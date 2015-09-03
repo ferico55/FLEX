@@ -20,7 +20,6 @@
 @interface CategoryViewController ()
 <
     NotificationManagerDelegate,
-    UITableViewDelegate,
     UICollectionViewDataSource,
     UICollectionViewDelegate
 >
@@ -39,8 +38,7 @@
 @implementation CategoryViewController
 
 #pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:@"CategoryViewController" bundle:nibBundleOrNil];
     if (self) {
         UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -50,8 +48,7 @@
 }
 
 #pragma mark - Life Cycle
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     /** Initialization variable **/
@@ -77,8 +74,65 @@
 
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    self.tabBarController.title = @"Kategori";
+    self.screenName = @"Top Category";
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    [self initNotificationManager];
+    
+
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+}
+
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Collection
+- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _category.count;
+
+}
+
+- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellid = @"CategoryViewCellIdentifier";
+    CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+    
+    NSString *title =[_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
+    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragrahStyle setLineSpacing:6];
+    [paragrahStyle setAlignment:NSTextAlignmentCenter];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
+    
+    cell.categoryLabel.attributedText = attributedString;
+    
+    NSString *icon = [_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATAICONKEY];
+    cell.icon.image = [UIImage imageNamed:icon];
+    
+    cell.backgroundColor = [UIColor whiteColor];
+    
+	return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     
@@ -107,80 +161,7 @@
     return cellSize;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    self.tabBarController.title = @"Kategori";
-    self.screenName = @"Top Category";
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
-    [self initNotificationManager];
-    
-
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-}
-
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-}
-
-#pragma mark - Memory Management
--(void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-#pragma mark - Table View Data Source
-- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return _category.count;
-
-}
-
-- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *cellid = @"CategoryViewCellIdentifier";
-    CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-    
-    NSString *title =[_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:6];
-    [paragrahStyle setAlignment:NSTextAlignmentCenter];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
-    
-    cell.categoryLabel.attributedText = attributedString;
-    
-    NSString *icon = [_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATAICONKEY];
-    cell.icon.image = [UIImage imageNamed:icon];
-    
-    cell.backgroundColor = [UIColor whiteColor];
-    
-	return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
-    return footerView;
-}
-
-
-#pragma mark - Delegate Cell
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger index =  indexPath.row;
     
     SearchResultViewController *vc = [SearchResultViewController new];
@@ -213,7 +194,6 @@
 }
 
 #pragma mark - Notification Manager
-
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
@@ -230,20 +210,16 @@
 }
 
 #pragma mark - Notification delegate
-
-- (void)reloadNotification
-{
+- (void)reloadNotification{
     [self initNotificationManager];
 }
 
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-{
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
     [notificationManager tapWindowBar];
     [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
 }
 
-- (void)pushViewController:(id)viewController
-{
+- (void)pushViewController:(id)viewController {
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;

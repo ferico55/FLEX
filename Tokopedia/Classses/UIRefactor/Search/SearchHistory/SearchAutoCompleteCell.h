@@ -10,9 +10,9 @@
 
 #import "SearchAutoCompleteViewModel.h"
 
-@interface SearchAutoCompleteCell : UITableViewCell
+@interface SearchAutoCompleteCell : UICollectionViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *searchTitle;
+@property (strong, nonatomic) IBOutlet UILabel *searchTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *searchImage;
 
 - (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel;
