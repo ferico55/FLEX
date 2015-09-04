@@ -311,6 +311,11 @@
     return UITableViewAutomaticDimension;
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor clearColor];
+}
+
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
