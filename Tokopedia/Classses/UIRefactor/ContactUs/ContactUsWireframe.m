@@ -18,14 +18,29 @@
     [navigation pushViewController:self.presenter.userInterface animated:YES];
 }
 
-- (void)pushContactUsProblemChoices:(NSArray *)choices
-                    selectedProblem:(NSString *)problem
-                     fromNavigation:(UINavigationController *)navigation {
+- (void)pushContactUsProblemFromNavigation:(UINavigationController *)navigation {
+    NSArray *object = [self.presenter.dataCollector selectedProblemTitles];
+    NSString *selectedObject = self.presenter.dataCollector.selectedProblem.ticket_category_name;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     GeneralTableViewController *controller = [GeneralTableViewController new];
     controller.title = @"Pilih Masalah";
-    controller.objects = choices;
-    controller.selectedObject = problem;
+    controller.objects = object;
+    controller.selectedObject = selectedObject;
     controller.delegate = self.presenter;
+    controller.senderIndexPath = indexPath;
+    [navigation pushViewController:controller animated:YES];
+}
+
+- (void)pushContactUsProblemDetailFromNavigation:(UINavigationController *)navigation {
+    NSArray *object = [self.presenter.dataCollector selectedProblemDetailTitles];
+    NSString *selectedObject = self.presenter.dataCollector.selectedDetailProblem.ticket_category_name;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.title = @"Pilih Detail Masalah";
+    controller.objects = object;
+    controller.selectedObject = selectedObject;
+    controller.delegate = self.presenter;
+    controller.senderIndexPath = indexPath;
     [navigation pushViewController:controller animated:YES];
 }
 

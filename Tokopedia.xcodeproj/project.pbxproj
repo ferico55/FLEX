@@ -29,6 +29,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		85CF8F071B997CD200F7D889 /* ContactUsDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CF8F061B997CD200F7D889 /* ContactUsDataCollector.m */; };
 		85D3DF1D1B7C81A500E4723C /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D3D52A1B7C81A200E4723C /* URLCacheAlert.m */; };
 		85D3DF1E1B7C81A500E4723C /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D3D52C1B7C81A200E4723C /* URLCacheConnection.m */; };
 		85D3DF1F1B7C81A500E4723C /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D3D52E1B7C81A200E4723C /* URLCacheController.m */; };
@@ -1628,6 +1629,8 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		85CF8F051B997CD200F7D889 /* ContactUsDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsDataCollector.h; sourceTree = "<group>"; };
+		85CF8F061B997CD200F7D889 /* ContactUsDataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsDataCollector.m; sourceTree = "<group>"; };
 		85D3D5291B7C81A200E4723C /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		85D3D52A1B7C81A200E4723C /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		85D3D52B1B7C81A200E4723C /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -5960,6 +5963,8 @@
 				853A20051B85B8FE0030F84B /* ContactUsTypeCell.xib */,
 				85D421391B96D18D00CC6E8A /* DataRequest.h */,
 				85D4213A1B96D18D00CC6E8A /* DataRequest.m */,
+				85CF8F051B997CD200F7D889 /* ContactUsDataCollector.h */,
+				85CF8F061B997CD200F7D889 /* ContactUsDataCollector.m */,
 			);
 			path = ContactUs;
 			sourceTree = "<group>";
@@ -10037,6 +10042,7 @@
 				85D3E1BD1B7C81A600E4723C /* DetailProductWholesaleTableCell.m in Sources */,
 				85D3E0801B7C81A600E4723C /* TxOrderConfirmedDetailResult.m in Sources */,
 				85D3DF6D1B7C81A500E4723C /* ReviewResult.m in Sources */,
+				85CF8F071B997CD200F7D889 /* ContactUsDataCollector.m in Sources */,
 				85D3E28D1B7C81A600E4723C /* FilterViewController.m in Sources */,
 				85D3E2CD1B7C81A600E4723C /* TxOrderConfirmationCell.m in Sources */,
 				85D3DF911B7C81A500E4723C /* InboxMessage.m in Sources */,

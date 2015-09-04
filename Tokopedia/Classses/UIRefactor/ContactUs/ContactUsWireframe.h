@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TicketCategory.h"
 
 @class TPRootWireframe;
 @class ContactUsPresenter;
@@ -18,10 +19,8 @@
 @property (nonatomic, strong) ContactUsPresenter *presenter;
 
 - (void)pushContactUsViewControllerFromNavigation:(UINavigationController *)navigation;
-- (void)pushContactUsProblemChoices:(NSArray *)choices
-                    selectedProblem:(NSString *)problem
-                     fromNavigation:(UINavigationController *)navigation;
-- (void)pushContactUsProblemDetailChoicesFromNavigation:(UINavigationController *)navigation;
+- (void)pushContactUsProblemFromNavigation:(UINavigationController *)navigation;
+- (void)pushContactUsProblemDetailFromNavigation:(UINavigationController *)navigation;
 - (void)pushContactUsFormViewFromNavigation:(UINavigationController *)navigation;
 
 @end

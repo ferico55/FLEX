@@ -8,8 +8,17 @@
 
 #import "ContactUsPresenter.h"
 #import "ContactUsWireframe.h"
+#import "ContactUsDataCollector.h"
 
 @implementation ContactUsPresenter
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.dataCollector = [ContactUsDataCollector new];
+    }
+    return self;
+}
 
 #pragma mark - Input
 
@@ -25,12 +34,20 @@
 
 }
 
-- (void)didSelectContactUsProblem:(NSArray *)problemChoices {
-    [self.wireframe pushContactUsProblemChoicesFromNavigation:self.userInterface.navigationController];
+- (void)didSelectContactUsType:(TicketCategory *)type
+               selectedProblem:(TicketCategory *)selectedProblem
+                fromNavigation:(UINavigationController *)navigation {
+    self.dataCollector.selectedType = type;
+    self.dataCollector.selectedProblem = selectedProblem;
+    [self.wireframe pushContactUsProblemFromNavigation:navigation];
 }
 
-- (void)didSelectContactUsProblemDetail:(NSArray *)problemDetailChoices {
-    
+- (void)didSelectProblem:(TicketCategory *)problem
+   selectedDetailProblem:(TicketCategory *)detailProblem
+          fromNavigation:(UINavigationController *)navigation {
+    self.dataCollector.selectedProblem = problem;
+    self.dataCollector.selectedDetailProblem = detailProblem;
+    [self.wireframe pushContactUsProblemDetailFromNavigation:navigation];
 }
 
 #pragma mark - Output
@@ -43,6 +60,18 @@
 
 }
 
+#pragma mark - General table delegate
 
+- (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            TicketCategory *ticketCategory = [self.dataCollector selectedProblemWithName:object];
+            [self.userInterface setSelectedProblem:ticketCategory];
+        } else if (indexPath.row == 1) {
+            TicketCategory *detailTicketCategory = [self.dataCollector selectedDetailProblemWithName:object];
+            [self.userInterface setSelectedDetailProblem:detailTicketCategory];
+        }
+    }
+}
 
 @end

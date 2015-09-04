@@ -12,8 +12,16 @@
 @protocol ContactUsModuleInterface <NSObject>
 
 - (void)updateView;
-- (void)didSelectContactUsProblem:(NSArray *)problemChoices;
-- (void)didSelectContactUsProblemDetail:(NSArray *)problemDetailChoices;
+
+- (void)didSelectContactUsType:(TicketCategory *)type
+               selectedProblem:(TicketCategory *)selectedProblem
+                fromNavigation:(UINavigationController *)navigation;
+
+- (void)didSelectProblem:(TicketCategory *)problem
+   selectedDetailProblem:(TicketCategory *)selectedDetailProblem
+          fromNavigation:(UINavigationController *)navigation;
+
+
 - (void)didTapContactUsButton;
 
 @end

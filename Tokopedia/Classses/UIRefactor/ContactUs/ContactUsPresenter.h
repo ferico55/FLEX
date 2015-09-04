@@ -11,13 +11,16 @@
 #import "ContactUsInteractor.h"
 #import "ContactUsModuleInterface.h"
 #import "ContactUsWireframe.h"
+#import "ContactUsDataCollector.h"
+#import "GeneralTableViewController.h"
 
 @protocol ContactUsViewInterface;
 
-@interface ContactUsPresenter : NSObject <ContactUsInteractorOutput, ContactUsModuleInterface>
+@interface ContactUsPresenter : NSObject <ContactUsInteractorOutput, ContactUsModuleInterface, GeneralTableViewControllerDelegate>
 
 @property (nonatomic, strong) id<ContactUsInteractorInput> interactor;
 @property (nonatomic, strong) UIViewController<ContactUsViewInterface> *userInterface;
 @property (nonatomic, strong) ContactUsWireframe *wireframe;
+@property (nonatomic, strong) ContactUsDataCollector *dataCollector;
 
 @end

@@ -27,7 +27,6 @@
     TicketCategory *_selectedType;
     TicketCategory *_selectedProblem;
     TicketCategory *_selectedDetailProblem;
-
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -151,11 +150,16 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
-            [self.eventHandler didSelectContactUsProblem:_selectedType.ticket_category_child];
+            [self.eventHandler didSelectContactUsType:_selectedType
+                                      selectedProblem:_selectedProblem
+                                       fromNavigation:self.navigationController];
         } else if (indexPath.row == 1) {
-            [self.eventHandler didSelectContactUsProblemDetail:_selectedProblem.ticket_category_child];
+            [self.eventHandler didSelectProblem:_selectedProblem
+                          selectedDetailProblem:_selectedDetailProblem
+                                 fromNavigation:self.navigationController];
         }
     }
 }
@@ -227,6 +231,16 @@
 
 - (void)setRetryView {
     
+}
+
+- (void)setSelectedProblem:(TicketCategory *)problem {
+    _selectedProblem = problem;
+    [self.tableView reloadData];
+}
+
+- (void)setSelectedDetailProblem:(TicketCategory *)detailProblem {
+    _selectedDetailProblem = detailProblem;
+    [self.tableView reloadData];
 }
 
 @end
