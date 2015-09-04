@@ -292,7 +292,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
              else if ([domainName isEqualToString:SearchDomainGeneral]) {
                  NSArray *generals = [domain objectForKey:@"data"];
                  SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
-                 
+                 [self saveHistory:general.title];
                  [self goToResultPage:general.title];
              }
              else if ([domainName isEqualToString:SearchDomainHotlist]) {
