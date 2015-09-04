@@ -208,11 +208,16 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
         NSDictionary *domain = [_domains objectAtIndex:[indexPath section]];
-
+        
         [header.titleLabel setText:[[domain objectForKey:@"title"] uppercaseString]];
         if([[domain objectForKey:@"title"] isEqualToString:SearchDomainHistory]) {
-            [header.deleteButton setTitle:@"Hapus" forState:UIControlStateNormal];
-            [header.deleteButton addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+            if(_historyResult.count > 0 || _typedHistoryResult.count > 0) {
+                [header.deleteButton setTitle:@"Hapus" forState:UIControlStateNormal];
+                [header.deleteButton addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                [header.titleLabel setText:@""];
+                [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+            }
         } else {
             [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
         }
