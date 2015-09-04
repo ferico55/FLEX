@@ -10,4 +10,6 @@
 
 @interface TPContactUsDependencies : NSObject
 
+- (void)pushContactUsViewControllerFromNavigation:(UINavigationController *)navigation;
+
 @end

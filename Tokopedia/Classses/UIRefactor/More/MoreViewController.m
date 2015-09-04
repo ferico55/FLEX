@@ -57,6 +57,7 @@
 #import <MessageUI/MessageUI.h>
 
 #import "ContactUsWireframe.h"
+#import "TPContactUsDependencies.h"
 
 #define CTagProfileInfo 12
 
@@ -687,8 +688,9 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-
             
+            TPContactUsDependencies *dependencies = [TPContactUsDependencies new];
+            [dependencies pushContactUsViewControllerFromNavigation:self.navigationController];
             
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];

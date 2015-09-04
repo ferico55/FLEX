@@ -10,4 +10,7 @@
 
 @interface TPRootWireframe : NSObject
 
+- (void)showRootViewController:(UIViewController *)viewController
+                      inWindow:(UIWindow *)window;
+
 @end

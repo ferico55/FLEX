@@ -25,6 +25,14 @@
 
 }
 
+- (void)didSelectContactUsProblem:(NSArray *)problemChoices {
+    [self.wireframe pushContactUsProblemChoicesFromNavigation:self.userInterface.navigationController];
+}
+
+- (void)didSelectContactUsProblemDetail:(NSArray *)problemDetailChoices {
+    
+}
+
 #pragma mark - Output
 
 - (void)didReceiveTicketCategoryResponse:(ContactUsResponse *)response {
@@ -32,6 +40,9 @@
 }
 
 - (void)didReceiveProblem:(id)problem {
+
 }
+
+
 
 @end

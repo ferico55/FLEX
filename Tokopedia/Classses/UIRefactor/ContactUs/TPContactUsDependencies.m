@@ -8,8 +8,6 @@
 
 #import "TPContactUsDependencies.h"
 
-#import "TPRootWireframe.h"
-
 #import "ContactUsWireframe.h"
 #import "ContactUsViewController.h"
 #import "ContactUsPresenter.h"
@@ -31,16 +29,28 @@
     return self;
 }
 
+- (void)pushContactUsViewControllerFromNavigation:(UINavigationController *)navigation {
+    [self.contactUsWireframe pushContactUsViewControllerFromNavigation:navigation];
+}
+
 - (void)configureDependencies {
-    TPRootWireframe *rootWireframe = [TPRootWireframe new];
+    ContactUsWireframe *contactUsWireframe = [ContactUsWireframe new];
     
     ContactUsViewController *controller = [ContactUsViewController new];
     ContactUsPresenter *presenter = [ContactUsPresenter new];
     ContactUsInteractor *interactor = [ContactUsInteractor new];
+
     interactor.output = presenter;
+    
     presenter.userInterface = controller;
     presenter.interactor = interactor;
+    presenter.wireframe = contactUsWireframe;
+    
     controller.eventHandler = presenter;
+
+    contactUsWireframe.presenter = presenter;
+    
+    self.contactUsWireframe = contactUsWireframe;
 }
 
 @end

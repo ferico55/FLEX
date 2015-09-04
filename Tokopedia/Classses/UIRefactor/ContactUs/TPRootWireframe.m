@@ -12,13 +12,17 @@
 
 - (void)showRootViewController:(UIViewController *)viewController
                       inWindow:(UIWindow *)window {
-    UINavigationController *navigation = [self navigationControllerFromWindow:window];
-    navigation.viewControllers = @[viewController];
+    UINavigationController *navigationController = [self navigationControllerFromWindow:window];
+    navigationController.viewControllers = @[viewController];
+}
+
+- (void)pushViewController:(UIViewController *)viewController inWindow:(UIWindow *)window {
+    
 }
 
 - (UINavigationController *)navigationControllerFromWindow:(UIWindow *)window {
-    UINavigationController *navigation = (UINavigationController *)[window rootViewController];
-    return navigation;
+    UINavigationController *navigationController = (UINavigationController *)[window rootViewController];
+    return navigationController;
 }
 
 @end

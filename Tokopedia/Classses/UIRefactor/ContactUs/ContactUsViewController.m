@@ -151,7 +151,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.eventHandler didTapProblem];
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            [self.eventHandler didSelectContactUsProblem:_selectedType.ticket_category_child];
+        } else if (indexPath.row == 1) {
+            [self.eventHandler didSelectContactUsProblemDetail:_selectedProblem.ticket_category_child];
+        }
+    }
 }
 
 #pragma mark - Collection view data source
@@ -213,6 +219,14 @@
 - (void)showContactUsFormData:(NSArray *)data {
     _categories = data;
     [self.tableView reloadData];
+}
+
+- (void)setErrorView {
+    
+}
+
+- (void)setRetryView {
+    
 }
 
 @end

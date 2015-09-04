@@ -10,6 +10,7 @@
 #import "ContactUsViewInterface.h"
 #import "ContactUsInteractor.h"
 #import "ContactUsModuleInterface.h"
+#import "ContactUsWireframe.h"
 
 @protocol ContactUsViewInterface;
 
@@ -17,5 +18,6 @@
 
 @property (nonatomic, strong) id<ContactUsInteractorInput> interactor;
 @property (nonatomic, strong) UIViewController<ContactUsViewInterface> *userInterface;
+@property (nonatomic, strong) ContactUsWireframe *wireframe;
 
 @end

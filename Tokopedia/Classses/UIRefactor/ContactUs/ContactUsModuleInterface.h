@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TicketCategory.h"
 
 @protocol ContactUsModuleInterface <NSObject>
 
 - (void)updateView;
-- (void)didTapProblem;
+- (void)didSelectContactUsProblem:(NSArray *)problemChoices;
+- (void)didSelectContactUsProblemDetail:(NSArray *)problemDetailChoices;
 - (void)didTapContactUsButton;
 
 @end
