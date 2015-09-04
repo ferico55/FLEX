@@ -941,10 +941,23 @@ Contoh : 157500</string>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfm-Pn-avB">
                                 <rect key="frame" x="19" y="0.0" width="143" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="143" id="gWY-zF-dyK"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <state key="normal" title="Info Selengkapnya">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gWY-zF-dyK"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="gWY-zF-dyK"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <action selector="tapUploadProofInfo:" destination="-1" eventType="touchUpInside" id="2RW-Vv-BSr"/>
                                 </connections>
@@ -952,17 +965,30 @@ Contoh : 157500</string>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="hfm-Pn-avB" secondAttribute="bottom" constant="5" id="4Do-m9-jLg"/>
                             <constraint firstItem="hfm-Pn-avB" firstAttribute="top" secondItem="16f-3Y-366" secondAttribute="top" id="Bsu-hX-6Vg"/>
                             <constraint firstAttribute="trailing" secondItem="hfm-Pn-avB" secondAttribute="trailing" constant="15" id="HLz-Gv-Hee"/>
+                            <constraint firstItem="hfm-Pn-avB" firstAttribute="top" secondItem="16f-3Y-366" secondAttribute="top" id="Huf-rh-4lh"/>
                             <constraint firstItem="hfm-Pn-avB" firstAttribute="leading" secondItem="16f-3Y-366" secondAttribute="leading" constant="19" id="SB7-3R-Wka"/>
                             <constraint firstAttribute="bottom" secondItem="hfm-Pn-avB" secondAttribute="bottom" id="hM8-J5-DiK"/>
+                            <constraint firstItem="hfm-Pn-avB" firstAttribute="leading" secondItem="16f-3Y-366" secondAttribute="leading" constant="19" id="qKW-Gi-SSK"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="4Do-m9-jLg"/>
                                 <exclude reference="Bsu-hX-6Vg"/>
                                 <exclude reference="HLz-Gv-Hee"/>
+                                <exclude reference="Huf-rh-4lh"/>
                                 <exclude reference="SB7-3R-Wka"/>
                                 <exclude reference="hM8-J5-DiK"/>
+                                <exclude reference="qKW-Gi-SSK"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="4Do-m9-jLg"/>
+                                <include reference="Huf-rh-4lh"/>
+                                <include reference="qKW-Gi-SSK"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
