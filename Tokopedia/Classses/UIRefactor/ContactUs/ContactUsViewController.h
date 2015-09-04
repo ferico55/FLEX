@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ContactUsViewInterface.h"
+#import "ContactUsModuleInterface.h"
 
-@interface ContactUsViewController : UIViewController
+@interface ContactUsViewController : UIViewController <ContactUsViewInterface>
+
+@property (nonatomic, strong) id<ContactUsModuleInterface> eventHandler;
 
 @end
