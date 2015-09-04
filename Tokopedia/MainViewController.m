@@ -565,11 +565,10 @@ typedef enum TagRequest {
         [FBSession.activeSession closeAndClearTokenInformation];
     }
     
-    [_logoutRequestManager doRequest];
+    [[GPPSignIn sharedInstance] signOut];
+    [[GPPSignIn sharedInstance] disconnect];
 
-//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-//    [_cacheController initCacheWithDocumentPath:path];
-//    [_cacheController clearCache];
+    [_logoutRequestManager doRequest];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
