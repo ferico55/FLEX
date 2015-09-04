@@ -20,5 +20,6 @@
 @property (strong, nonatomic) TrackOrderDetail *detail;
 @property (strong, nonatomic) NSString *shipping_ref_num;
 @property (strong, nonatomic) NSString *invalid;
+@property (strong, nonatomic) NSString *delivered;
 
 @end
