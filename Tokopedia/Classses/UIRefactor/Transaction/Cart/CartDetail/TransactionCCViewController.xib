@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -52,9 +51,10 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PFJ-bO-DBu">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PFJ-bO-DBu">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="f9V-d0-0CB"/>
                         <outlet property="delegate" destination="-1" id="Os5-Za-Ibx"/>
@@ -86,31 +86,71 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cgD-Z6-yT4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <subviews>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Anda harus isi form ini ketika pertama kali memilih metode pembayaran melalui Kartu Kredit, selanjutnya akan terisi otomatis." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUY-jv-2be">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.80484169407894723" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="VUY-jv-2be" secondAttribute="bottom" id="nK5-vf-ITO"/>
+                            <constraint firstItem="VUY-jv-2be" firstAttribute="leading" secondItem="cgD-Z6-yT4" secondAttribute="leading" constant="15" id="nRA-ca-B4q"/>
+                            <constraint firstItem="VUY-jv-2be" firstAttribute="top" secondItem="cgD-Z6-yT4" secondAttribute="top" id="qjk-6w-Ked"/>
+                            <constraint firstAttribute="trailing" secondItem="VUY-jv-2be" secondAttribute="trailing" constant="15" id="xgZ-iL-J4k"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="VUY-jv-2be"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="nK5-vf-ITO"/>
+                                <exclude reference="nRA-ca-B4q"/>
+                                <exclude reference="qjk-6w-Ked"/>
+                                <exclude reference="xgZ-iL-J4k"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="VUY-jv-2be"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="nK5-vf-ITO"/>
+                                <include reference="nRA-ca-B4q"/>
+                                <include reference="qjk-6w-Ked"/>
+                                <include reference="xgZ-iL-J4k"/>
+                            </mask>
                         </variation>
                     </view>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Anda harus isi form ini ketika pertama kali memilih metode pembayaran melalui Kartu Kredit, selanjutnya akan terisi otomatis." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VUY-jv-2be">
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
-                        <nil key="highlightedColor"/>
-                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                            <rect key="frame" x="15" y="1" width="290" height="52"/>
-                        </variation>
-                    </label>
                 </subviews>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="cgD-Z6-yT4" secondAttribute="trailing" id="1Yg-sK-eqE"/>
+                    <constraint firstAttribute="bottom" secondItem="cgD-Z6-yT4" secondAttribute="bottom" constant="16.5" id="Kwi-jb-QEH"/>
+                    <constraint firstItem="cgD-Z6-yT4" firstAttribute="top" secondItem="PdX-4v-sN8" secondAttribute="top" id="RWB-GS-eVZ"/>
+                    <constraint firstItem="cgD-Z6-yT4" firstAttribute="leading" secondItem="PdX-4v-sN8" secondAttribute="leading" id="V62-a6-K6D"/>
+                </constraints>
                 <variation key="default">
                     <mask key="subviews">
                         <exclude reference="cgD-Z6-yT4"/>
-                        <exclude reference="VUY-jv-2be"/>
+                    </mask>
+                    <mask key="constraints">
+                        <exclude reference="1Yg-sK-eqE"/>
+                        <exclude reference="Kwi-jb-QEH"/>
+                        <exclude reference="RWB-GS-eVZ"/>
+                        <exclude reference="V62-a6-K6D"/>
                     </mask>
                 </variation>
                 <variation key="heightClass=regular-widthClass=compact">
                     <mask key="subviews">
                         <include reference="cgD-Z6-yT4"/>
-                        <include reference="VUY-jv-2be"/>
+                    </mask>
+                    <mask key="constraints">
+                        <include reference="1Yg-sK-eqE"/>
+                        <include reference="Kwi-jb-QEH"/>
+                        <include reference="RWB-GS-eVZ"/>
+                        <include reference="V62-a6-K6D"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
@@ -122,10 +162,6 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8tm-x0-P81" id="oGs-Q1-r95">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="887-Wf-c9D">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qdm-X1-ays">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
@@ -161,12 +197,8 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Qdm-X1-ays" firstAttribute="top" secondItem="oGs-Q1-r95" secondAttribute="top" id="3M1-A2-KtG"/>
-                    <constraint firstAttribute="bottom" secondItem="887-Wf-c9D" secondAttribute="bottom" id="Da8-tb-WYy"/>
-                    <constraint firstAttribute="trailing" secondItem="887-Wf-c9D" secondAttribute="trailing" id="IXN-Xk-zay"/>
                     <constraint firstItem="Qdm-X1-ays" firstAttribute="leading" secondItem="oGs-Q1-r95" secondAttribute="leading" id="KbC-wp-gLQ"/>
                     <constraint firstAttribute="bottom" secondItem="Qdm-X1-ays" secondAttribute="bottom" constant="-0.5" id="NDU-KK-lvC"/>
-                    <constraint firstItem="887-Wf-c9D" firstAttribute="top" secondItem="oGs-Q1-r95" secondAttribute="top" id="VO9-hw-S0g"/>
-                    <constraint firstItem="887-Wf-c9D" firstAttribute="leading" secondItem="oGs-Q1-r95" secondAttribute="leading" id="apr-ix-Vei"/>
                     <constraint firstAttribute="trailing" secondItem="Qdm-X1-ays" secondAttribute="trailing" id="r2B-Vg-gc4"/>
                 </constraints>
             </tableViewCellContentView>
@@ -178,10 +210,6 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v1G-2O-Wkf" id="yHJ-ve-9sl">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yet-x8-ErB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EBr-3M-W8L">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
@@ -216,12 +244,8 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="yet-x8-ErB" secondAttribute="bottom" id="9KG-9w-8bC"/>
-                    <constraint firstItem="yet-x8-ErB" firstAttribute="leading" secondItem="yHJ-ve-9sl" secondAttribute="leading" id="CsL-Tb-2Ka"/>
                     <constraint firstAttribute="trailing" secondItem="EBr-3M-W8L" secondAttribute="trailing" id="JDt-cM-YUy"/>
                     <constraint firstItem="EBr-3M-W8L" firstAttribute="leading" secondItem="yHJ-ve-9sl" secondAttribute="leading" id="Ob5-vI-DZV"/>
-                    <constraint firstAttribute="trailing" secondItem="yet-x8-ErB" secondAttribute="trailing" id="PhZ-H8-Je4"/>
-                    <constraint firstItem="yet-x8-ErB" firstAttribute="top" secondItem="yHJ-ve-9sl" secondAttribute="top" id="SOR-f8-ex9"/>
                     <constraint firstAttribute="bottom" secondItem="EBr-3M-W8L" secondAttribute="bottom" constant="-0.5" id="ZQU-x5-Vkr"/>
                     <constraint firstItem="EBr-3M-W8L" firstAttribute="top" secondItem="yHJ-ve-9sl" secondAttribute="top" id="s06-Rx-Q1M"/>
                 </constraints>
@@ -234,10 +258,6 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HHv-rd-7PJ" id="dVt-mS-XOh">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gUS-t5-ylk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Msu-z9-Uhd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
@@ -272,13 +292,9 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="gUS-t5-ylk" secondAttribute="trailing" id="1Ch-zv-qYM"/>
-                    <constraint firstItem="gUS-t5-ylk" firstAttribute="leading" secondItem="dVt-mS-XOh" secondAttribute="leading" id="GP3-tb-ZPv"/>
-                    <constraint firstItem="gUS-t5-ylk" firstAttribute="top" secondItem="dVt-mS-XOh" secondAttribute="top" id="IqR-3h-X32"/>
                     <constraint firstItem="Msu-z9-Uhd" firstAttribute="top" secondItem="dVt-mS-XOh" secondAttribute="top" id="Q8A-IZ-eQ9"/>
                     <constraint firstAttribute="trailing" secondItem="Msu-z9-Uhd" secondAttribute="trailing" id="VdO-Ab-u0e"/>
                     <constraint firstItem="Msu-z9-Uhd" firstAttribute="leading" secondItem="dVt-mS-XOh" secondAttribute="leading" id="Zf4-VU-pbQ"/>
-                    <constraint firstAttribute="bottom" secondItem="gUS-t5-ylk" secondAttribute="bottom" id="aJU-KU-SGK"/>
                     <constraint firstAttribute="bottom" secondItem="Msu-z9-Uhd" secondAttribute="bottom" constant="-0.5" id="u9O-Db-9Jo"/>
                 </constraints>
             </tableViewCellContentView>
@@ -290,10 +306,6 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4we-RF-AAE" id="r4m-bw-FUj">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uCF-sI-cTq">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cwl-mK-ndo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
@@ -325,12 +337,8 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="uCF-sI-cTq" secondAttribute="bottom" id="FCN-la-nDo"/>
                     <constraint firstItem="Cwl-mK-ndo" firstAttribute="leading" secondItem="r4m-bw-FUj" secondAttribute="leading" id="Ovw-ot-Hrx"/>
-                    <constraint firstItem="uCF-sI-cTq" firstAttribute="top" secondItem="r4m-bw-FUj" secondAttribute="top" id="S7e-7y-sGO"/>
                     <constraint firstItem="Cwl-mK-ndo" firstAttribute="top" secondItem="r4m-bw-FUj" secondAttribute="top" id="es8-5G-E6j"/>
-                    <constraint firstItem="uCF-sI-cTq" firstAttribute="leading" secondItem="r4m-bw-FUj" secondAttribute="leading" id="his-GU-GTb"/>
-                    <constraint firstAttribute="trailing" secondItem="uCF-sI-cTq" secondAttribute="trailing" id="nZN-df-1bd"/>
                     <constraint firstAttribute="bottom" secondItem="Cwl-mK-ndo" secondAttribute="bottom" constant="-0.5" id="qWS-HN-AFy"/>
                     <constraint firstAttribute="trailing" secondItem="Cwl-mK-ndo" secondAttribute="trailing" id="y72-N7-Uuz"/>
                 </constraints>
@@ -343,10 +351,6 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QY8-9q-jNd" id="LpY-tn-Z15">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7wY-S2-3z9">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="59H-N6-L07">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
@@ -381,12 +385,8 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="7wY-S2-3z9" firstAttribute="leading" secondItem="LpY-tn-Z15" secondAttribute="leading" id="0CJ-Uf-w9i"/>
-                    <constraint firstAttribute="bottom" secondItem="7wY-S2-3z9" secondAttribute="bottom" id="1zg-xK-YWO"/>
                     <constraint firstItem="59H-N6-L07" firstAttribute="leading" secondItem="LpY-tn-Z15" secondAttribute="leading" id="AWe-7u-n2s"/>
-                    <constraint firstAttribute="trailing" secondItem="7wY-S2-3z9" secondAttribute="trailing" id="bsg-pL-O0E"/>
                     <constraint firstAttribute="bottom" secondItem="59H-N6-L07" secondAttribute="bottom" constant="-0.5" id="d49-Ja-1BE"/>
-                    <constraint firstItem="7wY-S2-3z9" firstAttribute="top" secondItem="LpY-tn-Z15" secondAttribute="top" id="fAQ-Yn-YQA"/>
                     <constraint firstAttribute="trailing" secondItem="59H-N6-L07" secondAttribute="trailing" id="h1p-eJ-xAe"/>
                     <constraint firstItem="59H-N6-L07" firstAttribute="top" secondItem="LpY-tn-Z15" secondAttribute="top" id="wm8-Jj-V1n"/>
                 </constraints>
@@ -399,10 +399,6 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="grM-Eb-Bvx" id="tEx-ft-Les">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z6o-bw-080">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRV-J4-juf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
@@ -438,13 +434,9 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="pRV-J4-juf" firstAttribute="top" secondItem="tEx-ft-Les" secondAttribute="top" id="BL6-j4-UDf"/>
-                    <constraint firstAttribute="bottom" secondItem="z6o-bw-080" secondAttribute="bottom" id="BSO-Tz-xaM"/>
                     <constraint firstItem="pRV-J4-juf" firstAttribute="leading" secondItem="tEx-ft-Les" secondAttribute="leading" id="ERD-3Y-Sfh"/>
-                    <constraint firstAttribute="trailing" secondItem="z6o-bw-080" secondAttribute="trailing" id="WVY-Xi-ria"/>
                     <constraint firstAttribute="trailing" secondItem="pRV-J4-juf" secondAttribute="trailing" id="ZTy-vd-a3B"/>
-                    <constraint firstItem="z6o-bw-080" firstAttribute="leading" secondItem="tEx-ft-Les" secondAttribute="leading" id="cuS-ss-grb"/>
                     <constraint firstAttribute="bottom" secondItem="pRV-J4-juf" secondAttribute="bottom" constant="-0.5" id="f8d-7b-ySD"/>
-                    <constraint firstItem="z6o-bw-080" firstAttribute="top" secondItem="tEx-ft-Les" secondAttribute="top" id="tBo-30-0OL"/>
                 </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="522" y="309"/>
@@ -474,15 +466,12 @@
                             <constraint firstItem="MFA-Sq-9Wg" firstAttribute="top" secondItem="efI-fM-FDf" secondAttribute="top" constant="11" id="Ej5-i2-9RO"/>
                         </constraints>
                     </view>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EWp-hp-WZk">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EWp-hp-WZk">
                         <rect key="frame" x="11" y="28" width="290" height="64.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                            <rect key="frame" x="11" y="28" width="290" height="65"/>
-                        </variation>
                         <connections>
                             <outlet property="delegate" destination="-1" id="PBH-bP-Cwp"/>
                         </connections>
@@ -490,19 +479,32 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="efI-fM-FDf" secondAttribute="trailing" id="Def-NT-TwI"/>
+                    <constraint firstItem="EWp-hp-WZk" firstAttribute="top" secondItem="efI-fM-FDf" secondAttribute="bottom" id="EO7-Ss-eBN"/>
                     <constraint firstItem="efI-fM-FDf" firstAttribute="leading" secondItem="kGx-Wc-Gac" secondAttribute="leading" id="hUi-Me-4NY"/>
+                    <constraint firstAttribute="bottom" secondItem="EWp-hp-WZk" secondAttribute="bottom" constant="7.5" id="hvp-e5-40E"/>
+                    <constraint firstAttribute="trailing" secondItem="EWp-hp-WZk" secondAttribute="trailing" constant="19" id="lta-Lu-4rf"/>
                     <constraint firstItem="efI-fM-FDf" firstAttribute="top" secondItem="kGx-Wc-Gac" secondAttribute="top" id="r3H-wX-aff"/>
+                    <constraint firstItem="EWp-hp-WZk" firstAttribute="leading" secondItem="kGx-Wc-Gac" secondAttribute="leading" constant="11" id="rpb-UF-8dB"/>
                     <constraint firstAttribute="bottom" secondItem="efI-fM-FDf" secondAttribute="bottom" constant="72.5" id="sRC-5r-Wpq"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="EO7-Ss-eBN"/>
+                        <exclude reference="hvp-e5-40E"/>
+                        <exclude reference="lta-Lu-4rf"/>
+                        <exclude reference="rpb-UF-8dB"/>
+                    </mask>
+                </variation>
+                <variation key="heightClass=regular-widthClass=compact">
+                    <mask key="constraints">
+                        <include reference="EO7-Ss-eBN"/>
+                        <include reference="hvp-e5-40E"/>
+                        <include reference="lta-Lu-4rf"/>
+                        <include reference="rpb-UF-8dB"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <point key="canvasLocation" x="522" y="423.5"/>
         </tableViewCell>
-        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Anda harus isi form ini ketika pertama kali memilih metode pembayaran melalui Kartu Kredit, selanjutnya akan terisi otomatis." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FXA-tn-JQT">
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-            <nil key="highlightedColor"/>
-        </label>
     </objects>
 </document>

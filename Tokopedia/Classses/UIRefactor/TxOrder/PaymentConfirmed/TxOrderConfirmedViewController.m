@@ -218,24 +218,24 @@
 }
 
 #pragma mark - Table View Delegate
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     CGFloat rowHeight = 0;
     
     BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
     if (indexPath.row == 0) {
-        rowHeight = 120;
+        rowHeight = 130;
     }
     else if (indexPath.row == 1)
         rowHeight = isShowBank?181:44;
     else
     {
-        rowHeight = 50;
-        
+        rowHeight = 40;
+    
         TxOrderConfirmedList *detailOrder = _list[indexPath.section];
         if (([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1) &&
-            [detailOrder.system_account_no integerValue] == 0) {
-            rowHeight = 0;
-        }
+            [detailOrder.system_account_no integerValue] == 0)
+                rowHeight = 0;
     }
     
     return rowHeight;
@@ -258,9 +258,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_isNodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
+    [cell setBackgroundColor:[UIColor clearColor]];
 }
 
 #pragma mark - Cell Delegate
@@ -355,7 +353,7 @@
     }
     [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
     [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
-    NSString *accountNumber = ([detailOrder.user_account_no integerValue] != 0)?detailOrder.user_account_no:@"";
+    NSString *accountNumber = (![detailOrder.system_account_no isEqualToString:@""] && detailOrder.system_account_no != nil && ![detailOrder.system_account_no isEqualToString:@"0"])?detailOrder.system_account_no:@"";
     [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
     [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber] animated:NO];
     

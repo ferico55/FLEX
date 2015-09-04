@@ -10,12 +10,12 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "AppsFlyerTracker.h"
-
+#import "Localytics.h"
+#import <GooglePlus/GooglePlus.h>
 
 @implementation AppDelegate
 
@@ -47,6 +47,8 @@
                                        openType:kTAGOpenTypePreferFresh
                                         timeout:nil
                                        notifier:self];
+        
+        [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee" launchOptions:launchOptions];
         
         //appsflyer init
         [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
@@ -109,16 +111,17 @@
     }
 }
 
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    if([sourceApplication isEqualToString:@"com.facebook.Facebook"]) {
-        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
+        return YES;
+    } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+        return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
     }
-    
     return NO;
 }
 

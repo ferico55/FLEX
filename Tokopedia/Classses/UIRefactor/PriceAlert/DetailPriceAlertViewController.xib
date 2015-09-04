@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailPriceAlertViewController">
@@ -10,9 +10,7 @@
                 <outlet property="btnFilter" destination="GDz-RY-csy" id="3eo-iM-awR"/>
                 <outlet property="btnSort" destination="arF-YV-fUm" id="xHe-NE-aXY"/>
                 <outlet property="constraintHeightTable" destination="1PE-o4-H4B" id="6vK-Jh-E7U"/>
-                <outlet property="constraintWidthFilter" destination="4YB-rs-Yuf" id="hAe-rH-a95"/>
                 <outlet property="constraintWidthSeparatorButton" destination="rpS-Ir-C9R" id="sSb-4s-zf9"/>
-                <outlet property="constraintWidthUrutkan" destination="hhS-Dk-d0k" id="hXo-5m-hAU"/>
                 <outlet property="constraintYLineHeader" destination="Rsb-66-cXU" id="Mxd-dI-ApS"/>
                 <outlet property="tblDetailPriceAlert" destination="Sx0-be-k6p" id="sw7-Lq-JSf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -38,7 +36,6 @@
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="511" id="1PE-o4-H4B"/>
-                        <constraint firstAttribute="width" constant="320" id="VOE-gJ-7GB"/>
                     </constraints>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gf-HE-U4k">
@@ -60,7 +57,6 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GDz-RY-csy">
                     <rect key="frame" x="161" y="523" width="159" height="45"/>
                     <constraints>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="159" id="4YB-rs-Yuf"/>
                         <constraint firstAttribute="height" constant="45" id="Uih-Y1-YHB"/>
                     </constraints>
                     <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
@@ -74,7 +70,6 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="arF-YV-fUm">
                     <rect key="frame" x="0.0" y="523" width="160" height="45"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="160" id="hhS-Dk-d0k"/>
                         <constraint firstAttribute="height" constant="45" id="w9f-F5-XYf"/>
                     </constraints>
                     <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
@@ -89,9 +84,9 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="vJH-Dz-e3C" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="160" id="4XK-Tk-zsR"/>
                 <constraint firstItem="arF-YV-fUm" firstAttribute="top" secondItem="6gf-HE-U4k" secondAttribute="bottom" id="6af-zN-s0v"/>
                 <constraint firstItem="vJH-Dz-e3C" firstAttribute="top" secondItem="Sx0-be-k6p" secondAttribute="bottom" constant="13" id="9sY-5l-puA"/>
+                <constraint firstAttribute="centerX" secondItem="vJH-Dz-e3C" secondAttribute="centerX" id="DGi-xz-VwA"/>
                 <constraint firstAttribute="bottom" secondItem="GDz-RY-csy" secondAttribute="bottom" id="DWK-rv-4H4"/>
                 <constraint firstAttribute="trailing" secondItem="Sx0-be-k6p" secondAttribute="trailing" id="EA1-KD-LQJ"/>
                 <constraint firstItem="s67-Nv-zra" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="Rsb-66-cXU"/>
@@ -105,6 +100,7 @@
                 <constraint firstAttribute="trailing" secondItem="6gf-HE-U4k" secondAttribute="trailing" id="jdg-aF-Noc"/>
                 <constraint firstItem="arF-YV-fUm" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="k5K-Yv-WQJ"/>
                 <constraint firstItem="6gf-HE-U4k" firstAttribute="top" secondItem="Sx0-be-k6p" secondAttribute="bottom" id="qq9-KY-dZK"/>
+                <constraint firstItem="GDz-RY-csy" firstAttribute="width" secondItem="arF-YV-fUm" secondAttribute="width" id="vEy-Y8-iQ8"/>
                 <constraint firstAttribute="trailing" secondItem="s67-Nv-zra" secondAttribute="trailing" id="xOb-JF-KUc"/>
                 <constraint firstItem="6gf-HE-U4k" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yrc-xi-b4B"/>
             </constraints>

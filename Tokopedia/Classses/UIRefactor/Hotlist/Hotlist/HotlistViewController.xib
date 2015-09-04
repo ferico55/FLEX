@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HotlistViewController">
             <connections>
                 <outlet property="act" destination="4zu-5W-3Hc" id="6MP-WN-Fde"/>
+                <outlet property="collectionView" destination="hFq-NK-t6N" id="eJJ-AC-EiX"/>
+                <outlet property="flowLayout" destination="iDy-JO-Mnh" id="oYD-tl-jp7"/>
                 <outlet property="footer" destination="RV0-LQ-bBH" id="BBN-VJ-JqZ"/>
-                <outlet property="table" destination="4bJ-qF-cUo" id="I38-AR-Abq"/>
                 <outlet property="view" destination="SkJ-Yv-ops" id="6b7-Cu-41Q"/>
             </connections>
         </placeholder>
@@ -18,31 +19,31 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="185" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4bJ-qF-cUo" customClass="TableViewScrollAndSwipe">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="hFq-NK-t6N" customClass="CollectionScrollAndSwipe">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.95294117647058818" green="0.95294117647058818" blue="0.95294117647058818" alpha="1" colorSpace="deviceRGB"/>
-                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="48"/>
-                    <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="sectionIndexColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iDy-JO-Mnh" customClass="HomeFlowLayout">
+                        <size key="itemSize" width="300" height="173"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                    </collectionViewFlowLayout>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="CL1-rw-hfO"/>
-                        <outlet property="delegate" destination="-1" id="eGe-ME-yQG"/>
+                        <outlet property="dataSource" destination="-1" id="EPr-3h-2MJ"/>
+                        <outlet property="delegate" destination="-1" id="KXY-Hk-waZ"/>
                     </connections>
-                </tableView>
+                </collectionView>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="4bJ-qF-cUo" firstAttribute="top" secondItem="SkJ-Yv-ops" secondAttribute="top" id="D5i-Hf-QB4"/>
-                <constraint firstItem="4bJ-qF-cUo" firstAttribute="leading" secondItem="SkJ-Yv-ops" secondAttribute="leading" id="GXX-Zy-fqL"/>
-                <constraint firstAttribute="bottom" secondItem="4bJ-qF-cUo" secondAttribute="bottom" id="OSD-5Q-ccR"/>
-                <constraint firstAttribute="trailing" secondItem="4bJ-qF-cUo" secondAttribute="trailing" id="cda-kT-s0M"/>
+                <constraint firstItem="hFq-NK-t6N" firstAttribute="top" secondItem="SkJ-Yv-ops" secondAttribute="top" id="Ax7-pY-dEe"/>
+                <constraint firstAttribute="bottom" secondItem="hFq-NK-t6N" secondAttribute="bottom" id="JSz-gM-F4F"/>
+                <constraint firstItem="hFq-NK-t6N" firstAttribute="leading" secondItem="SkJ-Yv-ops" secondAttribute="leading" id="MEg-iy-M0s"/>
+                <constraint firstAttribute="trailing" secondItem="hFq-NK-t6N" secondAttribute="trailing" id="ev4-OR-xdM"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="148" y="274"/>
+            <point key="canvasLocation" x="543" y="217"/>
         </view>
         <view contentMode="scaleToFill" id="RV0-LQ-bBH" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>

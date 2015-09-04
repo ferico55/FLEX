@@ -136,7 +136,6 @@
     
     _operationQueue = [NSOperationQueue new];
     _depositSummary = [NSMutableArray new];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     _noResult = [NoResult new];
     
     _table.delegate = self;
@@ -174,6 +173,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Withdraw Page";
+    
+    
+    if(_noResultView == nil)
+        _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
 }
 
 
@@ -191,6 +194,7 @@
         cell = (DepositSummaryCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (cell == nil) {
             cell = [DepositSummaryCell newcell];
+//            ((DepositSummaryCell *) cell).contentView.backgroundColor = [UIColor redColor];
         }
         
         if (_depositSummary.count > indexPath.row) {
@@ -234,6 +238,10 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 150;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     #ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
         return _isNoData ? 1 : _depositSummary.count;
@@ -255,7 +263,7 @@
         if (_page && _page != 0) {
             [self loadData];
         } else {
-            _table.tableFooterView = nil;
+            _table.tableFooterView = [UIView new];
             [_act stopAnimating];
         }
     }
@@ -284,7 +292,7 @@
         [_act startAnimating];
     }
     else{
-        _table.tableFooterView = nil;
+        _table.tableFooterView = [UIView new];
         [_act stopAnimating];
     }
     
@@ -335,9 +343,12 @@
                     [_withdrawalButton addSubview:_infoReviewSaldo];
                     CGRect newFrame4 = _infoReviewSaldo.frame;
                     newFrame4.origin.y += 47;
+                    newFrame4.size.width = self.view.bounds.size.width;
                     newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                     _infoReviewSaldo.frame = newFrame4;
                     
+                    constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
+                    constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height-2;
                 }
             }
             

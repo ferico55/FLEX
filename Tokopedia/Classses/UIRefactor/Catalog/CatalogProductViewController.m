@@ -7,15 +7,15 @@
 //
 
 #import "CatalogProductViewController.h"
-#import "DetailProductViewController.h"
-
 #import "CatalogProductCell.h"
-
 #import "ProductList.h"
+#import "NavigateViewController.h"
 
 #import "detail.h"
 
-@interface CatalogProductViewController ()
+@interface CatalogProductViewController () {
+    NavigateViewController *_navigator;
+}
 
 @end
 
@@ -23,6 +23,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _navigator = [NavigateViewController new];
     
     self.title = @"Daftar Produk";
 
@@ -71,10 +73,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    DetailProductViewController *controller = [DetailProductViewController new];
-    ProductList *product = [_product_list objectAtIndex:0];
-    controller.data = @{kTKPDDETAIL_APIPRODUCTIDKEY:product.product_id};
-    [self.navigationController pushViewController:controller animated:YES];
+    ProductList *product = [_product_list objectAtIndex:[indexPath row]];
+    
+    [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
+    
 
 }
 

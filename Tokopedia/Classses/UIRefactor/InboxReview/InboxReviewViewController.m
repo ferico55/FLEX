@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 12/11/14.
 //
 //
-
+#import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxReviewViewController.h"
 #import "InboxReview.h"
 #import "GeneralReviewCell.h"
@@ -90,6 +90,8 @@
     NSString *_inboxReviewBaseUrl;
     NSString *_inboxReviewPostUrl;
     NSString *_inboxReviewFullUrl;
+    
+    NSIndexPath *_selectedDetailIndexPath;
 }
 
 #pragma mark - Initialization
@@ -118,7 +120,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
-                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
+                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", NAV_REVIEW]
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -160,6 +162,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _readStatus = [((TKPDTabInboxReviewNavigationController *) self.parentViewController) getTitleNavReview];
+    if([_readStatus isEqualToString:ALL_REVIEW])
+        _readStatus = @"all";
+    else
+        _readStatus = @"unread";
+    
+    
     _operationQueue = [NSOperationQueue new];
     _operationSkipReviewQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
@@ -168,7 +177,8 @@
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;
@@ -217,7 +227,6 @@
             [self loadData];
         }
     }
-   
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -248,6 +257,7 @@
             
             ((GeneralReviewCell*)cell).timelabel.text = [list.review_create_time isEqualToString:@"0"] ? @"" : list.review_create_time;
             ((GeneralReviewCell*)cell).data = list;
+            ((GeneralReviewCell*)cell).detailVC = _detailViewController;
             
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderColor = [UIColor lightGrayColor].CGColor;
 //            ((GeneralReviewCell*)cell).contentReview.layer.borderWidth = 1.0f;
@@ -272,11 +282,19 @@
             }
             
             
-            
             if ([list.review_is_skipable isEqualToString:@"1"]) {
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = NO;
+//                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
+//                newFrame.origin.x = 0;
+//                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
+                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = NO;
             } else {
+                ((GeneralReviewCell*)cell).writeReviewButton.translatesAutoresizingMaskIntoConstraints = YES;
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = YES;
+                CGRect newFrame = ((GeneralReviewCell*)cell).writeReviewButton.frame;
+                newFrame.origin.x = 0;
+                newFrame.size.width = tableView.bounds.size.width-((((GeneralReviewCell*) cell).contentReview.frame.origin.x)*2);
+                ((GeneralReviewCell*)cell).writeReviewButton.frame = newFrame;
             }
             
             //report button visibility
@@ -290,6 +308,17 @@
                 ((GeneralReviewCell*)cell).reportReviewButton.hidden = YES;
             }
             
+            if (((GeneralReviewCell*)cell).reportReviewButton.hidden && ((GeneralReviewCell*)cell).editReviewButton.isHidden) {
+                ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
+
+                CGRect newFrame = ((GeneralReviewCell*) cell).commentbutton.frame;
+                newFrame.origin.x = 0;
+                newFrame.size.width = tableView.bounds.size.width-(((GeneralReviewCell*) cell).contentReview.frame.origin.x*2);
+                ((GeneralReviewCell*)cell).commentbutton.frame = newFrame;
+            }
+            else {
+                ((GeneralReviewCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = NO;
+            }
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
     
             if ([list.review_message length] > 50) {
@@ -321,7 +350,6 @@
             if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
                 ((GeneralReviewCell *)cell).commentView.hidden = YES;
-                
             } else {
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
                 ((GeneralReviewCell *)cell).commentView.hidden = NO;
@@ -493,7 +521,7 @@
     //TODO::change this param later
     NSDictionary* param = @{
                             ACTION_API_KEY:GET_INBOX_REVIEW,
-                            NAV_API_KEY : [_data objectForKey:@"nav"],
+                            NAV_API_KEY : [_data objectForKey:@"nav"]?:@"",
                             LIMIT_API_KEY:INBOX_REVIEW_LIMIT_VALUE,
                             PAGE_API_KEY:@(_reviewPage),
                             FILTER_API_KEY:_readStatus?_readStatus:@"",
@@ -604,6 +632,12 @@
         }
         
         if(_reviews.count > 0) {
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _reviewPage<=1) {
+                NSInteger row = _selectedDetailIndexPath.row?:0;
+                InboxReviewList *list = _reviews[row];
+                [_detailViewController replaceDataSelected:list];
+            }
+            
             _isNoData = NO;
             _uriNextPage =  reviewObject.result.paging.uri_next;
             NSURL *url = [NSURL URLWithString:_uriNextPage];
@@ -629,6 +663,7 @@
             _isNoData = YES;
             _reviewTable.tableFooterView = _noResult;
         }
+
     }
 }
 
@@ -706,21 +741,29 @@
 }
 
 -(void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    DetailReviewViewController *vc = [DetailReviewViewController new];
-    NSInteger row = indexpath.row;
+    _selectedDetailIndexPath = indexpath;
     
+    NSInteger row = indexpath.row;
     InboxReviewList *list = _reviews[row];
     list.review_read_status = @"2";
-    [_reviewTable reloadData];
     
-    vc.data = list;
-    vc.is_owner = list.review_is_owner;
-    vc.indexPath = indexpath;
-    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-    
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [_detailViewController replaceDataSelected:list];
+    }
+    else
+    {
+        DetailReviewViewController *vc = [DetailReviewViewController new];
+        
+        [_reviewTable reloadData];
+        
+        vc.data = list;
+        vc.is_owner = list.review_is_owner;
+        vc.indexPath = indexpath;
+        vc.index = [NSString stringWithFormat:@"%zd",row];
+        
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
 }
 
@@ -740,6 +783,17 @@
     [self.navigationController pushViewController:_reportController animated:YES];
 }
 
+-(void)tapAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedDetailIndexPath = indexPath;
+    NSInteger row = indexPath.row;
+    InboxReviewList *list = _reviews[row];
+    list.review_read_status = @"2";
+    
+    [_detailViewController replaceDataSelected:list];
+    [_reviewTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
 #pragma mark - Report Delegate
 - (NSString *)getPath {
     return @"action/review.pl";
@@ -747,6 +801,10 @@
 
 - (NSDictionary *)getParameter {
     return @{@"action" : @"report_review", @"review_id" : _reportedReviewId};
+}
+
+- (UIViewController *)didReceiveViewController {
+    return self;
 }
 
 #pragma mark - Action Skip Review

@@ -13,6 +13,7 @@
 @required
 - (NSDictionary*)getParameter;
 - (NSString*)getPath;
+- (UIViewController*)didReceiveViewController;
 
 @end
 
@@ -22,4 +23,5 @@
 @property (nonatomic, strong) NSString *strProductID;
 @property (nonatomic, strong) NSString *strCommentTalkID;
 @property (nonatomic, strong) NSString *strShopID;
+@property (nonatomic, strong) NSString *strReviewID;
 @end

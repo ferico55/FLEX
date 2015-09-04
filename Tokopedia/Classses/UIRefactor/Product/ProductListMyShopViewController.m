@@ -28,6 +28,7 @@
 #import "RequestMoveTo.h"
 
 #import "TokopediaNetworkManager.h"
+#import "NavigateViewController.h"
 
 #import "LoadingView.h"
 
@@ -81,10 +82,13 @@
     RequestMoveTo *_requestMoveTo;
     
     TokopediaNetworkManager *_networkManager;
-    
+    NavigateViewController *_TKPDNavigator;
     LoadingView *_loadingView;
     
     BOOL _isNeedToSearch;
+    
+    SortViewController *_sortViewController;
+    ProductListMyShopFilterViewController *_filterViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -132,6 +136,7 @@
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    _TKPDNavigator = [NavigateViewController new];
     
     _page = 1;
     _limit = 8;
@@ -161,6 +166,9 @@
     _auth = [secureStorage keychainDictionary];
     
     [_networkManager doRequest];
+    
+    _sortViewController = [SortViewController new];
+    _filterViewController = [ProductListMyShopFilterViewController new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -256,13 +264,8 @@
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _list[indexPath.row];
-    DetailProductViewController *detailProductVC = [DetailProductViewController new];
-    detailProductVC.hidesBottomBarWhenPushed = YES;
-    detailProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
-                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                             DATA_PRODUCT_DETAIL_KEY : list,
-                             };
-    [self.navigationController pushViewController:detailProductVC animated:YES];
+
+    [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:nil withId:[NSString stringWithFormat:@"%ld", (long)list.product_id] withImageurl:list.product_image withShopName:[_auth objectForKey:@"shop_name"]];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -318,11 +321,10 @@
             case BUTTON_FILTER_TYPE_SORT:
             {
                 NSIndexPath *indexpath = [_dataFilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
+                _sortViewController.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                vc.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                _sortViewController.delegate = self;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_sortViewController];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
@@ -330,12 +332,11 @@
             {
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
                 
-                ProductListMyShopFilterViewController *controller = [ProductListMyShopFilterViewController new];
-                controller.delegate = self;
-                controller.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
-                controller.shopID = [auth getShopId];
+                _filterViewController.delegate = self;
+                _filterViewController.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
+                _filterViewController.shopID = [auth getShopId];
                 
-                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:_filterViewController];
                 navigation.navigationBar.translucent = NO;
                 
                 [self.navigationController presentViewController:navigation animated:YES completion:nil];

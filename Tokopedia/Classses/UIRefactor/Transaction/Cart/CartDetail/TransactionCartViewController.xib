@@ -31,6 +31,9 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -60,6 +63,8 @@
                 <outlet property="depositAmountLabel" destination="iQg-aJ-CXo" id="i8x-TE-pGp"/>
                 <outlet property="footerView" destination="KDl-FM-LK1" id="SJG-4e-rGU"/>
                 <outlet property="grandTotalLabel" destination="6yM-Im-p4G" id="C1X-UC-14m"/>
+                <outlet property="klikBCANotes" destination="tBH-R1-omE" id="pWO-i2-ErD"/>
+                <outlet property="klikBCAUserIDCell" destination="hqV-P8-utv" id="Gki-KX-t6y"/>
                 <outlet property="passwordCell" destination="Mbe-do-c9y" id="9PE-pp-KYz"/>
                 <outlet property="passwordTextField" destination="hJb-lx-Y9Z" id="TlD-ew-hrh"/>
                 <outlet property="paymentGatewayCell" destination="60d-Jk-tyu" id="2na-gI-9aM"/>
@@ -76,6 +81,7 @@
                 <outlet property="totalPaymentDetail" destination="XiX-Jr-HT9" id="YQo-Ac-X0o"/>
                 <outlet property="transferCodeCell" destination="hHW-yd-Xhs" id="QsD-o3-0tn"/>
                 <outlet property="usedSaldoCell" destination="gnN-iy-Hi0" id="Q2N-GN-bKz"/>
+                <outlet property="userIDKlikBCATextField" destination="JiP-l8-4Tm" id="5Fo-xX-K2F"/>
                 <outlet property="view" destination="Gh7-DV-yXN" id="azQ-xw-Yce"/>
                 <outlet property="voucerCell" destination="v13-pk-jca" id="l4Z-or-uXE"/>
                 <outlet property="voucerCodeBeforeTapView" destination="7jP-3s-t2c" id="PGj-wW-pwn"/>
@@ -296,7 +302,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="117" y="336"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1Oa-Pn-t5D" detailTextLabel="duK-WS-3V1" style="IBUITableViewCellStyleValue1" id="oQo-sj-Ytv">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1Oa-Pn-t5D" detailTextLabel="duK-WS-3V1" style="IBUITableViewCellStyleValue1" id="oQo-sj-Ytv" userLabel="Administrasi Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oQo-sj-Ytv" id="FrT-Ye-UGi">
@@ -410,7 +416,7 @@
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="968" y="69"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v13-pk-jca">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v13-pk-jca" userLabel="Voucher Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v13-pk-jca" id="pFk-He-4KN">
@@ -515,7 +521,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="567" y="85"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="u1p-Qm-vqC" detailTextLabel="6yM-Im-p4G" style="IBUITableViewCellStyleValue1" id="hTf-We-spw">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="u1p-Qm-vqC" detailTextLabel="6yM-Im-p4G" style="IBUITableViewCellStyleValue1" id="hTf-We-spw" userLabel="Total payment 1Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTf-We-spw" id="Fl9-xG-6va">
@@ -535,7 +541,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="496" y="417"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="GgZ-h3-Niu" detailTextLabel="w7L-kM-nnc" style="IBUITableViewCellStyleValue1" id="XiX-Jr-HT9">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="GgZ-h3-Niu" detailTextLabel="w7L-kM-nnc" style="IBUITableViewCellStyleValue1" id="XiX-Jr-HT9" userLabel="Total payment 2Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XiX-Jr-HT9" id="UFN-Wi-MCI">
@@ -558,19 +564,26 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="504" y="531"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Lfk-xl-Rbu">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Lfk-xl-Rbu" userLabel="Saldo switch Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lfk-xl-Rbu" id="9r9-kM-wgv">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gunakan Saldo Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpc-Rx-yiu">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gunakan Saldo Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpc-Rx-yiu">
                         <rect key="frame" x="15" y="11" width="196" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="196" id="x9s-5J-7po"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
+                    <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
                         <rect key="frame" x="259" y="6" width="51" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="49" id="Mor-Xi-SP0"/>
+                            <constraint firstAttribute="height" constant="31" id="co1-ug-4QS"/>
+                        </constraints>
                         <connections>
                             <action selector="switchUsingSaldo:" destination="-1" eventType="touchUpInside" id="cjq-bV-vFe"/>
                         </connections>
@@ -592,11 +605,16 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="dAf-t4-mYj" firstAttribute="leading" secondItem="9r9-kM-wgv" secondAttribute="leading" id="3W9-37-5Wk"/>
+                    <constraint firstAttribute="trailing" secondItem="sI2-vl-FxW" secondAttribute="trailing" constant="12" id="8Ot-pe-JOe"/>
+                    <constraint firstItem="sI2-vl-FxW" firstAttribute="top" secondItem="dAf-t4-mYj" secondAttribute="bottom" constant="5" id="9Wj-wp-scB"/>
                     <constraint firstAttribute="bottom" secondItem="EUB-WT-MFg" secondAttribute="bottom" constant="-0.5" id="VbH-Ce-Ybo"/>
                     <constraint firstItem="dAf-t4-mYj" firstAttribute="top" secondItem="9r9-kM-wgv" secondAttribute="top" id="X4d-WY-y9J"/>
+                    <constraint firstItem="bpc-Rx-yiu" firstAttribute="top" secondItem="dAf-t4-mYj" secondAttribute="bottom" constant="10" id="YZW-jt-V1v"/>
                     <constraint firstItem="EUB-WT-MFg" firstAttribute="leading" secondItem="9r9-kM-wgv" secondAttribute="leading" id="bzb-71-6N1"/>
+                    <constraint firstItem="EUB-WT-MFg" firstAttribute="top" secondItem="bpc-Rx-yiu" secondAttribute="bottom" constant="11" id="drj-UD-J65"/>
                     <constraint firstAttribute="trailing" secondItem="EUB-WT-MFg" secondAttribute="trailing" id="uWQ-Gh-iMV"/>
                     <constraint firstAttribute="trailing" secondItem="dAf-t4-mYj" secondAttribute="trailing" id="ycC-3q-2vc"/>
+                    <constraint firstItem="bpc-Rx-yiu" firstAttribute="leading" secondItem="9r9-kM-wgv" secondAttribute="leading" constant="15" id="zf6-Vb-eY5"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -684,7 +702,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="166" y="442"/>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="tTs-1N-0vt">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="tTs-1N-0vt" userLabel="Saldo textfield Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tTs-1N-0vt" id="dU1-08-Srw">
@@ -757,7 +775,96 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="161" y="637"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Mbe-do-c9y">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="145" id="hqV-P8-utv" userLabel="ID BCA KlikPayTable View Cell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="145"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hqV-P8-utv" id="nXv-jO-rNi">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X9E-Go-rNd">
+                        <rect key="frame" x="0.0" y="20" width="320" height="125"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masukkan User ID KlikBCA Anda" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k93-Tu-DbB">
+                                <rect key="frame" x="15" y="8" width="290" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="4oE-Lc-prw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JiP-l8-4Tm">
+                                <rect key="frame" x="15" y="37" width="290" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="A6b-Pk-rp0"/>
+                                </constraints>
+                                <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="-1" id="CCi-3X-Wev"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masukkan User ID KlikBCA yang masih aktif dan terdaftar di BCA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBH-R1-omE">
+                                <rect key="frame" x="15" y="85" width="290" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="QVv-wa-frp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="slU-rP-xYE">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="VLf-mA-9AS"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W3K-6q-11Y">
+                                <rect key="frame" x="0.0" y="125" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="441-Qv-m0I"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="W3K-6q-11Y" secondAttribute="bottom" constant="-1" id="27l-Vn-qN8"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="top" secondItem="X9E-Go-rNd" secondAttribute="top" constant="37" id="4Rd-1J-RsV"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="leading" secondItem="k93-Tu-DbB" secondAttribute="leading" id="9Xt-rU-Fpj"/>
+                            <constraint firstItem="W3K-6q-11Y" firstAttribute="top" secondItem="tBH-R1-omE" secondAttribute="bottom" constant="5" id="BDw-nF-IG4"/>
+                            <constraint firstAttribute="trailing" secondItem="W3K-6q-11Y" secondAttribute="trailing" id="Bhm-aH-PGY"/>
+                            <constraint firstItem="k93-Tu-DbB" firstAttribute="top" secondItem="slU-rP-xYE" secondAttribute="bottom" constant="7" id="FFG-jD-IiE"/>
+                            <constraint firstItem="W3K-6q-11Y" firstAttribute="centerX" secondItem="tBH-R1-omE" secondAttribute="centerX" id="HPh-KQ-v3x"/>
+                            <constraint firstItem="slU-rP-xYE" firstAttribute="leading" secondItem="X9E-Go-rNd" secondAttribute="leading" id="Lo7-uu-rau"/>
+                            <constraint firstItem="slU-rP-xYE" firstAttribute="top" secondItem="X9E-Go-rNd" secondAttribute="top" id="MGb-4G-9ma"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="centerX" secondItem="X9E-Go-rNd" secondAttribute="centerX" id="RUc-eg-do0"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="leading" secondItem="X9E-Go-rNd" secondAttribute="leading" constant="15" id="Tc6-Sj-F43"/>
+                            <constraint firstItem="W3K-6q-11Y" firstAttribute="leading" secondItem="slU-rP-xYE" secondAttribute="leading" id="XIr-em-w4E"/>
+                            <constraint firstAttribute="trailing" secondItem="slU-rP-xYE" secondAttribute="trailing" id="ZP2-gK-0zI"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="top" secondItem="k93-Tu-DbB" secondAttribute="bottom" constant="8" symbolic="YES" id="a7o-wn-9nL"/>
+                            <constraint firstItem="slU-rP-xYE" firstAttribute="top" secondItem="X9E-Go-rNd" secondAttribute="top" id="dCc-4m-ZXM"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="leading" secondItem="tBH-R1-omE" secondAttribute="leading" id="re3-hp-sef"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="trailing" secondItem="tBH-R1-omE" secondAttribute="trailing" id="wSn-1A-MmZ"/>
+                            <constraint firstItem="JiP-l8-4Tm" firstAttribute="trailing" secondItem="k93-Tu-DbB" secondAttribute="trailing" id="yFw-nQ-RlI"/>
+                            <constraint firstItem="tBH-R1-omE" firstAttribute="top" secondItem="JiP-l8-4Tm" secondAttribute="bottom" constant="8" symbolic="YES" id="zzb-ZV-mre"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="X9E-Go-rNd" firstAttribute="top" secondItem="nXv-jO-rNi" secondAttribute="top" constant="20" id="Dv4-q7-Kgo"/>
+                    <constraint firstAttribute="bottom" secondItem="X9E-Go-rNd" secondAttribute="bottom" id="SaE-Pu-Zxt"/>
+                    <constraint firstItem="X9E-Go-rNd" firstAttribute="leading" secondItem="nXv-jO-rNi" secondAttribute="leading" id="nD8-rn-Iwq"/>
+                    <constraint firstAttribute="trailing" secondItem="X9E-Go-rNd" secondAttribute="trailing" id="qk6-Tj-ZO8"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="161" y="997.5"/>
+        </tableViewCell>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Mbe-do-c9y" userLabel="Password Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mbe-do-c9y" id="cbv-gu-2yJ">
@@ -800,10 +907,6 @@
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hJb-lx-Y9Z">
                                 <rect key="frame" x="118" y="3" width="187" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="D5Y-Tt-w7O"/>
-                                    <constraint firstAttribute="width" constant="187" id="ZhB-OK-u0w"/>
-                                </constraints>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -814,10 +917,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="rGT-eV-rjU" firstAttribute="top" secondItem="hJb-lx-Y9Z" secondAttribute="top" constant="-3" id="HoY-Jx-5Fc"/>
+                            <constraint firstItem="hJb-lx-Y9Z" firstAttribute="leading" secondItem="rGT-eV-rjU" secondAttribute="trailing" constant="10" id="HJC-i1-4VN"/>
+                            <constraint firstAttribute="trailing" secondItem="hJb-lx-Y9Z" secondAttribute="trailing" constant="15" id="Lml-8k-Hrh"/>
+                            <constraint firstAttribute="bottom" secondItem="hJb-lx-Y9Z" secondAttribute="bottom" id="QdM-PM-n7u"/>
+                            <constraint firstItem="hJb-lx-Y9Z" firstAttribute="top" secondItem="ZEg-l7-f8o" secondAttribute="top" constant="3" id="cxu-44-Cpf"/>
                             <constraint firstItem="rGT-eV-rjU" firstAttribute="top" secondItem="ZEg-l7-f8o" secondAttribute="top" id="deZ-vC-NZh"/>
                             <constraint firstItem="rGT-eV-rjU" firstAttribute="leading" secondItem="ZEg-l7-f8o" secondAttribute="leading" id="fNO-TT-Alk"/>
-                            <constraint firstItem="hJb-lx-Y9Z" firstAttribute="leading" secondItem="rGT-eV-rjU" secondAttribute="trailing" constant="10" id="itb-vd-BPZ"/>
                         </constraints>
                     </view>
                 </subviews>

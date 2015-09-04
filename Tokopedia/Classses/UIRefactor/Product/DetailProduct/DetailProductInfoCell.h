@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TTTAttributedLabel, DetailProductViewController;
+@class TTTAttributedLabel;
 
 #define CPaddingTopDescToko 10
 #define kTKPDDETAILPRODUCTINFOCELLIDENTIFIER @"DetailProductInfoCellIdentifier"
@@ -23,6 +23,7 @@
 @interface DetailProductInfoCell : UITableViewCell
 {
     IBOutlet NSLayoutConstraint *constraintHeightViewRetur;
+    IBOutlet NSLayoutConstraint *constraintWidthViewRetur;
     TTTAttributedLabel *lblMessageRetur;
     IBOutlet UIView *viewRetur;
     IBOutlet UIImageView *imgRetur;

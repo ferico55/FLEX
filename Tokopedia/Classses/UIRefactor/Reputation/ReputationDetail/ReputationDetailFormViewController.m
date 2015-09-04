@@ -11,6 +11,7 @@
 #import "ReviewList.h"
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
+#import "NavigateViewController.h"
 
 
 #import "string_inbox_review.h"
@@ -53,6 +54,7 @@
     NSMutableArray *_errorMessages;
     UIBarButtonItem *_barbuttonright;
     NSDictionary *_editedParam;
+    NavigateViewController *_TKPDNavigator;
 
 }
 
@@ -210,6 +212,7 @@
     [self initReviewTextView];
     [self initProductView];
     [self initReviewForm];
+    _TKPDNavigator = [NavigateViewController new];
 }
 
 
@@ -348,9 +351,8 @@
         switch (button.tag) {
             case 10:
             {
-                DetailProductViewController *vc = [DetailProductViewController new];
-                vc.data = @{@"product_id" : _selectedReviewDetail.review_product_id};
-                [self.navigationController pushViewController:vc animated:YES];
+                [_TKPDNavigator navigateToProductFromViewController:self withName:_selectedReviewDetail.review_product_name withPrice:nil withId:_selectedReviewDetail.review_product_id withImageurl:_selectedReviewDetail.review_product_image withShopName:nil];
+                
                 break;
             }
                 

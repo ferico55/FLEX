@@ -50,6 +50,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *twoButtons;
+@property (weak, nonatomic) IBOutlet UIButton *acceptedButton;
 
 @property (nonatomic) NSInteger deadlineProcessDayLeft;
 

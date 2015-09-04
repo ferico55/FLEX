@@ -60,6 +60,8 @@
     NSString *_endDate;
     
     NSDictionary *_auth;
+    
+    FilterSalesTransactionListViewController *_filterViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -98,6 +100,9 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
+    
+    _filterViewController = [FilterSalesTransactionListViewController new];
+    _filterViewController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -722,13 +727,19 @@
             _selectedOrder.order_detail.detail_ship_ref_num = receiptNumber;
             
         } else {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
-            [alert show];
+            if (actionOrder.message_error) {
+                NSArray *errorMessages = actionOrder.message_error?:@[@"Proses mengubah nomor resi gagal."];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                [alert show];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi tidak valid."] delegate:self];
+                [alert show];   
+            }
         }
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses mengubah nomor resi gagal."] delegate:self];
         [alert show];
         
     }];
@@ -743,9 +754,7 @@
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
-    controller.delegate = self;
-    navigationController.viewControllers = @[controller];
+    navigationController.viewControllers = @[_filterViewController];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }

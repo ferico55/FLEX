@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -21,11 +21,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="singleLineEtched" rowHeight="83" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DEU-dk-S8H">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="513"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -35,14 +35,11 @@
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0y-ak-8VP" userLabel="shopView">
-                    <rect key="frame" x="0.0" y="435" width="320" height="45"/>
+                    <rect key="frame" x="0.0" y="513" width="320" height="55"/>
                     <subviews>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m3O-OD-9Qo">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="45" id="eOC-Y8-F3d"/>
-                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="4" maxX="0.0" maxY="0.0"/>
                             <state key="normal" title="Filter Hasil Pencarian">
@@ -56,46 +53,53 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGU-1p-eDC" userLabel="Top Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="SZQ-im-aXy"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="2Bk-8a-4oQ"/>
-                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="nGU-1p-eDC" secondAttribute="top" id="5zS-7e-bfY"/>
-                        <constraint firstAttribute="trailing" secondItem="m3O-OD-9Qo" secondAttribute="trailing" id="EaA-oS-TFd"/>
-                        <constraint firstAttribute="bottom" secondItem="nGU-1p-eDC" secondAttribute="bottom" constant="44" id="MAk-FA-Mvl"/>
-                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="trailing" secondItem="nGU-1p-eDC" secondAttribute="trailing" id="Rry-YU-0hk"/>
-                        <constraint firstAttribute="bottom" secondItem="m3O-OD-9Qo" secondAttribute="bottom" id="WKa-n4-fgZ"/>
-                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="nGU-1p-eDC" secondAttribute="leading" id="ae8-fU-3eR"/>
-                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="zIv-Td-Oye"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="34N-rR-2DE"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="trailing" secondItem="nGU-1p-eDC" secondAttribute="trailing" id="8bR-hG-1cj"/>
+                        <constraint firstItem="nGU-1p-eDC" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="RQo-cF-qou"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="nGU-1p-eDC" secondAttribute="top" id="TJ9-ic-EUK"/>
+                        <constraint firstAttribute="trailing" secondItem="m3O-OD-9Qo" secondAttribute="trailing" id="ZPf-5y-216"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="cBm-z7-Gjh"/>
+                        <constraint firstAttribute="trailing" secondItem="nGU-1p-eDC" secondAttribute="trailing" id="erO-Sx-Yp6"/>
+                        <constraint firstAttribute="bottom" secondItem="m3O-OD-9Qo" secondAttribute="bottom" id="rcG-M3-nlL"/>
+                        <constraint firstItem="nGU-1p-eDC" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="uA7-Ze-fEt"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="nGU-1p-eDC" secondAttribute="leading" id="xlc-3k-6WV"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="r0y-ak-8VP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7Qd-Ev-i9m"/>
-                <constraint firstItem="r0y-ak-8VP" firstAttribute="leading" secondItem="DEU-dk-S8H" secondAttribute="leading" id="8Z3-JC-NJ2"/>
-                <constraint firstItem="r0y-ak-8VP" firstAttribute="trailing" secondItem="DEU-dk-S8H" secondAttribute="trailing" id="DbO-gG-o3I"/>
-                <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="DEU-dk-S8H" secondAttribute="bottom" constant="-45" id="L0F-Xa-zRF"/>
-                <constraint firstItem="r0y-ak-8VP" firstAttribute="bottom" secondItem="DEU-dk-S8H" secondAttribute="bottom" id="MhM-Io-dRL"/>
-                <constraint firstAttribute="trailing" secondItem="r0y-ak-8VP" secondAttribute="trailing" id="kJs-5O-ewP"/>
-                <constraint firstItem="r0y-ak-8VP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="435" id="nA7-CN-iJA"/>
-                <constraint firstItem="DEU-dk-S8H" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="oL4-W5-7hq"/>
-                <constraint firstAttribute="bottom" secondItem="r0y-ak-8VP" secondAttribute="bottom" id="tiO-LG-XjX"/>
+                <constraint firstItem="DEU-dk-S8H" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1IM-kL-pIp"/>
+                <constraint firstItem="DEU-dk-S8H" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Eb6-C9-34h"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="top" secondItem="DEU-dk-S8H" secondAttribute="bottom" id="QZ1-cN-5If"/>
+                <constraint firstAttribute="bottom" secondItem="DEU-dk-S8H" secondAttribute="bottom" constant="55" id="dgT-Hs-qsT"/>
+                <constraint firstAttribute="trailing" secondItem="DEU-dk-S8H" secondAttribute="trailing" id="npz-RR-iEt"/>
+                <constraint firstAttribute="bottom" secondItem="r0y-ak-8VP" secondAttribute="bottom" id="sZG-jC-NE9"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="leading" secondItem="DEU-dk-S8H" secondAttribute="leading" id="tdg-bR-EJJ"/>
+                <constraint firstItem="r0y-ak-8VP" firstAttribute="trailing" secondItem="DEU-dk-S8H" secondAttribute="trailing" id="x2Q-eZ-L4p"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="wVY-21-3dp" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4UL-cg-udr">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4UL-cg-udr">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
                     <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="4UL-cg-udr" secondAttribute="centerX" id="p40-J0-Lru"/>
+                <constraint firstAttribute="centerY" secondItem="4UL-cg-udr" secondAttribute="centerY" id="z71-vQ-JiO"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>

@@ -42,6 +42,7 @@
     _categorybuttons = [NSArray sortViewsWithTagInArray:_categorybuttons];
     self.productInformationView.layer.borderWidth = 0.5f;
     self.productInformationView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
+    self.productInformationView.layer.masksToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -65,7 +66,7 @@
 {
     if(lblMessageRetur == nil) {
         lblMessageRetur = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-        lblMessageRetur.textAlignment = NSTextAlignmentCenter;
+        lblMessageRetur.textAlignment = NSTextAlignmentLeft;
         lblMessageRetur.font = [UIFont fontWithName:CFont_Gotham_Book size:11.0f];
         lblMessageRetur.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
         lblMessageRetur.lineBreakMode = NSLineBreakByWordWrapping;
@@ -74,9 +75,23 @@
         [viewRetur addSubview:lblMessageRetur];
     }
     
-    float xLblMessageRetur = imgRetur.frame.origin.x+imgRetur.bounds.size.width+5;
-    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, 9999) withText:strText withColor:lblMessageRetur.textColor withFont:lblMessageRetur.font withAlignment:NSTextAlignmentCenter];
-    lblMessageRetur.frame = CGRectMake(xLblMessageRetur, CPaddingTopDescToko, viewRetur.bounds.size.width-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15, height);
+    
+    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText withColor:[UIColor whiteColor] withFont:FONT_GOTHAM_BOOK_14 withAlignment:NSTextAlignmentLeft];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5,
+                                       CPaddingTopDescToko,
+                                       ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-155,
+                                       height);
+    }
+    else
+    {
+        lblMessageRetur.frame = CGRectMake(70+5,
+                                           CPaddingTopDescToko,
+                                           ([[UIScreen mainScreen] bounds].size.width-30)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15,
+                                           height);
+    }
+    
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
 }
 

@@ -5,6 +5,8 @@
 //  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import "ShopBadgeLevel.h"
+#import "CMPopTipView.h"
 #import "string_inbox_message.h"
 #import "NavigateViewController.h"
 
@@ -18,10 +20,13 @@
 
 #import "GeneralTableViewController.h"
 
+#import "ReputationDetail.h"
 #import "ResolutionAction.h"
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "ShopReputation.h"
+#import "SmileyAndMedal.h"
 
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
@@ -37,10 +42,12 @@
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
+    SmileyDelegate,
     GeneralTableViewControllerDelegate,
     ResolutionCenterDetailViewControllerDelegate,
     InboxResolutionCenterComplainCellDelegate,
     LoadingViewDelegate,
+    CMPopTipViewDelegate,
     TokopediaNetworkManagerDelegate>
 {
     NavigateViewController *_navigate;
@@ -52,7 +59,8 @@
     NSOperationQueue *_operationQueue;
     
     NSMutableDictionary *_dataInput;
-    
+
+    CMPopTipView *cmPopTitpView;
     InboxResolutionCenterObjectMapping *_mapping;
     
     __weak RKObjectManager *_objectManager;
@@ -71,6 +79,8 @@
     NSDictionary *_objectCancelComplain;
     
     LoadingView *_loadingView;
+    
+    NSIndexPath *_selectedDetailIndexPath;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -244,6 +254,22 @@
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
     cell.viewLabelUser.text = _isMyComplain?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
+    //Set reputation score
+    cell.btnReputation.tag = indexPath.row;
+    
+    if(resolution.resolution_by.by_customer == 1)
+        [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge_object.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
+    else {
+        if(resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"]) {
+            [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
+            [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+        else {
+            [cell.btnReputation setTitle:[NSString stringWithFormat:@"%@%%", resolution.resolution_customer.customer_reputation.positive_percentage] forState:UIControlStateNormal];
+            [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        }
+    }
+    
     //Set user label
 //    if([resolution.resolution_by.user_label isEqualToString:CPenjual]) {
 //        [cell.viewLabelUser setColor:CTagPenjual];
@@ -366,35 +392,31 @@
 
 -(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
 {
-    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+    _selectedDetailIndexPath = indexPath;
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    vc.indexPath = indexPath;
-    vc.resolution = resolution;
-    vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
-    vc.delegate = self;
-    
-    resolution.resolution_read_status = 2;
-    [_list replaceObjectAtIndex:indexPath.row withObject:resolution];
-    [_tableView reloadData];
-    
-    [self.navigationController pushViewController:vc animated:YES];
+    NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if (![resolution isEqual:_detailViewController.resolution]) {
+            [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+        }
+    }
+    else
+    {
+        ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+        vc.indexPath = indexPath;
+        vc.resolution = resolution;
+        vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+        vc.delegate = self;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - Table View Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
-    InboxResolutionCenterList *resolution = _list[indexPath.row];
-    vc.indexPath = indexPath;
-    vc.resolution = resolution;
-    vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
-    vc.delegate = self;
+    _selectedDetailIndexPath = indexPath;
     
-    resolution.resolution_read_status = 2;
-    [_list replaceObjectAtIndex:indexPath.row withObject:resolution];
-    [_tableView reloadData];
-    
-    [self.navigationController pushViewController:vc animated:YES];
+    [self goToResolutionDetailAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -415,7 +437,74 @@
     }
 }
 
+#pragma mark - Method
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    cmPopTitpView.delegate = self;
+    cmPopTitpView.backgroundColor = [UIColor blackColor];
+    cmPopTitpView.animation = CMPopTipAnimationSlide;
+    cmPopTitpView.leftPopUp = YES;
+    cmPopTitpView.dismissTapAnywhere = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
 #pragma mark - Cell Delegate
+- (void)actionReputation:(id)sender {
+    ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[((UIView *) sender).tag]).resolution_detail;
+    
+    
+    
+    
+    
+    
+    
+    
+    if(resolution.resolution_by.by_customer == 1) {
+        if(resolution.resolution_shop.shop_reputation.tooltip!=nil && resolution.resolution_shop.shop_reputation.tooltip.length>0)
+            [self initPopUp:resolution.resolution_shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+    }
+    else {
+        if(! (resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"])) {
+            int paddingRightLeftContent = 10;
+            UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+            
+            SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+            [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:resolution.resolution_customer.customer_reputation.neutral withRepSmile:resolution.resolution_customer.customer_reputation.positive withRepSad:resolution.resolution_customer.customer_reputation.negative withDelegate:self];
+            
+            //Init pop up
+            cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+            cmPopTitpView.delegate = self;
+            cmPopTitpView.backgroundColor = [UIColor whiteColor];
+            cmPopTitpView.animation = CMPopTipAnimationSlide;
+            cmPopTitpView.dismissTapAnywhere = YES;
+            cmPopTitpView.leftPopUp = YES;
+            
+            UIButton *button = (UIButton *)sender;
+            [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+        }
+    }
+}
 
 -(void)refreshRequest
 {
@@ -591,6 +680,15 @@
                 
                 _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
                 _tableView.tableFooterView = nil;
+                
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _page <= 1) {
+                    NSIndexPath *indexPath = _selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    InboxResolutionCenterList *resolution = _list[indexPath.row];
+                    NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+                    if (![resolution isEqual:_detailViewController.resolution]) {
+                        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                    }
+                }
             }
             else
             {
@@ -703,6 +801,29 @@
     RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
     RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
     
+    
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                                 CNoReputation,
+                                                                 CNegative,
+                                                                 CNeutral,
+                                                                 CPositif]];
+    
+    
+    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
+                                                           CReputationBadge,
+                                                           CReputationScore,
+                                                           CScore,
+                                                           CMinBadgeScore]];
+    
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+
+    [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
+    [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
+    
+    
     RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                    toKeyPath:kTKPD_APIRESULTKEY
                                                                                  withMapping:resultMapping];
@@ -744,6 +865,7 @@
                                                                                             withMapping:resolutionDisputeMapping];
     
     
+    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
     [statusMapping addPropertyMapping:resultRel];
     
     [resultMapping addPropertyMapping:listRel];
@@ -819,4 +941,21 @@
 }
 
 
+#pragma mark - CMPopTipView Delegate
+- (void)dismissAllPopTipViews
+{
+    [cmPopTitpView dismissAnimated:YES];
+    cmPopTitpView = nil;
+}
+
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
+}
 @end

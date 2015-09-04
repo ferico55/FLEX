@@ -560,12 +560,17 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     if (!_ticketDetail) {
         _ticketDetail = [InboxTicketDetail new];
-        _ticketDetail = [InboxTicketDetail new];
         _ticketDetail.ticket_detail_user_name = _ticketInformation.ticket_first_message_name;
         _ticketDetail.ticket_detail_user_image = _ticketInformation.ticket_first_message_image;
         _ticketDetail.ticket_detail_message = _ticketInformation.ticket_first_message;
         _ticketDetail.ticket_detail_create_time = _ticketInformation.ticket_create_time;
-        _ticketDetail.ticket_detail_is_cs = @"0";
+        
+        NSString *ticketCategoryId = self.inboxTicket.ticket_category_id;
+        if ([ticketCategoryId isEqualToString:@"0"]) {
+            _ticketDetail.ticket_detail_is_cs = @"1";
+        } else {
+            _ticketDetail.ticket_detail_is_cs = @"0";
+        }
     }
     
     NSMutableArray *tickets = [NSMutableArray new];

@@ -34,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintTextView;
 
 @property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
 
@@ -60,7 +61,7 @@
     }
     
     _remarkTextView.delegate = self;
-    [_remarkTextView addSubview:_headerView];
+//    [_remarkTextView addSubview:_headerView];
     
     [self setDefaultData:_data];
     [_remarkTextView becomeFirstResponder];
@@ -79,7 +80,7 @@
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
-    inset.top = _headerView.frame.size.height + 10;
+    inset.top = 12;//_headerView.frame.size.height + 10;
     _remarkTextView.textContainerInset = inset;
 }
 
@@ -212,7 +213,7 @@ replacementString:(NSString*)string
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
-    inset.top = _headerView.frame.size.height;
+    inset.top = 0;
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, inset.top, _remarkTextView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
     placeholderLabel.font = [UIFont fontWithName:_remarkTextView.font.fontName size:_remarkTextView.font.pointSize];
@@ -240,31 +241,9 @@ replacementString:(NSString*)string
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        _scrollviewContentSize = [_remarkTextView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_remarkTextView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseOut
-                         animations:^{
-                             _scrollviewContentSize = [_remarkTextView contentSize];
-                             
-                             _keyboardPosition = [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             
-                             UIEdgeInsets inset = _remarkTextView.contentInset;
-                             inset.bottom = _keyboardPosition.y;
-                             [_remarkTextView setContentInset:inset];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+    
+    _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    _bottomConstraintTextView.constant = _keyboardSize.height-40;
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {

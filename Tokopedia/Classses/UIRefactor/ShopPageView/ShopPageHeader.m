@@ -5,11 +5,14 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
-
+#import "DetailProductViewController.h"
+#import "ShopContainerViewController.h"
 #import "ShopPageHeader.h"
 #import "ShopDescriptionView.h"
 #import "ShopStatView.h"
+#import "ShopBadgeLevel.h"
 #import "detail.h"
+#import "SmileyAndMedal.h"
 #import "string_product.h"
 #import "UserAuthentificationManager.h"
 #import "ShopSettingViewController.h"
@@ -125,6 +128,11 @@
     [super viewWillAppear:animated];
     
     _auth = [_userManager getUserLoginData];
+    
+    if(CGSizeEqualToSize(_statView.bounds.size, CGSizeZero)) {
+        _statView.frame = CGRectMake(0, _statView.frame.origin.y, self.view.bounds.size.width, self.scrollView.bounds.size.height);
+        [self.scrollView setContentSize:CGSizeMake(self.view.bounds.size.width*2, 77)];
+    }
 }
 
 - (void)viewDidLoad
@@ -137,10 +145,18 @@
     [self initButton];
     
     _descriptionView = [ShopDescriptionView newView];
-    _descriptionView.frame = CGRectMake(_descriptionView.frame.origin.x, _descriptionView.frame.origin.y, _descriptionView.bounds.size.width, self.scrollView.bounds.size.height);
+    _descriptionView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width, _descriptionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, self.scrollView.bounds.size.height);
     [self.scrollView addSubview:_descriptionView];
     
     _statView = [ShopStatView newView];
+    _statView.frame = CGRectZero;
+    id pageController = ((UIViewController *) _delegate).parentViewController;
+    if([pageController isMemberOfClass:[UIPageViewController class]]) {
+        if([((UIPageViewController *) pageController).delegate isMemberOfClass:[ShopContainerViewController class]]) {
+            [_statView.imgStatistic addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPopUp:)]];
+        }
+    }
+    
     [self.scrollView addSubview:_statView];
     
  
@@ -152,9 +168,11 @@
     [_navigationTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_navigationTab.layer setShadowRadius:1];
     [_navigationTab.layer setShadowOpacity:0.3];
-    
-    [self.scrollView setContentSize:CGSizeMake(640, 77)];
-    
+}
+
+- (void)showPopUp:(id)sender {
+    id pageController = ((UIViewController *) _delegate).parentViewController;
+    [((ShopContainerViewController *) ((UIPageViewController *) pageController).delegate) showPopUp:[NSString stringWithFormat:@"%@ %@", _shop.result.stats.shop_reputation_score, CStringPoin] withSender:((UITapGestureRecognizer *) sender).view];
 }
 
 - (void)didReceiveMemoryWarning
@@ -190,15 +208,7 @@
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
     _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
-    _descriptionView.descriptionLabel.numberOfLines = 4;
-    
-    CGRect newFrame = CGRectMake(20, 50, 280, 150);
-    _descriptionView.descriptionLabel.frame = newFrame;
-    [_descriptionView.descriptionLabel sizeToFit];
-    
-    CGRect myFrame = _descriptionView.descriptionLabel.frame;
-    myFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y, 280, myFrame.size.height);
-    _descriptionView.descriptionLabel.frame = myFrame;
+    _descriptionView.descriptionLabel.numberOfLines = 4;    
     
     _statView.locationLabel.text = _shop.result.info.shop_name;
     _statView.openStatusLabel.text = _shop.result.info.shop_location;
@@ -218,7 +228,7 @@
         _shopClosedView.hidden = NO;
         NSString *until = [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@",_shop.result.closed_info.until];
         NSString *reason = [NSString stringWithFormat:@"Alasan : %@",_shop.result.closed_info.note];
-        [_shopClosedReason setText:reason];
+        [_shopClosedReason setCustomAttributedText:reason];
         [_shopClosedUntil setText:until];
     } else {
         _shopClosedView.hidden = YES;
@@ -235,7 +245,7 @@
 #pragma clang diagnostic pop
         } failure:nil];
     } else {
-        [_coverImageView setBackgroundColor:[UIColor clearColor]];
+        [_coverImageView setBackgroundColor:[UIColor whiteColor]];
     }
     
     
@@ -264,6 +274,7 @@
     [self.delegate didReceiveShop:_shop];
     if(_shop) {
         [self setHeaderData];
+        [self generateMedal];
     }
 }
 
@@ -284,6 +295,13 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
 }
+
+#pragma mark - Method
+- (void)generateMedal {
+    [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:_statView.imgStatistic isLarge:YES];
+    _statView.constraintWidthMedal.constant = _statView.imgStatistic.image.size.width;
+}
+
 
 #pragma mark - Actions
 

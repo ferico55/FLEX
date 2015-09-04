@@ -16,5 +16,6 @@
 @property (strong, nonatomic) NSString *send_date;
 @property (strong, nonatomic) NSString *receiver_name;
 @property (strong, nonatomic) NSString *service_code;
+@property (strong, nonatomic) NSString *delivered;
 
 @end

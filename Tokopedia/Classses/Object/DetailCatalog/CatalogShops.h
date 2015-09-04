@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ProductList.h"
+@class ShopStats;
 
 #define CShopUri @"shop_uri"
 #define CShopRateAccuracy @"shop_rate_accuracy"
@@ -25,6 +26,7 @@
 #define CShopIsOwner @"shop_is_owner"
 #define CShopRatingDesc @"shop_rating_desc"
 #define CShopDomain @"shop_domain"
+#define CShopReputation @"shop_reputation"
 
 
 @interface CatalogShops : NSObject
@@ -47,5 +49,5 @@
 @property (nonatomic) NSInteger is_gold_shop;
 
 @property (nonatomic, strong) NSArray *product_list;
-
+@property (nonatomic, strong) ShopStats *shop_reputation;
 @end

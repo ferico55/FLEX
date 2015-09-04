@@ -36,6 +36,8 @@
 #import "Logout.h"
 #import "AlertBaseUrl.h"
 
+#import "InboxRootViewController.h"
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -461,7 +463,7 @@ typedef enum TagRequest {
 #endif
     
     // redirect to home after login or register
-    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
+//    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
 
 #pragma mark - Notification observers
@@ -563,11 +565,10 @@ typedef enum TagRequest {
         [FBSession.activeSession closeAndClearTokenInformation];
     }
     
-    [_logoutRequestManager doRequest];
+    [[GPPSignIn sharedInstance] signOut];
+    [[GPPSignIn sharedInstance] disconnect];
 
-//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-//    [_cacheController initCacheWithDocumentPath:path];
-//    [_cacheController clearCache];
+    [_logoutRequestManager doRequest];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;

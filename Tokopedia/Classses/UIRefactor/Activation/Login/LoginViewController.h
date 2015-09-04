@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GooglePlus/GooglePlus.h>
+
+@class GPPSignInButton;
 
 @protocol LoginViewDelegate <NSObject>
 
@@ -17,11 +20,13 @@
 
 @end
 
-@interface LoginViewController : GAITrackedViewController <UITextFieldDelegate>
+@interface LoginViewController : GAITrackedViewController <UITextFieldDelegate, GPPSignInDelegate>
 
 @property (strong,nonatomic) NSDictionary *data;
 @property BOOL isPresentedViewController;
 @property (weak, nonatomic) id<LoginViewDelegate> delegate;
 @property (weak, nonatomic) id redirectViewController;
+
+@property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 
 @end

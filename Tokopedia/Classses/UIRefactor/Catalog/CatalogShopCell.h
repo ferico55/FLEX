@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol CatalogShopDelegate <NSObject>
-
+- (void)actionContentStar:(id)sender;
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath;
@@ -18,12 +18,15 @@
 @end
 
 @interface CatalogShopCell : UITableViewCell
+{
+    IBOutlet UIView *viewContentStar, *expandViewContentStar;
+}
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *containerHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *shopLocationLabel;
+@property (weak, nonatomic) IBOutlet UIButton *btnLocation;
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
@@ -40,6 +43,6 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *stars;
 
-- (void)setShopRate:(NSInteger)rate;
 
+- (void)setTagContentStar:(int)tag;
 @end

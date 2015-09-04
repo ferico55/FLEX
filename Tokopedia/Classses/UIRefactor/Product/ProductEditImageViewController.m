@@ -12,16 +12,13 @@
 #import "ProductEditImageViewController.h"
 #import "TKPDPhotoPicker.h"
 
-@interface ProductEditImageViewController () <UIAlertViewDelegate, TKPDPhotoPickerDelegate>
+@interface ProductEditImageViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIScrollViewDelegate, TKPDPhotoPickerDelegate>
 {
     NSMutableDictionary *_dataInput;
     UITextField *_activeTextField;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
-    
-    CGRect _containerDefault;
-    CGSize _scrollviewContentSize;
     
     TKPDPhotoPicker *_photoPicker;
     
@@ -31,11 +28,13 @@
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UITextField *productNameTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *defaultPictureSwitch;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIButton *deleteImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *defaultPictLabel;
 @property (weak, nonatomic) IBOutlet UIButton *setDefaultButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintDeleteButton;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 
 - (IBAction)tap:(id)sender;
 
@@ -58,6 +57,8 @@
     
     self.title = @"Edit Gambar";
     
+    _section0Cells = [NSArray sortViewsWithTagInArray:_section0Cells];
+    
     _dataInput = [NSMutableDictionary new];
     
     [self setDefaultData:_data];
@@ -76,8 +77,6 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
-    
-    [_scrollView addSubview:_contentView];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -85,11 +84,6 @@
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
--(void)viewDidLayoutSubviews
-{
-    //_scrollView.contentSize = _contentView.frame.size;
 }
 
 - (void)didReceiveMemoryWarning
@@ -180,6 +174,76 @@
     _isDefaultImage = YES;
 }
 
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return _section0Cells.count;
+            break;
+        case 1:
+            return _section1Cells.count;
+            break;
+
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell= nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0Cells[indexPath.row];
+            break;
+        case 1:
+            cell = _section1Cells[indexPath.row];
+            break;
+
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (_deleteImageButton.hidden) {
+        return 1;
+    }
+    return 2;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return [_section0Cells[indexPath.row] frame].size.height;
+            break;
+        case 1:
+            return [_section1Cells[indexPath.row] frame].size.height;
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0;
+    }
+    return 40;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setBackgroundColor:[UIColor clearColor]];
+}
+
 #pragma mark - Photo picker delegate
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
@@ -217,10 +281,15 @@
     }
 }
 
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [_activeTextField resignFirstResponder];
+    _activeTextField = nil;
+}
+
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activeTextField = textField;
-    [textField resignFirstResponder];
     return YES;
 }
 
@@ -239,34 +308,18 @@
 }
 
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        
-        _scrollviewContentSize = [_scrollView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_scrollView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_scrollView contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                                 UIEdgeInsets inset = _scrollView.contentInset;
-                             inset.top -= (_keyboardSize.height - (self.view.frame.size.height-(_keyboardPosition.y + _activeTextField.frame.origin.y + _activeTextField.frame.size.height)));
-                             [_scrollView setContentInset:inset];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _table.contentInset = contentInsets;
+    _table.scrollIndicatorInsets = contentInsets;
+    
+    if (_activeTextField == _productNameTextField) {
+        [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
+
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -275,8 +328,8 @@
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         _scrollView.contentInset = contentInsets;
-                         _scrollView.scrollIndicatorInsets = contentInsets;
+                         _table.contentInset = contentInsets;
+                         _table.scrollIndicatorInsets = contentInsets;
                      }
                      completion:^(BOOL finished){
                      }];

@@ -15,6 +15,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -49,18 +50,20 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xe-3J-8jl">
-                                <rect key="frame" x="62" y="13" width="140" height="21"/>
+                                <rect key="frame" x="62" y="7" width="140" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="4Lz-bS-LVh"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="3hY-NH-3J0"/>
+                                    <constraint firstAttribute="height" constant="20" id="4Lz-bS-LVh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kf3-Hr-fSO">
-                                <rect key="frame" x="62" y="34" width="140" height="17"/>
+                                <rect key="frame" x="62" y="27" width="140" height="13"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="dyj-dR-2ZK"/>
+                                    <constraint firstAttribute="height" constant="13" id="dyj-dR-2ZK"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="rRU-UV-odc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -84,14 +87,26 @@
                                     <constraint firstAttribute="height" constant="1" id="U5N-LV-WYQ"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n2s-b9-j3X">
+                                <rect key="frame" x="62" y="40" width="140" height="14"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <inset key="titleEdgeInsets" minX="2" minY="3" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="0" image="icon_smile_small.png">
+                                    <color key="titleColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="n2s-b9-j3X" secondAttribute="trailing" constant="8" id="00A-Qr-kPa"/>
                             <constraint firstItem="Wbg-nK-3fN" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="0LE-zM-YVX"/>
-                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="top" secondItem="4xe-3J-8jl" secondAttribute="bottom" id="4XG-5R-pN9"/>
+                            <constraint firstItem="Kf3-Hr-fSO" firstAttribute="top" secondItem="4xe-3J-8jl" secondAttribute="bottom" id="8Lu-TG-JdL"/>
+                            <constraint firstItem="n2s-b9-j3X" firstAttribute="top" secondItem="Kf3-Hr-fSO" secondAttribute="bottom" id="9xh-T0-inc"/>
                             <constraint firstItem="Wbg-nK-3fN" firstAttribute="top" secondItem="ul6-rf-nr2" secondAttribute="bottom" constant="8" id="AM2-6y-Gsq"/>
                             <constraint firstAttribute="bottom" secondItem="Wbg-nK-3fN" secondAttribute="bottom" id="ChO-dZ-KGY"/>
+                            <constraint firstItem="n2s-b9-j3X" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="INe-r0-miY"/>
                             <constraint firstItem="ul6-rf-nr2" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" constant="10" id="J44-E2-OtT"/>
                             <constraint firstItem="ul6-rf-nr2" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="8" id="P3J-iN-FHu"/>
                             <constraint firstItem="aiL-Ab-rOE" firstAttribute="top" secondItem="HU8-BV-kCh" secondAttribute="top" id="Rym-aq-boC"/>
@@ -102,7 +117,7 @@
                             <constraint firstItem="Kf3-Hr-fSO" firstAttribute="leading" secondItem="ul6-rf-nr2" secondAttribute="trailing" constant="8" id="foY-5w-abV"/>
                             <constraint firstItem="nWc-fE-O2J" firstAttribute="leading" secondItem="4xe-3J-8jl" secondAttribute="trailing" constant="8" id="lbJ-w1-toV"/>
                             <constraint firstAttribute="trailing" secondItem="aiL-Ab-rOE" secondAttribute="trailing" id="oJR-MX-ZHp"/>
-                            <constraint firstItem="4xe-3J-8jl" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="12" id="uly-GD-pMc"/>
+                            <constraint firstItem="4xe-3J-8jl" firstAttribute="top" secondItem="aiL-Ab-rOE" secondAttribute="bottom" constant="6" id="uly-GD-pMc"/>
                             <constraint firstAttribute="trailing" secondItem="Wbg-nK-3fN" secondAttribute="trailing" id="w5S-Fa-0Kp"/>
                             <constraint firstItem="Wbg-nK-3fN" firstAttribute="top" secondItem="nWc-fE-O2J" secondAttribute="bottom" constant="20" id="xLs-kz-mgy"/>
                             <constraint firstItem="aiL-Ab-rOE" firstAttribute="leading" secondItem="HU8-BV-kCh" secondAttribute="leading" id="xbi-UP-eld"/>
@@ -356,6 +371,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="atachmentView" destination="RCZ-ET-Qtj" id="xfe-KM-yoC"/>
+                <outlet property="btnReputation" destination="n2s-b9-j3X" id="LDm-wh-0EL"/>
                 <outlet property="buyerNameLabel" destination="4xe-3J-8jl" id="64J-ps-Bem"/>
                 <outlet property="buyerProfileImageView" destination="ul6-rf-nr2" id="kDH-tQ-H3f"/>
                 <outlet property="buyerSellerLabel" destination="nWc-fE-O2J" id="K70-bR-dZD"/>
@@ -392,8 +408,11 @@
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LF1-y9-M9b">
-                    <rect key="frame" x="0.0" y="0.0" width="149" height="44"/>
+                <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LF1-y9-M9b">
+                    <rect key="frame" x="0.0" y="0.0" width="150" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Q1x-fH-lZM"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="-6" minY="-2" maxX="0.0" maxY="0.0"/>
@@ -405,16 +424,23 @@
                         <action selector="tap:" destination="RWp-0U-G7a" eventType="touchUpInside" id="Jcs-Yi-Pxi"/>
                     </connections>
                 </button>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mfQ-Za-jtV" userLabel="Horizontal Border">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfQ-Za-jtV" userLabel="Horizontal Border">
                     <rect key="frame" x="0.0" y="43" width="300" height="1"/>
                     <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="biU-NU-mDO"/>
+                    </constraints>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S1I-Pw-Zby" userLabel="Vertical Border">
-                    <rect key="frame" x="149" y="11" width="1" height="23"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1I-Pw-Zby" userLabel="Vertical Border">
+                    <rect key="frame" x="150" y="11" width="1" height="23"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="Sik-me-RYm"/>
+                        <constraint firstAttribute="height" constant="23" id="xb3-0a-0gP"/>
+                    </constraints>
                 </view>
-                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mh4-0S-sCW">
-                    <rect key="frame" x="150" y="0.0" width="150" height="44"/>
+                <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mh4-0S-sCW">
+                    <rect key="frame" x="151" y="0.0" width="149" height="44"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
@@ -428,6 +454,22 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="S1I-Pw-Zby" secondAttribute="centerX" id="4I8-ff-9My"/>
+                <constraint firstItem="LF1-y9-M9b" firstAttribute="leading" secondItem="q48-ie-aba" secondAttribute="leading" id="81R-xG-GRL"/>
+                <constraint firstAttribute="trailing" secondItem="Mh4-0S-sCW" secondAttribute="trailing" id="FSR-d6-QeQ"/>
+                <constraint firstAttribute="bottom" secondItem="mfQ-Za-jtV" secondAttribute="bottom" id="IKZ-aI-u5g"/>
+                <constraint firstItem="Mh4-0S-sCW" firstAttribute="leading" secondItem="S1I-Pw-Zby" secondAttribute="trailing" id="KOu-JI-n12"/>
+                <constraint firstItem="LF1-y9-M9b" firstAttribute="height" secondItem="Mh4-0S-sCW" secondAttribute="height" id="dl5-uG-HZp"/>
+                <constraint firstItem="LF1-y9-M9b" firstAttribute="top" secondItem="q48-ie-aba" secondAttribute="top" id="e67-rQ-PT1"/>
+                <constraint firstItem="mfQ-Za-jtV" firstAttribute="leading" secondItem="q48-ie-aba" secondAttribute="leading" id="elt-Ec-evj"/>
+                <constraint firstAttribute="trailing" secondItem="mfQ-Za-jtV" secondAttribute="trailing" id="g6j-uY-ysV"/>
+                <constraint firstAttribute="bottom" secondItem="LF1-y9-M9b" secondAttribute="bottom" id="iKm-3M-sUl"/>
+                <constraint firstAttribute="bottom" secondItem="Mh4-0S-sCW" secondAttribute="bottom" id="jbh-yT-mll"/>
+                <constraint firstAttribute="centerY" secondItem="S1I-Pw-Zby" secondAttribute="centerY" id="mho-IL-Kvc"/>
+                <constraint firstItem="S1I-Pw-Zby" firstAttribute="leading" secondItem="LF1-y9-M9b" secondAttribute="trailing" id="mmZ-Qp-9Hy"/>
+                <constraint firstItem="Mh4-0S-sCW" firstAttribute="top" secondItem="q48-ie-aba" secondAttribute="top" id="quK-g9-V97"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="352" y="439"/>
         </view>
@@ -435,8 +477,11 @@
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wsM-ua-5n2">
+                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wsM-ua-5n2">
                     <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Td7-Pf-pZi"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
@@ -453,6 +498,12 @@
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="wsM-ua-5n2" secondAttribute="trailing" id="1Gi-nE-S4X"/>
+                <constraint firstItem="wsM-ua-5n2" firstAttribute="top" secondItem="wsv-tB-9JN" secondAttribute="top" id="4pV-Tk-xqN"/>
+                <constraint firstAttribute="bottom" secondItem="wsM-ua-5n2" secondAttribute="bottom" id="WTf-WM-UcS"/>
+                <constraint firstItem="wsM-ua-5n2" firstAttribute="leading" secondItem="wsv-tB-9JN" secondAttribute="leading" id="XfE-KC-eWl"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="352" y="526"/>
         </view>
@@ -574,6 +625,7 @@
     <resources>
         <image name="icon_edit_grey.png" width="14" height="14"/>
         <image name="icon_profile_picture.jpeg" width="200" height="200"/>
+        <image name="icon_smile_small.png" width="14" height="14"/>
         <image name="icon_track_grey.png" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

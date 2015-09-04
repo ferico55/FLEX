@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -35,20 +36,21 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NPB-Bk-WX5">
                         <rect key="frame" x="10" y="19" width="300" height="50"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_retur.png" translatesAutoresizingMaskIntoConstraints="NO" id="fvs-uY-hH7">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_retur.png" translatesAutoresizingMaskIntoConstraints="NO" id="fvs-uY-hH7">
                                 <rect key="frame" x="20" y="10" width="30" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="cZK-us-Byg"/>
-                                    <constraint firstAttribute="width" constant="30" id="loq-GU-w7O"/>
+                                    <constraint firstAttribute="width" secondItem="fvs-uY-hH7" secondAttribute="height" multiplier="1:1" id="vQO-wZ-DIE"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.96078431372549022" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="fvs-uY-hH7" secondAttribute="centerY" id="Byi-1I-gZp"/>
-                            <constraint firstItem="fvs-uY-hH7" firstAttribute="leading" secondItem="NPB-Bk-WX5" secondAttribute="leading" constant="20" id="coC-RT-PxS"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="el3-uT-JTc"/>
-                            <constraint firstAttribute="width" constant="300" id="yzi-wc-GaS"/>
+                            <constraint firstItem="fvs-uY-hH7" firstAttribute="centerY" secondItem="NPB-Bk-WX5" secondAttribute="centerY" id="U1s-Cd-kKh"/>
+                            <constraint firstItem="fvs-uY-hH7" firstAttribute="leading" secondItem="NPB-Bk-WX5" secondAttribute="leading" constant="20" id="WlA-Zb-bWR"/>
+                            <constraint firstAttribute="bottom" secondItem="fvs-uY-hH7" secondAttribute="bottom" constant="10" id="X6b-7W-4Yb"/>
+                            <constraint firstAttribute="height" constant="50" id="el3-uT-JTc"/>
+                            <constraint firstItem="fvs-uY-hH7" firstAttribute="top" secondItem="NPB-Bk-WX5" secondAttribute="top" constant="10" id="xiw-Zs-a8W"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="yzi-wc-GaS"/>
                         </constraints>
                     </view>
                     <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rgf-ve-Kvl" userLabel="Product Information - View">
@@ -166,8 +168,8 @@
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="232" id="5Ke-tc-kZJ"/>
-                            <constraint firstAttribute="width" constant="300" id="Qzk-pM-cT1"/>
+                            <constraint firstAttribute="height" constant="232" id="5Ke-tc-kZJ"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="Qzk-pM-cT1"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -184,8 +186,9 @@
             <connections>
                 <outlet property="conditionlabel" destination="CyT-a6-icH" id="YwY-mm-xxt"/>
                 <outlet property="constraintHeightViewRetur" destination="el3-uT-JTc" id="Uwf-G4-rfK"/>
+                <outlet property="constraintWidthViewRetur" destination="yzi-wc-GaS" id="bLU-bW-G6Q"/>
                 <outlet property="etalasebutton" destination="xd9-Yo-yUf" id="ZHT-ID-ij2"/>
-                <outlet property="imgRetur" destination="fvs-uY-hH7" id="CVW-A6-PW9"/>
+                <outlet property="imgRetur" destination="fvs-uY-hH7" id="TFj-VF-2Cf"/>
                 <outlet property="insurancelabel" destination="qQQ-44-8y4" id="tYA-0a-vOk"/>
                 <outlet property="minorderlabel" destination="dVc-xU-9CT" id="1ex-tg-m4I"/>
                 <outlet property="productInformationView" destination="Rgf-ve-Kvl" id="OHh-77-4Gp"/>
@@ -195,15 +198,10 @@
                 <outletCollection property="categorybuttons" destination="FQH-9u-jNL" id="fYM-hu-5bJ"/>
                 <outletCollection property="categorybuttons" destination="Gwc-Y6-mxy" id="OPd-ZH-sPS"/>
             </connections>
-            <point key="canvasLocation" x="433" y="274.5"/>
+            <point key="canvasLocation" x="434" y="501.5"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_retur.png" width="40" height="40"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
