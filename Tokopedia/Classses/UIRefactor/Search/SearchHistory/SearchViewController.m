@@ -174,6 +174,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 -(void)clearHistory {
     [_historyResult removeAllObjects];
+    [_typedHistoryResult removeAllObjects];
     
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
@@ -209,6 +210,12 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         NSDictionary *domain = [_domains objectAtIndex:[indexPath section]];
 
         [header.titleLabel setText:[[domain objectForKey:@"title"] uppercaseString]];
+        if([[domain objectForKey:@"title"] isEqualToString:SearchDomainHistory]) {
+            [header.deleteButton setTitle:@"Hapus" forState:UIControlStateNormal];
+            [header.deleteButton addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+        }
         view = header;
     }
     
