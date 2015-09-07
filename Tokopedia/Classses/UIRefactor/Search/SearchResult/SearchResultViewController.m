@@ -92,6 +92,7 @@ PromoCollectionViewDelegate
 @property (nonatomic) UITableViewCellType cellType;
 
 @property (weak, nonatomic) IBOutlet UIView *toolbarView;
+@property (weak, nonatomic) IBOutlet UIView *firstFooter;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -180,6 +181,8 @@ PromoCollectionViewDelegate
     [_collectionView setAlwaysBounceVertical:YES];
     [_collectionView setDelegate:self];
     [_collectionView setDataSource:self];
+    [_firstFooter setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 50)];
+    [_collectionView addSubview:_firstFooter];
     
     //    [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [_params setDictionary:_data];
@@ -331,7 +334,7 @@ PromoCollectionViewDelegate
     NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (indexPath.section == section && indexPath.row == row) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (![_urinext isEqualToString:@""]) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
@@ -458,7 +461,7 @@ PromoCollectionViewDelegate
     CGSize size = CGSizeZero;
     NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
     if (section == lastSection) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
             size = CGSizeMake(self.view.frame.size.width, 50);
         }
     } else if (_product.count == 0 && _start == 0) {
@@ -471,6 +474,7 @@ PromoCollectionViewDelegate
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
     _isrefreshview = YES;
+    _isNeedToRemoveAllObject = YES;
     
     [_refreshControl beginRefreshing];
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
@@ -714,6 +718,7 @@ PromoCollectionViewDelegate
     
     if(_isNeedToRemoveAllObject) {
         [_product removeAllObjects];
+        [_promo removeAllObjects];
         _isNeedToRemoveAllObject = NO;
     }
     
@@ -737,18 +742,18 @@ PromoCollectionViewDelegate
             [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
         }
         
-        if(_start == 0) {
-            [_product removeAllObjects];
-            [_promo removeAllObjects];
-            [_collectionView setContentOffset:CGPointZero animated:YES];
-            [_collectionView reloadData];
-            [_collectionView layoutIfNeeded];
-        }
         
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
             [_product addObject: search.result.products];
         } else {
             [_product addObject: search.result.catalogs];
+        }
+        
+        if(_start == 0) {
+            [_collectionView setContentOffset:CGPointZero animated:YES];
+            [_firstFooter removeFromSuperview];
+            [_collectionView reloadData];
+            [_collectionView layoutIfNeeded];
         }
         
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
