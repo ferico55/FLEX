@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -39,14 +38,29 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_retur.png" translatesAutoresizingMaskIntoConstraints="NO" id="fvs-uY-hH7">
                                 <rect key="frame" x="20" y="10" width="30" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="fvs-uY-hH7" secondAttribute="height" multiplier="1:1" id="vQO-wZ-DIE"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="4SM-Fi-rJk"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="six-ls-pXE"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="4SM-Fi-rJk"/>
+                                        <exclude reference="six-ls-pXE"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="4SM-Fi-rJk"/>
+                                        <include reference="six-ls-pXE"/>
+                                    </mask>
+                                </variation>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.96078431372549022" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="fvs-uY-hH7" firstAttribute="centerY" secondItem="NPB-Bk-WX5" secondAttribute="centerY" id="U1s-Cd-kKh"/>
-                            <constraint firstItem="fvs-uY-hH7" firstAttribute="leading" secondItem="NPB-Bk-WX5" secondAttribute="leading" constant="20" id="WlA-Zb-bWR"/>
+                            <constraint firstItem="fvs-uY-hH7" firstAttribute="leading" secondItem="NPB-Bk-WX5" secondAttribute="leading" constant="15" id="WlA-Zb-bWR">
+                                <variation key="heightClass=regular-widthClass=regular" constant="10"/>
+                            </constraint>
                             <constraint firstAttribute="bottom" secondItem="fvs-uY-hH7" secondAttribute="bottom" constant="10" id="X6b-7W-4Yb"/>
                             <constraint firstAttribute="height" constant="50" id="el3-uT-JTc"/>
                             <constraint firstItem="fvs-uY-hH7" firstAttribute="top" secondItem="NPB-Bk-WX5" secondAttribute="top" constant="10" id="xiw-Zs-a8W"/>
@@ -58,47 +72,163 @@
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pemesanan Min." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaN-Ue-d4K">
                                 <rect key="frame" x="10" y="9" width="108" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="108" id="MEv-Nl-xYt"/>
+                                    <constraint firstAttribute="height" constant="21" id="moL-iH-VwY"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="MEv-Nl-xYt"/>
+                                        <exclude reference="moL-iH-VwY"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="MEv-Nl-xYt"/>
+                                        <include reference="moL-iH-VwY"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Berat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tgn-ov-f3t">
                                 <rect key="frame" x="10" y="38" width="108" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="FN8-tC-oc5"/>
+                                    <constraint firstAttribute="width" constant="108" id="Fq3-ba-vpU"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="FN8-tC-oc5"/>
+                                        <exclude reference="Fq3-ba-vpU"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="FN8-tC-oc5"/>
+                                        <include reference="Fq3-ba-vpU"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T3R-wn-DeZ">
                                 <rect key="frame" x="10" y="68" width="108" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="108" id="5f1-nc-26k"/>
+                                    <constraint firstAttribute="height" constant="21" id="GWt-Td-FRQ"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="5f1-nc-26k"/>
+                                        <exclude reference="GWt-Td-FRQ"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="5f1-nc-26k"/>
+                                        <include reference="GWt-Td-FRQ"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Kondisi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I4K-iZ-vOK">
                                 <rect key="frame" x="10" y="98" width="108" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="qaa-pz-AzR"/>
+                                    <constraint firstAttribute="width" constant="108" id="sLj-t9-iSH"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="qaa-pz-AzR"/>
+                                        <exclude reference="sLj-t9-iSH"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="qaa-pz-AzR"/>
+                                        <include reference="sLj-t9-iSH"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="order_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVc-xU-9CT">
                                 <rect key="frame" x="120" y="9" width="100" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="N9t-WN-TlN"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="N9t-WN-TlN"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="N9t-WN-TlN"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="weight_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cc0-iw-hjh">
                                 <rect key="frame" x="120" y="38" width="100" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="pSD-rj-1nk"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="pSD-rj-1nk"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="pSD-rj-1nk"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="insurance_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qQQ-44-8y4">
                                 <rect key="frame" x="120" y="68" width="100" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="XkE-lH-5g7"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="XkE-lH-5g7"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="XkE-lH-5g7"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="condition_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CyT-a6-icH">
                                 <rect key="frame" x="120" y="98" width="100" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="zcX-dx-IAR"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="zcX-dx-IAR"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="zcX-dx-IAR"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rs0-OR-RLi" userLabel="categoryView">
                                 <rect key="frame" x="7" y="128" width="293" height="60"/>
@@ -143,45 +273,214 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="NCP-HO-aLW"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="NCP-HO-aLW"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="NCP-HO-aLW"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vmT-V9-Y3N" userLabel="EtalaseView">
                                 <rect key="frame" x="7" y="202" width="320" height="20"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Etalase" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jwx-91-aye">
                                         <rect key="frame" x="3" y="0.0" width="108" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="108" id="Nn0-tN-pYc"/>
+                                            <constraint firstAttribute="height" constant="21" id="Z0G-5C-io8"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Nn0-tN-pYc"/>
+                                                <exclude reference="Z0G-5C-io8"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="Nn0-tN-pYc"/>
+                                                <include reference="Z0G-5C-io8"/>
+                                            </mask>
+                                        </variation>
                                     </label>
                                     <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xd9-Yo-yUf">
                                         <rect key="frame" x="113" y="-4" width="150" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="18" id="HTp-mA-FMr"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <state key="normal" title="-">
                                             <color key="titleColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="HTp-mA-FMr"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="HTp-mA-FMr"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
                                             <action selector="tag:" destination="RcP-lh-rUh" eventType="touchUpInside" id="dlG-cZ-LJH"/>
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="1nV-kp-SaK"/>
+                                    <constraint firstItem="jwx-91-aye" firstAttribute="top" secondItem="vmT-V9-Y3N" secondAttribute="top" id="4s7-a7-LkF"/>
+                                    <constraint firstAttribute="trailing" secondItem="xd9-Yo-yUf" secondAttribute="trailing" constant="10" id="5s0-JM-m14"/>
+                                    <constraint firstItem="xd9-Yo-yUf" firstAttribute="leading" secondItem="jwx-91-aye" secondAttribute="trailing" constant="2" id="99p-sL-0cT"/>
+                                    <constraint firstItem="jwx-91-aye" firstAttribute="leading" secondItem="vmT-V9-Y3N" secondAttribute="leading" constant="3" id="U8T-Ym-SBv"/>
+                                    <constraint firstItem="xd9-Yo-yUf" firstAttribute="top" secondItem="vmT-V9-Y3N" secondAttribute="top" id="ZFe-nG-AOy"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="1nV-kp-SaK"/>
+                                        <exclude reference="4s7-a7-LkF"/>
+                                        <exclude reference="U8T-Ym-SBv"/>
+                                        <exclude reference="5s0-JM-m14"/>
+                                        <exclude reference="99p-sL-0cT"/>
+                                        <exclude reference="ZFe-nG-AOy"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="1nV-kp-SaK"/>
+                                        <include reference="4s7-a7-LkF"/>
+                                        <include reference="U8T-Ym-SBv"/>
+                                        <include reference="5s0-JM-m14"/>
+                                        <include reference="99p-sL-0cT"/>
+                                        <include reference="ZFe-nG-AOy"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="height" constant="232" id="5Ke-tc-kZJ"/>
+                            <constraint firstItem="dVc-xU-9CT" firstAttribute="top" secondItem="Rgf-ve-Kvl" secondAttribute="top" constant="9" id="0Ax-S8-Zrn"/>
+                            <constraint firstItem="vmT-V9-Y3N" firstAttribute="leading" secondItem="Rgf-ve-Kvl" secondAttribute="leading" constant="7" id="2vd-sZ-szB"/>
+                            <constraint firstItem="CyT-a6-icH" firstAttribute="top" secondItem="qQQ-44-8y4" secondAttribute="bottom" constant="9" id="6xs-4S-KsW"/>
+                            <constraint firstItem="dVc-xU-9CT" firstAttribute="leading" secondItem="DaN-Ue-d4K" secondAttribute="trailing" constant="2" id="B6V-Zs-qYS"/>
+                            <constraint firstItem="I4K-iZ-vOK" firstAttribute="leading" secondItem="Rgf-ve-Kvl" secondAttribute="leading" constant="10" id="BCI-o3-nfP"/>
+                            <constraint firstItem="DaN-Ue-d4K" firstAttribute="top" secondItem="Rgf-ve-Kvl" secondAttribute="top" constant="9" id="Gby-fS-pQz"/>
+                            <constraint firstAttribute="trailing" secondItem="vmT-V9-Y3N" secondAttribute="trailing" constant="7" id="IPf-Mj-qrn"/>
+                            <constraint firstAttribute="trailing" secondItem="qQQ-44-8y4" secondAttribute="trailing" constant="8" id="NtE-ho-vKd"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="Qzk-pM-cT1"/>
+                            <constraint firstAttribute="trailing" secondItem="Rs0-OR-RLi" secondAttribute="trailing" id="UHa-J2-9Mx"/>
+                            <constraint firstItem="I4K-iZ-vOK" firstAttribute="top" secondItem="T3R-wn-DeZ" secondAttribute="bottom" constant="9" id="W4D-RW-8JX"/>
+                            <constraint firstAttribute="trailing" secondItem="CyT-a6-icH" secondAttribute="trailing" constant="8" id="WS3-ou-V1m"/>
+                            <constraint firstItem="qQQ-44-8y4" firstAttribute="leading" secondItem="T3R-wn-DeZ" secondAttribute="trailing" constant="2" id="Xpg-1g-d4X"/>
+                            <constraint firstAttribute="trailing" secondItem="dVc-xU-9CT" secondAttribute="trailing" constant="8" id="YyW-Qo-KU2"/>
+                            <constraint firstItem="vmT-V9-Y3N" firstAttribute="top" secondItem="Rs0-OR-RLi" secondAttribute="bottom" constant="14" id="bup-vG-wXD"/>
+                            <constraint firstAttribute="height" constant="232" id="dnS-kJ-4GL"/>
+                            <constraint firstItem="T3R-wn-DeZ" firstAttribute="top" secondItem="Tgn-ov-f3t" secondAttribute="bottom" constant="9" id="dv9-hk-bZe"/>
+                            <constraint firstItem="Tgn-ov-f3t" firstAttribute="leading" secondItem="Rgf-ve-Kvl" secondAttribute="leading" constant="10" id="fWp-dQ-vFc"/>
+                            <constraint firstAttribute="trailing" secondItem="cc0-iw-hjh" secondAttribute="trailing" constant="8" id="h5h-Mr-efM"/>
+                            <constraint firstItem="CyT-a6-icH" firstAttribute="leading" secondItem="I4K-iZ-vOK" secondAttribute="trailing" constant="2" id="iia-QR-U48"/>
+                            <constraint firstItem="cc0-iw-hjh" firstAttribute="top" secondItem="dVc-xU-9CT" secondAttribute="bottom" constant="8" id="mdn-d1-XfZ"/>
+                            <constraint firstItem="cc0-iw-hjh" firstAttribute="leading" secondItem="Tgn-ov-f3t" secondAttribute="trailing" constant="2" id="o0z-oT-kQA"/>
+                            <constraint firstItem="qQQ-44-8y4" firstAttribute="top" secondItem="cc0-iw-hjh" secondAttribute="bottom" constant="9" id="oWi-vC-9uG"/>
+                            <constraint firstItem="Rs0-OR-RLi" firstAttribute="leading" secondItem="Rgf-ve-Kvl" secondAttribute="leading" constant="7" id="rbx-gP-zIx"/>
+                            <constraint firstItem="Rs0-OR-RLi" firstAttribute="top" secondItem="CyT-a6-icH" secondAttribute="bottom" constant="9" id="u6k-kt-yj6"/>
+                            <constraint firstItem="DaN-Ue-d4K" firstAttribute="leading" secondItem="Rgf-ve-Kvl" secondAttribute="leading" constant="10" id="vFL-sl-yNa"/>
+                            <constraint firstItem="Tgn-ov-f3t" firstAttribute="top" secondItem="DaN-Ue-d4K" secondAttribute="bottom" constant="8" id="yCq-w9-g6s"/>
+                            <constraint firstItem="T3R-wn-DeZ" firstAttribute="leading" secondItem="Rgf-ve-Kvl" secondAttribute="leading" constant="10" id="zxS-XA-rqs"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="dnS-kJ-4GL"/>
+                                <exclude reference="Gby-fS-pQz"/>
+                                <exclude reference="vFL-sl-yNa"/>
+                                <exclude reference="fWp-dQ-vFc"/>
+                                <exclude reference="yCq-w9-g6s"/>
+                                <exclude reference="dv9-hk-bZe"/>
+                                <exclude reference="zxS-XA-rqs"/>
+                                <exclude reference="BCI-o3-nfP"/>
+                                <exclude reference="W4D-RW-8JX"/>
+                                <exclude reference="0Ax-S8-Zrn"/>
+                                <exclude reference="B6V-Zs-qYS"/>
+                                <exclude reference="YyW-Qo-KU2"/>
+                                <exclude reference="h5h-Mr-efM"/>
+                                <exclude reference="mdn-d1-XfZ"/>
+                                <exclude reference="o0z-oT-kQA"/>
+                                <exclude reference="UHa-J2-9Mx"/>
+                                <exclude reference="rbx-gP-zIx"/>
+                                <exclude reference="u6k-kt-yj6"/>
+                                <exclude reference="NtE-ho-vKd"/>
+                                <exclude reference="Xpg-1g-d4X"/>
+                                <exclude reference="oWi-vC-9uG"/>
+                                <exclude reference="6xs-4S-KsW"/>
+                                <exclude reference="WS3-ou-V1m"/>
+                                <exclude reference="iia-QR-U48"/>
+                                <exclude reference="2vd-sZ-szB"/>
+                                <exclude reference="IPf-Mj-qrn"/>
+                                <exclude reference="bup-vG-wXD"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="dnS-kJ-4GL"/>
+                                <include reference="Gby-fS-pQz"/>
+                                <include reference="vFL-sl-yNa"/>
+                                <include reference="fWp-dQ-vFc"/>
+                                <include reference="yCq-w9-g6s"/>
+                                <include reference="dv9-hk-bZe"/>
+                                <include reference="zxS-XA-rqs"/>
+                                <include reference="BCI-o3-nfP"/>
+                                <include reference="W4D-RW-8JX"/>
+                                <include reference="0Ax-S8-Zrn"/>
+                                <include reference="B6V-Zs-qYS"/>
+                                <include reference="YyW-Qo-KU2"/>
+                                <include reference="h5h-Mr-efM"/>
+                                <include reference="mdn-d1-XfZ"/>
+                                <include reference="o0z-oT-kQA"/>
+                                <include reference="UHa-J2-9Mx"/>
+                                <include reference="rbx-gP-zIx"/>
+                                <include reference="u6k-kt-yj6"/>
+                                <include reference="NtE-ho-vKd"/>
+                                <include reference="Xpg-1g-d4X"/>
+                                <include reference="oWi-vC-9uG"/>
+                                <include reference="6xs-4S-KsW"/>
+                                <include reference="WS3-ou-V1m"/>
+                                <include reference="iia-QR-U48"/>
+                                <include reference="2vd-sZ-szB"/>
+                                <include reference="IPf-Mj-qrn"/>
+                                <include reference="bup-vG-wXD"/>
+                            </mask>
+                        </variation>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="NPB-Bk-WX5" firstAttribute="top" secondItem="C7Z-Y5-yyl" secondAttribute="top" constant="19" id="1Nr-hz-iPw"/>
+                    <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Rgf-ve-Kvl" secondAttribute="bottom" constant="36.5" id="RTH-ef-ImX"/>
                     <constraint firstItem="NPB-Bk-WX5" firstAttribute="leading" secondItem="C7Z-Y5-yyl" secondAttribute="leading" constant="10" id="Z4k-Rv-vRL"/>
                     <constraint firstItem="Rgf-ve-Kvl" firstAttribute="leading" secondItem="C7Z-Y5-yyl" secondAttribute="leading" constant="10" id="bKR-pZ-6L0"/>
                     <constraint firstAttribute="trailing" secondItem="Rgf-ve-Kvl" secondAttribute="trailing" constant="10" id="sAw-2v-ldQ"/>
                     <constraint firstAttribute="trailing" secondItem="NPB-Bk-WX5" secondAttribute="trailing" constant="10" id="vWN-Vp-Y9E"/>
                     <constraint firstItem="Rgf-ve-Kvl" firstAttribute="top" secondItem="NPB-Bk-WX5" secondAttribute="bottom" constant="1" id="yf7-MA-B2N"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="RTH-ef-ImX"/>
+                    </mask>
+                </variation>
+                <variation key="heightClass=regular-widthClass=regular">
+                    <mask key="constraints">
+                        <include reference="RTH-ef-ImX"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="conditionlabel" destination="CyT-a6-icH" id="YwY-mm-xxt"/>

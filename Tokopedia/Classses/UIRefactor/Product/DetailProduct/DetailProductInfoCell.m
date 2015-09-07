@@ -78,20 +78,10 @@
     
     float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText withColor:[UIColor whiteColor] withFont:FONT_GOTHAM_BOOK_14 withAlignment:NSTextAlignmentLeft];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5,
-                                       CPaddingTopDescToko,
-                                       ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-155,
-                                       height);
-    }
-    else
-    {
-        lblMessageRetur.frame = CGRectMake(70+5,
-                                           CPaddingTopDescToko,
-                                           ([[UIScreen mainScreen] bounds].size.width-30)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15,
-                                           height);
-    }
-    
+    lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+15,
+                                   CPaddingTopDescToko,
+                                   ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width) - 15,
+                                   height);
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
 }
 
