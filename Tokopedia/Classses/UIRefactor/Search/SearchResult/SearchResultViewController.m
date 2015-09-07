@@ -650,8 +650,7 @@ PromoCollectionViewDelegate
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        @"redirect_url" : @"redirect_url", @"department_id" : @"department_id"
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
                                                         }];
     
     
@@ -659,7 +658,7 @@ PromoCollectionViewDelegate
     
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
                                                         kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
-                                                        @"st":@"st"
+                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id"
                                                         }];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
@@ -718,7 +717,7 @@ PromoCollectionViewDelegate
         _isNeedToRemoveAllObject = NO;
     }
     
-    NSString *redirect_url = search.redirect_url;
+    NSString *redirect_url = search.result.redirect_url;
     if([redirect_url isEqualToString:@""] || redirect_url == nil) {
         
         
@@ -776,7 +775,7 @@ PromoCollectionViewDelegate
         }
     } else {
         
-        NSURL *url = [NSURL URLWithString:search.redirect_url];
+        NSURL *url = [NSURL URLWithString:search.result.redirect_url];
         NSArray* query = [[url path] componentsSeparatedByString: @"/"];
         
         // Redirect URI to hotlist
@@ -785,7 +784,7 @@ PromoCollectionViewDelegate
         }
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-            NSString *departementID = search.department_id;
+            NSString *departementID = search.result.department_id;
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [_params removeObjectForKey:@"search"];
 //            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
@@ -809,7 +808,7 @@ PromoCollectionViewDelegate
 
 
 - (void)redirectToCatalogResult{
-    NSURL *url = [NSURL URLWithString:_searchObject.redirect_url];
+    NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
     NSString *catalogID = query[2];
@@ -831,7 +830,7 @@ PromoCollectionViewDelegate
 }
 
 - (void)redirectToHotlistResult{
-    NSURL *url = [NSURL URLWithString:_searchObject.redirect_url];
+    NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
     HotlistResultViewController *vc = [HotlistResultViewController new];

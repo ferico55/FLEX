@@ -18,6 +18,8 @@
 @property (nonatomic, strong) NSString *has_catalog;
 @property (nonatomic, strong) NSArray *products;
 @property (nonatomic, strong) NSArray *catalogs;
+@property (nonatomic, strong) NSString *redirect_url;
+@property (nonatomic, strong) NSString *department_id;
 
 
 @end
