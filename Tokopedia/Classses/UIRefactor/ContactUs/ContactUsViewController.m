@@ -40,7 +40,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
-@property (strong, nonatomic) UIWebView *descriptionWebView;
+@property (strong, nonatomic) IBOutlet UIWebView *descriptionWebView;
 
 @end
 
@@ -124,9 +124,9 @@
     UIView *view;
     if (section == 0) {
         view = _typeHeaderView;
-    } else if (section == 1) {
+    } else if (section == 1 && _selectedType) {
         view = _problemHeaderView;
-    } else if (section == 2) {
+    } else if (section == 2 && _selectedDetailProblem) {
         view = _solutionHeaderView;
     }
     return view;
@@ -144,7 +144,7 @@
     } else if (indexPath.section == 1) {
         height = 44;
     } else if (indexPath.section == 2) {
-        height = self.descriptionWebView.scrollView.contentSize.height;
+        height = 200;
     }
     return height;
 }
@@ -240,6 +240,8 @@
 
 - (void)setSelectedDetailProblem:(TicketCategory *)detailProblem {
     _selectedDetailProblem = detailProblem;
+    [self.descriptionWebView loadHTMLString:_selectedDetailProblem.ticket_category_description baseURL:nil];
+    self.tableView.tableFooterView = _footerView;
     [self.tableView reloadData];
 }
 

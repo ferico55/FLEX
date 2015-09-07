@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -23,6 +23,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactUsViewController">
             <connections>
                 <outlet property="collectionView" destination="xnd-ln-tOf" id="3Ju-av-TsZ"/>
+                <outlet property="descriptionWebView" destination="Zop-cL-G7l" id="xIq-J3-M3h"/>
                 <outlet property="flowLayout" destination="pix-kY-M9C" id="85o-Vd-52f"/>
                 <outlet property="footerView" destination="cFx-73-sJF" id="b5Q-Id-VDJ"/>
                 <outlet property="problemCell" destination="Bnl-B3-b8z" id="V47-4Z-zGF"/>
@@ -106,6 +107,18 @@
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZlQ-ug-jL4" id="htP-UU-emv">
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zop-cL-G7l">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </webView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Zop-cL-G7l" secondAttribute="bottom" id="Pb7-tk-IbB"/>
+                    <constraint firstItem="Zop-cL-G7l" firstAttribute="top" secondItem="htP-UU-emv" secondAttribute="top" id="WZe-Ac-THf"/>
+                    <constraint firstAttribute="trailing" secondItem="Zop-cL-G7l" secondAttribute="trailing" id="eex-dr-8bC"/>
+                    <constraint firstItem="Zop-cL-G7l" firstAttribute="leading" secondItem="htP-UU-emv" secondAttribute="leading" id="gb6-Or-RsV"/>
+                </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="192" y="1707"/>
         </tableViewCell>
@@ -240,7 +253,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xnd-ln-tOf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="159.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="159"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="pix-kY-M9C">
                             <size key="itemSize" width="160" height="160"/>
