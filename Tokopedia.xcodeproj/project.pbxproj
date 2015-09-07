@@ -776,6 +776,9 @@
 		850017E61B9D81E300BCF72D /* ContactUsFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 850017E41B9D81E300BCF72D /* ContactUsFormViewController.xib */; };
 		850017E91B9D827900BCF72D /* ContactUsFormPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 850017E81B9D827900BCF72D /* ContactUsFormPresenter.m */; };
 		850017EC1B9D828C00BCF72D /* ContactUsFormInteractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 850017EB1B9D828C00BCF72D /* ContactUsFormInteractor.m */; };
+		850017F11B9D918300BCF72D /* ContactUsFormDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 850017F01B9D918300BCF72D /* ContactUsFormDataManager.m */; };
+		850017F41B9D95B800BCF72D /* ContactUsActionResultError.m in Sources */ = {isa = PBXBuildFile; fileRef = 850017F31B9D95B800BCF72D /* ContactUsActionResultError.m */; };
+		850017F71B9D967400BCF72D /* ContactUsActionResultStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 850017F61B9D967400BCF72D /* ContactUsActionResultStatus.m */; };
 		8500FC161B9D38A800BCF72D /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500F3A21B9D38A500BCF72D /* URLCacheAlert.m */; };
 		8500FC171B9D38A800BCF72D /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500F3A41B9D38A500BCF72D /* URLCacheConnection.m */; };
 		8500FC181B9D38A800BCF72D /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500F3A61B9D38A500BCF72D /* URLCacheController.m */; };
@@ -2535,6 +2538,12 @@
 		850017EB1B9D828C00BCF72D /* ContactUsFormInteractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsFormInteractor.m; sourceTree = "<group>"; };
 		850017ED1B9D82AE00BCF72D /* ContactUsFormInteractorIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactUsFormInteractorIO.h; sourceTree = "<group>"; };
 		850017EE1B9D82CE00BCF72D /* ContactUsFormModuleInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactUsFormModuleInterface.h; sourceTree = "<group>"; };
+		850017EF1B9D918300BCF72D /* ContactUsFormDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsFormDataManager.h; sourceTree = "<group>"; };
+		850017F01B9D918300BCF72D /* ContactUsFormDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsFormDataManager.m; sourceTree = "<group>"; };
+		850017F21B9D95B800BCF72D /* ContactUsActionResultError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsActionResultError.h; sourceTree = "<group>"; };
+		850017F31B9D95B800BCF72D /* ContactUsActionResultError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsActionResultError.m; sourceTree = "<group>"; };
+		850017F51B9D967400BCF72D /* ContactUsActionResultStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsActionResultStatus.h; sourceTree = "<group>"; };
+		850017F61B9D967400BCF72D /* ContactUsActionResultStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsActionResultStatus.m; sourceTree = "<group>"; };
 		8500F3A11B9D38A500BCF72D /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		8500F3A21B9D38A500BCF72D /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		8500F3A31B9D38A500BCF72D /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -5534,6 +5543,8 @@
 				850017EB1B9D828C00BCF72D /* ContactUsFormInteractor.m */,
 				850017ED1B9D82AE00BCF72D /* ContactUsFormInteractorIO.h */,
 				850017EE1B9D82CE00BCF72D /* ContactUsFormModuleInterface.h */,
+				850017EF1B9D918300BCF72D /* ContactUsFormDataManager.h */,
+				850017F01B9D918300BCF72D /* ContactUsFormDataManager.m */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -5783,12 +5794,16 @@
 				8500F40B1B9D38A500BCF72D /* ContactUsActionResponse.m */,
 				8500F40C1B9D38A500BCF72D /* ContactUsActionResult.h */,
 				8500F40D1B9D38A500BCF72D /* ContactUsActionResult.m */,
+				850017F21B9D95B800BCF72D /* ContactUsActionResultError.h */,
+				850017F31B9D95B800BCF72D /* ContactUsActionResultError.m */,
 				8500F40E1B9D38A500BCF72D /* ContactUsResponse.h */,
 				8500F40F1B9D38A500BCF72D /* ContactUsResponse.m */,
 				8500F4101B9D38A500BCF72D /* ContactUsResult.h */,
 				8500F4111B9D38A500BCF72D /* ContactUsResult.m */,
 				8500F4121B9D38A500BCF72D /* TicketCategory.h */,
 				8500F4131B9D38A500BCF72D /* TicketCategory.m */,
+				850017F51B9D967400BCF72D /* ContactUsActionResultStatus.h */,
+				850017F61B9D967400BCF72D /* ContactUsActionResultStatus.m */,
 			);
 			path = ContactUs;
 			sourceTree = "<group>";
@@ -10548,6 +10563,7 @@
 				8500FCD81B9D38A800BCF72D /* ResponseComment.m in Sources */,
 				8500FCC61B9D38A800BCF72D /* ReplyInboxTicketResult.m in Sources */,
 				8500FD801B9D38A800BCF72D /* CCFee.m in Sources */,
+				850017F71B9D967400BCF72D /* ContactUsActionResultStatus.m in Sources */,
 				8500FC361B9D38A800BCF72D /* Logout.m in Sources */,
 				8500FCC11B9D38A800BCF72D /* InboxTicketTicket.m in Sources */,
 				8500FFFC1B9D38A900BCF72D /* TransactionCCDetailViewController.m in Sources */,
@@ -11219,6 +11235,7 @@
 				8500FD531B9D38A800BCF72D /* ShopSettingsResult.m in Sources */,
 				8500FC5E1B9D38A800BCF72D /* SpecChilds.m in Sources */,
 				8500FEF21B9D38A900BCF72D /* GalleryViewController.m in Sources */,
+				850017F11B9D918300BCF72D /* ContactUsFormDataManager.m in Sources */,
 				850000361B9D38A900BCF72D /* WebViewInvoiceViewController.m in Sources */,
 				850000421B9D38A900BCF72D /* ProfileFavoriteShopViewController.m in Sources */,
 				8500FFCF1B9D38A900BCF72D /* FilterConditionViewController.m in Sources */,
@@ -11271,6 +11288,7 @@
 				8500000E1B9D38A900BCF72D /* TxOrderStatusCell.m in Sources */,
 				8500FC3E1B9D38A800BCF72D /* AddressResult.m in Sources */,
 				8500FDA91B9D38A800BCF72D /* TxOrderStatusResult.m in Sources */,
+				850017F41B9D95B800BCF72D /* ContactUsActionResultError.m in Sources */,
 				8500FCA51B9D38A800BCF72D /* ResolutionDetailConversation.m in Sources */,
 				8500FCC41B9D38A800BCF72D /* RatingResult.m in Sources */,
 				8500FEB71B9D38A800BCF72D /* SalesViewController.m in Sources */,

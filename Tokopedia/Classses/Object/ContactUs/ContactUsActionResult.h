@@ -7,9 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ContactUsActionResultError.h"
 
 @interface ContactUsActionResult : NSObject
 
-@property (strong, nonatomic) NSString *is_success;
+@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) ContactUsActionResultError *error_message_inline;
+@property (nonatomic, strong) NSString *is_success;
+@property (nonatomic, strong) NSString *ticket_inbox_id;
 
 @end

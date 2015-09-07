@@ -15,4 +15,18 @@
 #define API_TICKET_CATEGORY_DESCRIPTION_KEY @"ticket_category_description"
 #define API_TICKET_CATEGORY_ID_KEY          @"ticket_category_id"
 
+#define API_TICKET_IS_SUCCESS_KEY           @"is_success"
+#define API_TICKET_INBOX_ID_KEY             @"ticket_inbox_id"
+
+#define API_TICKET_STATUS_KEY               @"status"
+#define API_TICKET_MESSAGE_BODY_ERROR_KEY   @"message_body_error"
+
+#define API_TICKET_ERROR_MESSAGE_INLINE_KEY @"error_message_inline"
+
+#define API_TICKET_CATEGORY_ATTACHMENT_STATUS_KEY   @"ticket_category_attachment_status"
+#define API_TICKET_CATEGORY_BACK_URL_KEY            @"ticket_category_back_url"
+#define API_TICKET_CATEGORY_BREADCRUMB_KEY          @"ticket_category_breadcrumb"
+#define API_TICKET_CATEGORY_LOGIN_STATUS_KEY        @"ticket_category_login_status"
+#define API_TICKET_CATEGORY_INVOICE_STATUS_KEY      @"ticket_category_invoice_status"
+
 #endif

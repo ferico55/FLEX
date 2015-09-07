@@ -6,8 +6,21 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#ifndef Tokopedia_ContactUsFormInteractorIO_h
-#define Tokopedia_ContactUsFormInteractorIO_h
+#import <Foundation/Foundation.h>
+#import "ContactUsResponse.h"
 
+@protocol ContactUsFormInteractorInput <NSObject>
 
-#endif
+- (void)getFormModelContactUs;
+- (void)createTicketValidation;
+- (void)createTicket;
+- (void)addTicketCategoryStatistic;
+
+@end
+
+@protocol ContactUsFormInteractorOutput <NSObject>
+
+- (void)didReceiveTicketCategoryResponse:(ContactUsResponse *)response;
+- (void)didReceiveProblem:(id)problem;
+
+@end

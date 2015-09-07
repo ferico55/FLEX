@@ -10,10 +10,10 @@
 
 @interface TicketCategory : NSObject
 
-@property (strong, nonatomic) NSArray *ticket_category_child;
-@property (strong, nonatomic) NSString *ticket_category_name;
-@property (strong, nonatomic) NSString *ticket_category_tree_no;
-@property (strong, nonatomic) NSString *ticket_category_description;
-@property (strong, nonatomic) NSString *ticket_category_id;
+@property (nonatomic, strong) NSArray *ticket_category_child;
+@property (nonatomic, strong) NSString *ticket_category_name;
+@property (nonatomic, strong) NSString *ticket_category_tree_no;
+@property (nonatomic, strong) NSString *ticket_category_description;
+@property (nonatomic, strong) NSString *ticket_category_id;
 
 @end

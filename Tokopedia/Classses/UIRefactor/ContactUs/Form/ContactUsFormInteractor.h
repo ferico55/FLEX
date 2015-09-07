@@ -10,4 +10,6 @@
 
 @interface ContactUsFormInteractor : NSObject
 
+//@property (nonatomic, weak) id <ContactUsInteractorOutput> output;
+
 @end
