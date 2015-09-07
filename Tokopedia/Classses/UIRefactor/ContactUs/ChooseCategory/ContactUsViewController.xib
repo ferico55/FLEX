@@ -231,7 +231,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="J3N-CY-84z"/>
+                        <action selector="didTapContactUsButton:" destination="-1" eventType="touchUpInside" id="6Wn-Uv-ebl"/>
                     </connections>
                 </button>
             </subviews>

@@ -22,6 +22,9 @@
           fromNavigation:(UINavigationController *)navigation;
 
 
-- (void)didTapContactUsButton;
+- (void)didTapContactUsButtonWithType:(TicketCategory *)type
+                      selectedProblem:(TicketCategory *)selectedProblem
+                selectedDetailProblem:(TicketCategory *)selectedDetailProblem
+                       fromNavigation:(UINavigationController *)navigation;
 
 @end

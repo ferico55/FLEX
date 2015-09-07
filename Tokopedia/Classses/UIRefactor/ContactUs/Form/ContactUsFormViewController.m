@@ -26,11 +26,6 @@
 
 @interface ContactUsFormViewController ()
 <
-    TokopediaNetworkManagerDelegate,
-    CameraAlbumListDelegate,
-    CameraCollectionViewControllerDelegate,
-    GenerateHostDelegate,
-    RequestUploadImageDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
     UITextViewDelegate
@@ -55,12 +50,6 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *photoDeleteButtons;
 
-@property (strong, nonatomic) NSMutableArray *uploadedPhotos;
-@property (strong, nonatomic) NSMutableArray *uploadedPhotosURL;
-
-@property (strong, nonatomic) NSMutableArray *selectedImagesCameraController;
-@property (strong, nonatomic) NSMutableArray *selectedIndexPathCameraController;
-
 @end
 
 @implementation ContactUsFormViewController
@@ -72,6 +61,10 @@
 
     self.messageTextView.placeholder = @"Keterangan Masalah Anda";
 
+    self.typeLabel.text = _contactUsType.ticket_category_name;
+    self.problemLabel.text = _problem.ticket_category_name;
+    self.detailProblemLabel.text = _detailProblem.ticket_category_name;
+    
     [self.uploadPhotoScrollView addSubview:_uploadPhotoCellSubview];
     self.uploadPhotoScrollView.contentSize = _uploadPhotoCellSubview.frame.size;
     
@@ -153,30 +146,8 @@
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *tap = sender;
         if ([tap.view isKindOfClass:[UIImageView class]]) {
-            [self openPhotoGallery];
         }
     } else if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = sender;
-        if (button.tag <= 5) {
-            NSInteger index = button.tag-1;
-            if (_uploadedPhotos.count >= button.tag) {
-                [_uploadedPhotos removeObjectAtIndex:index];
-            }
-            if (_uploadedPhotosURL.count >= button.tag) {
-                [_uploadedPhotosURL removeObjectAtIndex:index];
-            }
-            if (_selectedImagesCameraController.count >= button.tag) {
-                [_selectedImagesCameraController removeObjectAtIndex:index];
-            }
-            if (_selectedIndexPathCameraController.count >= button.tag) {
-                [_selectedIndexPathCameraController removeObjectAtIndex:index];
-            }
-            UIImageView *imageView = [self.photoImageViews objectAtIndex:index];
-            imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
-            imageView.userInteractionEnabled = YES;
-            UIButton *button = [self.photoDeleteButtons objectAtIndex:index];
-            button.hidden = YES;
-        }
     }
 }
 
@@ -193,71 +164,6 @@
     self.tableView.contentInset = UIEdgeInsetsZero;
 }
 
-#pragma mark - Photo gallery
-
-- (void)openPhotoGallery {
-    
-    CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
-    albumVC.title = @"Album";
-    albumVC.delegate = self;
-    CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
-    photoVC.title = @"All Picture";
-    photoVC.delegate = self;
-    NSMutableArray *selectedImage = [NSMutableArray new];
-    for (NSIndexPath *selected in _selectedImagesCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedImage addObject: selected];
-        }
-    }
-    photoVC.selectedImagesArray = [selectedImage copy];
-    NSMutableArray *selectedIndexPath = [NSMutableArray new];
-    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedIndexPath addObject: selected];
-        }
-    }
-    photoVC.selectedIndexPath = selectedIndexPath;
-    UINavigationController *nav = [[UINavigationController alloc]init];
-    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    nav.navigationBar.translucent = NO;
-    nav.navigationBar.tintColor = [UIColor whiteColor];
-    NSArray *controllers = @[albumVC,photoVC];
-    [nav setViewControllers:controllers];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-}
-
--(void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo
-{
-    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexPaths = [userinfo objectForKey:@"selected_indexpath"];
-    
-    _selectedImagesCameraController = [selectedImages mutableCopy];
-    _selectedIndexPathCameraController = [selectedIndexPaths mutableCopy];
-    
-    [_uploadedPhotos removeAllObjects];
-    [_uploadedPhotosURL removeAllObjects];
-    
-    NSInteger maxIndex = selectedImages.count;
-    for (int i = 0; i < self.photoImageViews.count; i++) {
-        UIImageView *imageView = [self.photoImageViews objectAtIndex:i];
-        if (i < maxIndex) {
-            NSDictionary *photo = [[selectedImages objectAtIndex:i] objectForKey:@"photo"];
-            UIImage *image = [photo objectForKey:@"photo"];
-            imageView.image = image;
-            imageView.userInteractionEnabled = NO;
-            UIButton *button = [self.photoDeleteButtons objectAtIndex:i];
-            button.hidden = NO;
-        }
-    }
-    
-//    if (_generateHost) {
-//        for (NSDictionary *photo in _selectedImagesCameraController) {
-//            [self requestUploadImage:@{DATA_SELECTED_PHOTO_KEY : photo}];
-//        }
-//    } else {
-//        [_requestHost requestGenerateHost];
-//    }
-}
 
 - (void)showLoadingBar {
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -279,33 +185,6 @@
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     CGPoint point = CGPointMake(0, self.tableView.contentOffset.y+self.tableView.contentInset.bottom);
     [self.tableView setContentOffset:point animated:YES];
-}
-
-#pragma mark - Tokopedia network manager delegate
-
-- (NSString *)getPath:(int)tag {
-    return @"";
-}
-
-- (NSDictionary *)getParameter:(int)tag {
-    return @{};
-}
-
-- (id)getObjectManager:(int)tag {
-    return nil;
-}
-
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    ContactUsActionResponse *response = [mappingResult.dictionary objectForKey:@""];
-    return response.status;
-}
-
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
 }
 
 @end

@@ -30,8 +30,14 @@
     [self.interactor loadProblem];
 }
 
-- (void)didTapContactUsButton {
-
+- (void)didTapContactUsButtonWithType:(TicketCategory *)type
+                      selectedProblem:(TicketCategory *)selectedProblem
+                selectedDetailProblem:(TicketCategory *)selectedDetailProblem
+                       fromNavigation:(UINavigationController *)navigation {
+    self.dataCollector.selectedType = type;
+    self.dataCollector.selectedProblem = selectedProblem;
+    self.dataCollector.selectedDetailProblem = selectedDetailProblem;
+    [self.wireframe pushContactUsFormViewFromNavigation:navigation];
 }
 
 - (void)didSelectContactUsType:(TicketCategory *)type

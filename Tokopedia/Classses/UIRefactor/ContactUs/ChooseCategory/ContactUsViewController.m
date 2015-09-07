@@ -218,6 +218,15 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - Action
+
+- (IBAction)didTapContactUsButton:(UIButton *)sender {
+    [self.eventHandler didTapContactUsButtonWithType:_selectedType
+                                     selectedProblem:_selectedProblem
+                               selectedDetailProblem:_selectedDetailProblem
+                                      fromNavigation:self.navigationController];
+}
+
 #pragma mark - View delegate
 
 - (void)showContactUsFormData:(NSArray *)data {

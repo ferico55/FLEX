@@ -11,6 +11,7 @@
 #import "ContactUsViewController.h"
 #import "ContactUsPresenter.h"
 #import "GeneralTableViewController.h"
+#import "ContactUsFormViewController.h"
 
 @implementation ContactUsWireframe
 
@@ -49,7 +50,11 @@
 }
 
 - (void)pushContactUsFormViewFromNavigation:(UINavigationController *)navigation {
-    
+    ContactUsFormViewController *controller = [ContactUsFormViewController new];
+    controller.contactUsType = self.presenter.dataCollector.selectedType;
+    controller.problem = self.presenter.dataCollector.selectedProblem;
+    controller.detailProblem = self.presenter.dataCollector.selectedDetailProblem;
+    [navigation pushViewController:controller animated:YES];
 }
 
 @end
