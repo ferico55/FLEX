@@ -10,6 +10,10 @@
 
 @implementation PromoProduct
 
+- (NSString *)product_name {
+    return [_product_name kv_decodeHTMLCharacterEntities];
+}
+
 - (ProductModelView *)viewModel {
     if(_viewModel == nil) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
