@@ -113,7 +113,7 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
-    
+  
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
@@ -164,7 +164,7 @@
 }
 
 - (void) setTableInset {
-    _table.contentInset = UIEdgeInsetsMake(40, 0, 200, 0);
+    _table.contentInset = UIEdgeInsetsMake(7, 0, 200, 0);
 }
 
 #pragma mark - Initialization
@@ -182,10 +182,7 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger rows = 0;
-    if (_promoShops.count > 0) rows++;
-    if (_shop.count > 0) rows++;
-    return rows;
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -266,8 +263,6 @@
     if (section == 0) {
         if (_promoShops.count > 0) {
             height = 40;
-        } else if (_promoShops.count == 0 && _shop.count > 0) {
-            height = 40;
         }
     } else if (section == 1) {
         if (_shop.count > 0) {
@@ -341,7 +336,7 @@
         [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
         [_table endUpdates];
         
-        if(_promoShops.count < 2) {
+        if(_promoShops.count == 0) {
             NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
             [section addIndex:0];
             [_table reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
@@ -349,7 +344,7 @@
     }
 }
 
--(void) pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
+-(void)pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
     tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
     [tokopediaNetworkManager doRequest];
