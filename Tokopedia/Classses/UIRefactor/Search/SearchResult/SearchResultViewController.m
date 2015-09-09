@@ -64,7 +64,7 @@ typedef enum ScrollDirection {
     ScrollDirectionDown,
 } ScrollDirection;
 
-static NSString *const startPerPage = @"24";
+static NSString *const startPerPage = @"12";
 
 @interface SearchResultViewController ()
 <
