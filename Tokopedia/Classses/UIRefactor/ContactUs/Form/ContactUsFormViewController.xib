@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -79,17 +79,17 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Pz-bL-Uvt" id="UaB-eD-aoW">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us.png" translatesAutoresizingMaskIntoConstraints="NO" id="cOr-MV-4bT">
-                        <rect key="frame" x="15" y="0.0" width="22" height="44"/>
+                    <imageView userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us.png" translatesAutoresizingMaskIntoConstraints="NO" id="cOr-MV-4bT">
+                        <rect key="frame" x="15" y="0.0" width="22" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="WlS-qB-pOI"/>
+                            <constraint firstAttribute="height" constant="43" id="WlS-qB-pOI"/>
                             <constraint firstAttribute="width" constant="22" id="fh9-P2-QQ5"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCX-2B-yF1">
-                        <rect key="frame" x="50" y="0.0" width="270" height="44"/>
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCX-2B-yF1">
+                        <rect key="frame" x="50" y="0.0" width="270" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="cxl-fB-P4j"/>
+                            <constraint firstAttribute="height" constant="43" id="cxl-fB-P4j"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -120,19 +120,19 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dIp-5o-2v1" id="5H8-hM-PIX">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mN2-Yp-3y1">
-                        <rect key="frame" x="65" y="0.0" width="255" height="44"/>
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mN2-Yp-3y1">
+                        <rect key="frame" x="65" y="0.0" width="255" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="Ubj-9v-1Pd"/>
+                            <constraint firstAttribute="height" constant="43" id="Ubj-9v-1Pd"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="63c-iG-29e">
-                        <rect key="frame" x="30" y="0.0" width="22" height="44"/>
+                    <imageView userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="63c-iG-29e">
+                        <rect key="frame" x="30" y="0.0" width="22" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="5Cs-48-lL4"/>
+                            <constraint firstAttribute="height" constant="43" id="5Cs-48-lL4"/>
                             <constraint firstAttribute="width" constant="22" id="82V-gS-3Nl"/>
                         </constraints>
                     </imageView>
@@ -161,17 +161,17 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eZB-vK-iqw" id="Y2B-hk-4W3">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZVu-iY-iIL">
-                        <rect key="frame" x="30" y="0.0" width="22" height="44"/>
+                    <imageView userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZVu-iY-iIL">
+                        <rect key="frame" x="30" y="0.0" width="22" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="ND9-Iy-OEa"/>
+                            <constraint firstAttribute="height" constant="43" id="ND9-Iy-OEa"/>
                             <constraint firstAttribute="width" constant="22" id="ooD-vK-zeq"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLS-Ku-eXx">
-                        <rect key="frame" x="65" y="0.0" width="255" height="44"/>
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLS-Ku-eXx">
+                        <rect key="frame" x="65" y="0.0" width="255" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="9xb-im-IQm"/>
+                            <constraint firstAttribute="height" constant="43" id="9xb-im-IQm"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -235,7 +235,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pWO-F7-7dd" customClass="TKPDTextView">
-                        <rect key="frame" x="10" y="5" width="310" height="195"/>
+                        <rect key="frame" x="10" y="5" width="310" height="194"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -260,9 +260,9 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5U-C8-Vin">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="100" id="OYB-lt-eBB"/>
+                            <constraint firstAttribute="height" constant="99" id="OYB-lt-eBB"/>
                         </constraints>
                     </scrollView>
                 </subviews>

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7A0BF32F85ED47B7C0BD8609"
+               BlueprintIdentifier = "E8F3F6A6C21ECCF6F181D0F5"
                BuildableName = "libPods-Tokopedia-AFNetworking.a"
                BlueprintName = "Pods-Tokopedia-AFNetworking"
                ReferencedContainer = "container:Pods.xcodeproj">

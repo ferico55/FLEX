@@ -11,9 +11,9 @@
 
 @interface ContactUsResponse : NSObject
 
-@property (strong, nonatomic) NSArray *message_error;
-@property (strong, nonatomic) NSString *status;
-@property (strong, nonatomic) NSString *server_process_time;
-@property (strong, nonatomic) ContactUsResult *result;
+@property (nonatomic, strong) NSArray *message_error;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *server_process_time;
+@property (nonatomic, strong) ContactUsResult *result;
 
 @end
