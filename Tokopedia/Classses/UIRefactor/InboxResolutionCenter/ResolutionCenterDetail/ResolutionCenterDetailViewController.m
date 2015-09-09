@@ -132,7 +132,7 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone  || _isNeedRequestListDetail) {
         [self configureRestKit];
         [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
     }
