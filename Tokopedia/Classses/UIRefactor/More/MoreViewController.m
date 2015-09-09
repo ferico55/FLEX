@@ -96,6 +96,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSaldo;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
+@property (weak, nonatomic) IBOutlet UILabel *LPointLabel;
 
 @end
 
@@ -477,7 +478,7 @@
 {
     switch (section) {
         case 0:
-            return 1;
+            return 2;
             break;
             
         case 1:

@@ -452,6 +452,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     [[NSRunLoop currentRunLoop] addTimer:timer
                                  forMode:NSRunLoopCommonModes];
+    
+    UIDevice *device = [UIDevice currentDevice];
+    
+    NSString  *currentDeviceId = [[device identifierForVendor]UUIDString];
 
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
