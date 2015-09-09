@@ -6,6 +6,7 @@ target "Tokopedia" do
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
     pod 'Localytics',  '~> 3.5.0'
+    pod 'GoogleAppIndexing'
 end
 
 target "TokopediaTests" do

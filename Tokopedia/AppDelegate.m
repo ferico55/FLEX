@@ -16,6 +16,7 @@
 #import "AppsFlyerTracker.h"
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
+#import <GoogleAppIndexing/GoogleAppIndexing.h>
 
 @implementation AppDelegate
 
@@ -115,6 +116,7 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
+    NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
     if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
