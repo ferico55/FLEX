@@ -228,6 +228,8 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
+    _selectedPaymentMethodLabels = [NSArray sortViewsWithTagInArray:_selectedPaymentMethodLabels];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -952,6 +954,8 @@
     NSMutableArray *messageError = [NSMutableArray new];
     
     if (_indexPage == 0) {
+        if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"])
+            [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
         NSInteger gateway = [[_dataInput objectForKey:API_GATEWAY_LIST_ID_KEY]integerValue];
         if (gateway == -1) {
             isValid = NO;
