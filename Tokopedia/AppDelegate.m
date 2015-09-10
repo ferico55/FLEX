@@ -90,7 +90,10 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
+        if(sanitizedURL) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
+        }
+
     });
     
     return YES;

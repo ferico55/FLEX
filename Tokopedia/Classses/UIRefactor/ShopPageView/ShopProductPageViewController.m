@@ -760,6 +760,7 @@ TokopediaNetworkManagerDelegate
     
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY    :   kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
                             kTKPDDETAIL_APISHOPIDKEY    :   @(shopID),
+                            @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
                             kTKPDDETAIL_APIPAGEKEY      :   @(_page),
                             kTKPDDETAIL_APILIMITKEY     :   @(_limit),
                             kTKPDDETAIL_APIORERBYKEY    :   @(sort),
