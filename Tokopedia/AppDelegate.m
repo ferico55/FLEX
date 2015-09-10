@@ -17,10 +17,12 @@
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
+#import "NavigateViewController.h"
 
 @implementation AppDelegate
 
 @synthesize viewController = _viewController;
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -33,6 +35,8 @@
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
     
+    
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         //GTM init
         _tagManager = [TAGManager instance];
@@ -41,6 +45,8 @@
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url != nil) {
             [_tagManager previewWithUrl:url];
+            NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
         }
         
         [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
@@ -81,6 +87,12 @@
         [self preparePersistData];
     });
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+        NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
+    });
+    
     return YES;
 }
 
@@ -117,6 +129,8 @@
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
     NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
+
     if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
@@ -126,6 +140,7 @@
     }
     return NO;
 }
+
 
 
 #pragma mark - reset persist data if freshly installed

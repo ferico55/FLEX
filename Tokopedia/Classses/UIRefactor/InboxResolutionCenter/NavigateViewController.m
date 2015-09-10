@@ -117,6 +117,14 @@
     [viewController.navigationController pushViewController:productController animated:YES];
 }
 
+- (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.data = data;
+    productController.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
 -(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -254,6 +262,16 @@
         InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
         [viewController.navigationController pushViewController:controller animated:YES];
     }
+}
+
+
+- (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName {
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+
+    container.data = @{
+                       @"shop_domain" : shopName
+                       };
+    [viewController.navigationController pushViewController:container animated:YES];
 }
 
 

@@ -25,6 +25,7 @@
 #import "InboxReviewViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
+#import "DeeplinkController.h"
 //#import "WishListViewController.h"
 
 #import "MyWishlistViewController.h"
@@ -37,6 +38,7 @@
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
                                     RedirectHandlerDelegate,
+                                    DeeplinkControllerDelegate,
                                     TKPDTabHomeDelegate> {
     NotificationManager *_notifManager;
     NSInteger _page;
@@ -44,7 +46,7 @@
     UserAuthentificationManager *_userManager;
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
-    
+    NSURL *_deeplinkUrl;
 }
 
 @property (strong, nonatomic) HotlistViewController *hotlistController;
@@ -61,6 +63,13 @@
 @implementation HomeTabViewController
 
 #pragma mark - Init
+
+- (instancetype)init {
+    self = [super init];
+    [self initNotificationCenter];
+    return self;
+}
+
 - (void)initNotificationCenter {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomePage:)
@@ -70,12 +79,37 @@
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDeeplinkUrl:)
+                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+
+    
 }
+
+#pragma mark - Deeplink Delegate
+- (NSURL *)sanitizedURL {
+    return _deeplinkUrl;
+}
+
+- (void)didReceiveDeeplinkUrl:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSURL *deeplinkUrl = [userInfo objectForKey:@"url"];
+    
+    if(deeplinkUrl) {
+        DeeplinkController *dlc = [DeeplinkController new];
+        dlc.delegate = self;
+        _deeplinkUrl = deeplinkUrl;
+        [dlc doRedirect];
+    }
+}
+
 
 #pragma mark - Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+
     
     _hotlistController = [HotlistViewController new];
     _hotlistController.delegate = self;
@@ -98,9 +132,6 @@
     _redirectHandler.delegate = self;
     
     _navigate = [NavigateViewController new];
-    
-    
-    [self initNotificationCenter];
 
     
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -388,5 +419,6 @@
     
     [_redirectHandler proxyRequest:code];
 }
+
 
 @end

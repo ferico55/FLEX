@@ -1171,7 +1171,9 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
         return @{
                  kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"
+                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0",
+                 @"product_key" : [_data objectForKey:@"product_key"]?:@"",
+                 @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
                  };
     else if(tag == CTagOtherProduct)
         return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"};
