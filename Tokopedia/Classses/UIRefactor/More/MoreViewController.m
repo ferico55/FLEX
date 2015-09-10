@@ -361,6 +361,10 @@
         LoyaltyPoint *lp = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         _LPResult = lp.result;
         _LPointLabel.text = lp.result.loyalty_point.amount;
+        _depositLabel.hidden = NO;
+        _loadingSaldo.hidden = YES;
+        [_loadingSaldo stopAnimating];
+        _isNoDataDeposit = NO;
         [[self tableView]reloadData];
     }
 }
@@ -605,7 +609,8 @@
         NSString *url_ = _LPResult.uri;
         NSURL *url = [NSURL URLWithString:url_];
         WebViewController *webViewController = [WebViewController new];
-        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@&%@",[url scheme],[url host],userID,currentDeviceId,[url path],[url query]];
+        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@&%@", @"http", @"m.tokopedia.com",userID,currentDeviceId,[url path],[url query]]; //[url scheme], [url host]
+        webViewController.isLPWebView = YES;
         webViewController.strURL = webViewStrUrl;
         webViewController.strTitle = @"TOKOPEDIA";
         [self.navigationController pushViewController:webViewController animated:YES];
@@ -896,10 +901,7 @@
     if (result) {
         Deposit *deposit = [result objectForKey:@""];
         _depositLabel.text = deposit.result.deposit_total;
-        _depositLabel.hidden = NO;
-        _loadingSaldo.hidden = YES;
-        [_loadingSaldo stopAnimating];
-        _isNoDataDeposit = NO;
+        [_LPNetworkManager doRequest];
     }
 }
 
@@ -963,8 +965,6 @@
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
     [self configureRestKit];
     [self loadDataDeposit];
-    
-    [_LPNetworkManager doRequest];
 }
 
 - (void)updateProfilePicture:(NSNotification *)notification
