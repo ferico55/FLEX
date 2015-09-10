@@ -59,10 +59,12 @@
 #import "TokopediaNetworkManager.h"
 
 #import "NavigateViewController.h"
+#import "LoyaltyPoint.h"
 
 #import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
+#define CTagLP 13
 
 @interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol> {
     NSDictionary *_auth;
@@ -81,6 +83,9 @@
     
     UISplitViewController *splitViewController;
     NavigateViewController *_navigate;
+    
+    TokopediaNetworkManager *_LPNetworkManager;
+    LoyaltyPointResult *_LPResult;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -138,6 +143,10 @@
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
+    
+    _LPNetworkManager = [TokopediaNetworkManager new];
+    _LPNetworkManager.delegate = self;
+    _LPNetworkManager.tagRequest = CTagLP;
     
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
@@ -232,7 +241,10 @@
                  kTKPDPROFILE_APIPROFILEUSERIDKEY : @([[_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
                  };
     }
-    
+    if (tag == CTagLP) {
+        return @{@"action":@"get_lp"
+                 };
+    }
     return nil;
 }
 
@@ -240,6 +252,9 @@
 {
     if(tag == CTagProfileInfo) {
         return kTKPDPROFILE_PEOPLEAPIPATH;
+    }
+    if (tag == CTagLP) {
+        return @"lp.pl";
     }
     
     return nil;
@@ -281,8 +296,24 @@
         
         return _objectmanager;
     }
+    if (tag == CTagLP) {
+        return [self objectManagerLP];
+    }
     
     return nil;
+}
+
+-(RKObjectManager*)objectManagerLP
+{
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LoyaltyPoint mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:@"lp.pl"
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    [objectManager addResponseDescriptor:responseDescriptor];
+
+    return objectManager;
 }
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag
@@ -291,7 +322,10 @@
         ProfileInfo *profileInfo = [((RKMappingResult *) result).dictionary objectForKey:@""];
         return profileInfo.status;
     }
-    
+    if (tag == CTagLP) {
+        LoyaltyPoint *lp = [((RKMappingResult *) result).dictionary objectForKey:@""];
+        return lp.status;
+    }
     return nil;
 }
 
@@ -321,6 +355,13 @@
                                                } failure: nil];
             }
         }
+    }
+    
+    if (tag == CTagLP) {
+        LoyaltyPoint *lp = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+        _LPResult = lp.result;
+        _LPointLabel.text = lp.result.loyalty_point.amount;
+        [[self tableView]reloadData];
     }
 }
 
@@ -477,10 +518,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:
-            return 2;
+        case 0:{
+            if ([_LPResult.loyalty_point.has_lp integerValue] == 1) {
+                return 2;
+            }
+            else return 1;
             break;
-            
+        }
         case 1:
             return 3;
             break;
@@ -541,18 +585,30 @@
     return @"";
 }
 
+
 #pragma mark - Table delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.hidesBottomBarWhenPushed = YES;
     
-    if(indexPath.section == 0) {
+    if(indexPath.section == 0 && indexPath.row == 0) {
         if(![_depositLabel.text isEqualToString:@"-"]) {
             DepositSummaryViewController *depositController = [DepositSummaryViewController new];
             depositController.data = @{@"total_saldo":_depositLabel.text};
             [self.navigationController pushViewController:depositController animated:YES];
         }
+    }
+    if (indexPath.section == 0 && indexPath.row == 1) {
+        NSString  *currentDeviceId = [_auth objectForKey:@"device_token"];
+        NSString *userID = [_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY];
+        NSString *url_ = _LPResult.uri;
+        NSURL *url = [NSURL URLWithString:url_];
+        WebViewController *webViewController = [WebViewController new];
+        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@&%@",[url scheme],[url host],userID,currentDeviceId,[url path],[url query]];
+        webViewController.strURL = webViewStrUrl;
+        webViewController.strTitle = @"TOKOPEDIA";
+        [self.navigationController pushViewController:webViewController animated:YES];
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
@@ -790,7 +846,6 @@
     
     [_depositObjectManager addResponseDescriptor:responseDescriptorStatus];
 }
-
 #pragma mark - Deposit Reskit methods
 
 - (void)loadDataDeposit
@@ -908,6 +963,8 @@
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
     [self configureRestKit];
     [self loadDataDeposit];
+    
+    [_LPNetworkManager doRequest];
 }
 
 - (void)updateProfilePicture:(NSNotification *)notification
