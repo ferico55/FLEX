@@ -34,6 +34,8 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -80,6 +82,7 @@
                 <outlet property="totalPaymentCell" destination="hTf-We-spw" id="2vh-Vl-d0W"/>
                 <outlet property="totalPaymentDetail" destination="XiX-Jr-HT9" id="YQo-Ac-X0o"/>
                 <outlet property="transferCodeCell" destination="hHW-yd-Xhs" id="QsD-o3-0tn"/>
+                <outlet property="usedLPCell" destination="3NZ-AS-z69" id="2CC-69-3ac"/>
                 <outlet property="usedSaldoCell" destination="gnN-iy-Hi0" id="Q2N-GN-bKz"/>
                 <outlet property="userIDKlikBCATextField" destination="JiP-l8-4Tm" id="5Fo-xX-K2F"/>
                 <outlet property="view" destination="Gh7-DV-yXN" id="azQ-xw-Yce"/>
@@ -563,6 +566,29 @@
                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             </tableViewCellContentView>
             <point key="canvasLocation" x="504" y="531"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="nZG-Eg-QJw" detailTextLabel="LIO-AO-bc5" style="IBUITableViewCellStyleValue1" id="3NZ-AS-z69" userLabel="Total LP Table View Cell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3NZ-AS-z69" id="Aft-YO-hyd">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Point Terpakai" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nZG-Eg-QJw">
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LIO-AO-bc5">
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="401" y="644"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Lfk-xl-Rbu" userLabel="Saldo switch Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

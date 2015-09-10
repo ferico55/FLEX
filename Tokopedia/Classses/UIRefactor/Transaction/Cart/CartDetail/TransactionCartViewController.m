@@ -166,6 +166,7 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *depositAmmountCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *ccAdministrationCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *ccFeeCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *usedLPCell;
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentDetail;
 @property (weak, nonatomic) IBOutlet UILabel *depositAmountLabel;
@@ -246,7 +247,7 @@
         [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
-        _requestCart.param = @{};
+        _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         
         //[_networkManager doRequest];
@@ -363,7 +364,7 @@
     NSInteger rowCount;
     
     if (section == listCount) {
-        rowCount = 7; // Kode Promo Tokopedia, Total invoice, Saldo Tokopedia Terpakai, Kode Transfer, Voucher, Biaya Administrasi,Total Pembayaran
+        rowCount = 8; // Kode Promo Tokopedia, Total invoice, Saldo Tokopedia Terpakai, LP Terpakai, Kode Transfer, Voucher, Biaya Administrasi,Total Pembayaran
     }
     else if (section < listCount) {
         TransactionCartList *list = _list[section];
@@ -1839,7 +1840,7 @@
 
 -(UITableViewCell*)cellPaymentInformationAtIndexPath:(NSIndexPath*)indexPath
 {
-    //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5. Biaya Administrasi, 6 Total Pembayaran
+    //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 LP Terpakai 5 Kode Transfer, 6. Biaya Administrasi, 7 Total Pembayaran
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
@@ -1858,17 +1859,21 @@
             [cell.detailTextLabel setText:_cartSummary.voucher_amount_idr];
             break;
         case 4:
+            cell = _usedLPCell;
+            [cell.detailTextLabel setText:_cartSummary.lp_amount_idr];
+            break;
+        case 5:
             cell = _transferCodeCell;
             [cell.detailTextLabel setText:_cartSummary.conf_code_idr];
             break;
-        case 5:
+        case 6:
         {
             cell = _ccAdministrationCell;
             NSString *administrationFeeStr = _cartSummary.credit_card.charge_idr?:@"Rp 0";
             [cell.detailTextLabel setText:administrationFeeStr];
         }
             break;
-        case 6:
+        case 7:
             cell = _totalPaymentDetail;
             [cell.detailTextLabel setText:_cartSummary.payment_left_idr?:@"Rp 0" animated:YES];
             break;
@@ -2226,7 +2231,7 @@
     }
     else if (indexPath.section == _list.count)
     {
-        //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 5 Biaya Administrasi, 6 Total Pembayaran
+        //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 LP Terpakai 5 Kode Transfer, 6 Biaya Administrasi, 7 Total Pembayaran
         if (indexPath.row == 0)
         {
             return 0;
@@ -2244,10 +2249,14 @@
             }
         }
         if (indexPath.row == 4) {
-            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
+            if ([_cartSummary.lp_amount integerValue] == 0)
                 return 0;
         }
         if (indexPath.row == 5) {
+            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
+                return 0;
+        }
+        if (indexPath.row == 6) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_CC) {
                 return 0;
             }
@@ -2391,7 +2400,8 @@
                                       API_DROPSHIP_STRING_KEY:dropshipString,
                                       API_PARTIAL_STRING_KEY :partialString,
                                       API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
-                                      API_DEPOSIT_AMT_KEY:usedSaldo
+                                      API_DEPOSIT_AMT_KEY:usedSaldo,
+                                      @"lp_flag":@"1"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
@@ -2400,7 +2410,6 @@
     [param addEntriesFromDictionary:paramDictionary];
     [param addEntriesFromDictionary:dropshipperDetail];
     [param addEntriesFromDictionary:partialDetail];
-    
     
     return param;
 }
@@ -2444,7 +2453,8 @@
                             API_CC_PHONE_KEY : CCPhone,
                             API_CC_STATE_KEY : CCState,
                             API_CC_CARD_NUMBER_KEY : CCNumber,
-                            API_BCA_USER_ID_KEY : userIDKlikBCA
+                            API_BCA_USER_ID_KEY : userIDKlikBCA,
+                            @"lp_flag":@"1"
                             };
     return param;
 }
@@ -2874,7 +2884,7 @@
 -(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     if (_indexPage == 0) {
-        _requestCart.param = @{};
+        _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         
         _refreshFromShipment = YES;
