@@ -59,6 +59,8 @@
     
     OrderTransaction *_selectedOrder;
     NSIndexPath *_selectedIndexPath;
+    
+    FilterShipmentStatusViewController *_filterController;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -90,6 +92,9 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
+    
+    _filterController = [FilterShipmentStatusViewController new];
+    _filterController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -760,9 +765,7 @@
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
-    FilterShipmentStatusViewController *controller = [FilterShipmentStatusViewController new];
-    controller.delegate = self;
-    navigationController.viewControllers = @[controller];
+    navigationController.viewControllers = @[_filterController];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }

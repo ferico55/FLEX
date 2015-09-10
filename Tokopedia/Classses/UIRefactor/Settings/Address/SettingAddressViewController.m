@@ -310,7 +310,7 @@
             if (_list.count > indexPath.section) {
                 AddressFormList *list = _list[indexPath.section];
                 ((SettingAddressExpandedCell*)cell).recieverNameLabel.text = list.receiver_name;
-                NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %zd",
+                NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %@",
                                      [NSString convertHTML:list.address_street], list.district_name, list.city_name,
                                      list.province_name, list.country_name, list.postal_code];
                 
@@ -1158,6 +1158,7 @@
     } else if (alertView.tag == 2) {
         if (buttonIndex == 1) {            
             [self deleteListAtIndexPath:_indexPath];
+            [self.navigationController popToViewController:self animated:YES];
         }
     }
 }

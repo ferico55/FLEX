@@ -32,6 +32,7 @@
 @property (strong, nonatomic) NSString *ticket_update_by_id;
 @property (strong, nonatomic) NSString *ticket_id;
 @property (strong, nonatomic) NSString *ticket_update_by_name;
+@property (strong, nonatomic) NSString *ticket_category_id;
 
 @property BOOL ticket_show_more_messages;
 

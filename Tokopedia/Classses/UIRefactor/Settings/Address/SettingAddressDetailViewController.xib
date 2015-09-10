@@ -47,7 +47,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingAddressDetailViewController">
             <connections>
-                <outlet property="deleteButton" destination="DZ6-t3-J48" id="RVy-K3-aSJ"/>
                 <outlet property="labeladdress" destination="9Ge-KR-1pk" id="XiA-Be-I4s"/>
                 <outlet property="labeladdressname" destination="Fdu-qS-IQI" id="lwd-fx-evh"/>
                 <outlet property="labelcity" destination="m1Y-3c-xJQ" id="qSS-rg-adl"/>
@@ -819,13 +818,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DZ6-t3-J48">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <color key="backgroundColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="deviceRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <state key="normal" title="Hapus Lokasi Ini">
                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="OI2-8X-xix"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

@@ -5,6 +5,7 @@ target "Tokopedia" do
     pod 'RestKit', '~>  0.20.0'
     pod 'NJKWebViewProgress'
     pod 'TTTAttributedLabel'
+    pod 'Localytics',  '~> 3.5.0'
 end
 
 target "TokopediaTests" do

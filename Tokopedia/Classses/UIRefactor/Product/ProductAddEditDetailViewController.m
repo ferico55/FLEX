@@ -1267,7 +1267,7 @@
                                       API_PRODUCT_MUST_INSURANCE_KEY : productInsurance,
                                       API_PRODUCT_MOVETO_WAREHOUSE_KEY : moveToWarehouse,
                                       API_PRODUCT_ETALASE_ID_KEY : etalaseID,
-                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName,
+                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName?:@"",
                                       API_PRODUCT_CONDITION_KEY : productConditionID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : productImage?:@(0),
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
