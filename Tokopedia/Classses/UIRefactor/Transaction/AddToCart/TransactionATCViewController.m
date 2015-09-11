@@ -299,6 +299,7 @@
         ShippingInfoShipments *shipment = _selectedShipment;
         ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
         AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+        
         [self setAddress:address];
         ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
         switch (indexPath.section) {
@@ -461,12 +462,19 @@
             cell = _tableViewProductCell[indexPath.row];
             break;
         case 1:
+        {
             cell = _tableViewShipmentCell[indexPath.row];
             if (indexPath.row == 1) {
                 [_addressLabel sizeToFit];
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                if ([address.address_name isEqualToString:@"0"])
+                {
+                    return 0;
+                }
                 return 243-50+_addressLabel.frame.size.height;
             }
             break;
+        }
         case 2:
             cell = _tableViewPaymentDetailCell[indexPath.row];
             if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
@@ -939,7 +947,10 @@
             
             [self setAddress:address];
             _isnodata = NO;
-            _tableView.tableHeaderView = ([_ATCForm.result.form.available_count integerValue] == 0)?_messageZeroShipmentView:[[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+            if (![address.address_name isEqualToString:@"0"] && [_ATCForm.result.form.available_count integerValue] == 0)
+                _tableView.tableHeaderView = _messageZeroShipmentView;
+            else
+                _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
             [_tableView reloadData];
         }
     }
