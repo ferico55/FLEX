@@ -805,8 +805,6 @@
         _isRequestFrom = NO;
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
-        [self buyButtonIsLoading:NO];
-        _buyButton.hidden = NO;
         [self requestSuccessFormATC:successResult withOperation:operation];
     }
     if (tag == TAG_REQUEST_ATC) {
@@ -951,6 +949,10 @@
                 _tableView.tableHeaderView = _messageZeroShipmentView;
             else
                 _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+            
+            [self buyButtonIsLoading:NO];
+            _buyButton.hidden = NO;
+            
             [_tableView reloadData];
         }
     }
