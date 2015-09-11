@@ -377,7 +377,7 @@
     else if (section == listCount+1)
         rowCount = 5; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia, userID klik BCA
     else if (section == listCount+2) 
-        rowCount = 1;
+        rowCount = 1; //Cachback step 2
     else rowCount = 2; // Biaya administrasi, total pembayaran
     
     return _isnodata?0:rowCount;
@@ -396,7 +396,7 @@
     else if (indexPath.section == shopCount+1)
         cell = [self cellAdjustDepositAtIndexPath:indexPath];
     else if (indexPath.section == shopCount + 2)
-        cell =
+        cell =  [self cellLoyaltyPointAtIndexPath:indexPath];
     else
     {
         if (indexPath.row == 1) {
@@ -1891,12 +1891,14 @@
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
-            cell = _
+            cell = _LPCashbackCell;
+            cell.detailTextLabel.text = _cartSummary.cashback_idr?:@"Rp 0";
             break;
             
         default:
             break;
     }
+    return cell;
 }
 
 -(UITableViewCell*)cellAdjustDepositAtIndexPath:(NSIndexPath*)indexPath
