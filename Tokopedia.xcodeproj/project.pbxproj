@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		7A5E86C51BA13B1F00B2F753 /* DeeplinkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5E86C41BA13B1F00B2F753 /* DeeplinkController.m */; };
+		7A5E86C81BA1B89200B2F753 /* RequestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5E86C71BA1B89200B2F753 /* RequestUtils.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		851D00001B7CA98200671399 /* ResolutionInputReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851DF7B01B7CA97E00671399 /* ResolutionInputReceiptViewController.m */; };
@@ -1789,6 +1790,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		7A5E86C31BA13B1F00B2F753 /* DeeplinkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeeplinkController.h; sourceTree = "<group>"; };
 		7A5E86C41BA13B1F00B2F753 /* DeeplinkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeeplinkController.m; sourceTree = "<group>"; };
+		7A5E86C61BA1B89200B2F753 /* RequestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUtils.h; sourceTree = "<group>"; };
+		7A5E86C71BA1B89200B2F753 /* RequestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUtils.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		851DF28A1B7CA97D00671399 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -4522,6 +4525,8 @@
 		851DF2901B7CA97D00671399 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				7A5E86C61BA1B89200B2F753 /* RequestUtils.h */,
+				7A5E86C71BA1B89200B2F753 /* RequestUtils.m */,
 				851DF2911B7CA97D00671399 /* CMPopTipView.h */,
 				851DF2921B7CA97D00671399 /* CMPopTipView.m */,
 				851DF2931B7CA97D00671399 /* DBManager.h */,
@@ -11004,6 +11009,7 @@
 				851DFFA91B7CA98200671399 /* GeneralList1GestureCell.m in Sources */,
 				851D01471B7CA98300671399 /* TokopediaCacheManager.m in Sources */,
 				851DFDDA1B7CA98200671399 /* ReviewList.m in Sources */,
+				7A5E86C81BA1B89200B2F753 /* RequestUtils.m in Sources */,
 				851DFFC31B7CA98200671399 /* FavoritedShopCell.m in Sources */,
 				851DFDF91B7CA98200671399 /* DepartmentChild2.m in Sources */,
 				851DFDCE1B7CA98200671399 /* Breadcrumb.m in Sources */,

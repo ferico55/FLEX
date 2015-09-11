@@ -20,6 +20,9 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "DetailProductViewController.h"
 #import "ProductGalleryViewController.h"
+#import "HotlistResultViewController.h"
+#import "CatalogViewController.h"
+#import "SearchResultViewController.h"
 
 #import "InboxRootViewController.h"
 #import "InboxMessageViewController.h"
@@ -272,6 +275,41 @@
                        @"shop_domain" : shopName
                        };
     [viewController.navigationController pushViewController:container animated:YES];
+}
+
+- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key{
+    CatalogViewController *catalogViewController = [CatalogViewController new];
+    catalogViewController.catalogID = catalogID;
+    catalogViewController.catalogName = key;
+    catalogViewController.catalogImage = @"";
+    catalogViewController.catalogPrice = @"";
+    
+    catalogViewController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:catalogViewController animated:YES];
+}
+
+- (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
+    SearchResultViewController *vc = [SearchResultViewController new];
+    vc.delegate = viewController;
+    vc.data =@{
+               @"search" : [data objectForKey:@"q"]?:@"",
+               @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
+               @"location" : [data objectForKey:@"floc"]?:@"",
+               @"price_min" : [data objectForKey:@"pmin"]?:@"",
+               @"price_max" : [data objectForKey:@"pmax"]?:@"",
+               @"order_by" :[data objectForKey:@"ob"]?:@"",
+               @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+               };
+    vc.title = [data objectForKey:@"q"];
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
+    HotlistResultViewController *controller = [HotlistResultViewController new];
+    controller.data = data;
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
 }
 
 
