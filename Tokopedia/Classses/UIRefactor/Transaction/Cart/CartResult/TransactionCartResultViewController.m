@@ -190,7 +190,12 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section < _listTotalPayment.count)
-        return _totalPaymentCell.frame.size.height;
+    {
+        if (indexPath.row == 0) {
+            return _totalPaymentCell.frame.size.height;
+        }
+        else return 44;
+    }
     else
         return  130;
 }
@@ -339,16 +344,29 @@
 {
     NSString *cellid = TRANSACTION_CART_PAYMENT_CELL_IDENTIDIER;
     
-    UITableViewCell *cell = (TransactionCartResultPaymentCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [TransactionCartResultPaymentCell newcell];
-    }
+    UITableViewCell *cell = nil;
     
     NSString *detail = [_listTotalPayment[indexPath.section] objectForKey:DATA_NAME_KEY];
     NSString *totalPayment =  [_listTotalPayment[indexPath.section] objectForKey:DATA_VALUE_KEY];
-    [((TransactionCartResultPaymentCell*)cell).detailPaymentLabel setText:detail animated:YES];
-    [((TransactionCartResultPaymentCell*)cell).totalPaymentLabel setText:totalPayment animated:YES];
-    cell.backgroundColor = ([detail isEqualToString:STRING_JUMLAH_YANG_HARUS_DIBAYAR])?[UIColor colorWithRed:255.f/255.f green:255.f/255.f blue:229.f/255.f alpha:1]:[UIColor colorWithRed:238.f/255.f green:255.f/255.f blue:255.f/255.f alpha:1];
+    
+    if ([detail isEqualToString:STRING_JUMLAH_YANG_HARUS_DIBAYAR] || [detail isEqualToString:STRING_JUMLAH_YANG_SUDAH_DIBAYAR]) {
+        cell = (TransactionCartResultPaymentCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
+        if (cell == nil) {
+            cell = [TransactionCartResultPaymentCell newcell];
+        }
+        [((TransactionCartResultPaymentCell*)cell).detailPaymentLabel setText:detail animated:YES];
+        [((TransactionCartResultPaymentCell*)cell).totalPaymentLabel setText:totalPayment animated:YES];
+        cell.backgroundColor = ([detail isEqualToString:STRING_JUMLAH_YANG_HARUS_DIBAYAR])?[UIColor colorWithRed:255.f/255.f green:255.f/255.f blue:229.f/255.f alpha:1]:[UIColor colorWithRed:238.f/255.f green:255.f/255.f blue:255.f/255.f alpha:1];
+    }
+    else
+    {
+        cell = [_tableView dequeueReusableCellWithIdentifier:@"cellID"];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
+        }
+        cell.textLabel = detail;
+        cell.detailTextLabel = totalPayment;
+    }
     
     return cell;
 }
