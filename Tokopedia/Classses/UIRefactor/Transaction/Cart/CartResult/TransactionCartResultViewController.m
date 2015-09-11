@@ -364,8 +364,8 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellID"];
         }
-        cell.textLabel = detail;
-        cell.detailTextLabel = totalPayment;
+        cell.textLabel.text = detail;
+        cell.detailTextLabel.text = totalPayment;
     }
     
     return cell;
