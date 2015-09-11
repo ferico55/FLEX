@@ -85,8 +85,7 @@
     backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    
-    [self.view addSubview:_readOption];
+    [self.view bringSubviewToFront:_readOption];
     
     _filterReadIndex = 0;
     [self updateCheckList];
