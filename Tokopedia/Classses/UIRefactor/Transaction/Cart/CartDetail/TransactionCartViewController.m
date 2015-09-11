@@ -167,6 +167,9 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *ccAdministrationCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *ccFeeCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *usedLPCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *LPCashbackCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *usedLP1Cell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *LPCashback1Cell;
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentDetail;
 @property (weak, nonatomic) IBOutlet UILabel *depositAmountLabel;
@@ -355,7 +358,7 @@
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger sectionCount = _list.count + 3;
+    NSInteger sectionCount = _list.count + 4;
     return _isnodata?0:sectionCount;
 }
 
@@ -364,7 +367,7 @@
     NSInteger rowCount;
     
     if (section == listCount) {
-        rowCount = 8; // Kode Promo Tokopedia, Total invoice, Saldo Tokopedia Terpakai, LP Terpakai, Kode Transfer, Voucher, Biaya Administrasi,Total Pembayaran
+        rowCount = 7; // Kode Promo Tokopedia, Total invoice, Saldo Tokopedia Terpakai, Kode Transfer, Voucher, Biaya Administrasi,Total Pembayaran
     }
     else if (section < listCount) {
         TransactionCartList *list = _list[section];
@@ -373,6 +376,8 @@
     }
     else if (section == listCount+1)
         rowCount = 5; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia, userID klik BCA
+    else if (section == listCount+2) 
+        rowCount = 1;
     else rowCount = 2; // Biaya administrasi, total pembayaran
     
     return _isnodata?0:rowCount;
@@ -390,6 +395,8 @@
         cell = [self cellPaymentInformationAtIndexPath:indexPath];
     else if (indexPath.section == shopCount+1)
         cell = [self cellAdjustDepositAtIndexPath:indexPath];
+    else if (indexPath.section == shopCount + 2)
+        cell =
     else
     {
         if (indexPath.row == 1) {
@@ -1840,7 +1847,7 @@
 
 -(UITableViewCell*)cellPaymentInformationAtIndexPath:(NSIndexPath*)indexPath
 {
-    //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 LP Terpakai 5 Kode Transfer, 6. Biaya Administrasi, 7 Total Pembayaran
+    //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 6. Biaya Administrasi, 7 Total Pembayaran
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
@@ -1859,21 +1866,17 @@
             [cell.detailTextLabel setText:_cartSummary.voucher_amount_idr];
             break;
         case 4:
-            cell = _usedLPCell;
-            [cell.detailTextLabel setText:_cartSummary.lp_amount_idr];
-            break;
-        case 5:
             cell = _transferCodeCell;
             [cell.detailTextLabel setText:_cartSummary.conf_code_idr];
             break;
-        case 6:
+        case 5:
         {
             cell = _ccAdministrationCell;
             NSString *administrationFeeStr = _cartSummary.credit_card.charge_idr?:@"Rp 0";
             [cell.detailTextLabel setText:administrationFeeStr];
         }
             break;
-        case 7:
+        case 6:
             cell = _totalPaymentDetail;
             [cell.detailTextLabel setText:_cartSummary.payment_left_idr?:@"Rp 0" animated:YES];
             break;
@@ -1883,6 +1886,18 @@
     return cell;
 }
 
+-(UITableViewCell *)cellLoyaltyPointAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = nil;
+    switch (indexPath.row) {
+        case 0:
+            cell = _
+            break;
+            
+        default:
+            break;
+    }
+}
 
 -(UITableViewCell*)cellAdjustDepositAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -2249,14 +2264,10 @@
             }
         }
         if (indexPath.row == 4) {
-            if ([_cartSummary.lp_amount integerValue] == 0)
-                return 0;
-        }
-        if (indexPath.row == 5) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
                 return 0;
         }
-        if (indexPath.row == 6) {
+        if (indexPath.row == 5) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_CC) {
                 return 0;
             }
