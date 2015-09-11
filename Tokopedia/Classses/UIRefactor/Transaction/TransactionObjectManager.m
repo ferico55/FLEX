@@ -47,7 +47,10 @@
                                                    API_GRAND_TOTAL_IDR_KEY,
                                                    API_GATEWAY_LIST_ID_KEY,
                                                    @"lp_amount_idr",
-                                                   @"lp_amount"]];
+                                                   @"lp_amount",
+                                                   @"cashback_idr",
+                                                   @"cashback"
+                                                   ]];
     
     RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
     RKObjectMapping *productMapping = [[self mapping] productMapping];

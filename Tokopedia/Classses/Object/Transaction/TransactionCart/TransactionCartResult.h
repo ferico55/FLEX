@@ -25,5 +25,7 @@
 @property (nonatomic,strong) NSString *token;
 @property (nonatomic,strong) NSString *lp_amount_idr;
 @property (nonatomic,strong) NSString *lp_amount;
+@property (nonatomic,strong) NSString *cashback_idr;
+@property (nonatomic,strong) NSString *cashback;
 
 @end

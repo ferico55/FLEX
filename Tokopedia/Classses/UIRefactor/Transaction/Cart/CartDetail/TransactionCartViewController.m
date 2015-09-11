@@ -366,18 +366,19 @@
     NSInteger listCount = _list.count;
     NSInteger rowCount;
     
-    if (section == listCount) {
-        rowCount = 7; // Kode Promo Tokopedia, Total invoice, Saldo Tokopedia Terpakai, Kode Transfer, Voucher, Biaya Administrasi,Total Pembayaran
-    }
-    else if (section < listCount) {
+    if (section < listCount) {
         TransactionCartList *list = _list[section];
         NSArray *products = list.cart_products;
         rowCount = products.count+6; //ErrorMessage, Detail Pengiriman, Partial, Dropshipper, dropshipper name, dropshipper phone
     }
-    else if (section == listCount+1)
+    else if (section == listCount)
+        rowCount = 1;
+    else if (section == listCount+1) {
+        rowCount = 9; // Kode Promo Tokopedia LPcell, Total invoice, Saldo Tokopedia Terpakai, Kode Transfer, Voucher, Biaya Administrasi,Total Pembayaran
+    }
+    else if (section == listCount+2)
         rowCount = 5; //saldo tokopedia, textfield saldo, deposit amount, password tokopedia, userID klik BCA
-    else if (section == listCount+2) 
-        rowCount = 1; //Cachback step 2
+
     else rowCount = 2; // Biaya administrasi, total pembayaran
     
     return _isnodata?0:rowCount;
@@ -392,11 +393,11 @@
     if (indexPath.section <shopCount)
         cell = [self cellListCartByShopAtIndexPath:indexPath];
     else if (indexPath.section == shopCount)
-        cell = [self cellPaymentInformationAtIndexPath:indexPath];
-    else if (indexPath.section == shopCount+1)
-        cell = [self cellAdjustDepositAtIndexPath:indexPath];
-    else if (indexPath.section == shopCount + 2)
         cell =  [self cellLoyaltyPointAtIndexPath:indexPath];
+    else if (indexPath.section == shopCount+1)
+        cell = [self cellPaymentInformationAtIndexPath:indexPath];
+    else if (indexPath.section == shopCount+2)
+        cell = [self cellAdjustDepositAtIndexPath:indexPath];
     else
     {
         if (indexPath.row == 1) {
@@ -407,7 +408,7 @@
             }
             else
             {
-                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi 2.5%";
+                _ccFeeCell.textLabel.text = @"Total belum termasuk biaya transaksi.";
             }
         }
         else
@@ -418,7 +419,7 @@
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, _tableView.frame.size.width,1)];
-    if (indexPath.section != shopCount+1) {
+    if (indexPath.section != shopCount+2) {
         lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
         [cell.contentView addSubview:lineView];
     }
@@ -461,7 +462,13 @@
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (section < _list.count) return 44;
-    else if (section == _list.count+1)
+    else if (section == _list.count)
+    {
+        if ([_cart.lp_amount integerValue] == 0) {
+            return 0.1f;
+        }
+    }
+    else if (section == _list.count+2)
     {
         if (_indexPage == 0) {
             if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
@@ -493,7 +500,22 @@
     
     if (section < listCount)
         return HEIGHT_VIEW_SUBTOTAL;
-    else if(section == listCount+1)
+    else if (section == listCount)
+    {
+        if (_indexPage==0)
+        {
+            if ([_cart.lp_amount integerValue] == 0) {
+                return 0.1f;
+            }
+        }
+        if (_indexPage==1)
+        {
+            if ([_cartSummary.lp_amount integerValue] <= 0) {
+                return 0.1f;
+            }
+        }
+    }
+    else if(section == listCount+2)
     {
         if (_indexPage==1)
         {
@@ -1847,38 +1869,49 @@
 
 -(UITableViewCell*)cellPaymentInformationAtIndexPath:(NSIndexPath*)indexPath
 {
-    //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 Kode Transfer, 6. Biaya Administrasi, 7 Total Pembayaran
+    //0 Kode Promo Tokopedia?, 1 LPCell 2 Total invoice, 3 Saldo Tokopedia Terpakai, 4 Voucher terpakai 5 Kode Transfer, 6. Biaya Administrasi, 7 Total Pembayaran
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
             cell = _voucerCell;
             break;
         case 1:
+        {
+            cell = _usedLP1Cell;
+            NSString *LPAmountStr = (_indexPage==0)?[NSString stringWithFormat:@"(%@)",_cart.lp_amount_idr]:[NSString stringWithFormat:@"(%@)",_cartSummary.lp_amount_idr];
+            cell.detailTextLabel.text = LPAmountStr;
+        }
+            break;
+        case 2:
             cell = _totalInvoiceCell;
             cell.detailTextLabel.text =_cartSummary.grand_total_before_fee_idr;
             break;
-        case 2:
+        case 3:
             cell = _usedSaldoCell;
             [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr];
             break;
-        case 3:
+        case 4:
             cell = _voucherUsedCell;
             [cell.detailTextLabel setText:_cartSummary.voucher_amount_idr];
             break;
-        case 4:
+        case 5:
             cell = _transferCodeCell;
             [cell.detailTextLabel setText:_cartSummary.conf_code_idr];
             break;
-        case 5:
+        case 6:
         {
             cell = _ccAdministrationCell;
             NSString *administrationFeeStr = _cartSummary.credit_card.charge_idr?:@"Rp 0";
             [cell.detailTextLabel setText:administrationFeeStr];
         }
             break;
-        case 6:
+        case 7:
             cell = _totalPaymentDetail;
             [cell.detailTextLabel setText:_cartSummary.payment_left_idr?:@"Rp 0" animated:YES];
+            break;
+        case 8:
+            cell = _usedLPCell;
+            cell.detailTextLabel.text = (_indexPage==0)?_cart.lp_amount_idr:_cartSummary.lp_amount_idr;
             break;
         default:
             break;
@@ -1892,7 +1925,7 @@
     switch (indexPath.row) {
         case 0:
             cell = _LPCashbackCell;
-            cell.detailTextLabel.text = _cartSummary.cashback_idr?:@"Rp 0";
+            cell.detailTextLabel.text = (_indexPage == 0)?_cart.cashback_idr:_cartSummary.cashback_idr?:@"Rp 0";
             break;
             
         default:
@@ -2138,12 +2171,7 @@
 {
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     
-    if (indexPath.section == _list.count) {
-        if (indexPath.row >0) {
-            return 0;
-        }
-    }
-    else if (indexPath.section < _list.count) {
+    if (indexPath.section < _list.count) {
         TransactionCartList *list = _list[indexPath.section];
         if (indexPath.row == 0)
             return [self errorLabelHeight:list];
@@ -2170,7 +2198,22 @@
             }
         }
     }
-    else if (indexPath.section == _list.count+1)
+    else if (indexPath.section == _list.count) {
+//        if ([_cart.lp_amount integerValue] == 0) {
+//            return 0;
+//        }
+    }
+    else if (indexPath.section == _list.count+1) {
+        if (indexPath.row == 1) {
+//            if ([_cart.lp_amount integerValue] == 0) {
+//                return 0;
+//            }
+        }
+        else if (indexPath.row >1) {
+            return 0;
+        }
+    }
+    else if (indexPath.section == _list.count+2)
     {
         //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia, 4. userID klik BCA
         if (indexPath.row == 0 || indexPath.row == 2) {
@@ -2248,34 +2291,52 @@
     }
     else if (indexPath.section == _list.count)
     {
-        //0 Kode Promo Tokopedia?, 1 Total invoice, 2 Saldo Tokopedia Terpakai, 3 Voucher terpakai 4 LP Terpakai 5 Kode Transfer, 6 Biaya Administrasi, 7 Total Pembayaran
+        if ([_cartSummary.lp_amount integerValue] == 0) {
+            return 0;
+        }
+    }
+    else if (indexPath.section == _list.count+1)
+    {
+        //0 Kode Promo Tokopedia?, 1 lpCELL 2 Total invoice, 3 Saldo Tokopedia Terpakai, 4 Voucher terpakai5 Kode Transfer, 6 Biaya Administrasi, 7 Total Pembayaran 8 lpCELL
         if (indexPath.row == 0)
         {
             return 0;
         }
-        if (indexPath.row == 2)
+        if (indexPath.row == 1) {
+            return 0;
+        }
+        if (indexPath.row == 3)
         {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
                 [_cartSummary.deposit_amount integerValue] <= 0) {
                 return 0;
             }
         }
-        if (indexPath.row == 3) {
+        if (indexPath.row == 4) {
             if ([_cartSummary.voucher_amount integerValue]<=0) {
                 return 0;
             }
         }
-        if (indexPath.row == 4) {
+        if (indexPath.row == 5) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
                 return 0;
         }
-        if (indexPath.row == 5) {
+        if (indexPath.row == 6) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_CC) {
                 return 0;
             }
         }
+        if (indexPath.row == 7) {
+            return 0;
+        }
+        if (indexPath.row == 8) {
+            if ([_cartSummary.lp_amount integerValue] == 0 && indexPath.row == 1) {
+                return 0;
+            }
+        }
+
     }
-    else if (indexPath.section == _list.count+1)
+    else if (indexPath.section == _list.count+2)
     {
         //0 saldo tokopedia, 1 textfield saldo, 2 deposit amount, 3 password tokopedia, 4 userID klik BCA
         if (indexPath.row == 0)
@@ -2306,9 +2367,11 @@
                 return 0;
         }
     }
-    else if (indexPath.section == _list.count+2)
+    else if (indexPath.section == _list.count+3)
     {
-        return 0;
+        if (indexPath.row == 1) {
+            return 0;
+        }
     }
     return DEFAULT_ROW_HEIGHT;
 }
