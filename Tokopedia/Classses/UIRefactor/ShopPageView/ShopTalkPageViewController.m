@@ -238,7 +238,7 @@ UIAlertViewDelegate>
 {
     if (_isNoData) {
         
-        cell.backgroundColor = [UIColor whiteColor];
+        cell.backgroundColor = [UIColor clearColor];
     }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
