@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TicketCategory.h"
+#import "ContactUsFormWireframe.h"
 
 @class TPRootWireframe;
 @class ContactUsPresenter;
@@ -15,12 +16,13 @@
 
 @interface ContactUsWireframe : NSObject
 
-@property (nonatomic, strong) TPRootWireframe *rootWireframe;
 @property (nonatomic, strong) ContactUsPresenter *presenter;
+@property (nonatomic, strong) TPRootWireframe *rootWireframe;
+@property (nonatomic, strong) ContactUsFormWireframe *formWireframe;
 
 - (void)pushContactUsViewControllerFromNavigation:(UINavigationController *)navigation;
-- (void)pushContactUsProblemFromNavigation:(UINavigationController *)navigation;
-- (void)pushContactUsProblemDetailFromNavigation:(UINavigationController *)navigation;
+- (void)pushCategoryFromNavigation:(UINavigationController *)navigation;
+- (void)pushSubCategoryFromNavigation:(UINavigationController *)navigation;
 - (void)pushContactUsFormViewFromNavigation:(UINavigationController *)navigation;
 
 @end

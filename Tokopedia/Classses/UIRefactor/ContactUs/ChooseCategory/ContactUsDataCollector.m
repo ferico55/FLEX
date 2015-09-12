@@ -15,49 +15,19 @@
 
 @implementation ContactUsDataCollector
 
-- (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            
-        } else if (indexPath.row == 1) {
-            
-        }
-    }
-}
-
-- (NSArray *)selectedProblemTitles {
+- (NSArray *)categoryTitles {
     NSMutableArray *titles = [NSMutableArray new];
-    for (TicketCategory *category in _selectedType.ticket_category_child) {
-        [titles addObject:category.ticket_category_name];
+    for (TicketCategory *childCategory in _subCategories) {
+        [titles addObject:childCategory.ticket_category_name];
     }
     return titles;
 }
 
-- (NSArray *)selectedProblemDetailTitles {
-    NSMutableArray *titles = [NSMutableArray new];
-    for (TicketCategory *category in _selectedProblem.ticket_category_child) {
-        [titles addObject:category.ticket_category_name];
-    }
-    return titles;
-}
-
-- (TicketCategory *)selectedProblemWithName:(NSString *)categoryName {
+- (TicketCategory *)categoryWithCategoryName:(NSString *)categoryName {
     TicketCategory *selectedCategory;
-    for (TicketCategory *category in self.selectedType.ticket_category_child) {
+    for (TicketCategory *category in _subCategories) {
         if ([category.ticket_category_name isEqualToString:categoryName]) {
             selectedCategory = category;
-            self.selectedProblem = category;
-        }
-    }
-    return selectedCategory;
-}
-
-- (TicketCategory *)selectedDetailProblemWithName:(NSString *)categoryName {
-    TicketCategory *selectedCategory;
-    for (TicketCategory *category in self.selectedProblem.ticket_category_child) {
-        if ([category.ticket_category_name isEqualToString:categoryName]) {
-            selectedCategory = category;
-            self.selectedDetailProblem = category;
         }
     }
     return selectedCategory;

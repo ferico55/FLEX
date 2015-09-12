@@ -8,10 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactUsActionResponse.h"
+#import "ContactUsQuery.h"
 
 @interface ContactUsFormDataManager : NSObject
 
-- (void)requestFormModelContactUs:(void (^)(ContactUsActionResponse *))response
-                            error:(void (^)(NSError *))error;
+- (void)requestFormModelWithQuery:(ContactUsQuery *)query
+                         response:(void (^)(ContactUsActionResponse *))response
+                    errorMessages:(void (^)(NSArray *))errorMessages;
+
+- (void)requestTicketValidationWithQuery:(ContactUsQuery *)query
+                                response:(void (^)(ContactUsActionResponse *))response
+                           errorMessages:(void (^)(NSArray *))errorMessages;
+
+- (void)requestCreateTicketWithQuery:(ContactUsQuery *)query
+                            response:(void (^)(ContactUsActionResponse *))response
+                       errorMessages:(void (^)(NSArray *))errorMessages;
 
 @end

@@ -19,15 +19,13 @@
 
 @interface ContactUsDataCollector : NSObject
 
-@property (nonatomic, strong) TicketCategory *selectedType;
-@property (nonatomic, strong) TicketCategory *selectedProblem;
-@property (nonatomic, strong) TicketCategory *selectedDetailProblem;
+@property (nonatomic, strong) TicketCategory *mainCategory;
+@property (nonatomic, strong) TicketCategory *selectedCategory;
+@property (nonatomic, strong) NSArray *subCategories;
+@property (nonatomic, strong) NSIndexPath *senderIndexPath;
 @property (nonatomic, weak) id<ContactUsDataCollectorDelegate> presenter;
 
-- (NSArray *)selectedProblemTitles;
-- (NSArray *)selectedProblemDetailTitles;
-
-- (TicketCategory *)selectedProblemWithName:(NSString *)categoryName;
-- (TicketCategory *)selectedDetailProblemWithName:(NSString *)categoryName;
+- (NSArray *)categoryTitles;
+- (TicketCategory *)categoryWithCategoryName:(NSString *)categoryName;
 
 @end

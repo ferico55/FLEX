@@ -11,16 +11,10 @@
 #import "GenerateHost.h"
 #import "RequestGenerateHost.h"
 #import "TokopediaNetworkManager.h"
+#import "ContactUsFormMainCategoryCell.h"
+#import "ContactUsFormCategoryCell.h"
 
 #import "TKPDTextView.h"
-
-#import "camera.h"
-#import "CameraAlbumListViewController.h"
-#import "CameraCollectionViewController.h"
-
-#import "UploadImage.h"
-#import "UploadImageParams.h"
-#import "RequestUploadImage.h"
 
 #import "ContactUsActionResponse.h"
 
@@ -32,23 +26,21 @@
 >
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UITableViewCell *typeCell;
-@property (strong, nonatomic) IBOutlet UITableViewCell *problemCell;
-@property (strong, nonatomic) IBOutlet UITableViewCell *problemDetailCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *invoiceInputCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *messageCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *uploadPhotoCell;
 @property (strong, nonatomic) IBOutlet UIView *uploadPhotoCellSubview;
 
-@property (weak, nonatomic) IBOutlet UILabel *problemLabel;
-@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *detailProblemLabel;
 @property (weak, nonatomic) IBOutlet UITextField *invoiceTextField;
 @property (weak, nonatomic) IBOutlet TKPDTextView *messageTextView;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *uploadPhotoScrollView;
+@property (strong, nonatomic) NSMutableArray *photos;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *photoDeleteButtons;
+
+@property BOOL invoiceTextFieldIsVisible;
+@property BOOL photoPickerIsVisible;
 
 @end
 
@@ -58,20 +50,14 @@
     [super viewDidLoad];
     
     self.title = @"Hubungi Kami";
-
+    
     self.messageTextView.placeholder = @"Keterangan Masalah Anda";
-
-    self.typeLabel.text = _contactUsType.ticket_category_name;
-    self.problemLabel.text = _problem.ticket_category_name;
-    self.detailProblemLabel.text = _detailProblem.ticket_category_name;
     
     [self.uploadPhotoScrollView addSubview:_uploadPhotoCellSubview];
     self.uploadPhotoScrollView.contentSize = _uploadPhotoCellSubview.frame.size;
     
     self.photoImageViews = [NSArray sortViewsWithTagInArray:_photoImageViews];
     self.photoDeleteButtons = [NSArray sortViewsWithTagInArray:_photoDeleteButtons];
-    
-    [self showSaveButton];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -82,6 +68,27 @@
              object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    _photos = [NSMutableArray new];
+
+    _invoiceTextFieldIsVisible = NO;
+    _photoPickerIsVisible = NO;
+    
+    TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
+    [self.eventHandler showFormWithCategory:lastCategory];
+    
+    [self.tableView reloadData];
+    
+    [self showSaveButton];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.view endEditing:YES];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -89,18 +96,17 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    NSInteger sections = 2;
+    if (_invoiceTextFieldIsVisible) sections++;
+    if (_photoPickerIsVisible) sections++;
+    return sections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rows;
+    NSInteger rows = 0;
     if (section == 0) {
-        rows = 3;
-    } else if (section == 1) {
-        rows = 1;
-    } else if (section == 2) {
-        rows = 1;
-    } else if (section == 3) {
+        rows = _subCategories.count + 1;
+    } else {
         rows = 1;
     }
     return rows;
@@ -110,16 +116,33 @@
     UITableViewCell *cell;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            cell = _typeCell;
-        } else if (indexPath.row == 1) {
-            cell = _problemCell;
-        } else if (indexPath.row == 2) {
-            cell = _problemDetailCell;
+            cell = [tableView dequeueReusableCellWithIdentifier:@"ContactUsFormMainCategoryCell"];
+            if (cell == nil) {
+                cell = [[ContactUsFormMainCategoryCell alloc] init];
+            }
+            ((ContactUsFormMainCategoryCell *)cell).categoryNameLabel.text = _mainCategory.ticket_category_name;
+        } else {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"ContactUsFormCategoryCell"];
+            if (cell == nil) {
+                cell = [[ContactUsFormCategoryCell alloc] init];
+            }
+            NSString *categoryName = [_subCategories[indexPath.row - 1] ticket_category_name];
+            ((ContactUsFormCategoryCell *)cell).categoryNameLabel.text = categoryName;
         }
     } else if (indexPath.section == 1) {
-        cell = _invoiceInputCell;
+        if (_invoiceTextFieldIsVisible) {
+            cell = _invoiceInputCell;
+        } else if (_photoPickerIsVisible) {
+            cell = _uploadPhotoCell;
+        } else {
+            cell = _messageCell;
+        }
     } else if (indexPath.section == 2) {
-        cell = _uploadPhotoCell;
+        if (_photoPickerIsVisible && _invoiceTextFieldIsVisible) {
+            cell = _uploadPhotoCell;
+        } else {
+            cell = _messageCell;
+        }
     } else if (indexPath.section == 3) {
         cell = _messageCell;
     }
@@ -129,11 +152,21 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height;
     if (indexPath.section == 0) {
-        height = _problemCell.frame.size.height;
+        height = 44;
     } else if (indexPath.section == 1) {
-        height = _invoiceInputCell.frame.size.height;
+        if (_invoiceTextFieldIsVisible) {
+            height = _invoiceInputCell.frame.size.height;
+        } else if (_photoPickerIsVisible) {
+            height = _uploadPhotoCell.frame.size.height;
+        } else {
+            height = _messageCell.frame.size.height;
+        }
     } else if (indexPath.section == 2) {
-        height = _uploadPhotoCell.frame.size.height;
+        if (_photoPickerIsVisible && _invoiceTextFieldIsVisible) {
+            height = _uploadPhotoCell.frame.size.height;
+        } else {
+            height = _messageCell.frame.size.height;
+        }
     } else if (indexPath.section == 3) {
         height = _messageCell.frame.size.height;
     }
@@ -142,13 +175,21 @@
 
 #pragma mark - Actions
 
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *tap = sender;
-        if ([tap.view isKindOfClass:[UIImageView class]]) {
-        }
-    } else if ([sender isKindOfClass:[UIButton class]]) {
-    }
+- (IBAction)didTapDeletePhotoButton:(UIButton *)button {
+    [self.photos removeObjectAtIndex:button.tag - 1];
+    [self refreshPhotos];
+}
+
+- (IBAction)didTapPhoto:(UITapGestureRecognizer *)tap {
+    [self.view endEditing:YES];
+    [self.eventHandler showPhotoPickerFromNavigation:self.navigationController];
+}
+
+- (void)didTapSubmitButton {
+//    [self.eventHandler submitTicketMessage:_messageTextView.text
+//                                   invoice:_invoiceTextField.text
+//                               attachments:_photos
+//                            ticketCategory:_detailProblem];
 }
 
 #pragma mark - Keyboard Notification
@@ -169,22 +210,56 @@
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [indicatorView startAnimating];
     UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
-    self.navigationItem.rightBarButtonItem = indicatorBarButton;
+    self.navigationController.navigationItem.rightBarButtonItem = indicatorBarButton;
 }
 
 - (void)showSaveButton {
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim Pesan"
                                                                    style:UIBarButtonItemStyleDone
                                                                   target:self
-                                                                  action:@selector(tap:)];
+                                                                  action:@selector(didTapSubmitButton)];
     self.navigationItem.rightBarButtonItem = saveButton;
 }
 
 #pragma mark - Text view delegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    CGPoint point = CGPointMake(0, self.tableView.contentOffset.y+self.tableView.contentInset.bottom);
-    [self.tableView setContentOffset:point animated:YES];
+}
+
+#pragma mark - View delegate
+
+- (void)showInvoiceInputTextField {
+    _invoiceTextFieldIsVisible = YES;
+    [self.tableView reloadData];
+}
+
+- (void)showPhotoPicker {
+    _photoPickerIsVisible = YES;
+    [self.tableView reloadData];
+}
+
+- (void)showErrorMessages:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
+}
+
+- (void)showSelectedPhotos:(NSArray *)photos {
+    self.photos = [photos mutableCopy];
+    [self refreshPhotos];
+}
+
+- (void)refreshPhotos {
+    for (int i = 0; i < 5; i++) {
+        UIImageView *imageView = [self.photoImageViews objectAtIndex:i];
+        UIButton *deleteButton = [self.photoDeleteButtons objectAtIndex:i];
+        if (i < self.photos.count) {
+            imageView.image = [self.photos objectAtIndex:i];
+            deleteButton.hidden = NO;
+        } else {
+            imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
+            deleteButton.hidden = YES;
+        }
+    }
 }
 
 @end

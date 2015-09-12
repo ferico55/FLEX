@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "TicketCategory.h"
+#import "ContactUsFormModuleInterface.h"
+#import "ContactUsFormViewInterface.h"
 
-@interface ContactUsFormViewController : UIViewController
+@interface ContactUsFormViewController : UIViewController <ContactUsFormViewInterface>
 
-@property (nonatomic, strong) TicketCategory *contactUsType;
-@property (nonatomic, strong) TicketCategory *problem;
-@property (nonatomic, strong) TicketCategory *detailProblem;
+@property (nonatomic, strong) TicketCategory *mainCategory;
+@property (nonatomic, strong) NSArray *subCategories;
+@property (nonatomic, strong) id<ContactUsFormModuleInterface> eventHandler;
 
 @end

@@ -17,6 +17,7 @@
 
 #define API_TICKET_IS_SUCCESS_KEY           @"is_success"
 #define API_TICKET_INBOX_ID_KEY             @"ticket_inbox_id"
+#define API_TICKET_POST_KEY                 @"post_key"
 
 #define API_TICKET_STATUS_KEY               @"status"
 #define API_TICKET_MESSAGE_BODY_ERROR_KEY   @"message_body_error"

@@ -1,0 +1,53 @@
+//
+//  ContactUsFormWireframe.m
+//  Tokopedia
+//
+//  Created by Tokopedia on 9/9/15.
+//  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
+//
+
+#import "ContactUsFormWireframe.h"
+#import "ContactUsFormPresenter.h"
+#import "ContactUsFormViewController.h"
+
+#import "camera.h"
+#import "CameraAlbumListViewController.h"
+#import "CameraCollectionViewController.h"
+
+@implementation ContactUsFormWireframe
+
+- (void)pushToContactFormWithMainCategory:(TicketCategory *)mainCategory
+                            subCategories:(NSArray *)subCategories
+                           fromNavigation:(UINavigationController *)navigation {
+    ContactUsFormViewController *controller = (ContactUsFormViewController *)self.presenter.userInterface;
+    controller.mainCategory = mainCategory;
+    controller.subCategories = subCategories;
+    [navigation pushViewController:controller animated:YES];
+}
+
+- (void)presentPhotoPickerFromNavigation:(UINavigationController *)navigation {
+    CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
+    albumVC.title = @"Album";
+    albumVC.delegate = self.presenter;
+    
+    CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
+    photoVC.title = @"All Picture";
+    photoVC.delegate = self.presenter;
+    
+    NSArray *selectedImagesArray = self.presenter.dataCollector.selectedImagesCameraController;
+    photoVC.selectedImagesArray = selectedImagesArray;
+
+    NSArray *selectedIndexPath = self.presenter.dataCollector.selectedIndexPathCameraController;
+    photoVC.selectedIndexPath = [selectedIndexPath mutableCopy];
+
+    UINavigationController *nav = [[UINavigationController alloc]init];
+    UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
+    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];
+    nav.navigationBar.translucent = NO;
+    nav.navigationBar.tintColor = [UIColor whiteColor];
+    [nav setViewControllers:@[albumVC,photoVC]];
+    
+    [navigation presentViewController:nav animated:YES completion:nil];
+}
+
+@end

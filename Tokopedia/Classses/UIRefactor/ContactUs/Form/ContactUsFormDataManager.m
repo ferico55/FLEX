@@ -14,11 +14,12 @@
 
 @implementation ContactUsFormDataManager
 
-- (void)requestFormModelContactUs:(void (^)(ContactUsActionResponse *))response
-                            error:(void (^)(NSError *))error {
-    NSDictionary *parameters = @{@"action" : @"get_form_model_contact_us"};
-    NSString *path = @"action/contact-us.pl";
-    RKResponseDescriptor *responseDescriptors = [self ticketFormStatusResponseDescriptors];
+- (void)requestFormModelWithQuery:(ContactUsQuery *)query
+                         response:(void (^)(ContactUsActionResponse *))response
+                    errorMessages:(void (^)(NSArray *))errorMessages {
+    NSDictionary *parameters = query.parameters;
+    NSString *path = @"contact-us.pl";
+    RKResponseDescriptor *responseDescriptors = [self ticketFormStatusResponseDescriptorsWithPath:path];
     [DataRequest requestWithParameters:parameters
                            pathPattern:path
                     responseDescriptor:responseDescriptors
@@ -29,12 +30,54 @@
                                     response(result);
                                 } else if ([completion isKindOfClass:[NSError class]]) {
                                     NSError *errorResponse = (NSError *)completion;
-                                    error(errorResponse);
+                                    errorMessages(@[errorResponse.localizedDescription]);
                                 }
                             }];
 }
 
-- (RKResponseDescriptor *)ticketFormStatusResponseDescriptors {
+- (void)requestTicketValidationWithQuery:(ContactUsQuery *)query
+                                response:(void (^)(ContactUsActionResponse *))response
+                           errorMessages:(void (^)(NSArray *))errorMessages {
+    NSDictionary *parameters = query.parameters;
+    NSString *path = @"action/contact-us.pl";
+    RKResponseDescriptor *responseDescriptors = [self ticketFormStatusResponseDescriptorsWithPath:path];
+    [DataRequest requestWithParameters:parameters
+                           pathPattern:path
+                    responseDescriptor:responseDescriptors
+                            completion:^(id completion) {
+                                if ([completion isKindOfClass:[RKMappingResult class]]) {
+                                    NSDictionary *dict = ((RKMappingResult *)completion).dictionary;
+                                    ContactUsActionResponse *result = (ContactUsActionResponse *)[dict objectForKey:@""];
+                                    response(result);
+                                } else if ([completion isKindOfClass:[NSError class]]) {
+                                    NSError *errorResponse = (NSError *)completion;
+                                    errorMessages(@[errorResponse.localizedDescription]);
+                                }
+                            }];
+}
+
+- (void)requestCreateTicketWithQuery:(ContactUsQuery *)query
+                            response:(void (^)(ContactUsActionResponse *))response
+                       errorMessages:(void (^)(NSArray *))errorMessages {
+    NSDictionary *parameters = query.parameters;
+    NSString *path = @"action/contact-us.pl";
+    RKResponseDescriptor *responseDescriptors = [self ticketFormStatusResponseDescriptorsWithPath:path];
+    [DataRequest requestWithParameters:parameters
+                           pathPattern:path
+                    responseDescriptor:responseDescriptors
+                            completion:^(id completion) {
+                                if ([completion isKindOfClass:[RKMappingResult class]]) {
+                                    NSDictionary *dict = ((RKMappingResult *)completion).dictionary;
+                                    ContactUsActionResponse *result = (ContactUsActionResponse *)[dict objectForKey:@""];
+                                    response(result);
+                                } else if ([completion isKindOfClass:[NSError class]]) {
+                                    NSError *errorResponse = (NSError *)completion;
+                                    errorMessages(@[errorResponse.localizedDescription]);
+                                }
+                            }];
+}
+
+- (RKResponseDescriptor *)ticketFormStatusResponseDescriptorsWithPath:(NSString *)path {
 
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ContactUsActionResponse class]];
     [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSKEY,
@@ -42,7 +85,8 @@
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ContactUsActionResult class]];
     [resultMapping addAttributeMappingsFromArray:@[API_TICKET_IS_SUCCESS_KEY,
-                                                   API_TICKET_INBOX_ID_KEY]];
+                                                   API_TICKET_INBOX_ID_KEY,
+                                                   API_TICKET_POST_KEY]];
     
     RKObjectMapping *formModelMapping = [RKObjectMapping mappingForClass:[ContactUsActionResultStatus class]];
     [formModelMapping addAttributeMappingsFromArray:@[API_TICKET_CATEGORY_ATTACHMENT_STATUS_KEY,
@@ -69,7 +113,7 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:@"action/contact-us.pl"
+                                                                                       pathPattern:path
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     

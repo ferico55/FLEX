@@ -1767,6 +1767,12 @@
 		8500FFFD1B9D38A900BCF72D /* TransactionCCDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8500FB651B9D38A800BCF72D /* TransactionCCDetailViewController.xib */; };
 		8500FFFE1B9D38A900BCF72D /* TransactionCCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8500FB671B9D38A800BCF72D /* TransactionCCViewController.m */; };
 		8500FFFF1B9D38A900BCF72D /* TransactionCCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8500FB681B9D38A800BCF72D /* TransactionCCViewController.xib */; };
+		8528C2DF1BA2B58000D5AA4F /* ContactUsCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8528C2DD1BA2B58000D5AA4F /* ContactUsCategoryCell.m */; };
+		8528C2E01BA2B58000D5AA4F /* ContactUsCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8528C2DE1BA2B58000D5AA4F /* ContactUsCategoryCell.xib */; };
+		8528C2E41BA2E35200D5AA4F /* ContactUsFormCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8528C2E21BA2E35200D5AA4F /* ContactUsFormCategoryCell.m */; };
+		8528C2E51BA2E35200D5AA4F /* ContactUsFormCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8528C2E31BA2E35200D5AA4F /* ContactUsFormCategoryCell.xib */; };
+		8528C2E91BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8528C2E71BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.m */; };
+		8528C2EA1BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8528C2E81BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1784,6 +1790,9 @@
 		8565E1EA1B94059600843388 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E81B94059600843388 /* GoogleOpenSource.framework */; };
 		8565E1EB1B94059600843388 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E91B94059600843388 /* GooglePlus.framework */; };
 		8565E1ED1B9405C800843388 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8565E1EC1B9405C800843388 /* GooglePlus.bundle */; };
+		8580524A1B9FF0E40001B919 /* ContactUsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 858052491B9FF0E40001B919 /* ContactUsQuery.m */; };
+		858052501BA010CC0001B919 /* ContactUsFormWireframe.m in Sources */ = {isa = PBXBuildFile; fileRef = 8580524F1BA010CC0001B919 /* ContactUsFormWireframe.m */; };
+		858052531BA010F90001B919 /* ContactUsFormDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = 858052521BA010F90001B919 /* ContactUsFormDataCollector.m */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -4455,6 +4464,15 @@
 		8500FC131B9D38A800BCF72D /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
 		8500FC141B9D38A800BCF72D /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
 		8500FC151B9D38A800BCF72D /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
+		8528C2DC1BA2B58000D5AA4F /* ContactUsCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsCategoryCell.h; sourceTree = "<group>"; };
+		8528C2DD1BA2B58000D5AA4F /* ContactUsCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsCategoryCell.m; sourceTree = "<group>"; };
+		8528C2DE1BA2B58000D5AA4F /* ContactUsCategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactUsCategoryCell.xib; sourceTree = "<group>"; };
+		8528C2E11BA2E35200D5AA4F /* ContactUsFormCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsFormCategoryCell.h; sourceTree = "<group>"; };
+		8528C2E21BA2E35200D5AA4F /* ContactUsFormCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsFormCategoryCell.m; sourceTree = "<group>"; };
+		8528C2E31BA2E35200D5AA4F /* ContactUsFormCategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactUsFormCategoryCell.xib; sourceTree = "<group>"; };
+		8528C2E61BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsFormMainCategoryCell.h; sourceTree = "<group>"; };
+		8528C2E71BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsFormMainCategoryCell.m; sourceTree = "<group>"; };
+		8528C2E81BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactUsFormMainCategoryCell.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -4472,6 +4490,13 @@
 		8565E1E81B94059600843388 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		8565E1E91B94059600843388 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		8565E1EC1B9405C800843388 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
+		858052481B9FF0E40001B919 /* ContactUsQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsQuery.h; sourceTree = "<group>"; };
+		858052491B9FF0E40001B919 /* ContactUsQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsQuery.m; sourceTree = "<group>"; };
+		8580524B1BA00F880001B919 /* ContactUsFormViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsFormViewInterface.h; sourceTree = "<group>"; };
+		8580524E1BA010CC0001B919 /* ContactUsFormWireframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsFormWireframe.h; sourceTree = "<group>"; };
+		8580524F1BA010CC0001B919 /* ContactUsFormWireframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsFormWireframe.m; sourceTree = "<group>"; };
+		858052511BA010F90001B919 /* ContactUsFormDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsFormDataCollector.h; sourceTree = "<group>"; };
+		858052521BA010F90001B919 /* ContactUsFormDataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsFormDataCollector.m; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -5527,6 +5552,9 @@
 				850017D21B9D7BC300BCF72D /* TPContactUsDependencies.m */,
 				850017D31B9D7BC300BCF72D /* TPRootWireframe.h */,
 				850017D41B9D7BC300BCF72D /* TPRootWireframe.m */,
+				8528C2DC1BA2B58000D5AA4F /* ContactUsCategoryCell.h */,
+				8528C2DD1BA2B58000D5AA4F /* ContactUsCategoryCell.m */,
+				8528C2DE1BA2B58000D5AA4F /* ContactUsCategoryCell.xib */,
 			);
 			path = ChooseCategory;
 			sourceTree = "<group>";
@@ -5545,6 +5573,17 @@
 				850017EE1B9D82CE00BCF72D /* ContactUsFormModuleInterface.h */,
 				850017EF1B9D918300BCF72D /* ContactUsFormDataManager.h */,
 				850017F01B9D918300BCF72D /* ContactUsFormDataManager.m */,
+				8580524B1BA00F880001B919 /* ContactUsFormViewInterface.h */,
+				8580524E1BA010CC0001B919 /* ContactUsFormWireframe.h */,
+				8580524F1BA010CC0001B919 /* ContactUsFormWireframe.m */,
+				858052511BA010F90001B919 /* ContactUsFormDataCollector.h */,
+				858052521BA010F90001B919 /* ContactUsFormDataCollector.m */,
+				8528C2E11BA2E35200D5AA4F /* ContactUsFormCategoryCell.h */,
+				8528C2E21BA2E35200D5AA4F /* ContactUsFormCategoryCell.m */,
+				8528C2E31BA2E35200D5AA4F /* ContactUsFormCategoryCell.xib */,
+				8528C2E61BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.h */,
+				8528C2E71BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.m */,
+				8528C2E81BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.xib */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -5804,6 +5843,8 @@
 				8500F4131B9D38A500BCF72D /* TicketCategory.m */,
 				850017F51B9D967400BCF72D /* ContactUsActionResultStatus.h */,
 				850017F61B9D967400BCF72D /* ContactUsActionResultStatus.m */,
+				858052481B9FF0E40001B919 /* ContactUsQuery.h */,
+				858052491B9FF0E40001B919 /* ContactUsQuery.m */,
 			);
 			path = ContactUs;
 			sourceTree = "<group>";
@@ -9498,6 +9539,7 @@
 				850004331B9D405B00BCF72D /* icon_more_active@2x.png in Resources */,
 				850003A71B9D405B00BCF72D /* icon_6@3x.png in Resources */,
 				850003DA1B9D405B00BCF72D /* icon_dislike_active@2x.png in Resources */,
+				8528C2E01BA2B58000D5AA4F /* ContactUsCategoryCell.xib in Resources */,
 				8500FF301B9D38A900BCF72D /* ReputationMyReviewViewController.xib in Resources */,
 				8500FE851B9D38A800BCF72D /* InboxRootViewController.xib in Resources */,
 				8500FF0E1B9D38A900BCF72D /* DetailMyReviewReputationCell.xib in Resources */,
@@ -9682,6 +9724,7 @@
 				8500034A1B9D405B00BCF72D /* icon_21@2x.png in Resources */,
 				8500FFAD1B9D38A900BCF72D /* ShopInfoAddressView.xib in Resources */,
 				850005061B9D405C00BCF72D /* icon_view.png in Resources */,
+				8528C2E51BA2E35200D5AA4F /* ContactUsFormCategoryCell.xib in Resources */,
 				850004CD1B9D405B00BCF72D /* icon_smile_small@3x.png in Resources */,
 				8500042A1B9D405B00BCF72D /* icon_medal_silver14@2x.png in Resources */,
 				850004191B9D405B00BCF72D /* icon_medal_diamond.png in Resources */,
@@ -9881,6 +9924,7 @@
 				850005471B9D405C00BCF72D /* icon_grid_satu@3x.png in Resources */,
 				850004861B9D405B00BCF72D /* icon_questionmark_grey@2x.png in Resources */,
 				8500FDD01B9D38A800BCF72D /* AlertPickerView.xib in Resources */,
+				8528C2EA1BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.xib in Resources */,
 				8500035C1B9D405B00BCF72D /* tab_btm_shadow.png in Resources */,
 				850004F31B9D405C00BCF72D /* icon_toped_loading_grey-01.png in Resources */,
 				8500059C1B9D405C00BCF72D /* klikbca_guide_1.png in Resources */,
@@ -10536,6 +10580,8 @@
 				8500FC671B9D38A800BCF72D /* Rating.m in Sources */,
 				8500FFBA1B9D38A900BCF72D /* SendMessageViewController.m in Sources */,
 				8500FEB41B9D38A800BCF72D /* MoreNavigationViewController.m in Sources */,
+				8580524A1B9FF0E40001B919 /* ContactUsQuery.m in Sources */,
+				8528C2E41BA2E35200D5AA4F /* ContactUsFormCategoryCell.m in Sources */,
 				8500FC411B9D38A800BCF72D /* CatalogResult.m in Sources */,
 				8500FEDE1B9D38A900BCF72D /* DetailPriceAlertViewController.m in Sources */,
 				8500FC251B9D38A800BCF72D /* NSUserDefaultCategory.m in Sources */,
@@ -10544,6 +10590,7 @@
 				8500FC3F1B9D38A800BCF72D /* CatalogAddProduct.m in Sources */,
 				8500FD761B9D38A800BCF72D /* TransactionEditAddressForm.m in Sources */,
 				8500FCE11B9D38A800BCF72D /* NotificationSales.m in Sources */,
+				858052501BA010CC0001B919 /* ContactUsFormWireframe.m in Sources */,
 				8500FCAF1B9D38A800BCF72D /* InboxReviewActionResult.m in Sources */,
 				8500FD641B9D38A800BCF72D /* TransactionActionResult.m in Sources */,
 				8500FCF91B9D38A800BCF72D /* UserInfo.m in Sources */,
@@ -10828,6 +10875,7 @@
 				8500FE751B9D38A800BCF72D /* HotlistViewController.m in Sources */,
 				8500FF4B1B9D38A900BCF72D /* OrderDetailViewController.m in Sources */,
 				8500FC801B9D38A800BCF72D /* FavoritedShopList.m in Sources */,
+				8528C2DF1BA2B58000D5AA4F /* ContactUsCategoryCell.m in Sources */,
 				8500FCEB1B9D38A800BCF72D /* ProductTalkForm.m in Sources */,
 				8500FF091B9D38A900BCF72D /* ProductListMyShopFilterViewController.m in Sources */,
 				8500FDB11B9D38A800BCF72D /* UploadImageResult.m in Sources */,
@@ -11077,11 +11125,13 @@
 				8500FDC01B9D38A800BCF72D /* RequestAddress.m in Sources */,
 				8500FEF71B9D38A900BCF72D /* ProductReviewDetailViewController.m in Sources */,
 				8500FC851B9D38A800BCF72D /* GeneralActionResult.m in Sources */,
+				8528C2E91BA2E59500D5AA4F /* ContactUsFormMainCategoryCell.m in Sources */,
 				8500FCDE1B9D38A800BCF72D /* NotificationInbox.m in Sources */,
 				8500FDA41B9D38A800BCF72D /* TxOrderPaymentEditResult.m in Sources */,
 				8500FD1C1B9D38A800BCF72D /* OrderHistory.m in Sources */,
 				8500FD951B9D38A800BCF72D /* TxOrderConfirmedDetailInvoice.m in Sources */,
 				8500FC921B9D38A800BCF72D /* InboxMessage.m in Sources */,
+				858052531BA010F90001B919 /* ContactUsFormDataCollector.m in Sources */,
 				8500FCD21B9D38A800BCF72D /* DetailReputationReview.m in Sources */,
 				8500FF871B9D38A900BCF72D /* SettingNotificationViewController.m in Sources */,
 				8500001C1B9D38A900BCF72D /* TxOrderConfirmationDetailViewController.m in Sources */,
@@ -11459,8 +11509,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Melissa Juminto (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Melissa Juminto (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -11500,8 +11550,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Melissa Juminto (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Melissa Juminto (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

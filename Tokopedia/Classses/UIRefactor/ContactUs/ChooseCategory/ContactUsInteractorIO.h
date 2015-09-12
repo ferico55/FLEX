@@ -12,7 +12,6 @@
 @protocol ContactUsInteractorInput <NSObject>
 
 - (void)loadTicketCategory;
-- (void)loadProblem;
 
 @end
 

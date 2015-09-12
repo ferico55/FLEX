@@ -6,9 +6,16 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 #import <Foundation/Foundation.h>
+#import "TicketCategory.h"
 
 @protocol ContactUsFormModuleInterface <NSObject>
 
-- (void)showContactUsForm;
+- (void)showFormWithCategory:(TicketCategory *)category;
+- (void)submitTicketMessage:(NSString *)message
+                    invoice:(NSString *)invoice
+                attachments:(NSArray *)attachments
+             ticketCategory:(TicketCategory *)category;
+
+- (void)showPhotoPickerFromNavigation:(UINavigationController *)navigation;
 
 @end

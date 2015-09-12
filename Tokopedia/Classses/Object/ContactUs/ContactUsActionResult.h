@@ -15,5 +15,6 @@
 @property (nonatomic, strong) ContactUsActionResultError *error_message_inline;
 @property (nonatomic, strong) NSString *is_success;
 @property (nonatomic, strong) NSString *ticket_inbox_id;
+@property (nonatomic, strong) NSString *post_key;
 
 @end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -9,25 +9,16 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactUsFormViewController">
             <connections>
-                <outlet property="detailProblemLabel" destination="HLS-Ku-eXx" id="6eH-je-PGr"/>
                 <outlet property="invoiceInputCell" destination="yZO-ba-hp1" id="ZxF-N3-atr"/>
                 <outlet property="invoiceTextField" destination="Edp-K1-S46" id="dTI-dv-nwR"/>
                 <outlet property="messageCell" destination="ixH-R3-0Lk" id="Ugb-zl-tMo"/>
                 <outlet property="messageTextView" destination="pWO-F7-7dd" id="XeH-Em-5wd"/>
-                <outlet property="problemCell" destination="dIp-5o-2v1" id="Sm8-Qt-kJL"/>
-                <outlet property="problemDetailCell" destination="eZB-vK-iqw" id="bTt-0t-sJg"/>
-                <outlet property="problemLabel" destination="mN2-Yp-3y1" id="AWc-9L-j5r"/>
                 <outlet property="tableView" destination="CKg-gW-RbB" id="Z1M-h0-t1Y"/>
-                <outlet property="typeCell" destination="1Pz-bL-Uvt" id="egh-UZ-Mdc"/>
-                <outlet property="typeLabel" destination="KCX-2B-yF1" id="69c-uj-KOk"/>
                 <outlet property="uploadPhotoCell" destination="giE-yg-UEr" id="Jpq-AS-mA2"/>
                 <outlet property="uploadPhotoCellSubview" destination="obn-IP-59d" id="5hm-lU-jYa"/>
                 <outlet property="uploadPhotoScrollView" destination="U5U-C8-Vin" id="XDI-cY-oJz"/>
@@ -46,7 +37,7 @@
         </placeholder>
         <tapGestureRecognizer id="CCz-7n-9hg">
             <connections>
-                <action selector="tap:" destination="-1" id="yKA-tR-XPb"/>
+                <action selector="didTapPhoto:" destination="-1" id="JAo-gr-vPF"/>
                 <outlet property="delegate" destination="-1" id="kWk-kZ-gai"/>
             </connections>
         </tapGestureRecognizer>
@@ -73,123 +64,6 @@
                 <constraint firstItem="CKg-gW-RbB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pRn-Qe-f5h"/>
             </constraints>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1Pz-bL-Uvt">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Pz-bL-Uvt" id="UaB-eD-aoW">
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <imageView userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us.png" translatesAutoresizingMaskIntoConstraints="NO" id="cOr-MV-4bT">
-                        <rect key="frame" x="15" y="0.0" width="22" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="43" id="WlS-qB-pOI"/>
-                            <constraint firstAttribute="width" constant="22" id="fh9-P2-QQ5"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCX-2B-yF1">
-                        <rect key="frame" x="50" y="0.0" width="270" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="43" id="cxl-fB-P4j"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="KCX-2B-yF1" firstAttribute="leading" secondItem="UaB-eD-aoW" secondAttribute="leading" constant="50" id="593-Oa-9VH"/>
-                    <constraint firstItem="cOr-MV-4bT" firstAttribute="leading" secondItem="UaB-eD-aoW" secondAttribute="leading" constant="15" id="ARU-Xo-Pol"/>
-                    <constraint firstAttribute="trailing" secondItem="KCX-2B-yF1" secondAttribute="trailing" id="IFe-ed-X3G"/>
-                    <constraint firstItem="KCX-2B-yF1" firstAttribute="leading" secondItem="cOr-MV-4bT" secondAttribute="trailing" constant="13" id="QoZ-ZU-Xhq"/>
-                    <constraint firstAttribute="bottom" secondItem="KCX-2B-yF1" secondAttribute="bottom" id="WfY-eZ-76f"/>
-                    <constraint firstAttribute="bottom" secondItem="cOr-MV-4bT" secondAttribute="bottom" id="fYS-SA-eG8"/>
-                    <constraint firstItem="cOr-MV-4bT" firstAttribute="top" secondItem="UaB-eD-aoW" secondAttribute="top" id="qsB-8d-umc"/>
-                    <constraint firstItem="KCX-2B-yF1" firstAttribute="top" secondItem="UaB-eD-aoW" secondAttribute="top" id="xlM-ca-Xr4"/>
-                </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="593-Oa-9VH"/>
-                    </mask>
-                </variation>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="-160" y="219"/>
-        </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="dIp-5o-2v1">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dIp-5o-2v1" id="5H8-hM-PIX">
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mN2-Yp-3y1">
-                        <rect key="frame" x="65" y="0.0" width="255" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="43" id="Ubj-9v-1Pd"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="63c-iG-29e">
-                        <rect key="frame" x="30" y="0.0" width="22" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="43" id="5Cs-48-lL4"/>
-                            <constraint firstAttribute="width" constant="22" id="82V-gS-3Nl"/>
-                        </constraints>
-                    </imageView>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="63c-iG-29e" firstAttribute="leading" secondItem="5H8-hM-PIX" secondAttribute="leading" constant="30" id="3Qd-Xd-Uaw"/>
-                    <constraint firstItem="63c-iG-29e" firstAttribute="top" secondItem="5H8-hM-PIX" secondAttribute="top" id="6Xf-uO-4cL"/>
-                    <constraint firstAttribute="bottom" secondItem="mN2-Yp-3y1" secondAttribute="bottom" id="6kI-iD-rQA"/>
-                    <constraint firstItem="mN2-Yp-3y1" firstAttribute="leading" secondItem="63c-iG-29e" secondAttribute="trailing" constant="13" id="898-le-z8G"/>
-                    <constraint firstAttribute="trailing" secondItem="mN2-Yp-3y1" secondAttribute="trailing" id="Krx-bH-YEa"/>
-                    <constraint firstItem="mN2-Yp-3y1" firstAttribute="top" secondItem="5H8-hM-PIX" secondAttribute="top" id="UmB-fM-qVM"/>
-                    <constraint firstAttribute="bottom" secondItem="63c-iG-29e" secondAttribute="bottom" id="kT0-PE-M1j"/>
-                    <constraint firstItem="mN2-Yp-3y1" firstAttribute="leading" secondItem="5H8-hM-PIX" secondAttribute="leading" constant="60" id="ni6-2V-er4"/>
-                </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="ni6-2V-er4"/>
-                    </mask>
-                </variation>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="-160" y="313"/>
-        </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eZB-vK-iqw">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eZB-vK-iqw" id="Y2B-hk-4W3">
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <imageView userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_contact_us_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZVu-iY-iIL">
-                        <rect key="frame" x="30" y="0.0" width="22" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="43" id="ND9-Iy-OEa"/>
-                            <constraint firstAttribute="width" constant="22" id="ooD-vK-zeq"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLS-Ku-eXx">
-                        <rect key="frame" x="65" y="0.0" width="255" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="43" id="9xb-im-IQm"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="HLS-Ku-eXx" firstAttribute="leading" secondItem="ZVu-iY-iIL" secondAttribute="trailing" constant="13" id="6KJ-dh-A1M"/>
-                    <constraint firstItem="HLS-Ku-eXx" firstAttribute="top" secondItem="Y2B-hk-4W3" secondAttribute="top" id="7f4-wd-hYx"/>
-                    <constraint firstAttribute="bottom" secondItem="HLS-Ku-eXx" secondAttribute="bottom" id="B0C-bK-YHF"/>
-                    <constraint firstItem="ZVu-iY-iIL" firstAttribute="leading" secondItem="Y2B-hk-4W3" secondAttribute="leading" constant="30" id="Liq-Am-1ek"/>
-                    <constraint firstAttribute="bottom" secondItem="ZVu-iY-iIL" secondAttribute="bottom" id="PWI-7c-OEt"/>
-                    <constraint firstAttribute="trailing" secondItem="HLS-Ku-eXx" secondAttribute="trailing" id="VgO-hm-xg6"/>
-                    <constraint firstItem="ZVu-iY-iIL" firstAttribute="top" secondItem="Y2B-hk-4W3" secondAttribute="top" id="ngj-1p-eLA"/>
-                </constraints>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="-160" y="406"/>
-        </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yZO-ba-hp1">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
@@ -340,7 +214,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="g0A-sf-hFs"/>
+                        <action selector="didTapDeletePhotoButton:" destination="-1" eventType="touchUpInside" id="BtN-TQ-pc2"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NPA-At-Snw">
@@ -353,7 +227,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="tIK-by-MtE"/>
+                        <action selector="didTapDeletePhotoButton:" destination="-1" eventType="touchUpInside" id="duh-so-cWK"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Un2-MG-hH7">
@@ -366,7 +240,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="C9d-HJ-fjX"/>
+                        <action selector="didTapDeletePhotoButton:" destination="-1" eventType="touchUpInside" id="n4V-Jx-B3G"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qhu-Q5-XPP">
@@ -379,7 +253,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="y0U-U1-fIZ"/>
+                        <action selector="didTapDeletePhotoButton:" destination="-1" eventType="touchUpInside" id="63z-Jo-hQO"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Jk-O6-AZD">
@@ -392,7 +266,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="kVR-CY-wzJ"/>
+                        <action selector="didTapDeletePhotoButton:" destination="-1" eventType="touchUpInside" id="GP4-YS-bY3"/>
                     </connections>
                 </button>
             </subviews>
@@ -431,8 +305,6 @@
     </objects>
     <resources>
         <image name="icon_cancel.png" width="20" height="20"/>
-        <image name="icon_contact_us.png" width="14" height="14"/>
-        <image name="icon_contact_us_arrow.png" width="14" height="14"/>
         <image name="icon_upload_image.png" width="90" height="90"/>
     </resources>
 </document>

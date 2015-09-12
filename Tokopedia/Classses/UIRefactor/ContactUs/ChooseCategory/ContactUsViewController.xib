@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
         </mutableArray>
@@ -23,11 +19,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactUsViewController">
             <connections>
                 <outlet property="collectionView" destination="xnd-ln-tOf" id="3Ju-av-TsZ"/>
-                <outlet property="descriptionWebView" destination="Zop-cL-G7l" id="xIq-J3-M3h"/>
+                <outlet property="contactUsButton" destination="Tq1-mh-qXA" id="4JJ-hS-IV4"/>
                 <outlet property="flowLayout" destination="pix-kY-M9C" id="85o-Vd-52f"/>
                 <outlet property="footerView" destination="cFx-73-sJF" id="b5Q-Id-VDJ"/>
-                <outlet property="problemCell" destination="Bnl-B3-b8z" id="V47-4Z-zGF"/>
-                <outlet property="problemDetailCell" destination="tLC-rz-wM8" id="mFl-79-Qt7"/>
                 <outlet property="problemHeaderView" destination="Xse-dd-NoP" id="CKn-S5-F3q"/>
                 <outlet property="problemSolutionCell" destination="ZlQ-ug-jL4" id="6V9-UL-lTD"/>
                 <outlet property="problemTypeCell" destination="RPc-l6-zo4" id="mVn-5U-te4"/>
@@ -60,65 +54,11 @@
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="GfT-Te-4av" detailTextLabel="8h1-MG-p7p" style="IBUITableViewCellStyleValue1" id="Bnl-B3-b8z">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bnl-B3-b8z" id="KC6-PB-cKZ">
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih Masalah" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GfT-Te-4av">
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8h1-MG-p7p">
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                </subviews>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="128" y="1050"/>
-        </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="sNY-Co-xUA" detailTextLabel="7zq-mt-Bhc" style="IBUITableViewCellStyleValue1" id="tLC-rz-wM8">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tLC-rz-wM8" id="32R-ng-Lpc">
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih Detail Masalah" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sNY-Co-xUA">
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7zq-mt-Bhc">
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                </subviews>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="231" y="1144"/>
-        </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="200" id="ZlQ-ug-jL4">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZlQ-ug-jL4" id="htP-UU-emv">
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zop-cL-G7l">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </webView>
-                </subviews>
-                <constraints>
-                    <constraint firstAttribute="bottom" secondItem="Zop-cL-G7l" secondAttribute="bottom" id="Pb7-tk-IbB"/>
-                    <constraint firstItem="Zop-cL-G7l" firstAttribute="top" secondItem="htP-UU-emv" secondAttribute="top" id="WZe-Ac-THf"/>
-                    <constraint firstAttribute="trailing" secondItem="Zop-cL-G7l" secondAttribute="trailing" id="eex-dr-8bC"/>
-                    <constraint firstItem="Zop-cL-G7l" firstAttribute="leading" secondItem="htP-UU-emv" secondAttribute="leading" id="gb6-Or-RsV"/>
-                </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="192" y="1707"/>
         </tableViewCell>
@@ -207,7 +147,7 @@
             <point key="canvasLocation" x="213" y="1426"/>
         </view>
         <view contentMode="scaleToFill" id="cFx-73-sJF">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masih memerlukan bantuan?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxs-mh-eJP">

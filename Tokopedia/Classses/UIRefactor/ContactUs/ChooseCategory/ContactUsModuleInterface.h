@@ -13,18 +13,13 @@
 
 - (void)updateView;
 
-- (void)didSelectContactUsType:(TicketCategory *)type
-               selectedProblem:(TicketCategory *)selectedProblem
-                fromNavigation:(UINavigationController *)navigation;
+- (void)didSelectCategoryChoices:(NSArray *)categories
+            withSelectedCategory:(TicketCategory *)selectedCategory
+                 senderIndexPath:(NSIndexPath *)indexPath
+                  fromNavigation:(UINavigationController *)navigation;
 
-- (void)didSelectProblem:(TicketCategory *)problem
-   selectedDetailProblem:(TicketCategory *)selectedDetailProblem
-          fromNavigation:(UINavigationController *)navigation;
-
-
-- (void)didTapContactUsButtonWithType:(TicketCategory *)type
-                      selectedProblem:(TicketCategory *)selectedProblem
-                selectedDetailProblem:(TicketCategory *)selectedDetailProblem
-                       fromNavigation:(UINavigationController *)navigation;
+- (void)didTapContactUsButtonWithMainCategory:(TicketCategory *)mainCategory
+                                subCategories:(NSArray *)subCategories
+                               fromNavigation:(UINavigationController *)navigation;
 
 @end

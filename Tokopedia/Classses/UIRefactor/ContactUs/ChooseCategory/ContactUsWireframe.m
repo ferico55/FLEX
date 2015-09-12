@@ -7,11 +7,12 @@
 //
 
 #import "TPRootWireframe.h"
-#import "ContactUsWireframe.h"
-#import "ContactUsViewController.h"
-#import "ContactUsPresenter.h"
+
 #import "GeneralTableViewController.h"
-#import "ContactUsFormViewController.h"
+
+#import "ContactUsWireframe.h"
+#import "ContactUsPresenter.h"
+#import "ContactUsViewController.h"
 
 @implementation ContactUsWireframe
 
@@ -19,42 +20,24 @@
     [navigation pushViewController:self.presenter.userInterface animated:YES];
 }
 
-- (void)pushContactUsProblemFromNavigation:(UINavigationController *)navigation {
-    NSArray *object = [self.presenter.dataCollector selectedProblemTitles];
-    NSString *selectedObject = self.presenter.dataCollector.selectedProblem.ticket_category_name;
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+- (void)pushCategoryFromNavigation:(UINavigationController *)navigation {
+    NSArray *object = [self.presenter.dataCollector categoryTitles];
+    NSString *selectedObject = self.presenter.dataCollector.selectedCategory.ticket_category_name;
+    NSIndexPath *senderIndexPath = self.presenter.dataCollector.senderIndexPath;
     GeneralTableViewController *controller = [GeneralTableViewController new];
     controller.title = @"Pilih Masalah";
     controller.objects = object;
     controller.selectedObject = selectedObject;
     controller.delegate = self.presenter;
-    controller.senderIndexPath = indexPath;
+    controller.senderIndexPath = senderIndexPath;
     [navigation pushViewController:controller animated:YES];
-}
-
-- (void)pushContactUsProblemDetailFromNavigation:(UINavigationController *)navigation {
-    NSArray *object = [self.presenter.dataCollector selectedProblemDetailTitles];
-    NSString *selectedObject = self.presenter.dataCollector.selectedDetailProblem.ticket_category_name;
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
-    GeneralTableViewController *controller = [GeneralTableViewController new];
-    controller.title = @"Pilih Detail Masalah";
-    controller.objects = object;
-    controller.selectedObject = selectedObject;
-    controller.delegate = self.presenter;
-    controller.senderIndexPath = indexPath;
-    [navigation pushViewController:controller animated:YES];
-}
-
-- (void)pushContactUsProblemDetailChoicesFromNavigation:(UINavigationController *)navigation {
-    
 }
 
 - (void)pushContactUsFormViewFromNavigation:(UINavigationController *)navigation {
-    ContactUsFormViewController *controller = [ContactUsFormViewController new];
-    controller.contactUsType = self.presenter.dataCollector.selectedType;
-    controller.problem = self.presenter.dataCollector.selectedProblem;
-    controller.detailProblem = self.presenter.dataCollector.selectedDetailProblem;
-    [navigation pushViewController:controller animated:YES];
+    ContactUsDataCollector *data = self.presenter.dataCollector;
+    [self.formWireframe pushToContactFormWithMainCategory:data.mainCategory
+                                            subCategories:data.subCategories
+                                           fromNavigation:navigation];
 }
 
 @end

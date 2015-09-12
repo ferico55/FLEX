@@ -15,7 +15,6 @@
 - (void)setErrorView;
 - (void)setRetryView;
 
-- (void)setSelectedProblem:(TicketCategory *)problem;
-- (void)setSelectedDetailProblem:(TicketCategory *)detailProblem;
+- (void)setCategory:(TicketCategory *)category atIndexPath:(NSIndexPath *)indexPath;
 
 @end

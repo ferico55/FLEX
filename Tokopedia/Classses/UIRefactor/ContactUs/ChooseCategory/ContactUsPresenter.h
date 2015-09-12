@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactUsViewInterface.h"
-#import "ContactUsInteractor.h"
 #import "ContactUsModuleInterface.h"
+#import "ContactUsInteractor.h"
 #import "ContactUsWireframe.h"
 #import "ContactUsDataCollector.h"
 #import "GeneralTableViewController.h"

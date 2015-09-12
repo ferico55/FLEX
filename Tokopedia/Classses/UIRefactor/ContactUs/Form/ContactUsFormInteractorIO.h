@@ -7,20 +7,32 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ContactUsResponse.h"
+#import "ContactUsActionResponse.h"
+#import "TicketCategory.h"
 
 @protocol ContactUsFormInteractorInput <NSObject>
 
-- (void)getFormModelContactUs;
-- (void)createTicketValidation;
-- (void)createTicket;
+- (void)getFormModelForCategory:(TicketCategory *)category;
+- (void)createTicketValidationWithMessage:(NSString *)message
+                                  invoice:(NSString *)invoice
+                              attachments:(NSArray *)attachments
+                           ticketCategory:(TicketCategory *)category
+                                 serverId:(NSString *)serverId;
+- (void)createTicketWithPostKey:(NSString *)postKey fileUploaded:(NSString *)fileUploaded;
 - (void)addTicketCategoryStatistic;
 
 @end
 
 @protocol ContactUsFormInteractorOutput <NSObject>
 
-- (void)didReceiveTicketCategoryResponse:(ContactUsResponse *)response;
-- (void)didReceiveProblem:(id)problem;
+- (void)didReceiveFormModel:(ContactUsActionResponse *)response;
+
+- (void)didReceivePostKey:(NSString *)postKey;
+- (void)didReceiveTicketValidationError:(NSArray *)errorMessages;
+
+- (void)didSuccessCreateTicket;
+- (void)didReceiveCreateTicketError:(NSArray *)errorMessages;
+
+- (void)didAddStatistic;
 
 @end

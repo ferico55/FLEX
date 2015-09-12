@@ -26,34 +26,22 @@
     [self.interactor loadTicketCategory];
 }
 
-- (void)didTapProblem {
-    [self.interactor loadProblem];
-}
-
-- (void)didTapContactUsButtonWithType:(TicketCategory *)type
-                      selectedProblem:(TicketCategory *)selectedProblem
-                selectedDetailProblem:(TicketCategory *)selectedDetailProblem
-                       fromNavigation:(UINavigationController *)navigation {
-    self.dataCollector.selectedType = type;
-    self.dataCollector.selectedProblem = selectedProblem;
-    self.dataCollector.selectedDetailProblem = selectedDetailProblem;
+- (void)didTapContactUsButtonWithMainCategory:(TicketCategory *)mainCategory
+                                subCategories:(NSArray *)subCategories
+                               fromNavigation:(UINavigationController *)navigation {
+    self.dataCollector.mainCategory = mainCategory;
+    self.dataCollector.subCategories = subCategories;
     [self.wireframe pushContactUsFormViewFromNavigation:navigation];
 }
 
-- (void)didSelectContactUsType:(TicketCategory *)type
-               selectedProblem:(TicketCategory *)selectedProblem
-                fromNavigation:(UINavigationController *)navigation {
-    self.dataCollector.selectedType = type;
-    self.dataCollector.selectedProblem = selectedProblem;
-    [self.wireframe pushContactUsProblemFromNavigation:navigation];
-}
-
-- (void)didSelectProblem:(TicketCategory *)problem
-   selectedDetailProblem:(TicketCategory *)detailProblem
-          fromNavigation:(UINavigationController *)navigation {
-    self.dataCollector.selectedProblem = problem;
-    self.dataCollector.selectedDetailProblem = detailProblem;
-    [self.wireframe pushContactUsProblemDetailFromNavigation:navigation];
+- (void)didSelectCategoryChoices:(NSArray *)categories
+            withSelectedCategory:(TicketCategory *)selectedCategory
+                 senderIndexPath:(NSIndexPath *)senderIndexPath
+                  fromNavigation:(UINavigationController *)navigation {
+    self.dataCollector.selectedCategory = selectedCategory;
+    self.dataCollector.subCategories = categories;
+    self.dataCollector.senderIndexPath = senderIndexPath;
+    [self.wireframe pushCategoryFromNavigation:navigation];
 }
 
 #pragma mark - Output
@@ -69,15 +57,8 @@
 #pragma mark - General table delegate
 
 - (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            TicketCategory *ticketCategory = [self.dataCollector selectedProblemWithName:object];
-            [self.userInterface setSelectedProblem:ticketCategory];
-        } else if (indexPath.row == 1) {
-            TicketCategory *detailTicketCategory = [self.dataCollector selectedDetailProblemWithName:object];
-            [self.userInterface setSelectedDetailProblem:detailTicketCategory];
-        }
-    }
+    TicketCategory *category = [self.dataCollector categoryWithCategoryName:object];
+    [self.userInterface setCategory:category atIndexPath:indexPath];
 }
 
 @end

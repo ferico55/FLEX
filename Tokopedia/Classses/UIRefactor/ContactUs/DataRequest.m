@@ -22,23 +22,17 @@
 
     __strong NSOperationQueue *operationQueue = [NSOperationQueue new];
     
-    NSInteger maxNumberOfRequest = 0;
-    while (maxNumberOfRequest <= 2) {
-        maxNumberOfRequest++;
-        __weak RKManagedObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:pathPattern parameters:parameters];
+    __weak RKManagedObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:pathPattern parameters:parameters];
 
-        [operationQueue addOperation:request];
-        
-        [request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            completionBlock(mappingResult);
-            [operationQueue cancelAllOperations];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            if (maxNumberOfRequest == 2) {
-                completionBlock(error);
-                [operationQueue cancelAllOperations];
-            }
-        }];
-    }
+    [operationQueue addOperation:request];
+    
+    [request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        completionBlock(mappingResult);
+        [operationQueue cancelAllOperations];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        completionBlock(error);
+        [operationQueue cancelAllOperations];
+    }];
 }
 
 @end

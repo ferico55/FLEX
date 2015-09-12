@@ -11,6 +11,7 @@
 #import "string_contact_us.h"
 #import "ContactUsTypeCell.h"
 #import "ContactUsPresenter.h"
+#import "ContactUsCategoryCell.h"
 
 @interface ContactUsViewController ()
 <
@@ -23,16 +24,14 @@
 >
 {
     NSArray *_categories;
+    TicketCategory *_mainCategory;
+    NSMutableArray *_subCategories;
     NSIndexPath *_selectedCollectionIndexPath;
-    TicketCategory *_selectedType;
-    TicketCategory *_selectedProblem;
-    TicketCategory *_selectedDetailProblem;
+    CGFloat _problemSolutionCellHeight;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *problemTypeCell;
-@property (strong, nonatomic) IBOutlet UITableViewCell *problemCell;
-@property (strong, nonatomic) IBOutlet UITableViewCell *problemDetailCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *problemSolutionCell;
 @property (strong, nonatomic) IBOutlet UIView *typeHeaderView;
 @property (strong, nonatomic) IBOutlet UIView *problemHeaderView;
@@ -40,7 +39,8 @@
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
-@property (strong, nonatomic) IBOutlet UIWebView *descriptionWebView;
+@property (weak, nonatomic) IBOutlet UIButton *contactUsButton;
+@property (strong, nonatomic) UIWebView *descriptionWebView;
 
 @end
 
@@ -66,7 +66,17 @@
     [self.flowLayout setSectionInset:UIEdgeInsetsZero];
     [self.collectionView setCollectionViewLayout:_flowLayout];
 
+    self.contactUsButton.layer.cornerRadius = 3;
+    
+    _categories = [NSArray new];
+    _subCategories = [NSMutableArray new];
+    
     [self.eventHandler updateView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,14 +100,29 @@
     if (section == 0) {
         rows = 1;
     } else if (section == 1) {
-        if (_selectedType) {
-            rows = 1;
+        if (_subCategories.count > 0) {
+            TicketCategory *category = [_subCategories objectAtIndex:_subCategories.count - 1];
+            if (category.ticket_category_child.count > 0) {
+                rows = _subCategories.count + 1;
+            } else {
+                rows = _subCategories.count;
+            }
+        } else {
+            if (_mainCategory) {
+                rows = 1;
+            }
         }
-        if (_selectedProblem) {
-            rows = 2;
+    } else if (section == 2) {
+        if (_subCategories.count > 0) {
+            TicketCategory *category = [_subCategories objectAtIndex:_subCategories.count - 1];
+            if (category.ticket_category_child.count == 0) {
+                rows = 1;
+            } else {
+                rows = 0;
+            }
+        } else {
+            rows = 0;
         }
-    } else if (section == 2 && _selectedDetailProblem) {
-        rows = 1;
     }
     return rows;
 }
@@ -107,15 +132,26 @@
     if (indexPath.section == 0) {
         cell = _problemTypeCell;
     } else if (indexPath.section == 1) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"ContactUsCategoryCell"];
+        if (cell == nil) {
+            cell = [[ContactUsCategoryCell alloc] init];
+        }
+
+        if (indexPath.row == _subCategories.count) {
+            cell.detailTextLabel.text = @"Pilih";
+        } else {
+            TicketCategory *category = _subCategories[indexPath.row];
+            cell.detailTextLabel.text = category.ticket_category_name;
+        }
+        
         if (indexPath.row == 0) {
-            cell = _problemCell;
-            if (_selectedProblem) cell.detailTextLabel.text = _selectedProblem.ticket_category_name?:@"Pilih";
-        } else if (indexPath.row == 1) {
-            cell = _problemDetailCell;
-            if (_selectedDetailProblem) cell.detailTextLabel.text = _selectedDetailProblem.ticket_category_name?:@"Pilih";
+            cell.textLabel.text = @"Pilih Masalah";
+        } else {
+            cell.textLabel.text = @"Pilih Detail Masalah";
         }
     } else if (indexPath.section == 2) {
         cell = _problemSolutionCell;
+        [cell addSubview:_descriptionWebView];
     }
     return cell;
 }
@@ -124,10 +160,15 @@
     UIView *view;
     if (section == 0) {
         view = _typeHeaderView;
-    } else if (section == 1 && _selectedType) {
+    } else if (section == 1 && _mainCategory) {
         view = _problemHeaderView;
-    } else if (section == 2 && _selectedDetailProblem) {
-        view = _solutionHeaderView;
+    } else if (section == 2) {
+        if (_subCategories.count > 0) {
+            TicketCategory *category = [_subCategories objectAtIndex:_subCategories.count - 1];
+            if (category.ticket_category_child.count == 0) {
+                view = _solutionHeaderView;
+            }
+        }
     }
     return view;
 }
@@ -144,7 +185,7 @@
     } else if (indexPath.section == 1) {
         height = 44;
     } else if (indexPath.section == 2) {
-        height = 200;
+        height = _problemSolutionCellHeight;
     }
     return height;
 }
@@ -152,14 +193,31 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            [self.eventHandler didSelectContactUsType:_selectedType
-                                      selectedProblem:_selectedProblem
-                                       fromNavigation:self.navigationController];
-        } else if (indexPath.row == 1) {
-            [self.eventHandler didSelectProblem:_selectedProblem
-                          selectedDetailProblem:_selectedDetailProblem
-                                 fromNavigation:self.navigationController];
+        if (_subCategories.count > 0) {
+            if (indexPath.row < _subCategories.count) {
+                TicketCategory *parentCategory;
+                if (indexPath.row == 0) {
+                    parentCategory = _mainCategory;
+                } else {
+                    parentCategory = _subCategories[indexPath.row - 1];
+                }
+                TicketCategory *currentCategory = _subCategories[indexPath.row];
+                [self.eventHandler didSelectCategoryChoices:parentCategory.ticket_category_child
+                                       withSelectedCategory:currentCategory
+                                            senderIndexPath:indexPath
+                                             fromNavigation:self.navigationController];
+            } else {
+                TicketCategory *parentCategory = _subCategories[indexPath.row - 1];
+                [self.eventHandler didSelectCategoryChoices:parentCategory.ticket_category_child
+                                       withSelectedCategory:nil
+                                            senderIndexPath:indexPath
+                                             fromNavigation:self.navigationController];
+            }
+        } else {
+            [self.eventHandler didSelectCategoryChoices:_mainCategory.ticket_category_child
+                                   withSelectedCategory:nil
+                                        senderIndexPath:indexPath
+                                         fromNavigation:self.navigationController];
         }
     }
 }
@@ -188,6 +246,8 @@
         cell.imageView.image = [UIImage imageNamed:@"icon_problem_shopper.png"];
     } else if ([category.ticket_category_id isEqualToString:@"104"]) {
         cell.imageView.image = [UIImage imageNamed:@"icon_problem_about_account.png"];
+    } else {
+        cell.imageView.image = nil;
     }
     if (_selectedCollectionIndexPath) {
         cell.alpha = 0.5;
@@ -213,18 +273,21 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     _selectedCollectionIndexPath = indexPath;
-    _selectedType = [_categories objectAtIndex:indexPath.row];
+    _mainCategory = [_categories objectAtIndex:indexPath.row];
+    [_subCategories removeAllObjects];
     [collectionView reloadData];
     [self.tableView reloadData];
+    [self performSelector:@selector(hideContactUsButton)
+               withObject:nil
+               afterDelay:0.2];
 }
 
 #pragma mark - Action
 
 - (IBAction)didTapContactUsButton:(UIButton *)sender {
-    [self.eventHandler didTapContactUsButtonWithType:_selectedType
-                                     selectedProblem:_selectedProblem
-                               selectedDetailProblem:_selectedDetailProblem
-                                      fromNavigation:self.navigationController];
+    [self.eventHandler didTapContactUsButtonWithMainCategory:_mainCategory
+                                               subCategories:_subCategories
+                                              fromNavigation:self.navigationController];
 }
 
 #pragma mark - View delegate
@@ -242,16 +305,132 @@
     
 }
 
-- (void)setSelectedProblem:(TicketCategory *)problem {
-    _selectedProblem = problem;
+- (void)setCategory:(TicketCategory *)category atIndexPath:(NSIndexPath *)indexPath {
+    if (_subCategories.count > 0) {
+        if (_subCategories.count > indexPath.row) {
+            NSMutableIndexSet *indexes = [NSMutableIndexSet new];
+            for (int i = 0; i < _subCategories.count; i++) {
+                if (i == indexPath.row) {
+                    [_subCategories replaceObjectAtIndex:i withObject:category];
+                } else if (i > indexPath.row) {
+                    [indexes addIndex:i];
+                }
+            }
+            [_subCategories removeObjectsAtIndexes:indexes];
+        }
+        // if user click empty cell
+        else {
+            [_subCategories addObject:category];
+        }
+    } else {
+        [_subCategories addObject:category];
+    }
+    self.tableView.tableFooterView = nil;
+    if (category.ticket_category_child.count == 0) {
+        [self showSolution];
+    }
     [self.tableView reloadData];
 }
 
-- (void)setSelectedDetailProblem:(TicketCategory *)detailProblem {
-    _selectedDetailProblem = detailProblem;
-    [self.descriptionWebView loadHTMLString:_selectedDetailProblem.ticket_category_description baseURL:nil];
-    self.tableView.tableFooterView = _footerView;
+- (void)showSolution {
+    [self.descriptionWebView removeFromSuperview];
+    CGRect frame = CGRectMake(7, 10, self.view.frame.size.width - 14, 24);
+    self.descriptionWebView = [[UIWebView alloc] initWithFrame:frame];
+    self.descriptionWebView.delegate = self;
+    self.descriptionWebView.scrollView.scrollEnabled = NO;
+    self.descriptionWebView.scrollView.bounces = NO;
+    
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+    TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
+    NSString *string = lastCategory.ticket_category_description;
+    NSString *description = [self htmlFromBodyString:string
+                                            textFont:font
+                                           textColor:[UIColor blackColor]];
+    
+    [self.descriptionWebView loadHTMLString:description baseURL:nil];
+}
+
+#pragma mark - Web view 
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (_subCategories.count > 0) {
+        UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+        TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
+        NSString *string = lastCategory.ticket_category_description;
+        NSString *description = [self htmlFromBodyString:string
+                                                textFont:font
+                                               textColor:[UIColor blackColor]];        
+        [self.descriptionWebView loadHTMLString:description baseURL:nil];
+        [[UIApplication sharedApplication] openURL:[request URL]];
+    }
+    return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    CGRect frame = self.descriptionWebView.frame;
+    frame.size = CGSizeMake(self.view.frame.size.width - 14, self.descriptionWebView.scrollView.contentSize.height);
+    frame.origin = CGPointMake(7, 10);
+    self.descriptionWebView.frame = frame;
+    
+    _problemSolutionCellHeight = self.descriptionWebView.scrollView.contentSize.height + 20;
+    
+    [self performSelector:@selector(showContactUsButton)
+               withObject:nil
+               afterDelay:0.2];
+    
     [self.tableView reloadData];
+}
+
+- (void)showContactUsButton {
+    self.tableView.tableFooterView = _footerView;
+}
+
+- (void)hideContactUsButton {
+    self.tableView.tableFooterView = nil;
+}
+
+-(CGSize)sizeOfText:(NSString *)textToMesure widthOfTextView:(CGFloat)width withFont:(UIFont*)font
+{
+    CGSize ts = [textToMesure sizeWithFont:font
+                         constrainedToSize:CGSizeMake(width-20.0, FLT_MAX)
+                             lineBreakMode:NSLineBreakByWordWrapping];
+    return ts;
+}
+
+- (NSString *)htmlFromBodyString:(NSString *)htmlBodyString
+                        textFont:(UIFont *)font
+                       textColor:(UIColor *)textColor
+{
+    int numComponents = CGColorGetNumberOfComponents([textColor CGColor]);
+    
+    NSAssert(numComponents == 4 || numComponents == 2, @"Unsupported color format");
+    
+    // E.g. FF00A5
+    NSString *colorHexString = nil;
+    
+    const CGFloat *components = CGColorGetComponents([textColor CGColor]);
+    
+    if (numComponents == 4) {
+        unsigned int red = components[0] * 255;
+        unsigned int green = components[1] * 255;
+        unsigned int blue = components[2] * 255;
+        colorHexString = [NSString stringWithFormat:@"%02X%02X%02X", red, green, blue];
+    } else {
+        unsigned int white = components[0] * 255;
+        colorHexString = [NSString stringWithFormat:@"%02X%02X%02X", white, white, white];
+    }
+    
+    NSString *HTML = [NSString stringWithFormat:@"<html>\n"
+                      "<head>\n"
+                      "<style type=\"text/css\">\n"
+                      "body {font-family: \"%@\"; font-size: %@; color:#%@;}\n"
+                      "</style>\n"
+                      "</head>\n"
+                      "<body>%@</body>\n"
+                      "</html>",
+                      font.familyName, @(font.pointSize), colorHexString, htmlBodyString];
+    
+    return HTML;
 }
 
 @end
