@@ -299,6 +299,9 @@
                @"price_max" : [data objectForKey:@"pmax"]?:@"",
                @"order_by" :[data objectForKey:@"ob"]?:@"",
                @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+               @"department_1" : [data objectForKey:@"department_1"]?:@"",
+               @"department_2" : [data objectForKey:@"department_2"]?:@"",
+               @"department_3" : [data objectForKey:@"department_3"]?:@"",
                };
     vc.title = [data objectForKey:@"q"];
     vc.hidesBottomBarWhenPushed = YES;

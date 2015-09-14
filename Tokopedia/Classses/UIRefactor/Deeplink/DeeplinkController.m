@@ -36,7 +36,12 @@
     
     if([explodedPathUrl[1] isEqualToString:@"p"]) {
         //directory
+        NSString *firstDepartment = [explodedPathUrl count] >= 3 ? explodedPathUrl[2] : @"";
+        NSString *secondDepartment = [explodedPathUrl count] >= 4 ? explodedPathUrl[3] : @"";
+        NSString *thirdDepartment = [explodedPathUrl count] >= 5 ? explodedPathUrl[4] : @"";
         
+        NSDictionary *departments = @{@"department_1" : firstDepartment, @"department_2" : secondDepartment, @"department_3" : thirdDepartment, @"st" : @"product"};
+        [navigator navigateToSearchFromViewController:(UIViewController*)_delegate withData:departments];
     }
     else if ([explodedPathUrl[1] isEqualToString:@"search"]) {
         //search
