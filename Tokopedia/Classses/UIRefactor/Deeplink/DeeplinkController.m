@@ -8,7 +8,7 @@
 
 #import "DeeplinkController.h"
 #import "NavigateViewController.h"
-#import "WebViewInvoiceViewController.h"
+#import "WebViewController.h"
 #import "RequestUtils.h"
 
 @implementation DeeplinkController
@@ -68,7 +68,17 @@
 
 
 - (void)redirectToWebViewController {
+    NSURL *url = [_delegate sanitizedURL];
+    NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     
+    WebViewController *webController = [[WebViewController alloc] init];
+    webController.strTitle = explodedPathUrl[1];
+    webController.strURL = [NSString stringWithFormat:@"https://%@%@", [url host], [url path]];
+    webController.hidesBottomBarWhenPushed = YES;
+    
+    
+    [((UIViewController*)_delegate).navigationController pushViewController:webController animated:YES];
+    return;
 }
 
 - (void)doRedirect {
@@ -77,6 +87,10 @@
     } else {
         [self redirectToAppsViewController:[_delegate sanitizedURL]];
     }
+}
+
+- (void)dealloc {
+//    [[NSNotificationCenter defaultCenter] removeObserver:_delegate];
 }
 
 @end
