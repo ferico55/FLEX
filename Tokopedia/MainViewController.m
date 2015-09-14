@@ -216,7 +216,7 @@ typedef enum TagRequest {
         [viewcontrollers addObject:v3];
     }
     
-    _swipevc = [HomeTabViewController new];
+    _swipevc = [[HomeTabViewController alloc] init];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
     
     /** TAB BAR INDEX 2 **/
