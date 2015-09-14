@@ -8,7 +8,7 @@
 
 #import "LoyaltyPointMerchant.h"
 
-NSString *const TKPMerchantIsLoyalKey = @"is_loyal";
+NSString *const TKPMerchantIsLoyalKey = @"is_lucky";
 NSString *const TKPMerchantExpTimeKey = @"expire_time";
 
 @implementation LoyaltyPointMerchant

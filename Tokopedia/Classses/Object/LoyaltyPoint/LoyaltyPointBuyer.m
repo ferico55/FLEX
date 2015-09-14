@@ -8,7 +8,7 @@
 
 #import "LoyaltyPointBuyer.h"
 
-NSString *const TKPBuyerIsLoyalKey = @"is_loyal";
+NSString *const TKPBuyerIsLoyalKey = @"is_lucky";
 NSString *const TKPBuyerExpTimeKey = @"expire_time";
 
 @implementation LoyaltyPointBuyer

@@ -12,7 +12,7 @@
 
 @interface LoyaltyPointMerchant : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSString *is_loyal;
+@property (nonatomic, strong) NSString *is_lucky;
 @property (nonatomic, strong) NSString *expire_time;
 
 @end
