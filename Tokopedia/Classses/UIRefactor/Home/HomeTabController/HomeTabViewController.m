@@ -97,7 +97,8 @@
     
     if(deeplinkUrl) {
         DeeplinkController *dlc = [DeeplinkController new];
-        dlc.delegate = self;
+        __weak typeof(self) weakSelf = self;
+        dlc.delegate = weakSelf;
         _deeplinkUrl = deeplinkUrl;
         [dlc doRedirect];
     }
@@ -109,19 +110,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-
+    __weak typeof(self) weakSelf = self;
     
     _hotlistController = [HotlistViewController new];
-    _hotlistController.delegate = self;
+    _hotlistController.delegate = weakSelf;
     
     _productFeedController = [ProductFeedViewController new];
-    _productFeedController.delegate = self;
+    _productFeedController.delegate = weakSelf;
     
     _historyController = [HistoryProductViewController new];
-    _historyController.delegate = self;
+    _historyController.delegate = weakSelf;
     
     _shopViewController = [FavoritedShopViewController new];
-    _shopViewController.delegate = self;
+    _shopViewController.delegate = weakSelf;
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     
