@@ -16,7 +16,7 @@
 @end
 
 @interface DeeplinkController : NSObject {
-    
+    TAGContainer *_gtmContainer;
 }
 
 @property (weak, nonatomic) id<DeeplinkControllerDelegate> delegate;

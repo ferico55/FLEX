@@ -10,6 +10,7 @@
 #import "NavigateViewController.h"
 #import "WebViewController.h"
 #import "RequestUtils.h"
+#import "TAGDataLayer.h"
 
 @implementation DeeplinkController
 
@@ -18,7 +19,16 @@
     //compare with GTM's array
     //GTM key : excluded_deeplink_url
     //replace below array later
-    NSArray *excludedUrls = @[@"/careers", @"/brand-asset", @"/bantuan/pembayaran"];
+
+    UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+    
+    NSString *excludedUrlsString = [_gtmContainer stringForKey:@"excluded-url"];
+    NSArray *excludedUrls = [excludedUrlsString componentsSeparatedByString:@","];
     if([excludedUrls containsObject:[url path]]) {
         return YES;
     }
@@ -89,8 +99,5 @@
     }
 }
 
-- (void)dealloc {
-//    [[NSNotificationCenter defaultCenter] removeObserver:_delegate];
-}
 
 @end
