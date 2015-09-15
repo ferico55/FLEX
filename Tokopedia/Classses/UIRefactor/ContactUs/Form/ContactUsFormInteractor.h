@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "ContactUsFormInteractorIO.h"
+#import "ContactUsFormDataCollector.h"
 
 @interface ContactUsFormInteractor : NSObject <ContactUsFormInteractorInput>
 
 @property (nonatomic, weak) id <ContactUsFormInteractorOutput> output;
+@property (nonatomic, strong) ContactUsFormDataCollector *dataCollector;
 
 @end

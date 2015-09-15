@@ -18,4 +18,6 @@
 
 - (void)showPhotoPickerFromNavigation:(UINavigationController *)navigation;
 
+- (void)showInboxTicketDetailFromNavigation:(UINavigationController *)navigation;
+
 @end

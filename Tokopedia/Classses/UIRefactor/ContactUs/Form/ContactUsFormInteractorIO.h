@@ -9,17 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "ContactUsActionResponse.h"
 #import "TicketCategory.h"
+#import "GenerateHost.h"
 
 @protocol ContactUsFormInteractorInput <NSObject>
 
 - (void)getFormModelForCategory:(TicketCategory *)category;
-- (void)createTicketValidationWithMessage:(NSString *)message
-                                  invoice:(NSString *)invoice
-                              attachments:(NSArray *)attachments
-                           ticketCategory:(TicketCategory *)category
-                                 serverId:(NSString *)serverId;
+- (void)createTicketValidation;
+- (void)replyTicketPictures;
 - (void)createTicketWithPostKey:(NSString *)postKey fileUploaded:(NSString *)fileUploaded;
 - (void)addTicketCategoryStatistic;
+- (void)uploadContactImages;
 
 @end
 
@@ -27,12 +26,15 @@
 
 - (void)didReceiveFormModel:(ContactUsActionResponse *)response;
 
-- (void)didReceivePostKey:(NSString *)postKey;
-- (void)didReceiveTicketValidationError:(NSArray *)errorMessages;
-
-- (void)didSuccessCreateTicket;
+- (void)didSuccessCreateTicket:(NSString *)ticketCategoryId;
 - (void)didReceiveCreateTicketError:(NSArray *)errorMessages;
 
 - (void)didAddStatistic;
+
+- (void)didReceiveUploadedPhoto:(UIImage *)photo urlPath:(NSString *)urlPath;
+- (void)didFailedUploadPhoto:(UIImage *)photo;
+
+- (void)didReceiveFileUploaded:(NSString *)fileUploaded;
+- (void)didReceivePostKey:(NSString *)postKey;
 
 @end

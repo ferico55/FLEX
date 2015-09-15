@@ -14,5 +14,8 @@
 - (void)showPhotoPicker;
 - (void)showErrorMessages:(NSArray *)errorMessages;
 - (void)showSelectedPhotos:(NSArray *)photos;
+- (void)redirectToInboxTicketDetail;
+- (void)showUploadedPhoto:(UIImage *)image;
+- (void)removeFailUploadPhoto:(UIImage *)image;
 
 @end

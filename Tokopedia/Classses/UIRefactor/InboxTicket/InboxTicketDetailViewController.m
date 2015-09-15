@@ -331,12 +331,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         if (_isLoadingMore) {
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_VIEW_MORE,
-                           API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id
+                           API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId
                            };
         } else {
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_DETAIL,
-                           API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id,
+                           API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id?:_inboxTicketId,
                            };
         }
     } else {
@@ -498,6 +498,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     // action after request ticket detail
     if (tag == 1) {
         [self loadTicketsData:mappingResult];
+        [self setTitleView];
     }
     
     // action after request give rating

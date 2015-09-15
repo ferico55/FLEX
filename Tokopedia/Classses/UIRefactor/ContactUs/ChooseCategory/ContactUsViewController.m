@@ -28,9 +28,10 @@
     NSMutableArray *_subCategories;
     NSIndexPath *_selectedCollectionIndexPath;
     CGFloat _problemSolutionCellHeight;
+    BOOL _showContactUsButton;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *problemTypeCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *problemSolutionCell;
 @property (strong, nonatomic) IBOutlet UIView *typeHeaderView;
@@ -72,6 +73,11 @@
     _subCategories = [NSMutableArray new];
     
     [self.eventHandler updateView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(resetView)
+                                                 name:@"ResetContactUsForm"
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -81,6 +87,16 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)resetView {
+    [self.tableView setContentOffset:CGPointZero animated:YES];
+    [_subCategories removeAllObjects];
+    _mainCategory = nil;
+    _selectedCollectionIndexPath = nil;
+    _showContactUsButton = NO;
+    [self.tableView reloadData];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -190,6 +206,22 @@
     return height;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (section == 2 && _showContactUsButton) {
+        return _footerView;
+    } else {
+        return nil;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 2 && _showContactUsButton) {
+        return _footerView.frame.size.height;
+    } else {
+        return 0;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
@@ -275,11 +307,9 @@
     _selectedCollectionIndexPath = indexPath;
     _mainCategory = [_categories objectAtIndex:indexPath.row];
     [_subCategories removeAllObjects];
+    _showContactUsButton = NO;
     [collectionView reloadData];
     [self.tableView reloadData];
-    [self performSelector:@selector(hideContactUsButton)
-               withObject:nil
-               afterDelay:0.2];
 }
 
 #pragma mark - Action
@@ -325,7 +355,7 @@
     } else {
         [_subCategories addObject:category];
     }
-    self.tableView.tableFooterView = nil;
+    _showContactUsButton = NO;
     if (category.ticket_category_child.count == 0) {
         [self showSolution];
     }
@@ -339,30 +369,24 @@
     self.descriptionWebView.delegate = self;
     self.descriptionWebView.scrollView.scrollEnabled = NO;
     self.descriptionWebView.scrollView.bounces = NO;
-    
+    [self loadWebViewContent];
+    [self performSelector:@selector(loadWebViewContent) withObject:nil afterDelay:1];
+}
+
+- (void)loadWebViewContent {
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
     TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
     NSString *string = lastCategory.ticket_category_description;
     NSString *description = [self htmlFromBodyString:string
                                             textFont:font
                                            textColor:[UIColor blackColor]];
-    
     [self.descriptionWebView loadHTMLString:description baseURL:nil];
 }
 
 #pragma mark - Web view 
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (_subCategories.count > 0) {
-        UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
-        TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
-        NSString *string = lastCategory.ticket_category_description;
-        NSString *description = [self htmlFromBodyString:string
-                                                textFont:font
-                                               textColor:[UIColor blackColor]];        
-        [self.descriptionWebView loadHTMLString:description baseURL:nil];
-        [[UIApplication sharedApplication] openURL:[request URL]];
-    }
+    [[UIApplication sharedApplication] openURL:[request URL]];
     return YES;
 }
 
@@ -374,19 +398,12 @@
     
     _problemSolutionCellHeight = self.descriptionWebView.scrollView.contentSize.height + 20;
     
-    [self performSelector:@selector(showContactUsButton)
-               withObject:nil
-               afterDelay:0.2];
-    
+    _showContactUsButton = YES;
     [self.tableView reloadData];
 }
 
-- (void)showContactUsButton {
-    self.tableView.tableFooterView = _footerView;
-}
-
-- (void)hideContactUsButton {
-    self.tableView.tableFooterView = nil;
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    
 }
 
 -(CGSize)sizeOfText:(NSString *)textToMesure widthOfTextView:(CGFloat)width withFont:(UIFont*)font

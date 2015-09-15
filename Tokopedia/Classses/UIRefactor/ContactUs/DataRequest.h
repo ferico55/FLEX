@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GenerateHost.h"
 
 @interface DataRequest : NSObject
 
@@ -15,6 +16,7 @@
 
 + (void)requestWithParameters:(NSDictionary *)parameters
                   pathPattern:(NSString *)pathPattern
+                         host:(GenerateHost *)host
            responseDescriptor:(RKResponseDescriptor *)responseDescriptor
                    completion:(void (^)(id))completionBlock;
 

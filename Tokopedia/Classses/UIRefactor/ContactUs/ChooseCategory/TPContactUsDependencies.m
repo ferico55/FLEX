@@ -38,19 +38,29 @@
 }
 
 - (void)configureDependencies {
+    [self configForm];
+    [self configList];
+}
+
+- (void)configForm {
     // Contact us form set dependencies
     ContactUsFormWireframe *formWireframe = [ContactUsFormWireframe new];
     ContactUsFormViewController *formController = [ContactUsFormViewController new];
     ContactUsFormPresenter *formPresenter = [ContactUsFormPresenter new];
     ContactUsFormInteractor *formInteractor = [ContactUsFormInteractor new];
+    ContactUsFormDataCollector *formDataCollector = [ContactUsFormDataCollector new];
     formInteractor.output = formPresenter;
+    formInteractor.dataCollector = formDataCollector;
     formPresenter.userInterface = formController;
     formPresenter.interactor = formInteractor;
     formPresenter.wireframe = formWireframe;
+    formPresenter.dataCollector = formDataCollector;
     formController.eventHandler = formPresenter;
     formWireframe.presenter = formPresenter;
     self.contactUsFormWireframe = formWireframe;
-    
+}
+
+- (void)configList {
     // Contact us choose category set dependencies
     ContactUsWireframe *contactUsWireframe = [ContactUsWireframe new];
     ContactUsViewController *controller = [ContactUsViewController new];
@@ -62,7 +72,7 @@
     presenter.wireframe = contactUsWireframe;
     controller.eventHandler = presenter;
     contactUsWireframe.presenter = presenter;
-    contactUsWireframe.formWireframe = formWireframe;
+    contactUsWireframe.formWireframe = self.contactUsFormWireframe;
     self.contactUsWireframe = contactUsWireframe;
 }
 

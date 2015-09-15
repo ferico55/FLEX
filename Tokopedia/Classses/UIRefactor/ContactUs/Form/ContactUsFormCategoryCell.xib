@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWU-7P-mdn">
-                        <rect key="frame" x="53" y="0.0" width="267" height="43"/>
+                        <rect key="frame" x="51" y="0.0" width="269" height="43"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -40,7 +40,7 @@
                     <constraint firstAttribute="trailing" secondItem="uWU-7P-mdn" secondAttribute="trailing" id="bv7-i5-Rgp"/>
                     <constraint firstItem="kr9-1h-EQ3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="mDW-AE-Fi3"/>
                     <constraint firstItem="kr9-1h-EQ3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="yBb-fw-IEQ"/>
-                    <constraint firstItem="uWU-7P-mdn" firstAttribute="leading" secondItem="kr9-1h-EQ3" secondAttribute="trailing" constant="7" id="yEh-yd-7hI"/>
+                    <constraint firstItem="uWU-7P-mdn" firstAttribute="leading" secondItem="kr9-1h-EQ3" secondAttribute="trailing" constant="5" id="yEh-yd-7hI"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

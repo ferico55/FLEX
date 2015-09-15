@@ -14,14 +14,18 @@
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
 
+#import "InboxTicketDetailViewController.h"
+
 @implementation ContactUsFormWireframe
 
 - (void)pushToContactFormWithMainCategory:(TicketCategory *)mainCategory
                             subCategories:(NSArray *)subCategories
                            fromNavigation:(UINavigationController *)navigation {
-    ContactUsFormViewController *controller = (ContactUsFormViewController *)self.presenter.userInterface;
+    ContactUsFormViewController *controller = [ContactUsFormViewController new];
     controller.mainCategory = mainCategory;
     controller.subCategories = subCategories;
+    controller.eventHandler = self.presenter;
+    self.presenter.userInterface = controller;
     [navigation pushViewController:controller animated:YES];
 }
 
@@ -48,6 +52,13 @@
     [nav setViewControllers:@[albumVC,photoVC]];
     
     [navigation presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)pushToInboxDetailFromNavigation:(UINavigationController *)navigation {
+    InboxTicketDetailViewController *controller = [InboxTicketDetailViewController new];
+    controller.inboxTicketId = self.presenter.dataCollector.inboxTicketId;
+    [navigation popViewControllerAnimated:NO];
+    [navigation pushViewController:controller animated:YES];
 }
 
 @end

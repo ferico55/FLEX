@@ -118,9 +118,17 @@
        if ([httpResponse statusCode] == 200) {
            id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
            if (parsedData == nil && error) {
-               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."] delegate:_delegate];
-               [alert show];
-               [_delegate failedUploadObject:_imageObject];
+               NSArray *messages = @[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."];
+               if ([_delegate isKindOfClass:[NSObject class]]) {
+                   NSDictionary *userInfo = @{kTKPD_SETUSERSTICKYERRORMESSAGEKEY:messages};
+                   [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
+                                                                       object:self
+                                                                     userInfo:userInfo];
+               } else {
+                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messages delegate:_delegate];
+                   [alert show];
+                   [_delegate failedUploadObject:_imageObject];
+               }
                NSLog(@"parser error");
                return;
            }
@@ -204,8 +212,16 @@
         }
     }
     
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError delegate:_delegate];
-    [alert show];
+    if ([_delegate isKindOfClass:[NSObject class]]) {
+        NSDictionary *userInfo = @{kTKPD_SETUSERSTICKYERRORMESSAGEKEY:messagesError};
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
+                                                            object:self
+                                                          userInfo:userInfo];
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError
+                                                                      delegate:_delegate];
+        [alert show];
+    }
 }
 
 - (BOOL)string:(NSString*)string containsString:(NSString*)other {

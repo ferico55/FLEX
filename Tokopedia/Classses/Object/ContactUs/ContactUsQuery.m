@@ -62,7 +62,7 @@
 }
 
 - (void)setServerId:(NSString *)serverId {
-    _serverId = serverId;
+    _serverId = serverId?:@"";
     [self.parameters setObject:serverId forKey:@"server_id"];
 }
 

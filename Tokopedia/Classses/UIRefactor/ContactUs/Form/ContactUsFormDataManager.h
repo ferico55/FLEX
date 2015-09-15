@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "ContactUsActionResponse.h"
 #import "ContactUsQuery.h"
+#import "ReplyInboxTicket.h"
+#import "GenerateHost.h"
 
 @interface ContactUsFormDataManager : NSObject
 
@@ -19,6 +21,11 @@
 - (void)requestTicketValidationWithQuery:(ContactUsQuery *)query
                                 response:(void (^)(ContactUsActionResponse *))response
                            errorMessages:(void (^)(NSArray *))errorMessages;
+
+- (void)replyTicketPictureWithQuery:(ContactUsQuery *)query
+                               host:(GenerateHost *)host
+                           response:(void (^)(ReplyInboxTicket *))response
+                      errorMessages:(void (^)(NSArray *))errorMessages;
 
 - (void)requestCreateTicketWithQuery:(ContactUsQuery *)query
                             response:(void (^)(ContactUsActionResponse *))response

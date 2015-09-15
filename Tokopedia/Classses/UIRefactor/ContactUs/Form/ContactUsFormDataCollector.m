@@ -10,6 +10,23 @@
 
 @implementation ContactUsFormDataCollector
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.uploadedPhotosURL = [NSMutableArray new];
+        self.uploadedPhotos = [NSMutableArray new];
+    }
+    return self;
+}
+
+- (NSString *)inboxTicketId {
+    return _inboxTicketId?:@"";
+}
+
+- (NSString *)postKey {
+    return _postKey?:@"";
+}
+
 - (NSArray *)getPhotosFromPhotoPickerData:(NSDictionary *)data {
     self.selectedImagesCameraController = [data objectForKey:@"selected_images"];
     self.selectedIndexPathCameraController = [data objectForKey:@"selected_indexpath"];
@@ -35,6 +52,29 @@
         if (![selected isEqual:@""]) [selectedIndexPaths addObject: selected];
     }
     _selectedIndexPathCameraController = selectedIndexPaths;
+}
+
+- (void)addUploadedPhoto:(UIImage *)photo photoURL:(NSString *)url {
+    if (![self.uploadedPhotos containsObject:photo]) {
+        [self.uploadedPhotos addObject:photo];
+        [self.uploadedPhotosURL addObject:url];
+    }
+}
+
+- (BOOL)allPhotosUploaded {
+    if (self.uploadedPhotosURL.count == self.attachments.count) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (NSString *)attachmentString {
+    NSString *attachmentString = @"";
+    for (NSString *url in _uploadedPhotosURL) {
+        attachmentString = [NSString stringWithFormat:@"%@%@~", attachmentString, url];
+    }
+    return attachmentString;
 }
 
 @end

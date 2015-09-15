@@ -12,12 +12,27 @@
 
 + (void)requestWithParameters:(NSDictionary *)parameters
                   pathPattern:(NSString *)pathPattern
+                         host:(GenerateHost *)host
            responseDescriptor:(RKResponseDescriptor *)responseDescriptor
                    completion:(void (^)(id))completionBlock {
     
-    parameters = [parameters encrypt];
+    __strong RKObjectManager *objectManager;
     
-    __weak RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    if (host) {
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        parameters = [parameters mutableCopy];
+        [parameters setValue:[auth getUserId] forKey:@"user_id"];
+        [parameters setValue:[auth getMyDeviceToken] forKey:@"device_id"];
+        [parameters setValue:@"2" forKey:@"os_type"];
+        
+        NSString *path = [NSString stringWithFormat:@"http://%@/ws", host.result.generated_host.upload_host];
+        objectManager = [RKObjectManager sharedClientUploadImage:path];
+    } else {
+        parameters = [parameters encrypt];
+
+        objectManager = [RKObjectManager sharedClient];
+    }
+    
     [objectManager addResponseDescriptor:responseDescriptor];
 
     __strong NSOperationQueue *operationQueue = [NSOperationQueue new];

@@ -21,6 +21,7 @@
     RKResponseDescriptor *responseDescriptors = [self ticketCategoriesResponseDescriptors];
     [DataRequest requestWithParameters:parameters
                            pathPattern:path
+                                  host:nil
                     responseDescriptor:responseDescriptors
                             completion:^(id completion) {
         if ([completion isKindOfClass:[RKMappingResult class]]) {

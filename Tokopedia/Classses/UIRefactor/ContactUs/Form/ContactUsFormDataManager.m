@@ -11,6 +11,8 @@
 #import "TicketCategory.h"
 #import "string_contact_us.h"
 #import "ContactUsActionResultStatus.h"
+#import "GenerateHost.h"
+#import "string_inbox_ticket.h"
 
 @implementation ContactUsFormDataManager
 
@@ -22,6 +24,7 @@
     RKResponseDescriptor *responseDescriptors = [self ticketFormStatusResponseDescriptorsWithPath:path];
     [DataRequest requestWithParameters:parameters
                            pathPattern:path
+                                  host:nil
                     responseDescriptor:responseDescriptors
                             completion:^(id completion) {
                                 if ([completion isKindOfClass:[RKMappingResult class]]) {
@@ -43,12 +46,40 @@
     RKResponseDescriptor *responseDescriptors = [self ticketFormStatusResponseDescriptorsWithPath:path];
     [DataRequest requestWithParameters:parameters
                            pathPattern:path
+                                  host:nil
                     responseDescriptor:responseDescriptors
                             completion:^(id completion) {
                                 if ([completion isKindOfClass:[RKMappingResult class]]) {
                                     NSDictionary *dict = ((RKMappingResult *)completion).dictionary;
                                     ContactUsActionResponse *result = (ContactUsActionResponse *)[dict objectForKey:@""];
                                     response(result);
+                                } else if ([completion isKindOfClass:[NSError class]]) {
+                                    NSError *errorResponse = (NSError *)completion;
+                                    errorMessages(@[errorResponse.localizedDescription]);
+                                }
+                            }];
+}
+
+- (void)replyTicketPictureWithQuery:(ContactUsQuery *)query
+                               host:(GenerateHost *)host
+                           response:(void (^)(ReplyInboxTicket *))response
+                      errorMessages:(void (^)(NSArray *))errorMessages {
+    NSDictionary *parameters = query.parameters;
+    NSString *path = @"action/upload-image-helper.pl";
+    RKResponseDescriptor *responseDescriptors = [self replyTicketPictureResponseDescriptorWithPath:path];
+    [DataRequest requestWithParameters:parameters
+                           pathPattern:path
+                                  host:host
+                    responseDescriptor:responseDescriptors
+                            completion:^(id completion) {
+                                if ([completion isKindOfClass:[RKMappingResult class]]) {
+                                    NSDictionary *dict = ((RKMappingResult *)completion).dictionary;
+                                    ReplyInboxTicket *result = (ReplyInboxTicket *)[dict objectForKey:@""];
+                                    if ([result.result.is_success boolValue]) {
+                                        response(result);
+                                    } else {
+                                        errorMessages(result.message_error);
+                                    }
                                 } else if ([completion isKindOfClass:[NSError class]]) {
                                     NSError *errorResponse = (NSError *)completion;
                                     errorMessages(@[errorResponse.localizedDescription]);
@@ -63,7 +94,7 @@
     NSString *path = @"action/contact-us.pl";
     RKResponseDescriptor *responseDescriptors = [self ticketFormStatusResponseDescriptorsWithPath:path];
     [DataRequest requestWithParameters:parameters
-                           pathPattern:path
+                           pathPattern:path host:nil
                     responseDescriptor:responseDescriptors
                             completion:^(id completion) {
                                 if ([completion isKindOfClass:[RKMappingResult class]]) {
@@ -77,11 +108,41 @@
                             }];
 }
 
+- (RKResponseDescriptor *)replyTicketPictureResponseDescriptorWithPath:(NSString *)path {
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ReplyInboxTicket class]];
+    [statusMapping addAttributeMappingsFromArray:@[
+                                                   kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY,
+                                                   ]];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReplyInboxTicketResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[API_TICKET_REPLY_IS_SUCCESS_KEY,
+                                                   API_TICKET_REPLY_FILE_UPLOADED_KEY,
+                                                   API_TICKET_REPLY_POST_KEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:path
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    return responseDescriptor;
+}
+
 - (RKResponseDescriptor *)ticketFormStatusResponseDescriptorsWithPath:(NSString *)path {
 
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ContactUsActionResponse class]];
     [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSKEY,
-                                                   kTKPD_APISERVERPROCESSTIMEKEY]];
+                                                   kTKPD_APISERVERPROCESSTIMEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY,
+                                                   ]];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ContactUsActionResult class]];
     [resultMapping addAttributeMappingsFromArray:@[API_TICKET_IS_SUCCESS_KEY,

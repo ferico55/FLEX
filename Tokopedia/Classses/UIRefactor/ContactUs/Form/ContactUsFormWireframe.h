@@ -24,4 +24,6 @@
 
 - (void)presentPhotoPickerFromNavigation:(UINavigationController *)navigation;
 
+- (void)pushToInboxDetailFromNavigation:(UINavigationController *)navigation;
+
 @end

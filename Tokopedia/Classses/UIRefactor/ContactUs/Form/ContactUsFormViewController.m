@@ -7,16 +7,14 @@
 //
 
 #import "ContactUsFormViewController.h"
-
 #import "GenerateHost.h"
 #import "RequestGenerateHost.h"
 #import "TokopediaNetworkManager.h"
 #import "ContactUsFormMainCategoryCell.h"
 #import "ContactUsFormCategoryCell.h"
-
 #import "TKPDTextView.h"
-
 #import "ContactUsActionResponse.h"
+#import "InboxTicketDetailViewController.h"
 
 @interface ContactUsFormViewController ()
 <
@@ -51,6 +49,12 @@
     
     self.title = @"Hubungi Kami";
     
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
+    
     self.messageTextView.placeholder = @"Keterangan Masalah Anda";
     
     [self.uploadPhotoScrollView addSubview:_uploadPhotoCellSubview];
@@ -59,29 +63,35 @@
     self.photoImageViews = [NSArray sortViewsWithTagInArray:_photoImageViews];
     self.photoDeleteButtons = [NSArray sortViewsWithTagInArray:_photoDeleteButtons];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(keyboardWillShow:)
-               name:UIKeyboardWillShowNotification
-             object:nil];
-    [nc addObserver:self selector:@selector(keyboardWillHide:)
-               name:UIKeyboardWillHideNotification
-             object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
     _photos = [NSMutableArray new];
-
+    
     _invoiceTextFieldIsVisible = NO;
     _photoPickerIsVisible = NO;
     
+    self.invoiceTextField.text = @"";
+    self.messageTextView.text = @"";
+    
     TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
     [self.eventHandler showFormWithCategory:lastCategory];
-    
-    [self.tableView reloadData];
-    
+        
     [self showSaveButton];
+
+    NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
+    
+    [notification addObserver:self
+                     selector:@selector(keyboardWillShow:)
+                         name:UIKeyboardWillShowNotification
+                       object:nil];
+    
+    [notification addObserver:self
+                     selector:@selector(keyboardWillHide:)
+                         name:UIKeyboardWillHideNotification
+                       object:nil];
+    
+    [notification addObserver:self
+                     selector:@selector(showMessageAlert:)
+                         name:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
+                       object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -186,10 +196,11 @@
 }
 
 - (void)didTapSubmitButton {
-//    [self.eventHandler submitTicketMessage:_messageTextView.text
-//                                   invoice:_invoiceTextField.text
-//                               attachments:_photos
-//                            ticketCategory:_detailProblem];
+    TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
+    [self.eventHandler submitTicketMessage:_messageTextView.text
+                                   invoice:_invoiceTextField.text
+                               attachments:_photos
+                            ticketCategory:lastCategory];
 }
 
 #pragma mark - Keyboard Notification
@@ -244,7 +255,7 @@
 }
 
 - (void)showSelectedPhotos:(NSArray *)photos {
-    self.photos = [photos mutableCopy];
+    self.photos = [NSMutableArray arrayWithArray:photos];
     [self refreshPhotos];
 }
 
@@ -260,6 +271,27 @@
             deleteButton.hidden = YES;
         }
     }
+}
+
+- (void)redirectToInboxTicketDetail {
+    [self.eventHandler showInboxTicketDetailFromNavigation:self.navigationController];
+}
+
+- (void)showUploadedPhoto:(UIImage *)image {
+    
+}
+
+- (void)removeFailUploadPhoto:(UIImage *)image {
+    [self.photos removeObject:image];
+    [self refreshPhotos];
+}
+
+#pragma mark - Notification
+
+- (void)showMessageAlert:(NSNotification *)notification {
+    NSArray *messages = [[notification userInfo] valueForKey:kTKPD_SETUSERSTICKYERRORMESSAGEKEY];
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+    [alert show];
 }
 
 @end
