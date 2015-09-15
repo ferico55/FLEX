@@ -16,7 +16,8 @@
 @implementation DeeplinkController
 
 - (BOOL)shouldRedirectToWebView {
-    NSURL *url = [GSDDeepLink handleDeepLink:[_delegate sanitizedURL]];
+    _sanitizedURL = [GSDDeepLink handleDeepLink:[_delegate sanitizedURL]];
+    NSURL *url = _sanitizedURL;
 
     //compare with GTM's array
     //GTM key : excluded_deeplink_url
@@ -44,7 +45,8 @@
     return YES;
 }
 
-- (void)redirectToAppsViewController:(NSURL*)url {
+- (void)redirectToAppsViewController {
+    NSURL *url = _sanitizedURL;
     NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     NavigateViewController *navigator = [NavigateViewController new];
     
@@ -99,7 +101,7 @@
     if([self shouldRedirectToWebView]) {
         [self redirectToWebViewController];
     } else {
-        [self redirectToAppsViewController:[_delegate sanitizedURL]];
+        [self redirectToAppsViewController];
     }
 }
 
