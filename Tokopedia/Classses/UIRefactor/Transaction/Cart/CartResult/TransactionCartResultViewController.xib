@@ -826,11 +826,11 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
             <point key="canvasLocation" x="802" y="323.5"/>
         </view>
         <view contentMode="scaleToFill" id="6z1-lL-pTH" userLabel="HeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="105"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZH-Og-jzx">
-                    <rect key="frame" x="15" y="0.0" width="290" height="105"/>
+                    <rect key="frame" x="15" y="0.0" width="290" height="46"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -844,7 +844,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                 <constraint firstItem="6ZH-Og-jzx" firstAttribute="leading" secondItem="6z1-lL-pTH" secondAttribute="leading" constant="15" id="bdZ-Tt-Ddx"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="69" y="-210.5"/>
+            <point key="canvasLocation" x="69" y="-240"/>
         </view>
         <view contentMode="scaleToFill" id="PI7-O1-Z1J" userLabel="HeaderIndomaretView">
             <rect key="frame" x="0.0" y="1" width="320" height="111"/>

@@ -252,6 +252,7 @@
         
         _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
+        _paymentMethodView.hidden = YES;
         
         //[_networkManager doRequest];
     }
@@ -1104,8 +1105,15 @@
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *dropshipperNameKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_NAME_KEY,shopID,addressID,shipmentID,shipmentPackageID];
         NSString *dropshipperPhoneKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_PHONE_KEY,shopID,addressID,shipmentID,shipmentPackageID];
-        [dropshipListParam setObject:_senderNameDropshipper[i] forKey:dropshipperNameKey];
-        [dropshipListParam setObject:_senderPhoneDropshipper[i] forKey:dropshipperPhoneKey];
+        if (_senderNameDropshipper.count >i) {
+            [dropshipListParam setObject:_senderNameDropshipper[i] forKey:dropshipperNameKey];
+            [dropshipListParam setObject:_senderPhoneDropshipper[i] forKey:dropshipperPhoneKey];
+        }
+        else
+        {
+            [dropshipListParam setObject:@"" forKey:dropshipperNameKey];
+            [dropshipListParam setObject:@"" forKey:dropshipperPhoneKey];
+        }
         
         if (_isDropshipper.count>0)
         {
@@ -1655,6 +1663,7 @@
     
     _requestCart.param = @{@"lp_flag":@"1"};
     [_requestCart doRequestCart];
+    _paymentMethodView.hidden = YES;
 }
 
 -(void)doClearAllData
@@ -1671,6 +1680,7 @@
     [_stockPartialStrList removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
+    [_list removeAllObjects];
     
     TransactionCartGateway *gateway = [TransactionCartGateway new];
     gateway.gateway = @(-1);
@@ -1688,16 +1698,17 @@
     _saldoTokopediaAmountTextField.text = @"";
     _userIDKlikBCATextField.text = @"";
     
+    _refreshFromShipment = NO;
+    
     [_tableView reloadData];
 }
 
 -(void)popShippingViewController
 {
     if (_indexPage == 0) {
+        _refreshFromShipment = YES;
         _requestCart.param = @{@"lp_flag":@"1"};
          [_requestCart doRequestCart];
-        
-        _refreshFromShipment = YES;
     }
     else
     {
@@ -1731,12 +1742,13 @@
         NSString *shopName = list.cart_shop.shop_name;
         
         TransactionCartHeaderView *headerView = [TransactionCartHeaderView newview];
-        NSInteger LPAmount = [self LPAmount];
+    
+        BOOL isLuckyMerchant = ([list.cart_shop.lucky_merchant integerValue] == 1);
 
-        headerView.LMBadgeImageView.hidden = (LPAmount == 0);
-        headerView.constraintwidthbadge.constant = (LPAmount == 0)?0:20;
-        headerView.constraintXShopName.constant = (LPAmount == 0)?0:8;
-            
+        headerView.LMBadgeImageView.hidden = (!isLuckyMerchant);
+        headerView.constraintwidthbadge.constant = (isLuckyMerchant)?20:0;
+        headerView.constraintXShopName.constant = (isLuckyMerchant)?8:0;
+        
         headerView.shopNameLabel.text = shopName;
         if (_indexPage==1) {
             headerView.shopNameLabel.textColor = [UIColor blackColor];
@@ -2218,12 +2230,19 @@
         }
         else if (indexPath.row == list.cart_products.count + 4)
         {
+            if (_isDropshipper.count>=indexPath.section) {
+                [_isDropshipper addObject:@(NO)];
+            }
             if (![_isDropshipper[indexPath.section] boolValue]) {
                 return 0;
             }
+
         }
         else if (indexPath.row == list.cart_products.count + 5)
         {
+            if (_isDropshipper.count>=indexPath.section) {
+                [_isDropshipper addObject:@(NO)];
+            }
             if (![_isDropshipper[indexPath.section] boolValue]) {
                 return 0;
             }
@@ -2357,9 +2376,6 @@
                 return 0;
             }
         }
-//        if (indexPath.row == 7) {
-//            return 0;
-//        }
         if (indexPath.row == 7) {
             if ([_cartSummary.lp_amount integerValue] == 0) {
                 return 0;
@@ -2609,11 +2625,10 @@
         {
             [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
         }
-        if (![_refreshControl isRefreshing]) {
+        if (![_refreshControl isRefreshing] && !_refreshFromShipment) {
             _tableView.tableFooterView = _footerView;
             [_act startAnimating];
         }
-        _paymentMethodView.hidden = YES;
         _isLoadingRequest = YES;
     }
     
@@ -2666,7 +2681,7 @@
         [_act stopAnimating];
         _paymentMethodView.hidden = YES;
         _isLoadingRequest = NO;
-        _tableView.tableFooterView = _loadingView.view;
+        if (!_refreshFromShipment)_tableView.tableFooterView =_loadingView.view;
     }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         [self endRefreshing];
@@ -2715,7 +2730,7 @@
     [_list addObjectsFromArray:list];
     
     _cart = cart.result;
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL];
+    [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
     
     [self adjustAfterUpdateList];
     
@@ -2987,10 +3002,9 @@
 -(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     if (_indexPage == 0) {
+        _refreshFromShipment = YES;
         _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
-        
-        _refreshFromShipment = YES;
     }
     [_tableView reloadData];
 }

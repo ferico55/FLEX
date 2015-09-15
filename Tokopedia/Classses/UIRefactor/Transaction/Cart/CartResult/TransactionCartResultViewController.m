@@ -237,7 +237,8 @@
     {
         if ([_cartBuy.transaction.lp_amount integerValue] == 0)
             return 0;
-        else return 44;
+        else
+        return 44;
     }
     else
         return 130;
@@ -467,6 +468,7 @@
                                                 ];
          [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
          
+         
          if ([_cartBuy.transaction.voucher_amount integerValue]>0) {
              NSArray *detailPayment = @[
                                         @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
@@ -488,6 +490,11 @@
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
             self.screenName = @"Thank you Page - Indomaret";
         }
+        
+        if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
+            _cartBuy.transaction.payment_left_idr = _cartBuy.transaction.indomaret.total_charge_real_idr;
+        }
+        
         if(![_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)] ||
            ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)] &&
             ([_cartBuy.transaction.deposit_amount integerValue]>0 ||
@@ -501,6 +508,7 @@
                                        ];
             [_listTotalPayment addObjectsFromArray:detailPayment];
         }
+        
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]||
            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)])
         {
@@ -538,10 +546,6 @@
                                          },
                                        ];
             [_listTotalPayment addObjectsFromArray:detailPayment];
-        }
-        
-        if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
-            _cartBuy.transaction.payment_left_idr = _cartBuy.transaction.indomaret.total_charge_real_idr;
         }
     }
     else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]||
@@ -594,6 +598,13 @@
     }
     
     
+    NSDictionary *metodePembayaran =
+                               @{DATA_NAME_KEY : STRING_METODE_PEMBAYARAN,
+                                 DATA_VALUE_KEY : _cartBuy.transaction.gateway_name?:@""
+                                 };
+    [_listTotalPayment insertObject:metodePembayaran atIndex:1];
+    
+    
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
                                                                               AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
                                                                               }];
@@ -606,7 +617,9 @@
     [_tableTitleLabel setCustomAttributedText:tableTitleLabel];
 
     if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
-        tableTitleLabel = [NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran KlikBCA\n\nUser ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user];
+//        tableTitleLabel = [NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran KlikBCA\n\nUser ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user];
+        
+        tableTitleLabel = [NSString stringWithFormat:@"User ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user];
         
         NSMutableAttributedString *attibutestring = [[NSMutableAttributedString alloc]initWithString:tableTitleLabel];
         
@@ -627,7 +640,7 @@
         _IndomaretCodeLabel.text = _cartBuy.transaction.indomaret.payment_code;
         _tableView.tableHeaderView = _headerViewIndomaret;
     }
-    else
+    else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA)
        _tableView.tableHeaderView = _tableHeaderView;
     
     _tableTitleLabel.textAlignment = NSTextAlignmentCenter;
