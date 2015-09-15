@@ -612,7 +612,7 @@
     [_footerLabel setCustomAttributedText:_footerLabel.text];
     [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
     
-    NSString *tableTitleLabel = [NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
+    NSString *tableTitleLabel = @"";//[NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
     
     [_tableTitleLabel setCustomAttributedText:tableTitleLabel];
 
@@ -640,7 +640,7 @@
         _IndomaretCodeLabel.text = _cartBuy.transaction.indomaret.payment_code;
         _tableView.tableHeaderView = _headerViewIndomaret;
     }
-    else if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA)
+    else
        _tableView.tableHeaderView = _tableHeaderView;
     
     _tableTitleLabel.textAlignment = NSTextAlignmentCenter;
