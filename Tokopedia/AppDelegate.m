@@ -16,7 +16,6 @@
 #import "AppsFlyerTracker.h"
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
-#import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "NavigateViewController.h"
 
 @implementation AppDelegate
@@ -45,8 +44,7 @@
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url != nil) {
             [_tagManager previewWithUrl:url];
-            NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
         }
         
         [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
@@ -89,9 +87,8 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-        NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
-        if(sanitizedURL) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
+        if(url) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
         }
 
     });
@@ -131,8 +128,7 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    NSURL *sanitizedURL = [GSDDeepLink handleDeepLink:url];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : sanitizedURL}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
 
     if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
         return YES;
