@@ -335,7 +335,7 @@ PromoCollectionViewDelegate
     NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (indexPath.section == section && indexPath.row == row) {
-        if (![_urinext isEqualToString:@""]) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
