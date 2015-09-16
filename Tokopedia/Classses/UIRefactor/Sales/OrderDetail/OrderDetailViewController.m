@@ -26,14 +26,14 @@
 
 @interface OrderDetailViewController ()
 <
-    LabelMenuDelegate,
-    UITableViewDataSource,
-    UITableViewDelegate,
-    ProductQuantityDelegate,
-    ChooseProductDelegate,
-    RejectExplanationDelegate,
-    SubmitShipmentConfirmationDelegate,
-    CancelShipmentConfirmationDelegate
+LabelMenuDelegate,
+UITableViewDataSource,
+UITableViewDelegate,
+ProductQuantityDelegate,
+ChooseProductDelegate,
+RejectExplanationDelegate,
+SubmitShipmentConfirmationDelegate,
+CancelShipmentConfirmationDelegate
 >
 {
     NSDictionary *_textAttributes;
@@ -130,25 +130,25 @@
                                                                                        action:@selector(tap:)];
     [_buyerNameLabel addGestureRecognizer:buyerNameGesture];
     _buyerNameLabel.text = _transaction.order_customer.customer_name;
-
+    
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_transaction.order_customer.customer_image]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-
+    
     _buyerProfileImageView.layer.cornerRadius = _buyerProfileImageView.frame.size.width/2;
     [_buyerProfileImageView setImageWithURLRequest:request
                                   placeholderImage:_buyerProfileImageView.image
                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-       _buyerProfileImageView.image = image;
-       _buyerProfileImageView.clipsToBounds = YES;
-       _buyerProfileImageView.contentMode = UIViewContentModeScaleToFill;
-    } failure:nil];
+                                               _buyerProfileImageView.image = image;
+                                               _buyerProfileImageView.clipsToBounds = YES;
+                                               _buyerProfileImageView.contentMode = UIViewContentModeScaleToFill;
+                                           } failure:nil];
     
     _invoiceNumberLabel.text = _transaction.order_detail.detail_invoice;
     _invoiceDateLabel.text = _transaction.order_payment.payment_verify_date;
     
     _receiverNameLabel.text = _transaction.order_destination.receiver_name;
-
+    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
@@ -164,7 +164,7 @@
     _addressLabel.attributedText = addressAttributedString;
     _addressLabel.numberOfLines = 0;
     [_addressLabel sizeToFit];
-
+    
     NSString *city = [NSString stringWithFormat:@"%@\n%@",
                       _transaction.order_destination.address_district,
                       _transaction.order_destination.address_city];
@@ -207,15 +207,15 @@
     _receivePartialOrderLabel.text = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
     
     _textAttributes = @{
-                            NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
-                            NSParagraphStyleAttributeName  : style,
-                            NSForegroundColorAttributeName : [UIColor blackColor],
+                        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                        NSParagraphStyleAttributeName  : style,
+                        NSForegroundColorAttributeName : [UIColor blackColor],
                         };
     
     CGFloat additionalHeight = _addressLabel.frame.size.height +
-                                _cityLabel.frame.size.height +
-                                _countryLabel.frame.size.height;
-
+    _cityLabel.frame.size.height +
+    _countryLabel.frame.size.height;
+    
     _tableView.contentInset = UIEdgeInsetsMake(66, 0, additionalHeight, 0);
     
     if (_addressLabel.frame.size.height >= 21 || _cityLabel.frame.size.height >= 21 || _countryLabel.frame.size.height >= 21) {
@@ -223,9 +223,9 @@
         frame.size.height += (additionalHeight - 63);
         _orderFooterView.frame = frame;
     }
-
+    
     if ([_delegate isKindOfClass:[SalesNewOrderViewController class]]) {
-
+        
         [self setDayLeft:_transaction.order_payment.payment_process_day_left];
         
         if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
@@ -236,24 +236,24 @@
             
             // Update table content inset after hide dropship
             _tableView.contentInset = UIEdgeInsetsMake(66, 0, -_dropshipView.frame.size.height + 44, 0);
-        
+            
             // Update table height
             CGRect frame = _orderFooterView.frame;
             frame.size.height -= (_dropshipView.frame.size.height-15);
             _orderFooterView.frame = frame;
-
+            
         } else  {
             _dropshipSenderNameLabel.text = _transaction.order_detail.detail_dropship_name;
             _dropshipSenderPhoneLabel.text = _transaction.order_detail.detail_dropship_telp;
         }
         
     } else if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]]) {
-
+        
         [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
         
         [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
         [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
-
+        
         if (_transaction.order_deadline.deadline_shipping_day_left < 0) {
             _acceptButton.enabled = NO;
             _acceptButton.layer.opacity = 0.25;
@@ -264,7 +264,7 @@
             // Hide dropship view if dropship not available
             _dropshipView.hidden = YES;
             _dropshipViewHeightConstraint.constant = 0;
-
+            
             // Add detail transaction view
             [_orderFooterView addSubview:_detailTransactionView];
             _transactionDateLabel.text = _transaction.order_detail.detail_order_date;
@@ -282,33 +282,33 @@
             
             // Update table content inset after hide dropship
             _tableView.contentInset = UIEdgeInsetsMake(66, 0, -_dropshipView.frame.size.height + _detailTransactionView.frame.size.height, 0);
-
+            
         } else {
-
+            
             _dropshipSenderNameLabel.text = _transaction.order_detail.detail_dropship_name;
             _dropshipSenderPhoneLabel.text = _transaction.order_detail.detail_dropship_telp;
-        
+            
             // Add detail transaction view
             [_orderFooterView addSubview:_detailTransactionView];
             _transactionDateLabel.text = _transaction.order_detail.detail_order_date;
             _transactionDueDateLabel.text = _transaction.order_payment.payment_shipping_due_date;
-
+            
             // Update transaction view position
             CGRect frame = _detailTransactionView.frame;
             frame.origin.y = _orderFooterView.frame.size.height;
             _detailTransactionView.frame = frame;
-
+            
             _tableView.contentInset = UIEdgeInsetsMake(66, 0, _detailTransactionView.frame.size.height, 0);
         }
-
+        
     } else if ([_delegate isKindOfClass:[DetailShipmentStatusViewController class]]) {
-
+        
         _topButtonsView.hidden = YES;
         _tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
-
+        
         _dayLeftLabel.hidden = YES;
         _automaticallyRejectedLabel.hidden = YES;
-
+        
         if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
             
             // Hide dropship view if dropship not available
@@ -316,7 +316,7 @@
             _dropshipViewHeightConstraint.constant = 0;
             
             // Update table content inset after hide dropship
-            _tableView.contentInset = UIEdgeInsetsMake(22, 0, -_dropshipView.frame.size.height + 44, 0);
+            _tableView.contentInset = UIEdgeInsetsMake(0, 0, -_dropshipView.frame.size.height, 0);
             
             // Update table height
             CGRect frame = _orderFooterView.frame;
@@ -327,8 +327,8 @@
             
             _dropshipSenderNameLabel.text = _transaction.order_detail.detail_dropship_name;
             _dropshipSenderPhoneLabel.text = _transaction.order_detail.detail_dropship_telp;
-        
-            _tableView.contentInset = UIEdgeInsetsMake(22, 0, 44, 0);
+            
+            _tableView.contentInset = UIEdgeInsetsZero;
         }
     }
     
@@ -381,14 +381,14 @@
     OrderProduct *product = [_transaction.order_products objectAtIndex:indexPath.section];
     
     if (indexPath.row == 0) {
-
+        
         static NSString *productCellIdentifer = @"OrderDetailProductCell";
         OrderDetailProductCell *cell = (OrderDetailProductCell *)[tableView dequeueReusableCellWithIdentifier:productCellIdentifer];
         if (cell == nil) {
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:productCellIdentifer owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:0];
         }
-
+        
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 4.0;
         
@@ -401,14 +401,13 @@
         cell.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:product.product_name
                                                                                attributes:attributes];
         [cell.productNameLabel sizeToFit];
-
-        cell.productPriceLabel.text = product.product_price;
-        cell.productWeightLabel.text = [NSString stringWithFormat:@"%@ kg", product.product_weight];
         
-        CGFloat totalWeight = product.product_quantity * [product.product_weight floatValue];
+        cell.productPriceLabel.text = product.product_price;
+        cell.productWeightLabel.hidden = YES;
+        
         cell.productTotalWeightLabel.text = [NSString stringWithFormat:@"%@ Barang (%.3f kg)",
                                              [NSNumber numberWithInteger:product.product_quantity],
-                                             totalWeight];
+                                             [product.product_weight floatValue]];
         
         cell.productTotalPriceLabel.text = product.order_subtotal_price_idr;
         
@@ -420,15 +419,15 @@
         [cell.productImageView setImageWithURLRequest:request
                                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"]
                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            cell.productImageView.image = image;
-            cell.productImageView.clipsToBounds = YES;
-            cell.productImageView.contentMode = UIViewContentModeScaleAspectFill;
-        } failure:nil];
+                                                  cell.productImageView.image = image;
+                                                  cell.productImageView.clipsToBounds = YES;
+                                                  cell.productImageView.contentMode = UIViewContentModeScaleAspectFill;
+                                              } failure:nil];
         
         return cell;
-
+        
     } else {
-
+        
         static NSString *productCellIdentifer = @"OrderDetailProductInformationCell";
         OrderDetailProductInformationCell *cell = (OrderDetailProductInformationCell *)[tableView dequeueReusableCellWithIdentifier:productCellIdentifer];
         if (cell == nil) {
@@ -500,10 +499,10 @@
     } else if ([[sender view] isKindOfClass:[UILabel class]]) {
         
         NSURL *desktopURL = [NSURL URLWithString:_transaction.order_detail.detail_pdf_uri];
-
+        
         NSString *pdf = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:0] componentsSeparatedByString:@"="] objectAtIndex:1];
         NSString *invoiceID = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:1] componentsSeparatedByString:@"="] objectAtIndex:1];
-
+        
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
         NSString *userID = authManager.getUserId;
         
@@ -529,7 +528,7 @@
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
+    
     if (button.tag == 1) {
         
         CancelShipmentViewController *controller = [CancelShipmentViewController new];
@@ -578,7 +577,7 @@
     } else if (button.tag == 2) {
         if (_transaction.order_payment.payment_process_day_left >= 0) {
             if (_transaction.order_detail.detail_partial_order == 1) {
-
+                
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
                                                                     message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
                                                                    delegate:self
@@ -586,9 +585,9 @@
                                                           otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
                 alertView.tag = 2;
                 [alertView show];
-            
+                
             } else {
-            
+                
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
                                                                     message:@"Apakah Anda yakin ingin menerima pesanan ini?"
                                                                    delegate:self
@@ -596,10 +595,10 @@
                                                           otherButtonTitles:@"Ya", nil];
                 alertView.tag = 4;
                 [alertView show];
-            
+                
             }
         } else {
-
+            
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pesanan Expired"
                                                                 message:@"Pesanan ini telah melewati batas waktu respon (3 hari)"
                                                                delegate:self
@@ -607,7 +606,7 @@
                                                       otherButtonTitles:@"Tolak Pesanan", nil];
             alertView.tag = 5;
             [alertView show];
-        
+            
         }
     }
 }
@@ -648,9 +647,9 @@
         if (buttonIndex == 1) {
             
             [self.delegate didReceiveActionType:@"accept"
-                                      reason:nil
-                                    products:nil
-                             productQuantity:nil];
+                                         reason:nil
+                                       products:nil
+                                productQuantity:nil];
             
             [self.navigationController popViewControllerAnimated:YES];
             
@@ -687,9 +686,9 @@
         } else if (buttonIndex == 2) {
             
             [self.delegate didReceiveActionType:@"reject"
-                                      reason:@"Barang tidak dapat dikirim"
-                                    products:_transaction.order_products
-                             productQuantity:nil];
+                                         reason:@"Barang tidak dapat dikirim"
+                                       products:_transaction.order_products
+                                productQuantity:nil];
             
             [self.navigationController popViewControllerAnimated:YES];
             
@@ -733,9 +732,9 @@
 - (void)didSelectProducts:(NSArray *)products
 {
     [self.delegate didReceiveActionType:@"reject"
-                              reason:@"Persediaan barang habis"
-                            products:products
-                     productQuantity:nil];
+                                 reason:@"Persediaan barang habis"
+                               products:products
+                        productQuantity:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -744,9 +743,9 @@
 - (void)didFinishWritingExplanation:(NSString *)explanation
 {
     [self.delegate didReceiveActionType:@"reject"
-                              reason:explanation
-                            products:nil
-                     productQuantity:nil];
+                                 reason:explanation
+                               products:nil
+                        productQuantity:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -756,9 +755,9 @@
 - (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation
 {
     [self.delegate didReceiveActionType:@"partial"
-                              reason:explanation
-                            products:nil
-                     productQuantity:productQuantity];
+                                 reason:explanation
+                               products:nil
+                        productQuantity:productQuantity];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
