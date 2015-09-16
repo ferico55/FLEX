@@ -3006,7 +3006,7 @@ UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id];
+        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id etalaseName:_product.result.product.product_etalase];
     }
 }
 
