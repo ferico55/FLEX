@@ -261,6 +261,7 @@ PromoCollectionViewDelegate
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [_collectionView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
