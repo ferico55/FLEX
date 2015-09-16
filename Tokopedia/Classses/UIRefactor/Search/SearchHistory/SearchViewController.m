@@ -88,7 +88,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
 
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    [searchBar setPlaceholder:@"Cari product, katalog dan toko"];
+    [searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
     [searchBar setOpaque:YES];
     [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
     [searchBar setTintColor:[UIColor whiteColor]];
@@ -120,6 +120,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
     
     [self.collectionView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
+
+    [_domains removeAllObjects];
+    [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
+    [_collectionView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -132,6 +136,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -159,10 +164,13 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
-    [_historyResult insertObject:history atIndex:0];
-    [_historyResult writeToFile:destPath atomically:YES];
-    
-    [_collectionView reloadData];
+    if(![_historyResult containsObject:history]) {
+        [_historyResult insertObject:history atIndex:0];
+        [_historyResult writeToFile:destPath atomically:YES];
+        
+        [_collectionView reloadData];
+    }
+
 }
 
 -(void)loadHistory {
@@ -246,6 +254,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
         searchCell.searchTitle.attributedText = attributedText;
         [searchCell.searchImage setHidden:YES];
+        [searchCell setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     } else if([domainName isEqualToString:SearchDomainGeneral]) {
         SearchAutoCompleteGeneral *general = _general[indexPath.row];
         [searchCell setViewModel:general.viewModel];
@@ -336,7 +345,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
         NSArray *historiesresult;
         historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
-        NSInteger limit = 3;
+        NSInteger limit = 5;
 
         if(historiesresult.count > limit) {
             NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
