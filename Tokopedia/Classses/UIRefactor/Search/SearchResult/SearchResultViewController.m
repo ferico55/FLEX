@@ -156,7 +156,7 @@ PromoCollectionViewDelegate
     [super viewDidLoad];
     
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
     _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
@@ -716,6 +716,7 @@ PromoCollectionViewDelegate
     _searchObject = search;
     
     [_noResultView removeFromSuperview];
+    [_firstFooter removeFromSuperview];
     
     if(_isNeedToRemoveAllObject) {
         [_product removeAllObjects];
@@ -752,7 +753,7 @@ PromoCollectionViewDelegate
         
         if(_start == 0) {
             [_collectionView setContentOffset:CGPointZero animated:YES];
-            [_firstFooter removeFromSuperview];
+
             [_collectionView reloadData];
             [_collectionView layoutIfNeeded];
         }
@@ -790,7 +791,7 @@ PromoCollectionViewDelegate
         }
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-            NSString *departementID = search.result.department_id;
+            NSString *departementID = search.result.department_id?:@"";
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [_params removeObjectForKey:@"search"];
 //            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
