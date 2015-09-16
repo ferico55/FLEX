@@ -341,6 +341,12 @@
                                                         @"product_name",
                                                         API_SHOP_NAME_KEY]];
     
+    RKObjectMapping *shopStatMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
+    [shopStatMapping addAttributeMappingsFromDictionary:@{CToolTip : CToolTip, @"reputation_score": CShopReputationScore}];
+
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
@@ -385,6 +391,14 @@
                                                                                   toKeyPath:API_CATALOG_SHOPS_KEY
                                                                                 withMapping:catalogShopsMapping]];
     
+    [shopStatMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"reputation_badge"
+                                                                                    toKeyPath:CShopBadgeLevel
+                                                                                  withMapping:shopBadgeMapping]];
+    
+    [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation
+                                                                                        toKeyPath:CShopReputation
+                                                                                      withMapping:shopStatMapping]];
+
     [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_LIST_KEY
                                                                                         toKeyPath:API_PRODUCT_LIST_KEY
                                                                                       withMapping:productListMapping]];
