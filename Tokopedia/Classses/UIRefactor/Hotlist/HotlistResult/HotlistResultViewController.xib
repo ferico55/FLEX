@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -17,6 +17,7 @@
                 <outlet property="descriptionlabel" destination="mBb-aS-tY9" id="faL-qh-eu1"/>
                 <outlet property="descriptionview" destination="91z-Sh-o8k" id="8tz-hs-PvV"/>
                 <outlet property="filterview" destination="vHm-Tc-Aus" id="2yn-hQ-25U"/>
+                <outlet property="firstFooter" destination="04a-cn-Xyi" id="QJB-wL-yaP"/>
                 <outlet property="flowLayout" destination="OsW-P4-XGO" id="7HW-4L-yFG"/>
                 <outlet property="hashtagsscrollview" destination="Q9k-15-37M" id="DyX-7G-5S7"/>
                 <outlet property="header" destination="HKl-uZ-hi3" id="crS-Jy-zYR"/>
@@ -323,6 +324,23 @@
                 <action selector="gesture:" destination="-1" id="M4i-Wp-gFm"/>
             </connections>
         </swipeGestureRecognizer>
+        <view contentMode="scaleToFill" id="04a-cn-Xyi">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="RZk-KV-GRl">
+                    <rect key="frame" x="150" y="15" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="RZk-KV-GRl" secondAttribute="trailing" constant="150" id="HSg-ql-Txg"/>
+                <constraint firstItem="RZk-KV-GRl" firstAttribute="leading" secondItem="04a-cn-Xyi" secondAttribute="leading" constant="150" id="Mxl-L4-uI9"/>
+                <constraint firstAttribute="bottom" secondItem="RZk-KV-GRl" secondAttribute="bottom" constant="15" id="iwD-RN-2Ya"/>
+                <constraint firstItem="RZk-KV-GRl" firstAttribute="top" secondItem="04a-cn-Xyi" secondAttribute="top" constant="15" id="m4d-Zn-pTv"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-231" y="-66"/>
+        </view>
     </objects>
     <resources>
         <image name="icon_filter.png" width="30" height="30"/>

@@ -1750,6 +1750,13 @@
 		7A5E1AC71B983F2F00B2F753 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A5E13FA1B983F2F00B2F753 /* vt-iOSlib-1.0.1.zip */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7ABCF6EA1BA7C2F3008D5297 /* HotlistResultAWSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCF6E81BA7C2F3008D5297 /* HotlistResultAWSViewController.m */; };
+		7ABCF6EB1BA7C2F3008D5297 /* HotlistResultAWSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCF6E91BA7C2F3008D5297 /* HotlistResultAWSViewController.xib */; };
+		7ABCF6EE1BA7C84C008D5297 /* HotlistBannerRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCF6ED1BA7C84C008D5297 /* HotlistBannerRequest.m */; };
+		7ABCF6F61BA7CD2A008D5297 /* HotlistBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCF6F51BA7CD2A008D5297 /* HotlistBanner.m */; };
+		7ABCF6F91BA7D34B008D5297 /* HotlistBannerResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCF6F81BA7D34B008D5297 /* HotlistBannerResult.m */; };
+		7ABCF6FC1BA7F43D008D5297 /* HotlistBannerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCF6FB1BA7F43D008D5297 /* HotlistBannerInfo.m */; };
+		7ABCF6FF1BA7F7FA008D5297 /* HotlistBannerQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABCF6FE1BA7F7FA008D5297 /* HotlistBannerQuery.m */; };
 		7AE498981B85AFFD001B1E40 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AE498951B85AFFD001B1E40 /* GoogleOpenSource.framework */; };
 		7AE498991B85AFFD001B1E40 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7AE498961B85AFFD001B1E40 /* GooglePlus.bundle */; };
 		7AE4989A1B85AFFD001B1E40 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AE498971B85AFFD001B1E40 /* GooglePlus.framework */; };
@@ -4412,6 +4419,19 @@
 		7A5E13FA1B983F2F00B2F753 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7ABCF6E71BA7C2F3008D5297 /* HotlistResultAWSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResultAWSViewController.h; sourceTree = "<group>"; };
+		7ABCF6E81BA7C2F3008D5297 /* HotlistResultAWSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResultAWSViewController.m; sourceTree = "<group>"; };
+		7ABCF6E91BA7C2F3008D5297 /* HotlistResultAWSViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultAWSViewController.xib; sourceTree = "<group>"; };
+		7ABCF6EC1BA7C84C008D5297 /* HotlistBannerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistBannerRequest.h; sourceTree = "<group>"; };
+		7ABCF6ED1BA7C84C008D5297 /* HotlistBannerRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistBannerRequest.m; sourceTree = "<group>"; };
+		7ABCF6F41BA7CD2A008D5297 /* HotlistBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistBanner.h; sourceTree = "<group>"; };
+		7ABCF6F51BA7CD2A008D5297 /* HotlistBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistBanner.m; sourceTree = "<group>"; };
+		7ABCF6F71BA7D34B008D5297 /* HotlistBannerResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistBannerResult.h; sourceTree = "<group>"; };
+		7ABCF6F81BA7D34B008D5297 /* HotlistBannerResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistBannerResult.m; sourceTree = "<group>"; };
+		7ABCF6FA1BA7F43D008D5297 /* HotlistBannerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistBannerInfo.h; sourceTree = "<group>"; };
+		7ABCF6FB1BA7F43D008D5297 /* HotlistBannerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistBannerInfo.m; sourceTree = "<group>"; };
+		7ABCF6FD1BA7F7FA008D5297 /* HotlistBannerQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistBannerQuery.h; sourceTree = "<group>"; };
+		7ABCF6FE1BA7F7FA008D5297 /* HotlistBannerQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistBannerQuery.m; sourceTree = "<group>"; };
 		7AE498951B85AFFD001B1E40 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		7AE498961B85AFFD001B1E40 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
 		7AE498971B85AFFD001B1E40 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
@@ -5014,6 +5034,7 @@
 		7A5E09C11B983F2B00B2F753 /* Hotlist */ = {
 			isa = PBXGroup;
 			children = (
+				7ABCF6F31BA7CD2A008D5297 /* Banner */,
 				7A5E09C21B983F2B00B2F753 /* DepartmentChild.h */,
 				7A5E09C31B983F2B00B2F753 /* DepartmentChild.m */,
 				7A5E09C41B983F2B00B2F753 /* DepartmentChild2.h */,
@@ -6813,6 +6834,11 @@
 				7A5E0DC61B983F2C00B2F753 /* HotlistResultViewController.h */,
 				7A5E0DC71B983F2C00B2F753 /* HotlistResultViewController.m */,
 				7A5E0DC81B983F2C00B2F753 /* HotlistResultViewController.xib */,
+				7ABCF6E71BA7C2F3008D5297 /* HotlistResultAWSViewController.h */,
+				7ABCF6E81BA7C2F3008D5297 /* HotlistResultAWSViewController.m */,
+				7ABCF6E91BA7C2F3008D5297 /* HotlistResultAWSViewController.xib */,
+				7ABCF6EC1BA7C84C008D5297 /* HotlistBannerRequest.h */,
+				7ABCF6ED1BA7C84C008D5297 /* HotlistBannerRequest.m */,
 			);
 			path = HotlistResult;
 			sourceTree = "<group>";
@@ -9218,6 +9244,21 @@
 			path = Veritrans;
 			sourceTree = "<group>";
 		};
+		7ABCF6F31BA7CD2A008D5297 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				7ABCF6F41BA7CD2A008D5297 /* HotlistBanner.h */,
+				7ABCF6F51BA7CD2A008D5297 /* HotlistBanner.m */,
+				7ABCF6F71BA7D34B008D5297 /* HotlistBannerResult.h */,
+				7ABCF6F81BA7D34B008D5297 /* HotlistBannerResult.m */,
+				7ABCF6FA1BA7F43D008D5297 /* HotlistBannerInfo.h */,
+				7ABCF6FB1BA7F43D008D5297 /* HotlistBannerInfo.m */,
+				7ABCF6FD1BA7F7FA008D5297 /* HotlistBannerQuery.h */,
+				7ABCF6FE1BA7F7FA008D5297 /* HotlistBannerQuery.m */,
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -9977,6 +10018,7 @@
 				7A5E17311B983F2F00B2F753 /* OrderDetailViewController.xib in Resources */,
 				7A5E1A471B983F2F00B2F753 /* icon_location_14px.png in Resources */,
 				7A5E19A31B983F2F00B2F753 /* icon_retur@3x.png in Resources */,
+				7ABCF6EB1BA7C2F3008D5297 /* HotlistResultAWSViewController.xib in Resources */,
 				7A5E18CD1B983F2F00B2F753 /* icon_5@3x.png in Resources */,
 				7A5E1A2F1B983F2F00B2F753 /* icon_more@2x.png in Resources */,
 				7A5E19971B983F2F00B2F753 /* icon_questionmark_blue.png in Resources */,
@@ -10661,6 +10703,7 @@
 				7A5E17D61B983F2F00B2F753 /* TransactionCartFormMandiriClickPayViewController.m in Sources */,
 				7A5E15181B983F2F00B2F753 /* SearchModel.xcdatamodeld in Sources */,
 				7A5E153B1B983F2F00B2F753 /* AddProductValidationResult.m in Sources */,
+				7ABCF6F61BA7CD2A008D5297 /* HotlistBanner.m in Sources */,
 				7A5E154E1B983F2F00B2F753 /* TrackOrderDetail.m in Sources */,
 				7A5E183E1B983F2F00B2F753 /* VTAddress.m in Sources */,
 				7A5E15001B983F2F00B2F753 /* OrderDetail.m in Sources */,
@@ -10733,6 +10776,7 @@
 				7A5E17811B983F2F00B2F753 /* CreateShopCell.m in Sources */,
 				7A5E17651B983F2F00B2F753 /* SettingBankNameCell.m in Sources */,
 				7A5E14651B983F2F00B2F753 /* GeneralActionResult.m in Sources */,
+				7ABCF6FF1BA7F7FA008D5297 /* HotlistBannerQuery.m in Sources */,
 				7A5E17FE1B983F2F00B2F753 /* TxOrderConfirmationDetailHeaderView.m in Sources */,
 				7A5E17BB1B983F2F00B2F753 /* FilterViewController.m in Sources */,
 				7A5E14471B983F2F00B2F753 /* Rating.m in Sources */,
@@ -10747,6 +10791,7 @@
 				7A5E18381B983F2F00B2F753 /* ProductThumbCell.m in Sources */,
 				7A5E15881B983F2F00B2F753 /* OrderDetailForm.m in Sources */,
 				7A5E16A61B983F2F00B2F753 /* MyShopEtalaseViewController.m in Sources */,
+				7ABCF6EA1BA7C2F3008D5297 /* HotlistResultAWSViewController.m in Sources */,
 				7A5E15EC1B983F2F00B2F753 /* CategoryMenuViewController.m in Sources */,
 				7A5E14BF1B983F2F00B2F753 /* NotificationPurchase.m in Sources */,
 				7A5E15551B983F2F00B2F753 /* TransactionAddressShippingResult.m in Sources */,
@@ -11162,6 +11207,7 @@
 				7A5E16611B983F2F00B2F753 /* InboxMessageViewController.m in Sources */,
 				7A5E15031B983F2F00B2F753 /* OrderOrder.m in Sources */,
 				7A5E169C1B983F2F00B2F753 /* MyShopAddressViewController.m in Sources */,
+				7ABCF6EE1BA7C84C008D5297 /* HotlistBannerRequest.m in Sources */,
 				7A5E159C1B983F2F00B2F753 /* UploadImage.m in Sources */,
 				7A5E15021B983F2F00B2F753 /* OrderLast.m in Sources */,
 				7A5E14711B983F2F00B2F753 /* HotlistResultInfo.m in Sources */,
@@ -11183,6 +11229,7 @@
 				7A5E15D81B983F2F00B2F753 /* CatalogSectionHeaderView.m in Sources */,
 				7A5E162D1B983F2F00B2F753 /* GeneralProductCollectionViewCell.m in Sources */,
 				7A5E15811B983F2F00B2F753 /* TxOrderConfirmedResult.m in Sources */,
+				7ABCF6F91BA7D34B008D5297 /* HotlistBannerResult.m in Sources */,
 				7A5E17D41B983F2F00B2F753 /* TransactionCartEditViewController.m in Sources */,
 				7A5E168C1B983F2F00B2F753 /* InboxTicketDetailViewController.m in Sources */,
 				7A5E14541B983F2F00B2F753 /* TalkCommentList.m in Sources */,
@@ -11192,6 +11239,7 @@
 				7A5E15361B983F2F00B2F753 /* AddProductPicture.m in Sources */,
 				7A5E166B1B983F2F00B2F753 /* InboxResolSplitViewController.m in Sources */,
 				7A5E16961B983F2F00B2F753 /* WebViewController.m in Sources */,
+				7ABCF6FC1BA7F43D008D5297 /* HotlistBannerInfo.m in Sources */,
 				7A5E18231B983F2F00B2F753 /* GoldShopView.m in Sources */,
 				7A5E17DE1B983F2F00B2F753 /* TransactionCartWebViewViewController.m in Sources */,
 				7A5E14AC1B983F2F00B2F753 /* TotalLikeDislike.m in Sources */,

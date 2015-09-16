@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 @class Paging;
 @class SearchAWSProduct;
+@class Hashtags;
+@class Breadcrumb;
+@class DepartmentTree;
 
 @interface SearchAWSResult : NSObject
 
@@ -20,6 +23,9 @@
 @property (nonatomic, strong) NSArray *catalogs;
 @property (nonatomic, strong) NSString *redirect_url;
 @property (nonatomic, strong) NSString *department_id;
+
+@property (nonatomic, strong) NSArray *hashtag;
+@property (nonatomic, strong) NSArray *breadcrumb;
 
 
 @end

@@ -266,7 +266,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     CGSize size = CGSizeZero;
     CGFloat maxWidth = collectionView.bounds.size.width;
     
-    size = CGSizeMake(maxWidth, 35.0);
+    size = CGSizeMake(maxWidth, 40.0);
     
     return size;
 }

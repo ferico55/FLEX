@@ -202,7 +202,7 @@ UICollectionViewDelegateFlowLayout
     
     [cell setViewModel:((HotlistList*)_product[indexPath.row]).viewModel];
     
-    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 4;
     if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             _isFailRequest = NO;

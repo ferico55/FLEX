@@ -1,3 +1,4 @@
+
 //
 //  HotlistResultViewController.m
 //  Tokopedia
@@ -9,6 +10,9 @@
 #import "HotlistDetail.h"
 #import "SearchResult.h"
 #import "List.h"
+#import "SearchAWS.h"
+#import "SearchAWSResult.h"
+#import "SearchAWSProduct.h"
 
 #import "string_home.h"
 #import "search.h"
@@ -41,6 +45,8 @@
 #import "PromoRequest.h"
 
 #import "DetailProductViewController.h"
+#import "HotlistBannerRequest.h"
+#import "HotlistBannerResult.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -54,6 +60,8 @@
 #define CProductSingleViewIdentifier @"ProductSingleViewIdentifier"
 #define CProductThumbView @"ProductThumbCell"
 #define CProductThumbIdentifier @"ProductThumbCellIdentifier"
+
+
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -69,6 +77,8 @@ typedef enum ScrollDirection {
     ScrollDirectionDown,
 } ScrollDirection;
 
+static NSString const *rows = @"12";
+
 @interface HotlistResultViewController ()
 <
     GeneralProductCellDelegate,
@@ -78,11 +88,15 @@ typedef enum ScrollDirection {
     GeneralSingleProductDelegate,
     GeneralPhotoProductDelegate,
     PromoCollectionViewDelegate,
-    PromoRequestDelegate
+    PromoRequestDelegate,
+HotlistBannerDelegate
 >
 {
     NSInteger _page;
     NSInteger _limit;
+    
+    NSString *_start;
+    NSString *_rows;
     
     NSInteger _viewposition;
     
@@ -98,6 +112,7 @@ typedef enum ScrollDirection {
     BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL isFailedRequest;
+    HotlistBannerResult *_bannerResult;
     
     UIRefreshControl *_refreshControl;
     
@@ -106,7 +121,7 @@ typedef enum ScrollDirection {
     NSInteger _requestcount;
     NSTimer *_timer;
     
-    HotlistDetail *_hotlistdetail;
+    SearchAWS *_searchObject;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -120,6 +135,8 @@ typedef enum ScrollDirection {
     NoResultView *_noResultView;
     
     PromoRequest *_promoRequest;
+    HotlistBannerRequest *_bannerRequest;
+    BOOL _shouldUseHashtag;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -133,6 +150,7 @@ typedef enum ScrollDirection {
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipegestureright;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 @property (nonatomic) UITableViewCellType cellType;
+@property (weak, nonatomic) IBOutlet UIView *firstFooter;
 
 @property (strong, nonatomic) NSMutableArray *promo;
 
@@ -186,7 +204,8 @@ typedef enum ScrollDirection {
     _cachecontroller = [URLCacheController new];
     _cacheconnection = [URLCacheConnection new];
     _operationQueue = [NSOperationQueue new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, self.view.frame.size.width, 100)];
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
+    _shouldUseHashtag = YES;
 
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
@@ -279,6 +298,11 @@ typedef enum ScrollDirection {
     _promoRequest.delegate = self;
     [self requestPromo];
     
+    _bannerRequest = [[HotlistBannerRequest alloc] init];
+    [_bannerRequest setDelegate:self];
+    [_bannerRequest setBannerKey:[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@""];
+    [_bannerRequest requestBanner];
+    
     self.scrollDirection = ScrollDirectionDown;
 }
 
@@ -300,16 +324,20 @@ typedef enum ScrollDirection {
 
         viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
         [viewCollection setAlwaysBounceVertical:YES];
+        [_firstFooter setFrame:CGRectMake(0, _header.frame.size.height + 50, [UIScreen mainScreen].bounds.size.width, 50)];
+        [viewCollection addSubview:_firstFooter];
         [flowLayout setFooterReferenceSize:CGSizeMake(self.view.frame.size.width, 50)];
         [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     }
     
     
     self.screenName = @"Browse HotList Detail";
-    [self configureRestKit];
-    if (_isnodata) {
-        [self request];
-    }
+//    [self configureRestKit];
+//    if (_isnodata) {
+//        [self request];
+//    }
+    
+    
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -373,7 +401,7 @@ typedef enum ScrollDirection {
         // buttons tag >=20 are tags untuk hashtags
         if (button.tag >=20) {
             //TODO::
-            NSArray *hashtagsarray = _hotlistdetail.result.hashtags;
+            NSArray *hashtagsarray = _searchObject.result.hashtag;
             Hashtags *hashtags = hashtagsarray[button.tag - 20];
             
             NSURL *url = [NSURL URLWithString:hashtags.url];
@@ -432,9 +460,9 @@ typedef enum ScrollDirection {
                     if ([_data objectForKey:@"title"] && [_data objectForKey:@"url"]) {
                         title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", [_data objectForKey:@"title"]];
                         url = [NSURL URLWithString:[_data objectForKey:@"url"]];
-                    } else if (_hotlistdetail) {
-                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _hotlistdetail.result.info.title_enc];
-                        url = [NSURL URLWithString:_hotlistdetail.result.hotlist_url];
+                    } else if (_bannerResult) {
+                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _bannerResult.info.title];
+                        url = [NSURL URLWithString:_bannerResult.info.title];
                     }
                     
                     if (title && url) {
@@ -544,74 +572,42 @@ typedef enum ScrollDirection {
     _objectmanager = nil;
 }
 
-- (void)configureRestKit
-{
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+- (void)configureRestKit {
+    _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[HotlistDetail class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistDetailResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY,
-                                                        KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY,
-                                                        kTKPDHOME_APIHOTLISTURLKEY:kTKPDHOME_APIHOTLISTURLKEY}];
     
-    RKObjectMapping *resultInfoMapping = [RKObjectMapping mappingForClass:[HotlistResultInfo class]];
-    [resultInfoMapping addAttributeMappingsFromDictionary:@{
-                                                            kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY   : kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY,
-                                                            kTKPDHOMEHOTLIST_KEYWORD_KEY            : kTKPDHOMEHOTLIST_KEYWORD_KEY,
-                                                            kTKPDHOMEHOTLIST_TITLE_ENC              : kTKPDHOMEHOTLIST_TITLE_ENC,
-                                                            kTKPDHOMEHOTLIST_CATALOG_KEY            : kTKPDHOMEHOTLIST_CATALOG_KEY,
-                                                            kTKPDHOMEHOTLIST_MIN_PRICE_KEY          : kTKPDHOMEHOTLIST_MIN_PRICE_KEY,
-                                                            kTKPDHOMEHOTLIST_HASHTAG_KEY            : kTKPDHOMEHOTLIST_HASHTAG_KEY,
-                                                            kTKPDHOMEHOTLIST_FILE_NAME_KEY          : kTKPDHOMEHOTLIST_FILE_NAME_KEY,
-                                                            kTKPDHOMEHOTLIST_ALIAS_KEY              : kTKPDHOMEHOTLIST_ALIAS_KEY,
-                                                            kTKPDHOMEHOTLIST_COVER_IMG_KEY          : kTKPDHOMEHOTLIST_COVER_IMG_KEY,
-                                                            kTKPDHOMEHOTLIST_URL_KEY                : kTKPDHOMEHOTLIST_URL_KEY,
-                                                            kTKPDHOMEHOTLIST_ID_KEY                 : kTKPDHOMEHOTLIST_ID_KEY,
-                                                            kTKPDHOMEHOTLIST_D_ID_KEY               : kTKPDHOMEHOTLIST_D_ID_KEY,
-                                                            kTKPDHOMEHOTLIST_FILE_PATH_KEY          : kTKPDHOMEHOTLIST_FILE_PATH_KEY,
-                                                            kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY   : kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY,
-                                                            kTKPDHOMEHOTLIST_SORT_BY_KEY            : kTKPDHOMEHOTLIST_SORT_BY_KEY,
-                                                            kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY    : kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY,
-                                                            kTKPDHOMEHOTLIST_DESCRIPTION_KEY        : kTKPDHOMEHOTLIST_HOTLIST_DESCRIPTION_KEY,
-                                                            kTKPDHOMEHOTLIST_MAX_PRICE_KEY          : kTKPDHOMEHOTLIST_MAX_PRICE_KEY,
-                                                            kTKPDHOMEHOTLIST_SHOP_KEY               : kTKPDHOMEHOTLIST_SHOP_KEY,
-                                                            kTKPDHOMEHOTLIST_TITLE_KEY              : kTKPDHOMEHOTLIST_TITLE_KEY,
-                                                            kTKPDHOMEHOTLIST_SHARE_FILE_NAME        : kTKPDHOMEHOTLIST_SHARE_FILE_NAME,
-                                                            }];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
     
-    // list mapping
-    RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
-    [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APICATALOGIMAGEKEY,
-                                                    kTKPDHOME_APICATALOGNAMEKEY,
-                                                    kTKPDHOME_APICATALOGPRICEKEY,
-                                                    kTKPDHOME_APIPRODUCTPRICEKEY,
-                                                    kTKPDHOME_APIPRODUCTIDKEY,
-                                                    kTKPDHOME_APISHOPGOLDSTATUSKEY,
-                                                    kTKPDHOME_APISHOPLOCATIONKEY,
-                                                    kTKPDHOME_APISHOPNAMEKEY,
-                                                    kTKPDHOME_APIPRODUCTIMAGEKEY,
-                                                    kTKPDHOME_APIPRODUCTIMAGEFULLKEY,
-                                                    kTKPDHOME_APIPRODUCTNAMEKEY,
-                                                    kTKPDHOME_APIPRODUCTREVIEWCOUNTKEY,
-                                                    kTKPDHOME_APIPRODUCTTALKCOUNTKEY
-                                                    ]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id"
+                                                        }];
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+    //product
+    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location" ]];
+
+    RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
+    [hashtagMapping addAttributeMappingsFromArray:@[@"name", @"url", @"department_id"]];
     
     // paging mapping
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
     
+    //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    // hashtags mapping
-    RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
-    [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY, kTKPDHOME_APIDEPARTMENTIDKEY]];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
+    [resultMapping addPropertyMapping:listRel];
     
-    // departmenttree mapping
+    RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:hashtagMapping];
+    [resultMapping addPropertyMapping:hashtagRel];
+    
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
     [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY,
                                                        kTKPDHOME_APITREEKEY,
@@ -620,39 +616,25 @@ typedef enum ScrollDirection {
                                                        ]];
     // Adjust Relationship
     //add Department tree relationship
-    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIDEPARTMENTTREEKEY toKeyPath:kTKPDHOME_APIDEPARTMENTTREEKEY withMapping:departmentMapping];
+    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:departmentMapping];
     [resultMapping addPropertyMapping:depttreeRel];
     
-    //add list relationship
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:hotlistMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    // add page relationship
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // hastags relationship
-    RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIHASHTAGSKEY toKeyPath:kTKPDHOME_APIHASHTAGSKEY withMapping:hashtagMapping];
-    [resultMapping addPropertyMapping:hashtagRel];
-    
-    // departmentchild relationship
     RKRelationshipMapping *deptchildRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APICHILDTREEKEY toKeyPath:kTKPDHOME_APICHILDTREEKEY withMapping:departmentMapping];
     [departmentMapping addPropertyMapping:deptchildRel];
     
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOMEHOTLIST_INFO_KEY
-                                                                                  toKeyPath:kTKPDHOMEHOTLIST_INFO_KEY
-                                                                                withMapping:resultInfoMapping]];
+    // add page relationship
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodGET
+                                                                                       pathPattern:@"search/v1/product"
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    // add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    
+    //add response description to object manager
+    [_objectmanager addResponseDescriptor:responseDescriptor];
 }
 
 
@@ -665,21 +647,26 @@ typedef enum ScrollDirection {
     NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
     
     NSDictionary* param = @{
-                            kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
-                            kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : @"12",
-                            kTKPDHOME_APIORDERBYKEY : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
-                            kTKPDHOME_APIDEPARTMENTIDKEY: [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
-                            kTKPDHOME_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
-                            kTKPDHOME_APISHOPTYPEKEY :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
-                            kTKPDHOME_APIPRICEMINKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
-                            kTKPDHOME_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@""
+                            @"device":@"ios",
+                            @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
+                            @"start" : _start?:@"0",
+                            @"rows" : rows,
+                            @"ob" : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
+                            @"sc" : [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
+                            @"floc" :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
+                            @"fshop" :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
+                            @"pmin" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
+                            @"pmax" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@"",
+                            @"hashtag" : _shouldUseHashtag?@"true":@"",
+                            @"breadcrumb" : _shouldUseHashtag?@"true":@"",
                             };
     
+
+    
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDHOMEHOTLISTRESULT_APIPATH
-                                                                parameters:[param encrypt]];
+                                                                    method:RKRequestMethodGET
+                                                                      path:@"search/v1/product"
+                                                                parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
@@ -705,8 +692,8 @@ typedef enum ScrollDirection {
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id info = [result objectForKey:@""];
-    _hotlistdetail = info;
-    NSString *statusstring = _hotlistdetail.status;
+    _searchObject = info;
+    NSString *statusstring = _searchObject.status;
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         if (_page <=1 && !_isrefreshview) {
@@ -739,37 +726,40 @@ typedef enum ScrollDirection {
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            _hotlistdetail = info;
-            NSString *statusstring = _hotlistdetail.status;
+            SearchAWS *info = [result objectForKey:@""];
+            _searchObject = info;
+            NSString *statusstring = _searchObject.status;
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
                 
-                if (_page == 1) {
+                if ([_start isEqualToString:@"0"]) {
                     [_product removeAllObjects];
                     [_promo removeAllObjects];
+                    [_firstFooter removeFromSuperview];
+                    [self setHashtags];
+                    _shouldUseHashtag = NO;
                 }
 
-                [_product addObject:_hotlistdetail.result.list];
+                [_product addObject:_searchObject.result.products];
                 
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
                 [self setHeaderData];
                 
-                NSArray * departmenttree = _hotlistdetail.result.department_tree;
+                NSArray * departmenttree = _searchObject.result.breadcrumb;
                 
                 if (_departmenttree.count == 0) {
                     [_departmenttree addObjectsFromArray:departmenttree];
                 }
                 
-                if (_product.count > 0) {
+                if (_searchObject.result.products.count > 0) {
                     
                     _descriptionview.hidden = NO;
                     _header.hidden = NO;
                     _filterview.hidden = NO;
                     
-                    _urinext =  _hotlistdetail.result.paging.uri_next;
+                    _urinext =  _searchObject.result.paging.uri_next;
                     NSURL *url = [NSURL URLWithString:_urinext];
                     NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
@@ -784,7 +774,8 @@ typedef enum ScrollDirection {
                         [queries setObject:value forKey:key];
                     }
                     
-                    _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+                    _start = [queries objectForKey:@"start"];
+
                     
                     NSLog(@"next page : %zd",_page);
                     
@@ -792,14 +783,20 @@ typedef enum ScrollDirection {
                     
                     _filterview.hidden = NO;
                     
-                    if (_page > 1) [self requestPromo];
-                    
+                    if ([_start integerValue] > 0) [self requestPromo];
+                    [viewCollection reloadData];
+                    if([_urinext isEqualToString:@""]) {
+                        [flowLayout setFooterReferenceSize:CGSizeZero];
+                    }
                 } else {
                     [flowLayout setFooterReferenceSize:CGSizeZero];
                     [viewCollection addSubview:_noResultView];
                     [viewCollection reloadData];
                     [viewCollection layoutIfNeeded];
                 }
+            } else {
+                [viewCollection addSubview:_noResultView];
+                [viewCollection reloadData];
             }
         }
     }
@@ -861,8 +858,8 @@ typedef enum ScrollDirection {
 
 -(void)setHeaderData
 {
-    if (![_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY]) {
-        NSString *urlstring = _hotlistdetail.result.cover_image;
+    if (_bannerResult) {
+        NSString *urlstring = _bannerResult.info.cover_img;
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
@@ -880,7 +877,7 @@ typedef enum ScrollDirection {
         }];
     }
     
-    if (_hotlistdetail.result.desc_key) {
+    if (_bannerResult.info.hotlist_description) {
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 4.0;
         style.alignment = NSTextAlignmentCenter;
@@ -891,18 +888,18 @@ typedef enum ScrollDirection {
                                      NSForegroundColorAttributeName : [UIColor whiteColor],
                                      };
         
-        _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _hotlistdetail.result.desc_key]
+        _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _bannerResult.info.hotlist_description?:@""]
                                                                            attributes:attributes];
     }
     
-    [self setHashtags];
+//    [self setHashtags];
 }
 
 -(void)setHashtags
 {
     _buttons = [NSMutableArray new];
     
-    NSArray *hashtags = _hotlistdetail.result.hashtags;
+    NSArray *hashtags = _searchObject.result.hashtag;
     
     CGFloat previousButtonWidth = 10;
     CGFloat totalWidth = 10;
@@ -947,7 +944,7 @@ typedef enum ScrollDirection {
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     [self cancel];
-    _page = 1;
+    _start = @"0";
     _requestcount = 0;
     _isrefreshview = YES;
     
@@ -1034,7 +1031,7 @@ typedef enum ScrollDirection {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell;
-    List *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
+    SearchAWSProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
         [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
@@ -1049,7 +1046,8 @@ typedef enum ScrollDirection {
     NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (indexPath.section == section && indexPath.row == row) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
+            isFailedRequest = NO;
             [self configureRestKit];
             [self request];
         }
@@ -1129,10 +1127,10 @@ typedef enum ScrollDirection {
     CGSize size = CGSizeZero;
     NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
     if (section == lastSection) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
             size = CGSizeMake(self.view.frame.size.width, 50);
         }
-    } else if (_product.count == 0 && _page == 1) {
+    } else if (_product.count == 0 && _start == 0) {
         size = CGSizeMake(self.view.frame.size.width, 50);
     }
     return size;
@@ -1199,6 +1197,34 @@ typedef enum ScrollDirection {
         self.scrollDirection = ScrollDirectionDown;
     }
     self.lastContentOffset = scrollView.contentOffset.y;
+}
+
+#pragma mark - Banner Request Delegate 
+- (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
+    _bannerResult = bannerResult;
+    _pagecontrol.hidden = NO;
+    _swipegestureleft.enabled = YES;
+    _swipegestureright.enabled = YES;
+    [self setHeaderData];
+    
+    //set query
+    HotlistBannerQuery *q = bannerResult.query;
+    NSDictionary *query = @{@"negative_keyword" : q.negative_keyword?:@"",
+                            @"department_id" : q.sc?:@"",
+                            @"order_by" : q.ob?:@"",
+                            @"terms" : q.terms?:@"",
+                            @"shop_type" : q.fshop?:@"",
+                            @"key" : q.q?:@"",
+                            @"price_min" : q.pmin?:@"",
+                            @"price_max" : q.pmax?:@"",
+                            @"type" : q.type?:@""};
+    [_detailfilter addEntriesFromDictionary:query];
+    
+    _start = @"0";
+    
+    //request hotlist
+    [self configureRestKit];
+    [self request];
 }
 
 @end
