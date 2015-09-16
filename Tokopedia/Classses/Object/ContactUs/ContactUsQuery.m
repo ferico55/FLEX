@@ -33,62 +33,62 @@
 
 - (void)setMessageCategory:(NSString *)messageCategory {
     _messageCategory = messageCategory;
-    [self.parameters setObject:messageCategory forKey:@"message_category"];
+    [self.parameters setObject:_messageCategory forKey:@"message_category"];
 }
 
 - (void)setMessageBody:(NSString *)messageBody {
     _messageBody = messageBody;
-    [self.parameters setObject:messageBody forKey:@"message_body"];
+    [self.parameters setObject:_messageBody forKey:@"message_body"];
 }
 
 - (void)setAttachmentString:(NSString *)attachmentString {
     _attachmentString = attachmentString;
-    [self.parameters setObject:attachmentString forKey:@"attachment_string"];
+    [self.parameters setObject:_attachmentString forKey:@"attachment_string"];
 }
 
 - (void)setInvNumber:(NSString *)invNumber {
     _invNumber = invNumber;
-    [self.parameters setObject:invNumber forKey:@"inv_number"];
+    [self.parameters setObject:_invNumber forKey:@"inv_number"];
 }
 
 - (void)setFullName:(NSString *)fullName {
     _fullName = fullName;
-    [self.parameters setObject:fullName forKey:@"full_name"];
+    [self.parameters setObject:_fullName forKey:@"full_name"];
 }
 
 - (void)setUserEmail:(NSString *)userEmail {
     _userEmail = userEmail;
-    [self.parameters setObject:userEmail forKey:@"user_email"];
+    [self.parameters setObject:_userEmail forKey:@"user_email"];
 }
 
 - (void)setServerId:(NSString *)serverId {
     _serverId = serverId?:@"";
-    [self.parameters setObject:serverId forKey:@"server_id"];
+    [self.parameters setObject:_serverId forKey:@"server_id"];
 }
 
 - (void)setPostKey:(NSString *)postKey {
     _postKey = postKey;
-    [self.parameters setObject:postKey forKey:@"post_key"];
+    [self.parameters setObject:_postKey forKey:@"post_key"];
 }
 
 - (void)setFileUploaded:(NSString *)fileUploaded {
     _fileUploaded = fileUploaded;
-    [self.parameters setObject:fileUploaded forKey:@"file_uploaded"];
+    [self.parameters setObject:_fileUploaded forKey:@"file_uploaded"];
 }
 
 - (void)setIsHelp:(NSString *)isHelp {
     _isHelp = isHelp;
-    [self.parameters setObject:isHelp forKey:@"is_help"];
+    [self.parameters setObject:_isHelp forKey:@"is_help"];
 }
 
 - (void)setTicketCategoryId:(NSString *)ticketCategoryId {
     _ticketCategoryId = ticketCategoryId;
-    [self.parameters setObject:ticketCategoryId forKey:@"ticket_category_id"];
+    [self.parameters setObject:_ticketCategoryId forKey:@"ticket_category_id"];
 }
 
 - (void)setTicketCategory:(TicketCategory *)ticketCategory {
     _ticketCategory = ticketCategory;
-    self.ticketCategoryId = ticketCategory.ticket_category_id;
+    self.ticketCategoryId = _ticketCategory.ticket_category_id;
 }
 
 @end
