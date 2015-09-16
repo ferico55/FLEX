@@ -84,7 +84,7 @@
 
 
 - (void)redirectToWebViewController {
-    NSURL *url = [_delegate sanitizedURL];
+    NSURL *url = _sanitizedURL;
     NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     
     WebViewController *webController = [[WebViewController alloc] init];
