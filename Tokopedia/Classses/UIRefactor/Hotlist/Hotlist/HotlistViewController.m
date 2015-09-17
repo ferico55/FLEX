@@ -252,15 +252,25 @@ UICollectionViewDelegateFlowLayout
         NSURL *url = [NSURL URLWithString:hotlist.url];
         
         NSMutableDictionary *parameters = [NSMutableDictionary new];
+        NSMutableArray *departmentIdentifiers = [NSMutableArray new];
         
         for (int i = 2; i < url.pathComponents.count; i++) {
             if (i == 2) {
                 [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_1];
+                [departmentIdentifiers addObject:[url.pathComponents objectAtIndex:i]];
             } else if (i == 3) {
                 [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_2];
+                [departmentIdentifiers addObject:[url.pathComponents objectAtIndex:i]];
             } else if (i == 4) {
                 [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_3];
+                [departmentIdentifiers addObject:[url.pathComponents objectAtIndex:i]];
             }
+        }
+        
+        NSString *scIdentifier = nil;
+        if(departmentIdentifiers.count > 0) {
+            scIdentifier = [departmentIdentifiers componentsJoinedByString:@"_"];
+            [parameters setValue:scIdentifier forKey:@"sc_identifier"];
         }
         
         for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {

@@ -628,6 +628,7 @@ PromoCollectionViewDelegate
     [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
     [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
     [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
+    [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     
     return parameter;
 }
