@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSString *product_review_count;
 @property (nonatomic, strong) NSString *product_talk_count;
 @property (nonatomic, strong) NSString *is_owner;
+@property (nonatomic, strong) NSString *shop_lucky;
 
 //catalog
 @property (nonatomic, strong) NSString *catalog_id;
