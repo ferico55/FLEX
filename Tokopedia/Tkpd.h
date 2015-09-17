@@ -138,6 +138,8 @@ typedef enum {
 #define DID_CANCEL_COMPLAIN_NOTIFICATION_NAME @"DidCancelComplain"
 
 #define ADD_PRODUCT_POST_NOTIFICATION_NAME @"tokopedia.ADDPRODUCTPOSTNOTIFICATIONNAME"
+#define MOVE_PRODUCT_TO_ETALASE_NOTIFICATION @"tokopedia.MOVE_PRODUCT_TO_ETALASE_NOTIFICATION"
+#define MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION @"tokopedia.MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION"
 
 #define REFRESH_TX_ORDER_POST_NOTIFICATION_NAME @"tokopedia.REFRESH_TX_ORDER_POST_NOTIFICATION_NAME"
 
@@ -206,7 +208,6 @@ typedef enum {
 #define productCollectionViewCellHeight6plus 250
 #define productCollectionViewCellHeightNormal 205
 
-
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
@@ -255,6 +256,8 @@ typedef enum {
 #define GTMKeyPromoBaseAction   @"promo_base_action_url"
 #define GTMKeyPromoPostAction   @"promo_post_action_url"
 #define GTMKeyPromoFullAction   @"promo_full_action_url"
+
+#define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)

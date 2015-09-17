@@ -88,6 +88,11 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
+
 - (IBAction)tap:(id)sender;
 - (IBAction)tapsegment:(id)sender;
 - (IBAction)gesture:(id)sender;
@@ -121,24 +126,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 {
     [super viewDidLoad];
     
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        CGRect frame = _facebookLoginView.frame;
-        frame.size.width = 550;
-        _facebookLoginView.frame = frame;
-    }
-    else
-    {
-        CGRect frame = _facebookLoginView.frame;
-        frame.size.width = [UIScreen mainScreen].bounds.size.width-30;
-        _facebookLoginView.frame = frame;
-    }
-
-    self.title = kTKPDREGISTER_NEW_TITLE;
-    
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    _contentView.frame = screenRect;
-    
     _datainput = [NSMutableDictionary new];
     [_datainput setObject:@"1" forKey:kTKPDREGISTER_APIGENDERKEY];
 
@@ -158,18 +145,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         
     _agreementLabel.userInteractionEnabled = YES;
 
-    _loginView = [[FBLoginView alloc] init];
-    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
-    _loginView.frame = CGRectMake(0, 0,
-                                  _facebookLoginView.frame.size.width,
-                                  _facebookLoginView.frame.size.height);
-    [_facebookLoginView addSubview:_loginView];
-
-    [_container addSubview:_contentView];
-    
-    _container.contentSize = CGSizeMake(self.view.frame.size.width,
-                                        _contentView.frame.size.height);
-    
     _signIn = [GPPSignIn sharedInstance];
     _signIn.shouldFetchGooglePlusUser = YES;
     _signIn.shouldFetchGoogleUserEmail = YES;
@@ -177,8 +152,19 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
     _signIn.delegate = self;
     [_signIn trySilentAuthentication];
+    
+    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
 
-    [_signInButton setStyle:kGPPSignInButtonStyleWide];
+    _loginView = [[FBLoginView alloc] init];
+    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
+    _loginView.delegate = self;
+
+    [_container addSubview:_contentView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateFormViewAppearance)
+                                                 name:kTKPDForceUpdateFacebookButton
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -202,6 +188,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     [[FBSession activeSession] closeAndClearTokenInformation];
     [[FBSession activeSession] close];
     [FBSession setActiveSession:nil];
+    
+    [self updateFormViewAppearance];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -886,6 +874,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         _isnodata = NO;
         if ([_login.result.status isEqualToString:@"2"]) {
             
+            [[GPPSignIn sharedInstance] signOut];
+            [[GPPSignIn sharedInstance] disconnect];
+            
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -929,16 +920,24 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
-            
+
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
             controller.delegate = self;
-            controller.facebookUser = _facebookUser;
-            
-            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
+            if (_facebookUser) {
+                controller.facebookUser = _facebookUser;
+            } else if (_googleUser) {
+                controller.googleUser = _googleUser;
+                NSString *fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+                controller.fullName = fullName;
+                controller.email = _signIn.authentication.userEmail;
+            }
+
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration
+                                              withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             navigationController.navigationBar.translucent = NO;
@@ -1040,6 +1039,79 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                     [self requestThirdAppUser:data];
                 }
             }];
+}
+
+- (void)updateFormViewAppearance {
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+    CGRect contentViewFrame = _contentView.frame;
+    CGFloat contentViewWidth = 0;
+    CGFloat contentViewMarginLeft = 0;
+    CGFloat contentViewMarginTop = 0;
+    CGFloat constant;
+    NSString *facebookButtonTitle = @"Sign in";
+    
+    if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
+        constant =  (width / 2) - 30;
+        contentViewWidth = width;
+        contentViewMarginLeft = 0;
+        self.facebookButtonTopConstraint.constant = 26;
+        self.googleButtonTopConstraint.constant = 25;
+        
+    } else if (IS_IPHONE_6) {
+        constant =  (335 / 2) - 30;
+        contentViewWidth = 345;
+        contentViewMarginLeft = 15;
+        contentViewMarginTop = 20;
+        self.facebookButtonTopConstraint.constant = 26;
+        self.googleButtonTopConstraint.constant = 25;
+        
+    } else if (IS_IPHONE_6P) {
+        constant =  (354 / 2) - 24;
+        contentViewWidth = 354;
+        contentViewMarginLeft = 30;
+        contentViewMarginTop = 40;
+        
+    } else if (IS_IPAD) {
+        constant =  (500 / 2) - 24;
+        contentViewWidth = 500;
+        contentViewMarginLeft = 134;
+        contentViewMarginTop = 134;
+        self.facebookButtonTopConstraint.constant = 26;
+        self.googleButtonTopConstraint.constant = 25;
+        [_signInButton setStyle:kGPPSignInButtonStyleWide];
+        facebookButtonTitle = @"Sign in with Facebook";
+        
+    }
+    
+    contentViewFrame.size.width = contentViewWidth;
+    contentViewFrame.origin.x = contentViewMarginLeft;
+    contentViewFrame.origin.y = contentViewMarginTop;
+    _contentView.frame = contentViewFrame;
+
+    _container.contentSize = CGSizeMake(width, _contentView.frame.size.height);
+    
+    self.googleButtonWidthConstraint.constant = constant;
+    self.facebookButtonWidthConstraint.constant = constant;
+    
+    _loginView.frame = CGRectMake(0, 0, constant, 42);
+    for (id obj in _loginView.subviews) {
+        if ([obj isKindOfClass:[UILabel class]]) {
+            UILabel *label = obj;
+            label.text = facebookButtonTitle;
+        } else if ([obj isKindOfClass:[UIButton class]]) {
+            UIButton *button = obj;
+            button.frame = CGRectMake(0, 0, constant, 42);
+            button.layer.shadowOpacity = 0;
+        }
+    }
+    
+    [_loginView removeFromSuperview];
+    [_facebookLoginView layoutIfNeeded];
+    _loginView.frame = CGRectMake(0, 0,
+                                  _facebookLoginView.frame.size.width,
+                                  _facebookLoginView.frame.size.height);
+    [_facebookLoginView addSubview:_loginView];
+    [_loginView layoutIfNeeded];
 }
 
 @end

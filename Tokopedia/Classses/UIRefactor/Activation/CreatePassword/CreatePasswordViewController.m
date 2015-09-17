@@ -16,6 +16,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
+#import "WebViewController.h"
 
 @interface CreatePasswordViewController ()
 <
@@ -55,7 +56,6 @@
 @property (weak, nonatomic) IBOutlet TextField *confirmPasswordTextfield;
 
 @property (weak, nonatomic) IBOutlet UIButton *agreementButton;
-@property (weak, nonatomic) IBOutlet UILabel *agreementLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
 
@@ -76,17 +76,14 @@
                                                               action:@selector(tap:)];
     self.navigationItem.leftBarButtonItem = button;
     
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:nil
+                                                                  action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
-    
-    NSDictionary *agreementAttributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-        NSParagraphStyleAttributeName  : style,
-        NSForegroundColorAttributeName : [UIColor lightGrayColor],
-    };
-
-    _agreementLabel.attributedText = [[NSAttributedString alloc] initWithString:_agreementLabel.text
-                                                                     attributes:agreementAttributes];
 
     NSMutableParagraphStyle *descriptionStyle = [[NSMutableParagraphStyle alloc] init];
     descriptionStyle.lineSpacing = 4.0;
@@ -110,7 +107,9 @@
     _requestCount = 0;
     
     NSString *name;
-    if (_facebookUser) {
+    if (_fullName) {
+        name = _fullName;
+    } else if (_facebookUser) {
         name = [_facebookUser objectForKey:@"name"];
     } else if (_googleUser) {
         name = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
@@ -119,7 +118,9 @@
     
     
     NSString *email;
-    if (_facebookUser) {
+    if (_email) {
+        email = _email;
+    } else if (_facebookUser) {
         email = [_facebookUser objectForKey:@"email"];
     } else if (_googleUser) {
         GPPSignIn *signIn = [GPPSignIn sharedInstance];
@@ -159,12 +160,34 @@
              object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    [_scrollView addSubview:_contentView];
+    [self updateFormViewAppearance];
+}
 
+- (void)updateFormViewAppearance {
+    CGRect frame = _contentView.frame;
+    CGFloat contentViewWidth = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat contentViewMarginLeft = 0;
+    CGFloat contentViewMarginTop = 0;
+    if (IS_IPHONE_6) {
+        contentViewWidth = 335;
+        contentViewMarginLeft = 20;
+        contentViewMarginTop = 20;
+    } else if (IS_IPHONE_6P) {
+        contentViewWidth = 354;
+        contentViewMarginLeft = 30;
+        contentViewMarginTop = 40;
+    } else if (IS_IPAD) {
+        contentViewWidth = 500;
+        contentViewMarginLeft = 134;
+        contentViewMarginTop = 134;
+    }
+    frame.size.width = contentViewWidth;
+    frame.origin.x = contentViewMarginLeft;
+    frame.origin.y = contentViewMarginTop;
+    _contentView.frame = frame;
+    
     CGFloat contentSizeHeight;
     if (self.view.frame.size.height > _contentView.frame.size.height) {
         contentSizeHeight = self.view.frame.size.height+1;
@@ -172,6 +195,8 @@
         contentSizeHeight = _contentView.frame.size.height;
     }
     _scrollView.contentSize = CGSizeMake(self.view.frame.size.width, contentSizeHeight);
+
+    [_scrollView addSubview:_contentView];
 }
 
 - (void)updateViewConstraints {
@@ -196,6 +221,8 @@
         [[FBSession activeSession] closeAndClearTokenInformation];
         [[FBSession activeSession] close];
         [FBSession setActiveSession:nil];
+        [[GPPSignIn sharedInstance] signOut];
+        [[GPPSignIn sharedInstance] disconnect];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
@@ -264,6 +291,22 @@
         }
     }
 }
+
+- (IBAction)tapTerms:(id)sender {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Syarat & Ketentuan";
+    webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+- (IBAction)tapPrivacy:(id)sender {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Kebijakan Privasi";
+    webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+#pragma mark - Restkit
 
 - (void)configureRestKit
 {
@@ -585,6 +628,10 @@
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         if (_login.result.is_login) {
+            
+            [[GPPSignIn sharedInstance] signOut];
+            [[GPPSignIn sharedInstance] disconnect];
+
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
