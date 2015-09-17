@@ -15,6 +15,7 @@
 #import "TKPDSecureStorage.h"
 #import "AppsFlyerTracker.h"
 #import "Localytics.h"
+#import <GooglePlus/GooglePlus.h>
 
 @implementation AppDelegate
 
@@ -110,17 +111,20 @@
     }
 }
 
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    if([sourceApplication isEqualToString:@"com.facebook.Facebook"]) {
-        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
+        return YES;
+    } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+        return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
     }
     return NO;
 }
+
 
 #pragma mark - reset persist data if freshly installed
 - (void)preparePersistData

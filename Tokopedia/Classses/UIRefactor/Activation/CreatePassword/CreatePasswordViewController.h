@@ -24,5 +24,7 @@
 @property (weak, nonatomic) id<CreatePasswordDelegate> delegate;
 @property (strong, nonatomic) id<FBGraphUser> facebookUser;
 @property GTLPlusPerson *googleUser;
+@property (strong, nonatomic) NSString *email;
+@property (strong, nonatomic) NSString *fullName;
 
 @end
