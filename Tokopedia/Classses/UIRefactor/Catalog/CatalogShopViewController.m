@@ -174,7 +174,11 @@
         cell.masking.hidden = NO;
     }
     
-    [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level withSet:shop.shop_reputation.shop_badge_level.set withImage:cell.stars isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level
+                                   withSet:shop.shop_reputation.shop_badge_level.set
+                                 withImage:cell.stars
+                                   isLarge:YES];
+    
     [cell setTagContentStar:(int)indexPath.row];
     
     return cell;

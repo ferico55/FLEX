@@ -89,13 +89,19 @@
         [((UIButton *) image) setImage:tempImage forState:UIControlStateNormal];
     }
     else if(isArrayObject) {
-        for(int i=0;i<((NSArray *) image).count;i++) {
-            UIImageView *temporaryImage = ((NSArray *) image)[i];
-            if(i < intLevel) {
-                temporaryImage.image = tempImage;
+        if (intLevel == 0 && intSet == 0) {
+            for (UIImageView *imageView in image) imageView.image = nil;
+            UIImageView *imageView = [image objectAtIndex:0];
+            imageView.image = tempImage;
+        } else {
+            for(int i=0;i<((NSArray *) image).count;i++) {
+                UIImageView *temporaryImage = ((NSArray *) image)[i];
+                if(i < intLevel) {
+                    temporaryImage.image = tempImage;
+                }
+                else
+                    temporaryImage.image = nil;
             }
-            else
-                temporaryImage.image = nil;
         }
     }
     else if([image isMemberOfClass:[UIImageView class]]){
