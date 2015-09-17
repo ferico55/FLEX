@@ -7,63 +7,55 @@
 //
 
 #import "search.h"
-#import "category.h"
 #import "SearchViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
 #import "ProductFeedViewController.h"
-#import "SearchAutoCompleteViewController.h"
-#import "CatalogViewController.h"
+
 #import "NotificationManager.h"
-#import "HotlistResultViewController.h"
 
-#import "SearchAutoCompleteDomains.h"
-#import "SearchAutoCompleteObject.h"
-#import "SearchAutoCompleteCell.h"
-#import "SearchAutoCompleteHeaderView.h"
-
-NSString *const searchPath = @"search/%@";
-
-@interface SearchViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UICollectionViewDataSource, UICollectionViewDelegate, SearchResultDelegate, NotificationDelegate,NotificationManagerDelegate> {
-
+@interface SearchViewController ()
+<
+UISearchBarDelegate,
+UISearchDisplayDelegate,
+UITableViewDelegate,
+UITableViewDataSource,
+SearchResultDelegate,
+NotificationDelegate,
+NotificationManagerDelegate
+>
+{
+    /** real time search result array **/
+    NSMutableArray *_searchresultarray;
+    /** variable for segment control **/
     NSString *_filter;
+    /** all histories from property list **/
+    NSMutableArray *_historysearch;
+    
     UITextField *_activeTextField;
     
+    //Notification *_notification;
     NotificationManager *_notifManager;
-    SearchAutoCompleteViewController *_searchAutoCompleteController;
-    
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_objectRequest;
-    
-    NSInteger *_requestCount;
-    NSOperationQueue *_operationQueue;
-
-    NSMutableArray *_domains;
-    NSMutableArray *_general;
-    NSMutableArray *_hotlist;
-    NSMutableArray *_historyResult;
-    NSMutableArray *_typedHistoryResult;
-    
 }
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIButton *buttonclear;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
+@property (weak, nonatomic) IBOutlet UIView *searchhistoryview;
+@property (weak, nonatomic) IBOutlet UILabel *labelsearchfor;
 
+@property (strong, nonatomic) UIView *notificationView;
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
+@property (strong, nonatomic) UIImageView *notificationArrowImageView;
 @property (strong, nonatomic) NotificationViewController *notificationController;
-
 
 @end
 
 @implementation SearchViewController
 
-NSString *const SearchDomainHistory = @"History";
-NSString *const SearchDomainGeneral = @"Keyword";
-NSString *const SearchDomainHotlist = @"Hotlist";
-
-#pragma mark - Lifecycle
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
     self = [super initWithNibName:@"SearchViewController" bundle:nibBundleOrNil];
     if (self) {
         self.title = kTKPDSEARCH_TITLE;
@@ -73,323 +65,332 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    _operationQueue = [NSOperationQueue new];
     [self.navigationController.navigationBar setTranslucent:NO];
-
-    _historyResult =[NSMutableArray new];
-    _typedHistoryResult = [NSMutableArray new];
-    _domains = [NSMutableArray new];
-
-    _general = [NSMutableArray new];
-    _hotlist = [NSMutableArray new];
     
-
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    [searchBar setPlaceholder:@"Cari product, katalog dan toko"];
-    [searchBar setOpaque:YES];
-    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
-    [searchBar setTintColor:[UIColor whiteColor]];
-    [[UITextField appearance] setTintColor:[UIColor blueColor]];
-    _searchBar = searchBar;
-    [self.view addSubview:_searchBar];
-
-    _searchBar.delegate = self;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
-
-
+    _historysearch =[NSMutableArray new];
+    _searchresultarray = [NSMutableArray new];
+    
+    _searchbar.delegate = self;
+    
+    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     _filter = @"search_product";
     
     [self loadHistory];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(clearHistory)
                                                  name:kTKPD_REMOVE_SEARCH_HISTORY
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
-    
-    [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    
-    [self.collectionView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
+    [_searchbar becomeFirstResponder];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    [self initNotificationManager];
     
+    self.navigationController.title = @"Cari";
     self.screenName = @"Search Page";
     self.hidesBottomBarWhenPushed = NO;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
+    [self initNotificationManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [_searchBar resignFirstResponder];
+    [_searchbar resignFirstResponder];
 }
 
 #pragma mark - Memory Management
-- (void)dealloc{
+
+-(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Methods
--(void)saveHistory:(id)history {
+-(void)SaveHistory:(id)history{
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
-    [_historyResult insertObject:history atIndex:0];
-    [_historyResult writeToFile:destPath atomically:YES];
+    [_historysearch insertObject:history atIndex:0];
+    [_historysearch writeToFile:destPath atomically:YES];
     
-    [_collectionView reloadData];
+    [_table reloadData];
+    
+    if (_historysearch.count == 0) {
+        _searchhistoryview.hidden = YES;
+    }else {
+        _searchhistoryview.hidden = NO;
+    }
 }
 
--(void)loadHistory {
+-(void)loadHistory
+{
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-
-    [_historyResult addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
+    
+    // Load the Property List
+    [_historysearch addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
+    
+    if (_historysearch.count == 0) {
+        _searchhistoryview.hidden = YES;
+    }else {
+        _searchhistoryview.hidden = NO;
+    }
 }
 
--(void)clearHistory {
-    [_historyResult removeAllObjects];
+-(void)clearHistory
+{
+    [_historysearch removeAllObjects];
     
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
+    // If the file doesn't exist in the Documents Folder, copy it.
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    
     if (![fileManager fileExistsAtPath:destPath]) {
         NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"history_search" ofType:@"plist"];
         [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
     }
     
-    [_historyResult writeToFile:destPath atomically:YES];
+    [_historysearch writeToFile:destPath atomically:YES];
     
-    [_collectionView reloadData];
-}
-
-
-#pragma mark - Collection Delegate
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return [_domains count];
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSDictionary *domain = [_domains objectAtIndex:section];
-    NSArray *domainData = [domain objectForKey:@"data"];
-    return [domainData count];
-}
-
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    UICollectionReusableView *view = nil;
+    [_table reloadData];
     
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
-        NSDictionary *domain = [_domains objectAtIndex:[indexPath section]];
+    if (_historysearch.count == 0) {
+        _searchhistoryview.hidden = YES;
+    }else {
+        _searchhistoryview.hidden = NO;
+    }
+}
 
-        [header.titleLabel setText:[[domain objectForKey:@"title"] uppercaseString]];
-        view = header;
+
+#pragma mark - View Gesture
+- (IBAction)tap:(id)sender {
+    [_searchbar resignFirstResponder];
+    [self clearHistory];
+}
+- (IBAction)gesture:(id)sender {
+    [_searchbar resignFirstResponder];
+}
+
+#pragma mark - Table View Data Source
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    if (_searchresultarray == nil || _searchresultarray.count == 0) {
+        return [_historysearch count];
+    } else {
+        return [_searchresultarray count];
+    }
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewCell* cell = nil;
+    NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
+    
+    NSString *searchresult;
+    if (_searchresultarray == nil || _searchresultarray.count == 0) {
+        searchresult = [_historysearch objectAtIndex:indexPath.row];
+    } else {
+        searchresult = [_searchresultarray objectAtIndex:indexPath.row];
     }
     
-    return view;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = nil;
-    
-    SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
-    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-    NSString *domainName = [domain objectForKey:@"title"];
-    if([domainName isEqualToString:SearchDomainHistory]) {
-        NSString *searchResult;
-        if(_typedHistoryResult.count > 0) {
-            searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
-        } else {
-            searchResult = [_historyResult objectAtIndex:indexPath.row];
-        }
-        NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
+    if (cell == nil) {
         
-        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
-        [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
-        searchCell.searchTitle.attributedText = attributedText;
-        [searchCell.searchImage setHidden:YES];
-    } else if([domainName isEqualToString:SearchDomainGeneral]) {
-        SearchAutoCompleteGeneral *general = _general[indexPath.row];
-        [searchCell setViewModel:general.viewModel];
-        [searchCell setBoldSearchText:_searchBar.text];
-    } else if([domainName isEqualToString:SearchDomainHotlist]) {
-        SearchAutoCompleteHotlist *hotlist = _hotlist[indexPath.row];
-        [searchCell setViewModel:hotlist.viewModel];
-        [searchCell setBoldSearchText:_searchBar.text];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+    if (_historysearch.count > indexPath.row) {
+        cell.textLabel.text = searchresult;
+        cell.textLabel.font = [UIFont fontWithName:@"GothamMedium" size:14.0f];
     }
     
-    cell = searchCell;
-    cell.hidden = NO;
     
     return cell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize size = CGSizeZero;
-    CGFloat maxWidth = collectionView.bounds.size.width;
+#pragma mark - TableView Delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    size = CGSizeMake(maxWidth, 35.0);
-    
-    return size;
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    CGSize size = CGSizeZero;
-    
-    NSDictionary *domain = [_domains objectAtIndex:section];
-    if(![[domain objectForKey:@"title"] isEqualToString:SearchDomainGeneral]) {
-        size = CGSizeMake(collectionView.bounds.size.width, 25);
+    NSString *searchresult;
+    if (_searchresultarray == nil || _searchresultarray.count == 0) {
+        searchresult = [_historysearch objectAtIndex:indexPath.row];
+    } else {
+        searchresult = [_searchresultarray objectAtIndex:indexPath.row];
     }
     
-    return size;
+    SearchResultViewController *vc = [SearchResultViewController new];
+    vc.delegate = self;
+    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
+               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc1.delegate = self;
+    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    NSArray *viewcontrollers = @[vc,vc1,vc2];
+    
+    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    [viewController setSelectedIndex:0];
+    [viewController setViewControllers:viewcontrollers];
+    [viewController setNavigationTitle:searchresult];
+    
+    viewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 1.0;
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_searchbar resignFirstResponder];
 }
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell  *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    [UIView animateWithDuration:0.10 delay:0 options:(UIViewAnimationOptionCurveEaseInOut)
-         animations:^{
-             [cell setBackgroundColor: collectionView.backgroundColor];
-         }
-         completion:^(BOOL finished){
-             [cell setBackgroundColor:[UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0]];
-             
-             NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-             NSString *domainName = [domain objectForKey:@"title"];
-             if([domainName isEqualToString:SearchDomainHistory]) {
-                 [self goToResultPage:[_historyResult objectAtIndex:indexPath.row]];
-             }
-             
-             else if ([domainName isEqualToString:SearchDomainGeneral]) {
-                 NSArray *generals = [domain objectForKey:@"data"];
-                 SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
-                 
-                 [self goToResultPage:general.title];
-             }
-             else if ([domainName isEqualToString:SearchDomainHotlist]) {
-                 NSArray *hotlists = [domain objectForKey:@"data"];
-                 SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
-                 NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
-                 
-                 HotlistResultViewController *controller = [HotlistResultViewController new];
-                 controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
-                 controller.hidesBottomBarWhenPushed = YES;
-                 
-                 [self.navigationController pushViewController:controller animated:YES];
-             }
-
-         }
-     ];
-}
-
 
 #pragma mark - UISearchBar Delegate
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    [_typedHistoryResult removeAllObjects];
-    
-    if([searchText isEqualToString:@""]) {
-        [_domains removeAllObjects];
-        [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
-        [_collectionView reloadData];
-    } else {
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [_searchresultarray removeAllObjects];
+    if (![searchBar.text isEqualToString: @""]&&![searchBar.text isEqualToString:@" "]) {
+        _labelsearchfor.hidden = NO;
+        //_labelsearchfor.text = [NSString stringWithFormat:@"Search for '%@'", searchBar.text];
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
         NSArray *historiesresult;
-        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
-        NSInteger limit = 3;
-
-        if(historiesresult.count > limit) {
-            NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
-            NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
-            [_typedHistoryResult addObjectsFromArray:lastThree];
-        } else {
-            [_typedHistoryResult addObjectsFromArray:historiesresult];
-        }
-        
-        [self configureRestkit];
-        [self doRequest];
+        historiesresult = [_historysearch filteredArrayUsingPredicate:resultPredicate];
+        [_searchresultarray addObjectsFromArray:historiesresult];
+        [_table reloadData];
     }
-
+    else
+    {
+        [_searchresultarray removeAllObjects];
+        [_table reloadData];
+        _labelsearchfor.hidden = YES;
+    }
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    NSArray *histories = _historyResult;
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSArray *histories = _historysearch;
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
-        [_typedHistoryResult removeAllObjects];
-        [_searchBar resignFirstResponder];
+        
+        [_searchresultarray removeAllObjects];
+        [_searchbar resignFirstResponder];
         
         if (histories.count == 0 || [histories isEqualToArray: @[]]) {
-            [self saveHistory:searchBar.text];
+            [self SaveHistory:searchBar.text];
         }
-        else {
+        else{
             if (![histories containsObject:searchBar.text]) {
-                [self saveHistory:searchBar.text];
+                [self SaveHistory:searchBar.text];
             }
         }
-        [self goToResultPage:_searchBar.text];
+        
+        /** Goto result page **/
+        SearchResultViewController *vc = [SearchResultViewController new];
+        vc.delegate = self;
+        vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
+                   kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
+                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+        SearchResultViewController *vc1 = [SearchResultViewController new];
+        vc.delegate = self;
+        vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
+                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+        SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+        vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
+                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+        NSArray *viewcontrollers = @[vc,vc1,vc2];
+        
+        TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+        
+        [viewController setSelectedIndex:0];
+        [viewController setViewControllers:viewcontrollers];
+        [viewController setNavigationTitle:_searchbar.text];
+        
+        viewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:viewController animated:YES];
     }
-    else {
-        [_typedHistoryResult removeAllObjects];
-        [_collectionView reloadData];
+    else
+    {
+        [_searchresultarray removeAllObjects];
+        [_table reloadData];
     }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [_searchBar setText:@""];
-    [_searchBar resignFirstResponder];
-    [self searchBar:_searchBar textDidChange:@""];
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [_searchbar setText:@""];
+    [_searchbar resignFirstResponder];
+    [self searchBar:_searchbar textDidChange:@""];
+    self.hidesBottomBarWhenPushed = YES;
     self.navigationController.tabBarController.tabBar.hidden = NO;
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
     [searchBar setShowsCancelButton:NO animated:YES];
-    [self deActivateSearchBar];
-    
     return YES;
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
     [searchBar setShowsCancelButton:YES animated:YES];
-    [self activateSearchBar];
-
     return YES;
 }
 
 #pragma mark - properties
-- (void)setData:(NSDictionary *)data {
+-(void)setData:(NSDictionary *)data
+{
     _data = data;
 }
 
 #pragma mark - Notification Manager
+
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
@@ -398,7 +399,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 - (void)tapNotificationBar {
-    [_searchBar resignFirstResponder];
+    [_searchbar resignFirstResponder];
     [_notifManager tapNotificationBar];
 }
 
@@ -412,161 +413,28 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.navigationController pushViewController:[userInfo objectForKey:@"vc"] animated:YES];
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    
-    _collectionView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
-}
-
-- (void)keyboardWillHide:(NSNotification *)info {
-    _collectionView.contentInset = UIEdgeInsetsZero;
-}
-
-- (void)reloadNotification {
+- (void)reloadNotification
+{
     [self initNotificationManager];
 }
 
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
     [notificationManager tapWindowBar];
     [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
 }
 
-- (void)pushViewController:(id)viewController {
+- (void)pushViewController:(id)viewController
+{
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
 
-- (void)pushViewController:(id)viewController animated:(BOOL)animated {
+- (void)pushViewController:(id)viewController animated:(BOOL)animated
+{
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:animated];
 }
-
-#pragma mark - Network
-- (void)configureRestkit {
-    NSString *urlString = [NSString stringWithFormat:@"http://jahe.tokopedia.com/"];
-    _objectManager = [RKObjectManager sharedClientUploadImage:urlString];
-    
-    RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteObject class]];;
-    RKObjectMapping *domainsMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteDomains class]];
-    
-    RKObjectMapping *generalMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteGeneral class]];
-    [generalMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"id"]];
-    
-    RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteHotlist class]];
-    [hotlistMapping addAttributeMappingsFromArray:@[@"title", @"url", @"rating", @"id"]];
-    
-    RKRelationshipMapping *generalRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"general" toKeyPath:@"general" withMapping:generalMapping];
-    RKRelationshipMapping *hotlistRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hotlist" toKeyPath:@"hotlist" withMapping:hotlistMapping];
-    
-    RKRelationshipMapping *domainsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"domains" toKeyPath:@"domains" withMapping:domainsMapping];
-    
-    
-    [domainsMapping addPropertyMapping:generalRel];
-    [domainsMapping addPropertyMapping:hotlistRel];
-    [searchMapping addPropertyMapping:domainsRel];
-    
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:searchMapping
-                                                                                                  method:RKRequestMethodGET
-                                                                                             pathPattern:[NSString stringWithFormat:searchPath, _searchBar.text]
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)doRequest {
-    _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                          method:RKRequestMethodGET
-                                                                            path:[NSString stringWithFormat:searchPath, _searchBar.text]
-                                                                      parameters:nil];
-    
-    [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSDictionary *result = ((RKMappingResult*)mappingResult).dictionary;
-        SearchAutoCompleteObject *search = [result objectForKey:@""];
-        
-        [_domains removeAllObjects];
-        [_general removeAllObjects];
-        [_hotlist removeAllObjects];
-        
-        [_general addObjectsFromArray:search.domains.general];
-        [_hotlist addObjectsFromArray:search.domains.hotlist];
-
-        if(_general.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
-        }
-        
-        if(_hotlist.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
-        }
-        
-        if(_typedHistoryResult.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
-        }
-        
-        [_collectionView reloadData];
-        [_collectionView setHidden:NO];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-
-    }];
-    
-    [_operationQueue addOperation:_objectRequest];
-    
-}
-
-#pragma mark - SearchBar Method
-- (void)activateSearchBar {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    
-    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
-    } completion:^(BOOL finished) {
-        
-    }];
-}
-
-- (void)deActivateSearchBar {
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
-    [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-        _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
-    } completion:^(BOOL finished) {
-        
-    }];
-}
-
-#pragma mark - Method
-- (void)goToResultPage:(NSString*)searchText {
-    SearchResultViewController *vc = [SearchResultViewController new];
-    vc.delegate = self;
-    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
-               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc.delegate = self;
-    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    NSArray *viewcontrollers = @[vc,vc1,vc2];
-    
-    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-    
-    [viewController setSelectedIndex:0];
-    [viewController setViewControllers:viewcontrollers];
-    [viewController setNavigationTitle:searchText];
-    
-    viewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-
 
 @end

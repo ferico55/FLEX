@@ -480,7 +480,7 @@
 {
     [_activeTextView resignFirstResponder];
     [_activeTextField resignFirstResponder];
-    if (indexPath.section==0 && _isGotTheOrder) {
+    if ([tableView cellForRowAtIndexPath:indexPath] == _cellSolution) {
         if (_indexPage == 0) {
             if (_isCanEditProblem) {
                 [self shouldPushGeneralViewControllerTitle:@"Pilih Masalah"

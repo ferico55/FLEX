@@ -502,9 +502,9 @@
     }
     
     
-//    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
-//                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
-//                                                                              }];
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
+                                                                              AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
+                                                                              }];
     
     [_footerLabel setCustomAttributedText:_footerLabel.text];
     [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
