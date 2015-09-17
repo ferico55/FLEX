@@ -53,6 +53,7 @@ typedef enum ScrollDirection {
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+@property (weak, nonatomic) IBOutlet UIView *firstFooter;
 
 @property (strong, nonatomic) NSMutableArray *promoScrollPosition;
 @property (assign, nonatomic) CGFloat lastContentOffset;
@@ -118,6 +119,8 @@ typedef enum ScrollDirection {
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
+    [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
+    [_collectionView addSubview:_firstFooter];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
@@ -362,6 +365,7 @@ typedef enum ScrollDirection {
         if (_page == 1) {
             [_product removeAllObjects];
             [_promo removeAllObjects];
+            [_firstFooter removeFromSuperview];
         }
         
         [_product addObject:feed.result.list];
