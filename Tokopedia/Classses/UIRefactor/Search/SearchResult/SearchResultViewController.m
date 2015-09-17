@@ -188,7 +188,12 @@ PromoCollectionViewDelegate
     [_params setDictionary:_data];
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-        self.screenName = @"Search Result - Product Tab";
+        if(self.isFromAutoComplete) {
+            self.screenName = @"AutoComplete Search Result - Product Tab";
+        } else {
+            self.screenName = @"Search Result - Product Tab";
+        }
+
     }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         self.screenName = @"Search Result - Catalog Tab";
     }

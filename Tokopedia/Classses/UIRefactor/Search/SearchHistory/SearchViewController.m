@@ -307,14 +307,14 @@ NSString *const SearchDomainHotlist = @"Hotlist";
              NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
              NSString *domainName = [domain objectForKey:@"title"];
              if([domainName isEqualToString:SearchDomainHistory]) {
-                 [self goToResultPage:[_historyResult objectAtIndex:indexPath.row]];
+                 [self goToResultPage:[_historyResult objectAtIndex:indexPath.row] withAutoComplete:YES];
              }
              
              else if ([domainName isEqualToString:SearchDomainGeneral]) {
                  NSArray *generals = [domain objectForKey:@"data"];
                  SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
                  [self saveHistory:general.title];
-                 [self goToResultPage:general.title];
+                 [self goToResultPage:general.title withAutoComplete:YES];
              }
              else if ([domainName isEqualToString:SearchDomainHotlist]) {
                  NSArray *hotlists = [domain objectForKey:@"data"];
@@ -323,6 +323,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                  
                  HotlistResultViewController *controller = [HotlistResultViewController new];
                  controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
+                 controller.isFromAutoComplete = YES;
                  controller.hidesBottomBarWhenPushed = YES;
                  
                  [self.navigationController pushViewController:controller animated:YES];
@@ -376,7 +377,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                 [self saveHistory:searchBar.text];
             }
         }
-        [self goToResultPage:_searchBar.text];
+        [self goToResultPage:_searchBar.text withAutoComplete:NO];
     }
     else {
         [_typedHistoryResult removeAllObjects];
@@ -561,18 +562,21 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 #pragma mark - Method
-- (void)goToResultPage:(NSString*)searchText {
+- (void)goToResultPage:(NSString*)searchText withAutoComplete:(BOOL) autocomplete{
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.delegate = self;
+    vc.isFromAutoComplete = autocomplete;
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc.isFromAutoComplete = autocomplete;
     vc.delegate = self;
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc.isFromAutoComplete = autocomplete;
     vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};

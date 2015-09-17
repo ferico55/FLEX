@@ -330,8 +330,12 @@ HotlistBannerDelegate
         [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     }
     
-    
-    self.screenName = @"Browse HotList Detail";
+    if(self.isFromAutoComplete) {
+        self.screenName = @"AutoComplete - Browse HotList Detail";
+    } else {
+        self.screenName = @"Browse HotList Detail";
+    }
+
 //    [self configureRestKit];
 //    if (_isnodata) {
 //        [self request];
