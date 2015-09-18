@@ -484,6 +484,7 @@ PromoCollectionViewDelegate
     _start = 0;
     _isrefreshview = YES;
     _isNeedToRemoveAllObject = YES;
+    _urinext = nil;
     
     [_refreshControl beginRefreshing];
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
