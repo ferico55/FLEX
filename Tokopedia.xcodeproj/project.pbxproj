@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		452DB5711BA94DE000B1210C /* RequestNotifyLBLM.m in Sources */ = {isa = PBXBuildFile; fileRef = 452DB5701BA94DE000B1210C /* RequestNotifyLBLM.m */; };
+		452DB5751BA951A600B1210C /* NotifyData.m in Sources */ = {isa = PBXBuildFile; fileRef = 452DB5741BA951A600B1210C /* NotifyData.m */; };
+		452DB5781BA951C400B1210C /* NotifyAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 452DB5771BA951C400B1210C /* NotifyAttributes.m */; };
+		452DB57B1BA951D300B1210C /* NotifyLBLM.m in Sources */ = {isa = PBXBuildFile; fileRef = 452DB57A1BA951D300B1210C /* NotifyLBLM.m */; };
 		45A042041BA135CB00F8721B /* LoyaltyPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A042031BA135CB00F8721B /* LoyaltyPoint.m */; };
 		45A042071BA1363600F8721B /* LoyaltyPointResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A042061BA1363600F8721B /* LoyaltyPointResult.m */; };
 		45A0420A1BA1366D00F8721B /* LoyaltyPointMerchant.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A042091BA1366D00F8721B /* LoyaltyPointMerchant.m */; };
@@ -1794,6 +1798,14 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		452DB56F1BA94DE000B1210C /* RequestNotifyLBLM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestNotifyLBLM.h; sourceTree = "<group>"; };
+		452DB5701BA94DE000B1210C /* RequestNotifyLBLM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestNotifyLBLM.m; sourceTree = "<group>"; };
+		452DB5731BA951A600B1210C /* NotifyData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyData.h; sourceTree = "<group>"; };
+		452DB5741BA951A600B1210C /* NotifyData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyData.m; sourceTree = "<group>"; };
+		452DB5761BA951C400B1210C /* NotifyAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyAttributes.h; sourceTree = "<group>"; };
+		452DB5771BA951C400B1210C /* NotifyAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyAttributes.m; sourceTree = "<group>"; };
+		452DB5791BA951D300B1210C /* NotifyLBLM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyLBLM.h; sourceTree = "<group>"; };
+		452DB57A1BA951D300B1210C /* NotifyLBLM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyLBLM.m; sourceTree = "<group>"; };
 		45A042021BA135CB00F8721B /* LoyaltyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoyaltyPoint.h; sourceTree = "<group>"; };
 		45A042031BA135CB00F8721B /* LoyaltyPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoyaltyPoint.m; sourceTree = "<group>"; };
 		45A042051BA1363600F8721B /* LoyaltyPointResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoyaltyPointResult.h; sourceTree = "<group>"; };
@@ -4492,6 +4504,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		452DB56E1BA94DB600B1210C /* GeneralRequest */ = {
+			isa = PBXGroup;
+			children = (
+				452DB56F1BA94DE000B1210C /* RequestNotifyLBLM.h */,
+				452DB5701BA94DE000B1210C /* RequestNotifyLBLM.m */,
+			);
+			path = GeneralRequest;
+			sourceTree = "<group>";
+		};
+		452DB5721BA9519500B1210C /* NotifyLBLM */ = {
+			isa = PBXGroup;
+			children = (
+				452DB5791BA951D300B1210C /* NotifyLBLM.h */,
+				452DB57A1BA951D300B1210C /* NotifyLBLM.m */,
+				452DB5731BA951A600B1210C /* NotifyData.h */,
+				452DB5741BA951A600B1210C /* NotifyData.m */,
+				452DB5761BA951C400B1210C /* NotifyAttributes.h */,
+				452DB5771BA951C400B1210C /* NotifyAttributes.m */,
+			);
+			path = NotifyLBLM;
+			sourceTree = "<group>";
+		};
 		45A042011BA135B900F8721B /* LoyaltyPoint */ = {
 			isa = PBXGroup;
 			children = (
@@ -4613,6 +4647,7 @@
 			isa = PBXGroup;
 			children = (
 				45A042111BA1370700F8721B /* TKPObjectMapping.h */,
+				452DB5721BA9519500B1210C /* NotifyLBLM */,
 				45A042011BA135B900F8721B /* LoyaltyPoint */,
 				851DF2C41B7CA97D00671399 /* Activation */,
 				851DF2D91B7CA97D00671399 /* Address */,
@@ -6164,6 +6199,7 @@
 		851DF6251B7CA97E00671399 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				452DB56E1BA94DB600B1210C /* GeneralRequest */,
 				851DF6261B7CA97E00671399 /* Activation */,
 				851DF6381B7CA97E00671399 /* Address */,
 				851DF6421B7CA97E00671399 /* Alert */,
@@ -10496,6 +10532,7 @@
 				851DFFDD1B7CA98200671399 /* TKPDTabHomeViewController.m in Sources */,
 				851D00901B7CA98200671399 /* ReputationMyProductViewController.m in Sources */,
 				851D01171B7CA98300671399 /* ShopNotesDetailViewController.m in Sources */,
+				452DB5711BA94DE000B1210C /* RequestNotifyLBLM.m in Sources */,
 				851DFE281B7CA98200671399 /* InboxTicket.m in Sources */,
 				851DFE3E1B7CA98200671399 /* ManageProductList.m in Sources */,
 				851DFEC31B7CA98200671399 /* District.m in Sources */,
@@ -10763,6 +10800,7 @@
 				851DFE301B7CA98200671399 /* InboxTicketTicket.m in Sources */,
 				851DFEB61B7CA98200671399 /* Shop.m in Sources */,
 				851DFF2F1B7CA98200671399 /* RequestAddress.m in Sources */,
+				452DB5751BA951A600B1210C /* NotifyData.m in Sources */,
 				851DFDA81B7CA98200671399 /* Login.m in Sources */,
 				851DFE731B7CA98200671399 /* BankAccountGetDefaultFormResult.m in Sources */,
 				851DFF0E1B7CA98200671399 /* TxOrderPaymentEdit.m in Sources */,
@@ -10876,6 +10914,7 @@
 				851DFE211B7CA98200671399 /* InboxReviewResponse.m in Sources */,
 				851DFF0F1B7CA98200671399 /* TxOrderPaymentEditBankAccount.m in Sources */,
 				851DFDA21B7CA98200671399 /* EncodeDecoderManager.m in Sources */,
+				452DB5781BA951C400B1210C /* NotifyAttributes.m in Sources */,
 				851DFE101B7CA98200671399 /* ResolutionButton.m in Sources */,
 				851D00B61B7CA98300671399 /* BarCodeViewController.m in Sources */,
 				851D00381B7CA98200671399 /* NotificationBarButton.m in Sources */,
@@ -11043,6 +11082,7 @@
 				851DFFA91B7CA98200671399 /* GeneralList1GestureCell.m in Sources */,
 				851D01471B7CA98300671399 /* TokopediaCacheManager.m in Sources */,
 				851DFDDA1B7CA98200671399 /* ReviewList.m in Sources */,
+				452DB57B1BA951D300B1210C /* NotifyLBLM.m in Sources */,
 				851DFFC31B7CA98200671399 /* FavoritedShopCell.m in Sources */,
 				851DFDF91B7CA98200671399 /* DepartmentChild2.m in Sources */,
 				851DFDCE1B7CA98200671399 /* Breadcrumb.m in Sources */,

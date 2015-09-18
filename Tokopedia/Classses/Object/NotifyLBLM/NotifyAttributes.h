@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NotifyAttributes : NSObject
+#import "TKPObjectMapping.h"
+
+@interface NotifyAttributes : NSObject <TKPObjectMapping>
+
+@property (nonatomic, strong) NSString *notify_buyer;
+@property (nonatomic, strong) NSString *expiry_time_loyal_buyer;
+@property (nonatomic, strong) NSString *notify_seller;
+@property (nonatomic, strong) NSString *expiry_time_loyal_seller;
 
 @end

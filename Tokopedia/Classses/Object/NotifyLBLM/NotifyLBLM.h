@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NotifyLBLM : NSObject
+#import "NotifyData.h"
+
+#import "TKPObjectMapping.h"
+
+@interface NotifyLBLM : NSObject <TKPObjectMapping>
+
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NotifyData *data;
 
 @end

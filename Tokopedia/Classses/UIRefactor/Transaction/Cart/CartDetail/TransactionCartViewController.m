@@ -474,7 +474,7 @@
     }
     else if (section == _list.count)
     {
-        if ([_cart.lp_amount integerValue] == 0) {
+        if ([_cart.cashback integerValue] == 0) {
             return 0.1f;
         }
     }
@@ -514,7 +514,7 @@
     {
         if (_indexPage==0)
         {
-            if ([_cart.lp_amount integerValue] == 0) {
+            if ([_cart.cashback integerValue] == 0) {
                 return 0.1f;
             }
         }
@@ -973,7 +973,7 @@
     }
     
     _cartSummary = summaryDetail;
-    
+
     _isUsingSaldoTokopedia = ([_cartSummary.deposit_amount integerValue]>0);
     
     NSArray *dropshipNameArray = [_data objectForKey:DATA_DROPSHIPPER_NAME_KEY];
@@ -1743,7 +1743,7 @@
         
         TransactionCartHeaderView *headerView = [TransactionCartHeaderView newview];
     
-        BOOL isLuckyMerchant = ([list.cart_shop.lucky_merchant integerValue] == 1);
+        BOOL isLuckyMerchant = ([list.cart_shop.shop_lucky integerValue] == 1);
 
         headerView.LMBadgeImageView.hidden = (!isLuckyMerchant);
         headerView.constraintwidthbadge.constant = (isLuckyMerchant)?20:0;
@@ -2249,7 +2249,7 @@
         }
     }
     else if (indexPath.section == _list.count) {
-        if ([_cart.lp_amount integerValue] == 0) {
+        if ([_cart.cashback integerValue] == 0) {
             return 0;
         }
     }
@@ -2341,7 +2341,7 @@
     }
     else if (indexPath.section == _list.count)
     {
-        if ([_cartSummary.lp_amount integerValue] == 0) {
+        if ([_cartSummary.cashback integerValue] == 0) {
             return 0;
         }
     }
@@ -2941,7 +2941,6 @@
         }
         break;
     }
-    
     //
     _buyButton.enabled = YES;
     _buyButton.layer.opacity = 1;

@@ -38,6 +38,8 @@
 
 #import "InboxRootViewController.h"
 
+#import "RequestNotifyLBLM.h"
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -175,7 +177,6 @@ typedef enum TagRequest {
     
     _tabBarController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	[self presentViewController:_tabBarController animated:YES completion:^{
-		
 	}];
 }
 

@@ -18,6 +18,8 @@
 #import "NavigateViewController.h"
 #import "ProductCell.h"
 
+#import "RequestNotifyLBLM.h"
+
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
 static NSInteger const normalHeight = 568;
@@ -50,6 +52,7 @@ typedef enum TagRequest {
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultView *_noResult;
+    RequestNotifyLBLM *_requestLBLM;
 }
 
 #pragma mark - Initialization
@@ -100,11 +103,16 @@ typedef enum TagRequest {
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductFeedTag;
     [_networkManager doRequest];
+    
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Home - Product Feed";
+    
+    _requestLBLM = [RequestNotifyLBLM new];
+    [_requestLBLM doRequestLBLM];
 }
 
 #pragma mark - Collection Delegate
@@ -239,7 +247,8 @@ typedef enum TagRequest {
                                                  kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
                                                  kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
-                                                 API_PRODUCT_NAME_KEY
+                                                 API_PRODUCT_NAME_KEY,
+                                                 @"shop_lucky"
                                                  ]];
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];

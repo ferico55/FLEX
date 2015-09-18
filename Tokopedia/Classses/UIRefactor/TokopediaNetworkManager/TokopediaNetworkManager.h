@@ -25,6 +25,7 @@
 - (void)actionBeforeRequest:(int)tag;
 - (void)actionRequestAsync:(int)tag;
 - (void)actionAfterFailRequestMaxTries:(int)tag;
+- (RKRequestMethod)getRequestMethod:(int)tag;
 
 @end
 

@@ -61,6 +61,13 @@
                                     <constraint firstAttribute="height" constant="30" id="QDC-bJ-lUS"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XZW-2v-ESw" userLabel="l">
+                                <rect key="frame" x="109" y="46" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="CBp-Bg-jJa"/>
+                                    <constraint firstAttribute="width" constant="30" id="Qyw-aC-gHl"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -73,10 +80,12 @@
                             <constraint firstAttribute="trailing" secondItem="Tn9-gR-GHT" secondAttribute="trailing" id="EGT-rI-eTC"/>
                             <constraint firstAttribute="bottom" secondItem="mlD-8n-5Cw" secondAttribute="bottom" constant="18" id="KUD-1y-eJZ"/>
                             <constraint firstItem="Uc5-k1-Ud2" firstAttribute="top" secondItem="ZXj-s2-9Ow" secondAttribute="bottom" constant="11" id="Kq6-U0-Xcj"/>
+                            <constraint firstAttribute="trailing" secondItem="XZW-2v-ESw" secondAttribute="trailing" constant="6" id="Q08-Ub-K11"/>
                             <constraint firstItem="mlD-8n-5Cw" firstAttribute="top" secondItem="Tn9-gR-GHT" secondAttribute="bottom" constant="21" id="Xiy-PT-ngu"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="leading" secondItem="mlD-8n-5Cw" secondAttribute="leading" id="dhQ-K9-Ipz"/>
                             <constraint firstItem="Tn9-gR-GHT" firstAttribute="top" secondItem="Ymv-Zs-D1n" secondAttribute="top" id="h9r-cr-xZl"/>
                             <constraint firstItem="Uc5-k1-Ud2" firstAttribute="trailing" secondItem="ZXj-s2-9Ow" secondAttribute="trailing" id="nAM-5n-asx"/>
+                            <constraint firstItem="XZW-2v-ESw" firstAttribute="top" secondItem="UFM-a3-IJN" secondAttribute="bottom" constant="8" id="oNU-Hp-BOe"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="centerX" secondItem="Tn9-gR-GHT" secondAttribute="centerX" id="pK3-Rt-adM"/>
                             <constraint firstItem="UFM-a3-IJN" firstAttribute="top" secondItem="Ymv-Zs-D1n" secondAttribute="topMargin" id="qtw-kS-w0W"/>
                             <constraint firstItem="Uc5-k1-Ud2" firstAttribute="leading" secondItem="mlD-8n-5Cw" secondAttribute="leading" id="xNU-Rl-00z"/>
@@ -92,7 +101,10 @@
                 <constraint firstAttribute="bottom" secondItem="Ymv-Zs-D1n" secondAttribute="bottom" id="Jce-ZB-TIr"/>
             </constraints>
             <connections>
-                <outlet property="goldShopBadge" destination="UFM-a3-IJN" id="0W2-EJ-fbQ"/>
+                <outlet property="constraintGoldBadge" destination="QDC-bJ-lUS" id="ixm-zj-CnW"/>
+                <outlet property="constraintSpaceGoldBadge" destination="oNU-Hp-BOe" id="LR8-qN-ftn"/>
+                <outlet property="goldShopBadge" destination="UFM-a3-IJN" id="lpf-a6-oCb"/>
+                <outlet property="luckyMerchantBadge" destination="XZW-2v-ESw" id="U43-MR-FwP"/>
                 <outlet property="productImage" destination="Tn9-gR-GHT" id="6SG-Qk-VGd"/>
                 <outlet property="productName" destination="ZXj-s2-9Ow" id="wOb-t5-fWN"/>
                 <outlet property="productPrice" destination="mlD-8n-5Cw" id="SXa-LS-3vo"/>

@@ -15,4 +15,6 @@
 @property (strong, nonatomic) NSString *catalogSeller;
 @property (strong, nonatomic) NSString *catalogThumbUrl;
 
+@property (strong, nonatomic) NSString *luckyMerchantImageURL;
+
 @end

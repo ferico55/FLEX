@@ -37,9 +37,15 @@
         [_delegate actionBeforeRequest:self.tagRequest];
     }
     
+    RKRequestMethod requestMethod = RKRequestMethodPOST;
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(getRequestMethod:)]) {
+        requestMethod = [_delegate getRequestMethod:self.tagRequest];
+    }
+    
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
-                                                                          method:RKRequestMethodPOST
+                                                                          method:requestMethod
                                                                             path:[_delegate getPath:self.tagRequest]
                                                                       parameters:(!_isParameterNotEncrypted ? [[_delegate getParameter:self.tagRequest] encrypt] : [_delegate getParameter:self.tagRequest])];
     

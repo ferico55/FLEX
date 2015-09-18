@@ -98,6 +98,13 @@
                             <constraint firstItem="eGy-Mg-oHd" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="zo8-7c-nMd"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dAv-XG-SxH" userLabel="l">
+                        <rect key="frame" x="260" y="48" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="GVX-9J-GPG"/>
+                            <constraint firstAttribute="height" constant="30" id="huR-h8-MIZ"/>
+                        </constraints>
+                    </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="HwM-OA-Hae" userLabel="Gold Badges">
                         <rect key="frame" x="260" y="10" width="30" height="30"/>
                         <constraints>
@@ -113,13 +120,18 @@
                 <constraint firstAttribute="trailing" secondItem="sy2-3E-5tq" secondAttribute="trailing" id="IoS-De-BQn"/>
                 <constraint firstAttribute="trailing" secondItem="HwM-OA-Hae" secondAttribute="trailing" constant="10" id="MNb-5v-Xbn"/>
                 <constraint firstItem="sy2-3E-5tq" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="NJQ-Fl-oda"/>
+                <constraint firstItem="dAv-XG-SxH" firstAttribute="top" secondItem="HwM-OA-Hae" secondAttribute="bottom" constant="8" id="dOn-dg-7AW"/>
+                <constraint firstAttribute="trailing" secondItem="dAv-XG-SxH" secondAttribute="trailing" constant="10" id="hGO-pz-6rS"/>
                 <constraint firstItem="sy2-3E-5tq" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="o0n-3T-oeU"/>
                 <constraint firstAttribute="bottom" secondItem="sy2-3E-5tq" secondAttribute="bottom" id="tpR-8e-xwZ"/>
             </constraints>
             <size key="customSize" width="300" height="387"/>
             <connections>
+                <outlet property="constraintGoldBadge" destination="hPP-br-RkJ" id="JuA-TJ-ylp"/>
+                <outlet property="constraintSpaceGoldBadge" destination="dOn-dg-7AW" id="j9q-PC-tHU"/>
                 <outlet property="goldShopBadge" destination="HwM-OA-Hae" id="Qp6-R5-r6M"/>
                 <outlet property="infoContraint" destination="uqX-fv-TF9" id="vSr-MU-fXp"/>
+                <outlet property="luckyMerchantBadge" destination="dAv-XG-SxH" id="CbV-Rp-RIb"/>
                 <outlet property="productImage" destination="xYp-Qr-lkc" id="gX7-hp-7N1"/>
                 <outlet property="productInfoLabel" destination="kIj-WD-JB3" id="qSD-6G-mYu"/>
                 <outlet property="productName" destination="DeI-5m-9NG" id="X5p-fb-Eb6"/>

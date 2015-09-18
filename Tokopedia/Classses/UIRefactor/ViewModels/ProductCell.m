@@ -26,6 +26,11 @@
     }
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
     
+    if (self.goldShopBadge.hidden == YES) {
+        _constraintGoldBadge.constant = 0;
+        _constraintSpaceGoldBadge.constant = 0;
+    }
+    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     [self.productImage setContentMode:UIViewContentModeCenter];
@@ -38,6 +43,15 @@
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
+    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [self.luckyMerchantBadge setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [self.luckyMerchantBadge setImage:image];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+       [self.luckyMerchantBadge setImage:[UIImage imageNamed:@""]];
+    }];
+    
 }
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
@@ -45,6 +59,11 @@
     [self.productPrice setText:viewModel.catalogPrice];
     [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
     self.goldShopBadge.hidden = YES;
+    
+    if (self.goldShopBadge.hidden == YES) {
+        _constraintGoldBadge.constant = 0;
+        _constraintSpaceGoldBadge.constant = 0;
+    }
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -57,6 +76,16 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [self.productImage setImage:[UIImage imageNamed:@""]];
     }];
+    
+    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [self.luckyMerchantBadge setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [self.luckyMerchantBadge setImage:image];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [self.luckyMerchantBadge setImage:[UIImage imageNamed:@""]];
+    }];
+    
 }
 
 @end

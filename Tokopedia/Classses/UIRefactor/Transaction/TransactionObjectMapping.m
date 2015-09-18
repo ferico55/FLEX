@@ -147,7 +147,7 @@
                                                           kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
-                                                          @"lucky_merchant" : @"lucky_merchant"
+                                                          @"shop_lucky" : @"shop_lucky"
                                                           }];
     return shopinfoMapping;
 }

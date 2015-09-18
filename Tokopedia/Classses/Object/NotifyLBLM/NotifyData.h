@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NotifyData : NSObject
+#import "NotifyAttributes.h"
+
+#import "TKPObjectMapping.h"
+
+@interface NotifyData : NSObject <TKPObjectMapping>
+
+@property (nonatomic, strong) NSString *notify_id;
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NotifyAttributes *attributes;
 
 @end

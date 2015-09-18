@@ -157,6 +157,19 @@
     
     cell.buyButton.layer.cornerRadius = 2;
     
+    cell.goldMerchantBadge.hidden = (!shop.is_gold_shop == 1);
+    
+    if (cell.goldMerchantBadge.hidden) {
+        cell.constraintWidthGoldMerchant.constant = 0;
+        cell.containerHeightConstraint.constant = 0;
+    }
+    
+    [cell.luckyMerchantBadge setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_lucky]]
+                              placeholderImage:[UIImage imageNamed:@""]
+                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                           cell.luckyMerchantBadge.image = image;
+                                           } failure:nil];
+    
     [cell.shopImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_image]]
                               placeholderImage:[UIImage imageNamed:@""]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -332,6 +345,7 @@
                                                          API_SHOP_RATE_ACCURACY_KEY,
                                                          API_SHOP_RATE_SPEED_KEY,
                                                          API_IS_GOLD_SHOP_KEY,
+                                                         @"shop_lucky"
                                                          ]];
     
     RKObjectMapping *productListMapping = [RKObjectMapping mappingForClass:[ProductList class]];

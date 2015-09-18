@@ -255,6 +255,10 @@ typedef enum {
 #define GTMKeyPromoPostAction   @"promo_post_action_url"
 #define GTMKeyPromoFullAction   @"promo_full_action_url"
 
+#define GTMKeyNotifyLBLMBase @"notify_base_url"
+#define GTMKeyNotifyLBLMPost @"notify_post_url"
+#define GTMKeyNotifyLBLMFull @"notify_full_url"
+
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

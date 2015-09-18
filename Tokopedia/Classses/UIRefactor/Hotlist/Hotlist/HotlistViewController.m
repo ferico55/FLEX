@@ -23,6 +23,8 @@
 #import "LoadingView.h"
 #import "TableViewScrollAndSwipe.h"
 
+#import "RequestNotifyLBLM.h"
+
 #pragma mark - HotlistView
 
 @interface HotlistViewController ()

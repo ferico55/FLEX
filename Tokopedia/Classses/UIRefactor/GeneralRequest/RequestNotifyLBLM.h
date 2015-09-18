@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RequestNotifyLBLM : NSObject
+@interface RequestNotifyLBLM : NSObject <TokopediaNetworkManagerDelegate>
+
+-(void)doRequestLBLM;
 
 @end

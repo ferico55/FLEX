@@ -13,11 +13,14 @@
 #import "MyWishlistViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "NoResultView.h"
+#import "ProductCell.h"
 
 #import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
 #import "WishListObject.h"
 #import "WishListObjectList.h"
+
+static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 
 @interface MyWishlistViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
@@ -122,6 +125,17 @@ typedef enum TagRequest {
     self.screenName = @"Home - Wishlist";
 }
 
+- (void)registerNib {
+    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:wishListCellIdentifier];
+    
+    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
+    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+}
+
 #pragma mark - Collection Delegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _product.count;
@@ -129,37 +143,12 @@ typedef enum TagRequest {
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellid = @"GeneralProductCollectionViewIdentifier";
-    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-
+    
+    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
+    
     WishListObjectList *list = [_product objectAtIndex:indexPath.row];
     cell.productPrice.text = list.product_price;
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:5];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
-    cell.productName.attributedText = attributedString;
-    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
-    cell.productShop.text = list.shop_name?:@"";
-    
-    if(list.shop_gold_status == 1) {
-        cell.goldShopBadge.hidden = NO;
-    } else {
-        cell.goldShopBadge.hidden = YES;
-    }
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    UIImageView *thumb = cell.productImage;
-    thumb.image = nil;
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        #pragma clang diagnostic push
-        #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-        [thumb setContentMode:UIViewContentModeScaleAspectFill];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    [cell setViewModel:list.viewModel];
     
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
@@ -169,11 +158,53 @@ typedef enum TagRequest {
             [_networkManager doRequest];
         }
     }
-    
+//    NSString *cellid = @"GeneralProductCollectionViewIdentifier";
+//    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+//
+//    WishListObjectList *list = [_product objectAtIndex:indexPath.row];
+//    cell.productPrice.text = list.product_price;
+//    
+//    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
+//    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+//    [paragrahStyle setLineSpacing:5];
+//    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
+//    cell.productName.attributedText = attributedString;
+//    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
+//    cell.productShop.text = list.shop_name?:@"";
+//    
+//    if(list.shop_gold_status == 1) {
+//        cell.goldShopBadge.hidden = NO;
+//    } else {
+//        cell.goldShopBadge.hidden = YES;
+//    }
+//    
+//    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+//    UIImageView *thumb = cell.productImage;
+//    thumb.image = nil;
+//    
+//    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//        #pragma clang diagnostic push
+//        #pragma clang diagnostic ignored "-Warc-retain-cycles"
+//        [thumb setImage:image];
+//        [thumb setContentMode:UIViewContentModeScaleAspectFill];
+//    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+//    }];
+//    
+//    //next page if already last cell
+//    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+//    if (row == indexPath.row) {
+//        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+//            _isFailRequest = NO;
+//            [_networkManager doRequest];
+//        }
+//    }
+//    
     return cell;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    [self registerNib];
+    
     UICollectionReusableView *reusableView = nil;
     
     if(kind == UICollectionElementKindSectionFooter) {
@@ -315,7 +346,8 @@ typedef enum TagRequest {
                                                  //KTKPDPRODUCT_REVIEW_COUNT,
                                                  //KTKPDSHOP_IS_OWNER,
                                                  //KTKPDPRODUCT_URL,
-                                                 KTKPDPRODUCT_NAME
+                                                 KTKPDPRODUCT_NAME,
+                                                 @"shop_lucky"
                                                  ]];
     
     //relation
