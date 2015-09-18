@@ -23,9 +23,9 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 
 @interface PromoCollectionReusableView ()
 <
-    UICollectionViewDataSource,
-    UICollectionViewDelegate,
-    TKPDAlertViewDelegate
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+TKPDAlertViewDelegate
 >
 
 @property (strong, nonatomic) UICollectionViewFlowLayout *flowLayout;
@@ -63,10 +63,10 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
         _cellIdentifier = @"ProductCellIdentifier";
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
         _collectionView.scrollIndicatorInsets = UIEdgeInsetsZero;
-
+        
         CGRect frame = self.frame;
         frame.size.height = [self viewHeight];
-        self.frame = frame;        
+        self.frame = frame;
     }
     
     else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
         _cellIdentifier = @"ProductThumbCellIdentifier";
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
         _collectionView.scrollIndicatorInsets = UIEdgeInsetsZero;
-
+        
         CGRect frame = self.frame;
         frame.size.height = [self viewHeight];
         self.frame = frame;
@@ -109,7 +109,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
         PromoProduct *product = [_promo objectAtIndex:indexPath.row];
         [cell setViewModel:product.viewModel];
         return cell;
-    
+        
     } else {
         UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
         return cell;
@@ -147,7 +147,9 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 
 - (void)centerPositionAnimated:(BOOL)animated {
     if (IS_IPAD) return;
-    if ([_scrollPosition integerValue] == 0 && _promo.count > 2) {
+    NSInteger maxCount = 2;
+    if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) maxCount = 3;
+    if ([_scrollPosition integerValue] == 0 && _promo.count > maxCount) {
         NSInteger x = _flowLayout.itemSize.width / 2;
         x += 5; // add cell spacing
         [_collectionView setContentOffset:CGPointMake(x, 0) animated:animated];
@@ -155,13 +157,14 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 }
 
 - (void)scrollToCenter {
+    NSLog(@"\n\n%ld\n\n", (long)self.indexPath.section);
     if (IS_IPAD) return;
-    NSInteger maxCount = 2;
-    if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) maxCount = 3;
-    if ([_scrollPosition integerValue] == 0 && _promo.count > maxCount) {
-        NSInteger x = _flowLayout.itemSize.width / 2;
-        x += 5; // add cell spacing
-        [_collectionView setContentOffset:CGPointMake(x, 0) animated:animated];
+    if (_indexPath.section == 1) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self centerPositionAnimated:YES];
+        });
+    } else {
+        [self centerPositionAnimated:YES];
     }
 }
 
@@ -237,7 +240,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
             height = PromoNormalCellHeightSixPlus;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
             height = PromoThumbnailCellHeightSixPlus;
-        }        
+        }
     }
     return height;
 }
