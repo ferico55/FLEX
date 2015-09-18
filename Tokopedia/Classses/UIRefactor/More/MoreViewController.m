@@ -30,11 +30,8 @@
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 
-#import "TKPDTabShopViewController.h"
 #import "ShopFavoritedViewController.h"
-#import "ShopReviewViewController.h"
-#import "MyShopNoteViewController.h"
-#import "ShopTalkViewController.h"
+
 
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
@@ -703,11 +700,9 @@
             [self.navigationController pushViewController:nc animated:YES];
             */
         } else if (indexPath.row == 3) {
-            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
-            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
             
-
+            [_navigate navigateToInboxPriceAlertFromViewController:self];
+            
         } else if (indexPath.row == 4) {
             TKPDTabViewController *controller = [TKPDTabViewController new];
             controller.hidesBottomBarWhenPushed = YES;

@@ -37,15 +37,10 @@
         [_delegate actionBeforeRequest:self.tagRequest];
     }
     
-    RKRequestMethod requestMethod = RKRequestMethodPOST;
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(getRequestMethod:)]) {
-        requestMethod = [_delegate getRequestMethod:self.tagRequest];
-    }
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
-                                                                          method:requestMethod
+                                                                          method:(_delegate && [_delegate respondsToSelector:@selector(didReceiveRequestMethod:)])?[_delegate didReceiveRequestMethod:self.tagRequest]:RKRequestMethodPOST
                                                                             path:[_delegate getPath:self.tagRequest]
                                                                       parameters:(!_isParameterNotEncrypted ? [[_delegate getParameter:self.tagRequest] encrypt] : [_delegate getParameter:self.tagRequest])];
     
@@ -127,7 +122,8 @@
 
 - (void)requestTimeout {
     [self requestCancel];
-    if(_requestCount < kTKPDREQUESTCOUNTMAX) {
+    NSInteger requestCountMax = _maxTries?:kTKPDREQUESTCOUNTMAX;
+    if(_requestCount < requestCountMax) {
         [self doRequest];
     } else {
         [self resetRequestCount];

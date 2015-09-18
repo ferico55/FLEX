@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @protocol SearchResultDelegate <NSObject>
 
 - (void)pushViewController:(id)viewController animated:(BOOL)animated;
@@ -20,6 +21,7 @@
 @interface SearchResultViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
+@property (nonatomic) BOOL isFromAutoComplete;
 @property (weak, nonatomic) id<SearchResultDelegate> delegate;
 
 @end

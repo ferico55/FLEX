@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -18,17 +18,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="237" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="twK-Ja-Ysd">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="214" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="twK-Ja-Ysd">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="twK-Ja-Ysd" secondAttribute="trailing" id="auL-IL-jx1"/>
-                <constraint firstItem="twK-Ja-Ysd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="glm-yB-mJo"/>
-                <constraint firstAttribute="bottom" secondItem="twK-Ja-Ysd" secondAttribute="bottom" id="iay-GM-Dmm"/>
-                <constraint firstItem="twK-Ja-Ysd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="kla-Dv-jSB"/>
+                <constraint firstAttribute="trailing" secondItem="twK-Ja-Ysd" secondAttribute="trailing" id="bAU-YV-ipO"/>
+                <constraint firstAttribute="bottom" secondItem="twK-Ja-Ysd" secondAttribute="bottom" id="jom-US-ckb"/>
+                <constraint firstItem="twK-Ja-Ysd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="tvl-gC-BNp"/>
+                <constraint firstItem="twK-Ja-Ysd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vyJ-h4-bw2"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="140" y="154"/>

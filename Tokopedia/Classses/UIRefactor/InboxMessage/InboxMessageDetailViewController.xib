@@ -114,16 +114,20 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="iUJ-XA-urU"/>
                     </connections>
                 </button>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6hY-Rz-ceo">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6hY-Rz-ceo">
                     <rect key="frame" x="150" y="25" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="kVd-M4-5br" secondAttribute="centerY" id="47D-TR-YeP"/>
+                <constraint firstAttribute="trailing" secondItem="6hY-Rz-ceo" secondAttribute="trailing" constant="150" id="AF0-Fl-wBj"/>
                 <constraint firstAttribute="centerX" secondItem="6hY-Rz-ceo" secondAttribute="centerX" id="CXB-8O-Kgu"/>
                 <constraint firstAttribute="centerX" secondItem="kVd-M4-5br" secondAttribute="centerX" id="Fpf-tE-2Lp"/>
                 <constraint firstAttribute="centerY" secondItem="6hY-Rz-ceo" secondAttribute="centerY" id="H3V-fn-CZ6"/>
+                <constraint firstItem="6hY-Rz-ceo" firstAttribute="top" secondItem="Mxn-u0-ISc" secondAttribute="top" constant="25" id="RfT-q2-52U"/>
+                <constraint firstAttribute="bottom" secondItem="6hY-Rz-ceo" secondAttribute="bottom" constant="24" id="Xti-hw-Qtf"/>
+                <constraint firstItem="6hY-Rz-ceo" firstAttribute="leading" secondItem="Mxn-u0-ISc" secondAttribute="leading" constant="150" id="n72-qZ-56T"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">

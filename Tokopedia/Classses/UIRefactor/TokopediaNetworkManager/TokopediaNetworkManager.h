@@ -25,7 +25,7 @@
 - (void)actionBeforeRequest:(int)tag;
 - (void)actionRequestAsync:(int)tag;
 - (void)actionAfterFailRequestMaxTries:(int)tag;
-- (RKRequestMethod)getRequestMethod:(int)tag;
+- (int)didReceiveRequestMethod:(int)tag;
 
 @end
 
@@ -54,6 +54,7 @@
 @property (nonatomic) int tagRequest;
 @property (nonatomic) BOOL isParameterNotEncrypted;
 @property (nonatomic) NSTimeInterval timeInterval;
+@property (nonatomic) NSInteger maxTries;
 
 - (void)doRequest;
 - (void)requestSuccess:(id)successResult withOperation:(RKObjectRequestOperation*)operation;
