@@ -21,26 +21,27 @@
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="kIx-Wn-xWp" userLabel="Gold Badges">
-                                <rect key="frame" x="58" y="5" width="30" height="30"/>
+                                <rect key="frame" x="71" y="2" width="20" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="73U-1l-tFd"/>
-                                    <constraint firstAttribute="width" constant="30" id="Z9K-tT-G93"/>
+                                    <constraint firstAttribute="height" constant="20" id="73U-1l-tFd"/>
+                                    <constraint firstAttribute="width" constant="20" id="Z9K-tT-G93"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gfk-mY-d4D" userLabel="l">
-                                <rect key="frame" x="58" y="39" width="30" height="30"/>
+                            <imageView userInteractionEnabled="NO" tag="10" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gfk-mY-d4D" userLabel="l">
+                                <rect key="frame" x="71" y="22" width="20" height="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="5wm-6u-LtE"/>
-                                    <constraint firstAttribute="width" constant="30" id="CsV-WN-jny"/>
+                                    <constraint firstAttribute="height" constant="20" id="5wm-6u-LtE"/>
+                                    <constraint firstAttribute="width" constant="20" id="CsV-WN-jny"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="gfk-mY-d4D" firstAttribute="top" secondItem="kIx-Wn-xWp" secondAttribute="bottom" constant="4" id="7nT-uv-Syt"/>
-                            <constraint firstAttribute="trailing" secondItem="gfk-mY-d4D" secondAttribute="trailing" constant="5" id="Lw5-80-8g1"/>
-                            <constraint firstAttribute="trailing" secondItem="kIx-Wn-xWp" secondAttribute="trailing" constant="5" id="QcR-L3-Ct5"/>
-                            <constraint firstItem="kIx-Wn-xWp" firstAttribute="top" secondItem="eFV-8v-Xwg" secondAttribute="top" constant="5" id="Yub-Uq-Tcw"/>
+                            <constraint firstItem="gfk-mY-d4D" firstAttribute="top" secondItem="kIx-Wn-xWp" secondAttribute="bottom" id="7nT-uv-Syt"/>
+                            <constraint firstAttribute="trailing" secondItem="gfk-mY-d4D" secondAttribute="trailing" constant="2" id="Lw5-80-8g1"/>
+                            <constraint firstAttribute="trailing" secondItem="kIx-Wn-xWp" secondAttribute="trailing" constant="2" id="QcR-L3-Ct5"/>
+                            <constraint firstItem="kIx-Wn-xWp" firstAttribute="top" secondItem="eFV-8v-Xwg" secondAttribute="top" constant="2" id="Yub-Uq-Tcw"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="leading" secondItem="eFV-8v-Xwg" secondAttribute="leading" id="ZIU-LO-z8z"/>
                             <constraint firstAttribute="bottom" secondItem="aeK-n3-p3K" secondAttribute="bottom" id="fs5-6k-T7I"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="top" secondItem="eFV-8v-Xwg" secondAttribute="top" id="l45-Ge-7jS"/>

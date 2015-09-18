@@ -24,7 +24,9 @@
     if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
         [self.productShop setHidden:YES];
     }
-    self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
+    //self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
+    
+    self.goldShopBadge.hidden = NO;
     
     if (self.goldShopBadge.hidden == YES) {
         _constraintGoldBadge.constant = 0;

@@ -37,6 +37,7 @@
     [self.productPrice setText:viewModel.productPrice];
     [self.productShop setText:viewModel.productShop];
     [self.goldShopBadge setHidden:viewModel.isGoldShopProduct ? NO : YES];
+    self.goldShopBadge.hidden = NO;
     
     if (self.goldShopBadge.hidden == YES) {
         _constraintGoldBadge.constant = 0;

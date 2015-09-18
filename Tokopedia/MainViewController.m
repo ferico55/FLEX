@@ -179,8 +179,7 @@ typedef enum TagRequest {
     
     _tabBarController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	[self presentViewController:_tabBarController animated:YES completion:^{
-        _requestLBLM = [RequestNotifyLBLM new];
-        [_requestLBLM doRequestLBLM];
+
 	}];
 }
 
@@ -523,9 +522,6 @@ typedef enum TagRequest {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
-    
-    _requestLBLM = [RequestNotifyLBLM new];
-    [_requestLBLM doRequestLBLM];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
     

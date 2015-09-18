@@ -13,6 +13,8 @@
 
 #import "Localytics.h"
 
+#import "AlertLuckyView.h"
+
 @implementation RequestNotifyLBLM
 {
     TAGContainer *_gtmContainer;
@@ -32,6 +34,9 @@
 {
     [self configureGTM];
     [[self networkManager] doRequest];
+    
+//    [self performSelector:@selector(showLuckyBuyer) withObject:nil afterDelay:3.0f];
+//    [self performSelector:@selector(showLuckyMerchant) withObject:nil afterDelay:4.0f];
 }
 
 -(TokopediaNetworkManager *)networkManager
@@ -58,7 +63,7 @@
 
 -(RKObjectManager*)objectManagerNotify
 {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient:_lplmBaseuUrl?:@"http://clover.tokopedia.com"];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:_lplmBaseuUrl];
     
 //    RKRoute *route = [RKRoute routeWithClass:[NotifyLBLM class]
 //                                 pathPattern:@""
@@ -77,6 +82,11 @@
     return objectManager;
 }
 
+-(int)didReceiveRequestMethod:(int)tag
+{
+    return RKRequestMethodGET;
+}
+
 -(NSString *)getPath:(int)tag
 {
     return _lplmPostUrl;
@@ -90,34 +100,62 @@
     NotifyLBLM *notify= stat;
     _notifyData = notify.data;
     
-    return notify.status;
+    return @"OK";//notify.status;
 }
 
 -(void)actionBeforeRequest:(int)tag
 {
-    
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    [self addLocalyticsProfile];
+    if ([_notifyData.attributes.notify_buyer isEqualToString:@"1"]) {
+        [self performSelector:@selector(showLuckyBuyer) withObject:nil afterDelay:2.0f];
+    }
+    if ([_notifyData.attributes.notify_seller isEqualToString:@"1"]) {
+        [self performSelector:@selector(showLuckyMerchant) withObject:nil afterDelay:3.0f];
+    }
+}
+
+-(void)showLuckyMerchant
+{
+    AlertLuckyView *alertLucky = [AlertLuckyView new];
+    NSString *line1 = [_gtmContainer stringForKey:@"string_notify_merchant_line_1"]?:@"Anda berhasil menjadi Lucky Merchant";
+    NSString *line2 = [_gtmContainer stringForKey:@"string_notify_merchant_line_2"]?:@"Kesempatan mendapatkan pesanan lebih banyak setiap harinya";
+    NSString *line3 = [_gtmContainer stringForKey:@"string_notify_merchant_line_3"]?:@"Berlaku hingga 30 hari kedepan";
+    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_seller_link"]?:@"http://blog.tokopedia.com";
+    
+    alertLucky.upperView.backgroundColor = [UIColor colorWithRed:(12.0f/255.0f) green:(170.0f/255.0f) blue:85.0f/255.0f alpha:1];
+    alertLucky.upperColor = alertLucky.upperView.backgroundColor;
+    [alertLucky.FirstLineLabel setCustomAttributedText:line1];
+    [alertLucky.secondLineLabel setCustomAttributedText:line2];
+    [alertLucky.Line3Label setCustomAttributedText:line3];
+    alertLucky.urlString = urlString;
+    
+    [alertLucky show];
+    
+}
+
+-(void)showLuckyBuyer
+{
+    AlertLuckyView *alertLucky = [AlertLuckyView new];
+    NSString *line1 = [_gtmContainer stringForKey:@"string_notify_buyer_line_1"]?:@"Anda berhasil menjadi Lucky Buyer";
+    NSString *line2 = [_gtmContainer stringForKey:@"string_notify_buyer_line_2"]?:@"Dapatkan cashback dan diskon setiap belanja dari Lucky Merchant";
+    NSString *line3 = [_gtmContainer stringForKey:@"string_notify_buyer_line_3"]?:@"Berlaku hingga 30 hari kedepan";
+    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"http://blog.tokopedia.com";
+    alertLucky.upperView.backgroundColor = [UIColor colorWithRed:(42.0f/255.0f) green:(180.0f/255.0f) blue:193.0f/255.0f alpha:1];
+    alertLucky.upperColor = alertLucky.upperView.backgroundColor;
+    [alertLucky.FirstLineLabel setCustomAttributedText:line1];
+    [alertLucky.secondLineLabel setCustomAttributedText:line2];
+    [alertLucky.Line3Label setCustomAttributedText:line3];
+    alertLucky.urlString = urlString;
+    
+    [alertLucky show];
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
-//    NSError *error = errorResult;
-//    StickyAlertView *alert = [[StickyAlertView alloc]init];
-//    NSArray *errors;
-//    if(error.code == -1011) {
-//        errors = @[@"Mohon maaf, terjadi kendala pada server"];
-//    } else if (error.code==-1009 || error.code==-999) {
-//        errors = @[@"Tidak ada koneksi internet"];
-//    } else {
-//        errors = @[error.localizedDescription];
-//    }
-//    
-//    [alert initWithErrorMessages:errors delegate:_delegate];
-//    [alert show];
+
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
@@ -140,14 +178,14 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
     
-    _lplmBaseuUrl = @"https://clover-staging.tokopedia.com";//[_gtmContainer stringForKey:@"lplm_base_url"];
-    _lplmPostUrl = @"notify/v1";//[_gtmContainer stringForKey:@"lplm_post_url"];
+    _lplmBaseuUrl = [_gtmContainer stringForKey:@"lplm_base_url"]?:@"https://clover-staging.tokopedia.com";
+    _lplmPostUrl = [_gtmContainer stringForKey:@"lplm_post_url"]?:@"notify/v1";
 }
 
-#pragma mark - L
--(void)addLocalyticsProfile
-{
-    [Localytics setValue:_notifyData.attributes.notify_buyer forProfileAttribute:@"Notify Buyer" withScope:LLProfileScopeApplication];
-    [Localytics setValue:_notifyData.attributes.notify_seller forProfileAttribute:@"Notify Seller" withScope:LLProfileScopeApplication];
-}
+//#pragma mark - L
+//-(void)addLocalyticsProfile
+//{
+//    [Localytics setValue:_notifyData.attributes.notify_buyer forProfileAttribute:@"Notify Buyer" withScope:LLProfileScopeApplication];
+//    [Localytics setValue:_notifyData.attributes.notify_seller forProfileAttribute:@"Notify Seller" withScope:LLProfileScopeApplication];
+//}
 @end

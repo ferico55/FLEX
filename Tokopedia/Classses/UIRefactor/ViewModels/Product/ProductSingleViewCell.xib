@@ -98,30 +98,31 @@
                             <constraint firstItem="eGy-Mg-oHd" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="zo8-7c-nMd"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dAv-XG-SxH" userLabel="l">
-                        <rect key="frame" x="260" y="48" width="30" height="30"/>
+                    <imageView userInteractionEnabled="NO" tag="10" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dAv-XG-SxH" userLabel="l">
+                        <rect key="frame" x="276" y="26" width="20" height="20"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="30" id="GVX-9J-GPG"/>
-                            <constraint firstAttribute="height" constant="30" id="huR-h8-MIZ"/>
+                            <constraint firstAttribute="width" constant="20" id="GVX-9J-GPG"/>
+                            <constraint firstAttribute="height" constant="20" id="huR-h8-MIZ"/>
                         </constraints>
                     </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="HwM-OA-Hae" userLabel="Gold Badges">
-                        <rect key="frame" x="260" y="10" width="30" height="30"/>
+                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="HwM-OA-Hae" userLabel="Gold Badges">
+                        <rect key="frame" x="276" y="4" width="20" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="30" id="735-1D-ezP"/>
-                            <constraint firstAttribute="height" constant="30" id="hPP-br-RkJ"/>
+                            <constraint firstAttribute="width" constant="20" id="735-1D-ezP"/>
+                            <constraint firstAttribute="height" constant="20" id="hPP-br-RkJ"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="HwM-OA-Hae" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="IdU-tT-Zfe"/>
+                <constraint firstItem="HwM-OA-Hae" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="IdU-tT-Zfe"/>
                 <constraint firstAttribute="trailing" secondItem="sy2-3E-5tq" secondAttribute="trailing" id="IoS-De-BQn"/>
-                <constraint firstAttribute="trailing" secondItem="HwM-OA-Hae" secondAttribute="trailing" constant="10" id="MNb-5v-Xbn"/>
+                <constraint firstAttribute="trailing" secondItem="HwM-OA-Hae" secondAttribute="trailing" constant="4" id="MNb-5v-Xbn"/>
                 <constraint firstItem="sy2-3E-5tq" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="NJQ-Fl-oda"/>
-                <constraint firstItem="dAv-XG-SxH" firstAttribute="top" secondItem="HwM-OA-Hae" secondAttribute="bottom" constant="8" id="dOn-dg-7AW"/>
-                <constraint firstAttribute="trailing" secondItem="dAv-XG-SxH" secondAttribute="trailing" constant="10" id="hGO-pz-6rS"/>
+                <constraint firstItem="dAv-XG-SxH" firstAttribute="top" secondItem="HwM-OA-Hae" secondAttribute="bottom" constant="2" id="dOn-dg-7AW"/>
+                <constraint firstAttribute="trailing" secondItem="dAv-XG-SxH" secondAttribute="trailing" constant="4" id="hGO-pz-6rS"/>
                 <constraint firstItem="sy2-3E-5tq" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="o0n-3T-oeU"/>
                 <constraint firstAttribute="bottom" secondItem="sy2-3E-5tq" secondAttribute="bottom" id="tpR-8e-xwZ"/>
             </constraints>
@@ -138,7 +139,7 @@
                 <outlet property="productPrice" destination="zUN-Jt-7ae" id="wlM-v2-KCT"/>
                 <outlet property="productShop" destination="eGy-Mg-oHd" id="KxJ-x8-9GN"/>
             </connections>
-            <point key="canvasLocation" x="202" y="218.5"/>
+            <point key="canvasLocation" x="202" y="218"/>
         </collectionViewCell>
     </objects>
     <resources>

@@ -32,7 +32,7 @@
 - (void)setViewModel:(ProductModelView *)viewModel {
 
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
-    
+    self.goldShopBadge.hidden = NO;
     if (self.goldShopBadge.hidden == YES) {
         _constraintGoldBadge.constant = 0;
         _constraintSpaceGoldBadge.constant = 0;

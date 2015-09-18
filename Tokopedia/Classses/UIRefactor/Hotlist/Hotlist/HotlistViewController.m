@@ -61,6 +61,8 @@ UICollectionViewDelegateFlowLayout
     LoadingView *_loadingView;
     
     BOOL _isFailRequest;
+    
+    RequestNotifyLBLM *_requestLBLM;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
@@ -146,13 +148,19 @@ UICollectionViewDelegateFlowLayout
     
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
-    
+        
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
     [_networkManager requestCancel];
+}
+
+-(void)doRequestNotify
+{
+    _requestLBLM = [RequestNotifyLBLM new];
+    [_requestLBLM doRequestLBLM];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -168,6 +176,8 @@ UICollectionViewDelegateFlowLayout
         [_networkManager doRequest];
         _collectionView.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
+    
+    [self doRequestNotify];
 }
 
 - (void) setTableInset {
