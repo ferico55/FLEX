@@ -32,11 +32,9 @@
 - (void)setViewModel:(ProductModelView *)viewModel {
 
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
-    self.goldShopBadge.hidden = NO;
-    if (self.goldShopBadge.hidden == YES) {
-        _constraintGoldBadge.constant = 0;
-        _constraintSpaceGoldBadge.constant = 0;
-    }
+
+    _constraintGoldBadge.constant = viewModel.isGoldShopProduct?_goldShopBadge.frame.size.width:0;
+    _constraintSpaceGoldBadge.constant = viewModel.isGoldShopProduct?2:0;
 
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [self.productImage setContentMode:UIViewContentModeCenter];
@@ -61,11 +59,6 @@
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
     [self.goldShopBadge setHidden:YES];
-    
-    if (self.goldShopBadge.hidden == YES) {
-        _constraintGoldBadge.constant = 0;
-        _constraintSpaceGoldBadge.constant = 0;
-    }
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
