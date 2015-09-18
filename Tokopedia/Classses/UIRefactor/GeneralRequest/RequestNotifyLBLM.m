@@ -31,10 +31,7 @@
 -(void)doRequestLBLM
 {
     [self configureGTM];
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.isParameterNotEncrypted = YES;
-    [_networkManager doRequest];
+    [[self networkManager] doRequest];
 }
 
 -(TokopediaNetworkManager *)networkManager
@@ -61,7 +58,7 @@
 
 -(RKObjectManager*)objectManagerNotify
 {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient:_lplmBaseuUrl?:@"http://clover-staging.tokopedia.com"];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:_lplmBaseuUrl?:@"http://clover.tokopedia.com"];
     
 //    RKRoute *route = [RKRoute routeWithClass:[NotifyLBLM class]
 //                                 pathPattern:@""
@@ -143,7 +140,7 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
     
-    _lplmBaseuUrl = @"http://clover-staging.tokopedia.com";//[_gtmContainer stringForKey:@"lplm_base_url"];
+    _lplmBaseuUrl = @"https://clover-staging.tokopedia.com";//[_gtmContainer stringForKey:@"lplm_base_url"];
     _lplmPostUrl = @"notify/v1";//[_gtmContainer stringForKey:@"lplm_post_url"];
 }
 
