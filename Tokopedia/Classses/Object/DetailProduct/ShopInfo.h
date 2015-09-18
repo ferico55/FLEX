@@ -39,6 +39,6 @@
 @property (nonatomic, strong) ResponseSpeed *respond_speed;
 
 @property (nonatomic) NSArray *shop_pay_gateway;
-@property (nonatomic, strong) NSString *shop_lucky;
+@property (nonatomic, strong) NSString *lucky_merchant;
 
 @end

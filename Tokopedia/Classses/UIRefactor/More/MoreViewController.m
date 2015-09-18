@@ -596,20 +596,20 @@
 {
     self.hidesBottomBarWhenPushed = YES;
     
-//    if(indexPath.section == 0 && indexPath.row == 0) {
-//        if(![_depositLabel.text isEqualToString:@"-"]) {
-//            DepositSummaryViewController *depositController = [DepositSummaryViewController new];
-//            depositController.data = @{@"total_saldo":_depositLabel.text};
-//            [self.navigationController pushViewController:depositController animated:YES];
-//        }
-//    }
-    if (indexPath.section == 0 && indexPath.row == 0) {
+    if(indexPath.section == 0 && indexPath.row == 0) {
+        if(![_depositLabel.text isEqualToString:@"-"]) {
+            DepositSummaryViewController *depositController = [DepositSummaryViewController new];
+            depositController.data = @{@"total_saldo":_depositLabel.text};
+            [self.navigationController pushViewController:depositController animated:YES];
+        }
+    }
+    if (indexPath.section == 0 && indexPath.row == 1) {
         NSString  *currentDeviceId = [_auth objectForKey:@"device_token"];
         NSString *userID = [_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY];
         NSString *url_ = _LPResult.uri;
         NSURL *url = [NSURL URLWithString:url_];
         WebViewController *webViewController = [WebViewController new];
-        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@", @"http", [url host],userID,currentDeviceId,[url path],[url query]]; //[url scheme], [url host]
+        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@", [url scheme], [url host],userID,currentDeviceId,[url path],[url query]]; //[url scheme], [url host]
 //        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@", @"http", @"m.tokopedia.com",userID,currentDeviceId,@"/lp.pl",@"flag_app=1"]; //[url scheme], [url host]
         webViewController.isLPWebView = YES;
         webViewController.strURL = webViewStrUrl;

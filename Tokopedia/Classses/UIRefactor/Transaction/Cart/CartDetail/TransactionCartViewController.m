@@ -1743,7 +1743,7 @@
         
         TransactionCartHeaderView *headerView = [TransactionCartHeaderView newview];
     
-        BOOL isLuckyMerchant = ([list.cart_shop.shop_lucky integerValue] == 1);
+        BOOL isLuckyMerchant = ([list.cart_shop.lucky_merchant integerValue] == 1);
 
         headerView.LMBadgeImageView.hidden = (!isLuckyMerchant);
         headerView.constraintwidthbadge.constant = (isLuckyMerchant)?20:0;
