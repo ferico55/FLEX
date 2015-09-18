@@ -156,12 +156,12 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
 
 - (void)scrollToCenter {
     if (IS_IPAD) return;
-    if (_indexPath.section == 1) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self centerPositionAnimated:YES];
-        });
-    } else {
-        [self centerPositionAnimated:YES];
+    NSInteger maxCount = 2;
+    if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) maxCount = 3;
+    if ([_scrollPosition integerValue] == 0 && _promo.count > maxCount) {
+        NSInteger x = _flowLayout.itemSize.width / 2;
+        x += 5; // add cell spacing
+        [_collectionView setContentOffset:CGPointMake(x, 0) animated:animated];
     }
 }
 

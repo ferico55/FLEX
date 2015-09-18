@@ -55,6 +55,8 @@
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *tokopediaNetworkManager;
     PromoRequest *_promoRequest;
+    
+    PromoShop *_selectedPromoShop;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -316,7 +318,8 @@
 -(void)removeFavoritedRow:(NSIndexPath*)indexpath{
     is_already_updated = YES;
     if(indexpath.section == 0) {
-        FavoritedShopList *list = _promoShops[indexpath.row];
+        PromoShop *shop = _promoShops[indexpath.row];
+        _selectedPromoShop = shop;
         
         [_shop insertObject:_promoShops[indexpath.row] atIndex:0];
         [_promoShops removeObjectAtIndex:indexpath.row];
@@ -329,7 +332,7 @@
                                      [NSIndexPath indexPathForRow:indexpath.row inSection:0], nil
                                      ];
         
-        [self pressFavoriteAction:list.shop_id withIndexPath:indexpath];
+        [self pressFavoriteAction:shop.shop_id withIndexPath:indexpath];
         
         [_table beginUpdates];
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
@@ -547,7 +550,8 @@
         strTempShopID = nil;
         return @{
                  kTKPDHOME_APIACTIONKEY:@"fav_shop",
-                 @"shop_id":tempShopID
+                 @"shop_id":tempShopID,
+                 @"ad_key":_selectedPromoShop.ad_key,
                  };
     }
     else

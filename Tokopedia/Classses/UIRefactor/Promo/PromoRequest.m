@@ -158,6 +158,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                                                     API_SHOP_IS_OWNER_KEY,
                                                     API_PRODUCT_URL_KEY,
                                                     API_PRODUCT_NAME_KEY,
+                                                    API_PRODUCT_SHOP_LUCKY_KEY,
                                                     ]];
     
     RKObjectMapping *shopMapping = [RKObjectMapping mappingForClass:[PromoShop class]];

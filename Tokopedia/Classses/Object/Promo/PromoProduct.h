@@ -36,6 +36,8 @@
 @property (strong, nonatomic) NSString *shop_is_owner;
 @property (strong, nonatomic) NSString *product_url;
 @property (strong, nonatomic) NSString *product_name;
++@property (strong, nonatomic) NSString *shop_lucky;
+
 @property (strong, nonatomic) ProductModelView *viewModel;
 
 @end

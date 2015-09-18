@@ -10,4 +10,12 @@
 
 @implementation PromoShop
 
+- (NSString *)shop_name {
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString *)ad_key {
+    return _ad_key?:@"";
+}
+
 @end

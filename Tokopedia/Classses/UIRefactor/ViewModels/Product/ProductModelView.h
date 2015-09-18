@@ -16,7 +16,7 @@
 @property (strong, nonatomic) NSString *productThumbUrl;
 @property (strong, nonatomic) NSString *productReview;
 @property (strong, nonatomic) NSString *productTalk;
-@property (strong, nonatomic) NSString *productShopLuckyImage;
+@property (strong, nonatomic) NSString *luckyMerchantImageURL;
 
 @property BOOL isGoldShopProduct;
 

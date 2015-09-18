@@ -135,6 +135,8 @@ HotlistBannerDelegate
     NoResultView *_noResultView;
     
     PromoRequest *_promoRequest;
+    NSInteger _lastSectionAnimated;
+    
     HotlistBannerRequest *_bannerRequest;
     BOOL _shouldUseHashtag;
 }
@@ -1082,10 +1084,11 @@ HotlistBannerDelegate
                 ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
                 ((PromoCollectionReusableView *)reusableView).delegate = self;
                 ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                if (self.scrollDirection == ScrollDirectionDown) {
+                if (self.scrollDirection == ScrollDirectionDown && _lastSectionAnimated != indexPath.section) {
+                    _lastSectionAnimated = indexPath.section;
                     [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                } else if (self.scrollDirection == ScrollDirectionUp) {
-                    [((PromoCollectionReusableView *)reusableView) scrollToCenterWithoutAnimation];
+                } else {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
                 }
             } else {
                 reusableView = nil;
