@@ -160,11 +160,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 #pragma mark - Methods
--(void)saveHistory:(id)history {
+-(void)saveHistory:(NSString*)history {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-    
-    if(![_historyResult containsObject:history]) {
+
+    if(![_historyResult containsObject:[history lowercaseString]]) {
         [_historyResult insertObject:history atIndex:0];
         [_historyResult writeToFile:destPath atomically:YES];
         
@@ -563,6 +563,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 #pragma mark - Method
 - (void)goToResultPage:(NSString*)searchText withAutoComplete:(BOOL) autocomplete{
+    searchText = [searchText lowercaseString];
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.delegate = self;
     vc.isFromAutoComplete = autocomplete;
