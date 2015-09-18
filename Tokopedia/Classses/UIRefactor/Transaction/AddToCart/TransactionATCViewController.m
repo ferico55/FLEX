@@ -993,8 +993,6 @@
         }
         if (setting.result.is_success == 1) {
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:SHOULD_REFRESH_CART object:nil userInfo:nil];
-            
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[setting.message_status firstObject] delegate:self cancelButtonTitle:@"Kembali Belanja" otherButtonTitles:@"Ke Keranjang Belanja",nil];
             alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
             [alertView show];
@@ -1191,6 +1189,7 @@
                 //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
                 //[self.navigationController pushViewController:cartViewController animated:YES];
             }
+            
             break;
         }
         default:

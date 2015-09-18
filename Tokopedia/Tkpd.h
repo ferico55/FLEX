@@ -138,6 +138,8 @@ typedef enum {
 #define DID_CANCEL_COMPLAIN_NOTIFICATION_NAME @"DidCancelComplain"
 
 #define ADD_PRODUCT_POST_NOTIFICATION_NAME @"tokopedia.ADDPRODUCTPOSTNOTIFICATIONNAME"
+#define MOVE_PRODUCT_TO_ETALASE_NOTIFICATION @"tokopedia.MOVE_PRODUCT_TO_ETALASE_NOTIFICATION"
+#define MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION @"tokopedia.MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION"
 
 #define REFRESH_TX_ORDER_POST_NOTIFICATION_NAME @"tokopedia.REFRESH_TX_ORDER_POST_NOTIFICATION_NAME"
 
@@ -254,6 +256,10 @@ typedef enum {
 #define GTMKeyPromoBaseAction   @"promo_base_action_url"
 #define GTMKeyPromoPostAction   @"promo_post_action_url"
 #define GTMKeyPromoFullAction   @"promo_full_action_url"
+
+#define GTMKeyNotifyLBLMBase @"notify_base_url"
+#define GTMKeyNotifyLBLMPost @"notify_post_url"
+#define GTMKeyNotifyLBLMFull @"notify_full_url"
 
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 

@@ -17,5 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImage *image;
 @property (strong, nonatomic) NSDictionary *data;
+@property (nonatomic) BOOL isFromAutoComplete;
 
 @end

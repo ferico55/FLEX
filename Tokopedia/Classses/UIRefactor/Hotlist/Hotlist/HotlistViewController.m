@@ -23,6 +23,8 @@
 #import "LoadingView.h"
 #import "TableViewScrollAndSwipe.h"
 
+#import "RequestNotifyLBLM.h"
+
 #pragma mark - HotlistView
 
 @interface HotlistViewController ()
@@ -59,6 +61,8 @@ UICollectionViewDelegateFlowLayout
     LoadingView *_loadingView;
     
     BOOL _isFailRequest;
+    
+    RequestNotifyLBLM *_requestLBLM;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
@@ -144,13 +148,19 @@ UICollectionViewDelegateFlowLayout
     
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
-    
+        
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
     [_networkManager requestCancel];
+}
+
+-(void)doRequestNotify
+{
+    _requestLBLM = [RequestNotifyLBLM new];
+    [_requestLBLM doRequestLBLM];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -166,6 +176,8 @@ UICollectionViewDelegateFlowLayout
         [_networkManager doRequest];
         _collectionView.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
+    
+    [self doRequestNotify];
 }
 
 - (void) setTableInset {
@@ -202,7 +214,7 @@ UICollectionViewDelegateFlowLayout
     
     [cell setViewModel:((HotlistList*)_product[indexPath.row]).viewModel];
     
-    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 4;
     if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             _isFailRequest = NO;
@@ -252,15 +264,25 @@ UICollectionViewDelegateFlowLayout
         NSURL *url = [NSURL URLWithString:hotlist.url];
         
         NSMutableDictionary *parameters = [NSMutableDictionary new];
+        NSMutableArray *departmentIdentifiers = [NSMutableArray new];
         
         for (int i = 2; i < url.pathComponents.count; i++) {
             if (i == 2) {
                 [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_1];
+                [departmentIdentifiers addObject:[url.pathComponents objectAtIndex:i]];
             } else if (i == 3) {
                 [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_2];
+                [departmentIdentifiers addObject:[url.pathComponents objectAtIndex:i]];
             } else if (i == 4) {
                 [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_3];
+                [departmentIdentifiers addObject:[url.pathComponents objectAtIndex:i]];
             }
+        }
+        
+        NSString *scIdentifier = nil;
+        if(departmentIdentifiers.count > 0) {
+            scIdentifier = [departmentIdentifiers componentsJoinedByString:@"_"];
+            [parameters setValue:scIdentifier forKey:@"sc_identifier"];
         }
         
         for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
