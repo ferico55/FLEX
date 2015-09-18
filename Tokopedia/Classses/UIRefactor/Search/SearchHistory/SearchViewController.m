@@ -165,7 +165,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
 
     if(![_historyResult containsObject:[history lowercaseString]]) {
-        [_historyResult insertObject:history atIndex:0];
+        [_historyResult insertObject:[history lowercaseString] atIndex:0];
         [_historyResult writeToFile:destPath atomically:YES];
         
         [_collectionView reloadData];
