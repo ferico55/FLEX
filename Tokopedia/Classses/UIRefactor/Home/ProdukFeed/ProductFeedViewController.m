@@ -110,9 +110,6 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Home - Product Feed";
-    
-    _requestLBLM = [RequestNotifyLBLM new];
-    [_requestLBLM doRequestLBLM];
 }
 
 #pragma mark - Collection Delegate

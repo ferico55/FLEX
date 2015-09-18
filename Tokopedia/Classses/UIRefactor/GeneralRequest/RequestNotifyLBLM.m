@@ -50,8 +50,8 @@
 #pragma mark - Network Manager
 -(NSDictionary *)getParameter:(int)tag
 {
-    return @{@"user_id":@"37911",//[_userManager getUserId]?:@"",
-             @"shop_id":@"9058"};//[_userManager getShopId]?:@""};
+    return @{@"user_id":[_userManager getUserId]?:@"",
+             @"shop_id":[_userManager getShopId]?:@""};
 }
 
 -(id)getObjectManager:(int)tag
