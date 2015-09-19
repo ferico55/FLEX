@@ -358,7 +358,6 @@
         LoyaltyPoint *lp = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         _LPResult = lp.result;
         _LPointLabel.text = lp.result.loyalty_point.amount;
-        _isNoDataDeposit = NO;
         [[self tableView]reloadData];
     }
 }
@@ -897,7 +896,8 @@
         _depositLabel.hidden = NO;
         _loadingSaldo.hidden = YES;
         [_loadingSaldo stopAnimating];
-        
+        _isNoDataDeposit = NO;
+
         [_LPNetworkManager doRequest];
     }
 }
