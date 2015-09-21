@@ -27,7 +27,7 @@
 
 - (BOOL)isLogin
 {
-    if (![[self getUserId] isEqualToString:@"0"]) {
+    if ([[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue]) {
         return YES;
     } else {
         return NO;

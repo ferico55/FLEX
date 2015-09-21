@@ -527,7 +527,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[GPPSignIn sharedInstance] disconnect];
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.is_login withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             
@@ -577,6 +577,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         } else if ([_login.result.status isEqualToString:@"1"]) {
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:_login.result.is_login withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
@@ -622,7 +623,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         _isnodata = NO;
         if (_login.result.is_login) {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.is_login withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             
@@ -945,10 +946,12 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     NSString *facebookButtonTitle = @"Sign in";
     if (IS_IPHONE_4_OR_LESS) {
         self.formViewMarginTopConstraint.constant = 40;
+        self.facebookButtonTopConstraint.constant = 18;
         constant =  (self.formViewWidthConstraint.constant / 2) - 10;
         
     } else if (IS_IPHONE_5) {
         self.formViewMarginTopConstraint.constant = 30;
+        self.facebookButtonTopConstraint.constant = 18;
         constant =  (self.formViewWidthConstraint.constant / 2) - 10;
     
     } else if (IS_IPHONE_6) {
@@ -974,9 +977,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     self.facebookButtonWidthConstraint.constant = constant;
     self.googleButtonWidthConstraint.constant = constant;
     
-    _loginView.frame = CGRectMake(0, 0, constant, 42);
+    _loginView.frame = CGRectMake(0, 0, constant, 40);
     _loginView.layer.shadowOpacity = 0;
-    [_loginView setTitle:@"Sign in" forState:UIControlStateNormal];
     
     [_loginView removeFromSuperview];
     
