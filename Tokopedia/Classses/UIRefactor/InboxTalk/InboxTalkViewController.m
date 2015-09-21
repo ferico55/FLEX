@@ -365,7 +365,7 @@
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicator startAnimating];
     
-    CGRect frame = CGRectMake(0, 0, self.table.frame.size.width, 60);
+    CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 60);
     UIView *loadingView = [[UIView alloc] initWithFrame:frame];
     [loadingView addSubview:indicator];
     

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InboxTalkViewController">
@@ -43,17 +43,14 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="4rt-xb-UkQ" secondAttribute="centerX" id="AJM-Ys-LhU"/>
-                <constraint firstAttribute="centerY" secondItem="4rt-xb-UkQ" secondAttribute="centerY" id="KII-KF-If0"/>
+                <constraint firstAttribute="trailing" secondItem="4rt-xb-UkQ" secondAttribute="trailing" constant="150" id="Btj-Ow-8M4"/>
+                <constraint firstItem="4rt-xb-UkQ" firstAttribute="top" secondItem="jdO-KW-mUi" secondAttribute="top" constant="12" id="HvU-NB-HDO"/>
+                <constraint firstAttribute="bottom" secondItem="4rt-xb-UkQ" secondAttribute="bottom" constant="12" id="aDD-Vg-jIu"/>
+                <constraint firstItem="4rt-xb-UkQ" firstAttribute="leading" secondItem="jdO-KW-mUi" secondAttribute="leading" constant="150" id="hWn-hR-7wZ"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-234" y="-113"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
