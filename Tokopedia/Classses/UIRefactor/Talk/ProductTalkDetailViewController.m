@@ -1204,7 +1204,13 @@
 #pragma mark - UITextView Delegate
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
-    _inputViewConstraint.constant = height+20;
+    float diff = (growingTextView.frame.size.height - height);
+    
+    CGRect r = _talkInputView.frame;
+    r.size.height -= diff;
+    r.origin.y += diff;
+    
+    _talkInputView.frame = r;
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{

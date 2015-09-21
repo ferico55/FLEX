@@ -222,7 +222,9 @@
 {
     [super viewDidDisappear:animated];
     self.navigationController.tabBarController.title = @"More";
+    [_LPNetworkManager requestCancel];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -946,6 +948,7 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [self requestCancel];
+    [_LPNetworkManager requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
