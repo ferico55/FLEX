@@ -730,6 +730,11 @@ PromoCollectionViewDelegate
     }
     
     NSString *redirect_url = search.result.redirect_url;
+    if(search.result.department_id) {
+        NSString *departementID = search.result.department_id?:@"";
+        [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+        [_delegate updateTabCategory:departementID];
+    }
     if([redirect_url isEqualToString:@""] || redirect_url == nil) {
         
         
