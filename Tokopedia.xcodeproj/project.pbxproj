@@ -2108,8 +2108,6 @@
 		85A18CEA1BAFEF9C002F1382 /* Hashtags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hashtags.m; sourceTree = "<group>"; };
 		85A18CEB1BAFEF9C002F1382 /* Hotlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hotlist.h; sourceTree = "<group>"; };
 		85A18CEC1BAFEF9C002F1382 /* Hotlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hotlist.m; sourceTree = "<group>"; };
-		85A18CED1BAFEF9C002F1382 /* HotlistBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistBanner.h; sourceTree = "<group>"; };
-		85A18CEE1BAFEF9C002F1382 /* HotlistBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistBanner.m; sourceTree = "<group>"; };
 		85A18CEF1BAFEF9C002F1382 /* HotlistDetailResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistDetailResult.h; sourceTree = "<group>"; };
 		85A18CF01BAFEF9C002F1382 /* HotlistDetailResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistDetailResult.m; sourceTree = "<group>"; };
 		85A18CF11BAFEF9C002F1382 /* HotlistList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistList.h; sourceTree = "<group>"; };
@@ -5133,8 +5131,6 @@
 				85A18CEA1BAFEF9C002F1382 /* Hashtags.m */,
 				85A18CEB1BAFEF9C002F1382 /* Hotlist.h */,
 				85A18CEC1BAFEF9C002F1382 /* Hotlist.m */,
-				85A18CED1BAFEF9C002F1382 /* HotlistBanner.h */,
-				85A18CEE1BAFEF9C002F1382 /* HotlistBanner.m */,
 				85A18CEF1BAFEF9C002F1382 /* HotlistDetailResult.h */,
 				85A18CF01BAFEF9C002F1382 /* HotlistDetailResult.m */,
 				85A18CF11BAFEF9C002F1382 /* HotlistList.h */,
