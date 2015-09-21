@@ -152,6 +152,9 @@
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
     [_promoRequest requestForShopFeed];
+    
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -776,6 +779,7 @@
 #pragma mark - Promo request delegate
 
 - (void)didReceivePromo:(NSArray *)promo {
+    _isnodata = NO;
     _promoShops = [NSMutableArray arrayWithArray:promo];
     [_table reloadData];
 }
