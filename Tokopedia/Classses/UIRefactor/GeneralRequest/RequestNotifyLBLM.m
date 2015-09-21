@@ -111,12 +111,12 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-//    if ([_notifyData.attributes.notify_buyer isEqualToString:@"1"]) {
+    if ([_notifyData.attributes.notify_buyer isEqualToString:@"1"]) {
         [self performSelector:@selector(showLuckyBuyer) withObject:nil afterDelay:2.0f];
-//    }
-//    if ([_notifyData.attributes.notify_seller isEqualToString:@"1"]) {
+    }
+    if ([_notifyData.attributes.notify_seller isEqualToString:@"1"]) {
         [self performSelector:@selector(showLuckyMerchant) withObject:nil afterDelay:3.0f];
-//    }
+    }
 }
 
 -(void)showLuckyMerchant

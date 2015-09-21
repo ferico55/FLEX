@@ -68,6 +68,11 @@
     [[UIApplication sharedApplication] openURL:url];
 }
 
+//- (IBAction)gesture:(UITapGestureRecognizer *)sender
+//{
+//
+//}
+
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
     [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
@@ -76,5 +81,33 @@
     }
 }
 
+//#pragma mark -
+//#pragma mark Methods
+//
+//- (void)show
+//{
+//    id<TKPDAlertViewDelegate> _delegate = self.delegate;
+//    
+//    [_gesture removeTarget:self action:@selector(gesture:)];
+//    [_gesture addTarget:self action:@selector(gesture:)];
+//    
+//    if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(willPresentAlertView:)])) {
+//        [_delegate willPresentAlertView:self];
+//    }
+//    
+//    self.center = _window.center;
+//    self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+//    
+//    [UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionCrossDissolve) animations:^{
+//        
+//        [_window addSubview:self];
+//        
+//    } completion:^(BOOL finished) {
+//        
+//        if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(didPresentAlertView:)])) {
+//            [_delegate didPresentAlertView:self];
+//        }
+//    }];
+//}
 
 @end
