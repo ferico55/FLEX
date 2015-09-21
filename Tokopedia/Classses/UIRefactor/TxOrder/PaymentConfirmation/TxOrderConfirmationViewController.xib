@@ -88,8 +88,12 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="iPI-Bg-ruD" secondAttribute="trailing" id="8Rr-0g-7jR"/>
-                <constraint firstItem="iPI-Bg-ruD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="90q-JU-3Cv"/>
+                <constraint firstAttribute="trailing" secondItem="iPI-Bg-ruD" secondAttribute="trailing" id="8Rr-0g-7jR">
+                    <variation key="heightClass=regular-widthClass=regular" constant="10"/>
+                </constraint>
+                <constraint firstItem="iPI-Bg-ruD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="90q-JU-3Cv">
+                    <variation key="heightClass=regular-widthClass=regular" constant="10"/>
+                </constraint>
                 <constraint firstItem="iPI-Bg-ruD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BF5-LN-VbV"/>
                 <constraint firstAttribute="trailing" secondItem="iPI-Bg-ruD" secondAttribute="trailing" id="HZI-JG-5VC"/>
                 <constraint firstAttribute="bottom" secondItem="RiG-1C-3Io" secondAttribute="bottom" id="HeF-G8-TVX"/>
@@ -103,6 +107,12 @@
                 <constraint firstItem="RiG-1C-3Io" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u4S-oF-fL9"/>
                 <constraint firstAttribute="bottom" secondItem="RiG-1C-3Io" secondAttribute="bottom" id="vxf-oQ-aeK"/>
             </constraints>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="HZI-JG-5VC"/>
+                    <exclude reference="J8o-fB-TeQ"/>
+                </mask>
+            </variation>
         </view>
         <view contentMode="scaleToFill" id="Kaz-cw-wZ6" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>

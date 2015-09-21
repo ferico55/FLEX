@@ -14,7 +14,7 @@
 @protocol TxOrderConfirmedCellDelegate <NSObject>
 @required
 - (void)didTapInvoiceButton:(UIButton*)button atIndexPath:(NSIndexPath*)indexPath;
-
+- (void)didTapPaymentProofIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface TxOrderConfirmedCell : UITableViewCell
@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *totalInvoiceButton;
+@property (weak, nonatomic) IBOutlet UIButton *imagePayementProofButton;
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
 

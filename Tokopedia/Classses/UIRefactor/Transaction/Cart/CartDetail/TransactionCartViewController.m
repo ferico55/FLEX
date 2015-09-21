@@ -232,6 +232,8 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
+    _selectedPaymentMethodLabels = [NSArray sortViewsWithTagInArray:_selectedPaymentMethodLabels];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -992,6 +994,8 @@
     NSMutableArray *messageError = [NSMutableArray new];
     
     if (_indexPage == 0) {
+        if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"])
+            [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
         NSInteger gateway = [[_dataInput objectForKey:API_GATEWAY_LIST_ID_KEY]integerValue];
         if (gateway == -1) {
             isValid = NO;
@@ -2155,6 +2159,8 @@
     else
         cell.productPriceLabel.text = priceString;
     
+    product.product_total_weight = [self roundingFloatFromString:product.product_total_weight];
+    
     NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",product.product_quantity, product.product_total_weight];
     attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
     [attributedString addAttribute:NSFontAttributeName
@@ -2207,6 +2213,19 @@
 
     cell.userInteractionEnabled = (_indexPage ==0);
     return cell;
+}
+
+-(NSString*)roundingFloatFromString:(NSString*)string
+{
+    string = [NSString stringWithFormat:@"%.3f",[string floatValue]];
+    CGFloat weightFloat = [string floatValue];
+    NSInteger weightInt = [string integerValue];
+    CGFloat floatMod= fmodf(weightFloat, weightInt);
+    if (floatMod == 0) {
+        string = [NSString stringWithFormat:@"%zd",weightInt];
+    }
+    
+    return string;
 }
 
 #pragma mark - Cell Height

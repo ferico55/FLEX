@@ -358,6 +358,7 @@ typedef enum ScrollDirection {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
     [_noResult removeFromSuperview];
+    [_firstFooter removeFromSuperview];
     
     if (feed.result.list.count > 0) {
         

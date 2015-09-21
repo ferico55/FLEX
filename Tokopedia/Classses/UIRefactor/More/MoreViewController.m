@@ -58,6 +58,8 @@
 #import "NavigateViewController.h"
 #import "LoyaltyPoint.h"
 
+#import "TAGDataLayer.h"
+
 #import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
@@ -83,6 +85,7 @@
     
     TokopediaNetworkManager *_LPNetworkManager;
     LoyaltyPointResult *_LPResult;
+    TAGContainer *_gtmContainer;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -222,7 +225,9 @@
 {
     [super viewDidDisappear:animated];
     self.navigationController.tabBarController.title = @"More";
+    [_LPNetworkManager requestCancel];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -358,10 +363,6 @@
         LoyaltyPoint *lp = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         _LPResult = lp.result;
         _LPointLabel.text = lp.result.loyalty_point.amount;
-        _depositLabel.hidden = NO;
-        _loadingSaldo.hidden = YES;
-        [_loadingSaldo stopAnimating];
-        _isNoDataDeposit = NO;
         [[self tableView]reloadData];
     }
 }
@@ -897,6 +898,11 @@
     if (result) {
         Deposit *deposit = [result objectForKey:@""];
         _depositLabel.text = deposit.result.deposit_total;
+        _depositLabel.hidden = NO;
+        _loadingSaldo.hidden = YES;
+        [_loadingSaldo stopAnimating];
+        _isNoDataDeposit = NO;
+
         [_LPNetworkManager doRequest];
     }
 }
@@ -946,6 +952,7 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [self requestCancel];
+    [_LPNetworkManager requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
@@ -974,6 +981,24 @@
     
     UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
     _profilePictureImageView.image = profilePicture;
+}
+
+- (IBAction)tapInfoTopPoints:(id)sender {
+    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"http://blog.tokopedia.com";
+    NSURL *url = [NSURL URLWithString:urlString];
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+#pragma mark - GTM
+- (void)configureGTM {
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+
 }
 
 #pragma mark - Email delegate
