@@ -250,7 +250,7 @@
     [self setHeaderData:_data];
     
     //islogin
-    if([_userManager getUserId] && ![[_userManager getUserId] isEqualToString:@"0"]) {
+    if([_userManager isLogin]) {
         //isbanned product
         if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
            ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
