@@ -2155,6 +2155,8 @@
     else
         cell.productPriceLabel.text = priceString;
     
+    product.product_total_weight = [self roundingFloatFromString:product.product_total_weight];
+    
     NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",product.product_quantity, product.product_total_weight];
     attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
     [attributedString addAttribute:NSFontAttributeName
@@ -2207,6 +2209,19 @@
 
     cell.userInteractionEnabled = (_indexPage ==0);
     return cell;
+}
+
+-(NSString*)roundingFloatFromString:(NSString*)string
+{
+    string = [NSString stringWithFormat:@"%.3f",[string floatValue]];
+    CGFloat weightFloat = [string floatValue];
+    NSInteger weightInt = [string integerValue];
+    CGFloat floatMod= fmodf(weightFloat, weightInt);
+    if (floatMod == 0) {
+        string = [NSString stringWithFormat:@"%zd",weightInt];
+    }
+    
+    return string;
 }
 
 #pragma mark - Cell Height
