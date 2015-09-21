@@ -16,13 +16,15 @@
 #import "TKPDPhotoPicker.h"
 
 #import "TxOrderPaymentViewController.h"
+#import "NotificationManager.h"
 
 @interface TxOrderTabViewController ()
 <
     UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
     TxOrderConfirmedViewControllerDelegate,
-    TxOrderConfirmationViewControllerDelegate
+    TxOrderConfirmationViewControllerDelegate,
+    NotificationManagerDelegate
 >
 {
     NSInteger _index;
@@ -34,6 +36,7 @@
     BOOL _isMultipleSelect;
     BOOL _isNodata;
     BOOL _isRefresh;
+    NotificationManager *_notifManager;
 }
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
@@ -88,9 +91,19 @@
     self.navigationItem.rightBarButtonItem = nil;
 }
 
+-(void)setNotification:(Notification *)notification
+{
+    if (notification) {
+        [self setSegmentedCotrollTitle:[NSString stringWithFormat:@"Belum Konfirmasi (%@)",notification.result.purchase.purchase_payment_conf] atIndex:0];
+        [self setSegmentedCotrollTitle:[NSString stringWithFormat:@"Menunggu Verifikasi (%@)",notification.result.purchase.purchase_payment_confirm] atIndex:1];
+    }
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self reloadNotification];
     
     self.title = @"Konfirmasi Pembayaran";
     self.screenName = @"Payment Confirmation";
@@ -276,6 +289,42 @@
 {
     _isRefresh = NO;
 }
+
+- (void)setSegmentedCotrollTitle:(NSString*)title atIndex:(NSInteger)index
+{
+    [_segmentControl setTitle:title forSegmentAtIndex:index];
+}
+
+#pragma mark - Notification Manager
+
+- (void)initNotificationManager {
+    [[self notifManager] initNotificationRequest];
+}
+
+#pragma mark - Notification delegate
+
+- (void)reloadNotification
+{
+    [self initNotificationManager];
+}
+
+
+-(NotificationManager*)notifManager
+{
+    if (!_notifManager) {
+        _notifManager = [NotificationManager new];
+        [_notifManager setViewController:self];
+        _notifManager.delegate = self;
+    }
+    
+    return _notifManager;
+}
+
+- (void)didReceiveNotification:(Notification *)notification
+{
+    [self setNotification:notification];
+}
+
 
 #pragma mark - Memory Management
 -(void)dealloc{
