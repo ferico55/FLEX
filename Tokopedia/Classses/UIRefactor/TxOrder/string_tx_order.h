@@ -74,6 +74,7 @@ typedef enum
 #define ACTION_GET_TX_ORDER_LIST @"get_tx_order_list"
 #define ACTION_RE_ORDER @"reorder"
 #define ACTION_DETIVERY_CONFIRM @"delivery_confirm"
+#define ACTION_CONFIRM_PAYMENT_VALIDATION @"validate_confirm_payment"
 #pragma mark -
 
 #define API_ACTION_KEY @"action"
@@ -281,14 +282,14 @@ typedef enum
 #pragma mark -
 
 #pragma mark - Error Message
-#define ERRORMESSAGE_NILL_BANK_NAME @"Masukkan Nama Bank"
-#define ERRORMESSAGE_NILL_BANK_ACCOUNT_NAME @"Masukan Nama Pemilik Bank"
-#define ERRORMESSAGE_NILL_BANK_ACCOUNT_NUMBER @"Masukkan Nomor Rekening"
-#define ERRORMESSAGE_NILL_PASSWORD_TOKOPEDIA @"Masukkan Password Tokopedia"
-#define ERRORMESSAGE_NILL_SYSTEM_BANK @"Bank tujuan belum dipilih"
-#define ERRORMESSAGE_NILL_BANK_ACCOUNT @"Akun bank belum dipilih"
+#define ERRORMESSAGE_NILL_BANK_NAME @"Nama Bank harus diisi"
+#define ERRORMESSAGE_NILL_BANK_ACCOUNT_NAME @"Nama Pemilik Akun Bank harus diisi"
+#define ERRORMESSAGE_NILL_BANK_ACCOUNT_NUMBER @"Nomor Rekening harus diisi"
+#define ERRORMESSAGE_NILL_PASSWORD_TOKOPEDIA @"Kata sandi harus diisi"
+#define ERRORMESSAGE_NILL_SYSTEM_BANK @"Bank Tujuan belum dipilih"
+#define ERRORMESSAGE_NILL_BANK_ACCOUNT @"Akun Bank belum dipilih"
 #define ERRORMESSAGE_INVALID_PAYMENT_AMOUNT @"Jumlah pembayaran yang diinput tidak mencukupi. Total Pembayaran sebesar Rp %zd,-"
-#define ERRORMESSAGE_NILL_DEPOSITOR @"Nama penyetor belum diisi"
+#define ERRORMESSAGE_NILL_DEPOSITOR @"Nama Penyetor harus diisi"
 
 #pragma mark - Order Form
 #define API_ORDER_FORM_KEY @"order"

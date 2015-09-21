@@ -378,6 +378,12 @@
     _editProfilePictButton.enabled = YES;
 }
 
+-(void)failedUploadErrorMessage:(NSArray *)errorMessage
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+    [stickyAlertView show];
+}
+
 -(void)setImageWithStringURL:(NSString*)stringURL
 {
     NSURL *profilePictureURL = [NSURL URLWithString:stringURL];

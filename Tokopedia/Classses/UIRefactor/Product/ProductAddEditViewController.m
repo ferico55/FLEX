@@ -1056,6 +1056,12 @@
     [self requestProcessUploadPhoto];
 }
 
+-(void)failedUploadErrorMessage:(NSArray *)errorMessage
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+    [stickyAlertView show];
+}
+
 - (void)requestProcessUploadPhoto
 {
     if (_uploadingImages.count ==0) _isFinishedUploadImages = YES;

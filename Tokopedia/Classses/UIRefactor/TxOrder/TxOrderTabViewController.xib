@@ -47,8 +47,12 @@
                         <constraint firstItem="i0G-vT-Pct" firstAttribute="leading" secondItem="EEU-LB-sIJ" secondAttribute="leading" id="QaT-wy-axN"/>
                         <constraint firstAttribute="bottom" secondItem="i0G-vT-Pct" secondAttribute="bottom" id="Xey-4S-fxc"/>
                         <constraint firstItem="GQq-Wb-n59" firstAttribute="top" secondItem="EEU-LB-sIJ" secondAttribute="top" constant="16" id="nNU-ON-Rf2"/>
-                        <constraint firstItem="GQq-Wb-n59" firstAttribute="leading" secondItem="EEU-LB-sIJ" secondAttribute="leading" constant="9" id="o7V-49-q0b"/>
-                        <constraint firstAttribute="trailing" secondItem="GQq-Wb-n59" secondAttribute="trailing" constant="9" id="q7O-lc-kpA"/>
+                        <constraint firstItem="GQq-Wb-n59" firstAttribute="leading" secondItem="EEU-LB-sIJ" secondAttribute="leading" constant="9" id="o7V-49-q0b">
+                            <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                        </constraint>
+                        <constraint firstAttribute="trailing" secondItem="GQq-Wb-n59" secondAttribute="trailing" constant="9" id="q7O-lc-kpA">
+                            <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                        </constraint>
                         <constraint firstAttribute="trailing" secondItem="i0G-vT-Pct" secondAttribute="trailing" id="wOJ-pt-ZQ8"/>
                     </constraints>
                 </view>
