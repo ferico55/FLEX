@@ -12,7 +12,7 @@
 
 @interface LoginResult : NSObject //<NSCoding>
 
-@property (nonatomic) BOOL is_login;
+@property (nonatomic, strong) NSString *is_login;
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *shop_avatar;

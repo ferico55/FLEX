@@ -148,6 +148,10 @@
     else {
         objLoadData = nil;
     }
+    
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [_promoRequest requestForShopFeed];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -443,10 +447,6 @@
                 _isnodata = YES;
             }
             
-            _promoRequest = [PromoRequest new];
-            _promoRequest.delegate = self;
-            [_promoRequest requestForShopFeed];
-            
             if(_refreshControl.isRefreshing) {
                 [_refreshControl endRefreshing];
             }
@@ -529,8 +529,6 @@
     /** request data **/
     [self request];
     
-    _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
     [_promoRequest requestForShopFeed];
 }
 

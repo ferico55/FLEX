@@ -134,8 +134,6 @@ PromoCollectionViewDelegate
     NSString *_searchFullUrl;
     
     BOOL _isFailRequest;
-    
-    NSInteger _lastSectionAnimated;
 }
 
 #pragma mark - Initialization
@@ -366,10 +364,7 @@ PromoCollectionViewDelegate
                 ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
                 ((PromoCollectionReusableView *)reusableView).delegate = self;
                 ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                if (self.scrollDirection == ScrollDirectionDown && _lastSectionAnimated != indexPath.section) {
-                    _lastSectionAnimated = indexPath.section;
-                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                } else {
+                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
                     [((PromoCollectionReusableView *)reusableView) scrollToCenter];
                 }
             } else {
