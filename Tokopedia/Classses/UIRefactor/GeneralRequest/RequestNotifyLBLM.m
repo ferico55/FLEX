@@ -178,7 +178,7 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
     
-    _lplmBaseuUrl = [_gtmContainer stringForKey:@"lplm_base_url"]?:@"https://clover-staging.tokopedia.com";
+    _lplmBaseuUrl = [_gtmContainer stringForKey:@"lplm_base_url"]?:@"https://clover.tokopedia.com";
     _lplmPostUrl = [_gtmContainer stringForKey:@"lplm_post_url"]?:@"notify/v1";
 }
 
