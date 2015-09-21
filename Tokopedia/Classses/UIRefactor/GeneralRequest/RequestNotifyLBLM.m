@@ -15,6 +15,7 @@
 
 #import "AlertLuckyView.h"
 
+
 @implementation RequestNotifyLBLM
 {
     TAGContainer *_gtmContainer;
@@ -28,6 +29,7 @@
     NSString *_detailProductFullUrl;
     
     NotifyData *_notifyData;
+
 }
 
 -(void)doRequestLBLM
@@ -109,12 +111,12 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    if ([_notifyData.attributes.notify_buyer isEqualToString:@"1"]) {
+//    if ([_notifyData.attributes.notify_buyer isEqualToString:@"1"]) {
         [self performSelector:@selector(showLuckyBuyer) withObject:nil afterDelay:2.0f];
-    }
-    if ([_notifyData.attributes.notify_seller isEqualToString:@"1"]) {
+//    }
+//    if ([_notifyData.attributes.notify_seller isEqualToString:@"1"]) {
         [self performSelector:@selector(showLuckyMerchant) withObject:nil afterDelay:3.0f];
-    }
+//    }
 }
 
 -(void)showLuckyMerchant
@@ -123,7 +125,7 @@
     NSString *line1 = [_gtmContainer stringForKey:@"string_notify_merchant_line_1"]?:@"Anda berhasil menjadi Lucky Merchant";
     NSString *line2 = [_gtmContainer stringForKey:@"string_notify_merchant_line_2"]?:@"Kesempatan mendapatkan pesanan lebih banyak setiap harinya";
     NSString *line3 = [_gtmContainer stringForKey:@"string_notify_merchant_line_3"]?:@"Berlaku hingga 30 hari kedepan";
-    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_seller_link"]?:@"http://blog.tokopedia.com";
+    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"http://blog.tokopedia.com";
     
     alertLucky.upperView.backgroundColor = [UIColor colorWithRed:(12.0f/255.0f) green:(170.0f/255.0f) blue:85.0f/255.0f alpha:1];
     alertLucky.upperColor = alertLucky.upperView.backgroundColor;

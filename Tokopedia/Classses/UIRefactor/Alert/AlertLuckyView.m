@@ -8,6 +8,12 @@
 
 #import "AlertLuckyView.h"
 
+@interface TKPDAlertView (TkpdCategory)
+
+- (void)dismissindex:(NSInteger)index silent:(BOOL)silent animated:(BOOL)animated;
+
+@end
+
 @implementation AlertLuckyView
 
 - (void)awakeFromNib
@@ -56,8 +62,18 @@
 }
 
 - (IBAction)tapKlikDisini:(id)sender {
+    [self dismissWithClickedButtonIndex:0 animated:YES];
+    
     NSURL *url = [NSURL URLWithString:_urlString];
     [[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+    [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    
+    if(self.superview != nil){
+        [self dismissindex:buttonIndex silent:NO animated:animated];
+    }
 }
 
 
