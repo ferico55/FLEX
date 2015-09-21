@@ -13,9 +13,9 @@
 
 @interface TransactionATCFormDetail : NSObject
 
-@property(nonatomic) NSInteger available_count;
-@property (nonatomic,strong) ProductDetail *product_detail;
-@property (nonatomic,strong) AddressFormList *destination;
+@property (nonatomic, strong) NSString *available_count;
+@property (nonatomic, strong) ProductDetail *product_detail;
+@property (nonatomic, strong) AddressFormList *destination;
 @property (nonatomic, strong) NSArray *shipment;
 
 @end
