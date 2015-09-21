@@ -160,6 +160,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Home - Favorite Shop";
+    [self refreshView:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -518,6 +519,11 @@
     [self.navigationController pushViewController:container animated:YES];
 }
 
+- (void)resetView {
+    [_shop removeAllObjects];
+    [_promoShops removeAllObjects];
+    [self refreshView:nil];
+}
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
