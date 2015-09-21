@@ -152,11 +152,15 @@
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
     [_promoRequest requestForShopFeed];
+    
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Home - Favorite Shop";
+    [self refreshView:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -515,6 +519,11 @@
     [self.navigationController pushViewController:container animated:YES];
 }
 
+- (void)resetView {
+    [_shop removeAllObjects];
+    [_promoShops removeAllObjects];
+    [self refreshView:nil];
+}
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
@@ -776,6 +785,7 @@
 #pragma mark - Promo request delegate
 
 - (void)didReceivePromo:(NSArray *)promo {
+    _isnodata = NO;
     _promoShops = [NSMutableArray arrayWithArray:promo];
     [_table reloadData];
 }
