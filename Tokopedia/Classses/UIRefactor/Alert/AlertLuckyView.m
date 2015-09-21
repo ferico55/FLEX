@@ -8,6 +8,12 @@
 
 #import "AlertLuckyView.h"
 
+@interface TKPDAlertView (TkpdCategory)
+
+- (void)dismissindex:(NSInteger)index silent:(BOOL)silent animated:(BOOL)animated;
+
+@end
+
 @implementation AlertLuckyView
 
 - (void)awakeFromNib
@@ -56,9 +62,52 @@
 }
 
 - (IBAction)tapKlikDisini:(id)sender {
+    [self dismissWithClickedButtonIndex:0 animated:YES];
+    
     NSURL *url = [NSURL URLWithString:_urlString];
     [[UIApplication sharedApplication] openURL:url];
 }
 
+//- (IBAction)gesture:(UITapGestureRecognizer *)sender
+//{
+//
+//}
+
+- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+    [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    
+    if(self.superview != nil){
+        [self dismissindex:buttonIndex silent:NO animated:animated];
+    }
+}
+
+//#pragma mark -
+//#pragma mark Methods
+//
+//- (void)show
+//{
+//    id<TKPDAlertViewDelegate> _delegate = self.delegate;
+//    
+//    [_gesture removeTarget:self action:@selector(gesture:)];
+//    [_gesture addTarget:self action:@selector(gesture:)];
+//    
+//    if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(willPresentAlertView:)])) {
+//        [_delegate willPresentAlertView:self];
+//    }
+//    
+//    self.center = _window.center;
+//    self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
+//    
+//    [UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionCrossDissolve) animations:^{
+//        
+//        [_window addSubview:self];
+//        
+//    } completion:^(BOOL finished) {
+//        
+//        if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(didPresentAlertView:)])) {
+//            [_delegate didPresentAlertView:self];
+//        }
+//    }];
+//}
 
 @end

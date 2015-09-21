@@ -18,7 +18,7 @@
 @required
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage*)uploadImage;
 - (void)failedUploadObject:(id)object;
-
+- (void)failedUploadErrorMessage:(NSArray*)errorMessage;
 @end
 
 @interface RequestUploadImage : NSObject
