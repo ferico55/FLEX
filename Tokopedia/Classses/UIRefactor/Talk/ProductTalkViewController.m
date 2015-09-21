@@ -124,8 +124,8 @@
     //right button
 
     NSString *shopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
-    NSString *userID = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
-    if(![userID isEqualToString:@"0"] && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
+    BOOL isLogin = [_userManager isLogin];
+    if(isLogin && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
 
         UIBarButtonItem *rightbar;
         UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];

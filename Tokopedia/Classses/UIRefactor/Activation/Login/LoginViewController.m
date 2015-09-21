@@ -21,7 +21,8 @@
 #import "TextField.h"
 #import "ForgotPasswordViewController.h"
 
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
 #import "AppsFlyerTracker.h"
@@ -32,7 +33,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 @interface LoginViewController ()
 <
-    FBLoginViewDelegate,
+    FBSDKLoginButtonDelegate,
     LoginViewDelegate,
     CreatePasswordDelegate
 >
@@ -55,9 +56,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     __weak RKObjectManager *_thirdAppObjectManager;
     __weak RKManagedObjectRequestOperation *_thirdAppLoginRequest;
     NSOperationQueue *_thirdAppOperationQueue;
-    
-    FBLoginView *_loginView;
-    id<FBGraphUser> _facebookUser;
+
+    NSDictionary *_facebookUserData;
     
     GPPSignIn *_signIn;
     GTLPlusPerson *_googleUser;
@@ -82,6 +82,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
+
+@property (strong, nonatomic) FBSDKLoginButton *loginView;
 
 - (void)cancelLogin;
 - (void)configureRestKitLogin;
@@ -165,11 +167,11 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _passwordTextField.isTopRoundCorner = YES;
     _passwordTextField.isBottomRoundCorner = YES;
     
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];
+    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    [loginManager logOut];
+    [FBSDKAccessToken setCurrentAccessToken:nil];
     
-    _loginView = [[FBLoginView alloc] init];
+    _loginView = [[FBSDKLoginButton alloc] init];
     _loginView.delegate = self;
     _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
 
@@ -185,7 +187,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 {
     [super viewWillDisappear:animated];
     [self cancelLogin];
-    _loginView.delegate = nil;
 }
 
 #pragma mark - View Actipn
@@ -310,9 +311,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
     [_activityIndicator stopAnimating];
     
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [[FBSession activeSession] close];
-    [FBSession setActiveSession:nil];    
+    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    [loginManager logOut];
+    [FBSDKAccessToken setCurrentAccessToken:nil];
 }
 
 - (void)setLoggingInState {
@@ -526,7 +527,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[GPPSignIn sharedInstance] disconnect];
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.is_login withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             
@@ -546,8 +547,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
             [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-            if (_facebookUser) {
-                [secureStorage setKeychainWithValue:([_facebookUser objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+            if (_facebookUserData) {
+                [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
             } else if (_googleUser) {
                 [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
             }
@@ -576,6 +577,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         } else if ([_login.result.status isEqualToString:@"1"]) {
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:_login.result.is_login withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
@@ -583,8 +585,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
             controller.delegate = self;
-            if (_facebookUser) {
-                controller.facebookUser = _facebookUser;
+            if (_facebookUserData) {
+                controller.facebookUserData = _facebookUserData;
             } else if (_googleUser) {
                 controller.googleUser = _googleUser;
                 NSString *fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
@@ -621,7 +623,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         _isnodata = NO;
         if (_login.result.is_login) {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.is_login withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             
@@ -768,34 +770,57 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 #pragma mark - Facebook login delegate
 
-// Call method when user information has been fetched
-- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
-    if ([[FBSession activeSession] state] == FBSessionStateOpen) {
-        
-        FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
-        NSString *accessToken = [token accessToken]?:@"";
-        
+- (void)  loginButton:(FBSDKLoginButton *)loginButton
+didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
+                error:(NSError *)error {
+    if (error) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[error.localizedDescription] delegate:self];
+        [alert show];
+    } else {
+        FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
+        if (accessToken) {
+            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+            [parameters setValue:@"id, name, email, birthday, gender" forKey:@"fields"];
+            [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:parameters]
+             startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                 if (!error) {
+                     [self didReceiveFacebookUserData:result];
+                 }
+             }];
+        }
+    }
+}
+
+- (void)didReceiveFacebookUserData:(id)data {
+    
+        _facebookUserData = data;
+
         NSString *gender = @"";
-        if ([[user objectForKey:@"gender"] isEqualToString:@"male"]) {
+        if ([[data objectForKey:@"gender"] isEqualToString:@"male"]) {
             gender = @"1";
-        } else if ([[user objectForKey:@"gender"] isEqualToString:@"female"]) {
+        } else if ([[data objectForKey:@"gender"] isEqualToString:@"female"]) {
             gender = @"2";
         }
 
-        NSDictionary *data = @{
-            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
-            kTKPDLOGIN_API_EMAIL_KEY        : [user objectForKey:@"email"]?:@"",
-            kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
-            kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
-            kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
-            kTKPDLOGIN_API_GENDER_KEY       : gender,
-            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken,
-        };
-        
-        [self requestThirdAppUser:data];
+        NSString *email = [data objectForKey:@"email"]?:@"";
+        NSString *name = [data objectForKey:@"name"]?:@"";
+        NSString *userId = [data objectForKey:@"id"]?:@"";
+        NSString *birthday = [data objectForKey:@"birthday"]?:@"";
 
-        _facebookUser = user;
-        
+        FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
+
+        NSDictionary *parameters = @{
+            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
+            kTKPDLOGIN_API_EMAIL_KEY        : email,
+            kTKPDLOGIN_API_NAME_KEY         : name,
+            kTKPDLOGIN_API_ID_KEY           : userId,
+            kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
+            kTKPDLOGIN_API_GENDER_KEY       : gender,
+            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
+        };
+
+        [self requestThirdAppUser:parameters];
+
         _loadingView.hidden = NO;
         _emailTextField.hidden = YES;
         _passwordTextField.hidden = YES;
@@ -805,53 +830,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         self.googleSignInButton.hidden = YES;
         
         [_activityIndicator startAnimating];
-    }
 }
 
-- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
-{
-
-}
-
-- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
-{
-    if ([[FBSession activeSession] state] != FBSessionStateCreated) {
-        [self cancelLogin];
-    }
-}
-
-// Handle possible errors that can occur during login
-- (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error {
-    NSString *alertMessage, *alertTitle;
-    if ([FBErrorUtility shouldNotifyUserForError:error]) {
-
-        alertTitle = @"Facebook error";
-        alertMessage = [FBErrorUtility userMessageForError:error];
-    
-    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession) {
-    
-        alertTitle = @"Session Error";
-        alertMessage = @"Your current session is no longer valid. Please log in again.";
-    
-    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
-    
-        NSLog(@"user cancelled login");
-    
-    } else {
-    
-        alertTitle  = @"Something went wrong";
-        alertMessage = @"Please try again later.";
-        NSLog(@"Unexpected error:%@", error);
-    
-    }
-    
-    if (alertMessage) {
-        [[[UIAlertView alloc] initWithTitle:alertTitle
-                                    message:alertMessage
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
-    }
+- (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
+    [self cancelLogin];
 }
 
 #pragma mark - Login delegate
@@ -964,10 +946,12 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     NSString *facebookButtonTitle = @"Sign in";
     if (IS_IPHONE_4_OR_LESS) {
         self.formViewMarginTopConstraint.constant = 40;
+        self.facebookButtonTopConstraint.constant = 18;
         constant =  (self.formViewWidthConstraint.constant / 2) - 10;
         
     } else if (IS_IPHONE_5) {
         self.formViewMarginTopConstraint.constant = 30;
+        self.facebookButtonTopConstraint.constant = 18;
         constant =  (self.formViewWidthConstraint.constant / 2) - 10;
     
     } else if (IS_IPHONE_6) {
@@ -993,17 +977,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     self.facebookButtonWidthConstraint.constant = constant;
     self.googleButtonWidthConstraint.constant = constant;
     
-    _loginView.frame = CGRectMake(0, 0, constant, 42);
-    for (id obj in _loginView.subviews) {
-        if ([obj isKindOfClass:[UILabel class]]) {
-            UILabel *label = obj;
-            label.text = facebookButtonTitle;
-        } else if ([obj isKindOfClass:[UIButton class]]) {
-            UIButton *button = obj;
-            button.frame = CGRectMake(0, 0, constant, 42);
-            button.layer.shadowOpacity = 0;
-        }
-    }
+    _loginView.frame = CGRectMake(0, 0, constant, 40);
+    _loginView.layer.shadowOpacity = 0;
     
     [_loginView removeFromSuperview];
     

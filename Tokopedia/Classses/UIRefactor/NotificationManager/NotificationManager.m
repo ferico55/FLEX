@@ -88,10 +88,8 @@
 }
 
 - (void)setViewController:(UIViewController*)vc {
-    _attachedViewController = vc;
-    
-    NSString* userId = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
-    if(![userId isEqualToString:IS_NOT_LOGIN]) {
+    _attachedViewController = vc;    
+    if([_userManager isLogin]) {
         [self initNotificationBarButton];
         [self initNotificationRequest];
         [self initNotificationWindow];
