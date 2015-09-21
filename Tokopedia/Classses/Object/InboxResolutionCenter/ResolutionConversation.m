@@ -10,4 +10,8 @@
 
 @implementation ResolutionConversation
 
+- (NSString *)remark_str {
+    return [_remark_str kv_decodeHTMLCharacterEntities];
+}
+
 @end
