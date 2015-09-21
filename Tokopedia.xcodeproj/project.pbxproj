@@ -1772,6 +1772,13 @@
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		853595E91BAFAE1000000CDD /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 853595E21BAFAE1000000CDD /* FacebookSDKStrings.bundle */; };
+		853595EA1BAFAE1000000CDD /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853595E31BAFAE1000000CDD /* FBAudienceNetwork.framework */; };
+		853595EB1BAFAE1000000CDD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853595E41BAFAE1000000CDD /* FBSDKCoreKit.framework */; };
+		853595EC1BAFAE1000000CDD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853595E51BAFAE1000000CDD /* FBSDKLoginKit.framework */; };
+		853595ED1BAFAE1000000CDD /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853595E61BAFAE1000000CDD /* FBSDKMessengerShareKit.framework */; };
+		853595EE1BAFAE1000000CDD /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853595E71BAFAE1000000CDD /* FBSDKShareKit.framework */; };
+		853595EF1BAFAE1000000CDD /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853595E81BAFAE1000000CDD /* Bolts.framework */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1789,6 +1796,8 @@
 		8565E1EA1B94059600843388 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E81B94059600843388 /* GoogleOpenSource.framework */; };
 		8565E1EB1B94059600843388 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E91B94059600843388 /* GooglePlus.framework */; };
 		8565E1ED1B9405C800843388 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8565E1EC1B9405C800843388 /* GooglePlus.bundle */; };
+		85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDD1BAFCE4A002F1382 /* Fabric.framework */; settings = {ASSET_TAGS = (); }; };
+		85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDF1BAFD257002F1382 /* StoreKit.framework */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1816,7 +1825,6 @@
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCAAEA4619F7534B00904AFB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
 		FCFF56EF1AB6D5CD0076000E /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF56EE1AB6D5CD0076000E /* MainViewController.xib */; };
-		FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCFF63551ABA79660076000E /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -4479,6 +4487,13 @@
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		853595E21BAFAE1000000CDD /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKStrings.bundle; path = "../Downloads/FacebookSDKs-iOS-20150910/FacebookSDKStrings.bundle"; sourceTree = "<group>"; };
+		853595E31BAFAE1000000CDD /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBAudienceNetwork.framework; path = "../Downloads/FacebookSDKs-iOS-20150910/FBAudienceNetwork.framework"; sourceTree = "<group>"; };
+		853595E41BAFAE1000000CDD /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../Downloads/FacebookSDKs-iOS-20150910/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		853595E51BAFAE1000000CDD /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../Downloads/FacebookSDKs-iOS-20150910/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
+		853595E61BAFAE1000000CDD /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = "../Downloads/FacebookSDKs-iOS-20150910/FBSDKMessengerShareKit.framework"; sourceTree = "<group>"; };
+		853595E71BAFAE1000000CDD /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../Downloads/FacebookSDKs-iOS-20150910/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		853595E81BAFAE1000000CDD /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "../Downloads/FacebookSDKs-iOS-20150910/Bolts.framework"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -4496,6 +4511,8 @@
 		8565E1E81B94059600843388 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		8565E1E91B94059600843388 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		8565E1EC1B9405C800843388 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
+		85A18BDD1BAFCE4A002F1382 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		85A18BDF1BAFD257002F1382 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -4537,7 +4554,6 @@
 		FCAAEA4419F7534B00904AFB /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		FCAAEA4819F7536D00904AFB /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
 		FCFF56EE1AB6D5CD0076000E /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainViewController.xib; path = Tokopedia/MainViewController.xib; sourceTree = SOURCE_ROOT; };
-		FCFF63551ABA79660076000E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4545,6 +4561,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
+				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
@@ -4557,6 +4575,7 @@
 				8565E1DF1B9404B000843388 /* AssetsLibrary.framework in Frameworks */,
 				8565E1DD1B94048800843388 /* AddressBook.framework in Frameworks */,
 				459623341BABECEC00FCC4D8 /* libGoogleAnalyticsServices.a in Frameworks */,
+				853595ED1BAFAE1000000CDD /* FBSDKMessengerShareKit.framework in Frameworks */,
 				459623371BABECEC00FCC4D8 /* libAdIdAccess.a in Frameworks */,
 				7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */,
 				7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */,
@@ -4565,20 +4584,24 @@
 				853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */,
 				853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */,
 				853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */,
+				853595EC1BAFAE1000000CDD /* FBSDKLoginKit.framework in Frameworks */,
 				854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */,
 				85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */,
 				85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */,
 				85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */,
 				85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */,
+				853595EF1BAFAE1000000CDD /* Bolts.framework in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
+				853595EB1BAFAE1000000CDD /* FBSDKCoreKit.framework in Frameworks */,
 				8565E1EB1B94059600843388 /* GooglePlus.framework in Frameworks */,
-				FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */,
+				853595EA1BAFAE1000000CDD /* FBAudienceNetwork.framework in Frameworks */,
 				8565E1DA1B9401E600843388 /* GoogleOpenSource.framework in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				459623331BABECEC00FCC4D8 /* libAdIdAccess.a in Frameworks */,
 				8565E1DB1B9401E600843388 /* GooglePlus.framework in Frameworks */,
 				459623321BABECEC00FCC4D8 /* libAppsFlyerLib.a in Frameworks */,
+				853595EE1BAFAE1000000CDD /* FBSDKShareKit.framework in Frameworks */,
 				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
 				8565E1EA1B94059600843388 /* GoogleOpenSource.framework in Frameworks */,
 				FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */,
@@ -9413,8 +9436,16 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85A18BDF1BAFD257002F1382 /* StoreKit.framework */,
+				85A18BDD1BAFCE4A002F1382 /* Fabric.framework */,
+				853595E21BAFAE1000000CDD /* FacebookSDKStrings.bundle */,
+				853595E31BAFAE1000000CDD /* FBAudienceNetwork.framework */,
+				853595E41BAFAE1000000CDD /* FBSDKCoreKit.framework */,
+				853595E51BAFAE1000000CDD /* FBSDKLoginKit.framework */,
+				853595E61BAFAE1000000CDD /* FBSDKMessengerShareKit.framework */,
+				853595E71BAFAE1000000CDD /* FBSDKShareKit.framework */,
+				853595E81BAFAE1000000CDD /* Bolts.framework */,
 				8565E1EC1B9405C800843388 /* GooglePlus.bundle */,
-				FCFF63551ABA79660076000E /* FacebookSDK.framework */,
 				8565E1E81B94059600843388 /* GoogleOpenSource.framework */,
 				8565E1E91B94059600843388 /* GooglePlus.framework */,
 				8565E1E61B9404D900843388 /* MediaPlayer.framework */,
@@ -10486,6 +10517,7 @@
 				45961E341BABECEB00FCC4D8 /* StickyAlertView.xib in Resources */,
 				45961E631BABECEB00FCC4D8 /* ContactUsViewController.xib in Resources */,
 				459622BE1BABECEC00FCC4D8 /* icon_category_white.png in Resources */,
+				853595E91BAFAE1000000CDD /* FacebookSDKStrings.bundle in Resources */,
 				4596219A1BABECEC00FCC4D8 /* icon_login_active@2x.png in Resources */,
 				4596230D1BABECEC00FCC4D8 /* icon_signin_active.png in Resources */,
 				4596222F1BABECEC00FCC4D8 /* icon_share@2x.png in Resources */,
@@ -11514,6 +11546,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -11555,6 +11588,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = fast;
@@ -11581,9 +11615,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Users/tokopedia/Downloads/FacebookSDKs-iOS-20150910",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -11620,11 +11656,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Users/tokopedia/Downloads/FacebookSDKs-iOS-20150910",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";

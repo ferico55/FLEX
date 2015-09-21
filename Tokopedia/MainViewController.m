@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import <FacebookSDK/FacebookSDK.h>
-
-
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "SearchViewController.h"
@@ -39,6 +36,9 @@
 #import "InboxRootViewController.h"
 
 #import "RequestNotifyLBLM.h"
+
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -564,10 +564,9 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
                                                         object:nil];
 
-    if ([FBSession activeSession].state == FBSessionStateOpen &&
-        [FBSession activeSession].state == FBSessionStateOpenTokenExtended) {
-        [FBSession.activeSession closeAndClearTokenInformation];
-    }
+    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    [loginManager logOut];
+    [FBSDKAccessToken setCurrentAccessToken:nil];
     
     [[GPPSignIn sharedInstance] signOut];
     [[GPPSignIn sharedInstance] disconnect];

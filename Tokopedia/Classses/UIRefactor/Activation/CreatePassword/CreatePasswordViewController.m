@@ -13,7 +13,6 @@
 #import "TKPDAlertView.h"
 #import "CreatePasswordViewController.h"
 #import "TextField.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
 #import "WebViewController.h"
@@ -21,7 +20,7 @@
 @interface CreatePasswordViewController ()
 <
     UIScrollViewDelegate,
-    FBLoginViewDelegate,
+    FBSDKLoginButtonDelegate,
     UITextFieldDelegate,
     TKPDAlertViewDelegate
 >
@@ -109,8 +108,8 @@
     NSString *name;
     if (_fullName) {
         name = _fullName;
-    } else if (_facebookUser) {
-        name = [_facebookUser objectForKey:@"name"];
+    } else if (_facebookUserData) {
+        name = [_facebookUserData objectForKey:@"name"];
     } else if (_googleUser) {
         name = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
     }
@@ -120,8 +119,8 @@
     NSString *email;
     if (_email) {
         email = _email;
-    } else if (_facebookUser) {
-        email = [_facebookUser objectForKey:@"email"];
+    } else if (_facebookUserData) {
+        email = [_facebookUserData objectForKey:@"email"];
     } else if (_googleUser) {
         GPPSignIn *signIn = [GPPSignIn sharedInstance];
         email = signIn.userEmail;
@@ -131,8 +130,8 @@
     _emailTextField.layer.opacity = 0.7;
     
     NSString *birthday = @"";
-    if (_facebookUser) {
-        birthday = [_facebookUser objectForKey:@"birthday"];
+    if (_facebookUserData) {
+        birthday = [_facebookUserData objectForKey:@"birthday"];
     } else if (_googleUser) {
         if (_googleUser.birthday) {
             NSArray *birthdayComponents = [_googleUser.birthday componentsSeparatedByString:@"-"];
@@ -218,9 +217,9 @@
 - (IBAction)tap:(id)sender
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [[FBSession activeSession] closeAndClearTokenInformation];
-        [[FBSession activeSession] close];
-        [FBSession setActiveSession:nil];
+        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+        [loginManager logOut];
+        [FBSDKAccessToken setCurrentAccessToken:nil];
         [[GPPSignIn sharedInstance] signOut];
         [[GPPSignIn sharedInstance] disconnect];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -367,10 +366,10 @@
     NSArray *dataComponents = [_dateOfBirthTextField.text componentsSeparatedByString:@"/"];
     
     NSString *gender = @"";
-    if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"male"] ||
+    if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"male"] ||
         [_googleUser.gender isEqualToString:@"male"]) {
         gender = @"1";
-    } else if ([[_facebookUser objectForKey:@"gender"] isEqualToString:@"female"] ||
+    } else if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"female"] ||
                [_googleUser.gender isEqualToString:@"female"]) {
         gender = @"2";
     }
