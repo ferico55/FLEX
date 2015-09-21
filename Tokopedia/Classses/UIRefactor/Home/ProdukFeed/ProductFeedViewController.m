@@ -105,9 +105,6 @@ typedef enum ScrollDirection {
     _isNoData = (_product.count > 0);
     _page = 1;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
-    
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -143,6 +140,8 @@ typedef enum ScrollDirection {
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.screenName = @"Home - Product Feed";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
 }
 
 #pragma mark - Collection Delegate
@@ -417,6 +416,8 @@ typedef enum ScrollDirection {
 }
 
 - (void)userDidLogin:(NSNotification*)notification {
+    [_product removeAllObjects];
+    [_promo removeAllObjects];
     [self refreshView:_refreshControl];
 }
 
