@@ -208,62 +208,48 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
-    if (!_isnodata) {
-        NSString *cellid = kTKPDFAVORITEDSHOPCELL_IDENTIFIER;
-        
-        cell = (FavoritedShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [FavoritedShopCell newcell];
-            ((FavoritedShopCell*)cell).delegate = self;
-        }
-        
-        NSArray *shops;
-        if (indexPath.section == 0) {
-            shops = _promoShops;
-        } else {
-            shops = _shop;
-        }
-        FavoritedShopList *shop = shops[indexPath.row];
-        
-        ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
-        ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
-        
-        if (indexPath.section == 0) {
-            [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-        } else {
-            [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
-        }
-        
-        ((FavoritedShopCell*)cell).indexpath = indexPath;
-        
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil]
-                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        
-        UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
-        thumb.image = nil;
-        
-        [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    NSString *cellid = kTKPDFAVORITEDSHOPCELL_IDENTIFIER;
+    
+    cell = (FavoritedShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [FavoritedShopCell newcell];
+        ((FavoritedShopCell*)cell).delegate = self;
+    }
+    
+    NSArray *shops;
+    if (indexPath.section == 0) {
+        shops = _promoShops;
+    } else {
+        shops = _shop;
+    }
+    FavoritedShopList *shop = shops[indexPath.row];
+    
+    ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
+    ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
+    
+    if (indexPath.section == 0) {
+        [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+    } else {
+        [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
+    }
+    
+    ((FavoritedShopCell*)cell).indexpath = indexPath;
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
+    thumb.image = nil;
+    
+    [thumb setImageWithURLRequest:request
+                 placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image animated:YES];
+        [thumb setImage:image animated:NO];
 #pragma clang diagnostic pop
-        } failure:nil];
-        
-        return cell;
-
-    } else {
-        static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
-    }
+    } failure:nil];
     
     return cell;
 }

@@ -432,7 +432,6 @@
     if (status && [_createPassword.result.is_success boolValue]) {
 
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        
         [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
         [secureStorage setKeychainWithValue:_fullNameTextField.text withKey:kTKPD_FULLNAMEKEY];
         [secureStorage setKeychainWithValue:@(YES) withKey:kTKPD_ISLOGINKEY];
@@ -632,7 +631,7 @@
             [[GPPSignIn sharedInstance] disconnect];
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:_login.result.is_login withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             
