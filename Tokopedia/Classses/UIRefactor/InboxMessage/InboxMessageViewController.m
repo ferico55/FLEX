@@ -132,29 +132,11 @@ typedef enum TagRequest {
 }
 
 - (void)initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showCheckmark:)
-                                                 name:@"editModeOn"
-                                               object:nil];
-    
-    
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showMessageWithFilter:)
-                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", _messageNavigationFlag]
-                                               object:nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadVc:)
-                                                 name:@"reloadvc"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateMessageWithIndex:)
-                                                 name:@"updateMessageWithIndex"
-                                               object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCheckmark:) name:@"editModeOn" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageWithFilter:) name:[NSString stringWithFormat:@"%@%@", @"showRead", _messageNavigationFlag] object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadVc:) name:@"reloadvc" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMessageWithIndex:) name:@"updateMessageWithIndex" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markAsReadMessage:) name:@"markAsReadMessage" object:nil];
 }
 
 #pragma mark - UIViewController
@@ -610,6 +592,19 @@ typedef enum TagRequest {
         [_table reloadData];
     }
 
+}
+
+- (void)markAsReadMessage:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSIndexPath *indexpath = [userinfo objectForKey:@"index_path"];
+    NSString *readStatus = [userinfo objectForKey:@"read_status"];
+    
+    if(readStatus) {
+        InboxMessageList *list = _messages[indexpath.row];
+        
+        list.message_read_status = readStatus;
+        [_table reloadData];
+    }
 }
 
 
