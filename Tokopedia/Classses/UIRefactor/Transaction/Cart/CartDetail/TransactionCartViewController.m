@@ -330,6 +330,7 @@
     
 
     [self adjustPaymentMethodView];
+    [self swipePaymentMethod];
 }
 
 -(void)adjustPaymentMethodView
@@ -349,6 +350,9 @@
             _paymentMethodSelectedView.hidden = NO;
         }
     }
+    
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -1000,6 +1004,7 @@
         if (gateway == -1) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
+            [self swipePaymentMethod];
         }
         if (gateway == TYPE_GATEWAY_CC) {
             return [self isValidInputCC];
@@ -1718,6 +1723,18 @@
     {
         _popFromShipment = YES;
     }
+}
+
+
+- (void)swipePaymentMethod {
+    CGAffineTransform tr = CGAffineTransformTranslate(_paymentMethodView.transform, -40, 0);
+    _paymentMethodView.transform = tr;
+    
+    [UIView animateWithDuration:2.0 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.0f options:0 animations:^{
+        _paymentMethodView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)setDefaultInputData
