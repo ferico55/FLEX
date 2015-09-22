@@ -102,7 +102,7 @@
     NotifyLBLM *notify= stat;
     _notifyData = notify.data;
     
-    return @"OK";//notify.status;
+    return notify.status;
 }
 
 -(void)actionBeforeRequest:(int)tag

@@ -14,6 +14,8 @@
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
 #import "CatalogViewController.h"
+#import "TKPDTabNavigationController.h"
+#import "SearchResultShopViewController.h"
 
 #import "RetryCollectionReusableView.h"
 
@@ -303,10 +305,32 @@ UICollectionViewDelegateFlowLayout
         
         SearchResultViewController *controller = [SearchResultViewController new];
         controller.data = parameters;
-        controller.title = hotlist.title;
         controller.hidesBottomBarWhenPushed = YES;
         
-        [self.delegate pushViewController:controller];
+        SearchResultViewController *controller2 = [SearchResultViewController new];
+//        [parameters setValue:@"search_catalog" forKey:kTKPDSEARCH_DATATYPE];
+//        controller.data = parameters;
+//        controller.hidesBottomBarWhenPushed = YES;
+        
+//        SearchResultShopViewController *controller3 = [SearchResultShopViewController new];
+//        [parameters setValue:@"search_shop" forKey:kTKPDSEARCH_DATATYPE];
+//        controller3.data = parameters;
+//        controller3.hidesBottomBarWhenPushed = YES;
+        
+        NSArray *viewcontrollers = @[controller];
+        
+        TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+        
+        [viewController setSelectedIndex:0];
+        [viewController setViewControllers:viewcontrollers];
+        [viewController setNavigationTitle:hotlist.title];
+        
+        viewController.hidesBottomBarWhenPushed = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:@{@"hide_segment" : @"1"}];
+        [self.delegate pushViewController:viewController];
+        
+        
+//        [self.delegate pushViewController:controller];
         
     } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
         
