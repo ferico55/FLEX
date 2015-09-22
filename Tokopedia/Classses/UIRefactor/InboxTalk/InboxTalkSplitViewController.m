@@ -23,24 +23,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    InboxTalkViewController *vc = [InboxTalkViewController new];
-    vc.data=@{@"nav":@"inbox-talk"};
+    TKPDTabViewController *controller = [TKPDTabViewController new];
+    controller.hidesBottomBarWhenPushed = YES;
+    controller.splitVC = self;
     
-    InboxTalkViewController *vc1 = [InboxTalkViewController new];
-    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+    InboxTalkViewController *allTalk = [InboxTalkViewController new];
+    allTalk.inboxTalkType = InboxTalkTypeAll;
+    allTalk.delegate = controller;
     
-    InboxTalkViewController *vc2 = [InboxTalkViewController new];
-    vc2.data=@{@"nav":@"inbox-talk-following"};
+    InboxTalkViewController *myProductTalk = [InboxTalkViewController new];
+    myProductTalk.inboxTalkType = InboxTalkTypeMyProduct;
+    myProductTalk.delegate = controller;
     
-    NSArray *vcs = @[vc,vc1, vc2];
+    InboxTalkViewController *followingTalk = [InboxTalkViewController new];
+    followingTalk.inboxTalkType = InboxTalkTypeFollowing;
+    followingTalk.delegate = controller;
     
-    TKPDTabInboxTalkNavigationController *masterVC = [TKPDTabInboxTalkNavigationController new];
-    [masterVC setSelectedIndex:2];
-    [masterVC setViewControllers:vcs];
+    controller.viewControllers = @[allTalk, myProductTalk, followingTalk];
+    controller.tabTitles = @[@"Semua", @"Produk Saya", @"Ikuti"];
+    controller.menuTitles = @[@"Semua Diskusi", @"Belum Dibaca"];
     
-    masterVC.splitVC = self;
-    
-    UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:masterVC];
+    UINavigationController *masterNav = [[UINavigationController alloc]initWithRootViewController:controller];
     masterNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     masterNav.navigationBar.translucent = NO;
     masterNav.navigationBar.tintColor = [UIColor whiteColor];
@@ -48,16 +51,16 @@
     
     //Grab a reference to the LeftViewController and get the first monster in the list.
     ProductTalkDetailViewController *detailVC = [ProductTalkDetailViewController new];
-    detailVC.masterViewController = masterVC;
+    detailVC.masterViewController = controller;
     
     UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
     detailNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     detailNav.navigationBar.translucent = NO;
     detailNav.navigationBar.tintColor = [UIColor whiteColor];
     
-    vc.detailViewController = detailVC;
-    vc1.detailViewController = detailVC;
-    vc2.detailViewController = detailVC;
+    allTalk.detailViewController = detailVC;
+    followingTalk.detailViewController = detailVC;
+    myProductTalk.detailViewController = detailVC;
     
     self.view.frame = [UIScreen mainScreen].bounds;
     

@@ -44,6 +44,7 @@
 
 #import "StarsRateView.h"
 #import "MarqueeLabel.h"
+#import "PromoRequest.h"
 
 #import "DetailProductViewController.h"
 #import "DetailProductWholesaleCell.h"
@@ -59,11 +60,6 @@
 #import "ProductAddEditViewController.h"
 
 #import "DetailProductOtherView.h"
-
-#import "TKPDTabShopViewController.h"
-#import "ShopTalkViewController.h"
-#import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
 
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
@@ -2142,6 +2138,8 @@ UIAlertViewDelegate
             [self setHeaderviewData];
             [self setFooterViewData];
             [self setOtherProducts];
+            [self addImpressionClick];
+            
             _isnodata = NO;
             [_table reloadData];
             
@@ -3011,7 +3009,7 @@ UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id];
+        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id etalaseName:_product.result.product.product_etalase];
     }
 }
 
@@ -3098,5 +3096,15 @@ UIAlertViewDelegate
     
     _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
     _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
+}
+
+- (void)addImpressionClick {
+    __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+    NSString *adKey = [_data objectForKey:PromoImpressionKey];
+    NSString *adSemKey = [_data objectForKey:PromoSemKey];
+    NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
+    if (adKey) {
+        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+    }
 }
 @end

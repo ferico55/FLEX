@@ -64,8 +64,10 @@
     
 }
 
--(void)requestActionMoveToWarehouse:(NSString*)productID
+-(void)requestActionMoveToWarehouse:(NSString*)productID etalaseName:(NSString *)etalaseName
 {
+    _etalaseName = etalaseName;
+    
     [self configureRestKitActionMoveToWarehouse];
     if (_requestActionMoveToWarehouse.isExecuting) return;
     NSTimer *timer;
@@ -126,7 +128,7 @@
                 if (setting.result.is_success == 1) {
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil gudangkan produk", nil];
                     [_delegate successMoveToWithMessages:array];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION object:nil userInfo:nil];
                 }
             }
         }
@@ -184,6 +186,8 @@
 
 -(void)requestActionMoveToEtalase:(NSString*)productID etalaseID:(NSString*)etalaseID etalaseName:(NSString*)etalaseName
 {
+    _etalaseName = etalaseName;
+    
     [self configureRestKitActionMoveToEtalase];
     if (_requestActionMoveToEtalase.isExecuting) return;
     NSTimer *timer;
@@ -256,7 +260,7 @@
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil memindahkan produk ke etalase", nil];
                     [_delegate successMoveToWithMessages:array];
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:MOVE_PRODUCT_TO_ETALASE_NOTIFICATION object:nil userInfo:@{kTKPDSHOP_APIETALASENAMEKEY : _etalaseName}];
                 }
             }
         }

@@ -25,7 +25,7 @@
 }
 
 - (IBAction)tapDev:(id)sender {
-    baseUrl = @"http://www.tokopedia.dev/ws";
+    baseUrl = @"http://alpha.tokopedia.com/ws";
     [self didChangeButtonColor:_devButton];
 }
 

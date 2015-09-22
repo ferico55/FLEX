@@ -7,7 +7,7 @@
 //
 #import <AFNetworking/AFNetworking.h>
 #import <SystemConfiguration/SystemConfiguration.h>
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "AppDelegate.h"
@@ -80,11 +80,13 @@
         [self preparePersistData];
     });
     
-    return YES;
+    BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                       didFinishLaunchingWithOptions:launchOptions];
+    return didFinishLaunching;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [FBAppEvents activateApp];
+    [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
 }
 
@@ -115,7 +117,11 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
+    BOOL shouldOpenURL = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                        openURL:url
+                                                              sourceApplication:sourceApplication
+                                                                     annotation:annotation];
+    if (shouldOpenURL) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;

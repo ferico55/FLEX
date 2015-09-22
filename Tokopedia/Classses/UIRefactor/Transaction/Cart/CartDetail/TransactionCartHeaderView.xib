@@ -7,7 +7,6 @@
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -17,17 +16,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Toko :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dNU-c7-nhX">
-                    <rect key="frame" x="15" y="0.0" width="48" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="48" id="EAB-8x-2zg"/>
-                        <constraint firstAttribute="height" constant="44" id="byJ-BC-Rag"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FYa-Qi-T9k">
-                    <rect key="frame" x="66" y="0.0" width="206" height="44"/>
+                    <rect key="frame" x="43" y="7" width="233" height="33"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="33" id="Vsv-VL-BgX"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -35,8 +28,8 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z9V-lt-b5H">
                     <rect key="frame" x="276" y="0.0" width="44" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="44" id="Xm5-P4-9ey"/>
-                        <constraint firstAttribute="height" constant="44" id="kCR-SL-TQd"/>
+                        <constraint firstAttribute="height" constant="44" id="MMc-Ia-7jT"/>
+                        <constraint firstAttribute="width" constant="44" id="PD6-Te-DgK"/>
                     </constraints>
                     <state key="normal" image="icon_cancel_grey.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -45,28 +38,35 @@
                         <action selector="tap:" destination="iN0-l3-epB" eventType="touchUpInside" id="aj3-LU-XWz"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loyalMerchant.png" translatesAutoresizingMaskIntoConstraints="NO" id="lJa-Fl-foS">
+                    <rect key="frame" x="15" y="12" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="eQN-K0-54M"/>
+                        <constraint firstAttribute="width" constant="20" id="yHd-pe-hYn"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="z9V-lt-b5H" firstAttribute="leading" secondItem="FYa-Qi-T9k" secondAttribute="trailing" constant="4" id="K2U-j8-0h5"/>
-                <constraint firstItem="FYa-Qi-T9k" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Myj-U2-y4e"/>
-                <constraint firstItem="dNU-c7-nhX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="QIf-45-UqX"/>
-                <constraint firstItem="dNU-c7-nhX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="diR-2k-STM"/>
-                <constraint firstAttribute="bottom" secondItem="FYa-Qi-T9k" secondAttribute="bottom" id="eFD-Qj-h3i"/>
-                <constraint firstItem="FYa-Qi-T9k" firstAttribute="leading" secondItem="dNU-c7-nhX" secondAttribute="trailing" constant="3" id="fCe-49-n7j"/>
-                <constraint firstAttribute="trailing" secondItem="z9V-lt-b5H" secondAttribute="trailing" id="hvw-nH-oyC"/>
-                <constraint firstItem="z9V-lt-b5H" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jsm-hq-XSt"/>
-                <constraint firstAttribute="bottom" secondItem="dNU-c7-nhX" secondAttribute="bottom" id="nv1-s2-r1T"/>
-                <constraint firstAttribute="bottom" secondItem="z9V-lt-b5H" secondAttribute="bottom" id="una-Pc-8h5"/>
+                <constraint firstItem="lJa-Fl-foS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="E8j-F5-SyO"/>
+                <constraint firstItem="lJa-Fl-foS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="Egg-zk-lZz"/>
+                <constraint firstItem="z9V-lt-b5H" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Sb3-Wn-w7f"/>
+                <constraint firstAttribute="trailing" secondItem="z9V-lt-b5H" secondAttribute="trailing" id="WlV-zX-BUh"/>
+                <constraint firstItem="FYa-Qi-T9k" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="7" id="dXt-gT-3of"/>
+                <constraint firstItem="FYa-Qi-T9k" firstAttribute="leading" secondItem="lJa-Fl-foS" secondAttribute="trailing" constant="8" id="lgZ-L3-Jkl"/>
+                <constraint firstItem="z9V-lt-b5H" firstAttribute="leading" secondItem="FYa-Qi-T9k" secondAttribute="trailing" id="lhf-xp-6ek"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="LMBadgeImageView" destination="lJa-Fl-foS" id="565-IQ-Ymy"/>
+                <outlet property="constraintXShopName" destination="lgZ-L3-Jkl" id="mjm-gZ-cwn"/>
+                <outlet property="constraintwidthbadge" destination="yHd-pe-hYn" id="RAw-6H-o80"/>
                 <outlet property="deleteButton" destination="z9V-lt-b5H" id="O8B-7q-YXp"/>
                 <outlet property="shopNameLabel" destination="FYa-Qi-T9k" id="cQk-2z-gm1"/>
                 <outletCollection property="gestureRecognizers" destination="t9m-IX-MvS" appends="YES" id="81L-Lr-euL"/>
             </connections>
-            <point key="canvasLocation" x="460" y="2"/>
+            <point key="canvasLocation" x="460" y="-11"/>
         </view>
         <tapGestureRecognizer id="t9m-IX-MvS">
             <connections>
@@ -76,6 +76,7 @@
     </objects>
     <resources>
         <image name="icon_cancel_grey.png" width="14" height="14"/>
+        <image name="loyalMerchant.png" width="20" height="19"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -215,12 +215,12 @@
         _reportButton.hidden = YES;
         _buttonsDividers.hidden = YES;
         
-        _talktotalcommentlabel.translatesAutoresizingMaskIntoConstraints = YES;
-        CGRect newFrame = _talktotalcommentlabel.frame;
-        newFrame.origin.x = _header.frame.size.width/2;
-        _talktotalcommentlabel.frame = newFrame;
+
     }
-    
+    _talktotalcommentlabel.translatesAutoresizingMaskIntoConstraints = YES;
+    CGRect newFrame = _talktotalcommentlabel.frame;
+    newFrame.origin.x = 0;
+    _talktotalcommentlabel.frame = newFrame;
     
     
 //    //UIBarButtonItem *barbutton1;
@@ -250,7 +250,7 @@
     [self setHeaderData:_data];
     
     //islogin
-    if([_userManager getUserId] && ![[_userManager getUserId] isEqualToString:@"0"]) {
+    if([_userManager isLogin]) {
         //isbanned product
         if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
            ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
@@ -617,7 +617,7 @@
         
         _talktotalcommentlabel.translatesAutoresizingMaskIntoConstraints = YES;
         CGRect newFrame = _talktotalcommentlabel.frame;
-        newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - (_talktotalcommentlabel.frame.size.width)) / 2;
+        newFrame.origin.x = _table.frame.size.width / 2;
         _talktotalcommentlabel.frame = newFrame;
     }
     
@@ -1184,8 +1184,9 @@
             commentlist.comment_id = commentaction.result.comment_id;
             commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
             
-            if([dictCell objectForKey:@"-1"]) //-1 is keyword for temporay where ui need display first after send message
+            if([dictCell objectForKey:@"-1"]) {
                 [dictCell removeObjectForKey:@"-1"];
+            }
             
             NSDictionary *userinfo;
             userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
@@ -1203,7 +1204,13 @@
 #pragma mark - UITextView Delegate
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
-    _inputViewConstraint.constant = height+20;
+    float diff = (growingTextView.frame.size.height - height);
+    
+    CGRect r = _talkInputView.frame;
+    r.size.height -= diff;
+    r.origin.y += diff;
+    
+    _talkInputView.frame = r;
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{

@@ -30,11 +30,8 @@
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 
-#import "TKPDTabShopViewController.h"
 #import "ShopFavoritedViewController.h"
-#import "ShopReviewViewController.h"
-#import "MyShopNoteViewController.h"
-#import "ShopTalkViewController.h"
+
 
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
@@ -59,10 +56,14 @@
 #import "TokopediaNetworkManager.h"
 
 #import "NavigateViewController.h"
+#import "LoyaltyPoint.h"
+
+#import "TAGDataLayer.h"
 
 #import <MessageUI/MessageUI.h>
 
 #define CTagProfileInfo 12
+#define CTagLP 13
 
 @interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol> {
     NSDictionary *_auth;
@@ -81,6 +82,10 @@
     
     UISplitViewController *splitViewController;
     NavigateViewController *_navigate;
+    
+    TokopediaNetworkManager *_LPNetworkManager;
+    LoyaltyPointResult *_LPResult;
+    TAGContainer *_gtmContainer;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -96,6 +101,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSaldo;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
+@property (weak, nonatomic) IBOutlet UILabel *LPointLabel;
 
 @end
 
@@ -137,6 +143,10 @@
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
+    
+    _LPNetworkManager = [TokopediaNetworkManager new];
+    _LPNetworkManager.delegate = self;
+    _LPNetworkManager.tagRequest = CTagLP;
     
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
@@ -215,7 +225,9 @@
 {
     [super viewDidDisappear:animated];
     self.navigationController.tabBarController.title = @"More";
+    [_LPNetworkManager requestCancel];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -231,7 +243,10 @@
                  kTKPDPROFILE_APIPROFILEUSERIDKEY : @([[_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
                  };
     }
-    
+    if (tag == CTagLP) {
+        return @{@"action":@"get_lp"
+                 };
+    }
     return nil;
 }
 
@@ -239,6 +254,9 @@
 {
     if(tag == CTagProfileInfo) {
         return kTKPDPROFILE_PEOPLEAPIPATH;
+    }
+    if (tag == CTagLP) {
+        return @"lp.pl";
     }
     
     return nil;
@@ -280,8 +298,24 @@
         
         return _objectmanager;
     }
+    if (tag == CTagLP) {
+        return [self objectManagerLP];
+    }
     
     return nil;
+}
+
+-(RKObjectManager*)objectManagerLP
+{
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LoyaltyPoint mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:@"lp.pl"
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    [objectManager addResponseDescriptor:responseDescriptor];
+
+    return objectManager;
 }
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag
@@ -290,7 +324,10 @@
         ProfileInfo *profileInfo = [((RKMappingResult *) result).dictionary objectForKey:@""];
         return profileInfo.status;
     }
-    
+    if (tag == CTagLP) {
+        LoyaltyPoint *lp = [((RKMappingResult *) result).dictionary objectForKey:@""];
+        return lp.status;
+    }
     return nil;
 }
 
@@ -320,6 +357,13 @@
                                                } failure: nil];
             }
         }
+    }
+    
+    if (tag == CTagLP) {
+        LoyaltyPoint *lp = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+        _LPResult = lp.result;
+        _LPointLabel.text = lp.result.loyalty_point.amount;
+        [[self tableView]reloadData];
     }
 }
 
@@ -476,10 +520,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:
-            return 1;
+        case 0:{
+            if ([_LPResult.loyalty_point.has_lp integerValue] == 1) {
+                return 2;
+            }
+            else return 1;
             break;
-            
+        }
         case 1:
             return 3;
             break;
@@ -540,18 +587,32 @@
     return @"";
 }
 
+
 #pragma mark - Table delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.hidesBottomBarWhenPushed = YES;
     
-    if(indexPath.section == 0) {
+    if(indexPath.section == 0 && indexPath.row == 0) {
         if(![_depositLabel.text isEqualToString:@"-"]) {
             DepositSummaryViewController *depositController = [DepositSummaryViewController new];
             depositController.data = @{@"total_saldo":_depositLabel.text};
             [self.navigationController pushViewController:depositController animated:YES];
         }
+    }
+    if (indexPath.section == 0 && indexPath.row == 1) {
+        NSString  *currentDeviceId = [_auth objectForKey:@"device_token"];
+        NSString *userID = [_auth objectForKey:kTKPDPROFILE_APIUSERIDKEY];
+        NSString *url_ = _LPResult.uri;
+        NSURL *url = [NSURL URLWithString:url_];
+        WebViewController *webViewController = [WebViewController new];
+        NSString *webViewStrUrl =[NSString stringWithFormat:@"http://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@",  [url host],userID,currentDeviceId,[url path],[url query]]; //[url scheme], [url host]
+//        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@", @"http", @"m.tokopedia.com",userID,currentDeviceId,@"/lp.pl",@"flag_app=1"]; //[url scheme], [url host]
+        webViewController.isLPWebView = YES;
+        webViewController.strURL = webViewStrUrl;
+        webViewController.strTitle = @"TopPoints";
+        [self.navigationController pushViewController:webViewController animated:YES];
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
@@ -640,11 +701,9 @@
             [self.navigationController pushViewController:nc animated:YES];
             */
         } else if (indexPath.row == 3) {
-            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
-            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
             
-
+            [_navigate navigateToInboxPriceAlertFromViewController:self];
+            
         } else if (indexPath.row == 4) {
             TKPDTabViewController *controller = [TKPDTabViewController new];
             controller.hidesBottomBarWhenPushed = YES;
@@ -789,7 +848,6 @@
     
     [_depositObjectManager addResponseDescriptor:responseDescriptorStatus];
 }
-
 #pragma mark - Deposit Reskit methods
 
 - (void)loadDataDeposit
@@ -844,6 +902,8 @@
         _loadingSaldo.hidden = YES;
         [_loadingSaldo stopAnimating];
         _isNoDataDeposit = NO;
+
+        [_LPNetworkManager doRequest];
     }
 }
 
@@ -892,6 +952,7 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [self requestCancel];
+    [_LPNetworkManager requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
@@ -920,6 +981,24 @@
     
     UIImage *profilePicture = [notification.userInfo objectForKey:@"profile_img"];
     _profilePictureImageView.image = profilePicture;
+}
+
+- (IBAction)tapInfoTopPoints:(id)sender {
+    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"http://blog.tokopedia.com";
+    NSURL *url = [NSURL URLWithString:urlString];
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+#pragma mark - GTM
+- (void)configureGTM {
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+
 }
 
 #pragma mark - Email delegate

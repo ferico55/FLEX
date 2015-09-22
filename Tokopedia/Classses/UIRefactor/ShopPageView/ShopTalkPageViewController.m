@@ -5,11 +5,8 @@
 //  Created by Tokopedia on 11/28/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "CMPopTipView.h"
-#import "TKPDTabInboxTalkNavigationController.h"
+
 #import "ShopTalkPageViewController.h"
-#import "ProductTalkDetailViewController.h"
-#import "GeneralTalkCell.h"
 
 #import "Talk.h"
 #import "GeneralAction.h"
@@ -21,21 +18,18 @@
 #import "string_inbox_talk.h"
 #import "detail.h"
 
-#import "URLCacheController.h"
 #import "ReputationDetail.h"
 #import "ShopPageHeader.h"
 #import "string_inbox_message.h"
 #import "NoResultView.h"
 #import "NSString+HTML.h"
-#import "SmileyAndMedal.h"
 #import "UserAuthentificationManager.h"
+#import "TalkCell.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 UIScrollViewDelegate,
-SmileyDelegate,
-CMPopTipViewDelegate,
-GeneralTalkCellDelegate,
+TalkCellDelegate,
 ShopPageHeaderDelegate,
 UIAlertViewDelegate>
 
@@ -62,7 +56,6 @@ UIAlertViewDelegate>
     NSInteger _limit;
     NSInteger _viewposition;
 
-    CMPopTipView *cmPopTitpView;
     NSMutableDictionary *_paging;
     
     NSString *_uriNext;
@@ -86,16 +79,10 @@ UIAlertViewDelegate>
     
     
     __weak RKObjectManager *_objectManager;
-    __weak RKObjectManager *_objectUnfollowmanager;
-    __weak RKObjectManager *_objectDeletemanager;
     
     __weak RKManagedObjectRequestOperation *_request;
-    __weak RKManagedObjectRequestOperation *_requestUnfollow;
-    __weak RKManagedObjectRequestOperation *_requestDelete;
     
     NSOperationQueue *_operationQueue;
-    NSOperationQueue *_operationUnfollowQueue;
-    NSOperationQueue *_operationDeleteQueue;
     
     
     NSString *_cachepath;
@@ -153,8 +140,6 @@ UIAlertViewDelegate>
     _page = 1;
     
     _operationQueue = [NSOperationQueue new];
-    _operationUnfollowQueue = [NSOperationQueue new];
-    _operationDeleteQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _list = [NSMutableArray new];
@@ -184,15 +169,20 @@ UIAlertViewDelegate>
         _isNoData = NO;
     }
     
+    UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
+    [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
+    
     [_fakeStickyTab.layer setShadowOffset:CGSizeMake(0, 0.5)];
     [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_fakeStickyTab.layer setShadowRadius:1];
     [_fakeStickyTab.layer setShadowOpacity:0.3];
     
     [self initNotification];
-    [self configureRestKit];
 
+
+    [self configureRestKit];
     [self loadData];
+
     
 }
 
@@ -202,13 +192,6 @@ UIAlertViewDelegate>
     [super viewWillAppear:animated];
     self.screenName = @"Shop - Talk List";
     _userManager = [UserAuthentificationManager new];
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        
-        if (_isNoData && _page < 1) {
-            [self loadData];
-        }
-    }
     
 }
 
@@ -234,25 +217,6 @@ UIAlertViewDelegate>
     return _header.frame.size.height;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isNoData) {
-        
-        cell.backgroundColor = [UIColor clearColor];
-    }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [self configureRestKit];
-            [self loadData];
-        } else {
-            _table.tableFooterView = nil;
-            [_act stopAnimating];
-        }
-    }
-}
-
 
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -261,134 +225,24 @@ UIAlertViewDelegate>
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = nil;
-    if (!_isNoData) {
-        
-        NSString *cellid = kTKPDGENERALTALKCELL_IDENTIFIER;
-        
-        cell = (GeneralTalkCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [GeneralTalkCell newcell];
-            ((GeneralTalkCell*)cell).delegate = self;
-            [((GeneralTalkCell*)cell).userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
-            ((GeneralTalkCell*)cell).userButton.userInteractionEnabled = YES;
-            [((GeneralTalkCell*)cell).userButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:cell action:@selector(tap:)]];
+    TalkList *list = [_list objectAtIndex:indexPath.row];
+    
+    TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
+    cell.delegate = self;
+    cell.selectedTalkShopID = list.talk_shop_id;
+    cell.selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)list.talk_user_id];
+    cell.selectedTalkProductID = list.talk_product_id;
+    cell.selectedTalkReputation = list.talk_user_reputation;
+    
+    [cell setTalkViewModel:list.viewModel];
+    
+    //next page if already last cell
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            [self configureRestKit];
+            [self loadData];
         }
-        
-        if (_list.count > indexPath.row) {
-            TalkList *list = _list[indexPath.row];
-            
-            ((GeneralTalkCell*)cell).btnReputation.tag = indexPath.row;
-            ((GeneralTalkCell*)cell).indexpath = indexPath;
-            ((GeneralTalkCell*)cell).data = list;
-            ((GeneralTalkCell*)cell).userButton.text = list.talk_user_name;
-            [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
-            ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
-            [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
-            
-            
-            if(list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"]) {
-                [((GeneralTalkCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
-                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-            else {
-                [((GeneralTalkCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", list.talk_user_reputation.positive_percentage==nil? @"0":list.talk_user_reputation.positive_percentage] forState:UIControlStateNormal];
-                [((GeneralTalkCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-            
-            //Set user label
-//            if([list.talk_user_label isEqualToString:CPenjual]) {
-//                [((GeneralTalkCell*)cell).userButton setColor:CTagPenjual];
-//            }
-//            else if([list.talk_user_label isEqualToString:CPembeli]) {
-//                [((GeneralTalkCell*)cell).userButton setColor:CTagPembeli];
-//            }
-//            else if([list.talk_user_label isEqualToString:CAdministrator]) {
-//                [((GeneralTalkCell*)cell).userButton setColor:CTagAdministrator];
-//            }
-//            else if([list.talk_user_label isEqualToString:CPengguna]) {
-//                [((GeneralTalkCell*)cell).userButton setColor:CTagPengguna];
-//            }
-//            else {
-//                [((GeneralTalkCell*)cell).userButton setColor:-1];//-1 is set to empty string
-//            }
-            [((GeneralTalkCell*)cell).userButton setLabelBackground:list.talk_user_label];
-            
-            NSString *followStatus;
-            if(!list.talk_follow_status) {
-                followStatus = TKPD_TALK_FOLLOW;
-            } else {
-                followStatus = TKPD_TALK_UNFOLLOW;
-            }
-            [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
-            
-            if(![list.talk_own isEqualToString:@"1"] && [_userManager isLogin]) {
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
-            } else {
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-                ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
-                
-                ((GeneralTalkCell*)cell).commentbutton.translatesAutoresizingMaskIntoConstraints = YES;
-                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
-                newFrame.origin.x = ([UIScreen mainScreen].bounds.size.width - ((GeneralTalkCell*)cell).commentbutton.frame.size.width) / 2-10;
-                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
-            }
-            
-            
-            if([_userManager isLogin]) {
-                ((GeneralTalkCell*)cell).moreActionButton.hidden = NO;
-            } else {
-                ((GeneralTalkCell*)cell).moreActionButton.hidden = YES;
-            }
-            
-            if ([list.talk_message length] > 30) {
-                NSRange stringRange = {0, MIN([list.talk_message length], 30)};
-                stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                ((GeneralTalkCell*)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.talk_message substringWithRange:stringRange]];
-            } else {
-                ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
-            }
-            
-
-            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
-            userImageView.image = nil;
-            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [userImageView setImage:image];
-                userImageView.layer.cornerRadius = userImageView.frame.size.width/2;
-#pragma clang diagnostic pop
-            } failure:nil];
-            
-            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *productImageView = ((GeneralTalkCell*)cell).productImageView;
-            productImageView.image = nil;
-            [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [productImageView setImage:image];
-                productImageView.layer.cornerRadius = productImageView.frame.size.width/2;
-#pragma clang diagnostic pop
-            } failure:nil];
-            
-        }
-        
-        
-        
-        return cell;
-        
-    } else {
-        static NSString *cellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
     
     return cell;
@@ -616,216 +470,6 @@ UIAlertViewDelegate>
 
 
 
-
-#pragma mark - General Talk Delegate
-- (void)actionSmile:(id)sender {
-    TalkList *list = _list[((UIView *) sender).tag];
-    
-    if(! (list.talk_user_reputation.no_reputation!=nil && [list.talk_user_reputation.no_reputation isEqualToString:@"1"])) {
-        int paddingRightLeftContent = 10;
-        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.talk_user_reputation.neutral withRepSmile:list.talk_user_reputation.positive withRepSad:list.talk_user_reputation.negative withDelegate:self];
-        
-        //Init pop up
-        cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-        cmPopTitpView.delegate = self;
-        cmPopTitpView.backgroundColor = [UIColor whiteColor];
-        cmPopTitpView.animation = CMPopTipAnimationSlide;
-        cmPopTitpView.dismissTapAnywhere = YES;
-        cmPopTitpView.leftPopUp = YES;
-        
-        UIButton *button = (UIButton *)sender;
-        [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
-    }
-}
-
-- (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
-    NSInteger row = indexpath.row;
-    TalkList *list = _list[row];
-    vc.data = @{
-                TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation,
-                TKPD_TALK_MESSAGE:list.talk_message?:@0,
-                TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
-                TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
-                TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
-                TKPD_TALK_ID:list.talk_id?:@0,
-                TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%d", (int)list.talk_user_id],
-                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
-                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
-                TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
-                TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
-                kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
-                TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@"",
-                TKPD_TALK_USER_LABEL:list.talk_user_label?:@""
-                };
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
-
-#pragma mark - action
--(void) configureUnfollowRestkit {
-    _objectUnfollowmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST
-                                                                                             pathPattern:TKPD_MESSAGE_TALK_ACTION keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectUnfollowmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)configureDeleteRestkit {
-    _objectDeletemanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:TKPD_MESSAGE_TALK_ACTION
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectDeletemanager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)followAnimateZoomOut:(UIButton*)buttonUnfollow {
-    double delayInSeconds = 2.0;
-    if([[buttonUnfollow currentTitle] isEqualToString:TKPD_TALK_FOLLOW]) {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.3];
-        buttonUnfollow.transform = CGAffineTransformMakeScale(1.3,1.3);
-        [buttonUnfollow setTitle:TKPD_TALK_UNFOLLOW forState:UIControlStateNormal];
-        buttonUnfollow.transform = CGAffineTransformMakeScale(1,1);
-        [UIView commitAnimations];
-    } else {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.3];
-        buttonUnfollow.transform = CGAffineTransformMakeScale(1.3,1.3);
-        [buttonUnfollow setTitle:TKPD_TALK_FOLLOW forState:UIControlStateNormal];
-        buttonUnfollow.transform = CGAffineTransformMakeScale(1,1);
-        [UIView commitAnimations];
-    }
-    
-    buttonUnfollow.enabled = NO;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        buttonUnfollow.enabled = YES;
-    });
-}
-
-- (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow {
-    [self configureUnfollowRestkit];
-    [self followAnimateZoomOut:buttonUnfollow];
-    
-    TalkList *list = _list[indexpath.row];
-    if (_requestUnfollow.isExecuting) return;
-    
-    NSDictionary* param = @{
-                            kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
-                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                            TKPD_TALK_ID:list.talk_id?:@0,
-                            };
-    
-    _requestUnfollowCount ++;
-    _requestUnfollow = [_objectUnfollowmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:[param encrypt]];
-    
-    [_requestUnfollow setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        
-    }];
-    
-    [_operationUnfollowQueue addOperation:_requestUnfollow];
-    
-}
-
-- (void)deleteTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:PROMPT_DELETE_TALK
-                          message:PROMPT_DELETE_TALK_MESSAGE
-                          delegate:self
-                          cancelButtonTitle:BUTTON_CANCEL
-                          otherButtonTitles:nil];
-    
-    [alert addButtonWithTitle:BUTTON_OK];
-    [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    //delete talk
-    if(buttonIndex == 1) {
-        TalkList *list = _list[buttonIndex];
-        [_list removeObjectAtIndex:buttonIndex];
-        [_table reloadData];
-        [self configureDeleteRestkit];
-        
-        if (_requestDelete.isExecuting) return;
-        
-        NSDictionary* param = @{
-                                kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
-                                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
-                                TKPD_TALK_ID:list.talk_id?:@0,
-                                kTKPDDETAILSHOP_APISHOPID : list.talk_shop_id
-                                };
-        
-        _requestDeleteCount ++;
-        _requestDelete = [_objectDeletemanager appropriateObjectRequestOperationWithObject:self
-                                                                                    method:RKRequestMethodPOST
-                                                                                      path:TKPD_MESSAGE_TALK_ACTION
-                                                                                parameters:[param encrypt]];
-        
-        [_requestDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            
-            
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            
-        }];
-        
-        [_operationDeleteQueue addOperation:_requestDelete];
-        
-    }
-}
-
-- (void)failToDelete:(id)talk {
-    
-}
-
-
-- (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    return self;
-}
-
 #pragma mark - Refresh View
 -(void)refreshView:(UIRefreshControl*)refresh
 {
@@ -919,27 +563,16 @@ UIAlertViewDelegate>
 - (id)didReceiveNavigationController {
     return self;
 }
-
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
-
-#pragma mark - PopUp
-- (void)dismissAllPopTipViews
-{
-    [cmPopTitpView dismissAnimated:YES];
-    cmPopTitpView = nil;
+#pragma mark - Talk Cell Delegate
+- (id)getNavigationController:(UITableViewCell *)cell {
+    return self;
 }
 
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
-{
-    [self dismissAllPopTipViews];
+- (UITableView *)getTable {
+    return _table;
+}
+
+- (NSMutableArray *)getTalkList {
+    return _list;
 }
 @end

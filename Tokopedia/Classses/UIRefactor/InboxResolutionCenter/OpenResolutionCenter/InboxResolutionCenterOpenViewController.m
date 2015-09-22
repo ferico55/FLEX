@@ -480,7 +480,7 @@
 {
     [_activeTextView resignFirstResponder];
     [_activeTextField resignFirstResponder];
-    if (indexPath.section==0 && _isGotTheOrder) {
+    if ([tableView cellForRowAtIndexPath:indexPath] == _cellSolution) {
         if (_indexPage == 0) {
             if (_isCanEditProblem) {
                 [self shouldPushGeneralViewControllerTitle:@"Pilih Masalah"
@@ -1104,6 +1104,12 @@
     [_uploadingPhotos removeObject:object];
     
     [self requestProcessUploadPhoto];
+}
+
+-(void)failedUploadErrorMessage:(NSArray *)errorMessage
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+    [stickyAlertView show];
 }
 
 - (void)requestProcessUploadPhoto

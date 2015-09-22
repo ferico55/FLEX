@@ -13,7 +13,6 @@
 #import "SearchItem.h"
 
 #import "TKPDTabNavigationController.h"
-#import "TKPDTabShopViewController.h"
 
 #import "DetailProductViewController.h"
 #import "SearchResultShopCell.h"
@@ -24,9 +23,6 @@
 
 #import "SearchResultShopViewController.h"
 
-#import "ShopTalkViewController.h"
-#import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
 #import "NSDictionaryCategory.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"

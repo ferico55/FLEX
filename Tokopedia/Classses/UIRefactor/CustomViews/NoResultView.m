@@ -19,7 +19,7 @@
         [[NSBundle mainBundle] loadNibNamed:@"NoResultView"
                                       owner:self
                                     options:nil];
-        [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
+        [self.view setFrame:CGRectMake(0, 0, frame.size.width?:[[UIScreen mainScreen]bounds].size.width, 200)];
         [self addSubview:self.view];
     }
     return self;
