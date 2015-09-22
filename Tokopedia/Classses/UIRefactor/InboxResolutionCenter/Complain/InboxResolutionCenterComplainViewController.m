@@ -409,6 +409,9 @@
         vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
+    
+    ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status = 2; //status resolution become read
+     [_tableView reloadData];
 }
 
 #pragma mark - Table View Delegate

@@ -199,7 +199,7 @@
     if (index<0) {
         index = 0;
     }
-    if([vcs[index] isKindOfClass:[TKPDTabInboxTalkNavigationController class]]) {
+    if([vcs[index] isKindOfClass:[TKPDTabViewController class]]) {
         
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
