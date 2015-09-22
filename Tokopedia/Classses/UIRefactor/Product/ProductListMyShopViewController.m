@@ -335,10 +335,14 @@
             case BUTTON_FILTER_TYPE_SORT:
             {
                 NSIndexPath *indexpath = [_dataFilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                
                 _sortViewController.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 _sortViewController.delegate = self;
+                
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_sortViewController];
+                nav.navigationBar.translucent = NO;
+                
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
