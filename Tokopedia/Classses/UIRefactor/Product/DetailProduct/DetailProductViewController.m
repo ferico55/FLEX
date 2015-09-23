@@ -198,6 +198,7 @@ UIAlertViewDelegate
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *otherProductIndicator;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIView *infoShopView;
 
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (weak, nonatomic) IBOutlet UIButton *reviewbutton;
@@ -211,6 +212,9 @@ UIAlertViewDelegate
 @property (weak, nonatomic) IBOutlet StarsRateView *qualityrateview;
 @property (weak, nonatomic) IBOutlet StarsRateView *accuracyrateview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
+@property (weak, nonatomic) IBOutlet UIImageView *luckyBadgeImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBadgeGoldWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBadgeLuckySpace;
 
 @property (weak, nonatomic) IBOutlet UILabel *countsoldlabel;
 @property (weak, nonatomic) IBOutlet UILabel *countviewlabel;
@@ -379,6 +383,11 @@ UIAlertViewDelegate
     
     //Add observer
     [self initNotification];
+    
+    _infoShopView.layer.cornerRadius = 5;
+    self.infoShopView.layer.borderWidth = 0.5f;
+    self.infoShopView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
+    self.infoShopView.layer.masksToBounds = YES;
 }
 
 - (void)initNotification {
@@ -1323,6 +1332,7 @@ UIAlertViewDelegate
                                                               kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON:kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON,
                                                               kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE:kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE,
                                                               kTKPDDETAILPRODUCT_APISHOPURLKEY:kTKPDDETAILPRODUCT_APISHOPURLKEY
+                                                              ,@"shop_lucky":@"shop_lucky"
                                                               }];
         
         RKObjectMapping *productRatingMapping = [RKObjectMapping mappingForClass:[Rating class]];
@@ -2308,6 +2318,7 @@ UIAlertViewDelegate
     cmPopTitpView.backgroundColor = [UIColor blackColor];
     cmPopTitpView.animation = CMPopTipAnimationSlide;
     cmPopTitpView.dismissTapAnywhere = YES;
+    cmPopTitpView.leftPopUp = YES;
     
     UIButton *button = (UIButton *)sender;
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
@@ -2613,21 +2624,24 @@ UIAlertViewDelegate
     NSMutableAttributedString *myString= [[NSMutableAttributedString alloc]initWithAttributedString:attachmentString ];
     NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location?:@"" attributes:nil];
     [myString appendAttributedString:newAttString];
-    
     _shoplocation.attributedText = myString;
+    //_shoplocation.text = _product.result.shop_info.shop_location?:@"";
     
     if(_product.result.shop_info.shop_is_gold == 1) {
         _goldShop.hidden = NO;
     } else {
         _goldShop.hidden = YES;
     }
+    _constraintBadgeGoldWidth.constant = (_product.result.shop_info.shop_is_gold == 1)?20:0;
+    _constraintBadgeLuckySpace.constant = (_product.result.shop_info.shop_is_gold == 1)?4:0;
+    
     
     UIImageView *thumb = _shopthumb;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     //request.URL = url;
     
-    thumb.image = nil;
+    thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
     thumb.layer.cornerRadius = thumb.layer.frame.size.width/2;
     
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -2644,6 +2658,14 @@ UIAlertViewDelegate
         
     }];
     
+    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_lucky] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [self.luckyBadgeImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        self.luckyBadgeImageView.image = image;
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        self.luckyBadgeImageView.image = [UIImage imageNamed:@""];
+    }];
 }
 
 -(void)setOtherProducts
