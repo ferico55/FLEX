@@ -196,7 +196,7 @@
         NSURL *root = [NSURL URLWithString:@"/" relativeToURL:url];
         NSString *baseURL = root.absoluteString;
         
-        NSString *stringURLEMoney = [NSString stringWithFormat:@"%@/ws-new/tx-payment-emoney.pl?id=",baseURL];
+        NSString *stringURLEMoney = [NSString stringWithFormat:@"%@ws-new/tx-payment-emoney.pl?id=",baseURL];
             if ([request.URL.absoluteString rangeOfString:stringURLEMoney].location != NSNotFound) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     [_delegate shouldDoRequestEMoney:YES];
