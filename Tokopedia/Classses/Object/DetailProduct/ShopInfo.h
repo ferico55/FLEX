@@ -40,5 +40,6 @@
 
 @property (nonatomic) NSArray *shop_pay_gateway;
 @property (nonatomic, strong) NSString *lucky_merchant;
+@property (nonatomic, strong) NSString *shop_lucky;
 
 @end
