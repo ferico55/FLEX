@@ -63,7 +63,7 @@
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     HotlistBanner *banner = stat;
-
+ 
     return banner.status;
 }
 
