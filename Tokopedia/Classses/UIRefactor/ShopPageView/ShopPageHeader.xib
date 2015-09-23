@@ -37,7 +37,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ou8-Bc-lrO">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="305"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="245"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ds4-4z-ewW">
                             <rect key="frame" x="-31" y="0.0" width="381" height="120"/>
@@ -80,7 +80,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nZg-u9-ck3">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="302"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="252"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRV-F0-kLA" userLabel="BGView">
                                     <rect key="frame" x="0.0" y="180" width="320" height="85"/>
@@ -353,13 +353,13 @@
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="trailing" secondItem="fs6-Rf-uOW" secondAttribute="trailing" id="amn-7a-RFP"/>
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="top" secondItem="fs6-Rf-uOW" secondAttribute="top" id="bwV-Mr-Zi6"/>
                         <constraint firstItem="nZg-u9-ck3" firstAttribute="top" secondItem="Ou8-Bc-lrO" secondAttribute="top" id="kph-sN-DbS"/>
-                        <constraint firstAttribute="bottom" secondItem="nZg-u9-ck3" secondAttribute="bottom" constant="3" id="nFk-oH-QaA"/>
+                        <constraint firstAttribute="bottom" secondItem="nZg-u9-ck3" secondAttribute="bottom" constant="-7" id="nFk-oH-QaA"/>
                         <constraint firstItem="Ds4-4z-ewW" firstAttribute="leading" secondItem="Ou8-Bc-lrO" secondAttribute="leading" constant="-31" id="prn-GT-Zjs"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Ou8-Bc-lrO" secondAttribute="bottom" constant="-60" id="4VF-gw-Kfr"/>
+                <constraint firstAttribute="bottom" secondItem="Ou8-Bc-lrO" secondAttribute="bottom" id="4VF-gw-Kfr"/>
                 <constraint firstItem="Ou8-Bc-lrO" firstAttribute="leading" secondItem="bKn-su-j17" secondAttribute="leading" id="FDH-KF-w3T"/>
                 <constraint firstItem="Ou8-Bc-lrO" firstAttribute="top" secondItem="bKn-su-j17" secondAttribute="top" id="Gfk-H2-Tvl"/>
                 <constraint firstAttribute="trailing" secondItem="Ou8-Bc-lrO" secondAttribute="trailing" id="a5g-fy-GSj"/>

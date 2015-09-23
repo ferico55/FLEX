@@ -193,7 +193,7 @@
         _goldBadgeView.hidden = NO;
     } else {
         CGRect newFrame = _luckyBadgeView.frame;
-        newFrame.origin.x += _goldBadgeView.frame.size.width;
+        newFrame.origin.x = _goldBadgeView.frame.origin.x;
         [_luckyBadgeView setFrame:newFrame];
     }
     

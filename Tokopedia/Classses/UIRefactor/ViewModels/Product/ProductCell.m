@@ -48,6 +48,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         thumb.image = image;
+        thumb.contentMode = UIViewContentModeScaleAspectFill;
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         thumb.image = [UIImage imageNamed:@""];
     }];
