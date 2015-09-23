@@ -35,11 +35,13 @@
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
     
+    
     NSDictionary *_auth;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintGoldBadgeWidth;
 @property (weak, nonatomic) IBOutlet UIImageView *goldBadgeView;
 @property (weak, nonatomic) IBOutlet UIImageView *luckyBadgeView;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
@@ -53,6 +55,7 @@
 @property (weak, nonatomic) IBOutlet UIView *shopClosedView;
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedReason;
 @property (weak, nonatomic) IBOutlet UILabel *shopClosedUntil;
+
 
 
 @end
@@ -192,9 +195,7 @@
     if (_shop.result.info.shop_is_gold == 1) {
         _goldBadgeView.hidden = NO;
     } else {
-        CGRect newFrame = _luckyBadgeView.frame;
-        newFrame.origin.x = _goldBadgeView.frame.origin.x;
-        [_luckyBadgeView setFrame:newFrame];
+        _constraintGoldBadgeWidth.constant = 0;
     }
     
     

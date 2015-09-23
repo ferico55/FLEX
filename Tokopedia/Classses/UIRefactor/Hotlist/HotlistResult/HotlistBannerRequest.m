@@ -74,4 +74,8 @@
     [_delegate didReceiveBannerHotlist:banner.result];
 }
 
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
+}
+
 @end
