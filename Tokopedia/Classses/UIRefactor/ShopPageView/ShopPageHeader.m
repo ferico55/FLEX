@@ -41,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *goldBadgeView;
+@property (weak, nonatomic) IBOutlet UIImageView *luckyBadgeView;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
@@ -190,13 +191,19 @@
     
     if (_shop.result.info.shop_is_gold == 1) {
         _goldBadgeView.hidden = NO;
+    } else {
+        CGRect newFrame = _luckyBadgeView.frame;
+        newFrame.origin.x += _goldBadgeView.frame.size.width;
+        [_luckyBadgeView setFrame:newFrame];
     }
+    
+    
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 3.0;
-    style.alignment = NSTextAlignmentCenter;
+    style.alignment = NSTextAlignmentLeft;
     
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
@@ -207,18 +214,21 @@
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_shop.result.info.shop_description?:@""
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
-    _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+    _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentLeft;
     _descriptionView.descriptionLabel.numberOfLines = 4;    
     
     _statView.locationLabel.text = _shop.result.info.shop_name;
-    _statView.openStatusLabel.text = _shop.result.info.shop_location;
+//    _statView.openStatusLabel.text = _shop.result.info.shop_location;
+    [_statView.openStatusLabel setHidden:YES];
+    [_statView.statLabel setHidden:YES];
+    
     NSString *stats = [NSString stringWithFormat:@"%@ Barang Terjual & %@ Favorit",
                        _shop.result.stats.shop_item_sold,
                        _shop.result.info.shop_total_favorit];
     
     
     
-    [_statView.statLabel setText:stats];
+//    [_statView.statLabel setText:stats];
     // Set cover image
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -241,12 +251,25 @@
             _coverImageView.contentMode = UIViewContentModeScaleToFill;
             _coverImageView.image = image;
             _coverImageView.hidden = NO;
-            
 #pragma clang diagnostic pop
         } failure:nil];
     } else {
-        [_coverImageView setBackgroundColor:[UIColor whiteColor]];
+        [_coverImageView setBackgroundColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     }
+    
+    NSURLRequest *requestBadge =  [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_lucky?:@""]
+                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_luckyBadgeView setImageWithURLRequest:requestBadge placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        _luckyBadgeView.contentMode = UIViewContentModeScaleToFill;
+        _luckyBadgeView.image = image;
+        _luckyBadgeView.hidden = NO;
+#pragma clang diagnostic pop
+    } failure:nil];
+
     
     
     //set shop image
@@ -300,6 +323,8 @@
 - (void)generateMedal {
     [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:_statView.imgStatistic isLarge:YES];
     _statView.constraintWidthMedal.constant = _statView.imgStatistic.image.size.width;
+    
+    [_statView.imgStatistic setContentMode:UIViewContentModeLeft];
 }
 
 
