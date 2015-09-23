@@ -27,7 +27,7 @@
 
 - (BOOL)isLogin
 {
-    if (![[self getUserId] isEqualToString:@"0"]) {
+    if ([[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue]) {
         return YES;
     } else {
         return NO;
@@ -43,10 +43,18 @@
 }
 
 - (NSString *)getUserId {
-    if ([[_auth objectForKey:@"user_id"] stringValue]) {
-        return [[_auth objectForKey:@"user_id"] stringValue];
+    if ([_auth objectForKey:@"user_id"]) {
+        if ([[_auth objectForKey:@"user_id"] isKindOfClass:[NSString class]]) {
+            return [_auth objectForKey:@"user_id"];
+        } else {
+            return [[_auth objectForKey:@"user_id"] stringValue];
+        }
     } else if ([_auth objectForKey:@"tmp_user_id"]){
-        return [[_auth objectForKey:@"tmp_user_id"] stringValue];
+        if ([[_auth objectForKey:@"tmp_user_id"] isKindOfClass:[NSString class]]) {
+            return [_auth objectForKey:@"tmp_user_id"];
+        } else {
+            return [[_auth objectForKey:@"tmp_user_id"] stringValue];
+        }
     }
     return @"0";
 }

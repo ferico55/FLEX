@@ -75,22 +75,22 @@
 
 
 - (void)initButton {
-//    self.leftButton.layer.cornerRadius = 3;
-//    self.leftButton.layer.borderWidth = 1;
-//    self.leftButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-//    
-//    self.rightButton.layer.cornerRadius = 3;
-//    self.rightButton.layer.borderWidth = 1;
-//    self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-//
+    //    self.leftButton.layer.cornerRadius = 3;
+    //    self.leftButton.layer.borderWidth = 1;
+    //    self.leftButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    //
+    //    self.rightButton.layer.cornerRadius = 3;
+    //    self.rightButton.layer.borderWidth = 1;
+    //    self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    //
     _auth = [_userManager getUserLoginData];
     if ([_auth allValues] > 0) {
         //toko sendiri dan login
-         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-             
-         } else {
-             
-         }
+        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+            
+        } else {
+            
+        }
     }
     
     
@@ -109,7 +109,7 @@
             
             [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
             [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-//            self.rightButton.tintColor = [UIColor lightGrayColor];
+            //            self.rightButton.tintColor = [UIColor lightGrayColor];
         }
     } else {
         [self.leftButton setTitle:@"Message" forState:UIControlStateNormal];
@@ -117,7 +117,7 @@
         
         [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
         [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-//        self.rightButton.tintColor = [UIColor lightGrayColor];
+        //        self.rightButton.tintColor = [UIColor lightGrayColor];
     }
     
     self.leftButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -159,7 +159,7 @@
     
     [self.scrollView addSubview:_statView];
     
- 
+    
     self.scrollView.hidden = YES;
     self.scrollView.delegate = self;
     _operationQueue = [NSOperationQueue new];
@@ -197,13 +197,13 @@
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 3.0;
     style.alignment = NSTextAlignmentCenter;
-
+    
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
                                  NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: style
                                  };
-
+    
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_shop.result.info.shop_description?:@""
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
@@ -216,7 +216,7 @@
                        _shop.result.stats.shop_item_sold,
                        _shop.result.info.shop_total_favorit];
     
-
+    
     
     [_statView.statLabel setText:stats];
     // Set cover image
@@ -233,7 +233,7 @@
     } else {
         _shopClosedView.hidden = YES;
     }
-
+    
     if(_shop.result.info.shop_is_gold == 1) {
         [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -251,8 +251,8 @@
     
     //set shop image
     NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     [_avatarIndicator startAnimating];
     [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -318,7 +318,7 @@
                 settingController.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                            kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
                                            };
-
+                
                 nav.hidesBottomBarWhenPushed = YES;
                 [nav.navigationController pushViewController:settingController animated:YES];
                 break;
@@ -332,7 +332,7 @@
                                            kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
                                            };
                 [nav.navigationController pushViewController:messageController animated:YES];
-               
+                
             } else {
                 UINavigationController *navigationController = [[UINavigationController alloc] init];
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];

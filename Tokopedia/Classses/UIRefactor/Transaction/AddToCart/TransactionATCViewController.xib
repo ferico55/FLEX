@@ -32,6 +32,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -57,6 +58,8 @@
                 <outlet property="buyButton" destination="ZND-e2-NEY" id="Hzm-Ug-aPG"/>
                 <outlet property="footer" destination="7qp-b3-zGj" id="6Rx-Ku-Itj"/>
                 <outlet property="insuraceConstraint" destination="1nr-77-rUU" id="nZm-ic-rvp"/>
+                <outlet property="messageZeroShipmentLabel" destination="ZrZ-ED-WHQ" id="zkj-XQ-7HH"/>
+                <outlet property="messageZeroShipmentView" destination="tVL-of-Hh8" id="bfM-iq-ORD"/>
                 <outlet property="phoneLabel" destination="cqz-ce-FDb" id="0Ux-Ri-zzg"/>
                 <outlet property="productDescriptionLabel" destination="jsc-eB-Aif" id="FOq-wd-cvk"/>
                 <outlet property="productQuantityTextField" destination="YBU-6k-Lh7" id="QPL-Fs-jAo"/>
@@ -997,6 +1000,27 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="499" y="291"/>
         </tableViewCell>
+        <view contentMode="scaleToFill" id="tVL-of-Hh8">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrZ-ED-WHQ">
+                    <rect key="frame" x="15" y="0.0" width="290" height="70"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" red="0.7843137255" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.98039215686274506" green="0.85882352941176465" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="ZrZ-ED-WHQ" firstAttribute="leading" secondItem="tVL-of-Hh8" secondAttribute="leading" constant="15" id="Cbo-4t-Ztf"/>
+                <constraint firstAttribute="bottom" secondItem="ZrZ-ED-WHQ" secondAttribute="bottom" id="iEs-Gq-lDJ"/>
+                <constraint firstAttribute="trailing" secondItem="ZrZ-ED-WHQ" secondAttribute="trailing" constant="15" id="mh6-Es-IGm"/>
+                <constraint firstItem="ZrZ-ED-WHQ" firstAttribute="top" secondItem="tVL-of-Hh8" secondAttribute="top" id="xMu-f6-zAS"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="512" y="-841"/>
+        </view>
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>

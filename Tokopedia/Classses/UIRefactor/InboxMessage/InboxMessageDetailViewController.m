@@ -95,10 +95,12 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
-//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-//    barButtonItem.tag = 10;
-//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     _operationQueue = [NSOperationQueue new];
     _page = 1;

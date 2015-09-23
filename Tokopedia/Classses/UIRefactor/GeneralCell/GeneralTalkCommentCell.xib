@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -28,7 +28,7 @@
                             <constraint firstAttribute="height" constant="50" id="Wm5-lL-BK4"/>
                         </constraints>
                     </imageView>
-                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="E3E8E0BA-2847-44FC-8787-7CCD4A53674B" translatesAutoresizingMaskIntoConstraints="NO" id="zzK-ok-yaY">
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="7B04FF15-E899-472F-AF59-F18847F9FD64" translatesAutoresizingMaskIntoConstraints="NO" id="zzK-ok-yaY">
                         <rect key="frame" x="300" y="8" width="15" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="KsI-Ar-FIO"/>
@@ -111,7 +111,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="E3E8E0BA-2847-44FC-8787-7CCD4A53674B" width="14" height="14">
+        <image name="7B04FF15-E899-472F-AF59-F18847F9FD64" width="14" height="14">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

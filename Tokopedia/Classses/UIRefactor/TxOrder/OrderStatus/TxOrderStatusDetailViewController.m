@@ -255,6 +255,7 @@
     if (alertView.tag == TAG_ALERT_REORDER) {
         if (buttonIndex == 1) {
             [_delegate reOrder:_order atIndexPath:_indexPath];
+            [_delegate delegateViewController:self];
         }
     }
     else if (alertView.tag == TAG_ALERT_COMPLAIN)
@@ -282,6 +283,7 @@
             case 1://Selesai
             {
                 [_delegate confirmDelivery:_order atIndexPath:_indexPath];
+                [_delegate delegateViewController:self];
             }
                 break;
             case 2://Complain
@@ -298,6 +300,7 @@
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
 {
     [_delegate shouldCancelComplain:resolution atIndexPath:indexPath];
+    [_delegate delegateViewController:self];
 
 }
 

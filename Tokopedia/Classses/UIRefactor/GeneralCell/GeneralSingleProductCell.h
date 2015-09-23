@@ -22,10 +22,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
-@property (weak, nonatomic) IBOutlet UILabel *productInfoLabel;
+@property (weak, nonatomic) IBOutlet UILabel *d;
 @property (weak, nonatomic) IBOutlet UILabel *productShopLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *badge;
 @property (strong, nonatomic) NSIndexPath *indexPath;
+@property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *infoLabelConstraint;
 
 + (id)initCell;

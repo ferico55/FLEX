@@ -184,7 +184,7 @@
     if([_review.review_response.response_message isEqualToString:@"0"]) {
         [_commentbutton setTitle:@"0 Komentar" forState:UIControlStateNormal];
         
-        if([[_userManager getUserId] isEqualToString:@"0"] || ![_userManager isMyShopWithShopId:_review.review_shop_id]) {
+        if(![_userManager isLogin] || ![_userManager isMyShopWithShopId:_review.review_shop_id]) {
             [self hideInputView];
         }
         else

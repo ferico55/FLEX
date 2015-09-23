@@ -40,6 +40,8 @@
 #import "TKPDPhotoPicker.h"
 #import "LoadingView.h"
 
+#import "GalleryViewController.h"
+
 @interface TxOrderConfirmedViewController ()
 <
     UITableViewDelegate,
@@ -47,17 +49,15 @@
     UIAlertViewDelegate,
     TxOrderConfirmedButtonCellDelegate,
     TxOrderConfirmedCellDelegate,
-    GenerateHostDelegate,
-    RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
     TKPDPhotoPickerDelegate,
     TxOrderPaymentViewControllerDelegate,
-    LoadingViewDelegate
+    LoadingViewDelegate,
+    GalleryViewControllerDelegate
 >
 {
     BOOL _isNodata;
     NSMutableArray *_list;
-    NSMutableArray *_isExpandedCell;
     NSString *_URINext;
     
     NSInteger _page;
@@ -92,6 +92,8 @@
     LoadingView *_loadingView;
     
     UIAlertView *_loadingAlert;
+    
+    UIImage *_imageproof;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -107,7 +109,6 @@
     _isNodata = NO;
     _list = [NSMutableArray new];
     _mapping = [TxOrderObjectMapping new];
-    _isExpandedCell = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _orderDetail = [TxOrderConfirmedDetailOrder new];
     _dataInput = [NSMutableDictionary new];
@@ -155,6 +156,10 @@
         [_delegate setIsRefresh:_isRefresh];
     }
     
+    UIEdgeInsets inset = _tableView.contentInset;
+    inset.bottom = 20;
+    [_tableView setContentInset:inset];
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
@@ -200,13 +205,12 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
     switch (indexPath.row) {
         case 0:
             cell = [self cellConfirmedAtIndexPath:indexPath];
             break;
         case 1:
-            cell = (isShowBank)?[self cellConfirmedBankAtIndexPath:indexPath]:[self cellButtonArrowAtIndexPath:indexPath];
+            cell = [self cellConfirmedBankAtIndexPath:indexPath];
             break;
         case 2:
             cell = [self cellButtonAtIndexPath:indexPath];
@@ -222,12 +226,11 @@
 {
     CGFloat rowHeight = 0;
     
-    BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
     if (indexPath.row == 0) {
-        rowHeight = 130;
+        rowHeight = 137;
     }
     else if (indexPath.row == 1)
-        rowHeight = isShowBank?181:44;
+        rowHeight = 130;
     else
     {
         rowHeight = 40;
@@ -239,21 +242,6 @@
     }
     
     return rowHeight;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
-    switch (indexPath.row) {
-        case 1:
-            isShowBank = !isShowBank;
-            [_isExpandedCell replaceObjectAtIndex:indexPath.section withObject:@(isShowBank)];
-            break;
-            
-        default:
-            break;
-    }
-    [_tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -291,6 +279,50 @@
     //TODO:: Invoice
     [self configureRestKitDetail];
     [self requestDetail:detailOrder];
+}
+
+-(void)didTapPaymentProofIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderConfirmedList *detailOrder = _list[indexPath.section];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailOrder.img_proof_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    UIImageView *thumb = [UIImageView new];
+    _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];    
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        _imageproof = image;
+        [self pushToGallery];
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        _imageproof = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+        [self pushToGallery];
+    }];
+}
+
+-(void)pushToGallery
+{
+    GalleryViewController *gallery = [GalleryViewController new];
+    gallery.canDownload = NO;
+    [gallery initWithPhotoSource:self withStartingIndex:0];
+    [self.navigationController presentViewController:gallery animated:YES completion:nil];
+}
+
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
+{
+    return 1;
+}
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
+{
+    return @"Bukti Pembayaran";
+}
+
+- (UIImage *)photoGallery:(NSUInteger)index {
+
+    return _imageproof;
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -336,6 +368,7 @@
     [cell.dateLabel setText:detailOrder.payment_date animated:YES];
     [cell.totalPaymentLabel setText:detailOrder.payment_amount animated:YES];
     [cell.totalInvoiceButton setTitle:[NSString stringWithFormat:@"%@ Invoice", detailOrder.order_count] forState:UIControlStateNormal];
+    cell.imagePayementProofButton.hidden = ([detailOrder.img_proof_url isEqualToString:@""]||detailOrder.img_proof_url == nil)?YES:NO;
     
     cell.indexPath = indexPath;
     return cell;
@@ -351,11 +384,11 @@
     if (cell == nil) {
         cell = [TxOrderConfirmedBankCell newCell];
     }
-    [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
-    [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
+    [cell.userNameLabel setCustomAttributedText:detailOrder.user_account_name?:@""];
+    [cell.bankNameLabel setCustomAttributedText:detailOrder.user_bank_name?:@""];
     NSString *accountNumber = (![detailOrder.system_account_no isEqualToString:@""] && detailOrder.system_account_no != nil && ![detailOrder.system_account_no isEqualToString:@"0"])?detailOrder.system_account_no:@"";
-    [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
-    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber] animated:NO];
+    [cell.nomorRekLabel setCustomAttributedText:detailOrder.user_account_no?:@""];
+    [cell.recieverNomorRekLabel setCustomAttributedText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, accountNumber]];
     
     if ([cell.userNameLabel.text isEqualToString:@""]) {
         cell.userNameLabel.text =@"-";
@@ -490,7 +523,6 @@
     
     if (_page == 1||_page == 0) {
         _list = [order.result.list mutableCopy];
-        [_isExpandedCell removeAllObjects];
     }
     else
     {
@@ -501,9 +533,6 @@
         _isNodata = NO;
         _URINext =  order.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_URINext] integerValue];
-        for (int i =0; i<_list.count; i++) {
-            [_isExpandedCell addObject:@(NO)];
-        }
     }
     else
     {
@@ -736,6 +765,11 @@
     [_tableView reloadData];
 }
 
+-(void)failedUploadErrorMessage:(NSArray *)errorMessage
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+    [stickyAlertView show];
+}
 
 #pragma mark - Request Cancel Payment Confirmation
 -(void)cancelProof
@@ -858,6 +892,7 @@
                 if (order.result.is_success == 1) {
                     NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
                     [self showStickyAlertSuccessMessage:array];
+                    [self refreshRequest];
                 }
                 else
                 {

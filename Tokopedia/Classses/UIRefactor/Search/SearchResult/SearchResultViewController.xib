@@ -13,11 +13,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchResultViewController">
             <connections>
-                <outlet property="act" destination="nQ9-eC-uJC" id="aDS-eP-fNF"/>
                 <outlet property="changeGridButton" destination="Toy-Rx-Qd7" id="VTh-MC-xu3"/>
                 <outlet property="collectionView" destination="wUv-gY-Tcb" id="2HF-ZK-fzW"/>
+                <outlet property="firstFooter" destination="Lds-cu-kWS" id="u1H-q3-zVi"/>
                 <outlet property="flowLayout" destination="Jdd-NB-rBb" id="gnT-YK-RaO"/>
-                <outlet property="footer" destination="6ZL-9z-ZuU" id="GFf-K3-5T1"/>
                 <outlet property="toolbarView" destination="1AR-6H-D7f" id="7cg-Qn-miI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -283,11 +282,11 @@
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="wUv-gY-Tcb">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="523"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Jdd-NB-rBb">
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="Jdd-NB-rBb">
                         <size key="itemSize" width="145" height="205"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                        <size key="footerReferenceSize" width="320" height="40"/>
+                        <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                     </collectionViewFlowLayout>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="jgo-k9-dLc"/>
@@ -310,18 +309,22 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
         </view>
-        <view contentMode="scaleToFill" id="6ZL-9z-ZuU" userLabel="FooterView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+        <view contentMode="scaleToFill" id="Lds-cu-kWS">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="nQ9-eC-uJC">
-                    <rect key="frame" x="150" y="7" width="20" height="20"/>
-                    <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="MeC-Sv-WrI">
+                    <rect key="frame" x="150" y="15" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
+            <constraints>
+                <constraint firstItem="MeC-Sv-WrI" firstAttribute="leading" secondItem="Lds-cu-kWS" secondAttribute="leading" constant="150" id="3ee-AY-G0f"/>
+                <constraint firstAttribute="trailing" secondItem="MeC-Sv-WrI" secondAttribute="trailing" constant="150" id="NCX-Fc-u9D"/>
+                <constraint firstItem="MeC-Sv-WrI" firstAttribute="top" secondItem="Lds-cu-kWS" secondAttribute="top" constant="15" id="e0w-1Q-DgL"/>
+                <constraint firstAttribute="bottom" secondItem="MeC-Sv-WrI" secondAttribute="bottom" constant="15" id="eO3-e4-Yw7"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-231" y="-66"/>
         </view>
     </objects>
     <resources>

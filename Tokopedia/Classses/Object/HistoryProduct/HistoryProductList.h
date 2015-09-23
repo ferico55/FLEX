@@ -18,6 +18,8 @@
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong) NSString *shop_lucky;
+
 @property (nonatomic, strong) ProductModelView *viewModel;
 
 @end

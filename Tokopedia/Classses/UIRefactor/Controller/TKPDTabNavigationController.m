@@ -593,7 +593,11 @@
         _tabViewHeightConstraint.constant = 0;
     } else {
         _tabView.backgroundColor = [UIColor whiteColor];
-    }    
+    }
+    
+    if([[userinfo objectForKey:@"hide_segment"] isEqualToString:@"1"]) {
+        _tabViewHeightConstraint.constant = 0;
+    }
 }
 
 - (void)updateTabCategory:(NSString *)categoryID

@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak) IBOutlet id<RequestMoveToDelegate> delegate;
 
--(void)requestActionMoveToWarehouse:(NSString*)productID;
+-(void)requestActionMoveToWarehouse:(NSString*)productID etalaseName:(NSString *)etalaseName;
 -(void)requestActionMoveToEtalase:(NSString*)productID etalaseID:(NSString*)etalaseID etalaseName:(NSString*)etalaseName;
 
 @end
