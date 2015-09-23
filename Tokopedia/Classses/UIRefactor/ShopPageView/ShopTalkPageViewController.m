@@ -507,7 +507,7 @@ UIAlertViewDelegate>
     NSLog(@"Content offset container %f", scrollView.contentOffset.y);
 
     
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (305 - _fakeStickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
     
     NSLog(@"Sticky Tab %hhd", isFakeStickyVisible);
     //    NSLog(@"Range : %f", (_header.frame.size.height - _stickyTab.frame.size.height));
