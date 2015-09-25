@@ -12,10 +12,9 @@
     NSString *baseUrl;
 }
 
-@property (weak, nonatomic) IBOutlet UIButton *devButton;
-@property (weak, nonatomic) IBOutlet UIButton *betaButton;
-@property (weak, nonatomic) IBOutlet UIButton *liveButton;
-@property (weak, nonatomic) IBOutlet UIButton *doneButton;
+@property (weak, nonatomic) IBOutlet UITextField *baseUrlText;
+@property (weak, nonatomic) IBOutlet UIButton *swithButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
 - (void)dismissindex:(NSInteger)index silent:(BOOL)silent animated:(BOOL)animated;
 
