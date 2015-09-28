@@ -261,6 +261,8 @@ typedef enum {
 #define GTMKeyNotifyLBLMPost @"notify_post_url"
 #define GTMKeyNotifyLBLMFull @"notify_full_url"
 
+#define GTMVeritransClientKey @"veritrans_client_key"
+
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
