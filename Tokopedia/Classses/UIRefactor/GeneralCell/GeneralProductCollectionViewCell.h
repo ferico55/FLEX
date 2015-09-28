@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *productShop;
 @property (strong, nonatomic) IBOutlet UILabel *productName;
 @property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
+@property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
 
 - (void)setViewModel:(ProductModelView *)productModelView;
 @end

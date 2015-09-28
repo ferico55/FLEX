@@ -154,6 +154,7 @@
         [cell setUnClickViewAction];
         
         cell.delegate = self;
+        cell.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
         [self setPropertyLabelDesc:cell.getLabelDesc];
     }
     
@@ -385,19 +386,21 @@
         [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
         [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
 
-        NSString *strMessage = @"";
-        if([emoticonState isEqualToString:CRevieweeScroreBad]) {
-            strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
+        if(UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+            NSString *strMessage = @"";
+            if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+                strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
+            }
+            else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+                strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
+            }
+            else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+                strMessage = [NSString stringWithFormat:@"Saya Puas!"];
+            }
+            
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
+            [stickyAlertView show];
         }
-        else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
-            strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
-        }
-        else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
-            strMessage = [NSString stringWithFormat:@"Saya Puas!"];
-        }
-
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
-        [stickyAlertView show];
     }
 }
 

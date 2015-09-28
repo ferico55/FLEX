@@ -27,11 +27,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
+        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+        
+        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        self.navigationItem.leftBarButtonItem = backBarButton;
+    } else {
+        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+        self.navigationItem.backBarButtonItem = backBarButton;
+    }
+
+
     
     // Reset segment
     [self.segmentedControl removeSegmentAtIndex:0 animated:NO];
@@ -131,9 +144,10 @@
     CGSize calculateSize = [title sizeWithFont:button.titleLabel.font constrainedToSize:CGSizeMake(320, 9999) lineBreakMode:NSLineBreakByWordWrapping];
     CGRect tempButtonRect = button.frame;
     tempButtonRect.size.width = calculateSize.width;
+    tempButtonRect.origin.y += 3;
     button.frame = tempButtonRect;
     [button addTarget:self action:@selector(navigationBarTap) forControlEvents:UIControlEventTouchUpInside];
-    button.titleLabel.font = [self.navigationController.navigationBar.titleTextAttributes objectForKey:NSFontAttributeName];
+    button.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14.0f];
     
     
     CGRect rect = CGRectMake(0,0,16,10);
@@ -222,6 +236,10 @@
 
 - (void)pushViewController:(id)controller {
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)tapBackButton {
+    [_splitVC.navigationController popViewControllerAnimated:YES];
 }
 
 @end

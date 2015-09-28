@@ -118,8 +118,9 @@
        if ([httpResponse statusCode] == 200) {
            id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
            if (parsedData == nil && error) {
-               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."] delegate:_delegate];
-               [alert show];
+//               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."] delegate:_delegate];
+//               [alert show];
+               [_delegate failedUploadErrorMessage:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
                [_delegate failedUploadObject:_imageObject];
                NSLog(@"parser error");
                return;
@@ -204,8 +205,9 @@
         }
     }
     
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError delegate:_delegate];
-    [alert show];
+    [_delegate failedUploadErrorMessage:messagesError];
+//    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError delegate:_delegate];
+//    [alert show];
 }
 
 - (BOOL)string:(NSString*)string containsString:(NSString*)other {

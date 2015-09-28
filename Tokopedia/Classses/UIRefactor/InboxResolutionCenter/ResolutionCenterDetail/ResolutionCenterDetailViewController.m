@@ -1784,16 +1784,20 @@
     
     NSTimer *timer;
     
+    NSString *editSolutionFlagString = [NSString stringWithFormat:@"%zd",editSolutionFlag];
+    NSString *flagReceivedString = [NSString stringWithFormat:@"%zd",received];
+    NSString *solutionString = (!received || [solution isEqualToString:@""])?@"1":solution;
+    
     NSDictionary* param = @{API_ACTION_KEY : action,
                             API_RESOLUTION_ID_KEY : _resolutionID?:@"",
                             API_REPLAY_MESSAGE_KEY : message,
                             API_REMARK_KEY : message,
                             API_PHOTOS_KEY : photo,
                             API_SERVER_ID_KEY : serverID,
-                            API_EDIT_SOLUTION_FLAG_KEY:@(editSolutionFlag),
-                            API_SOLUTION_KEY : (!received)?@(1):solution,
+                            API_EDIT_SOLUTION_FLAG_KEY:editSolutionFlagString,
+                            API_SOLUTION_KEY : solutionString,
                             API_REFUND_AMOUNT_KEY : refunAmount,
-                            API_FLAG_RECIEVED_KEY : @(received),
+                            API_FLAG_RECIEVED_KEY :flagReceivedString,
                             API_TROUBLE_TYPE_KEY : trouble,
                             };
     

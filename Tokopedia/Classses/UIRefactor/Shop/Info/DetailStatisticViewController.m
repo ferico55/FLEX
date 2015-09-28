@@ -182,14 +182,14 @@
             else {
                 viewPlot.hidden = NO;
                 if(_detailShopResult.stats.hide_rate!=nil && [_detailShopResult.stats.hide_rate isEqualToString:@"1"]) { //if hide_rate == 1 not using percentage
-                    lblPercentageFooter.text = [NSString stringWithFormat:@"%@", _detailShopResult.stats.tx_count_success==nil||[_detailShopResult.stats.tx_count_success isEqualToString:@""]? @"0":_detailShopResult.stats.tx_count_success];
+                    lblPercentageFooter.text = [NSString stringWithFormat:@"%@", _detailShopResult.stats.shop_total_transaction==nil||[_detailShopResult.stats.shop_total_transaction isEqualToString:@""]? @"0":_detailShopResult.stats.shop_total_transaction];
                 }
                 else
-                    lblPercentageFooter.text = [NSString stringWithFormat:@"%.1f%%", _detailShopResult.stats.rate_success==nil||[_detailShopResult.stats.rate_success isEqualToString:@""]? 0:[_detailShopResult.stats.rate_success floatValue]];
+                    lblPercentageFooter.text = [NSString stringWithFormat:@"%ld", _detailShopResult.stats.shop_total_transaction==nil||[_detailShopResult.stats.shop_total_transaction isEqualToString:@""]? 0:[_detailShopResult.stats.shop_total_transaction integerValue]];
 
                 NSString *strDari = @"Dari ";
                 NSString *strTransaksi = @" Transaksi";
-                lblDescPercentageFooter.text = [NSString stringWithFormat:@"%@%@%@", strDari, _detailShopResult.stats.shop_total_transaction, strTransaksi];
+                lblDescPercentageFooter.text = @"Total Transaksi";
                 
                 NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: lblDescPercentageFooter.font, NSFontAttributeName, lblDescPercentageFooter.textColor, NSForegroundColorAttributeName, nil];
                 UIFont *boldFont = [UIFont fontWithName:@"Gotham Medium" size:lblDescPercentageFooter.font.pointSize];

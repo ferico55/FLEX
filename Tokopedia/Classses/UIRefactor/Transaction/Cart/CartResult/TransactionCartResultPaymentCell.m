@@ -31,5 +31,8 @@
 
     // Configure the view for the selected state
 }
+- (IBAction)expandingButton:(id)sender {
+    [_delegate didExpand];
+}
 
 @end

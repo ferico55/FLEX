@@ -263,16 +263,7 @@
     }
     else if(tag == CTagEditPriceAlert) {
         if([generalAction.result.is_success isEqualToString:@"1"]) {
-            UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-3];
-            if([viewController isMemberOfClass:[AlertPriceNotificationViewController class]]) {
-                [((AlertPriceNotificationViewController *) viewController) updatePriceAlert:[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]];
-            }
-            
-            //Update DetailPriceAlert ViewController
-            viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-            if([viewController isMemberOfClass:[DetailPriceAlertViewController class]]) {
-                [((DetailPriceAlertViewController *) viewController) updatePriceAlert:[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]];
-            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"TkpdUpdatePriceAlert" object:nil userInfo:@{@"price":[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]}];
             
             
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessEditPriceAlert] delegate:self];

@@ -47,6 +47,7 @@
 @property (nonatomic) NSInteger shop_rate_accuracy;
 @property (nonatomic) NSInteger shop_rate_speed;
 @property (nonatomic) NSInteger is_gold_shop;
+@property (nonatomic, strong) NSString *shop_lucky;
 
 @property (nonatomic, strong) NSArray *product_list;
 @property (nonatomic, strong) ShopStats *shop_reputation;

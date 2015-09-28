@@ -157,6 +157,19 @@
     
     cell.buyButton.layer.cornerRadius = 2;
     
+    cell.goldMerchantBadge.hidden = (!shop.is_gold_shop == 1);
+    
+    if (cell.goldMerchantBadge.hidden) {
+        cell.constraintWidthGoldMerchant.constant = 0;
+        cell.containerHeightConstraint.constant = 0;
+    }
+    
+    [cell.luckyMerchantBadge setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_lucky]]
+                              placeholderImage:[UIImage imageNamed:@""]
+                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                           cell.luckyMerchantBadge.image = image;
+                                           } failure:nil];
+    
     [cell.shopImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_image]]
                               placeholderImage:[UIImage imageNamed:@""]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -174,7 +187,11 @@
         cell.masking.hidden = NO;
     }
     
-    [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level withSet:shop.shop_reputation.shop_badge_level.set withImage:cell.stars isLarge:YES];
+    [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level
+                                   withSet:shop.shop_reputation.shop_badge_level.set
+                                 withImage:cell.stars
+                                   isLarge:YES];
+    
     [cell setTagContentStar:(int)indexPath.row];
     
     return cell;
@@ -332,6 +349,7 @@
                                                          API_SHOP_RATE_ACCURACY_KEY,
                                                          API_SHOP_RATE_SPEED_KEY,
                                                          API_IS_GOLD_SHOP_KEY,
+                                                         @"shop_lucky"
                                                          ]];
     
     RKObjectMapping *productListMapping = [RKObjectMapping mappingForClass:[ProductList class]];
@@ -340,6 +358,12 @@
                                                         @"product_id",
                                                         @"product_name",
                                                         API_SHOP_NAME_KEY]];
+    
+    RKObjectMapping *shopStatMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
+    [shopStatMapping addAttributeMappingsFromDictionary:@{CToolTip : CToolTip, @"reputation_score": CShopReputationScore}];
+
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
@@ -385,6 +409,14 @@
                                                                                   toKeyPath:API_CATALOG_SHOPS_KEY
                                                                                 withMapping:catalogShopsMapping]];
     
+    [shopStatMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"reputation_badge"
+                                                                                    toKeyPath:CShopBadgeLevel
+                                                                                  withMapping:shopBadgeMapping]];
+    
+    [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation
+                                                                                        toKeyPath:CShopReputation
+                                                                                      withMapping:shopStatMapping]];
+
     [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_LIST_KEY
                                                                                         toKeyPath:API_PRODUCT_LIST_KEY
                                                                                       withMapping:productListMapping]];

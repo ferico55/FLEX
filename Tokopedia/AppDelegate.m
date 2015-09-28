@@ -7,16 +7,15 @@
 //
 #import <AFNetworking/AFNetworking.h>
 #import <SystemConfiguration/SystemConfiguration.h>
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "AppsFlyerTracker.h"
 #import "Localytics.h"
-
+#import <GooglePlus/GooglePlus.h>
 
 @implementation AppDelegate
 
@@ -81,11 +80,13 @@
         [self preparePersistData];
     });
     
-    return YES;
+    BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                       didFinishLaunchingWithOptions:launchOptions];
+    return didFinishLaunching;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [FBAppEvents activateApp];
+    [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
 }
 
@@ -112,16 +113,21 @@
     }
 }
 
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    if([sourceApplication isEqualToString:@"com.facebook.Facebook"]) {
-        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    BOOL shouldOpenURL = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                        openURL:url
+                                                              sourceApplication:sourceApplication
+                                                                     annotation:annotation];
+    if (shouldOpenURL) {
+        return YES;
+    } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+        return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
     }
-    
     return NO;
 }
 
