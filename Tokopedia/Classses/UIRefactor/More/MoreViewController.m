@@ -187,6 +187,7 @@
     
     [self updateSaldoTokopedia:nil];
     [self setShopImage];
+    [self configureGTM];
 }
 
 - (void)viewWillAppear:(BOOL)animated
