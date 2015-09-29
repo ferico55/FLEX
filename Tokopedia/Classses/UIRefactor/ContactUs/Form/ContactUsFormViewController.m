@@ -37,6 +37,10 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *photoDeleteButtons;
 
+@property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *descriptionActionLabel;
+
 @property BOOL invoiceTextFieldIsVisible;
 @property BOOL photoPickerIsVisible;
 
@@ -74,7 +78,9 @@
     TicketCategory *lastCategory = _subCategories[_subCategories.count - 1];
     [self.eventHandler showFormWithCategory:lastCategory];
         
-    [self showSaveButton];
+    [self showSubmitButton];
+    
+    [self showHeaderView];
 
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     
@@ -101,6 +107,50 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)showHeaderView {
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    UIColor *textColor = [UIColor colorWithRed:126.0/255.0
+                                         green:126.0/255.0
+                                          blue:126.0/255.0
+                                         alpha:1];
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : textColor,
+                                 };
+    
+    NSString *title = @"Customer Care Tokopedia akan menjawab pesan kamu dalam waktu maksimal 1x24 jam.";
+    NSString *subTitle = @"Silahkan cek layanan pengguna";
+    
+    UIColor *buttonColor = [UIColor blueColor];
+
+    NSMutableAttributedString *titleAttributedString = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                              attributes:attributes];
+    
+    self.descriptionLabel.attributedText = titleAttributedString;
+    [self.descriptionLabel sizeToFit];
+    
+    NSMutableAttributedString *subtitleAttributedString = [[NSMutableAttributedString alloc] initWithString:subTitle
+                                                                                                 attributes:attributes];
+    [subtitleAttributedString addAttribute:NSForegroundColorAttributeName value:buttonColor
+                                     range:NSMakeRange(13, 16)];
+
+    self.descriptionActionLabel.attributedText = subtitleAttributedString;
+    
+    CGFloat width = self.view.frame.size.width;
+    CGRect rect = [titleAttributedString boundingRectWithSize:CGSizeMake(width, 10000)
+                                                      options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                      context:nil];
+
+    CGFloat height = rect.size.height + self.descriptionActionLabel.frame.size.height + 50;
+    self.tableHeaderView.frame = CGRectMake(0, 0, rect.size.width, height);
+    
+    self.tableView.tableHeaderView = _tableHeaderView;
 }
 
 #pragma mark - Table view data source
@@ -136,8 +186,21 @@
             if (cell == nil) {
                 cell = [[ContactUsFormCategoryCell alloc] init];
             }
-            NSString *categoryName = [_subCategories[indexPath.row - 1] ticket_category_name];
-            ((ContactUsFormCategoryCell *)cell).categoryNameLabel.text = categoryName;
+            
+            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 4.0;
+            
+            NSDictionary *attributes = @{
+                NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                NSParagraphStyleAttributeName  : style,
+            };
+            
+            NSString *text = [_subCategories[indexPath.row - 1] ticket_category_name];
+            
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text
+                                                                                   attributes:attributes];
+
+            ((ContactUsFormCategoryCell *)cell).categoryNameLabel.attributedText = attributedString;
         }
     } else if (indexPath.section == 1) {
         if (_invoiceTextFieldIsVisible) {
@@ -162,7 +225,18 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height;
     if (indexPath.section == 0) {
-        height = 44;
+        height = 35;
+        NSString *text;
+        if (indexPath.row == 0) {
+            text = _mainCategory.ticket_category_name;
+        } else {
+            text = [_subCategories[indexPath.row - 1] ticket_category_name];
+        }
+        CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
+        CGSize expectedLabelSize = [text sizeWithFont:FONT_GOTHAM_BOOK_14
+                                    constrainedToSize:maximumLabelSize
+                                        lineBreakMode:NSLineBreakByWordWrapping];
+        height = height + expectedLabelSize.height; // add margin
     } else if (indexPath.section == 1) {
         if (_invoiceTextFieldIsVisible) {
             height = _invoiceInputCell.frame.size.height;
@@ -203,6 +277,10 @@
                             ticketCategory:lastCategory];
 }
 
+- (IBAction)didTapInboxTicketButton:(id)sender {
+    [self.eventHandler showInboxTicketFromNavigation:self.navigationController];
+}
+
 #pragma mark - Keyboard Notification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -216,25 +294,30 @@
     self.tableView.contentInset = UIEdgeInsetsZero;
 }
 
-
 - (void)showLoadingBar {
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [indicatorView startAnimating];
     UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
-    self.navigationController.navigationItem.rightBarButtonItem = indicatorBarButton;
+    self.navigationItem.rightBarButtonItem = indicatorBarButton;
+    [self hideDeletePhotoButton];
 }
 
-- (void)showSaveButton {
+- (void)showSubmitButton {
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim Pesan"
                                                                    style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(didTapSubmitButton)];
     self.navigationItem.rightBarButtonItem = saveButton;
+    [self refreshPhotos];
 }
 
 #pragma mark - Text view delegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
+    CGPoint localPoint = [textView bounds].origin;
+    CGPoint basePoint = [textView convertPoint:localPoint toView:nil];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:basePoint];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 #pragma mark - View delegate
@@ -264,16 +347,32 @@
         UIImageView *imageView = [self.photoImageViews objectAtIndex:i];
         UIButton *deleteButton = [self.photoDeleteButtons objectAtIndex:i];
         if (i < self.photos.count) {
+            imageView.alpha =1;
             imageView.image = [self.photos objectAtIndex:i];
             deleteButton.hidden = NO;
         } else {
+            imageView.alpha = 1;
             imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
             deleteButton.hidden = YES;
         }
     }
 }
 
+- (void)hideDeletePhotoButton {
+    for (int i = 0; i < 5; i++) {
+        UIImageView *imageView = [self.photoImageViews objectAtIndex:i];
+        UIButton *deleteButton = [self.photoDeleteButtons objectAtIndex:i];
+        if (i < self.photos.count) {
+            imageView.alpha = 0.5;
+            deleteButton.hidden = YES;
+        }
+    }
+}
+
 - (void)redirectToInboxTicketDetail {
+    NSArray *successMessages = @[@"Pesan Anda telah terkirim!"];
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+    [alert show];
     [self.eventHandler showInboxTicketDetailFromNavigation:self.navigationController];
 }
 

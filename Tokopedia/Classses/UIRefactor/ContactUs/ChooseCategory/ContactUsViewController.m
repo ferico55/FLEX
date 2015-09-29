@@ -42,6 +42,8 @@
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 @property (weak, nonatomic) IBOutlet UIButton *contactUsButton;
 @property (strong, nonatomic) UIWebView *descriptionWebView;
+@property (strong, nonatomic) IBOutlet UIView *loadingView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 @end
 
@@ -63,7 +65,6 @@
     UINib *nib = [UINib nibWithNibName:@"ContactUsTypeCell" bundle:nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:@"ContactUsTypeCell"];
     
-    [self.flowLayout setFooterReferenceSize:CGSizeMake(160, 160)];
     [self.flowLayout setSectionInset:UIEdgeInsetsZero];
     [self.collectionView setCollectionViewLayout:_flowLayout];
 
@@ -73,6 +74,9 @@
     _subCategories = [NSMutableArray new];
     
     [self.eventHandler updateView];
+    
+    self.tableView.tableHeaderView = _loadingView;
+    [self.activityIndicatorView startAnimating];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(resetView)
@@ -197,7 +201,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height;
     if (indexPath.section == 0) {
-        height = 340;
+        NSInteger numberOfRows = (_categories.count / 2) + (_categories.count % 2);
+        height = numberOfRows * 170;
     } else if (indexPath.section == 1) {
         height = 44;
     } else if (indexPath.section == 2) {
@@ -261,7 +266,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 4;
+    return _categories.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -279,7 +284,12 @@
     } else if ([category.ticket_category_id isEqualToString:@"104"]) {
         cell.imageView.image = [UIImage imageNamed:@"icon_problem_about_account.png"];
     } else {
+        cell.imageView.backgroundColor = [UIColor colorWithRed:230.0/255.0
+                                                         green:231.0/255.0
+                                                          blue:232.0/255.0
+                                                         alpha:1];
         cell.imageView.image = nil;
+        
     }
     if (_selectedCollectionIndexPath) {
         cell.alpha = 0.5;
@@ -298,7 +308,10 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(160, 160);
+    CGFloat width = self.view.frame.size.width / 2;
+    CGFloat height = 170.0f;
+    [self.flowLayout setFooterReferenceSize:CGSizeMake(width, height)];
+    return CGSizeMake(width, height);
 }
 
 #pragma mark - Collection view delegate
@@ -324,7 +337,9 @@
 
 - (void)showContactUsFormData:(NSArray *)data {
     _categories = data;
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 0.01f)];
     [self.tableView reloadData];
+    [self.activityIndicatorView stopAnimating];
 }
 
 - (void)setErrorView {
@@ -403,10 +418,6 @@
     
     _showContactUsButton = YES;
     [self.tableView reloadData];
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    
 }
 
 -(CGSize)sizeOfText:(NSString *)textToMesure widthOfTextView:(CGFloat)width withFont:(UIFont*)font

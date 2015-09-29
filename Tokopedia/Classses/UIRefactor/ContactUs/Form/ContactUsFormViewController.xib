@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -14,10 +16,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactUsFormViewController">
             <connections>
+                <outlet property="descriptionActionLabel" destination="mEC-xk-zaQ" id="dcg-oX-io6"/>
+                <outlet property="descriptionLabel" destination="8Qw-qd-bsM" id="1xc-IJ-OLc"/>
                 <outlet property="invoiceInputCell" destination="yZO-ba-hp1" id="ZxF-N3-atr"/>
                 <outlet property="invoiceTextField" destination="Edp-K1-S46" id="dTI-dv-nwR"/>
                 <outlet property="messageCell" destination="ixH-R3-0Lk" id="Ugb-zl-tMo"/>
                 <outlet property="messageTextView" destination="pWO-F7-7dd" id="XeH-Em-5wd"/>
+                <outlet property="tableHeaderView" destination="NBx-ps-scE" id="Vhw-Nh-w6p"/>
                 <outlet property="tableView" destination="CKg-gW-RbB" id="Z1M-h0-t1Y"/>
                 <outlet property="uploadPhotoCell" destination="giE-yg-UEr" id="Jpq-AS-mA2"/>
                 <outlet property="uploadPhotoCellSubview" destination="obn-IP-59d" id="5hm-lU-jYa"/>
@@ -39,6 +44,30 @@
             <connections>
                 <action selector="didTapPhoto:" destination="-1" id="JAo-gr-vPF"/>
                 <outlet property="delegate" destination="-1" id="kWk-kZ-gai"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="WRf-r3-0Nj">
+            <connections>
+                <action selector="didTapPhoto:" destination="-1" id="GFM-l6-FXb"/>
+                <outlet property="delegate" destination="-1" id="oJS-S5-few"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="IHl-PG-zZv">
+            <connections>
+                <action selector="didTapPhoto:" destination="-1" id="OGs-1L-Uby"/>
+                <outlet property="delegate" destination="-1" id="fJl-gd-2GV"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="VSd-95-duy">
+            <connections>
+                <action selector="didTapPhoto:" destination="-1" id="0Ec-UC-JZW"/>
+                <outlet property="delegate" destination="-1" id="mhp-sC-5Ta"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="f49-KK-S33">
+            <connections>
+                <action selector="didTapPhoto:" destination="-1" id="kM3-hB-PoY"/>
+                <outlet property="delegate" destination="-1" id="OEp-3z-Elg"/>
             </connections>
         </tapGestureRecognizer>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -68,6 +97,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yZO-ba-hp1" id="IsB-bj-UsZ">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="No Invoice" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Edp-K1-S46">
@@ -106,6 +136,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ixH-R3-0Lk" id="Ruj-Yn-fNN">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="199.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pWO-F7-7dd" customClass="TKPDTextView">
@@ -131,6 +162,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="giE-yg-UEr" id="cBQ-o0-wQ7">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5U-C8-Vin">
@@ -160,7 +192,7 @@
                         <constraint firstAttribute="height" constant="80" id="zVz-Dh-vJq"/>
                     </constraints>
                     <connections>
-                        <outletCollection property="gestureRecognizers" destination="CCz-7n-9hg" appends="YES" id="cIb-hE-9WI"/>
+                        <outletCollection property="gestureRecognizers" destination="CCz-7n-9hg" appends="YES" id="kPC-bK-1np"/>
                     </connections>
                 </imageView>
                 <imageView clipsSubviews="YES" tag="2" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_upload_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="awu-Yn-gQs">
@@ -171,7 +203,7 @@
                         <constraint firstAttribute="height" constant="80" id="mJO-XR-huM"/>
                     </constraints>
                     <connections>
-                        <outletCollection property="gestureRecognizers" destination="CCz-7n-9hg" appends="YES" id="QYF-sT-1Jz"/>
+                        <outletCollection property="gestureRecognizers" destination="WRf-r3-0Nj" appends="YES" id="c8a-Dg-Mjn"/>
                     </connections>
                 </imageView>
                 <imageView clipsSubviews="YES" tag="3" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_upload_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="JbB-VF-sUj">
@@ -181,7 +213,7 @@
                         <constraint firstAttribute="width" constant="80" id="d6c-iK-5Wd"/>
                     </constraints>
                     <connections>
-                        <outletCollection property="gestureRecognizers" destination="CCz-7n-9hg" appends="YES" id="j5g-7U-f3g"/>
+                        <outletCollection property="gestureRecognizers" destination="IHl-PG-zZv" appends="YES" id="Edf-aT-0Wg"/>
                     </connections>
                 </imageView>
                 <imageView clipsSubviews="YES" tag="4" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_upload_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="YUr-83-Tyn">
@@ -191,7 +223,7 @@
                         <constraint firstAttribute="width" constant="80" id="aKX-e0-25s"/>
                     </constraints>
                     <connections>
-                        <outletCollection property="gestureRecognizers" destination="CCz-7n-9hg" appends="YES" id="3Lt-ZX-Nkf"/>
+                        <outletCollection property="gestureRecognizers" destination="VSd-95-duy" appends="YES" id="qdh-lL-Pgj"/>
                     </connections>
                 </imageView>
                 <imageView clipsSubviews="YES" tag="5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_upload_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="cjv-1q-4Oa">
@@ -201,7 +233,7 @@
                         <constraint firstAttribute="height" constant="80" id="jD3-DA-0pP"/>
                     </constraints>
                     <connections>
-                        <outletCollection property="gestureRecognizers" destination="CCz-7n-9hg" appends="YES" id="nQb-p2-7KY"/>
+                        <outletCollection property="gestureRecognizers" destination="f49-KK-S33" appends="YES" id="HpC-LV-tJX"/>
                     </connections>
                 </imageView>
                 <button hidden="YES" opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vHs-Mg-clc">
@@ -302,6 +334,51 @@
             </variation>
             <point key="canvasLocation" x="305" y="881"/>
         </view>
+        <view contentMode="scaleToFill" id="NBx-ps-scE">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Customer Care Tokopedia akan menjawab pesan kamu dalam waktu maksimal 1x24 jam. " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qw-qd-bsM">
+                    <rect key="frame" x="15" y="16" width="290" height="21.5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="n00-RI-Q2C"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mEC-xk-zaQ">
+                    <rect key="frame" x="15" y="47.5" width="290" height="21"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="hMd-Ex-npW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="ci9-5H-cme" appends="YES" id="JT7-08-ju9"/>
+                    </connections>
+                </label>
+            </subviews>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="8Qw-qd-bsM" secondAttribute="trailing" constant="15" id="20d-gZ-Krj"/>
+                <constraint firstItem="mEC-xk-zaQ" firstAttribute="leading" secondItem="NBx-ps-scE" secondAttribute="leading" constant="15" id="Mxd-B2-5je"/>
+                <constraint firstAttribute="trailing" secondItem="mEC-xk-zaQ" secondAttribute="trailing" constant="15" id="OJS-4d-GRn"/>
+                <constraint firstItem="8Qw-qd-bsM" firstAttribute="top" secondItem="NBx-ps-scE" secondAttribute="top" constant="16" id="b7c-gv-rbj"/>
+                <constraint firstItem="mEC-xk-zaQ" firstAttribute="top" secondItem="8Qw-qd-bsM" secondAttribute="bottom" constant="10" id="gr5-Cv-KBB"/>
+                <constraint firstItem="8Qw-qd-bsM" firstAttribute="leading" secondItem="NBx-ps-scE" secondAttribute="leading" constant="15" id="qhp-TK-P19"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="420" y="1231"/>
+        </view>
+        <tapGestureRecognizer id="ci9-5H-cme">
+            <connections>
+                <action selector="didTapInboxTicketButton:" destination="-1" id="1kA-28-DcD"/>
+                <outlet property="delegate" destination="-1" id="Olg-xh-3ur"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_cancel.png" width="20" height="20"/>

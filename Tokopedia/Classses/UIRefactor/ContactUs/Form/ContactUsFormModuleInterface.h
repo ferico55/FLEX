@@ -11,6 +11,7 @@
 @protocol ContactUsFormModuleInterface <NSObject>
 
 - (void)showFormWithCategory:(TicketCategory *)category;
+
 - (void)submitTicketMessage:(NSString *)message
                     invoice:(NSString *)invoice
                 attachments:(NSArray *)attachments
@@ -19,5 +20,7 @@
 - (void)showPhotoPickerFromNavigation:(UINavigationController *)navigation;
 
 - (void)showInboxTicketDetailFromNavigation:(UINavigationController *)navigation;
+
+- (void)showInboxTicketFromNavigation:(UINavigationController *)navigation;
 
 @end

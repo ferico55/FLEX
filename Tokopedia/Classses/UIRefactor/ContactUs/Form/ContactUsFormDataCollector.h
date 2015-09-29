@@ -26,6 +26,8 @@
 @property (nonatomic, strong) NSString *postKey;
 @property (nonatomic, strong) NSString *fileUploaded;
 
+@property BOOL failPhotoUpload;
+
 @property (nonatomic, strong) NSString *message;
 @property (nonatomic, strong) NSString *invoice;
 @property (nonatomic, strong) TicketCategory *ticketCategory;

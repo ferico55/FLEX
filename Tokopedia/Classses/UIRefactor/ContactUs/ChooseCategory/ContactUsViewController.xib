@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -18,10 +18,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactUsViewController">
             <connections>
+                <outlet property="activityIndicatorView" destination="Glf-I1-ws0" id="4GB-Mp-oo7"/>
                 <outlet property="collectionView" destination="xnd-ln-tOf" id="3Ju-av-TsZ"/>
                 <outlet property="contactUsButton" destination="Tq1-mh-qXA" id="4JJ-hS-IV4"/>
                 <outlet property="flowLayout" destination="pix-kY-M9C" id="85o-Vd-52f"/>
                 <outlet property="footerView" destination="cFx-73-sJF" id="b5Q-Id-VDJ"/>
+                <outlet property="loadingView" destination="6ca-jC-OUg" id="qOe-qd-Lg5"/>
                 <outlet property="problemHeaderView" destination="Xse-dd-NoP" id="CKn-S5-F3q"/>
                 <outlet property="problemSolutionCell" destination="ZlQ-ug-jL4" id="6V9-UL-lTD"/>
                 <outlet property="problemTypeCell" destination="RPc-l6-zo4" id="mVn-5U-te4"/>
@@ -58,6 +60,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZlQ-ug-jL4" id="htP-UU-emv">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
             </tableViewCellContentView>
             <point key="canvasLocation" x="192" y="1707"/>
@@ -161,7 +164,7 @@
                 </label>
                 <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tq1-mh-qXA">
                     <rect key="frame" x="15" y="42" width="290" height="40"/>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Goy-6m-d1A"/>
                     </constraints>
@@ -190,6 +193,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RPc-l6-zo4" id="Xv2-4C-PBd">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="159.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="xnd-ln-tOf">
@@ -216,5 +220,20 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="523" y="799"/>
         </tableViewCell>
+        <view contentMode="scaleToFill" id="6ca-jC-OUg">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Glf-I1-ws0">
+                    <rect key="frame" x="150" y="12" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Glf-I1-ws0" firstAttribute="centerX" secondItem="6ca-jC-OUg" secondAttribute="centerX" id="HG8-HN-0Eg"/>
+                <constraint firstItem="Glf-I1-ws0" firstAttribute="centerY" secondItem="6ca-jC-OUg" secondAttribute="centerY" id="NPw-WL-qUq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="345" y="652"/>
+        </view>
     </objects>
 </document>

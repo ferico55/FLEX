@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -16,11 +16,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWU-7P-mdn">
-                        <rect key="frame" x="51" y="0.0" width="269" height="43"/>
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWU-7P-mdn">
+                        <rect key="frame" x="51" y="0.0" width="254" height="43"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -37,7 +37,7 @@
                     <constraint firstAttribute="bottom" secondItem="uWU-7P-mdn" secondAttribute="bottom" constant="0.5" id="2cB-VU-tY7"/>
                     <constraint firstAttribute="bottom" secondItem="kr9-1h-EQ3" secondAttribute="bottom" constant="0.5" id="Pwo-9e-753"/>
                     <constraint firstItem="uWU-7P-mdn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Zfh-qT-FeB"/>
-                    <constraint firstAttribute="trailing" secondItem="uWU-7P-mdn" secondAttribute="trailing" id="bv7-i5-Rgp"/>
+                    <constraint firstAttribute="trailing" secondItem="uWU-7P-mdn" secondAttribute="trailing" constant="15" id="bv7-i5-Rgp"/>
                     <constraint firstItem="kr9-1h-EQ3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="mDW-AE-Fi3"/>
                     <constraint firstItem="kr9-1h-EQ3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="yBb-fw-IEQ"/>
                     <constraint firstItem="uWU-7P-mdn" firstAttribute="leading" secondItem="kr9-1h-EQ3" secondAttribute="trailing" constant="5" id="yEh-yd-7hI"/>

@@ -17,5 +17,7 @@
 - (void)redirectToInboxTicketDetail;
 - (void)showUploadedPhoto:(UIImage *)image;
 - (void)removeFailUploadPhoto:(UIImage *)image;
+- (void)showLoadingBar;
+- (void)showSubmitButton;
 
 @end

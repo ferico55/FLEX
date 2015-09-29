@@ -30,7 +30,7 @@
 }
 
 - (IBAction)tapLive:(id)sender {
-    baseUrl = @"http://www.tokopedia.com/ws";
+    baseUrl = @"http://staging.tokopedia.com/ws";
     [self didChangeButtonColor:_liveButton];
 }
 

@@ -22,6 +22,9 @@
                     invoice:(NSString *)invoice
                 attachments:(NSArray *)attachments
              ticketCategory:(TicketCategory *)category {
+    [self.userInterface showLoadingBar];
+    [self.dataCollector.uploadedPhotos removeAllObjects];
+    [self.dataCollector.uploadedPhotosURL removeAllObjects];
     self.dataCollector.message = message;
     self.dataCollector.invoice = invoice;
     self.dataCollector.attachments = attachments;
@@ -41,26 +44,35 @@
     [self.wireframe pushToInboxDetailFromNavigation:navigation];
 }
 
+- (void)showInboxTicketFromNavigation:(UINavigationController *)navigation {
+    [self.wireframe pushToInboxTicketFromNavigation:navigation];
+}
+
 #pragma mark - Interactor output
 
 - (void)didReceiveFormModel:(ContactUsActionResponse *)response {
     ContactUsActionResultStatus *status = [response.result.list objectAtIndex:0];
+    [self.userInterface showLoadingBar];
     if ([status.ticket_category_attachment_status boolValue]) {
         [self.userInterface showPhotoPicker];
     }
     if ([status.ticket_category_invoice_status boolValue]) {
         [self.userInterface showInvoiceInputTextField];
     }
+    [self.userInterface showSubmitButton];
 }
 
 - (void)didSuccessCreateTicket:(NSString *)ticketCategoryId {
     self.dataCollector.inboxTicketId = ticketCategoryId;
     [self.userInterface redirectToInboxTicketDetail];
+    [self.userInterface showSubmitButton];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ResetContactUsForm" object:nil];
 }
 
-- (void)didReceiveCreateTicketError:(NSError *)error {
-    
+- (void)didReceiveCreateTicketError:(NSArray *)error {
+    [self.userInterface showSubmitButton];
+    [self.userInterface showErrorMessages:error];
 }
 
 - (void)didReceivePostKey:(NSString *)postKey {
@@ -82,9 +94,11 @@
 
 - (void)didFailedUploadPhoto:(UIImage *)photo {
     [self.userInterface removeFailUploadPhoto:photo];
+    [self.userInterface showSubmitButton];
 }
 
 - (void)didReceiveFileUploaded:(NSString *)fileUploaded {
+    self.dataCollector.failPhotoUpload = YES;
     self.dataCollector.fileUploaded = fileUploaded;
     [self.interactor createTicketValidation];
 }

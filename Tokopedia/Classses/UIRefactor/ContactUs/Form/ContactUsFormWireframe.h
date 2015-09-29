@@ -26,4 +26,6 @@
 
 - (void)pushToInboxDetailFromNavigation:(UINavigationController *)navigation;
 
+- (void)pushToInboxTicketFromNavigation:(UINavigationController *)navigation;
+
 @end

@@ -62,11 +62,10 @@
 }
 
 - (BOOL)allPhotosUploaded {
-    if (self.uploadedPhotosURL.count == self.attachments.count) {
+    if (self.uploadedPhotosURL.count == self.attachments.count && !_failPhotoUpload) {
         return YES;
-    } else {
-        return NO;
     }
+    return NO;
 }
 
 - (NSString *)attachmentString {
