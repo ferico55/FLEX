@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		45B188951BB94978008EF271 /* AlertListBankView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B188941BB94978008EF271 /* AlertListBankView.m */; settings = {ASSET_TAGS = (); }; };
+		45B188971BB94995008EF271 /* AlertListBankView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45B188961BB94995008EF271 /* AlertListBankView.xib */; settings = {ASSET_TAGS = (); }; };
+		45B1889A1BB94B30008EF271 /* AlertListBankCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B188991BB94B30008EF271 /* AlertListBankCell.m */; settings = {ASSET_TAGS = (); }; };
+		45B1889E1BB94BB5008EF271 /* AlertListBankCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45B1889D1BB94BB5008EF271 /* AlertListBankCell.xib */; settings = {ASSET_TAGS = (); }; };
+		45B188A11BB95AD9008EF271 /* ListRekeningBank.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B188A01BB95AD9008EF271 /* ListRekeningBank.m */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; settings = {ASSET_TAGS = (); }; };
@@ -1841,6 +1846,14 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		45B188931BB94978008EF271 /* AlertListBankView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertListBankView.h; sourceTree = "<group>"; };
+		45B188941BB94978008EF271 /* AlertListBankView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertListBankView.m; sourceTree = "<group>"; };
+		45B188961BB94995008EF271 /* AlertListBankView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertListBankView.xib; sourceTree = "<group>"; };
+		45B188981BB94B30008EF271 /* AlertListBankCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertListBankCell.h; sourceTree = "<group>"; };
+		45B188991BB94B30008EF271 /* AlertListBankCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertListBankCell.m; sourceTree = "<group>"; };
+		45B1889D1BB94BB5008EF271 /* AlertListBankCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertListBankCell.xib; sourceTree = "<group>"; };
+		45B1889F1BB95AD9008EF271 /* ListRekeningBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListRekeningBank.h; sourceTree = "<group>"; };
+		45B188A01BB95AD9008EF271 /* ListRekeningBank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListRekeningBank.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6051,6 +6064,8 @@
 				85A18F7C1BAFEF9D002F1382 /* TxOrderConfirmPaymentForm */,
 				85A18F891BAFEF9D002F1382 /* TxOrderPayementEditForm */,
 				85A18F981BAFEF9D002F1382 /* TxOrderStatus */,
+				45B1889F1BB95AD9008EF271 /* ListRekeningBank.h */,
+				45B188A01BB95AD9008EF271 /* ListRekeningBank.m */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -6538,6 +6553,12 @@
 				85A18FFD1BAFEF9D002F1382 /* TKPDAlert.xib */,
 				85A18FFE1BAFEF9D002F1382 /* TKPDAlertView.h */,
 				85A18FFF1BAFEF9D002F1382 /* TKPDAlertView.m */,
+				45B188931BB94978008EF271 /* AlertListBankView.h */,
+				45B188941BB94978008EF271 /* AlertListBankView.m */,
+				45B188961BB94995008EF271 /* AlertListBankView.xib */,
+				45B188981BB94B30008EF271 /* AlertListBankCell.h */,
+				45B188991BB94B30008EF271 /* AlertListBankCell.m */,
+				45B1889D1BB94BB5008EF271 /* AlertListBankCell.xib */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -10033,6 +10054,7 @@
 				85A19D091BAFEFA1002F1382 /* icon_sad50@2x.png in Resources */,
 				85A19BCE1BAFEFA1002F1382 /* icon_21@2x.png in Resources */,
 				85A199D11BAFEFA1002F1382 /* ResolutionCenterDetailViewController.xib in Resources */,
+				45B188971BB94995008EF271 /* AlertListBankView.xib in Resources */,
 				85A19C5C1BAFEFA1002F1382 /* icon_etalase.png in Resources */,
 				85A19AFC1BAFEFA1002F1382 /* SendMessageViewController.xib in Resources */,
 				85A19A611BAFEFA1002F1382 /* PromoCollectionReusableView.xib in Resources */,
@@ -10138,6 +10160,7 @@
 				85A19DBF1BAFEFA1002F1382 /* icon_grid_satu@3x.png in Resources */,
 				85A199491BAFEFA1002F1382 /* TKPDTabBarController.xib in Resources */,
 				85A19BB31BAFEFA1002F1382 /* icon_0@2x.png in Resources */,
+				45B1889E1BB94BB5008EF271 /* AlertListBankCell.xib in Resources */,
 				85A199D31BAFEFA1002F1382 /* ResolutionCenterInputViewController.xib in Resources */,
 				85A19B551BAFEFA1002F1382 /* TxOrderTransactionDetailViewController.xib in Resources */,
 				85A19CE41BAFEFA1002F1382 /* icon_no_data_grey@2x.png in Resources */,
@@ -10774,6 +10797,7 @@
 				85A198501BAFEFA0002F1382 /* ActionOrderResult.m in Sources */,
 				85A1985F1BAFEFA0002F1382 /* WarehouseResult.m in Sources */,
 				85A197981BAFEFA0002F1382 /* ShopStats.m in Sources */,
+				45B188951BB94978008EF271 /* AlertListBankView.m in Sources */,
 				85A19A2C1BAFEFA1002F1382 /* GalleryPhotoView.m in Sources */,
 				85A198941BAFEFA0002F1382 /* SettingPaymentResult.m in Sources */,
 				85A198C71BAFEFA1002F1382 /* TransactionSummaryBCAParam.m in Sources */,
@@ -10865,6 +10889,8 @@
 				85A197CF1BAFEFA0002F1382 /* ResolutionBy.m in Sources */,
 				85A197681BAFEFA0002F1382 /* AddressDistrict.m in Sources */,
 				85A1991C1BAFEFA1002F1382 /* TKPDAlertView.m in Sources */,
+				45B1889A1BB94B30008EF271 /* AlertListBankCell.m in Sources */,
+				45B188A11BB95AD9008EF271 /* ListRekeningBank.m in Sources */,
 				85A198671BAFEFA0002F1382 /* SearchAutoCompleteDomains.m in Sources */,
 				85A19E1C1BAFEFA1002F1382 /* HPGrowingTextView.m in Sources */,
 				85A19AA51BAFEFA1002F1382 /* ShipmentStatusCell.m in Sources */,

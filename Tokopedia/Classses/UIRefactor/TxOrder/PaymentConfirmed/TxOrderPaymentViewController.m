@@ -103,6 +103,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *markTextView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UITableViewCell *RekInfoCell;
 
 @end
 
@@ -242,6 +243,8 @@
         _isNewRekening = !(_isNewRekening);
         [_tableView reloadData];
     }
+}
+- (IBAction)tapRekeningInfo:(id)sender {
 }
 
 -(void)requestPaymentConfirmation
