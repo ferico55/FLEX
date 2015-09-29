@@ -263,6 +263,8 @@ typedef enum {
 
 #define GTMVeritransClientKey @"veritrans_client_key"
 
+#define GTMHiddenPaymentKey @""
+
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

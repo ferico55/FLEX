@@ -34,6 +34,7 @@
 
 #import "TransactionObjectManager.h"
 #import "RequestCart.h"
+#import "TAGDataLayer.h"
 
 #import "LoadingView.h"
 
@@ -120,7 +121,7 @@
     UIAlertView *_alertLoading;
     
     LoadingView *_loadingView;
-    
+    TAGContainer *_gtmContainer;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -176,6 +177,11 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *voucherUsedCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *klikBCAUserIDCell;
 @property (weak, nonatomic) IBOutlet UITextField *userIDKlikBCATextField;
+
+@property (strong, nonatomic) IBOutlet UIView *chooseBankDurationView;
+@property (weak, nonatomic) IBOutlet UILabel *bankInstallmentLabel;
+@property (weak, nonatomic) IBOutlet UILabel *durationInstallmentLabel;
+
 
 @property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
@@ -293,6 +299,8 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
+    
+    [self configureGTM];
 }
 
 
@@ -303,11 +311,12 @@
     if (_indexPage == 0) {
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+        _tableView.tableHeaderView = nil;
     }
     else
     {
         if (!_popFromShipment) {
-            [_tableView setContentOffset:CGPointMake(0, -40) animated:YES];
+            _tableView.contentOffset = CGPointZero;
         }
         if (_popFromShipment) {
             _popFromShipment = NO;
@@ -317,6 +326,7 @@
         _passwordTextField.text = @"";
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+        _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -740,6 +750,7 @@
                 }
                     break;
                 case TYPE_GATEWAY_CC:
+                case TYPE_GATEWAY_INSTALLMENT:
                 {
                     [self pushToCCInformation];
                 }
@@ -750,6 +761,11 @@
             [self sendingProductDataToGA];
         }
     }
+}
+- (IBAction)tapBankInstallment:(id)sender {
+    
+}
+- (IBAction)tapBankDuration:(id)sender {
 }
 
 -(BOOL)isValidInputCC
@@ -867,21 +883,50 @@
 - (IBAction)tapChoosePayment:(id)sender {
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY]?:[TransactionCartGateway new];
     
-    NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
+    NSMutableArray *gatewayListWithoutHiddenPayment= [NSMutableArray new];
+    
+    
+    NSString *hiddenGatewayString = @"11,12";//[[self gtmContainer] stringForKey:GTMHiddenPaymentKey]?:@"-1";
+    NSArray *hiddenGatewayArray = [hiddenGatewayString componentsSeparatedByString: @","];
+    
+    NSMutableArray *hiddenGatewayName = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(11)] ) {
-            [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
+        [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name];
+        for (NSString *hiddenGateway in hiddenGatewayArray) {
+            if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
+                [hiddenGatewayName addObject:gateway.gateway_name];
+            }
         }
     }
     
+    [gatewayListWithoutHiddenPayment removeObjectsInArray:hiddenGatewayName];
+    
     GeneralTableViewController *vc = [GeneralTableViewController new];
     vc.selectedObject = selectedGateway.gateway_name;
-    vc.objects = gatewayListWithoutCreditCart;
+    vc.objects = gatewayListWithoutHiddenPayment;
     vc.delegate = self;
     vc.title = @"Metode Pembayaran";
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+#pragma mark - GTM
+- (void)configureGTM {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+}
+
+
+-(TAGContainer *)gtmContainer
+{
+    if (!_gtmContainer) {
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        _gtmContainer = appDelegate.container;
+    }
+    return _gtmContainer;
+}
+
 
 #pragma mark - Delegate
 -(void)TransactionCartShippingViewController:(TransactionCartShippingViewController *)viewController withUserInfo:(NSDictionary *)userInfo
@@ -1006,7 +1051,7 @@
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
             [self swipePaymentMethod];
         }
-        if (gateway == TYPE_GATEWAY_CC) {
+        if (gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT) {
             return [self isValidInputCC];
         }
         if (gateway == TYPE_GATEWAY_BCA_KLIK_BCA) {
@@ -1609,7 +1654,7 @@
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -1663,7 +1708,7 @@
 {
     [self doClearAllData];
     
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height-48) animated:YES];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     [_refreshControl beginRefreshing];
     
     if ([_refreshControl isRefreshing]) {
@@ -2706,7 +2751,7 @@
 -(void)endRefreshing
 {
     if (_refreshControl.isRefreshing) {
-        [_tableView setContentOffset:CGPointMake(0, -80) animated:YES];
+        _tableView.contentOffset = CGPointZero;
         [_refreshControl endRefreshing];
     }
 }
