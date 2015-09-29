@@ -44,21 +44,22 @@
                                                         @"pic_id" : @"pic_id",
                                                         @"pic_obj" : @"pic_obj",
                                                         @"file_uploaded" : @"file_uploaded",
-                                                        @"pic_src" : @"pic_src"
+                                                        @"pic_src" : @"pic_src",
+                                                        @"pic_code" : @"pic_code"
                                                         }];
     
 
     RKObjectMapping *subResultMapping = [RKObjectMapping mappingForClass:[Upload class]];
     [subResultMapping addAttributeMappingsFromDictionary:@{kTKPD_SRC:kTKPD_SRC}];
     
-    RKObjectMapping *imageResultMapping = [RKObjectMapping mappingForClass:[UploadImageImage class]];
-    [imageResultMapping addAttributeMappingsFromDictionary:@{@"pic_code":@"pic_code",
-                                                           @"pic_src":@"pic_src"}];
+//    RKObjectMapping *imageResultMapping = [RKObjectMapping mappingForClass:[UploadImageImage class]];
+//    [imageResultMapping addAttributeMappingsFromDictionary:@{@"pic_code":@"pic_code",
+//                                                           @"pic_src":@"pic_src"}];
     
     
     // Relationship Mapping
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIUPLOADKEY toKeyPath:kTKPD_APIUPLOADKEY withMapping:subResultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:imageResultMapping]];
+//    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:imageResultMapping]];
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -143,7 +144,7 @@
                BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                
                if (status) {
-                   if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
+                   if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.pic_src!=nil || images.result.pic_obj!=nil) {
                        [_delegate successUploadObject:_imageObject withMappingResult:images];
                    }
                    else
