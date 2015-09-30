@@ -146,7 +146,8 @@
                                                           kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
+                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
+                                                          @"lucky_merchant" : @"lucky_merchant"
                                                           }];
     return shopinfoMapping;
 }
@@ -192,7 +193,11 @@
                                                         API_TOKEN_KEY,
                                                         API_STEP_KEY,
                                                         API_DROPSHIP_LIST_KEY,
-                                                        @"klikbca_user"
+                                                        @"klikbca_user",
+                                                        @"cashback_idr",
+                                                        @"cashback",
+                                                        @"lp_amount_idr",
+                                                        @"lp_amount"
                                                         ]];
     return transactionMapping;
 }

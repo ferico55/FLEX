@@ -119,7 +119,7 @@
     txtURL.contentInset = UIEdgeInsetsMake(0, padding*4, 0, padding*2);
     txtURL.frame = CGRectMake(0, lblUrl.frame.origin.y+lblUrl.bounds.size.height, self.view.bounds.size.width, txtURL.bounds.size.height);
     lblTambahProduct.frame = CGRectMake(padding, txtURL.frame.origin.y+txtURL.bounds.size.height+padding, txtURL.bounds.size.width, lblTambahProduct.bounds.size.height);
-    viewContentDesc.frame = CGRectMake(0, lblTambahProduct.frame.origin.y+lblTambahProduct.bounds.size.height+padding, self.view.bounds.size.width, viewContentDesc.bounds.size.height);
+    viewContentDesc.frame = CGRectMake(0, lblTambahProduct.frame.origin.y+lblTambahProduct.bounds.size.height+padding, [UIScreen mainScreen].bounds.size.width, viewContentDesc.bounds.size.height);
     btnTambahProduct.frame = CGRectMake(padding, padding+viewContentDesc.frame.origin.y+viewContentDesc.bounds.size.height, self.view.bounds.size.width-(padding*2), btnTambahProduct.bounds.size.height);
     [contentScrollView setContentSize:CGSizeMake(self.view.bounds.size.width, btnTambahProduct.frame.origin.y+btnTambahProduct.bounds.size.height+padding)];
 }

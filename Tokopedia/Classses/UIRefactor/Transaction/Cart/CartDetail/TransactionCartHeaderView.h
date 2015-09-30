@@ -20,6 +20,10 @@
 
 
 @property (nonatomic, weak) IBOutlet id<TransactionCartHeaderViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintwidthbadge;
+@property (weak, nonatomic) IBOutlet UIImageView *LMBadgeImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintYShopName;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintXShopName;
 
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;

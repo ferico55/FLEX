@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+
+@class TalkModelView;
 #define CTalkUserReputation @"talk_user_reputation"
 @class ReputationDetail;
 @interface TalkList : NSObject
@@ -38,4 +40,6 @@
 //user label
 @property (nonatomic, strong) NSString *talk_user_label;
 @property (nonatomic, strong) NSString *talk_user_label_id;
+
+@property (nonatomic, strong) TalkModelView *viewModel;
 @end

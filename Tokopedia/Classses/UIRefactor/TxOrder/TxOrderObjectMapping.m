@@ -224,7 +224,8 @@
                                                       API_ORDER_BUTTON_KEY,
                                                       API_ORDER_BUTTON_UPLOAD_PROOF_KEY,
                                                       API_ORDER_HAS_USER_BANK_KEY,
-                                                      API_ORDER_PAYMENT_AMOUNT_KEY
+                                                      API_ORDER_PAYMENT_AMOUNT_KEY,
+                                                      @"img_proof_url"
                                                       ]];
     return confirmedMapping;
 }

@@ -18,7 +18,7 @@
 #import "VTConfig.h"
 #import "VTDirect.h"
 #import "VTCardDetails.h"
-
+#import "TAGDataLayer.h"
 
 @interface TransactionCCDetailViewController ()
 <
@@ -57,6 +57,8 @@
     
     UITextField *_activeTextField;
     BOOL _isFailMaxRequest;
+    
+    TAGContainer *_gtmContainer;
 }
 
 - (void)viewDidLoad {
@@ -98,6 +100,8 @@
     _isFailMaxRequest = NO;
     
     _tableview.tableFooterView = [UIView new];
+    
+    [self configureGTM];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -200,10 +204,26 @@
     
 }
 
+#pragma mark - GTM
+- (void)configureGTM {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+}
+
 -(void)shouldDoRequestCCVeritrans
 {
-    [VTConfig setCLIENT_KEY:@"a2ce64ee-ecc5-4cff-894d-c789ff2ab003"];
-    [VTConfig setVT_IsProduction:NO];
+    
+    NSString *clientKey = [_gtmContainer stringForKey:GTMVeritransClientKey];
+    
+    //Production : e9e0c15c-40e1-47fb-a303-43743550549a
+    //SandBox : a2ce64ee-ecc5-4cff-894d-c789ff2ab003
+    
+    [VTConfig setCLIENT_KEY:clientKey];
+    [VTConfig setVT_IsProduction:YES];
     
     VTDirect *vtDirect = [VTDirect new];
     VTCardDetails *cardDetails = [VTCardDetails new];

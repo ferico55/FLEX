@@ -1,3 +1,4 @@
+
 //
 //  HotlistResultViewController.m
 //  Tokopedia
@@ -9,6 +10,9 @@
 #import "HotlistDetail.h"
 #import "SearchResult.h"
 #import "List.h"
+#import "SearchAWS.h"
+#import "SearchAWSResult.h"
+#import "SearchAWSProduct.h"
 
 #import "string_home.h"
 #import "search.h"
@@ -37,6 +41,12 @@
 #import "GeneralPhotoProductCell.h"
 #import "NavigateViewController.h"
 
+#import "PromoCollectionReusableView.h"
+#import "PromoRequest.h"
+
+#import "DetailProductViewController.h"
+#import "HotlistBannerRequest.h"
+#import "HotlistBannerResult.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -51,24 +61,42 @@
 #define CProductThumbView @"ProductThumbCell"
 #define CProductThumbIdentifier @"ProductThumbCellIdentifier"
 
+
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
     UITableViewCellTypeThreeColumn,
 };
 
+typedef enum ScrollDirection {
+    ScrollDirectionNone,
+    ScrollDirectionRight,
+    ScrollDirectionLeft,
+    ScrollDirectionUp,
+    ScrollDirectionDown,
+} ScrollDirection;
+
+static NSString const *rows = @"12";
+
 @interface HotlistResultViewController ()
 <
-GeneralProductCellDelegate,
-CategoryMenuViewDelegate,
-SortViewControllerDelegate,
-FilterViewControllerDelegate,
-GeneralSingleProductDelegate,
-GeneralPhotoProductDelegate
+    GeneralProductCellDelegate,
+    CategoryMenuViewDelegate,
+    SortViewControllerDelegate,
+    FilterViewControllerDelegate,
+    GeneralSingleProductDelegate,
+    GeneralPhotoProductDelegate,
+    PromoCollectionViewDelegate,
+    PromoRequestDelegate,
+HotlistBannerDelegate
 >
 {
     NSInteger _page;
     NSInteger _limit;
+    
+    NSString *_start;
+    NSString *_rows;
     
     NSInteger _viewposition;
     
@@ -84,6 +112,7 @@ GeneralPhotoProductDelegate
     BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL isFailedRequest;
+    HotlistBannerResult *_bannerResult;
     
     UIRefreshControl *_refreshControl;
     
@@ -92,7 +121,7 @@ GeneralPhotoProductDelegate
     NSInteger _requestcount;
     NSTimer *_timer;
     
-    HotlistDetail *_hotlistdetail;
+    SearchAWS *_searchObject;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -104,10 +133,14 @@ GeneralPhotoProductDelegate
     
     NSTimeInterval _timeinterval;
     NoResultView *_noResultView;
+    
+    PromoRequest *_promoRequest;
+    
+    HotlistBannerRequest *_bannerRequest;
+    BOOL _shouldUseHashtag;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
@@ -118,6 +151,15 @@ GeneralPhotoProductDelegate
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipegestureright;
 @property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 @property (nonatomic) UITableViewCellType cellType;
+@property (weak, nonatomic) IBOutlet UIView *firstFooter;
+
+@property (strong, nonatomic) NSMutableArray *promo;
+
+@property PromoCollectionViewCellType promoCellType;
+@property (strong, nonatomic) NSMutableArray *promoScrollPosition;
+
+@property (assign, nonatomic) CGFloat lastContentOffset;
+@property ScrollDirection scrollDirection;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -163,9 +205,12 @@ GeneralPhotoProductDelegate
     _cachecontroller = [URLCacheController new];
     _cacheconnection = [URLCacheConnection new];
     _operationQueue = [NSOperationQueue new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, self.view.frame.size.width, 100)];
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
+    _shouldUseHashtag = YES;
 
-    
+    _promo = [NSMutableArray new];
+    _promoScrollPosition = [NSMutableArray new];
+
     // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
     
@@ -224,15 +269,22 @@ GeneralPhotoProductDelegate
         if (self.cellType == UITableViewCellTypeOneColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeNormal;
+            
         } else if (self.cellType == UITableViewCellTypeTwoColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeNormal;
+
         } else if (self.cellType == UITableViewCellTypeThreeColumn) {
             [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                    forState:UIControlStateNormal];
+            self.promoCellType = PromoCollectionViewCellTypeThumbnail;
+
         }
     } else {
         self.cellType = UITableViewCellTypeTwoColumn;
+        self.promoCellType = PromoCollectionViewCellTypeNormal;
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                forState:UIControlStateNormal];
     }
@@ -243,6 +295,16 @@ GeneralPhotoProductDelegate
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [viewCollection addSubview:_refreshControl];
     
+    _promoRequest = [PromoRequest new];
+    _promoRequest.delegate = self;
+    [self requestPromo];
+    
+    _bannerRequest = [[HotlistBannerRequest alloc] init];
+    [_bannerRequest setDelegate:self];
+    [_bannerRequest setBannerKey:[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@""];
+    [_bannerRequest requestBanner];
+    
+    self.scrollDirection = ScrollDirectionDown;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -258,18 +320,29 @@ GeneralPhotoProductDelegate
         [self registerNibCell:CProductSingleView withIdentifier:CProductSingleViewIdentifier isFooterView:NO isHeader:NO];
         [self registerNibCell:CProductThumbView withIdentifier:CProductThumbIdentifier isFooterView:NO isHeader:NO];
         
+        UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
+        [viewCollection registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
+
         viewCollection.backgroundColor = [UIColor colorWithRed:243/255.0f green:243/255.0f blue:243/255.0f alpha:1.0f];
         [viewCollection setAlwaysBounceVertical:YES];
-        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.bounds.size.height, 50)];
-        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+        [_firstFooter setFrame:CGRectMake(0, _header.frame.size.height + 50, [UIScreen mainScreen].bounds.size.width, 50)];
+        [viewCollection addSubview:_firstFooter];
+        [flowLayout setFooterReferenceSize:CGSizeMake(self.view.frame.size.width, 50)];
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     }
     
-    
-    self.screenName = @"Browse HotList Detail";
-    [self configureRestKit];
-    if (_isnodata) {
-        [self request];
+    if(self.isFromAutoComplete) {
+        self.screenName = @"AutoComplete - Browse HotList Detail";
+    } else {
+        self.screenName = @"Browse HotList Detail";
     }
+
+//    [self configureRestKit];
+//    if (_isnodata) {
+//        [self request];
+//    }
+    
+    
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -285,7 +358,7 @@ GeneralPhotoProductDelegate
 }
 
 #pragma mark - Memory Management
--(void)dealloc{
+-(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
@@ -333,7 +406,7 @@ GeneralPhotoProductDelegate
         // buttons tag >=20 are tags untuk hashtags
         if (button.tag >=20) {
             //TODO::
-            NSArray *hashtagsarray = _hotlistdetail.result.hashtags;
+            NSArray *hashtagsarray = _searchObject.result.hashtag;
             Hashtags *hashtags = hashtagsarray[button.tag - 20];
             
             NSURL *url = [NSURL URLWithString:hashtags.url];
@@ -392,9 +465,9 @@ GeneralPhotoProductDelegate
                     if ([_data objectForKey:@"title"] && [_data objectForKey:@"url"]) {
                         title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", [_data objectForKey:@"title"]];
                         url = [NSURL URLWithString:[_data objectForKey:@"url"]];
-                    } else if (_hotlistdetail) {
-                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _hotlistdetail.result.info.title_enc];
-                        url = [NSURL URLWithString:_hotlistdetail.result.hotlist_url];
+                    } else if (_bannerResult) {
+                        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _bannerResult.info.title];
+                        url = [NSURL URLWithString:_bannerResult.info.title];
                     }
                     
                     if (title && url) {
@@ -412,16 +485,19 @@ GeneralPhotoProductDelegate
                     
                     if (self.cellType == UITableViewCellTypeOneColumn) {
                         self.cellType = UITableViewCellTypeTwoColumn;
+                        self.promoCellType = PromoCollectionViewCellTypeNormal;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
                                                forState:UIControlStateNormal];
                         
                     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
                         self.cellType = UITableViewCellTypeThreeColumn;
+                        self.promoCellType = PromoCollectionViewCellTypeThumbnail;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
                                                forState:UIControlStateNormal];
                         
                     } else if (self.cellType == UITableViewCellTypeThreeColumn) {
                         self.cellType = UITableViewCellTypeOneColumn;
+                        self.promoCellType = PromoCollectionViewCellTypeNormal;
                         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
                                                forState:UIControlStateNormal];
                         
@@ -430,7 +506,7 @@ GeneralPhotoProductDelegate
                     NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
                     [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
                     [viewCollection reloadData];
-                    
+                    [viewCollection layoutIfNeeded];
                     break;
                 }
                 default:
@@ -501,74 +577,42 @@ GeneralPhotoProductDelegate
     _objectmanager = nil;
 }
 
-- (void)configureRestKit
-{
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+- (void)configureRestKit {
+    _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[HotlistDetail class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistDetailResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY,
-                                                        KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY,
-                                                        kTKPDHOME_APIHOTLISTURLKEY:kTKPDHOME_APIHOTLISTURLKEY}];
     
-    RKObjectMapping *resultInfoMapping = [RKObjectMapping mappingForClass:[HotlistResultInfo class]];
-    [resultInfoMapping addAttributeMappingsFromDictionary:@{
-                                                            kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY   : kTKPDHOMEHOTLIST_NEGATIVE_KEYWORD_KEY,
-                                                            kTKPDHOMEHOTLIST_KEYWORD_KEY            : kTKPDHOMEHOTLIST_KEYWORD_KEY,
-                                                            kTKPDHOMEHOTLIST_TITLE_ENC              : kTKPDHOMEHOTLIST_TITLE_ENC,
-                                                            kTKPDHOMEHOTLIST_CATALOG_KEY            : kTKPDHOMEHOTLIST_CATALOG_KEY,
-                                                            kTKPDHOMEHOTLIST_MIN_PRICE_KEY          : kTKPDHOMEHOTLIST_MIN_PRICE_KEY,
-                                                            kTKPDHOMEHOTLIST_HASHTAG_KEY            : kTKPDHOMEHOTLIST_HASHTAG_KEY,
-                                                            kTKPDHOMEHOTLIST_FILE_NAME_KEY          : kTKPDHOMEHOTLIST_FILE_NAME_KEY,
-                                                            kTKPDHOMEHOTLIST_ALIAS_KEY              : kTKPDHOMEHOTLIST_ALIAS_KEY,
-                                                            kTKPDHOMEHOTLIST_COVER_IMG_KEY          : kTKPDHOMEHOTLIST_COVER_IMG_KEY,
-                                                            kTKPDHOMEHOTLIST_URL_KEY                : kTKPDHOMEHOTLIST_URL_KEY,
-                                                            kTKPDHOMEHOTLIST_ID_KEY                 : kTKPDHOMEHOTLIST_ID_KEY,
-                                                            kTKPDHOMEHOTLIST_D_ID_KEY               : kTKPDHOMEHOTLIST_D_ID_KEY,
-                                                            kTKPDHOMEHOTLIST_FILE_PATH_KEY          : kTKPDHOMEHOTLIST_FILE_PATH_KEY,
-                                                            kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY   : kTKPDHOMEHOTLIST_META_DESCRIPTION_KEY,
-                                                            kTKPDHOMEHOTLIST_SORT_BY_KEY            : kTKPDHOMEHOTLIST_SORT_BY_KEY,
-                                                            kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY    : kTKPDHOMEHOTLIST_SHARE_FILE_PATH_KEY,
-                                                            kTKPDHOMEHOTLIST_DESCRIPTION_KEY        : kTKPDHOMEHOTLIST_HOTLIST_DESCRIPTION_KEY,
-                                                            kTKPDHOMEHOTLIST_MAX_PRICE_KEY          : kTKPDHOMEHOTLIST_MAX_PRICE_KEY,
-                                                            kTKPDHOMEHOTLIST_SHOP_KEY               : kTKPDHOMEHOTLIST_SHOP_KEY,
-                                                            kTKPDHOMEHOTLIST_TITLE_KEY              : kTKPDHOMEHOTLIST_TITLE_KEY,
-                                                            kTKPDHOMEHOTLIST_SHARE_FILE_NAME        : kTKPDHOMEHOTLIST_SHARE_FILE_NAME,
-                                                            }];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
     
-    // list mapping
-    RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
-    [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APICATALOGIMAGEKEY,
-                                                    kTKPDHOME_APICATALOGNAMEKEY,
-                                                    kTKPDHOME_APICATALOGPRICEKEY,
-                                                    kTKPDHOME_APIPRODUCTPRICEKEY,
-                                                    kTKPDHOME_APIPRODUCTIDKEY,
-                                                    kTKPDHOME_APISHOPGOLDSTATUSKEY,
-                                                    kTKPDHOME_APISHOPLOCATIONKEY,
-                                                    kTKPDHOME_APISHOPNAMEKEY,
-                                                    kTKPDHOME_APIPRODUCTIMAGEKEY,
-                                                    kTKPDHOME_APIPRODUCTIMAGEFULLKEY,
-                                                    kTKPDHOME_APIPRODUCTNAMEKEY,
-                                                    kTKPDHOME_APIPRODUCTREVIEWCOUNTKEY,
-                                                    kTKPDHOME_APIPRODUCTTALKCOUNTKEY
-                                                    ]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id"
+                                                        }];
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+    //product
+    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+
+    RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
+    [hashtagMapping addAttributeMappingsFromArray:@[@"name", @"url", @"department_id"]];
     
     // paging mapping
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
     
+    //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    // hashtags mapping
-    RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
-    [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY, kTKPDHOME_APIDEPARTMENTIDKEY]];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
+    [resultMapping addPropertyMapping:listRel];
     
-    // departmenttree mapping
+    RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:hashtagMapping];
+    [resultMapping addPropertyMapping:hashtagRel];
+    
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
     [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY,
                                                        kTKPDHOME_APITREEKEY,
@@ -577,39 +621,25 @@ GeneralPhotoProductDelegate
                                                        ]];
     // Adjust Relationship
     //add Department tree relationship
-    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIDEPARTMENTTREEKEY toKeyPath:kTKPDHOME_APIDEPARTMENTTREEKEY withMapping:departmentMapping];
+    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:departmentMapping];
     [resultMapping addPropertyMapping:depttreeRel];
     
-    //add list relationship
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:hotlistMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    // add page relationship
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // hastags relationship
-    RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIHASHTAGSKEY toKeyPath:kTKPDHOME_APIHASHTAGSKEY withMapping:hashtagMapping];
-    [resultMapping addPropertyMapping:hashtagRel];
-    
-    // departmentchild relationship
     RKRelationshipMapping *deptchildRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APICHILDTREEKEY toKeyPath:kTKPDHOME_APICHILDTREEKEY withMapping:departmentMapping];
     [departmentMapping addPropertyMapping:deptchildRel];
     
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOMEHOTLIST_INFO_KEY
-                                                                                  toKeyPath:kTKPDHOMEHOTLIST_INFO_KEY
-                                                                                withMapping:resultInfoMapping]];
+    // add page relationship
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodGET
+                                                                                       pathPattern:@"search/v1/product"
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    // add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    
+    //add response description to object manager
+    [_objectmanager addResponseDescriptor:responseDescriptor];
 }
 
 
@@ -622,32 +652,32 @@ GeneralPhotoProductDelegate
     NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
     
     NSDictionary* param = @{
-                            kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
-                            kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
-                            kTKPDHOME_APIORDERBYKEY : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
-                            kTKPDHOME_APIDEPARTMENTIDKEY: [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
-                            kTKPDHOME_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
-                            kTKPDHOME_APISHOPTYPEKEY :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
-                            kTKPDHOME_APIPRICEMINKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
-                            kTKPDHOME_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@""
+                            @"device":@"ios",
+                            @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
+                            @"start" : _start?:@"0",
+                            @"rows" : rows,
+                            @"ob" : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
+                            @"sc" : [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
+                            @"floc" :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
+                            @"fshop" :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
+                            @"pmin" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
+                            @"pmax" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@"",
+                            @"hashtag" : _shouldUseHashtag?@"true":@"",
+                            @"breadcrumb" : _shouldUseHashtag?@"true":@"",
                             };
     
+
+    
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDHOMEHOTLISTRESULT_APIPATH
-                                                                parameters:[param encrypt]];
-    //	[_cachecontroller getFileModificationDate];
-    //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-    //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-    //[_cachecontroller clearCache];
+                                                                    method:RKRequestMethodGET
+                                                                      path:@"search/v1/product"
+                                                                parameters:param];
+    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
-        [_table reloadData];
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestfailure:error];
@@ -660,15 +690,6 @@ GeneralPhotoProductDelegate
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    //    }
-    //	else {
-    //        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    //        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    //        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-    //        NSLog(@"cache and updated in last 24 hours.");
-    //        [self requestfailure:nil];
-    //	}
 }
 
 
@@ -676,10 +697,9 @@ GeneralPhotoProductDelegate
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id info = [result objectForKey:@""];
-    _hotlistdetail = info;
-    NSString *statusstring = _hotlistdetail.status;
+    _searchObject = info;
+    NSString *statusstring = _searchObject.status;
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
     if (status) {
         if (_page <=1 && !_isrefreshview) {
             //only save cache for first page
@@ -701,6 +721,7 @@ GeneralPhotoProductDelegate
     else {
         isFailedRequest = YES;
         [viewCollection reloadData];
+        [viewCollection layoutIfNeeded];
     }
 }
 
@@ -710,43 +731,40 @@ GeneralPhotoProductDelegate
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            _hotlistdetail = info;
-            NSString *statusstring = _hotlistdetail.status;
+            SearchAWS *info = [result objectForKey:@""];
+            _searchObject = info;
+            NSString *statusstring = _searchObject.status;
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
                 
-                if (_page == 1) {
+                if ([_start isEqualToString:@"0"]) {
                     [_product removeAllObjects];
-                    [self.table setContentOffset:CGPointZero animated:YES];
+                    [_promo removeAllObjects];
+                    [_firstFooter removeFromSuperview];
+                    [self setHashtags];
+                    _shouldUseHashtag = NO;
                 }
+
+                [_product addObject:_searchObject.result.products];
                 
-                [_product addObjectsFromArray: _hotlistdetail.result.list];
-                
-                if(_product.count == 0) {
-                    [flowLayout setFooterReferenceSize:CGSizeZero];
-                    [viewCollection addSubview:_noResultView];
-                }
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
                 [self setHeaderData];
                 
-                NSArray * departmenttree = _hotlistdetail.result.department_tree;
+                NSArray * departmenttree = _searchObject.result.breadcrumb;
                 
-                //[_departmenttree removeAllObjects];
                 if (_departmenttree.count == 0) {
                     [_departmenttree addObjectsFromArray:departmenttree];
                 }
                 
-                if (_product.count >0) {
+                if (_searchObject.result.products.count > 0) {
                     
                     _descriptionview.hidden = NO;
                     _header.hidden = NO;
                     _filterview.hidden = NO;
                     
-                    _urinext =  _hotlistdetail.result.paging.uri_next;
-                    
+                    _urinext =  _searchObject.result.paging.uri_next;
                     NSURL *url = [NSURL URLWithString:_urinext];
                     NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
@@ -761,15 +779,28 @@ GeneralPhotoProductDelegate
                         [queries setObject:value forKey:key];
                     }
                     
-                    _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+                    _start = [queries objectForKey:@"start"];
+
                     
                     NSLog(@"next page : %zd",_page);
                     
                     _isnodata = NO;
                     
                     _filterview.hidden = NO;
+                    
+                    if ([_start integerValue] > 0) [self requestPromo];
+                    [viewCollection reloadData];
+                    if([_urinext isEqualToString:@""]) {
+                        [flowLayout setFooterReferenceSize:CGSizeZero];
+                    }
+                } else {
+                    [flowLayout setFooterReferenceSize:CGSizeZero];
+                    [viewCollection addSubview:_noResultView];
+                    [viewCollection reloadData];
+                    [viewCollection layoutIfNeeded];
                 }
-                
+            } else {
+                [viewCollection addSubview:_noResultView];
                 [viewCollection reloadData];
             }
         }
@@ -793,6 +824,7 @@ GeneralPhotoProductDelegate
         else
         {
             [viewCollection reloadData];
+            [viewCollection layoutIfNeeded];
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
                 NSString *errorDescription = error.localizedDescription;
@@ -813,6 +845,7 @@ GeneralPhotoProductDelegate
 - (IBAction)pressRetryButton:(id)sender
 {
     [viewCollection reloadData];
+    [viewCollection layoutIfNeeded];
     [self configureRestKit];
     [self request];
 }
@@ -830,8 +863,8 @@ GeneralPhotoProductDelegate
 
 -(void)setHeaderData
 {
-    if (![_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY]) {
-        NSString *urlstring = _hotlistdetail.result.cover_image;
+    if (_bannerResult) {
+        NSString *urlstring = _bannerResult.info.cover_img;
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
@@ -849,7 +882,7 @@ GeneralPhotoProductDelegate
         }];
     }
     
-    if (_hotlistdetail.result.desc_key) {
+    if (_bannerResult.info.hotlist_description) {
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 4.0;
         style.alignment = NSTextAlignmentCenter;
@@ -860,18 +893,18 @@ GeneralPhotoProductDelegate
                                      NSForegroundColorAttributeName : [UIColor whiteColor],
                                      };
         
-        _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _hotlistdetail.result.desc_key]
+        _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _bannerResult.info.hotlist_description?:@""]
                                                                            attributes:attributes];
     }
     
-    [self setHashtags];
+//    [self setHashtags];
 }
 
 -(void)setHashtags
 {
     _buttons = [NSMutableArray new];
     
-    NSArray *hashtags = _hotlistdetail.result.hashtags;
+    NSArray *hashtags = _searchObject.result.hashtag;
     
     CGFloat previousButtonWidth = 10;
     CGFloat totalWidth = 10;
@@ -916,12 +949,11 @@ GeneralPhotoProductDelegate
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     [self cancel];
-    _page = 1;
+    _start = @"0";
     _requestcount = 0;
     _isrefreshview = YES;
     
     [_refreshControl beginRefreshing];
-    [_table setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
     [self configureRestKit];
     [self request];
@@ -994,15 +1026,17 @@ GeneralPhotoProductDelegate
     return cellSize;
 }
 
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _isnodata?0:_product.count;
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return _product.count?:1;
 }
 
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _isnodata?0:[[_product objectAtIndex:section] count];
+}
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell;
-    List *list = [_product objectAtIndex:indexPath.row];
+    SearchAWSProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cell = (ProductSingleViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CProductSingleViewIdentifier forIndexPath:indexPath];
         [(ProductSingleViewCell *)cell setViewModel:list.viewModel];
@@ -1014,11 +1048,11 @@ GeneralPhotoProductDelegate
         [(ProductThumbCell *)cell setViewModel:list.viewModel];
     }
     
-    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
+    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
+    if (indexPath.section == section && indexPath.row == row) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
+            isFailedRequest = NO;
             [self configureRestKit];
             [self request];
         }
@@ -1030,43 +1064,170 @@ GeneralPhotoProductDelegate
     return cell;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
-
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
-    return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
-}
-
-
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
-    
-    if(kind == UICollectionElementKindSectionFooter) {
-        if(isFailedRequest) {
-            isFailedRequest = !isFailedRequest;
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+    if (kind == UICollectionElementKindSectionHeader) {
+        if (indexPath.section == 0) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                              withReuseIdentifier:CTagHeaderIdentifier
+                                                                     forIndexPath:indexPath];
+            [_header removeFromSuperview];
+            [reusableView addSubview:_header];
+        } else if (_promo.count >= indexPath.section && indexPath.section > 0) {
+            if ([_promo objectAtIndex:indexPath.section]) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                }
+            } else {
+                reusableView = nil;
+            }
         } else {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:CTagFooterCollectionIdentifier forIndexPath:indexPath];
+            reusableView = nil;
         }
     }
-    else if(kind == UICollectionElementKindSectionHeader) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CTagHeaderIdentifier forIndexPath:indexPath];
-        [_header removeFromSuperview];
-        [reusableView addSubview:_header];
+    else if(kind == UICollectionElementKindSectionFooter) {
+        if(isFailedRequest) {
+            isFailedRequest = !isFailedRequest;
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"RetryView"
+                                                                     forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:CTagFooterCollectionIdentifier
+                                                                     forIndexPath:indexPath];
+        }
     }
-    
+
     return reusableView;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    CGSize size = CGSizeZero;
+    if (section == 0) {
+        _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
+        size = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
+    } else {
+        if (_promo.count > section && section > 0) {
+            if ([_promo objectAtIndex:section]) {
+                CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                size = CGSizeMake(self.view.frame.size.width, headerHeight);
+            }
+        }
+    }
+    return size;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+    NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
+    if (section == lastSection) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
+            size = CGSizeMake(self.view.frame.size.width, 50);
+        }
+    } else if (_product.count == 0 && _start == 0) {
+        size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    return size;
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    List *list = _product[indexPath.row];
+	List *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     NavigateViewController *navigator = [NavigateViewController new];
     [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }
+
+#pragma mark - Promo request delegate
+
+- (void)requestPromo {
+    NSString *key = [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
+    _promoRequest.page = _page;
+    [_promoRequest requestForProductHotlist:key];
+}
+
+- (void)didReceivePromo:(NSArray *)promo {
+    if (promo) {
+        [_promo addObject:promo];
+        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+    } else if (promo == nil && _page == 2) {
+        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    }
+    [viewCollection reloadData];
+    [viewCollection layoutIfNeeded];
+}
+
+#pragma mark - Promo collection delegate
+
+- (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
+    [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
+}
+
+- (void)didSelectPromoProduct:(PromoProduct *)product {
+    NavigateViewController *navigateController = [NavigateViewController new];
+    NSDictionary *productData = @{
+        @"product_id"       : product.product_id?:@"",
+        @"product_name"     : product.product_name?:@"",
+        @"product_image"    : product.product_image_200?:@"",
+        @"product_price"    :product.product_price?:@"",
+        @"shop_name"        : product.shop_name?:@""
+    };
+    NSDictionary *promoData = @{
+        kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+        PromoImpressionKey          : product.ad_key,
+        PromoSemKey                 : product.ad_sem_key,
+        PromoReferralKey            : product.ad_r
+    };
+    [navigateController navigateToProductFromViewController:self
+                                                  promoData:promoData
+                                                productData:productData];
+}
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.lastContentOffset > scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionUp;
+    } else if (self.lastContentOffset < scrollView.contentOffset.y) {
+        self.scrollDirection = ScrollDirectionDown;
+    }
+    self.lastContentOffset = scrollView.contentOffset.y;
+}
+
+#pragma mark - Banner Request Delegate 
+- (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
+    _bannerResult = bannerResult;
+    _pagecontrol.hidden = NO;
+    _swipegestureleft.enabled = YES;
+    _swipegestureright.enabled = YES;
+    [self setHeaderData];
+    
+    //set query
+    HotlistBannerQuery *q = bannerResult.query;
+    NSDictionary *query = @{@"negative_keyword" : q.negative_keyword?:@"",
+                            @"department_id" : q.sc?:@"",
+                            @"order_by" : q.ob?:@"",
+                            @"terms" : q.terms?:@"",
+                            @"shop_type" : q.fshop?:@"",
+                            @"key" : q.q?:@"",
+                            @"price_min" : q.pmin?:@"",
+                            @"price_max" : q.pmax?:@"",
+                            @"type" : q.type?:@""};
+    [_detailfilter addEntriesFromDictionary:query];
+    
+    _start = @"0";
+    
+    //request hotlist
+    [self configureRestKit];
+    [self request];
+}
+
 @end

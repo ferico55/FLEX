@@ -368,7 +368,9 @@
                                                           kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
                                                           kTKPDDETAILSHOP_APISHOPURLKEY:kTKPDDETAILSHOP_APISHOPURLKEY,
                                                           API_IS_OWNER_SHOP_KEY:API_IS_OWNER_SHOP_KEY,
-                                                          @"shop_has_terms" : @"shop_has_terms"
+                                                          @"shop_has_terms" : @"shop_has_terms",
+                                                          @"lucky_merchant" : @"lucky_merchant",
+                                                          @"shop_lucky" : @"shop_lucky"
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];

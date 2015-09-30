@@ -27,6 +27,7 @@
     UINavigationController *detailVC = [[UINavigationController alloc] init];
     detailVC.navigationBar.translucent = NO;
     splitViewController.viewControllers = [NSArray arrayWithObjects:masterVC, detailVC, nil];
+    splitViewController.delegate = self;
     [self.view addSubview:splitViewController.view];
     [splitViewController setValue:[NSNumber numberWithFloat:350.0] forKey:@"_masterColumnWidth"];
     
@@ -71,4 +72,10 @@
     detailVC.navigationBar.translucent = NO;
     splitViewController.viewControllers = [NSArray arrayWithObjects:[splitViewController.viewControllers firstObject], detailVC, nil];
 }
+
+#pragma mark - SplitView Delegate
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
+        return NO;
+}
+
 @end

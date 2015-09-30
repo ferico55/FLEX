@@ -174,15 +174,14 @@
                                                object:nil];
     
     _userManager = [UserAuthentificationManager new];
-    if([[_userManager getUserId] isEqualToString:@"0"]) {
-        _isAbleToSwipe = NO;
-        [_scrollView setContentSize:CGSizeMake(300, 300)];
-        [_scrollView setPagingEnabled:NO];
-
-    } else {
+    if([_userManager isLogin]) {
         _isAbleToSwipe = YES;
         [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
         [_scrollView setPagingEnabled:YES];
+    } else {
+        _isAbleToSwipe = NO;
+        [_scrollView setContentSize:CGSizeMake(300, 300)];
+        [_scrollView setPagingEnabled:NO];
     }
 }
 

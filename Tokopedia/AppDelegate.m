@@ -7,7 +7,7 @@
 //
 #import <AFNetworking/AFNetworking.h>
 #import <SystemConfiguration/SystemConfiguration.h>
-#import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import "AppDelegate.h"
@@ -85,19 +85,20 @@
         [self preparePersistData];
     });
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
         }
 
     });
-    
-    return YES;
+    BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                       didFinishLaunchingWithOptions:launchOptions];
+    return didFinishLaunching;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [FBAppEvents activateApp];
+    [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
 }
 
@@ -128,9 +129,11 @@
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
-
-    if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
+    BOOL shouldOpenURL = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                        openURL:url
+                                                              sourceApplication:sourceApplication
+                                                                     annotation:annotation];
+    if (shouldOpenURL) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;

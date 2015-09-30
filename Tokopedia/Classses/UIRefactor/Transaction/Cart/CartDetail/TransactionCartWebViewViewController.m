@@ -190,7 +190,14 @@
     else if(gateway == TYPE_GATEWAY_MANDIRI_E_CASH)
     {
         //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
-            if ([request.URL.absoluteString rangeOfString:@"http://www.tokopedia.com/ws-new/tx-payment-emoney.pl?id="].location != NSNotFound) {
+        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+        NSString *baseURLFull = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+        NSURL *url = [NSURL URLWithString:baseURLFull];
+        NSURL *root = [NSURL URLWithString:@"/" relativeToURL:url];
+        NSString *baseURL = root.absoluteString;
+        
+        NSString *stringURLEMoney = [NSString stringWithFormat:@"%@ws-new/tx-payment-emoney.pl?id=",baseURL];
+            if ([request.URL.absoluteString rangeOfString:stringURLEMoney].location != NSNotFound) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     [_delegate shouldDoRequestEMoney:YES];
                 UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];

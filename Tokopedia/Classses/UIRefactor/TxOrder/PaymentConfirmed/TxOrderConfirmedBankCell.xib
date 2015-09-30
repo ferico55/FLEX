@@ -17,131 +17,122 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TxOrderConfirmedBankCellIdentifier" rowHeight="184" id="udP-L2-V1X" customClass="TxOrderConfirmedBankCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TxOrderConfirmedBankCellIdentifier" rowHeight="125" id="udP-L2-V1X" customClass="TxOrderConfirmedBankCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="125"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="udP-L2-V1X" id="wdF-rz-wbf">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UpD-RD-asJ" userLabel="RekeningView">
-                        <rect key="frame" x="10" y="0.0" width="300" height="113"/>
+                        <rect key="frame" x="10" y="0.0" width="165" height="125"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dari Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h6-Uh-4Yt">
-                                <rect key="frame" x="10" y="14" width="280" height="21"/>
+                                <rect key="frame" x="10" y="14" width="145" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="oiH-4C-iFw"/>
+                                    <constraint firstAttribute="height" constant="21" id="cR3-v6-BtO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpz-KL-d9U">
-                                <rect key="frame" x="10" y="40" width="280" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpz-KL-d9U">
+                                <rect key="frame" x="10" y="40" width="145" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="6sP-nn-kOo"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="ei8-2j-v4V"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdy-Ur-jLk">
-                                <rect key="frame" x="10" y="62" width="280" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdy-Ur-jLk">
+                                <rect key="frame" x="10" y="62" width="145" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="30B-hE-wme"/>
+                                    <constraint firstAttribute="height" constant="14" id="oqJ-Ku-JiZ"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DC-S1-XdR">
-                                <rect key="frame" x="10" y="84" width="280" height="14"/>
+                                <rect key="frame" x="10" y="84" width="145" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="qeB-7w-REr"/>
+                                    <constraint firstAttribute="height" constant="14" id="NMy-44-SAl"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h0N-WF-6Bn" userLabel="Horizontal Border">
-                                <rect key="frame" x="0.0" y="112" width="300" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="dLu-QF-epT"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="sdy-Ur-jLk" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="0vO-Gx-xC2"/>
-                            <constraint firstAttribute="trailing" secondItem="h0N-WF-6Bn" secondAttribute="trailing" id="1h2-2X-znL"/>
-                            <constraint firstAttribute="trailing" secondItem="sdy-Ur-jLk" secondAttribute="trailing" constant="10" id="5nf-aT-wfu"/>
-                            <constraint firstItem="7DC-S1-XdR" firstAttribute="top" secondItem="sdy-Ur-jLk" secondAttribute="bottom" constant="8" id="6I5-xz-MHZ"/>
-                            <constraint firstItem="6h6-Uh-4Yt" firstAttribute="top" secondItem="UpD-RD-asJ" secondAttribute="top" constant="14" id="7wI-i8-pr8"/>
-                            <constraint firstItem="sdy-Ur-jLk" firstAttribute="top" secondItem="Rpz-KL-d9U" secondAttribute="bottom" constant="8" id="8eD-EF-P4s"/>
-                            <constraint firstItem="6h6-Uh-4Yt" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="G3L-uW-GhY"/>
-                            <constraint firstItem="7DC-S1-XdR" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="GSI-vk-gGa"/>
-                            <constraint firstAttribute="trailing" secondItem="7DC-S1-XdR" secondAttribute="trailing" constant="10" id="Iod-ON-IT6"/>
-                            <constraint firstAttribute="bottom" secondItem="h0N-WF-6Bn" secondAttribute="bottom" id="Knx-4j-Igk"/>
-                            <constraint firstItem="h0N-WF-6Bn" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" id="Mhv-e6-j0k"/>
-                            <constraint firstAttribute="trailing" secondItem="Rpz-KL-d9U" secondAttribute="trailing" constant="10" id="VSR-eL-eBp"/>
-                            <constraint firstItem="Rpz-KL-d9U" firstAttribute="top" secondItem="6h6-Uh-4Yt" secondAttribute="bottom" constant="5" id="VyR-gI-TkQ"/>
-                            <constraint firstAttribute="height" constant="113" id="a5s-e9-MAD"/>
-                            <constraint firstItem="Rpz-KL-d9U" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="a89-DA-iYT"/>
-                            <constraint firstAttribute="trailing" secondItem="6h6-Uh-4Yt" secondAttribute="trailing" constant="10" id="tOd-OV-2SH"/>
+                            <constraint firstAttribute="trailing" secondItem="sdy-Ur-jLk" secondAttribute="trailing" constant="10" id="1to-bO-N2e"/>
+                            <constraint firstItem="Rpz-KL-d9U" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="4LC-TH-r5W"/>
+                            <constraint firstItem="6h6-Uh-4Yt" firstAttribute="top" secondItem="UpD-RD-asJ" secondAttribute="top" constant="14" id="IwT-Lb-0Zr"/>
+                            <constraint firstItem="sdy-Ur-jLk" firstAttribute="top" secondItem="Rpz-KL-d9U" secondAttribute="bottom" constant="8" id="MxW-0y-hvY"/>
+                            <constraint firstItem="Rpz-KL-d9U" firstAttribute="top" secondItem="6h6-Uh-4Yt" secondAttribute="bottom" constant="5" id="QB0-6S-kDN"/>
+                            <constraint firstItem="sdy-Ur-jLk" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="TeB-gy-ybJ"/>
+                            <constraint firstAttribute="trailing" secondItem="7DC-S1-XdR" secondAttribute="trailing" constant="10" id="WQt-E3-0Nq"/>
+                            <constraint firstAttribute="trailing" secondItem="6h6-Uh-4Yt" secondAttribute="trailing" constant="10" id="aui-LW-AnT"/>
+                            <constraint firstItem="7DC-S1-XdR" firstAttribute="top" secondItem="sdy-Ur-jLk" secondAttribute="bottom" constant="8" id="coy-Ah-xgz"/>
+                            <constraint firstItem="7DC-S1-XdR" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="eup-WZ-E1i"/>
+                            <constraint firstItem="6h6-Uh-4Yt" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="leading" constant="10" id="kBy-Vr-rVu"/>
+                            <constraint firstAttribute="trailing" secondItem="Rpz-KL-d9U" secondAttribute="trailing" constant="10" id="uKa-5u-N4L"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p8c-zx-IV4" userLabel="User View">
-                        <rect key="frame" x="10" y="113" width="300" height="70"/>
+                        <rect key="frame" x="175" y="0.0" width="135" height="125"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rekening Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVI-wH-ue5">
-                                <rect key="frame" x="10" y="12" width="280" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rekening Tujuan" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVI-wH-ue5">
+                                <rect key="frame" x="0.0" y="12" width="125" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="dKq-XU-gLq"/>
+                                    <constraint firstAttribute="height" constant="21" id="ZwD-ut-LMC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hR1-af-dFo">
-                                <rect key="frame" x="10" y="37" width="280" height="14"/>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Bank Mandiri" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hR1-af-dFo">
+                                <rect key="frame" x="0.0" y="37" width="125" height="14"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="14" id="0wl-FN-Vry"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="yAL-hJ-Yhm"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5nq-Wz-Ym5" userLabel="Horizontal Border">
-                                <rect key="frame" x="0.0" y="69" width="300" height="1"/>
-                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="kFT-ql-82a"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="DVI-wH-ue5" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" constant="10" id="4sN-nJ-UOw"/>
-                            <constraint firstItem="hR1-af-dFo" firstAttribute="top" secondItem="DVI-wH-ue5" secondAttribute="bottom" constant="4" id="8ve-0e-732"/>
-                            <constraint firstAttribute="trailing" secondItem="5nq-Wz-Ym5" secondAttribute="trailing" id="Jcf-ra-cC9"/>
-                            <constraint firstAttribute="bottom" secondItem="5nq-Wz-Ym5" secondAttribute="bottom" id="JmB-ws-icQ"/>
-                            <constraint firstItem="5nq-Wz-Ym5" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" id="NgE-vu-0va"/>
-                            <constraint firstItem="hR1-af-dFo" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" constant="10" id="Oop-oO-CMk"/>
-                            <constraint firstItem="DVI-wH-ue5" firstAttribute="top" secondItem="p8c-zx-IV4" secondAttribute="top" constant="12" id="Wgx-3T-Mn9"/>
-                            <constraint firstAttribute="trailing" secondItem="DVI-wH-ue5" secondAttribute="trailing" constant="10" id="h2r-Jk-HAm"/>
-                            <constraint firstAttribute="trailing" secondItem="hR1-af-dFo" secondAttribute="trailing" constant="10" id="pQF-uE-Qy2"/>
+                            <constraint firstAttribute="width" constant="135" id="J6h-mI-Gfk"/>
+                            <constraint firstAttribute="trailing" secondItem="DVI-wH-ue5" secondAttribute="trailing" constant="10" id="TkP-9b-L7Y"/>
+                            <constraint firstItem="DVI-wH-ue5" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" id="aa5-xX-aBi"/>
+                            <constraint firstAttribute="trailing" secondItem="hR1-af-dFo" secondAttribute="trailing" constant="10" id="buC-o4-vQj"/>
+                            <constraint firstItem="hR1-af-dFo" firstAttribute="leading" secondItem="p8c-zx-IV4" secondAttribute="leading" id="l5D-WE-GRz"/>
+                            <constraint firstItem="DVI-wH-ue5" firstAttribute="top" secondItem="p8c-zx-IV4" secondAttribute="top" constant="12" id="rYH-Xy-Zol"/>
+                            <constraint firstItem="hR1-af-dFo" firstAttribute="top" secondItem="DVI-wH-ue5" secondAttribute="bottom" constant="4" id="vKL-IE-sAO"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eT5-q5-lW0" userLabel="Horizontal Border">
+                        <rect key="frame" x="10" y="0.0" width="300" height="1"/>
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="5KD-4d-jft"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="d1x-Da-VGe"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="p8c-zx-IV4" secondAttribute="bottom" id="3He-xn-xJr"/>
-                    <constraint firstItem="UpD-RD-asJ" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="5p0-Lc-Ac2"/>
-                    <constraint firstItem="p8c-zx-IV4" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="Ebb-59-wnJ"/>
-                    <constraint firstItem="UpD-RD-asJ" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="Nai-t3-Gpy"/>
-                    <constraint firstAttribute="trailing" secondItem="p8c-zx-IV4" secondAttribute="trailing" constant="10" id="a30-cS-AHl"/>
-                    <constraint firstItem="p8c-zx-IV4" firstAttribute="top" secondItem="UpD-RD-asJ" secondAttribute="bottom" id="jX3-s8-IOC"/>
-                    <constraint firstAttribute="trailing" secondItem="UpD-RD-asJ" secondAttribute="trailing" constant="10" id="otx-IK-HxX"/>
+                    <constraint firstItem="eT5-q5-lW0" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="5lh-iv-axN"/>
+                    <constraint firstAttribute="bottom" secondItem="p8c-zx-IV4" secondAttribute="bottom" id="7WI-HJ-aMp"/>
+                    <constraint firstItem="UpD-RD-asJ" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="Cgz-s7-tFd"/>
+                    <constraint firstItem="p8c-zx-IV4" firstAttribute="leading" secondItem="UpD-RD-asJ" secondAttribute="trailing" id="ab5-uM-VHY"/>
+                    <constraint firstAttribute="trailing" secondItem="eT5-q5-lW0" secondAttribute="trailing" constant="10" id="asy-7l-c0O"/>
+                    <constraint firstAttribute="trailing" secondItem="p8c-zx-IV4" secondAttribute="trailing" constant="10" id="awC-qN-eyH"/>
+                    <constraint firstItem="p8c-zx-IV4" firstAttribute="top" secondItem="wdF-rz-wbf" secondAttribute="top" id="ewB-gt-u3E"/>
+                    <constraint firstItem="UpD-RD-asJ" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="fFz-el-Zxb"/>
+                    <constraint firstItem="eT5-q5-lW0" firstAttribute="leading" secondItem="wdF-rz-wbf" secondAttribute="leading" constant="10" id="jhM-BZ-iCH"/>
+                    <constraint firstAttribute="bottom" secondItem="UpD-RD-asJ" secondAttribute="bottom" id="mtw-SK-CGN"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -151,7 +142,7 @@
                 <outlet property="recieverNomorRekLabel" destination="hR1-af-dFo" id="vzb-Oh-Sjp"/>
                 <outlet property="userNameLabel" destination="sdy-Ur-jLk" id="kTA-P7-FBO"/>
             </connections>
-            <point key="canvasLocation" x="256" y="355"/>
+            <point key="canvasLocation" x="256" y="325.5"/>
         </tableViewCell>
     </objects>
 </document>

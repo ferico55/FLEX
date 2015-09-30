@@ -47,6 +47,8 @@
 
 #import "NoResult.h"
 
+#import "PromoRequest.h"
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -863,6 +865,7 @@ TokopediaNetworkManagerDelegate
     
     if(_page == 1) {
         _product = [feed.result.list mutableCopy];
+        [self addImpressionClick];
     } else {
         [_product addObjectsFromArray: feed.result.list];
     }
@@ -898,6 +901,18 @@ TokopediaNetworkManagerDelegate
     
     _isFailRequest = YES;
     [_collectionView reloadData];
+}
+
+#pragma mark - Promo Request
+
+- (void)addImpressionClick {
+    if ([_data objectForKey:PromoImpressionKey]) {
+        __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+        NSString *adKey = [_data objectForKey:PromoImpressionKey];
+        NSString *adSemKey = [_data objectForKey:PromoSemKey];
+        NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
+        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+    }
 }
 
 @end

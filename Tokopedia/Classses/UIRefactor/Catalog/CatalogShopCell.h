@@ -35,6 +35,10 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (weak, nonatomic) IBOutlet UIButton *seeOtherProducts;
+@property (weak, nonatomic) IBOutlet UIImageView *goldMerchantBadge;
+@property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintWidthGoldMerchant;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintSpaceLuckyMerchant;
 
 @property (weak, nonatomic) IBOutlet UIView *masking;
 

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2fX-OV-qV1" customClass="PromoInfoAlertView">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="410"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TopAds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KQB-g7-rN5">
+                    <rect key="frame" x="122" y="33" width="80" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="U2h-aX-2Dr"/>
+                        <constraint firstAttribute="height" constant="21" id="d4y-fq-6ei"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="18"/>
+                    <color key="textColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tingkatkan penjualan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7zL-vb-VfS">
+                    <rect key="frame" x="15" y="72" width="250" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="fw2-Uo-yEU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Toko dan produk anda akan lebih mudah ditemukan oleh pengunjung Tokopedia" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fnb-3J-Xzz">
+                    <rect key="frame" x="15" y="97" width="250" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="COW-37-p24"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menjangkau dengan tepat" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JKm-gu-JX6">
+                    <rect key="frame" x="15" y="158" width="250" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="jiy-U4-eaA"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TopAds membantu Anda menjangkau calon pembeli yang sesuai, melalui pencarian produk dan penelusuran" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ah-T0-RNg">
+                    <rect key="frame" x="15" y="183" width="250" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="gsc-lD-XBg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Efektif dan Efisien" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvq-dG-z41">
+                    <rect key="frame" x="15" y="244" width="250" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="72c-RZ-m4k"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dengan TopAds, hasil yang Anda harapkan sesuai dengan biaya yang Anda keluarkan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XNB-Wo-yQi">
+                    <rect key="frame" x="15" y="269" width="250" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="meM-Xa-H56"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="vGB-Wo-td0">
+                    <rect key="frame" x="79" y="17" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="5XV-9f-kef"/>
+                        <constraint firstAttribute="height" constant="40" id="r3K-SA-ACc"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbY-Bu-jvP">
+                    <rect key="frame" x="10" y="356" width="260" height="44"/>
+                    <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="5nF-kO-Igw"/>
+                        <constraint firstAttribute="width" constant="260" id="OkU-FB-M1U"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <state key="normal" title="Baca selengkapnya">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="2fX-OV-qV1" eventType="touchUpInside" id="0HR-Sv-7bD"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="7zL-vb-VfS" firstAttribute="top" secondItem="vGB-Wo-td0" secondAttribute="bottom" constant="15" id="0UN-At-dZi"/>
+                <constraint firstItem="fnb-3J-Xzz" firstAttribute="top" secondItem="7zL-vb-VfS" secondAttribute="bottom" constant="3" id="0mC-rQ-cgE"/>
+                <constraint firstAttribute="trailing" secondItem="JKm-gu-JX6" secondAttribute="trailing" constant="15" id="0mE-NN-9gK"/>
+                <constraint firstItem="8ah-T0-RNg" firstAttribute="top" secondItem="JKm-gu-JX6" secondAttribute="bottom" id="0w9-0G-jiO"/>
+                <constraint firstItem="KQB-g7-rN5" firstAttribute="leading" secondItem="2fX-OV-qV1" secondAttribute="leading" constant="12" id="4G0-Q4-gOd"/>
+                <constraint firstAttribute="trailing" secondItem="KQB-g7-rN5" secondAttribute="trailing" constant="78" id="5bD-yU-Q4f"/>
+                <constraint firstAttribute="trailing" secondItem="8ah-T0-RNg" secondAttribute="trailing" constant="15" id="6Bk-6a-5Pr"/>
+                <constraint firstAttribute="trailing" secondItem="KQB-g7-rN5" secondAttribute="trailing" constant="12" id="8D4-mL-Ebf"/>
+                <constraint firstItem="hvq-dG-z41" firstAttribute="leading" secondItem="2fX-OV-qV1" secondAttribute="leading" constant="15" id="AKI-wR-3ob"/>
+                <constraint firstItem="7zL-vb-VfS" firstAttribute="top" secondItem="KQB-g7-rN5" secondAttribute="bottom" constant="10" id="Fi0-KL-UgN"/>
+                <constraint firstItem="fnb-3J-Xzz" firstAttribute="leading" secondItem="2fX-OV-qV1" secondAttribute="leading" constant="15" id="G0M-zi-Uoi"/>
+                <constraint firstItem="8ah-T0-RNg" firstAttribute="leading" secondItem="2fX-OV-qV1" secondAttribute="leading" constant="15" id="ILj-aa-6XO"/>
+                <constraint firstItem="KQB-g7-rN5" firstAttribute="leading" secondItem="vGB-Wo-td0" secondAttribute="trailing" constant="3" id="MKA-iD-fIb"/>
+                <constraint firstItem="fnb-3J-Xzz" firstAttribute="top" secondItem="7zL-vb-VfS" secondAttribute="bottom" constant="22" id="NML-2z-LqZ"/>
+                <constraint firstItem="7zL-vb-VfS" firstAttribute="leading" secondItem="2fX-OV-qV1" secondAttribute="leading" constant="15" id="Ou1-0J-tan"/>
+                <constraint firstItem="KQB-g7-rN5" firstAttribute="top" secondItem="2fX-OV-qV1" secondAttribute="top" constant="25" id="Tzm-Ug-hJD"/>
+                <constraint firstItem="hvq-dG-z41" firstAttribute="top" secondItem="8ah-T0-RNg" secondAttribute="bottom" constant="11" id="bqE-ru-Juh"/>
+                <constraint firstAttribute="trailing" secondItem="7zL-vb-VfS" secondAttribute="trailing" constant="15" id="cAw-sg-hER"/>
+                <constraint firstAttribute="trailing" secondItem="hvq-dG-z41" secondAttribute="trailing" constant="15" id="cBM-Ru-T8m"/>
+                <constraint firstItem="XNB-Wo-yQi" firstAttribute="top" secondItem="hvq-dG-z41" secondAttribute="bottom" constant="3" id="ehu-d3-5bt"/>
+                <constraint firstItem="XNB-Wo-yQi" firstAttribute="leading" secondItem="2fX-OV-qV1" secondAttribute="leading" constant="15" id="hM6-Cj-KRY"/>
+                <constraint firstAttribute="centerX" secondItem="fnb-3J-Xzz" secondAttribute="centerX" id="iGP-fM-AaO"/>
+                <constraint firstItem="8ah-T0-RNg" firstAttribute="top" secondItem="JKm-gu-JX6" secondAttribute="bottom" constant="3" id="jJx-YK-086"/>
+                <constraint firstAttribute="trailing" secondItem="fnb-3J-Xzz" secondAttribute="trailing" constant="15" id="kTO-Lz-MsS"/>
+                <constraint firstAttribute="centerX" secondItem="qbY-Bu-jvP" secondAttribute="centerX" id="kXZ-Cs-pi7"/>
+                <constraint firstItem="KQB-g7-rN5" firstAttribute="top" secondItem="2fX-OV-qV1" secondAttribute="top" constant="33" id="nNg-7c-9xw"/>
+                <constraint firstAttribute="trailing" secondItem="XNB-Wo-yQi" secondAttribute="trailing" constant="15" id="nf7-Wr-547"/>
+                <constraint firstItem="JKm-gu-JX6" firstAttribute="top" secondItem="fnb-3J-Xzz" secondAttribute="bottom" constant="11" id="tFq-zi-VXV"/>
+                <constraint firstItem="vGB-Wo-td0" firstAttribute="top" secondItem="2fX-OV-qV1" secondAttribute="top" constant="17" id="w1o-bX-zmQ"/>
+                <constraint firstItem="JKm-gu-JX6" firstAttribute="leading" secondItem="2fX-OV-qV1" secondAttribute="leading" constant="15" id="y6U-Ho-C8L"/>
+                <constraint firstAttribute="bottom" secondItem="qbY-Bu-jvP" secondAttribute="bottom" constant="10" id="zQE-kH-CCJ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="Fi0-KL-UgN"/>
+                    <exclude reference="NML-2z-LqZ"/>
+                    <exclude reference="iGP-fM-AaO"/>
+                    <exclude reference="4G0-Q4-gOd"/>
+                    <exclude reference="8D4-mL-Ebf"/>
+                    <exclude reference="Tzm-Ug-hJD"/>
+                    <exclude reference="0w9-0G-jiO"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="button" destination="qbY-Bu-jvP" id="cXw-W5-6fl"/>
+                <outlet property="firstParagraph" destination="fnb-3J-Xzz" id="0Ew-3q-pgu"/>
+                <outlet property="secondParagraph" destination="8ah-T0-RNg" id="98q-6r-AfS"/>
+                <outlet property="thirdParagraph" destination="XNB-Wo-yQi" id="GiA-e0-qLb"/>
+            </connections>
+            <point key="canvasLocation" x="-211" y="302"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_toped_alert.png" width="90" height="90"/>
+    </resources>
+</document>
