@@ -38,6 +38,8 @@
 
 #import "LoadingView.h"
 
+#import "GeneralTableViewController.h"
+
 @interface TransactionCartViewController ()
 <
     UITableViewDataSource,
@@ -182,6 +184,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *bankInstallmentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *durationInstallmentLabel;
 
+@property (weak, nonatomic) IBOutlet UIView *bankView;
+@property (weak, nonatomic) IBOutlet UIView *durationView;
 
 @property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
@@ -327,6 +331,7 @@
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
         _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
+        
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -340,7 +345,20 @@
     
 
     [self adjustPaymentMethodView];
-    [self swipePaymentMethod];
+    //[self swipePaymentMethod];
+    [self swipeView:_paymentMethodView];
+}
+
+-(void)headerInstallmentAnimating
+{
+    if ([_durationInstallmentLabel.text isEqualToString:@"Pilih"]) {
+        _tableView.contentOffset = CGPointZero;
+        [self swipeView:_durationView];
+    }
+    if ([_bankInstallmentLabel.text isEqualToString:@"Pilih"]) {
+        _tableView.contentOffset = CGPointZero;
+        [self swipeView:_bankView];
+    }
 }
 
 -(void)adjustPaymentMethodView
@@ -763,10 +781,34 @@
     }
 }
 - (IBAction)tapBankInstallment:(id)sender {
+    GeneralTableViewController *vc = [GeneralTableViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 - (IBAction)tapBankDuration:(id)sender {
+    GeneralTableViewController *vc = [GeneralTableViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
+
+//-(BOOL)isValidInputInstallment
+//{
+//    BOOL isvalid = YES;
+//    NSMutableArray *errorMessage = [NSMutableArray new];
+//
+//    if ([_durationInstallmentLabel.text isEqualToString:@"Pilih"]) {
+//        [errorMessage addObject:@"Durasi harus dipilih"];
+//        isvalid = NO;
+//    }
+//    if ([_bankInstallmentLabel.text isEqualToString:@"Pilih"]) {
+//        [errorMessage addObject:@"Durasi harus dipilih"];
+//        isvalid = NO;
+//    }
+//    
+//    [self headerInstallmentAnimating];
+//    return isvalid;
+//}
+
+
 
 -(BOOL)isValidInputCC
 {
@@ -1049,7 +1091,8 @@
         if (gateway == -1) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
-            [self swipePaymentMethod];
+            //[self swipePaymentMethod];
+            [self swipeView:_paymentMethodView];
         }
         if (gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT) {
             return [self isValidInputCC];
@@ -1770,13 +1813,13 @@
     }
 }
 
-
-- (void)swipePaymentMethod {
-    CGAffineTransform tr = CGAffineTransformTranslate(_paymentMethodView.transform, -40, 0);
-    _paymentMethodView.transform = tr;
+-(void)swipeView:(UIView*)view{
+//- (void)swipePaymentMethod {
+    CGAffineTransform tr = CGAffineTransformTranslate(view.transform, -40, 0);
+    view.transform = tr;
     
     [UIView animateWithDuration:2.0 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.0f options:0 animations:^{
-        _paymentMethodView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+        view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
     } completion:^(BOOL finished) {
         
     }];

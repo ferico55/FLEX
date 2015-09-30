@@ -65,6 +65,7 @@
                 <outlet property="LPCashbackCell" destination="pzN-dJ-cAl" id="eDJ-Ge-0Hf"/>
                 <outlet property="act" destination="kvI-4t-wDf" id="yuS-lP-yqe"/>
                 <outlet property="bankInstallmentLabel" destination="iqU-73-xD1" id="Dpd-A7-hyD"/>
+                <outlet property="bankView" destination="XQN-Ku-2hw" id="dTl-ze-GDF"/>
                 <outlet property="buttonCancelVoucher" destination="Ykh-pd-XjA" id="SFH-lB-YJV"/>
                 <outlet property="buttonVoucherInfo" destination="0sG-Mm-AAO" id="5h4-6f-HTh"/>
                 <outlet property="buyButton" destination="aJd-4o-xMK" id="ml6-bq-Ni5"/>
@@ -78,6 +79,7 @@
                 <outlet property="depositAmmountCell" destination="0fn-1v-Cit" id="Iwg-7k-vf9"/>
                 <outlet property="depositAmountLabel" destination="iQg-aJ-CXo" id="i8x-TE-pGp"/>
                 <outlet property="durationInstallmentLabel" destination="axK-8c-txg" id="YhE-RW-eFd"/>
+                <outlet property="durationView" destination="DiC-BR-LYF" id="Smo-hx-DMI"/>
                 <outlet property="footerView" destination="KDl-FM-LK1" id="SJG-4e-rGU"/>
                 <outlet property="grandTotalLabel" destination="6yM-Im-p4G" id="C1X-UC-14m"/>
                 <outlet property="klikBCANotes" destination="tBH-R1-omE" id="pWO-i2-ErD"/>
