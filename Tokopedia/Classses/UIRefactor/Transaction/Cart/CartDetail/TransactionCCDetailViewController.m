@@ -130,7 +130,10 @@
     _CCNumberTextField.text = ccNumber;
     
     _selectedMonth = [_dataInput objectForKey:API_CC_EXP_MONTH_KEY];
-    _selectedMonth = ([_selectedMonth integerValue]==0)?@"mm":[NSString stringWithFormat:@"0%@",_selectedMonth];
+    if (_selectedMonth.length ==1 && _selectedMonth) {
+        _selectedMonth = [NSString stringWithFormat:@"0%@",_selectedMonth];
+    }
+    _selectedMonth = ([_selectedMonth integerValue]==0)?@"mm": _selectedMonth;
     _selectedYear = [_dataInput objectForKey:API_CC_EXP_YEAR_KEY]?:@"yyyy";
     _expDateLabel.text = [NSString stringWithFormat:@"%@/%@",_selectedMonth,_selectedYear];
 
@@ -284,8 +287,8 @@
     if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
         cardDetails.installment = YES;
         cardDetails.installment_term = [_dataInput objectForKey:API_CC_DURATION_INSTALLMENT_KEY]?:@"";
+        cardDetails.bank = @"mandiri";
     }
-        
     //cardDetails.bank = _dataCC.
     //TODO::Bank
     

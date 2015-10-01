@@ -2084,7 +2084,6 @@
     cell.clipsToBounds = YES;
     cell.contentView.clipsToBounds = YES;
     
-    
     return cell;
 }
 
@@ -2129,7 +2128,11 @@
         {
             cell = _ccAdministrationCell;
             NSString *administrationFeeStr = _cartSummary.credit_card.charge_idr?:@"Rp 0";
-            [cell.detailTextLabel setText:administrationFeeStr];
+            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
+                [cell.detailTextLabel setText:_cartSummary.conf_code_idr?:@"Rp 0"];
+            }
+            else [cell.detailTextLabel setText:administrationFeeStr];
         }
             break;
         case 7:
@@ -2575,9 +2578,11 @@
                 return 0;
         }
         if (indexPath.row == 6) {
-            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_CC) {
-                return 0;
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC || ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [_cartSummary.conf_code integerValue] != 0)) {
+                return 44;
             }
+            else
+                return 0;
         }
         if (indexPath.row == 7) {
             if ([_cartSummary.lp_amount integerValue] == 0) {
@@ -3103,7 +3108,6 @@
                                DATA_CC_KEY : cart.result.credit_card_data?:[CCData new]
                                };
     [_delegate didFinishRequestCheckoutData:userInfo];
-    
     _checkoutButton.enabled = YES;
     _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
