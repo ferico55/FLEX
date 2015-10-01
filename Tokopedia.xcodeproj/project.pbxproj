@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		456C420A1BBB8B2B008CAA35 /* InstallmentBank.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C42091BBB8B2B008CAA35 /* InstallmentBank.m */; settings = {ASSET_TAGS = (); }; };
+		456C420D1BBB8BA8008CAA35 /* InstallmentTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */; settings = {ASSET_TAGS = (); }; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -1840,6 +1842,10 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		456C42081BBB8B2B008CAA35 /* InstallmentBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentBank.h; sourceTree = "<group>"; };
+		456C42091BBB8B2B008CAA35 /* InstallmentBank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallmentBank.m; sourceTree = "<group>"; };
+		456C420B1BBB8BA8008CAA35 /* InstallmentTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentTerm.h; sourceTree = "<group>"; };
+		456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallmentTerm.m; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -6195,6 +6201,10 @@
 				85A18F521BAFEF9D002F1382 /* TransactionSummaryResult.m */,
 				85A18F531BAFEF9D002F1382 /* Veritrans.h */,
 				85A18F541BAFEF9D002F1382 /* Veritrans.m */,
+				456C42081BBB8B2B008CAA35 /* InstallmentBank.h */,
+				456C42091BBB8B2B008CAA35 /* InstallmentBank.m */,
+				456C420B1BBB8BA8008CAA35 /* InstallmentTerm.h */,
+				456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */,
 			);
 			path = TransactionSummary;
 			sourceTree = "<group>";
@@ -10813,6 +10823,7 @@
 				85A199E71BAFEFA1002F1382 /* InboxTicketDetailViewController.m in Sources */,
 				85A197DD1BAFEFA0002F1382 /* InboxReviewList.m in Sources */,
 				85A19B091BAFEFA1002F1382 /* ShopTalkPageViewController.m in Sources */,
+				456C420A1BBB8B2B008CAA35 /* InstallmentBank.m in Sources */,
 				85A1984B1BAFEFA0002F1382 /* ShopBadgeLevel.m in Sources */,
 				85A19ABA1BAFEFA1002F1382 /* SettingAddressEditViewController.m in Sources */,
 				85A198051BAFEFA0002F1382 /* DetailReviewReputaionViewModel.m in Sources */,
@@ -11206,6 +11217,7 @@
 				85A197EC1BAFEFA0002F1382 /* InboxTicketResult.m in Sources */,
 				85A19AA71BAFEFA1002F1382 /* ShipmentStatusViewController.m in Sources */,
 				85A198751BAFEFA0002F1382 /* ShipmentResult.m in Sources */,
+				456C420D1BBB8BA8008CAA35 /* InstallmentTerm.m in Sources */,
 				85A1982A1BAFEFA0002F1382 /* FavoriteShopResult.m in Sources */,
 				85A1984F1BAFEFA0002F1382 /* ActionOrder.m in Sources */,
 				85A1974C1BAFEFA0002F1382 /* NSData+Encryption.m in Sources */,

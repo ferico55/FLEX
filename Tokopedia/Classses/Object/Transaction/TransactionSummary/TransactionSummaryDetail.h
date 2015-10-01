@@ -11,6 +11,7 @@
 #import "TransactionSummaryBCAParam.h"
 #import "CCFee.h"
 #import "IndomaretData.h"
+#import "InstallmentBank.h"
 
 @interface TransactionSummaryDetail : NSObject
 

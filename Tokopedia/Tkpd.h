@@ -263,7 +263,7 @@ typedef enum {
 
 #define GTMVeritransClientKey @"veritrans_client_key"
 
-#define GTMHiddenPaymentKey @""
+#define GTMHiddenPaymentKey @"hidden_payment_gateways"
 
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 

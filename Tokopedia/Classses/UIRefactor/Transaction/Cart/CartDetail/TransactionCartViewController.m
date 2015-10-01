@@ -40,6 +40,8 @@
 
 #import "GeneralTableViewController.h"
 
+#define DurationInstallmentFormat @"%@ bulan (Rp %@)"
+
 @interface TransactionCartViewController ()
 <
     UITableViewDataSource,
@@ -59,7 +61,8 @@
     TokopediaNetworkManagerDelegate,
     LoadingViewDelegate,
     RequestCartDelegate,
-    TransactionCCViewControllerDelegate
+    TransactionCCViewControllerDelegate,
+    GeneralTableViewControllerDelegate
 >
 {
     NSMutableArray *_list;
@@ -124,6 +127,13 @@
     
     LoadingView *_loadingView;
     TAGContainer *_gtmContainer;
+    
+    InstallmentBank *_selectedInstallmentBank;
+    InstallmentTerm *_selectedInstallmentDuration;
+    
+    BOOL _isSelectBankInstallment;
+    BOOL _isSelectDurationInstallment;
+    
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -262,7 +272,7 @@
         [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
-        _requestCart.param = @{@"lp_flag":@"1"};
+        _requestCart.param = @{};//@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         _paymentMethodView.hidden = YES;
         
@@ -781,13 +791,38 @@
     }
 }
 - (IBAction)tapBankInstallment:(id)sender {
-    GeneralTableViewController *vc = [GeneralTableViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.title = @"Pilih Bank";
+    controller.delegate = self;
+    
+    NSMutableArray *objects = [NSMutableArray new];
+    
+    for (InstallmentBank *bank in _cartSummary.installment_bank_option) {
+        [objects addObject:bank.bank_name];
+    }
+    
+    controller.objects = [objects copy];
+    controller.selectedObject = _selectedInstallmentBank.bank_name;
+    controller.tag = 1;
+    _isSelectBankInstallment = YES;
+    [self.navigationController pushViewController:controller animated:YES];
     
 }
 - (IBAction)tapBankDuration:(id)sender {
-    GeneralTableViewController *vc = [GeneralTableViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.title = @"Pilih Durasi";
+    controller.delegate = self;
+    
+    NSMutableArray *objects = [NSMutableArray new];
+    
+    for (InstallmentTerm *term in _selectedInstallmentBank.installment_term) {
+        [objects addObject:[NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price]];
+    }
+    controller.objects = [objects copy];
+    controller.selectedObject = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price];
+    controller.tag = 2;
+    _isSelectDurationInstallment = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 //-(BOOL)isValidInputInstallment
@@ -866,7 +901,10 @@
     TransactionCCViewController *vc = [TransactionCCViewController new];
     vc.cartSummary = _cartSummary;
     vc.delegate = self;
+    vc.selectedBank = _selectedInstallmentBank?:[InstallmentBank new];
+    vc.selectedTerm = _selectedInstallmentDuration?:[InstallmentTerm new];
     vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
+    vc.data = [_dataInput copy];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -981,7 +1019,7 @@
         
         [self adjustDropshipperListParam];
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
+        _requestCart.param = @{};//@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         
     }
@@ -996,7 +1034,7 @@
         [_dataInput setObject:@(index) forKey:DATA_INDEX_KEY];
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
         
-        _requestCart.param = @{@"lp_flag":@"1"};
+        _requestCart.param = @{};//@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         
         _refreshFromShipment = YES;
@@ -1075,8 +1113,19 @@
     NSArray *dropshipPhoneArray = [_data objectForKey:DATA_DROPSHIPPER_PHONE_KEY];
     [_senderPhoneDropshipper removeAllObjects];
     [_senderPhoneDropshipper addObjectsFromArray:dropshipPhoneArray];
+    
+    TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
+    if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
+        if (!_selectedInstallmentBank) _selectedInstallmentBank = _cartSummary.installment_bank_option[0];
+        if (!_selectedInstallmentDuration) _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+        
+        _bankInstallmentLabel.text = _selectedInstallmentBank.bank_name;
+        _durationInstallmentLabel.text = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price];
+    }
+    
     [_tableView reloadData];
 }
+
 
 -(BOOL)isValidInput
 {
@@ -1322,6 +1371,11 @@
     }
 }
 
+-(void)addData:(NSDictionary *)dataInput
+{
+    [_dataInput addEntriesFromDictionary:dataInput];
+}
+
 #pragma mark - Actionsheet Delegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -1402,6 +1456,27 @@
         _saldoTokopediaAmountTextField.text = @"";
         
     }
+    
+    if (_isSelectBankInstallment) { //bank
+        for (InstallmentBank *bank in _cartSummary.installment_bank_option) {
+            if ([bank.bank_name isEqualToString:object]) {
+                _selectedInstallmentBank = bank;
+            }
+        }
+        _selectedInstallmentDuration = _selectedInstallmentBank.installment_term[0];
+        _isSelectBankInstallment = NO;
+    }
+    
+    if (_isSelectDurationInstallment) { //duration
+        for (InstallmentTerm *term in _selectedInstallmentBank.installment_term) {
+            NSString *termNow = [NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price];
+            if ([termNow isEqualToString:object]) {
+                _selectedInstallmentDuration = term;
+            }
+        }
+        _isSelectDurationInstallment = NO;
+    }
+    
     [_tableView reloadData];
 }
 
@@ -1758,7 +1833,7 @@
         [_act stopAnimating];
     }
     
-    _requestCart.param = @{@"lp_flag":@"1"};
+    _requestCart.param = @{};//@"lp_flag":@"1"};
     [_requestCart doRequestCart];
     _paymentMethodView.hidden = YES;
 }
@@ -1797,6 +1872,9 @@
     
     _refreshFromShipment = NO;
     
+    _selectedInstallmentBank = nil;
+    _selectedInstallmentDuration = nil;
+    
     [_tableView reloadData];
 }
 
@@ -1804,7 +1882,7 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
+        _requestCart.param = @{};//@"lp_flag":@"1"};
          [_requestCart doRequestCart];
     }
     else
@@ -1839,6 +1917,7 @@
     
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+    
 }
 
 #pragma mark - Footer View
@@ -2648,7 +2727,7 @@
                                       API_PARTIAL_STRING_KEY :partialString,
                                       API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
                                       API_DEPOSIT_AMT_KEY:usedSaldo,
-                                      @"lp_flag":@"1"
+                                      //@"lp_flag":@"1"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
@@ -2701,7 +2780,7 @@
                             API_CC_STATE_KEY : CCState,
                             API_CC_CARD_NUMBER_KEY : CCNumber,
                             API_BCA_USER_ID_KEY : userIDKlikBCA,
-                            @"lp_flag":@"1"
+                            //@"lp_flag":@"1"
                             };
     return param;
 }
@@ -2832,6 +2911,7 @@
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
     }
+    
     [self endRefreshing];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
@@ -3126,7 +3206,7 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
+        _requestCart.param = @{};//@"lp_flag":@"1"};
         [_requestCart doRequestCart];
     }
     [_tableView reloadData];

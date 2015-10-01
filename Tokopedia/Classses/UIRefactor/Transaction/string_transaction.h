@@ -329,6 +329,8 @@ typedef enum
 #define API_CC_CVV_KEY @"card_cvv"
 #define API_CC_OWNER_KEY @"card_owner"
 #define API_CC_TOKEN_ID_KEY @"credit_card_token"
+#define API_CC_BANK_INSTALLMENT_KEY @"installment_bank"
+#define API_CC_DURATION_INSTALLMENT_KEY @"installment_term"
 
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"
