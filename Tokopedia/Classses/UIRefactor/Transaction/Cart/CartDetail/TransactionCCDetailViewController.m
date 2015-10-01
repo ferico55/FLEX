@@ -288,7 +288,7 @@
         cardDetails.installment = YES;
         cardDetails.installment_term = [_dataInput objectForKey:API_CC_DURATION_INSTALLMENT_KEY]?:@"";
     }
-    cardDetails.bank = @"mandiri";
+    cardDetails.bank = _dataCC.cc_card_bank_type?:@"mandiri";
     //cardDetails.bank = _dataCC.
     //TODO::Bank
     

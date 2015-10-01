@@ -967,6 +967,7 @@
     
     
     NSString *hiddenGatewayString = [[self gtmContainer] stringForKey:GTMHiddenPaymentKey]?:@"-1";
+    hiddenGatewayString = ([hiddenGatewayString isEqualToString:@""])?@"-1":hiddenGatewayString;
     NSArray *hiddenGatewayArray = [hiddenGatewayString componentsSeparatedByString: @","];
     
     NSMutableArray *hiddenGatewayName = [NSMutableArray new];

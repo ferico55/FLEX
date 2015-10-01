@@ -293,7 +293,8 @@
     [mapping addAttributeMappingsFromArray:@[@"user_email",
                                              @"payment_id",
                                              @"cc_agent",
-                                             @"cc_type"]];
+                                             @"cc_type",
+                                             @"cc_card_bank_type"]];
     return mapping;
 }
 
