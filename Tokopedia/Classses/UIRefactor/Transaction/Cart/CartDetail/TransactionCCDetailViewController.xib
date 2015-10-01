@@ -174,7 +174,7 @@
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfP-5i-eWP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="CVV/CVC2" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7t8-Yf-1cY">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="CVV/CVC" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7t8-Yf-1cY">
                                 <rect key="frame" x="15" y="0.0" width="255" height="44"/>
                                 <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>

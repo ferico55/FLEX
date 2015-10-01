@@ -483,7 +483,7 @@
 }
 - (IBAction)infoCVC:(id)sender {
     AlertInfoView *alertInfo = [AlertInfoView newview];
-    alertInfo.text = @"Info CVC/CVV2";
+    alertInfo.text = @"Info CVC/CVV";
     alertInfo.detailText = @"CVC atau Card Verification Code adalah tiga digit angka terakhir yang terdapat pada bagian belakang kartu kredit.";
     [alertInfo show];
 }
