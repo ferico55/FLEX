@@ -287,8 +287,8 @@
     if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
         cardDetails.installment = YES;
         cardDetails.installment_term = [_dataInput objectForKey:API_CC_DURATION_INSTALLMENT_KEY]?:@"";
-        cardDetails.bank = @"mandiri";
     }
+    cardDetails.bank = @"mandiri";
     //cardDetails.bank = _dataCC.
     //TODO::Bank
     

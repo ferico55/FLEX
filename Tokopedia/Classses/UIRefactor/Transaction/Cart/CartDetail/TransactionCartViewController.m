@@ -1143,7 +1143,7 @@
             //[self swipePaymentMethod];
             [self swipeView:_paymentMethodView];
         }
-        if (gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT) {
+        if (gateway == TYPE_GATEWAY_CC) {
             return [self isValidInputCC];
         }
         if (gateway == TYPE_GATEWAY_BCA_KLIK_BCA) {
@@ -2610,7 +2610,8 @@
         {
             if (([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
                 [_cartSummary.deposit_amount integerValue] <= 0)||
-                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC) {
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC ||
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT ) {
                 return 0;
             }
         }
