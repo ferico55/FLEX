@@ -193,7 +193,7 @@ PromoCollectionViewDelegate
         } else {
             self.screenName = @"Search Result - Product Tab";
         }
-
+        
     }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         self.screenName = @"Search Result - Catalog Tab";
     }
@@ -260,6 +260,7 @@ PromoCollectionViewDelegate
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.isParameterNotEncrypted = YES;
+    _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
     
 }
@@ -711,6 +712,10 @@ PromoCollectionViewDelegate
     return ((SearchItem *) stat).status;
 }
 
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
+}
+
 - (void)actionBeforeRequest:(int)tag {
     
 }
@@ -763,7 +768,7 @@ PromoCollectionViewDelegate
         
         if(_start == 0) {
             [_collectionView setContentOffset:CGPointZero animated:YES];
-
+            
             [_collectionView reloadData];
             [_collectionView layoutIfNeeded];
         }
@@ -804,16 +809,16 @@ PromoCollectionViewDelegate
             NSString *departementID = search.result.department_id?:@"";
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [_params removeObjectForKey:@"search"];
-//            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
+            //            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
             [_networkManager requestCancel];
-//            [_act startAnimating];
-//            
+            //            [_act startAnimating];
+            //
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
                 [self.delegate updateTabCategory:departementID];
             }
             
             [self refreshView:nil];
-//            [_networkManager doRequest];
+            //            [_networkManager doRequest];
         }
         
         
@@ -938,18 +943,18 @@ PromoCollectionViewDelegate
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         NavigateViewController *navigateController = [NavigateViewController new];
         NSDictionary *productData = @{
-            @"product_id"       : product.product_id?:@"",
-            @"product_name"     : product.product_name?:@"",
-            @"product_image"    : product.product_image_200?:@"",
-            @"product_price"    :product.product_price?:@"",
-            @"shop_name"        : product.shop_name?:@""
-        };
+                                      @"product_id"       : product.product_id?:@"",
+                                      @"product_name"     : product.product_name?:@"",
+                                      @"product_image"    : product.product_image_200?:@"",
+                                      @"product_price"    :product.product_price?:@"",
+                                      @"shop_name"        : product.shop_name?:@""
+                                      };
         NSDictionary *promoData = @{
-            kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-            PromoImpressionKey          : product.ad_key,
-            PromoSemKey                 : product.ad_sem_key,
-            PromoReferralKey            : product.ad_r
-        };
+                                    kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+                                    PromoImpressionKey          : product.ad_key,
+                                    PromoSemKey                 : product.ad_sem_key,
+                                    PromoReferralKey            : product.ad_r
+                                    };
         [navigateController navigateToProductFromViewController:self
                                                       promoData:promoData
                                                     productData:productData];
