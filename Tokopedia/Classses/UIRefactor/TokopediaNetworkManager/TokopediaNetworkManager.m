@@ -9,10 +9,13 @@
 
 #import "TokopediaNetworkManager.h"
 #import "MaintenanceViewController.h"
-
 #import "StickyAlertView.h"
+#import "NSString+MD5.h"
+#import "TkpdHMAC.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
+
+
 
 @implementation TokopediaNetworkManager
 @synthesize tagRequest;
@@ -27,6 +30,18 @@
     return self;
 }
 
+- (NSString*)getStringRequestMethod:(int)requestMethod {
+    if(requestMethod == RKRequestMethodPOST) {
+        return @"POST";
+    } else if (requestMethod == RKRequestMethodGET){
+        return @"GET";
+    } else if (requestMethod == RKRequestMethodPUT) {
+        return @"PUT";
+    }
+    
+    return nil;
+}
+
 #pragma mark - Process Request
 - (void)doRequest {
     if(_objectRequest.isExecuting) return;
@@ -39,10 +54,33 @@
     
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
-    _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
-                                                                          method:(_delegate && [_delegate respondsToSelector:@selector(didReceiveRequestMethod:)])?[_delegate didReceiveRequestMethod:self.tagRequest]:RKRequestMethodPOST
-                                                                            path:[_delegate getPath:self.tagRequest]
-                                                                      parameters:(!_isParameterNotEncrypted ? [[_delegate getParameter:self.tagRequest] encrypt] : [_delegate getParameter:self.tagRequest])];
+    
+    if(self.isUsingHmac) {
+        TkpdHMAC *hmac = [TkpdHMAC new];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:[_delegate getRequestMethod:nil]] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
+        
+        [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:[hmac getDate]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
+        
+        [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
+        
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
+                                                                              method:[_delegate getRequestMethod:self.tagRequest]
+                                                                                path:[_delegate getPath:self.tagRequest]
+                                                                          parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
+    } else {
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
+                                                                              method:RKRequestMethodPOST
+                                                                                path:[_delegate getPath:self.tagRequest]
+                                                                          parameters:[[_delegate getParameter:self.tagRequest] encrypt]];
+        
+    }
+    
     
     
     [_requestTimer invalidate];
@@ -76,7 +114,7 @@
             
             
         } else {
-
+            
             if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
                 [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
             } else
@@ -94,7 +132,7 @@
                 
                 [alert initWithErrorMessages:errors delegate:_delegate];
                 [alert show];
-            
+                
             }
         }
     }
