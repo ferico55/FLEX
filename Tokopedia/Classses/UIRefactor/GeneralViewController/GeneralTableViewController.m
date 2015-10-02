@@ -8,6 +8,7 @@
 #import "category.h"
 #import "EtalaseList.h"
 #import "GeneralTableViewController.h"
+#import "ResizeableImageCell.h"
 
 @interface GeneralTableViewController ()
 <
@@ -106,12 +107,24 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:_tableViewCellStyle reuseIdentifier:nil];
+    UITableViewCell *cell = nil;
+    if (_objectImages.count > 0)
+    {
+        cell = (ResizeableImageCell*)[tableView dequeueReusableCellWithIdentifier:@"cellID"];
+        if (cell == nil) {
+            cell = [ResizeableImageCell newCell];
+        }
+    }
+    else
+    {
+        cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:_tableViewCellStyle reuseIdentifier:nil];
+        }
     }
 
     id object;
+    id objectImage;
     
     if (_searchBar.text.length > 0) {
         object = [_searchResults objectAtIndex:indexPath.row];
@@ -119,18 +132,47 @@
         object = [_objects objectAtIndex:indexPath.row];
     }
     
+    if (_objectImages.count > 0)
+    {
+        objectImage = [_objectImages objectAtIndex:indexPath.row];
+    }
+    
     if (_tableViewCellStyle == UITableViewCellStyleDefault) {
-        if(isObjectCategory) {
-            cell.textLabel.text = [((NSDictionary *)object) objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+        if (_objectImages.count > 0)
+        {
+            //Set image product
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:objectImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            UIImageView *thumb = ((ResizeableImageCell*)cell).thumb;
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@" " ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                //NSLOG(@"thumb: %@", thumb);
+                [thumb setContentMode:UIViewContentModeCenter];
+                [thumb setImage:image];
+#pragma clang diagnostic pop
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            }];
+        
+            ((ResizeableImageCell*)cell).textCellLabel.text= [object description];
+            ((ResizeableImageCell*)cell).textCellLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
+                                                                            attributes:_textAttributes];
         }
-        else if([object isMemberOfClass:[EtalaseList class]]) {
-            cell.textLabel.text = ((EtalaseList *)object).etalase_name;
+        else
+        {
+            if(isObjectCategory) {
+                cell.textLabel.text = [((NSDictionary *)object) objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+            }
+            else if([object isMemberOfClass:[EtalaseList class]]) {
+                cell.textLabel.text = ((EtalaseList *)object).etalase_name;
+            }
+            else {
+                cell.textLabel.text = [object description];
+                cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
+                                                                            attributes:_textAttributes];
+            }
         }
-        else {
-            cell.textLabel.text = [object description];
-            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
-                                                                        attributes:_textAttributes];
-        }
+
         cell.textLabel.numberOfLines = 0;
     }
     

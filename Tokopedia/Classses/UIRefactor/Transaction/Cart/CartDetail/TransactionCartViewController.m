@@ -36,11 +36,13 @@
 #import "RequestCart.h"
 #import "TAGDataLayer.h"
 
+#import "TagManagerHandler.h"
+
 #import "LoadingView.h"
 
 #import "GeneralTableViewController.h"
 
-#define DurationInstallmentFormat @"%@ bulan (Rp %@)"
+#define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
 <
@@ -313,8 +315,6 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
-    
-    [self configureGTM];
 }
 
 
@@ -964,28 +964,34 @@
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY]?:[TransactionCartGateway new];
     
     NSMutableArray *gatewayListWithoutHiddenPayment= [NSMutableArray new];
-    
+    NSMutableArray *gatewayImages= [NSMutableArray new];
     
     NSString *hiddenGatewayString = [[self gtmContainer] stringForKey:GTMHiddenPaymentKey]?:@"-1";
     hiddenGatewayString = ([hiddenGatewayString isEqualToString:@""])?@"-1":hiddenGatewayString;
     NSArray *hiddenGatewayArray = [hiddenGatewayString componentsSeparatedByString: @","];
     
     NSMutableArray *hiddenGatewayName = [NSMutableArray new];
+    NSMutableArray *hiddenGatewayImage = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name];
+        [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
+        [gatewayImages addObject:gateway.gateway_image?:@""];
         for (NSString *hiddenGateway in hiddenGatewayArray) {
             if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
+                [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
                 [hiddenGatewayName addObject:gateway.gateway_name];
             }
         }
     }
     
+    [gatewayImages removeObjectsInArray:hiddenGatewayImage];
     [gatewayListWithoutHiddenPayment removeObjectsInArray:hiddenGatewayName];
     
     GeneralTableViewController *vc = [GeneralTableViewController new];
+    vc.tableViewCellStyle = UITableViewCellStyleDefault;
     vc.selectedObject = selectedGateway.gateway_name;
-    vc.objects = gatewayListWithoutHiddenPayment;
+    vc.objectImages = [gatewayImages copy];
+    vc.objects = [gatewayListWithoutHiddenPayment copy];
     vc.delegate = self;
     vc.title = @"Metode Pembayaran";
     [self.navigationController pushViewController:vc animated:YES];
@@ -1002,8 +1008,7 @@
 -(TAGContainer *)gtmContainer
 {
     if (!_gtmContainer) {
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        _gtmContainer = appDelegate.container;
+        _gtmContainer = [TagManagerHandler getContainer];
     }
     return _gtmContainer;
 }
