@@ -263,6 +263,8 @@ typedef enum {
 
 #define GTMVeritransClientKey @"veritrans_client_key"
 
+#define GTMKeyComplainNotifString @"complain_notif_string"
+
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

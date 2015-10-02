@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		45801F051BBE7C4E00A603C7 /* TagManagerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 45801F041BBE7C4E00A603C7 /* TagManagerHandler.m */; settings = {ASSET_TAGS = (); }; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -1840,6 +1841,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		45801F031BBE7C4E00A603C7 /* TagManagerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagManagerHandler.h; sourceTree = "<group>"; };
+		45801F041BBE7C4E00A603C7 /* TagManagerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagManagerHandler.m; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -8086,6 +8089,8 @@
 		85A193961BAFEF9E002F1382 /* TagHandlers */ = {
 			isa = PBXGroup;
 			children = (
+				45801F031BBE7C4E00A603C7 /* TagManagerHandler.h */,
+				45801F041BBE7C4E00A603C7 /* TagManagerHandler.m */,
 				85A193971BAFEF9E002F1382 /* ChangeMessageUrlTagHandler.h */,
 				85A193981BAFEF9E002F1382 /* ChangeMessageUrlTagHandler.m */,
 			);
@@ -11360,6 +11365,7 @@
 				85A197CC1BAFEFA0002F1382 /* InboxResolutionCenterResult.m in Sources */,
 				85A197471BAFEFA0002F1382 /* DBManager.m in Sources */,
 				85A1979C1BAFEFA0002F1382 /* TalkCommentList.m in Sources */,
+				45801F051BBE7C4E00A603C7 /* TagManagerHandler.m in Sources */,
 				85A199641BAFEFA1002F1382 /* RateView.m in Sources */,
 				85A199771BAFEFA1002F1382 /* ForgotPasswordViewController.m in Sources */,
 				85A198521BAFEFA0002F1382 /* OrderCustomer.m in Sources */,
