@@ -235,6 +235,7 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[InstallmentTerm class]];
     [mapping addAttributeMappingsFromArray:@[@"duration",
                                              @"monthly_price",
+                                             @"monthly_price_idr"
                                              ]];
     return mapping;
 }

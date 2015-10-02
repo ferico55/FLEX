@@ -315,6 +315,10 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
+    
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TagManagerHandler *gtmHandler = [TagManagerHandler new];
+    [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
 }
 
 
@@ -816,10 +820,10 @@
     NSMutableArray *objects = [NSMutableArray new];
     
     for (InstallmentTerm *term in _selectedInstallmentBank.installment_term) {
-        [objects addObject:[NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price]];
+        [objects addObject:[NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price_idr]];
     }
     controller.objects = [objects copy];
-    controller.selectedObject = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price];
+    controller.selectedObject = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price_idr];
     controller.tag = 2;
     _isSelectDurationInstallment = YES;
     [self.navigationController pushViewController:controller animated:YES];
@@ -998,13 +1002,6 @@
 }
 
 #pragma mark - GTM
-- (void)configureGTM {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
-}
-
-
 -(TAGContainer *)gtmContainer
 {
     if (!_gtmContainer) {
@@ -1126,7 +1123,7 @@
         if (!_selectedInstallmentDuration) _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
         
         _bankInstallmentLabel.text = _selectedInstallmentBank.bank_name;
-        _durationInstallmentLabel.text = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price];
+        _durationInstallmentLabel.text = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price_idr];
     }
     
     [_tableView reloadData];
@@ -1475,7 +1472,7 @@
     
     if (_isSelectDurationInstallment) { //duration
         for (InstallmentTerm *term in _selectedInstallmentBank.installment_term) {
-            NSString *termNow = [NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price];
+            NSString *termNow = [NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price_idr];
             if ([termNow isEqualToString:object]) {
                 _selectedInstallmentDuration = term;
             }

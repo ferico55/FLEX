@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString *duration;
 @property (nonatomic, strong) NSString *monthly_price;
+@property (nonatomic, strong) NSString *monthly_price_idr;
 
 @end

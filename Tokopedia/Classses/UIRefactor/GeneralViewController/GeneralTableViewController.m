@@ -137,42 +137,37 @@
         objectImage = [_objectImages objectAtIndex:indexPath.row];
     }
     
-    if (_tableViewCellStyle == UITableViewCellStyleDefault) {
-        if (_objectImages.count > 0)
-        {
-            //Set image product
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:objectImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *thumb = ((ResizeableImageCell*)cell).thumb;
-            thumb.image = nil;
-            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@" " ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    if (_objectImages.count > 0)
+    {
+        //Set image product
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:objectImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        UIImageView *thumb = ((ResizeableImageCell*)cell).thumb;
+        thumb.image = nil;
+        [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@" " ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setContentMode:UIViewContentModeCenter];
-                [thumb setImage:image];
+            //NSLOG(@"thumb: %@", thumb);
+            [thumb setContentMode:UIViewContentModeCenter];
+            [thumb setImage:image];
 #pragma clang diagnostic pop
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        }];
         
-            ((ResizeableImageCell*)cell).textCellLabel.text= [object description];
-            ((ResizeableImageCell*)cell).textCellLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
-                                                                            attributes:_textAttributes];
+        ((ResizeableImageCell*)cell).textCellLabel.text= [object description];
+    }
+    
+    else if (_tableViewCellStyle == UITableViewCellStyleDefault) {
+        if(isObjectCategory) {
+            cell.textLabel.text = [((NSDictionary *)object) objectForKey:kTKPDCATEGORY_DATATITLEKEY];
         }
-        else
-        {
-            if(isObjectCategory) {
-                cell.textLabel.text = [((NSDictionary *)object) objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-            }
-            else if([object isMemberOfClass:[EtalaseList class]]) {
-                cell.textLabel.text = ((EtalaseList *)object).etalase_name;
-            }
-            else {
-                cell.textLabel.text = [object description];
-                cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
-                                                                            attributes:_textAttributes];
-            }
+        else if([object isMemberOfClass:[EtalaseList class]]) {
+            cell.textLabel.text = ((EtalaseList *)object).etalase_name;
         }
-
+        else {
+            cell.textLabel.text = [object description];
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
+                                                                        attributes:_textAttributes];
+        }
         cell.textLabel.numberOfLines = 0;
     }
     
