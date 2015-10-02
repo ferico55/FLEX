@@ -120,11 +120,15 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 
 - (RKObjectManager *)configureObjectManager {
     
+#ifdef DEBUG
+    _objectManager = [RKObjectManager sharedClient];
+#else
     if([_promoBaseURL isEqualToString:kTkpdBaseURLString] || [_promoBaseURL isEqualToString:@""]) {
         _objectManager = [RKObjectManager sharedClient];
     } else {
         _objectManager = [RKObjectManager sharedClient:_promoBaseURL];
     }
+#endif
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[PromoResponse class]];
     [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSKEY, kTKPD_APISERVERPROCESSTIMEKEY]];
