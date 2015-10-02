@@ -21,6 +21,7 @@
 @interface GeneralTableViewController : UITableViewController
 @property (nonatomic) BOOL isObjectCategory;
 @property (strong, nonatomic) NSArray *objects;
+@property (strong, nonatomic) NSArray *objectImages;
 @property (strong, nonatomic) id selectedObject;
 @property (strong, nonatomic) NSIndexPath *senderIndexPath;
 @property (strong, nonatomic) id<GeneralTableViewControllerDelegate> delegate;
