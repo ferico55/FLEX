@@ -223,8 +223,8 @@
         
         NSDictionary *param = @{@"new_add":@(1),
                                 @"action":@"update_shop_picture",
-                                @"pic_code":_images.result.pic_code?:@"",
-                                @"pic_src": _images.result.pic_src?:@"",
+                                @"pic_code":_images.result.image.pic_code?:@"",
+                                @"pic_src": _images.result.image.pic_src?:@"",
                                 @"user_id" : userID,
                                 @"server_id" : _generatehost.result.generated_host.server_id?:@""
                                 };
@@ -265,7 +265,7 @@
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Anda telah berhasil mengubah gambar toko"] delegate:self];
             [alert show];
             
-            NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.pic_src?:@"",
+            NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.image.pic_src?:@"",
                                        kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path?:@""
                                        };
             [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_SHOP_AVATAR_NOTIFICATION_NAME object:nil userInfo:userinfo];
