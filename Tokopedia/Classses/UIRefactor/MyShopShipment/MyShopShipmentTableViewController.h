@@ -28,6 +28,8 @@
 - (ShippingInfoShipments *)getRpx;
 - (ShippingInfoShipments *)getCahaya;
 - (ShippingInfoShipments *)getPandu;
+- (ShippingInfoShipments *)getFirst;
+- (ShippingInfoShipments *)getSiCepat;
 
 - (ShippingInfoShipmentPackage *)getJnePackageYes;
 - (ShippingInfoShipmentPackage *)getJnePackageReguler;
@@ -46,7 +48,12 @@
 - (ShippingInfoShipmentPackage *)getPosPackageExpress;
 
 - (ShippingInfoShipmentPackage *)getCahayaPackageNormal;
+
 - (ShippingInfoShipmentPackage *)getPanduPackageRegular;
+
+- (ShippingInfoShipmentPackage *)getFirstPackageRegular;
+
+- (ShippingInfoShipmentPackage *)getSiCepatPackageRegular;
 
 - (BOOL)getJneExtraFeeTextField;
 - (BOOL)getJneMinWeightTextField;
