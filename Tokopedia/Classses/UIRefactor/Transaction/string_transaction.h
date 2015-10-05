@@ -85,7 +85,7 @@ typedef enum
 #define STRING_METODE_PEMBAYARAN @"Metode Pembayaran"
 #define STRING_TOTAL_TAGIHAN @"Total Tagihan"
 #define STRING_PENGGUNAAN_KUPON @"Penggunaan Kupon"
-#define STRING_LOYALTY_POINT @"Top Points Terpakai"
+#define STRING_LOYALTY_POINT @"TopPoints Terpakai"
 #define STRING_PAYMENT
 
 #define DATA_DETAIL_PRODUCT_KEY @"product"
