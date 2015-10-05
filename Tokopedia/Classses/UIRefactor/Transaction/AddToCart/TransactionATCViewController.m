@@ -460,6 +460,12 @@
     switch (indexPath.section) {
         case 0:
             cell = _tableViewProductCell[indexPath.row];
+            if (indexPath.row == 1) {
+                return 73;
+            }
+            if (indexPath.row == 3) {
+                return 163;
+            }
             break;
         case 1:
         {
@@ -479,7 +485,7 @@
             cell = _tableViewPaymentDetailCell[indexPath.row];
             if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
                 if ([_productQuantityTextField.text integerValue]<=1) {
-                //if (_productQuantityStepper.value<=1) {
+                    //if (_productQuantityStepper.value<=1) {
                     return 0;
                 }
                 else
@@ -490,7 +496,7 @@
         default:
             break;
     }
-    return cell.frame.size.height;
+    return 44;//cell.frame.size.height; //case for ios9 can't use frame height
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
