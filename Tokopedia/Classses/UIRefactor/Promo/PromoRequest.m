@@ -50,10 +50,10 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     NSString *_promoActionPostURL;
     NSString *_promoActionFullURL;
     
-    BOOL _requestProductFeed;
-    BOOL _requestHotlist;
-    BOOL _requestShopFeed;
-    BOOL _requestSearch;
+    BOOL _cancelRequestProductFeed;
+    BOOL _cancelRequestHotlist;
+    BOOL _cancelRequestShopFeed;
+    BOOL _cancelRequestSearch;
 }
 
 @end
@@ -282,23 +282,23 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _query = query;
     _departmentId = department;
     _requestType = PromoRequestTypeProductSearch;
-    if (_requestSearch) [self requestPromo];
+    if (!_cancelRequestHotlist) [self requestPromo];
 }
 
 - (void)requestForProductHotlist:(NSString *)key {
     _key = key;
     _requestType = PromoRequestTypeProductHotlist;
-    if (_requestHotlist) [self requestPromo];
+    if (!_cancelRequestHotlist) [self requestPromo];
 }
 
 - (void)requestForProductFeed {
     _requestType = PromoRequestTypeProductFeed;
-    if (_requestProductFeed) [self requestPromo];
+    if (!_cancelRequestProductFeed) [self requestPromo];
 }
 
 - (void)requestForShopFeed {
     _requestType = PromoRequestTypeShopFeed;
-    if (_requestShopFeed) [self requestPromo];
+    if (!_cancelRequestShopFeed) [self requestPromo];
 }
 
 - (void)requestActionPromo {
@@ -335,10 +335,10 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _promoActionPostURL = [_gtmContainer stringForKey:GTMKeyPromoPostAction];
     _promoActionFullURL = [_gtmContainer stringForKey:GTMKeyPromoFullAction];
     
-    _requestHotlist = [[_gtmContainer stringForKey:GTMKeyPromoHotlist] boolValue];
-    _requestProductFeed = [[_gtmContainer stringForKey:GTMKeyPromoProductFeed] boolValue];
-    _requestSearch = [[_gtmContainer stringForKey:GTMKeyPromoSearch] boolValue];
-    _requestShopFeed = [[_gtmContainer stringForKey:GTMKeyPromoShopFeed] boolValue];
+    _cancelRequestHotlist = [[_gtmContainer stringForKey:GTMKeyCancelPromoHotlist] boolValue];
+    _cancelRequestProductFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoProductFeed] boolValue];
+    _cancelRequestSearch = [[_gtmContainer stringForKey:GTMKeyCancelPromoSearch] boolValue];
+    _cancelRequestShopFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoShopFeed] boolValue];
 }
 
 @end
