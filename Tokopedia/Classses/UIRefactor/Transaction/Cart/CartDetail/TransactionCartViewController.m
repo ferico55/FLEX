@@ -274,7 +274,7 @@
         [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
-        _requestCart.param = @{};//@"lp_flag":@"1"};
+        _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         _paymentMethodView.hidden = YES;
         
@@ -1022,7 +1022,7 @@
         
         [self adjustDropshipperListParam];
         _refreshFromShipment = YES;
-        _requestCart.param = @{};//@"lp_flag":@"1"};
+        _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         
     }
@@ -1037,7 +1037,7 @@
         [_dataInput setObject:@(index) forKey:DATA_INDEX_KEY];
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
         
-        _requestCart.param = @{};//@"lp_flag":@"1"};
+        _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
         
         _refreshFromShipment = YES;
@@ -1836,7 +1836,7 @@
         [_act stopAnimating];
     }
     
-    _requestCart.param = @{};//@"lp_flag":@"1"};
+    _requestCart.param = @{@"lp_flag":@"1"};
     [_requestCart doRequestCart];
     _paymentMethodView.hidden = YES;
 }
@@ -1885,7 +1885,7 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{};//@"lp_flag":@"1"};
+        _requestCart.param = @{@"lp_flag":@"1"};
          [_requestCart doRequestCart];
     }
     else
@@ -2736,7 +2736,7 @@
                                       API_PARTIAL_STRING_KEY :partialString,
                                       API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
                                       API_DEPOSIT_AMT_KEY:usedSaldo,
-                                      //@"lp_flag":@"1"
+                                      @"lp_flag":@"1"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
@@ -2789,7 +2789,7 @@
                             API_CC_STATE_KEY : CCState,
                             API_CC_CARD_NUMBER_KEY : CCNumber,
                             API_BCA_USER_ID_KEY : userIDKlikBCA,
-                            //@"lp_flag":@"1"
+                            @"lp_flag":@"1"
                             };
     return param;
 }
@@ -3214,7 +3214,7 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{};//@"lp_flag":@"1"};
+        _requestCart.param = @{@"lp_flag":@"1"};
         [_requestCart doRequestCart];
     }
     [_tableView reloadData];
