@@ -1829,90 +1829,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		92F4BF481BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E085D11431F177E1B44ECF67;
-			remoteInfo = "Pods-Tokopedia";
-		};
-		92F4BF4A1BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9AF1ACE37FA49E1BDA72C5C2;
-			remoteInfo = "Pods-Tokopedia-AFNetworking";
-		};
-		92F4BF4C1BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3ED09A1A7083E92219CFC0C4;
-			remoteInfo = "Pods-Tokopedia-NJKWebViewProgress";
-		};
-		92F4BF4E1BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 34A03A959A86D0F02BEF4C96;
-			remoteInfo = "Pods-Tokopedia-RestKit";
-		};
-		92F4BF501BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 061EE55D3292037C1769E53D;
-			remoteInfo = "Pods-Tokopedia-SOCKit";
-		};
-		92F4BF521BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 683113EF71C782D6572392F1;
-			remoteInfo = "Pods-Tokopedia-TTTAttributedLabel";
-		};
-		92F4BF541BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 786EAD31F67CA643AD6ADB07;
-			remoteInfo = "Pods-Tokopedia-TransitionKit";
-		};
-		92F4BF561BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 21DC0DB8FE754D37ABCB730C;
-			remoteInfo = "Pods-TokopediaTests";
-		};
-		92F4BF581BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4FCF1F75C7812F6463646EAC;
-			remoteInfo = "Pods-TokopediaTests-AFNetworking";
-		};
-		92F4BF5A1BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 22F0BE9BDED79B0D3A70F073;
-			remoteInfo = "Pods-TokopediaTests-RestKit";
-		};
-		92F4BF5C1BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 05993988F7EFF0F134423885;
-			remoteInfo = "Pods-TokopediaTests-SOCKit";
-		};
-		92F4BF5E1BBE3DA300155C60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3DD3D3B606555827E137F3CF;
-			remoteInfo = "Pods-TokopediaTests-TransitionKit";
-		};
 		FC36DFA319B0656400AF74C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FC36DF7B19B0656400AF74C1 /* Project object */;
@@ -4605,7 +4521,6 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
@@ -9477,29 +9392,9 @@
 			path = Veritrans;
 			sourceTree = "<group>";
 		};
-		92F4BF3A1BBE3DA200155C60 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92F4BF491BBE3DA300155C60 /* libPods-Tokopedia.a */,
-				92F4BF4B1BBE3DA300155C60 /* libPods-Tokopedia-AFNetworking.a */,
-				92F4BF4D1BBE3DA300155C60 /* libPods-Tokopedia-NJKWebViewProgress.a */,
-				92F4BF4F1BBE3DA300155C60 /* libPods-Tokopedia-RestKit.a */,
-				92F4BF511BBE3DA300155C60 /* libPods-Tokopedia-SOCKit.a */,
-				92F4BF531BBE3DA300155C60 /* libPods-Tokopedia-TTTAttributedLabel.a */,
-				92F4BF551BBE3DA300155C60 /* libPods-Tokopedia-TransitionKit.a */,
-				92F4BF571BBE3DA300155C60 /* libPods-TokopediaTests.a */,
-				92F4BF591BBE3DA300155C60 /* libPods-TokopediaTests-AFNetworking.a */,
-				92F4BF5B1BBE3DA300155C60 /* libPods-TokopediaTests-RestKit.a */,
-				92F4BF5D1BBE3DA300155C60 /* libPods-TokopediaTests-SOCKit.a */,
-				92F4BF5F1BBE3DA300155C60 /* libPods-TokopediaTests-TransitionKit.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
-				92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */,
 				FC36DF8C19B0656400AF74C1 /* Tokopedia */,
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
@@ -9708,12 +9603,6 @@
 			mainGroup = FC36DF7A19B0656400AF74C1;
 			productRefGroup = FC36DF8419B0656400AF74C1 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 92F4BF3A1BBE3DA200155C60 /* Products */;
-					ProjectRef = 92F4BF391BBE3DA200155C60 /* Pods.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				FC36DF8219B0656400AF74C1 /* Tokopedia */,
@@ -9721,93 +9610,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		92F4BF491BBE3DA300155C60 /* libPods-Tokopedia.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Tokopedia.a";
-			remoteRef = 92F4BF481BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF4B1BBE3DA300155C60 /* libPods-Tokopedia-AFNetworking.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Tokopedia-AFNetworking.a";
-			remoteRef = 92F4BF4A1BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF4D1BBE3DA300155C60 /* libPods-Tokopedia-NJKWebViewProgress.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Tokopedia-NJKWebViewProgress.a";
-			remoteRef = 92F4BF4C1BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF4F1BBE3DA300155C60 /* libPods-Tokopedia-RestKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Tokopedia-RestKit.a";
-			remoteRef = 92F4BF4E1BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF511BBE3DA300155C60 /* libPods-Tokopedia-SOCKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Tokopedia-SOCKit.a";
-			remoteRef = 92F4BF501BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF531BBE3DA300155C60 /* libPods-Tokopedia-TTTAttributedLabel.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Tokopedia-TTTAttributedLabel.a";
-			remoteRef = 92F4BF521BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF551BBE3DA300155C60 /* libPods-Tokopedia-TransitionKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Tokopedia-TransitionKit.a";
-			remoteRef = 92F4BF541BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF571BBE3DA300155C60 /* libPods-TokopediaTests.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-TokopediaTests.a";
-			remoteRef = 92F4BF561BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF591BBE3DA300155C60 /* libPods-TokopediaTests-AFNetworking.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-TokopediaTests-AFNetworking.a";
-			remoteRef = 92F4BF581BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF5B1BBE3DA300155C60 /* libPods-TokopediaTests-RestKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-TokopediaTests-RestKit.a";
-			remoteRef = 92F4BF5A1BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF5D1BBE3DA300155C60 /* libPods-TokopediaTests-SOCKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-TokopediaTests-SOCKit.a";
-			remoteRef = 92F4BF5C1BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92F4BF5F1BBE3DA300155C60 /* libPods-TokopediaTests-TransitionKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-TokopediaTests-TransitionKit.a";
-			remoteRef = 92F4BF5E1BBE3DA300155C60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FC36DF8119B0656400AF74C1 /* Resources */ = {
