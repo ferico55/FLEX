@@ -162,6 +162,7 @@
     cell.getLabelDesc.tag = indexPath.row;
     cell.getBtnKomentar.tag = indexPath.row;
     cell.getBtnUbah.tag = indexPath.row;
+    cell.getBtnProduct.tag = indexPath.row;
     cell.strRole = _detailMyInboxReputation.role;
     [cell setView:detailReputationReview.viewModel];
     
