@@ -257,6 +257,11 @@ typedef enum {
 #define GTMKeyPromoPostAction   @"promo_post_action_url"
 #define GTMKeyPromoFullAction   @"promo_full_action_url"
 
+#define GTMKeyPromoProductFeed  @"promo_product_feed"
+#define GTMKeyPromoHotlist      @"promo_hotlist"
+#define GTMKeyPromoSearch       @"promo_search"
+#define GTMKeyPromoShopFeed     @"promo_shop_feed"
+
 #define GTMKeyNotifyLBLMBase @"notify_base_url"
 #define GTMKeyNotifyLBLMPost @"notify_post_url"
 #define GTMKeyNotifyLBLMFull @"notify_full_url"
