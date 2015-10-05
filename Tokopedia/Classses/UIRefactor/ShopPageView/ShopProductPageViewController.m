@@ -247,7 +247,7 @@ TokopediaNetworkManagerDelegate
     UIView *header = [[UIView alloc] initWithFrame:_header.frame];
     [header setBackgroundColor:[UIColor whiteColor]];
     [header addSubview:_header];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, _header.frame.size.height, 320, 200)];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 200)];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
