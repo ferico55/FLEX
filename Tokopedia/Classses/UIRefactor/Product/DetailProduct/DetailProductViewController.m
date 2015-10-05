@@ -224,9 +224,14 @@ UIAlertViewDelegate
 @property (strong, nonatomic) IBOutlet UIView *shopClickView;
 @property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightBuyButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightDinkButton;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (weak, nonatomic) IBOutlet UIButton *favButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightShare;
 @property (weak, nonatomic) IBOutlet UIButton *dinkButton;
 
 -(void)cancel;
@@ -388,6 +393,8 @@ UIAlertViewDelegate
     self.infoShopView.layer.borderWidth = 0.5f;
     self.infoShopView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
     self.infoShopView.layer.masksToBounds = YES;
+    _constraintHeightBuyButton.constant = 0;
+    _constraintHeightDinkButton.constant = 0;
 }
 
 - (void)initNotification {
@@ -977,7 +984,7 @@ UIAlertViewDelegate
         else
             return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
     }
-    
+
     return 40;
 }
 
@@ -1995,11 +2002,17 @@ UIAlertViewDelegate
                 [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
            }
             
-            [viewContentWarehouse removeConstraints:_constraint];
-            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
+//            [viewContentWarehouse removeConstraints:_constraint];
+            constraintHeightWarehouse.constant = 50;
+            _constraintHeightShare.constant = 0;
+//            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
             [viewContentWarehouse setHidden:NO];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
             _table.tableHeaderView = _header;
+        }
+        else
+        {
+            [self unsetWarehouse];
         }
         
         _table.tableHeaderView = _header;
@@ -2013,10 +2026,13 @@ UIAlertViewDelegate
 }
 
 - (void)unsetWarehouse {
-    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
-    [viewContentWarehouse addConstraints:_constraint];
+    constraintHeightWarehouse.constant = 0;
+    _constraintHeightShare.constant = 50;
+//    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
+//    [viewContentWarehouse addConstraints:_constraint];
     viewContentWarehouse.hidden = YES;
-    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height
+                            );
     _table.tableHeaderView = _header;
 
 }
@@ -2042,6 +2058,9 @@ UIAlertViewDelegate
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
+            
+            _constraintHeightBuyButton.constant = 50;
+            _constraintHeightDinkButton.constant = 50;
             
             if (_product.result.wholesale_price.count > 0) {
                 _isnodatawholesale = NO;
@@ -2369,15 +2388,19 @@ UIAlertViewDelegate
 {
     _dinkButton.hidden = YES;
     _buyButton.hidden = YES;
-    [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
-                                                                        options:0
-                                                                        metrics:nil
-                                                                          views:NSDictionaryOfVariableBindings(_dinkButton)]];
     
-    [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
+    _constraintHeightBuyButton.constant = 0;
+    _constraintHeightDinkButton.constant = 0;
+    
+//    [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
+//                                                                        options:0
+//                                                                        metrics:nil
+//                                                                          views:NSDictionaryOfVariableBindings(_dinkButton)]];
+//    
+//    [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
+//                                                                       options:0
+//                                                                       metrics:nil
+//                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
 }
 
 - (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment
@@ -3039,6 +3062,7 @@ UIAlertViewDelegate
 
 -(void)successMoveToWithMessages:(NSArray *)successMessages
 {
+    [self refreshRequest:nil];
     StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successMessages delegate:self];
     [alert show];
 }
