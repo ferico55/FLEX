@@ -443,7 +443,6 @@
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
     productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
-    detailReputationReview.review_user_label = [detailReputationReview.review_user_label isEqualToString:CBuyer]? CPembeli:CPenjual;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
     
     if(_detailMyInboxReputation.updated_reputation_review!=nil && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@""] && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@"0"]) {
