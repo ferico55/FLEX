@@ -59,7 +59,7 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="V7E-6E-hID"/>
+                                        <action selector="tapToSort:" destination="-1" eventType="touchUpInside" id="bQd-5L-bae"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="10" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LlN-6Q-xg3">
@@ -89,7 +89,7 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="nh2-Xf-hpq"/>
+                                        <action selector="tapToSort:" destination="-1" eventType="touchUpInside" id="pby-dM-nDc"/>
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nag-A7-Jys" userLabel="Vertical Border">
@@ -144,7 +144,7 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="R7V-e3-lbM"/>
+                                        <action selector="tapToEtalase:" destination="-1" eventType="touchUpInside" id="TLB-s7-j19"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="11" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3b2-dN-r1K">
@@ -174,7 +174,7 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="Ecr-wB-30u"/>
+                                        <action selector="tapToEtalase:" destination="-1" eventType="touchUpInside" id="pyI-oQ-hYz"/>
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeA-NV-EG8" userLabel="Vertical Border">
@@ -237,7 +237,7 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="93Q-pU-WA7"/>
+                                        <action selector="tapToGrid:" destination="-1" eventType="touchUpInside" id="K2I-Ef-T4p"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="13" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XQ1-7n-awT">
@@ -267,7 +267,7 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="XU6-mp-88Y"/>
+                                        <action selector="tapToGrid:" destination="-1" eventType="touchUpInside" id="PKo-NC-qUK"/>
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVL-OA-lS0" userLabel="Vertical Border">
@@ -315,7 +315,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOl-TV-hea">
                             <rect key="frame" x="240" y="0.0" width="80" height="44"/>
                             <subviews>
-                                <button opaque="NO" tag="12" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gt7-R1-HEe">
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gt7-R1-HEe">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
                                     <animations/>
                                     <constraints>
@@ -330,7 +330,7 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="N7a-Ez-Cgh"/>
+                                        <action selector="tapToShare:" destination="-1" eventType="touchUpInside" id="314-39-23P"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="11" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVF-1o-j7L">
@@ -360,7 +360,7 @@
                                         </mask>
                                     </variation>
                                     <connections>
-                                        <action selector="tapButton:" destination="-1" eventType="touchUpInside" id="9Um-L9-DuE"/>
+                                        <action selector="tapToShare:" destination="-1" eventType="touchUpInside" id="wQE-g8-pIZ"/>
                                     </connections>
                                 </button>
                             </subviews>
