@@ -2059,8 +2059,8 @@ UIAlertViewDelegate
         
         if (status) {
             
-            _constraintHeightBuyButton.constant = 50;
-            _constraintHeightDinkButton.constant = 50;
+            _constraintHeightBuyButton.constant = 48;
+            _constraintHeightDinkButton.constant = 48;
             
             if (_product.result.wholesale_price.count > 0) {
                 _isnodatawholesale = NO;
