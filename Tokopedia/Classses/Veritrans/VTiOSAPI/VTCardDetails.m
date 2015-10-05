@@ -24,7 +24,9 @@
 
 -(NSString*) getParamUrl{
     
-    return [NSString stringWithFormat:@"?card_number=%@&card_exp_month=%ld&card_exp_year=%ld&card_cvv=%@&client_key=%@&secure=%@%@&gross_amount=%@",_card_number,_card_exp_month,_card_exp_year,_card_cvv,VTConfig.CLIENT_KEY,_secure ? @"true" : @"false",[self getBankParam],_gross_amount];
+    NSLog(@"%@",[NSString stringWithFormat:@"?card_number=%@&card_exp_month=%ld&card_exp_year=%ld&card_cvv=%@&client_key=%@&secure=%@%@&gross_amount=%@&installment=%@&installment_term=%@",_card_number,_card_exp_month,_card_exp_year,_card_cvv,VTConfig.CLIENT_KEY,_secure ? @"true" : @"false",[self getBankParam],_gross_amount,_installment ? @"true" : @"false",_installment_term]);
+    return [NSString stringWithFormat:@"?card_number=%@&card_exp_month=%ld&card_exp_year=%ld&card_cvv=%@&client_key=%@&secure=%@%@&gross_amount=%@&installment=%@&installment_term=%@",_card_number,_card_exp_month,_card_exp_year,_card_cvv,VTConfig.CLIENT_KEY,_secure ? @"true" : @"false",[self getBankParam],_gross_amount,_installment ? @"true" : @"false",_installment_term];
+    //TODO:: installment:true ,installment_term:1
 }
 
 -(NSString*) getBankParam{
