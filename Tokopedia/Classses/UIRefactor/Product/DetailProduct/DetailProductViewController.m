@@ -3062,7 +3062,7 @@ UIAlertViewDelegate
 
 -(void)successMoveToWithMessages:(NSArray *)successMessages
 {
-    [self refreshRequest:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
     StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successMessages delegate:self];
     [alert show];
 }
