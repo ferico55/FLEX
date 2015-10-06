@@ -48,7 +48,7 @@
 @property NSString *selectedProblem;
 @property NSString *selectedSolution;
 @property NSArray *uploadedPhotos;
-@property GenerateHost *generatehost;
+@property (nonatomic, strong) GenerateHost *generatehost;
 
 @property BOOL isChangeSolution;
 @property BOOL isActionBySeller;

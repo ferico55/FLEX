@@ -135,6 +135,8 @@
     [self adjustFooterButton];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
+    requestHost.isNotUsingNewAdd = YES;
+    requestHost.isResolutionInput = YES;
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
@@ -145,6 +147,10 @@
     [formatter setDateFormat:@"dd MMMM yyyy HH:mm"];
     
     _createDateLabel.text = [formatter stringFromDate:[NSDate date]];
+    
+    frame = _imageScrollView.frame;
+    frame.size.width = [UIScreen mainScreen].bounds.size.width;
+    _imageScrollView.frame = frame;
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -856,6 +862,7 @@
     
     _isFinishUploadingImage = NO;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
+    uploadImage.isNotUsingNewAdd = YES;
     uploadImage.imageObject = object;
     uploadImage.delegate = self;
     uploadImage.generateHost = _generatehost;

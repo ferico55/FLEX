@@ -65,6 +65,8 @@
     TKPDPhotoPicker *_photoPicker;
     
     TokopediaNetworkManager *_networkManagerOpenComplain;
+    
+    NSString *serverID;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewUploadPhoto;
@@ -134,12 +136,21 @@
     
     _isFinishUploadingImage = YES;
     
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    if (_generatehost.result == nil && _indexPage !=1) {
+        RequestGenerateHost *requestHost = [RequestGenerateHost new];
+        requestHost.isNotUsingNewAdd = YES;
+        [requestHost configureRestkitGenerateHost];
+        [requestHost requestGenerateHost];
+        requestHost.delegate = self;
+    }
 
     [self adjustNavigationTitle];
+}
+
+-(void)setGeneratehost:(GenerateHost *)generatehost
+{
+    _generatehost = generatehost;
+    serverID = generatehost.result.generated_host.server_id;
 }
 
 -(void)setControllerTitle:(NSString *)controllerTitle
@@ -847,7 +858,6 @@
     vc.isGotTheOrder = _isGotTheOrder;
     vc.order = _order?:[TxOrderStatusList new];
     vc.uploadedPhotos = (_uploadedPhotos.count>0)?_uploadedPhotos:_photos?:@[];
-    vc.generatehost = _generatehost;
     vc.delegate = _delegate;
     vc.detailOpenAmount = _detailOpenAmount;
     vc.detailOpenAmountIDR = _detailOpenAmountIDR;
@@ -862,6 +872,7 @@
     vc.totalRefund = _totalRefund;
     vc.syncroDelegate = self;
     vc.controllerTitle = _controllerTitle;
+    vc.generatehost = _generatehost;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -893,7 +904,7 @@
                                 API_REFUND_AMOUNT_KEY : _totalRefund?:@"",
                                 API_REMARK_KEY : _note?:@"",
                                 API_PHOTOS_KEY : photos,
-                                API_SERVER_ID_KEY : _generatehost.result.generated_host.server_id?:@"0"
+                                API_SERVER_ID_KEY : _generatehost.result.generated_host.server_id?:serverID?:@"0"
                                 };
         return param;
     }

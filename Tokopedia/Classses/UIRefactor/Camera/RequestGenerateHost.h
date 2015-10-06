@@ -34,6 +34,8 @@
 
 
 @property NSString *prodct_id;
+@property BOOL isNotUsingNewAdd;
+@property BOOL isResolutionInput;
 
 - (void)configureRestkitGenerateHost;
 - (void)requestGenerateHost;
