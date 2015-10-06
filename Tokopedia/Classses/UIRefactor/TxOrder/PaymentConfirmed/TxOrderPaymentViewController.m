@@ -1171,7 +1171,7 @@
     bankid = [[data objectForKey:API_BANK_ID_KEY] integerValue];
     bankAccount.bank_id = bankid;
     bankAccount.bank_name = name;
-    [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    [_dataInput setObject:bankAccount?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     [_tableView reloadData];
 }
 
