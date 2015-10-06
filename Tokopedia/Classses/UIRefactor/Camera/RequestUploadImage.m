@@ -90,8 +90,7 @@
                              kTKPD_USERIDKEY                    : userID,
                              @"product_id"                      : _productID?:@"",
                              @"new_add"                         : newAdd,
-                             @"payment_id"                      : _paymentID?:@"",
-                             @"upload_version"                  :@"2"
+                             @"payment_id"                      : _paymentID?:@""
                          };
     
     

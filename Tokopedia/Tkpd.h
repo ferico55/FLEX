@@ -270,6 +270,8 @@ typedef enum {
 
 #define GTMHiddenPaymentKey @"hidden_payment_gateways"
 
+#define GTMIsLuckyInstallmentAvailableKey @"is_installment_available"
+
 #define GTMKeyComplainNotifString @"complain_notif_string"
 
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
