@@ -1228,7 +1228,7 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    BankAccountFormList *bankAcount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    BankAccountFormList *bankAcount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     if (textField == _accountNameTextField) {
         bankAcount.bank_account_name = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
