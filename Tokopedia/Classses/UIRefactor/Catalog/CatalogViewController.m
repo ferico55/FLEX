@@ -367,6 +367,7 @@ static CGFloat rowHeight = 40;
                                                          API_SHOP_RATE_ACCURACY_KEY,
                                                          API_SHOP_RATE_SPEED_KEY,
                                                          API_IS_GOLD_SHOP_KEY,
+                                                         @"shop_lucky"
                                                          ]];
     
     RKObjectMapping *shopStatMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
