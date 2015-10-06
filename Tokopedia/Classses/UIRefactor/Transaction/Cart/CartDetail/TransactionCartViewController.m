@@ -444,6 +444,7 @@
     UITableViewCell* cell = nil;
 
     NSInteger shopCount = _list.count;
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (indexPath.section <shopCount)
         cell = [self cellListCartByShopAtIndexPath:indexPath];
@@ -457,7 +458,6 @@
     {
         if (indexPath.row == 1) {
             cell = _ccFeeCell;
-            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
             if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
                 _ccFeeCell.textLabel.text = @"Total belum termasuk biaya administrasi.";
             }
@@ -469,7 +469,19 @@
         else
         {
             cell = _totalPaymentCell;
-            [cell.detailTextLabel setText:(_indexPage ==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
+            NSString *isAvailableInstallment = [[self gtmContainer]stringForKey:GTMIsLuckyInstallmentAvailableKey];
+            NSString *totalPayment;
+            if (_indexPage == 0) {
+                if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isAvailableInstallment integerValue] == 0) {
+                    totalPayment = _cart.grand_total_without_lp_idr;
+                }
+                else
+                    totalPayment = _cart.grand_total_idr;
+            }
+            else
+                totalPayment = _cartSummary.payment_left_idr;
+            
+            [cell.detailTextLabel setText:totalPayment animated:YES];
         }
     }
     
@@ -2422,6 +2434,7 @@
 -(CGFloat)rowHeightPage1AtIndexPath:(NSIndexPath*)indexPath
 {
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    NSString *isInstallmentAvailable = [[self gtmContainer] stringForKey:GTMIsLuckyInstallmentAvailableKey];
     
     if (indexPath.section < _list.count) {
         TransactionCartList *list = _list[indexPath.section];
@@ -2458,15 +2471,27 @@
         }
     }
     else if (indexPath.section == _list.count) {
+        if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isInstallmentAvailable integerValue] == 0) {
+            return 0;
+        }
+        
         if ([_cart.cashback integerValue] == 0) {
             return 0;
         }
+        
+        return 44;
     }
     else if (indexPath.section == _list.count+1) {
         if (indexPath.row == 1) {
-            if ([_cart.lp_amount integerValue] == 0) {
+            if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isInstallmentAvailable integerValue] == 0) {
                 return 0;
             }
+            
+            if ([_cart.lp_amount integerValue] <= 0) {
+                return 0;
+            }
+            
+            return 44;
         }
         else if (indexPath.row >1) {
             return 0;

@@ -49,7 +49,8 @@
                                                    @"lp_amount_idr",
                                                    @"lp_amount",
                                                    @"cashback_idr",
-                                                   @"cashback"
+                                                   @"cashback",
+                                                   @"grand_total_without_lp_idr"
                                                    ]];
     
     RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
