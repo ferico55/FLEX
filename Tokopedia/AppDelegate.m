@@ -133,6 +133,10 @@
                                                                         openURL:url
                                                               sourceApplication:sourceApplication
                                                                      annotation:annotation];
+    
+    //open app indexing (deeplink URL)
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+    
     if (shouldOpenURL) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
