@@ -159,22 +159,24 @@
     
     cell.goldMerchantBadge.hidden = (!shop.is_gold_shop == 1);
     
-    if (cell.goldMerchantBadge.hidden) {
-        cell.constraintWidthGoldMerchant.constant = 0;
-        cell.containerHeightConstraint.constant = 0;
-    }
+    cell.constraintWidthGoldMerchant.constant = (shop.is_gold_shop == 0)?0:20;
+    cell.constraintSpaceLuckyMerchant.constant = (shop.is_gold_shop == 0)?0:2;
     
-    [cell.luckyMerchantBadge setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_lucky]]
+    UIImageView *thumb = cell.luckyMerchantBadge;
+    thumb.image = nil;
+    [thumb setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_lucky]]
                               placeholderImage:[UIImage imageNamed:@""]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                           cell.luckyMerchantBadge.image = image;
+                                           thumb.image = image;
                                            } failure:nil];
     
-    [cell.shopImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_image]]
+    thumb = cell.shopImageView;
+    thumb.image = nil;
+    [thumb setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_image]]
                               placeholderImage:[UIImage imageNamed:@""]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                           cell.shopImageView.image = image;
-                                           cell.shopImageView.contentMode = UIViewContentModeScaleAspectFill;
+                                           thumb.image = image;
+                                           thumb.contentMode = UIViewContentModeScaleAspectFill;
     } failure:nil];
 
     if (shop.product_list.count > 1) {
