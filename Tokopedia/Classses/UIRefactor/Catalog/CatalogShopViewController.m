@@ -350,7 +350,7 @@
                                                          API_SHOP_RATE_SERVICE_KEY,
                                                          API_SHOP_RATE_ACCURACY_KEY,
                                                          API_SHOP_RATE_SPEED_KEY,
-                                                         API_IS_GOLD_SHOP_KEY,
+                                                         @"is_gold_shop",
                                                          @"shop_lucky"
                                                          ]];
     
