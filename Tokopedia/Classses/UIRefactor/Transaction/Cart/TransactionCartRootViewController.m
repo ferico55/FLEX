@@ -18,6 +18,8 @@
 
 #import "NotificationManager.h"
 
+#import "Localytics.h"
+
 @interface TransactionCartRootViewController ()
 <
     UIPageViewControllerDataSource,
@@ -135,6 +137,8 @@
             [self initNotificationManager];
         }
     }
+    
+    [Localytics triggerInAppMessage:@"Cart Screen"];
 }
 
 -(void)viewDidAppear:(BOOL)animated

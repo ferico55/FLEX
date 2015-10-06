@@ -23,6 +23,8 @@
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
 
+#import "Localytics.h"
+
 NSString *const searchPath = @"search/%@";
 
 @interface SearchViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UICollectionViewDataSource, UICollectionViewDelegate, SearchResultDelegate, NotificationDelegate,NotificationManagerDelegate> {
@@ -137,6 +139,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
+    [Localytics triggerInAppMessage:@"Search Product"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

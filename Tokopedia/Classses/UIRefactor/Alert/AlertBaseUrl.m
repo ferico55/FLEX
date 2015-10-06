@@ -7,12 +7,11 @@
 //
 
 #import "AlertBaseUrl.h"
+#import "Localytics.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @implementation AlertBaseUrl
-
-
 
 - (void)awakeFromNib {
     self.layer.cornerRadius = 5;
@@ -27,6 +26,7 @@
 - (IBAction)tapDev:(id)sender {
     baseUrl = @"http://alpha.tokopedia.com/ws";
     [self didChangeButtonColor:_devButton];
+    [Localytics tagEvent:@"Developer Options"];
 }
 
 - (IBAction)tapLive:(id)sender {
@@ -46,6 +46,5 @@
     
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
 }
-
 
 @end

@@ -48,6 +48,8 @@
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
 
+#import "Localytics.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -786,7 +788,6 @@ PromoCollectionViewDelegate
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
             [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
-            //            [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
         } else  {
             [_collectionView reloadData];
         }
@@ -799,26 +800,29 @@ PromoCollectionViewDelegate
         if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
             [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
         }
+
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.result.department_id?:@"";
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [_params removeObjectForKey:@"search"];
-//            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
             [_networkManager requestCancel];
-//            [_act startAnimating];
-//            
+
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
                 [self.delegate updateTabCategory:departementID];
             }
             
             [self refreshView:nil];
-//            [_networkManager doRequest];
+            
+            [Localytics triggerInAppMessage:@"Category Result Screen"];
         }
-        
         
         else if ([query[1] isEqualToString:@"catalog"]) {
             [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
+        }
+        
+        else {
+            [Localytics triggerInAppMessage:@"Search Result Screen"];
         }
     }
 }
@@ -847,6 +851,8 @@ PromoCollectionViewDelegate
 }
 
 - (void)redirectToHotlistResult{
+    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
+    
     NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     

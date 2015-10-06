@@ -26,7 +26,6 @@
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
 #import "DeeplinkController.h"
-//#import "WishListViewController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -34,6 +33,8 @@
 
 #import "InboxRootViewController.h"
 #import "NavigateViewController.h"
+
+#import "Localytics.h"
 
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
@@ -162,7 +163,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-//    [_scrollView setFrame:self.view.frame];
     self.navigationController.title = @"Beranda";
     
     [self goToPage:_page];
@@ -183,6 +183,8 @@
         [_scrollView setContentSize:CGSizeMake(300, 300)];
         [_scrollView setPagingEnabled:NO];
     }
+    
+    [Localytics triggerInAppMessage:@"Home - Hot List"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

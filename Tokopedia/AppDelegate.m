@@ -34,54 +34,20 @@
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
     
-    
-    
     dispatch_async(dispatch_get_main_queue(), ^{
-        //GTM init
-        _tagManager = [TAGManager instance];
-        [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
-        
-        NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-        if(url != nil) {
-            [_tagManager previewWithUrl:url];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
-        }
-        
-        [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
-                                     tagManager:self.tagManager
-                                       openType:kTAGOpenTypePreferFresh
-                                        timeout:nil
-                                       notifier:self];
-        
-        [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee" launchOptions:launchOptions];
-        
-        //appsflyer init
-        [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
-        [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
-        [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
-        
-        //fabric init
+        // Init Fabric
         [Fabric with:@[CrashlyticsKit]];
+
+        // Configure Third Party Apps
+        [self configureGTMInApplication:application withOptions:launchOptions];
+        [self configureLocalyticsInApplication:application withOptions:launchOptions];
+        [self configureAppsflyer];
+        [self configureGoogleAnalytics];
         
-        //push notification init
-        if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
-            // iOS 8 Notifications
-            [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-            [application registerForRemoteNotifications];
-        }
-        else {
-            // iOS < 8 Notifications
-            [application registerForRemoteNotificationTypes:
-             (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
-        }
+        [self configurePushNotificationsInApplication:application];
         
-        //Google Analytics init
-        [GAI sharedInstance].trackUncaughtExceptions = YES;
-//        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
-        [GAI sharedInstance].dispatchInterval = 60;
-        [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
-        [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+
         [self preparePersistData];
     });
     
@@ -95,6 +61,63 @@
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;
+}
+
+- (void)configureGoogleAnalytics {
+    //Google Analytics init
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    //        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+    [GAI sharedInstance].dispatchInterval = 60;
+    [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
+    [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];
+}
+
+- (void)configureAppsflyer {
+    //appsflyer init
+    [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
+    [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
+    [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
+}
+
+- (void)configureGTMInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
+    //GTM init
+    _tagManager = [TAGManager instance];
+    [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
+    
+    NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+    if(url != nil) {
+        [_tagManager previewWithUrl:url];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+    }
+    
+    [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
+                                 tagManager:self.tagManager
+                                   openType:kTAGOpenTypePreferFresh
+                                    timeout:nil
+                                   notifier:self];
+}
+
+- (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
+    [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee"
+                launchOptions:launchOptions];
+#ifdef DEBUG
+    [Localytics setTestModeEnabled:YES];
+#endif
+    [Localytics triggerInAppMessage:@"Home: Launch App"];
+}
+
+- (void)configurePushNotificationsInApplication:(UIApplication *)application {
+    // If you are using Localytics Messaging include the following code to register for push notifications
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)] ||
+        [application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+        UIUserNotificationType types = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types
+                                                                                 categories:nil];
+        [application registerUserNotificationSettings:settings];
+        [application registerForRemoteNotifications];
+    } else {
+        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -138,6 +161,8 @@
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
+        return YES;
+    } else if ([Localytics handleTestModeURL:url]) {
         return YES;
     }
     return NO;

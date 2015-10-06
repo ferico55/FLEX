@@ -20,6 +20,8 @@
 #import "WishListObject.h"
 #import "WishListObjectList.h"
 
+#import "Localytics.h"
+
 static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 
 @interface MyWishlistViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
@@ -117,6 +119,8 @@ typedef enum TagRequest {
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductTag;
     [_networkManager doRequest];
+    
+    [Localytics triggerInAppMessage:@"Wishlist Screen"];
 }
 
 -(void)viewWillAppear:(BOOL)animated
