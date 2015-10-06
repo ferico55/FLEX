@@ -600,7 +600,7 @@ typedef enum TagRequest {
     NSString *readStatus = [userinfo objectForKey:@"read_status"];
     
     if(readStatus) {
-        if (_messages.count > 0) {
+        if (_messages.count > indexpath.row) {
             InboxMessageList *list = _messages[indexpath.row];
             
             list.message_read_status = readStatus;
