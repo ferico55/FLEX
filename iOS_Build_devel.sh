@@ -4,11 +4,11 @@ xcodebuild -alltargets clean
 rm -rf "./JenkinsBuild"
 
 
-xcodebuild -workspace Tokopedia.xcworkspace -configuration Debug -scheme Tokopedia PROVISIONING_PROFILE="a8bfc88c-0639-4b53-b0b0-a1932192a833" CONFIGURATION_BUILD_DIR=JenkinsBuild
+xcodebuild -workspace Tokopedia.xcworkspace -configuration Debug -scheme Tokopedia PROVISIONING_PROFILE="772fd597-9b4f-4cd4-80e6-3515b12fc81c" CONFIGURATION_BUILD_DIR=JenkinsBuild
 
 rm -rf "./JenkinsArchive"
 
-xcodebuild -workspace Tokopedia.xcworkspace -configuration Debug -scheme Tokopedia archive PROVISIONING_PROFILE="a8bfc88c-0639-4b53-b0b0-a1932192a833" CODE_SIGN_IDENTITY="iPhone Developer: Melissa Juminto (TT6A3N9KTC)" -archivePath ./JenkinsArchive/Tokopedia.xcarchive -destination generic/platform=iOS
+xcodebuild -workspace Tokopedia.xcworkspace -configuration Debug -scheme Tokopedia archive PROVISIONING_PROFILE="772fd597-9b4f-4cd4-80e6-3515b12fc81c" CODE_SIGN_IDENTITY="iPhone Developer: Melissa Juminto (TT6A3N9KTC)" -archivePath ./JenkinsArchive/Tokopedia.xcarchive -destination generic/platform=iOS
 
 rm -rf "./JenkinsIPAExport"
 

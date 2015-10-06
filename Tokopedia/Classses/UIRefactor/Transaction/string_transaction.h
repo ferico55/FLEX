@@ -55,7 +55,8 @@ typedef enum
     TYPE_GATEWAY_BCA_CLICK_PAY = 7,
     TYPE_GATEWAY_BCA_KLIK_BCA = 9,
     TYPE_GATEWAY_CC = 8,
-    TYPE_GATEWAY_INDOMARET = 10
+    TYPE_GATEWAY_INDOMARET = 10,
+    TYPE_GATEWAY_INSTALLMENT = 12
 }TYPE_GATEWAY;
 
 typedef enum
@@ -84,7 +85,7 @@ typedef enum
 #define STRING_METODE_PEMBAYARAN @"Metode Pembayaran"
 #define STRING_TOTAL_TAGIHAN @"Total Tagihan"
 #define STRING_PENGGUNAAN_KUPON @"Penggunaan Kupon"
-#define STRING_LOYALTY_POINT @"Loyalty Point Terpakai"
+#define STRING_LOYALTY_POINT @"TopPoints Terpakai"
 #define STRING_PAYMENT
 
 #define DATA_DETAIL_PRODUCT_KEY @"product"
@@ -328,6 +329,8 @@ typedef enum
 #define API_CC_CVV_KEY @"card_cvv"
 #define API_CC_OWNER_KEY @"card_owner"
 #define API_CC_TOKEN_ID_KEY @"credit_card_token"
+#define API_CC_BANK_INSTALLMENT_KEY @"installment_bank"
+#define API_CC_DURATION_INSTALLMENT_KEY @"installment_term"
 
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"

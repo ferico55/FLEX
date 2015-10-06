@@ -434,7 +434,7 @@
         }
         else
         {
-            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pembayaran Anda gagal"] delegate:_viewController];
+            StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:actionCC.message_error?:@[@"Pembayaran Anda gagal"] delegate:_viewController];
             [failedAlert show];
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
