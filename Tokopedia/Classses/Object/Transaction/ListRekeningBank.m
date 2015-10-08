@@ -45,6 +45,17 @@
 {
     NSArray *systemBankArray =
                                 @[
+#if DEBUG
+                                  @{
+                                      @"sb_bank_cabang":@"Tomang Tol",
+                                      @"sb_picture":@"",
+                                      @"sb_info":@"Verifikasi 2x24 jam",
+                                      @"sb_bank_name":@"List Default",
+                                      @"sb_active":@"1",
+                                      @"sb_account_no":@"==============",
+                                      @"sb_account_name":@"PT. Tokopedia"
+                                      },
+#endif
                                     @{
                                         @"sb_active": @"1",
                                         @"sb_account_no": @"372 177 3939",
@@ -90,7 +101,6 @@
                                         @"sb_account_no":@"177 01 00731 002",
                                         @"sb_account_name":@"PT. Tokopedia"
                                     }
-
                                 ];
     
     NSMutableArray *systemBankWithMapping = [NSMutableArray new];
