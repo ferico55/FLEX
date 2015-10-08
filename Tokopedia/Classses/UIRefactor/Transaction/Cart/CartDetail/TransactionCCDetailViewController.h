@@ -14,6 +14,7 @@
 @required
 - (void)doRequestCC:(NSDictionary*)param;
 - (void)isSucessSprintAsia:(NSDictionary*)param;
+- (void)addData:(NSDictionary*)dataInput;
 
 @end
 
