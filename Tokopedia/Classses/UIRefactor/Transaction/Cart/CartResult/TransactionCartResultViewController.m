@@ -212,7 +212,7 @@
         }
         return 7;
     }
-    else if (section == _listTotalPayment.count && _cartBuy.transaction.lp_amount >= 0) {
+    else if (section == _listTotalPayment.count && _cartBuy.transaction.cashback >= 0) {
         return 10;
     }
     else if (section == _listTotalPayment.count+1) {
@@ -239,7 +239,7 @@
     }
     else if (indexPath.section == _listTotalPayment.count)
     {
-        if ([_cartBuy.transaction.lp_amount integerValue] == 0)
+        if ([_cartBuy.transaction.cashback integerValue] == 0)
             return 0;
         else
         return 44;
