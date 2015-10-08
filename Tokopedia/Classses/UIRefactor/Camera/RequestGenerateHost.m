@@ -74,17 +74,11 @@
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     NSString *userID = [userManager getUserId];
     
-    NSString *newAdd = [NSString stringWithFormat:@"%d", _isNotUsingNewAdd?0:1];
-    NSString *uploadVersion = [NSString stringWithFormat:@"%d", _isNotUsingNewAdd?0:2];
-    if (_isResolutionInput) {
-        newAdd = @"1";
-    }
-    
     NSDictionary* param = @{
                             API_ACTION_KEY : API_ACTION_GENERATE_HOST,
                             kTKPD_USERIDKEY : userID,
-                            @"new_add" : newAdd, //product,contact,
-                            @"upload_version" :uploadVersion
+                            @"new_add" : @(1), //product,contact,
+//                            @"upload_version" :@"2"
                             };
     
     _requestGenerateHost = [_objectManagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_UPLOAD_GENERATE_HOST_PATH parameters:param];
@@ -93,7 +87,7 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         [self requestSuccessGenerateHost:mappingResult withOperation:operation];
         [timer invalidate];
-         
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureGenerateHost:error];
