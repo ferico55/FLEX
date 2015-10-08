@@ -32,6 +32,9 @@
     
     BOOL _isWillApearFromGallery;
     BOOL _isExpanding;
+    
+    URLCacheConnection *_cacheConnection;
+    URLCacheController *_cacheController;
 }
 @property (weak, nonatomic) IBOutlet UIButton *confirmPaymentButton;
 @property (weak, nonatomic) IBOutlet UILabel *listPaymentTitleLabel;

@@ -9,8 +9,8 @@
 #import "TableViewCell.h"
 
 @interface AlertListBankCell : TableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *textLabel;
-@property (weak, nonatomic) IBOutlet UILabel *detailTextLabel;
+@property (weak, nonatomic) IBOutlet UILabel *textCellLabel;
+@property (weak, nonatomic) IBOutlet UILabel *detailTextCellLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnail;
 
 + (id)newcell;

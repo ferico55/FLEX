@@ -16,7 +16,7 @@
 {
     [super awakeFromNib];
     self.layer.cornerRadius = 5;
-    
+    self.tableView.layer.cornerRadius = 5;
 }
 
 #pragma mark - Table Data Source
@@ -38,8 +38,8 @@
         }
         
         TransactionSystemBank *content = _list[indexPath.row];
-        cell.textLabel.text = content.sb_bank_name?:@"";
-        cell.detailTextLabel.text = content.sb_account_no?:@"";
+        cell.textCellLabel.text = [NSString stringWithFormat:@"Bank %@",content.sb_bank_name]?:@"";
+        cell.detailTextCellLabel.text = content.sb_account_no?:@"";
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:content.sb_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         

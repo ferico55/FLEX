@@ -451,9 +451,6 @@
                         <constraint firstAttribute="height" constant="54" id="iUy-pS-BXs"/>
                         <constraint firstItem="cEj-yB-LeO" firstAttribute="leading" secondItem="qUQ-5o-7fm" secondAttribute="leading" id="ynt-xp-yXB"/>
                     </constraints>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="L3K-fE-Hig" appends="YES" id="9qq-j6-uBs"/>
-                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -482,11 +479,6 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="108" y="-612.5"/>
         </view>
-        <tapGestureRecognizer id="L3K-fE-Hig">
-            <connections>
-                <action selector="gesture:" destination="-1" id="nah-5N-6Jl"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_info_grey.png" width="20" height="20"/>

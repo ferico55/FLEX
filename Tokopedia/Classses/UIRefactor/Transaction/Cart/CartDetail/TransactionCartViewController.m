@@ -42,6 +42,8 @@
 
 #import "GeneralTableViewController.h"
 
+#import "ListRekeningBank.h"
+
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
@@ -135,6 +137,11 @@
     
     BOOL _isSelectBankInstallment;
     BOOL _isSelectDurationInstallment;
+    
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    
+    NSString *_cachepath;
     
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -250,6 +257,8 @@
     _requestCart = [RequestCart new];
     _requestCart.viewController = self;
     _requestCart.delegate = self;
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -319,6 +328,12 @@
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
+    
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"bank-account"];
+    ListRekeningBank *listBank = [ListRekeningBank new];
+    _cachepath = [listBank cachepath];
+    _cachecontroller.filePath = _cachepath;
+    [_cachecontroller initCacheWithDocumentPath:path];
 }
 
 
@@ -3175,6 +3190,12 @@
             [_delegate didFinishRequestBuyData:userInfo];
             [_dataInput removeAllObjects];
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_TRANSFER_BANK) {
+                [_cacheconnection connection:operation.HTTPRequestOperation.request
+                          didReceiveResponse:operation.HTTPRequestOperation.response];
+                [_cachecontroller connectionDidFinish:_cacheconnection];
+                [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+            }
         }
         break;
     }

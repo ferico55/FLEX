@@ -20,6 +20,8 @@
 #import "TxOrderPaymentViewController.h"
 #import "AlertListBankView.h"
 
+#import "ListRekeningBank.h"
+
 @interface TxOrderConfirmationDetailViewController ()
 <
     UITableViewDataSource,
@@ -99,7 +101,8 @@
 
 - (IBAction)tapRekInfo:(id)sender {
     AlertListBankView *popUp = [AlertListBankView newview];
-//    popUp.list = 
+    ListRekeningBank *listBank = [ListRekeningBank new];
+    popUp.list = [listBank getRekeningBankList];
     [popUp show];
 }
 

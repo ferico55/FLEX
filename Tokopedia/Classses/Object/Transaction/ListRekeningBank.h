@@ -10,5 +10,7 @@
 
 @interface ListRekeningBank : NSObject
 
+- (NSString *)cachepath;
+-(NSArray*)getRekeningBankList;
 
 @end
