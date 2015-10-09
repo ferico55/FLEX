@@ -43,19 +43,20 @@
 
 -(NSArray*)defaultListBank
 {
-    NSArray *systemBankArray =
-                                @[
+    NSMutableArray *systemBankArray = [NSMutableArray new];
 #if DEBUG
-                                  @{
-                                      @"sb_bank_cabang":@"Tomang Tol",
-                                      @"sb_picture":@"",
-                                      @"sb_info":@"Verifikasi 2x24 jam",
-                                      @"sb_bank_name":@"List Default",
-                                      @"sb_active":@"1",
-                                      @"sb_account_no":@"==============",
-                                      @"sb_account_name":@"PT. Tokopedia"
-                                      },
+    [systemBankArray addObject: @{
+                                  @"sb_bank_cabang":@"Tomang Tol",
+                                  @"sb_picture":@"",
+                                  @"sb_info":@"Verifikasi 2x24 jam",
+                                  @"sb_bank_name":@"List Default",
+                                  @"sb_active":@"1",
+                                  @"sb_account_no":@"==============",
+                                  @"sb_account_name":@"PT. Tokopedia"
+                                  }];
 #endif
+    NSArray *systemBank =
+                                @[
                                     @{
                                         @"sb_active": @"1",
                                         @"sb_account_no": @"372 177 3939",
@@ -102,6 +103,7 @@
                                         @"sb_account_name":@"PT. Tokopedia"
                                     }
                                 ];
+    [systemBankArray addObjectsFromArray:systemBank];
     
     NSMutableArray *systemBankWithMapping = [NSMutableArray new];
     for (NSDictionary *systemBank in systemBankArray) {
@@ -115,7 +117,7 @@
         [systemBankWithMapping addObject:bank];
     }
     
-    return systemBankWithMapping;
+    return [systemBankWithMapping copy];
 }
 
 -(RKObjectManager*)objectManager
