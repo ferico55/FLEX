@@ -61,7 +61,7 @@
     }
     else if ([explodedPathUrl[1] isEqualToString:@"search"]) {
         //search
-        NSString *urlString = [url absoluteString];
+        NSString *urlString = [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *urlDict = [urlString URLQueryParametersWithOptions:URLQueryOptionDefault];
         [navigator navigateToSearchFromViewController:(UIViewController*)_delegate withData:urlDict];
     }
