@@ -22,6 +22,7 @@
 #import "SearchAutoCompleteObject.h"
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
+#import "DeeplinkController.h"
 
 NSString *const searchPath = @"search/%@";
 
@@ -44,6 +45,7 @@ NSString *const searchPath = @"search/%@";
     NSMutableArray *_hotlist;
     NSMutableArray *_historyResult;
     NSMutableArray *_typedHistoryResult;
+    NSURL *_deeplinkUrl;
     
 }
 
@@ -109,6 +111,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                                                  name:kTKPD_REMOVE_SEARCH_HISTORY
                                                object:nil];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDeeplinkUrl:)
+                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -148,6 +155,26 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [super viewWillDisappear:animated];
     [_searchBar resignFirstResponder];
 }
+
+
+#pragma mark - Deeplink Delegate
+- (NSURL *)sanitizedURL {
+    return _deeplinkUrl;
+}
+
+- (void)didReceiveDeeplinkUrl:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSURL *deeplinkUrl = [userInfo objectForKey:@"url"];
+    
+    if(deeplinkUrl) {
+        DeeplinkController *dlc = [DeeplinkController new];
+        __weak typeof(self) weakSelf = self;
+        dlc.delegate = weakSelf;
+        _deeplinkUrl = deeplinkUrl;
+        [dlc doRedirect];
+    }
+}
+
 
 #pragma mark - Memory Management
 - (void)dealloc{

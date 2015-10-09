@@ -15,6 +15,7 @@
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "NotificationManager.h"
+#import "DeeplinkController.h"
 
 
 @interface CategoryViewController ()
@@ -26,6 +27,7 @@
 {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
+    NSURL *_deeplinkUrl;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -67,12 +69,36 @@
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDeeplinkUrl:)
+                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+
 
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
 
 
 }
+
+#pragma mark - Deeplink Delegate
+- (NSURL *)sanitizedURL {
+    return _deeplinkUrl;
+}
+
+- (void)didReceiveDeeplinkUrl:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSURL *deeplinkUrl = [userInfo objectForKey:@"url"];
+    
+    if(deeplinkUrl) {
+        DeeplinkController *dlc = [DeeplinkController new];
+        __weak typeof(self) weakSelf = self;
+        dlc.delegate = weakSelf;
+        _deeplinkUrl = deeplinkUrl;
+        [dlc doRedirect];
+    }
+}
+
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
