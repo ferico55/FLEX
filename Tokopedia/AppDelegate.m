@@ -147,6 +147,11 @@
     return NO;
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
+    
+    return YES;
+}
+
 
 
 #pragma mark - reset persist data if freshly installed
