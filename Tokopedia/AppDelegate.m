@@ -146,6 +146,11 @@
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
     }
+    if ([userInfo objectForKey:@"Localytics Campaign"]) {
+        NSString *campaign = [userInfo objectForKey:@"Localytics Campaign"];
+        NSDictionary *attributes = @{@"source" : campaign};
+        [Localytics tagEvent:@"Event : App Launch" attributes:attributes];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application

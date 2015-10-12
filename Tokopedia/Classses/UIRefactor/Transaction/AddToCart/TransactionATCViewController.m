@@ -1519,7 +1519,7 @@ replacementString:(NSString*)string
                                  @"Quantity" : productQuantity
                                  };
     
-    [Localytics tagEvent:@"Event : add to cart" attributes:attributes];
+    [Localytics tagEvent:@"Event : Add To Cart" attributes:attributes];
     
     NSString *profileAttribute = @"Profile : Last date has product in cart";
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
