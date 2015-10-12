@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		450230251BCB578B00E3EF38 /* RequestImageStepHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 450230241BCB578B00E3EF38 /* RequestImageStepHandler.m */; settings = {ASSET_TAGS = (); }; };
+		450230281BCB57D800E3EF38 /* RequestUploadImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 450230271BCB57D800E3EF38 /* RequestUploadImageHelper.m */; settings = {ASSET_TAGS = (); }; };
+		4502302E1BCB59F000E3EF38 /* UploadImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502302B1BCB59F000E3EF38 /* UploadImageHelper.m */; settings = {ASSET_TAGS = (); }; };
+		4502302F1BCB59F000E3EF38 /* UploadImageHelperResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502302D1BCB59F000E3EF38 /* UploadImageHelperResult.m */; settings = {ASSET_TAGS = (); }; };
+		454D09211BC7B1610092CD92 /* RequestResolutionCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D09201BC7B1610092CD92 /* RequestResolutionCenter.m */; settings = {ASSET_TAGS = (); }; };
+		454D09311BC7C0600092CD92 /* ResolutionPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D09241BC7C0600092CD92 /* ResolutionPicture.m */; settings = {ASSET_TAGS = (); }; };
+		454D09321BC7C0600092CD92 /* ResolutionPictureResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D09261BC7C0600092CD92 /* ResolutionPictureResult.m */; settings = {ASSET_TAGS = (); }; };
+		454D09331BC7C0600092CD92 /* ResolutionSubmit.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D09291BC7C0600092CD92 /* ResolutionSubmit.m */; settings = {ASSET_TAGS = (); }; };
+		454D09341BC7C0600092CD92 /* ResolutionSubmitResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D092B1BC7C0600092CD92 /* ResolutionSubmitResult.m */; settings = {ASSET_TAGS = (); }; };
+		454D09351BC7C0600092CD92 /* ResolutionValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D092E1BC7C0600092CD92 /* ResolutionValidation.m */; settings = {ASSET_TAGS = (); }; };
+		454D09361BC7C0600092CD92 /* ResolutionValidationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D09301BC7C0600092CD92 /* ResolutionValidationResult.m */; settings = {ASSET_TAGS = (); }; };
 		456C420A1BBB8B2B008CAA35 /* InstallmentBank.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C42091BBB8B2B008CAA35 /* InstallmentBank.m */; settings = {ASSET_TAGS = (); }; };
 		456C420D1BBB8BA8008CAA35 /* InstallmentTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */; settings = {ASSET_TAGS = (); }; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
@@ -1845,6 +1856,28 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		450230231BCB578B00E3EF38 /* RequestImageStepHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestImageStepHandler.h; sourceTree = "<group>"; };
+		450230241BCB578B00E3EF38 /* RequestImageStepHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestImageStepHandler.m; sourceTree = "<group>"; };
+		450230261BCB57D800E3EF38 /* RequestUploadImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageHelper.h; sourceTree = "<group>"; };
+		450230271BCB57D800E3EF38 /* RequestUploadImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageHelper.m; sourceTree = "<group>"; };
+		4502302A1BCB59F000E3EF38 /* UploadImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageHelper.h; sourceTree = "<group>"; };
+		4502302B1BCB59F000E3EF38 /* UploadImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageHelper.m; sourceTree = "<group>"; };
+		4502302C1BCB59F000E3EF38 /* UploadImageHelperResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageHelperResult.h; sourceTree = "<group>"; };
+		4502302D1BCB59F000E3EF38 /* UploadImageHelperResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageHelperResult.m; sourceTree = "<group>"; };
+		454D091F1BC7B1610092CD92 /* RequestResolutionCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionCenter.h; sourceTree = "<group>"; };
+		454D09201BC7B1610092CD92 /* RequestResolutionCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionCenter.m; sourceTree = "<group>"; };
+		454D09231BC7C0600092CD92 /* ResolutionPicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionPicture.h; sourceTree = "<group>"; };
+		454D09241BC7C0600092CD92 /* ResolutionPicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionPicture.m; sourceTree = "<group>"; };
+		454D09251BC7C0600092CD92 /* ResolutionPictureResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionPictureResult.h; sourceTree = "<group>"; };
+		454D09261BC7C0600092CD92 /* ResolutionPictureResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionPictureResult.m; sourceTree = "<group>"; };
+		454D09281BC7C0600092CD92 /* ResolutionSubmit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionSubmit.h; sourceTree = "<group>"; };
+		454D09291BC7C0600092CD92 /* ResolutionSubmit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionSubmit.m; sourceTree = "<group>"; };
+		454D092A1BC7C0600092CD92 /* ResolutionSubmitResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionSubmitResult.h; sourceTree = "<group>"; };
+		454D092B1BC7C0600092CD92 /* ResolutionSubmitResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionSubmitResult.m; sourceTree = "<group>"; };
+		454D092D1BC7C0600092CD92 /* ResolutionValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionValidation.h; sourceTree = "<group>"; };
+		454D092E1BC7C0600092CD92 /* ResolutionValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionValidation.m; sourceTree = "<group>"; };
+		454D092F1BC7C0600092CD92 /* ResolutionValidationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionValidationResult.h; sourceTree = "<group>"; };
+		454D09301BC7C0600092CD92 /* ResolutionValidationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionValidationResult.m; sourceTree = "<group>"; };
 		456C42081BBB8B2B008CAA35 /* InstallmentBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentBank.h; sourceTree = "<group>"; };
 		456C42091BBB8B2B008CAA35 /* InstallmentBank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallmentBank.m; sourceTree = "<group>"; };
 		456C420B1BBB8BA8008CAA35 /* InstallmentTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentTerm.h; sourceTree = "<group>"; };
@@ -4639,6 +4672,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		450230291BCB59F000E3EF38 /* UploadImageHelper */ = {
+			isa = PBXGroup;
+			children = (
+				4502302A1BCB59F000E3EF38 /* UploadImageHelper.h */,
+				4502302B1BCB59F000E3EF38 /* UploadImageHelper.m */,
+				4502302C1BCB59F000E3EF38 /* UploadImageHelperResult.h */,
+				4502302D1BCB59F000E3EF38 /* UploadImageHelperResult.m */,
+			);
+			path = UploadImageHelper;
+			sourceTree = "<group>";
+		};
+		454D09221BC7C0600092CD92 /* InboxResolutionPicture */ = {
+			isa = PBXGroup;
+			children = (
+				454D09231BC7C0600092CD92 /* ResolutionPicture.h */,
+				454D09241BC7C0600092CD92 /* ResolutionPicture.m */,
+				454D09251BC7C0600092CD92 /* ResolutionPictureResult.h */,
+				454D09261BC7C0600092CD92 /* ResolutionPictureResult.m */,
+			);
+			path = InboxResolutionPicture;
+			sourceTree = "<group>";
+		};
+		454D09271BC7C0600092CD92 /* InboxResolutionSubmit */ = {
+			isa = PBXGroup;
+			children = (
+				454D09281BC7C0600092CD92 /* ResolutionSubmit.h */,
+				454D09291BC7C0600092CD92 /* ResolutionSubmit.m */,
+				454D092A1BC7C0600092CD92 /* ResolutionSubmitResult.h */,
+				454D092B1BC7C0600092CD92 /* ResolutionSubmitResult.m */,
+			);
+			path = InboxResolutionSubmit;
+			sourceTree = "<group>";
+		};
+		454D092C1BC7C0600092CD92 /* InboxResolutionValidation */ = {
+			isa = PBXGroup;
+			children = (
+				454D092D1BC7C0600092CD92 /* ResolutionValidation.h */,
+				454D092E1BC7C0600092CD92 /* ResolutionValidation.m */,
+				454D092F1BC7C0600092CD92 /* ResolutionValidationResult.h */,
+				454D09301BC7C0600092CD92 /* ResolutionValidationResult.m */,
+			);
+			path = InboxResolutionValidation;
+			sourceTree = "<group>";
+		};
 		45A254E51BBD4FD000742479 /* GoogleTagManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -5223,6 +5300,9 @@
 		85A18D0C1BAFEF9C002F1382 /* InboxResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				454D09221BC7C0600092CD92 /* InboxResolutionPicture */,
+				454D09271BC7C0600092CD92 /* InboxResolutionSubmit */,
+				454D092C1BC7C0600092CD92 /* InboxResolutionValidation */,
 				85A18D0D1BAFEF9C002F1382 /* InboxResolutionAction */,
 				85A18D121BAFEF9C002F1382 /* InboxResolutionCenter.h */,
 				85A18D131BAFEF9C002F1382 /* InboxResolutionCenter.m */,
@@ -6354,6 +6434,7 @@
 		85A18FA11BAFEF9D002F1382 /* UploadImage */ = {
 			isa = PBXGroup;
 			children = (
+				450230291BCB59F000E3EF38 /* UploadImageHelper */,
 				85A18FA21BAFEF9D002F1382 /* GenerateHost */,
 				85A18FA91BAFEF9D002F1382 /* Upload.h */,
 				85A18FAA1BAFEF9D002F1382 /* Upload.m */,
@@ -7062,6 +7143,12 @@
 		85A191241BAFEF9D002F1382 /* InboxResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				454D091F1BC7B1610092CD92 /* RequestResolutionCenter.h */,
+				454D09201BC7B1610092CD92 /* RequestResolutionCenter.m */,
+				450230231BCB578B00E3EF38 /* RequestImageStepHandler.h */,
+				450230241BCB578B00E3EF38 /* RequestImageStepHandler.m */,
+				450230261BCB57D800E3EF38 /* RequestUploadImageHelper.h */,
+				450230271BCB57D800E3EF38 /* RequestUploadImageHelper.m */,
 				85A191251BAFEF9D002F1382 /* Complain */,
 				85A1912F1BAFEF9D002F1382 /* InboxResolSplitViewController.h */,
 				85A191301BAFEF9D002F1382 /* InboxResolSplitViewController.m */,
@@ -10687,6 +10774,7 @@
 				85A19AC61BAFEFA1002F1382 /* SettingBankDetailViewController.m in Sources */,
 				85A197451BAFEFA0002F1382 /* URLCacheController.m in Sources */,
 				85A19B031BAFEFA1002F1382 /* ShopPageHeader.m in Sources */,
+				450230281BCB57D800E3EF38 /* RequestUploadImageHelper.m in Sources */,
 				85A19AC81BAFEFA1002F1382 /* SettingBankEditViewController.m in Sources */,
 				85A197FB1BAFEFA0002F1382 /* LoyaltyPoint.m in Sources */,
 				85A19B891BAFEFA1002F1382 /* UserPageHeader.m in Sources */,
@@ -10781,6 +10869,7 @@
 				85A19A211BAFEFA1002F1382 /* DetailProductInfoCell.m in Sources */,
 				85A1974F1BAFEFA0002F1382 /* NSString+HTML.m in Sources */,
 				85A1992B1BAFEFA1002F1382 /* CatalogProductCell.m in Sources */,
+				454D09321BC7C0600092CD92 /* ResolutionPictureResult.m in Sources */,
 				85A197D51BAFEFA0002F1382 /* ResolutionDetail.m in Sources */,
 				85A19A271BAFEFA1002F1382 /* DetailProductWholesaleCell.m in Sources */,
 				85A199121BAFEFA1002F1382 /* AlertLuckyView.m in Sources */,
@@ -11046,6 +11135,7 @@
 				85A1981C1BAFEFA0002F1382 /* ProductFeedList.m in Sources */,
 				85A19A9F1BAFEFA1002F1382 /* DetailShipmentStatusCell.m in Sources */,
 				85A198281BAFEFA0002F1382 /* ProfileEditResult.m in Sources */,
+				4502302E1BCB59F000E3EF38 /* UploadImageHelper.m in Sources */,
 				85A197C71BAFEFA0002F1382 /* InboxMessageResult.m in Sources */,
 				85A198411BAFEFA0002F1382 /* PromoProductImage.m in Sources */,
 				85A19A751BAFEFA1002F1382 /* HeaderCollectionReusableView.m in Sources */,
@@ -11181,6 +11271,7 @@
 				85A19AAB1BAFEFA1002F1382 /* SearchAutoCompleteHeaderView.m in Sources */,
 				85A19B2F1BAFEFA1002F1382 /* TransactionCartEditViewController.m in Sources */,
 				85A19AD21BAFEFA1002F1382 /* SettingPrivacyViewController.m in Sources */,
+				454D09351BC7C0600092CD92 /* ResolutionValidation.m in Sources */,
 				85A199C01BAFEFA1002F1382 /* FilterComplainViewController.m in Sources */,
 				85A19A891BAFEFA1002F1382 /* OrderDetailProductInformationCell.m in Sources */,
 				85A19B811BAFEFA1002F1382 /* ProfileFavoriteShopCell.m in Sources */,
@@ -11238,6 +11329,7 @@
 				85A19B621BAFEFA1002F1382 /* TxOrderConfirmationShipmentCell.m in Sources */,
 				85A19B831BAFEFA1002F1382 /* ProfileFavoriteShopViewController.m in Sources */,
 				85A19B8E1BAFEFA1002F1382 /* ProductCell.m in Sources */,
+				454D09331BC7C0600092CD92 /* ResolutionSubmit.m in Sources */,
 				85A197EC1BAFEFA0002F1382 /* InboxTicketResult.m in Sources */,
 				85A19AA71BAFEFA1002F1382 /* ShipmentStatusViewController.m in Sources */,
 				85A198751BAFEFA0002F1382 /* ShipmentResult.m in Sources */,
@@ -11248,6 +11340,7 @@
 				85A197711BAFEFA0002F1382 /* CategoryResult.m in Sources */,
 				85A1998A1BAFEFA1002F1382 /* GeneralSingleProductCell.m in Sources */,
 				85A19AB61BAFEFA1002F1382 /* SearchResultViewController.m in Sources */,
+				454D09311BC7C0600092CD92 /* ResolutionPicture.m in Sources */,
 				85A198241BAFEFA0002F1382 /* DataUser.m in Sources */,
 				85A19A7F1BAFEFA1002F1382 /* OrderRejectExplanationViewController.m in Sources */,
 				85A199171BAFEFA1002F1382 /* StickyAlert.m in Sources */,
@@ -11278,6 +11371,7 @@
 				85A198531BAFEFA0002F1382 /* OrderDeadline.m in Sources */,
 				85A19A8F1BAFEFA1002F1382 /* FilterSalesTransactionListViewController.m in Sources */,
 				85A19B5C1BAFEFA1002F1382 /* TxOrderConfirmationDetailViewController.m in Sources */,
+				450230251BCB578B00E3EF38 /* RequestImageStepHandler.m in Sources */,
 				85A197BE1BAFEFA0002F1382 /* HotlistResultInfo.m in Sources */,
 				85A19AFB1BAFEFA1002F1382 /* SendMessageViewController.m in Sources */,
 				FC36DF9319B0656400AF74C1 /* main.m in Sources */,
@@ -11318,6 +11412,7 @@
 				85A1989B1BAFEFA0002F1382 /* ShippingInfo.m in Sources */,
 				85A1987F1BAFEFA0002F1382 /* NoteDetails.m in Sources */,
 				85A1982E1BAFEFA0002F1382 /* UserInfo.m in Sources */,
+				4502302F1BCB59F000E3EF38 /* UploadImageHelperResult.m in Sources */,
 				85A19B2D1BAFEFA1002F1382 /* TransactionCartCostView.m in Sources */,
 				85A197991BAFEFA0002F1382 /* Statistic.m in Sources */,
 				85A19B8B1BAFEFA1002F1382 /* UserProfileBiodataViewController.m in Sources */,
@@ -11334,12 +11429,14 @@
 				85A198461BAFEFA0002F1382 /* PromoteResult.m in Sources */,
 				85A19A981BAFEFA1002F1382 /* RequestShipmentCourier.m in Sources */,
 				85A19B601BAFEFA1002F1382 /* TxOrderConfirmationProductCell.m in Sources */,
+				454D09341BC7C0600092CD92 /* ResolutionSubmitResult.m in Sources */,
 				85A19B1E1BAFEFA1002F1382 /* ProductTalkFormViewController.m in Sources */,
 				85A19AA31BAFEFA1002F1382 /* FilterShipmentStatusViewController.m in Sources */,
 				85A19AB11BAFEFA1002F1382 /* SearchResultCell.m in Sources */,
 				85A1981A1BAFEFA0002F1382 /* PriceAlertResult.m in Sources */,
 				85A19A231BAFEFA1002F1382 /* DetailProductOtherView.m in Sources */,
 				85A1989A1BAFEFA0002F1382 /* PosMinWeight.m in Sources */,
+				454D09211BC7B1610092CD92 /* RequestResolutionCenter.m in Sources */,
 				85A199921BAFEFA1002F1382 /* RequestNotifyLBLM.m in Sources */,
 				85A199801BAFEFA1002F1382 /* GeneralPhotoProductCell.m in Sources */,
 				85A197601BAFEFA0002F1382 /* CreatePasswordResult.m in Sources */,
@@ -11448,6 +11545,7 @@
 				85A198B91BAFEFA0002F1382 /* TransactionEditAddressForm.m in Sources */,
 				85A19AD01BAFEFA1002F1382 /* SettingPrivacyCell.m in Sources */,
 				85A199251BAFEFA1002F1382 /* CameraCollectionViewController.m in Sources */,
+				454D09361BC7C0600092CD92 /* ResolutionValidationResult.m in Sources */,
 				85A19B1A1BAFEFA1002F1382 /* SortViewController.m in Sources */,
 				85A198B71BAFEFA0002F1382 /* TransactionCC.m in Sources */,
 				85A19A0D1BAFEFA1002F1382 /* MyShopShipmentViewController.m in Sources */,
@@ -11674,7 +11772,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

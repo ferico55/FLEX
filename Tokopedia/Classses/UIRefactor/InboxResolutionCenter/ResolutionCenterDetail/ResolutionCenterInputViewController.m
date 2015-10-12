@@ -135,8 +135,8 @@
     [self adjustFooterButton];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    requestHost.isNotUsingNewAdd = YES;
-    requestHost.isResolutionInput = YES;
+//    requestHost.isNotUsingNewAdd = YES;
+//    requestHost.isResolutionInput = YES;
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
@@ -862,7 +862,7 @@
     
     _isFinishUploadingImage = NO;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.isNotUsingNewAdd = YES;
+//    uploadImage.isNotUsingNewAdd = YES;
     uploadImage.imageObject = object;
     uploadImage.delegate = self;
     uploadImage.generateHost = _generatehost;
