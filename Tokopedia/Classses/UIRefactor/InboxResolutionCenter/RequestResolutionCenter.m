@@ -7,87 +7,147 @@
 //
 
 #import "RequestResolutionCenter.h"
+#import "RequestUploadImageSteps.h"
 
-@interface RequestResolutionCenter()<TokopediaNetworkManagerDelegate>
+@interface RequestResolutionCenter()<TokopediaNetworkManagerDelegate, RequestUploadImageDelegate>
 {
-    TokopediaNetworkManager *_networkManagerReplayValidation;
-    TokopediaNetworkManager *_networkManagerResolutionPicture;
-    TokopediaNetworkManager *_networkManagerReplaySubmit;
+    RequestUploadImageSteps *_requestUploadImageReplay;
+    RequestUploadImageSteps *_requestUploadImageCreate;
 }
 
 @end
 
-typedef enum {
-    TagRequestResolutionReplayValidation = 10,
-    TagRequestResolutionResolutionPicture = 11,
-    TagRequestResolutionReplaySubmit = 12,
-}TagRequestResolution;
-
 @implementation RequestResolutionCenter
 {
-    NSDictionary *_paramReplayValidation;
+    NSDictionary *_paramValidation;
     NSDictionary *_paramResolutionPicture;
-    NSDictionary *_paramReplaySubmit;
+    NSDictionary *_paramSubmit;
 }
 
--(TokopediaNetworkManager*)networkManagerReplayValidation
+-(RequestUploadImageSteps*)requestUploadImageReplay
 {
-    if (!_networkManagerReplayValidation) {
-        _networkManagerReplayValidation = [TokopediaNetworkManager new];
-        _networkManagerReplayValidation.tagRequest = TagRequestResolutionReplayValidation;
-        _networkManagerReplayValidation.delegate = self;
+    if (!_requestUploadImageReplay) {
+        _requestUploadImageReplay = [RequestUploadImageSteps new];
+        _requestUploadImageReplay.delegate = self;
+        _requestUploadImageReplay.tag = 10;
     }
-    return _networkManagerReplayValidation;
+    return _requestUploadImageReplay;
 }
 
--(TokopediaNetworkManager*)networkManagerResolutionPicture
+-(RequestUploadImageSteps*)requestUploadImageCreate
 {
-    if (!_networkManagerResolutionPicture) {
-        _networkManagerResolutionPicture = [TokopediaNetworkManager new];
-        _networkManagerResolutionPicture.tagRequest = TagRequestResolutionReplaySubmit;
-        _networkManagerResolutionPicture.delegate = self;
+    if (!_requestUploadImageCreate) {
+        _requestUploadImageCreate = [RequestUploadImageSteps new];
+        _requestUploadImageCreate.delegate = self;
+        _requestUploadImageCreate.tag = 11;
     }
-    return _networkManagerResolutionPicture;
-}
-
--(TokopediaNetworkManager*)networkManagerReplaySubmit
-{
-    if (!_networkManagerReplaySubmit) {
-        _networkManagerReplaySubmit = [TokopediaNetworkManager new];
-        _networkManagerReplaySubmit.tagRequest = TagRequestResolutionReplaySubmit;
-        _networkManagerReplaySubmit.delegate = self;
-    }
-    return _networkManagerReplaySubmit;
+    return _requestUploadImageCreate;
 }
 
 -(void)doRequestReplay
 {
-    [[self networkManagerReplayValidation] doRequest];
+    [[self requestUploadImageReplay] doRequest];
+}
+
+-(void)doRequestCreate
+{
+    [[self requestUploadImageCreate] doRequest];
 }
 
 #pragma mark - Network Manager Delegate
 -(void)setParamReplayValidationFromID:(NSString*)resolutionID
                               message:(NSString*)message
                                photos:(NSString*)photos
-                              serveID:(NSString*)serverID
+                              serverID:(NSString*)serverID
                      editSolutionFlag:(NSString*)editSolutionFlag
                              solution:(NSString*)solution
                          refundAmount:(NSString*)refundAmount
                          flagReceived:(NSString*)flagReceived
                           troubleType:(NSString*)troubleType
+                               action:(NSString*)action
 {
-    NSDictionary *param = @{@"action"            :@"reply_conversation_validation",
+    NSMutableArray *paramPhotos = [NSMutableArray new];
+    NSArray *allPhotos = [photos componentsSeparatedByString:@"~"];
+    for (NSString *photo in allPhotos) {
+        if (![photo isEqualToString:@""]) {
+            [paramPhotos addObject:photo];
+        }
+    }
+    NSString *photo = [[[paramPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    
+    NSDictionary *param = @{@"action"            :action?:@"",
                             @"resolution_id"     :resolutionID?:@"",
                             @"reply_msg"         :message?:@"",
-                            @"photos"            :photos?:@"",
+                            @"photos"            :photo?:@"",
                             @"server_id"         :serverID?:@"",
                             @"edit_solution_flag":editSolutionFlag?:@"",
                             @"solution"          :solution?:@"",
                             @"refund_amount"     :refundAmount?:@"",
                             @"flag_received"     :flagReceived?:@"",
+                            @"trouble_type"      :troubleType?:@"",
+                            @"remark"            :message?:@""
+                            };
+    _paramValidation = param;
+    
+    [self setParamResolutionImageFromID:resolutionID attachmentString:photo serverID:serverID];
+    
+    NSMutableArray *actionSubmitArray = [NSMutableArray new];
+    [actionSubmitArray addObjectsFromArray:[action componentsSeparatedByString:@"_"]];
+    [actionSubmitArray removeLastObject];
+    NSString * actionSubmit = [[[actionSubmitArray copy] valueForKey:@"description"] componentsJoinedByString:@"_"];
+    actionSubmit = [actionSubmit stringByAppendingString:@"_submit"];
+    [self setParamresolutionID:resolutionID action:actionSubmit];
+    
+    [self adjustParameterImageReplay];
+}
+
+-(void)setParamCreateValidationFromID:(NSString *)orderID flagReceived:(NSString *)flagReceived troubleType:(NSString *)troubleType solution:(NSString *)solution refundAmount:(NSString *)refundAmount remark:(NSString *)remark photos:(NSString *)photos serverID:(NSString *)serverID
+{
+    NSMutableArray *paramPhotos = [NSMutableArray new];
+    NSArray *allPhotos = [photos componentsSeparatedByString:@"~"];
+    for (NSString *photo in allPhotos) {
+        if (![photo isEqualToString:@""]) {
+            [paramPhotos addObject:photo];
+        }
+    }
+    NSString *photo = [[[paramPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    NSString *action = @"create_resolution_validation";
+    
+    NSDictionary *param = @{@"action"            :action?:@"",
+                            @"order_id"          :orderID?:@"",
+                            @"remark"            :remark?:@"",
+                            @"photos"            :photo?:@"",
+                            @"server_id"         :serverID?:@"",
+                            @"solution"          :solution?:@"",
+                            @"refund_amt"        :refundAmount?:@"",
+                            @"flag_received"     :flagReceived?:@"",
                             @"trouble_type"      :troubleType?:@""
                             };
-    _paramReplayValidation = param;
+    _paramValidation = param;
+    
+    [self setParamCreateResolutionImageFromID:orderID attachmentString:photo serverID:serverID];
+    [self setParamCreateResolutionID:orderID action:@"create_resolution_submit"];
+    
+    [self adjustParameterImageCreate];
+    
+}
+
+-(void)adjustParameterImageReplay
+{
+    [self requestUploadImageReplay].paramValidation = _paramValidation;
+    [self requestUploadImageReplay].paramImage = _paramResolutionPicture;
+    [self requestUploadImageReplay].paramSubmit = _paramSubmit;
+    [self requestUploadImageReplay].pathValidation = [self requestUploadImageReplay].pathSubmit = @"action/resolution-center.pl";
+    [self requestUploadImageReplay].generatedHost = _generatedHost;
+}
+
+-(void)adjustParameterImageCreate
+{
+    [self requestUploadImageCreate].paramValidation = _paramValidation;
+    [self requestUploadImageCreate].paramImage = _paramResolutionPicture;
+    [self requestUploadImageCreate].paramSubmit = _paramSubmit;
+    [self requestUploadImageCreate].pathValidation = [self requestUploadImageCreate].pathSubmit = @"action/resolution-center.pl";
+    [self requestUploadImageCreate].generatedHost = _generatedHost;
 }
 
 -(void)setParamResolutionImageFromID:(NSString*)resolutionID
@@ -97,106 +157,67 @@ typedef enum {
     NSDictionary *param = @{@"action"            :@"create_resolution_picture",
                             @"resolution_id"     :resolutionID?:@"",
                             @"attachment_string" :attachmentString?:@"",
-                            @"server_id"         :serverID?:@""
+                            @"server_id"         :serverID?:@"",
+                            @"user_id"           :@(_generatedHost.user_id)?:@""
                             };
     _paramResolutionPicture = param;
 }
 
--(void)setParamPostKey:(NSString*)postKey
-          fileUploaded:(NSString*)fileUploaded
-          resolutionID:(NSString*)resolutionID
+-(void)setParamCreateResolutionImageFromID:(NSString*)orderID
+                          attachmentString:(NSString*)attachmentString
+                                  serverID:(NSString*)serverID
 {
-    NSDictionary *param = @{@"action"            :@"reply_conversation_submit",
-                            @"resolution_id"     :resolutionID?:@"",
-                            @"post_key"          :postKey?:@"",
-                            @"file_uploaded"     :fileUploaded?:@""
+    NSDictionary *param = @{@"action"            :@"create_resolution_picture",
+                            @"order_id"          :orderID?:@"",
+                            @"attachment_string" :attachmentString?:@"",
+                            @"server_id"         :serverID?:@"",
+                            @"user_id"           :@(_generatedHost.user_id)?:@""
                             };
-    _paramReplaySubmit = param;
+    _paramResolutionPicture = param;
+}
+
+-(void)setParamresolutionID:(NSString*)resolutionID
+                action:(NSString*)action
+{
+    NSDictionary *param = @{@"action"            :action,
+                            @"resolution_id"     :resolutionID?:@""
+                            };
+    _paramSubmit = param;
+}
+
+-(void)setParamCreateResolutionID:(NSString*)orderID
+                           action:(NSString*)action
+{
+    NSDictionary *param = @{@"action"       :action,
+                            @"order_id"     :orderID?:@""
+                            };
+    _paramSubmit = param;
 }
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    switch (tag) {
-        case TagRequestResolutionReplayValidation:
-            return _paramReplayValidation;
-            break;
-        case TagRequestResolutionResolutionPicture:
-            return _paramResolutionPicture;
-            break;
-        case TagRequestResolutionReplaySubmit:
-            return _paramReplaySubmit;
-            break;
-        default:
-            break;
-    }
-    
     return @{};
 }
 
 -(NSString *)getPath:(int)tag
 {
-    switch (tag) {
-        case TagRequestResolutionReplayValidation:
-            return @"resolution-center.pl";
-            break;
-        case TagRequestResolutionResolutionPicture:
-            return @"action/upload-image-helper.pl";
-            break;
-        case TagRequestResolutionReplaySubmit:
-            return @"resolution-center.pl";
-            break;
-        default:
-            break;
-    }
-    
-    return nil;
+    return @"";
 }
 
 -(id)getObjectManager:(int)tag
 {
-    switch (tag) {
-        case TagRequestResolutionReplayValidation:
-            return [self objectManagerValidation];
-            break;
-        case TagRequestResolutionResolutionPicture:
-            return [self objectManagerPicture];
-            break;
-        case TagRequestResolutionReplaySubmit:
-            return [self objectManagerSubmit];
-            break;
-        default:
-            break;
-    }
-    
     return nil;
 }
 
 -(NSString *)getRequestStatus:(id)result withTag:(int)tag
 {
-    switch (tag) {
-        case TagRequestResolutionReplayValidation:
-        {
-            ResolutionValidation *reso = [((RKMappingResult *) result).dictionary objectForKey:@""];
-            return reso.status;
-        }
-            break;
-        case TagRequestResolutionResolutionPicture:
-        {
-            ResolutionPicture *reso = [((RKMappingResult *) result).dictionary objectForKey:@""];
-            return reso.status;
-        }
-            break;
-        case TagRequestResolutionReplaySubmit:
-        {
-            ResolutionSubmit *reso = [((RKMappingResult *) result).dictionary objectForKey:@""];
-            return reso.status;
-        }
-            break;
-        default:
-            break;
-    }
-    
     return nil;
+}
+
+-(UIViewController*)lastViewController
+{
+    UIViewController * lastVC = [((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject];
+    return lastVC;
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
@@ -204,63 +225,33 @@ typedef enum {
 
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+-(NSString *)setSuccessMessage:(NSInteger)tag
 {
-    NSError *error = errorResult;
-    NSArray *errors;
-    
-    if (error.code==-1009 || error.code==-999) {
-        errors = @[@"Tidak ada koneksi internet"];
-    } else {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    NSString *successMessage = @"";
+    if (tag == 10) {
+        NSInteger isChangeSolution = [[_paramValidation objectForKey:@"edit_solution_flag"] integerValue];
+        successMessage = (isChangeSolution == 1)?@"Anda telah berhasil mengubah solusi":@"Sukses mengirim pesan diskusi";
     }
-    
-    StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_delegate];
-    [failedAlert show];
+    else if (tag == 11)
+    {
+        successMessage = @"Anda telah berhasil membuka komplain.";
+    }
+
+    return successMessage;
 }
 
--(void)actionAfterFailRequestMaxTries:(int)tag
+-(void)didSuccessUploadImage:(NSInteger)tag
 {
-    
-}
-
--(RKObjectManager*)objectManagerValidation
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionValidation mapping]
-                                                                                            method:RKRequestMethodGET
-                                                                                       pathPattern:nil
-                                                                                           keyPath:[self getPath:TagRequestResolutionReplayValidation]
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(RKObjectManager*)objectManagerSubmit
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionSubmit mapping]
-                                                                                            method:RKRequestMethodGET
-                                                                                       pathPattern:nil
-                                                                                           keyPath:[self getPath:TagRequestResolutionReplaySubmit]
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(RKObjectManager*)objectManagerPicture
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionPicture mapping]
-                                                                                            method:RKRequestMethodGET
-                                                                                       pathPattern:nil
-                                                                                           keyPath:[self getPath:TagRequestResolutionResolutionPicture]
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
+    switch (tag) {
+        case 10:
+            [_delegate didSuccessReplay];
+            break;
+        case 11:
+            [_delegate didSuccessCreate];
+            break;
+        default:
+            break;
+    }
 }
 
 @end

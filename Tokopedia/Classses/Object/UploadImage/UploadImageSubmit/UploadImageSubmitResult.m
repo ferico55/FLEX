@@ -1,18 +1,18 @@
 //
-//  ResolutionPictureResult.m
+//  UploadImageSubmitResult.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 3/6/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ResolutionPictureResult.h"
+#import "UploadImageSubmitResult.h"
 
-@implementation ResolutionPictureResult
+@implementation UploadImageSubmitResult
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"post_key"];
+    NSArray *keys = @[@"is_success"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

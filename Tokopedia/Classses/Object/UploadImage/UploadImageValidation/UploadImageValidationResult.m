@@ -1,18 +1,18 @@
 //
-//  ResolutionValidationResult.m
+//  UploadImageValidationResult.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 3/6/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ResolutionValidationResult.h"
+#import "UploadImageValidationResult.h"
 
-@implementation ResolutionValidationResult
+@implementation UploadImageValidationResult
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"file_uploaded"];
+    NSArray *keys = @[@"post_key"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
@@ -21,6 +21,5 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     return mapping;
 }
-
 
 @end

@@ -1,5 +1,5 @@
 //
-//  ResolutionSubmitResult.h
+//  UploadImageValidationResult.h
 //  Tokopedia
 //
 //  Created by IT Tkpd on 3/6/15.
@@ -10,8 +10,8 @@
 
 #import "TKPObjectMapping.h"
 
-@interface ResolutionSubmitResult : NSObject <TKPObjectMapping>
+@interface UploadImageValidationResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic) NSInteger is_success;
+@property (nonatomic, strong) NSString *post_key;
 
 @end

@@ -24,27 +24,21 @@
     if (!_networkManager) {
         _networkManager = [TokopediaNetworkManager new];
         _networkManager.delegate = self;
+        _networkManager.isParameterNotEncrypted = YES;
     }
     return _networkManager;
 }
-
 
 -(void)doRequest
 {
     [[self networkManager] doRequest];
 }
 
+
 #pragma mark - Network Manager Delegate
 
--(void)setParamResolutionImageFromID:(NSString*)resolutionID
-                    attachmentString:(NSString*)attachmentString
-                            serverID:(NSString*)serverID
+-(void)setParam:(NSDictionary *)param
 {
-    NSDictionary *param = @{@"action"            :@"create_resolution_picture",
-                            @"resolution_id"     :resolutionID?:@"",
-                            @"attachment_string" :attachmentString?:@"",
-                            @"server_id"         :serverID?:@""
-                            };
     _param = param;
 }
 
@@ -72,36 +66,30 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    NSError *error = errorResult;
-    NSArray *errors;
-    
-    if (error.code==-1009 || error.code==-999) {
-        errors = @[@"Tidak ada koneksi internet"];
-    } else {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    UploadImageHelper *reso = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
+    if (reso.result.file_uploaded && ![reso.result.file_uploaded isEqualToString:@""]) {
+        [_delegate setFileUploaded:reso.result.file_uploaded];
     }
-    
-    StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_delegate];
-    [failedAlert show];
+    else
+    {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:reso.message_error?:@[@"Maaf, Permohonan Anda tidak dapat diproses saat ini. Mohon dicoba kembali."] delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+        [alert show];
+    }
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    
+    [_delegate actionAfterFailRequestMaxTries:_tag];
 }
 
 -(RKObjectManager*)objectManager
 {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_upload_host];
+    RKObjectManager *objectManager = [RKObjectManager sharedClientUploadImage:urlString];
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[UploadImageHelper mapping]
-                                                                                            method:RKRequestMethodGET
-                                                                                       pathPattern:nil
-                                                                                           keyPath:[self getPath:0]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:[self getPath:_tag]
+                                                                                           keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     [objectManager addResponseDescriptor:responseDescriptor];
     

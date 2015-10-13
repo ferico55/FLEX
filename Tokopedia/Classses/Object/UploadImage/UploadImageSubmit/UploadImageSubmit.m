@@ -1,14 +1,14 @@
 //
-//  ResolutionSubmit.m
+//  UploadImageSubmit.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 3/6/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ResolutionSubmit.h"
+#import "UploadImageSubmit.h"
 
-@implementation ResolutionSubmit
+@implementation UploadImageSubmit
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
@@ -24,7 +24,7 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
                                                                             toKeyPath:@"result"
-                                                                          withMapping:[ResolutionSubmitResult mapping]]];
+                                                                          withMapping:[UploadImageSubmitResult mapping]]];
     return mapping;
 }
 

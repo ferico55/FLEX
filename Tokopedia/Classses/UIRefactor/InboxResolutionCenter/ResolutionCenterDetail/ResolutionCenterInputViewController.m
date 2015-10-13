@@ -303,7 +303,14 @@
         }
         else if (barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_SEND) {
             if ([self isValid]) {
-                NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+                NSMutableArray *photoArray = [NSMutableArray new];
+                for (NSString *photo in _uploadedPhotos) {
+                    if (![photo isEqualToString:@""])
+                    {
+                        [photoArray addObject:photo];
+                    }
+                }
+                NSString *photos = [[photoArray valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
                 [_delegate message:_messageTextView.text
                              photo:photos?:@""
                           serverID:_generatehost.result.generated_host.server_id?:@""];
@@ -844,6 +851,7 @@
 -(void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generatehost = generateHost;
+    [_delegate setGenerateHost:_generatehost.result.generated_host];
     [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(YES)];
 }
 
@@ -876,6 +884,7 @@
 {
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.alpha = 1.0;
+    
     if (![_uploadedPhotos containsObject:uploadImage.result.file_th]) {
         [_uploadedPhotos replaceObjectAtIndex:imageView.tag-10 withObject:uploadImage.result.file_th];
     }

@@ -1,14 +1,14 @@
 //
-//  ResolutionPicture.m
+//  UploadImageValidation.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 3/6/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ResolutionPicture.h"
+#import "UploadImageValidation.h"
 
-@implementation ResolutionPicture
+@implementation UploadImageValidation
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
@@ -24,7 +24,7 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
                                                                             toKeyPath:@"result"
-                                                                          withMapping:[ResolutionPictureResult mapping]]];
+                                                                          withMapping:[UploadImageValidationResult mapping]]];
     return mapping;
 }
 
