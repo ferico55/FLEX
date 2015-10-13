@@ -399,6 +399,14 @@
 
 -(void)didTapImageButton:(UIButton*)sender
 {
+    CGRect frame = _imageScrollView.frame;
+    frame.origin.y = _messageTextView.contentSize.height;
+    if (frame.origin.y <= 33) {
+        frame.origin.y += _headerView.frame.size.height;
+    }
+    _imageScrollView.frame = frame;
+    [_messageTextView addSubview:_imageScrollView];
+    
     CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
     albumVC.title = @"Album";
     albumVC.delegate = self;
@@ -618,6 +626,7 @@
     if ([self totalUploadedAndUploadingImage] == 0) {
         [_imageScrollView removeFromSuperview];
     }
+    
 
 }
 
@@ -691,10 +700,10 @@
     for (UIImageView *image in _thumbImages) {
         if (image.tag == tagView)
         {
+            imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
             image.alpha = 0.5f;
-            imageView = image;
         }
     }
     
@@ -707,7 +716,7 @@
     
     for (UIButton *button in _uploadButtons) {
         if (button.tag == tagView) {
-            button.enabled = NO;
+            button.hidden = YES;
         }
         if (button.tag == tagView+1)
         {
@@ -715,6 +724,7 @@
                 if (image.tag == tagView+1)
                 {
                     if (image.image == nil) {
+                        button.hidden = NO;
                         button.enabled = YES;
                     }
                 }
@@ -908,6 +918,8 @@
             button.enabled = YES;
         }
     }
+    
+    ((UIButton*)_cancelButtons[imageView.tag-10]).hidden = YES;
     
     imageView.hidden = YES;
     
