@@ -1787,6 +1787,7 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; settings = {ASSET_TAGS = (); }; };
+		7AD9D3F31BCBBEA7002E69DB /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3F21BCB68A4002E69DB /* Tokopedia.entitlements */; settings = {ASSET_TAGS = (); }; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -9707,6 +9708,7 @@
 				7A3F459B1BC3A5B10043850D /* icon_grid_dua@3x.png in Resources */,
 				7A3F44A81BC3A5B10043850D /* icon_neutral25@2x.png in Resources */,
 				7A3F45E01BC3A5B10043850D /* icon_close_white@2x.png in Resources */,
+				7AD9D3F31BCBBEA7002E69DB /* Tokopedia.entitlements in Resources */,
 				7A3F41081BC3A5B10043850D /* CatalogSectionHeaderView.xib in Resources */,
 				7A3F41DA1BC3A5B10043850D /* MyShopEtalaseFilterCell.xib in Resources */,
 				7A3F45AE1BC3A5B10043850D /* active_tab.png in Resources */,

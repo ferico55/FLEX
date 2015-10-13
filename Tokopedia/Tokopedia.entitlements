@@ -4,7 +4,10 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>webcredentials:tokopedia.com</string>
+		<string>applinks:tokopedia.com</string>
+		<string>applinks:alpha.tokopedia.com</string>
+		<string>applinks:m-alpha.tokopedia.com</string>
+		<string>applinks:m.tokopedia.com</string>
 	</array>
 </dict>
 </plist>

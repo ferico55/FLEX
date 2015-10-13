@@ -38,7 +38,16 @@
         return YES;
     }
     
-    if([[url host] isEqualToString:@"www.tokopedia.com"]) {
+    NSString *baseUrl;
+    if([kTkpdBaseURLString isEqualToString:@"http://alpha.tokopedia.com/ws"]) {
+        baseUrl = @"alpha.tokopedia.com";
+    } else if ([kTkpdBaseURLString isEqualToString:@"http://staging.tokopedia.com/ws"]) {
+        baseUrl = @"staging.tokopedia.com";
+    } else if ([kTkpdBaseURLString isEqualToString:@"http://www.tokopedia.com/ws"]) {
+        baseUrl = @"www.tokopedia.com";
+    }
+    
+    if([[url host] isEqualToString:baseUrl]) {
         return NO;
     }
     
