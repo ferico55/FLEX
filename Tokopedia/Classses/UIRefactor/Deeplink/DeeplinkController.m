@@ -11,6 +11,9 @@
 #import "WebViewController.h"
 #import "RequestUtils.h"
 #import "TAGDataLayer.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
+#import "TKPDTabNavigationController.h"
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 
 @implementation DeeplinkController
@@ -69,7 +72,57 @@
         //search
         NSString *urlString = [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *urlDict = [urlString URLQueryParametersWithOptions:URLQueryOptionDefault];
-        [navigator navigateToSearchFromViewController:(UIViewController*)_delegate withData:urlDict];
+        NSDictionary *data = urlDict;
+        
+        SearchResultViewController *vc = [SearchResultViewController new];
+        vc.data = @{
+                    @"search" : [data objectForKey:@"q"]?:@"",
+                    @"type" : @"search_product",
+                    @"location" : [data objectForKey:@"floc"]?:@"",
+                    @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                    @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                    @"order_by" :[data objectForKey:@"ob"]?:@"",
+                    @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                    @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                    @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                    @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                    };
+        SearchResultViewController *vc1 = [SearchResultViewController new];
+        vc1.data = @{
+                     @"search" : [data objectForKey:@"q"]?:@"",
+                     @"type" : @"search_catalog",
+                     @"location" : [data objectForKey:@"floc"]?:@"",
+                     @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                     @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                     @"order_by" :[data objectForKey:@"ob"]?:@"",
+                     @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                     @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                     @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                     @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                     };
+        SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+        vc2.data = @{
+                     @"search" : [data objectForKey:@"q"]?:@"",
+                     @"type" : @"search_shop",
+                     @"location" : [data objectForKey:@"floc"]?:@"",
+                     @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                     @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                     @"order_by" :[data objectForKey:@"ob"]?:@"",
+                     @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                     @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                     @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                     @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                     };
+        NSArray *viewcontrollers = @[vc,vc1,vc2];
+        
+        TKPDTabNavigationController *vcs = [[TKPDTabNavigationController alloc] init];
+        
+        [vcs setSelectedIndex:0];
+        [vcs setViewControllers:viewcontrollers];
+        [vcs setNavigationTitle:[data objectForKey:@"q"]];
+        
+        vcs.hidesBottomBarWhenPushed = YES;
+        [((UIViewController*)_delegate).navigationController pushViewController:vcs animated:YES];
     }
     else if([explodedPathUrl[1] isEqualToString:@"hot"]) {
         //hot

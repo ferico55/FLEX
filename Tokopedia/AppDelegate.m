@@ -91,15 +91,18 @@
         if(url) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
         } else {
-            NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
-            if (userActivityDictionary) {
-                [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-                    if ([obj isKindOfClass:[NSUserActivity class]]) {
-                        NSUserActivity *userActivity = obj;
-                        NSURL *url = userActivity.webpageURL;
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
-                    }
-                }];
+            //universal search link, only available in iOS 9
+            if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+                NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+                if (userActivityDictionary) {
+                    [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                        if ([obj isKindOfClass:[NSUserActivity class]]) {
+                            NSUserActivity *userActivity = obj;
+                            NSURL *url = userActivity.webpageURL;
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+                        }
+                    }];
+                }
             }
         }
 
