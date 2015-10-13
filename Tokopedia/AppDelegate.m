@@ -148,7 +148,7 @@
     }
     if ([userInfo objectForKey:@"Localytics Campaign"]) {
         NSString *campaign = [userInfo objectForKey:@"Localytics Campaign"];
-        NSDictionary *attributes = @{@"source" : campaign};
+        NSDictionary *attributes = @{@"Campaign" : campaign};
         [Localytics tagEvent:@"Event : App Launch" attributes:attributes];
     }
 }

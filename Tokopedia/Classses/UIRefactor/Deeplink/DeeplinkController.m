@@ -98,12 +98,16 @@
 }
 
 - (void)doRedirect {
+    NSURL *url = _sanitizedURL;
+    if ([[url host] rangeOfString:@"testMode"].location != NSNotFound ||
+        [[url host] rangeOfString:@"localytics"].location != NSNotFound) {
+        return;
+    }
     if([self shouldRedirectToWebView]) {
         [self redirectToWebViewController];
     } else {
         [self redirectToAppsViewController];
     }
 }
-
 
 @end

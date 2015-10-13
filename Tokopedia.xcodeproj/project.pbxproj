@@ -9594,6 +9594,14 @@
 				TargetAttributes = {
 					FC36DF8219B0656400AF74C1 = {
 						DevelopmentTeam = YQP4A2M94J;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					FC36DF9D19B0656400AF74C1 = {
 						DevelopmentTeam = YQP4A2M94J;
