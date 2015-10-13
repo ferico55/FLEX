@@ -85,10 +85,22 @@
         [self preparePersistData];
     });
     
+    //opening URL in background state
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+        } else {
+            NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+            if (userActivityDictionary) {
+                [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                    if ([obj isKindOfClass:[NSUserActivity class]]) {
+                        NSUserActivity *userActivity = obj;
+                        NSURL *url = userActivity.webpageURL;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+                    }
+                }];
+            }
         }
 
     });
