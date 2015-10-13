@@ -38,20 +38,17 @@
         return YES;
     }
     
-    NSString *baseUrl;
-    if([kTkpdBaseURLString isEqualToString:@"http://alpha.tokopedia.com/ws"]) {
-        baseUrl = @"alpha.tokopedia.com";
-    } else if ([kTkpdBaseURLString isEqualToString:@"http://staging.tokopedia.com/ws"]) {
-        baseUrl = @"staging.tokopedia.com";
-    } else if ([kTkpdBaseURLString isEqualToString:@"http://www.tokopedia.com/ws"]) {
-        baseUrl = @"www.tokopedia.com";
+    
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern: @"/tokopedia.com/" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRange textRange = NSMakeRange(0, [url host].length);
+    NSRange matchRange = [regex rangeOfFirstMatchInString:[url host] options:NSMatchingReportProgress range:textRange];
+    
+    if (matchRange.location != NSNotFound) {
+        return YES;
     }
     
-    if([[url host] isEqualToString:baseUrl]) {
-        return NO;
-    }
-    
-    return YES;
+    return NO;
 }
 
 - (void)redirectToAppsViewController {
