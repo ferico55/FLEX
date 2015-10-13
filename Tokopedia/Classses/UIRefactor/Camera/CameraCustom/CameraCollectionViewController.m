@@ -378,10 +378,14 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
             if ([self.delegate respondsToSelector:@selector(didRemoveImageDictionary:)]) {
                 [_delegate didRemoveImageDictionary:selectedImage];
             }
-            for (int i=0; i<_selectedIndexPath.count; i++) {
-                if ([_selectedIndexPath[i] isEqual:indexPath]) {
-                    [_selectedIndexPath replaceObjectAtIndex:i withObject:@""];
-                    break;
+            if(!_isAddEditProduct)[_selectedIndexPath removeObject:indexPath];
+            else
+            {
+                for (int i=0; i<_selectedIndexPath.count; i++) {
+                    if ([_selectedIndexPath[i] isEqual:indexPath]) {
+                        [_selectedIndexPath replaceObjectAtIndex:i withObject:@""];
+                        break;
+                    }
                 }
             }
         }
@@ -390,10 +394,14 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
             if (selectedIndexPath.count < _maxSelected) {
                 cell.checkmarkImageView.hidden = NO;
                 [selectedIndexPath addObject:indexPath];
-                for (int i=0; i<_selectedIndexPath.count; i++) {
-                    if ([_selectedIndexPath[i] isEqual:@""]) {
-                        [_selectedIndexPath replaceObjectAtIndex:i withObject:indexPath];
-                        break;
+                if(!_isAddEditProduct)[_selectedIndexPath addObject:indexPath];
+                else
+                {
+                    for (int i=0; i<_selectedIndexPath.count; i++) {
+                        if ([_selectedIndexPath[i] isEqual:@""]) {
+                            [_selectedIndexPath replaceObjectAtIndex:i withObject:indexPath];
+                            break;
+                        }
                     }
                 }
             }

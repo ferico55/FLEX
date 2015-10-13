@@ -604,8 +604,10 @@
     for (NSDictionary *selected in selectedImages) {
         if (![self Array:[_selectedImagesCameraController copy] containObject:selected])
         {
-            [_selectedImagesCameraController addObject:selected];
-            [self setImageData:selected tag:[emptyImageIndex[j] integerValue]];
+            if (emptyImageIndex.count > j) {
+                [_selectedImagesCameraController addObject:selected];
+                [self setImageData:selected tag:[emptyImageIndex[j] integerValue]];
+            }
             j++;
         }
     }
@@ -708,8 +710,10 @@
         [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];   
     }
     
-    [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
-    
+    if ([[photo objectForKey:@"source_type"] integerValue] !=1) {
+        [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
+    }
+
     for (UIButton *button in _uploadButtons) {
         if (button.tag == tagView) {
             button.hidden = YES;

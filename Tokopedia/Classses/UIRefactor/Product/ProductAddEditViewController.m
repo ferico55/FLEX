@@ -1498,13 +1498,14 @@
         [_networkManagerDeleteImage doRequest];
     }
     else  if (type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        
+
     }
     
     ((UIButton*)_addImageButtons[index]).hidden = NO;
     ((UIButton*)_addImageButtons[index]).enabled = YES;
     [_productImageIDs replaceObjectAtIndex:index withObject:@""];
     [_productImageURLs replaceObjectAtIndex:index withObject:@""];
+    [_productImageDesc replaceObjectAtIndex:index withObject:@""];
     ((UIImageView*)_thumbProductImageViews[index]).image = nil;
     ((UIImageView*)_thumbProductImageViews[index]).hidden = YES;
     

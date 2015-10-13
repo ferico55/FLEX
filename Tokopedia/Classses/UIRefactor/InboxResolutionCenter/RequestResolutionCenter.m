@@ -54,7 +54,7 @@
     [[self requestUploadImageCreate] doRequest];
 }
 
-#pragma mark - Network Manager Delegate
+#pragma mark - Methods
 -(void)setParamReplayValidationFromID:(NSString*)resolutionID
                               message:(NSString*)message
                                photos:(NSString*)photos
