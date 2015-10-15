@@ -40,6 +40,7 @@
         TransactionSystemBank *content = _list[indexPath.row];
         cell.textCellLabel.text = [NSString stringWithFormat:@"Bank %@",content.sb_bank_name]?:@"";
         cell.detailTextCellLabel.text = content.sb_account_no?:@"";
+        cell.subDetailCellLabel.text = content.sb_account_name?:@"";
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:content.sb_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
