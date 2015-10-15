@@ -61,8 +61,7 @@
     }
     
     _remarkTextView.delegate = self;
-//    [_remarkTextView addSubview:_headerView];
-    
+    [_remarkTextView addSubview:_headerView];
     [self setDefaultData:_data];
     [_remarkTextView becomeFirstResponder];
     
@@ -80,8 +79,11 @@
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
-    inset.top = 12;//_headerView.frame.size.height + 10;
+    inset.top = 50;
     _remarkTextView.textContainerInset = inset;
+    inset = _remarkTextView.contentInset;
+    inset.top = _headerView.frame.size.height;
+    [_remarkTextView setContentInset:inset];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -213,7 +215,7 @@ replacementString:(NSString*)string
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
-    inset.top = 0;
+    inset.top = 37;
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, inset.top, _remarkTextView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
     placeholderLabel.font = [UIFont fontWithName:_remarkTextView.font.fontName size:_remarkTextView.font.pointSize];
@@ -243,23 +245,27 @@ replacementString:(NSString*)string
 - (void)keyboardWillShow:(NSNotification *)aNotification {
     
     _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-    _bottomConstraintTextView.constant = _keyboardSize.height-40;
+    _bottomConstraintTextView.constant = _headerView.frame.size.height;
+//    if (_bottomConstraintTextView.constant - _keyboardSize.height <= 50) {
+//        _bottomConstraintTextView.constant = 60;
+//        [self.view setFrame:CGRectMake(0, -_bottomConstraintTextView.constant, self.view.frame.size.width, self.view.frame.size.height)];
+//    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
     
-    UIEdgeInsets inset = _remarkTextView.contentInset;
-    inset.bottom = 0;
-    [_remarkTextView setContentInset:inset];
-    
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-
-                     }
-                     completion:^(BOOL finished){
-                     }];
+//    UIEdgeInsets inset = _remarkTextView.contentInset;
+//    inset.top = 0;
+//    [_remarkTextView setContentInset:inset];
+//    
+//    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+//                          delay:0
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations:^{
+//                        [self.view setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+//                     }
+//                     completion:^(BOOL finished){
+//                     }];
     
 }
 
