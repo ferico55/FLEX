@@ -431,8 +431,8 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     float actualHeight = rawImage.size.height;
     float actualWidth = rawImage.size.width;
     float imgRatio = actualWidth/actualHeight;
-    float widthView = self.view.frame.size.width;
-    float heightView = self.view.frame.size.height;
+    float widthView = kTKPDCAMERA_MAXIMAGESIZE.width;//self.view.frame.size.width;
+    float heightView = kTKPDCAMERA_MAXIMAGESIZE.height;//self.view.frame.size.height;
     float maxRatio = widthView/heightView;
     
     if(imgRatio!=maxRatio){
