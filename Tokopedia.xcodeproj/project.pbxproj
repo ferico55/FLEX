@@ -22,6 +22,11 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; settings = {ASSET_TAGS = (); }; };
+		7AD9D3F91BCD0ADD002E69DB /* BannerCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD9D3F71BCD0ADD002E69DB /* BannerCollectionReusableView.m */; settings = {ASSET_TAGS = (); }; };
+		7AD9D3FA1BCD0ADD002E69DB /* BannerCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3F81BCD0ADD002E69DB /* BannerCollectionReusableView.xib */; settings = {ASSET_TAGS = (); }; };
+		7AD9D3FE1BCD2E8A002E69DB /* banner_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3FB1BCD2E8A002E69DB /* banner_1.jpg */; settings = {ASSET_TAGS = (); }; };
+		7AD9D3FF1BCD2E8A002E69DB /* banner_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3FC1BCD2E8A002E69DB /* banner_2.jpg */; settings = {ASSET_TAGS = (); }; };
+		7AD9D4001BCD2E8A002E69DB /* banner_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3FD1BCD2E8A002E69DB /* banner_3.jpg */; settings = {ASSET_TAGS = (); }; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1864,6 +1869,12 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7AD9D3F61BCD0ADD002E69DB /* BannerCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerCollectionReusableView.h; sourceTree = "<group>"; };
+		7AD9D3F71BCD0ADD002E69DB /* BannerCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerCollectionReusableView.m; sourceTree = "<group>"; };
+		7AD9D3F81BCD0ADD002E69DB /* BannerCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionReusableView.xib; sourceTree = "<group>"; };
+		7AD9D3FB1BCD2E8A002E69DB /* banner_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = banner_1.jpg; sourceTree = "<group>"; };
+		7AD9D3FC1BCD2E8A002E69DB /* banner_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = banner_2.jpg; sourceTree = "<group>"; };
+		7AD9D3FD1BCD2E8A002E69DB /* banner_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = banner_3.jpg; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -7588,6 +7599,9 @@
 				85A1926F1BAFEF9D002F1382 /* RetryCollectionReusableView.h */,
 				85A192701BAFEF9D002F1382 /* RetryCollectionReusableView.m */,
 				85A192711BAFEF9D002F1382 /* RetryCollectionReusableView.xib */,
+				7AD9D3F61BCD0ADD002E69DB /* BannerCollectionReusableView.h */,
+				7AD9D3F71BCD0ADD002E69DB /* BannerCollectionReusableView.m */,
+				7AD9D3F81BCD0ADD002E69DB /* BannerCollectionReusableView.xib */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -8557,6 +8571,9 @@
 		85A194981BAFEF9E002F1382 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AD9D3FB1BCD2E8A002E69DB /* banner_1.jpg */,
+				7AD9D3FC1BCD2E8A002E69DB /* banner_2.jpg */,
+				7AD9D3FD1BCD2E8A002E69DB /* banner_3.jpg */,
 				45CC344E1BBE223100180B89 /* saldo.png */,
 				85A194991BAFEF9E002F1382 /* badges_gold_merchant.png */,
 				85A1949A1BAFEF9E002F1382 /* balloon_read_left.png */,
@@ -9694,6 +9711,7 @@
 				85A19B021BAFEFA1002F1382 /* ShopNotesPageViewController.xib in Resources */,
 				85A19DFD1BAFEFA1002F1382 /* icon_cancel_grey@2x.png in Resources */,
 				85A19D981BAFEFA1002F1382 /* launch_image@2x.png in Resources */,
+				7AD9D3FE1BCD2E8A002E69DB /* banner_1.jpg in Resources */,
 				85A19A171BAFEFA1002F1382 /* DetailPriceAlertTableViewCell.xib in Resources */,
 				85A19CC91BAFEFA1002F1382 /* icon_neutral20@3x.png in Resources */,
 				85A19DB01BAFEFA1002F1382 /* logo@2x.png in Resources */,
@@ -10256,6 +10274,7 @@
 				85A19CBF1BAFEFA1002F1382 /* icon_netral25@2x.png in Resources */,
 				85A19B961BAFEFA1002F1382 /* ProductThumbCell.xib in Resources */,
 				85A19CF11BAFEFA1002F1382 /* icon_plus_blue.png in Resources */,
+				7AD9D3FA1BCD0ADD002E69DB /* BannerCollectionReusableView.xib in Resources */,
 				85A19C7F1BAFEFA1002F1382 /* icon_login@2x.png in Resources */,
 				85A19C421BAFEFA1002F1382 /* icon_clock@2x.png in Resources */,
 				85A19C791BAFEFA1002F1382 /* icon_like_active@3x.png in Resources */,
@@ -10370,6 +10389,7 @@
 				85A19A4B1BAFEFA1002F1382 /* DetailMyReviewReputationViewController.xib in Resources */,
 				85A19C9F1BAFEFA1002F1382 /* icon_medal_diamond_one@3x.png in Resources */,
 				85A19C981BAFEFA1002F1382 /* icon_medal_diamond@2x.png in Resources */,
+				7AD9D4001BCD2E8A002E69DB /* banner_3.jpg in Resources */,
 				85A199501BAFEFA1002F1382 /* TKPDTabInboxReviewNavigationController.xib in Resources */,
 				85A199701BAFEFA1002F1382 /* DepositListBankCell.xib in Resources */,
 				85A19CB21BAFEFA1002F1382 /* icon_move_etalase.png in Resources */,
@@ -10513,6 +10533,7 @@
 				85A19D451BAFEFA1002F1382 /* icon_speed_bad@3x.png in Resources */,
 				85A19B191BAFEFA1002F1382 /* SortCell.xib in Resources */,
 				85A19C691BAFEFA1002F1382 /* icon_grid_tiga.png in Resources */,
+				7AD9D3FF1BCD2E8A002E69DB /* banner_2.jpg in Resources */,
 				85A19C881BAFEFA1002F1382 /* icon_maintenance_grey.png in Resources */,
 				85A19CAA1BAFEFA1002F1382 /* icon_medal_silver@2x.png in Resources */,
 				85A19BC01BAFEFA1002F1382 /* icon_15@2x.png in Resources */,
@@ -11028,6 +11049,7 @@
 				85A198681BAFEFA0002F1382 /* SearchAutoCompleteGeneral.m in Sources */,
 				85A197D61BAFEFA0002F1382 /* ResolutionDispute.m in Sources */,
 				85A199661BAFEFA1002F1382 /* StarsRateView.m in Sources */,
+				7AD9D3F91BCD0ADD002E69DB /* BannerCollectionReusableView.m in Sources */,
 				85A197801BAFEFA0002F1382 /* CatalogPrice.m in Sources */,
 				85A197F11BAFEFA0002F1382 /* RatingResult.m in Sources */,
 				85A197441BAFEFA0002F1382 /* URLCacheConnection.m in Sources */,

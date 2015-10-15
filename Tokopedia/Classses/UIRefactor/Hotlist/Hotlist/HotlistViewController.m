@@ -94,6 +94,24 @@ UICollectionViewDelegateFlowLayout
 {
     [super viewDidLoad];
     
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+//        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+//        [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
+//        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+//        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+//        
+//        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+//        self.navigationItem.leftBarButtonItem = backBarButton;
+//    } else {
+        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+        self.navigationItem.backBarButtonItem = backBarButton;
+//    }
+
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     self.screenName = @"Home - HotList";
     
@@ -259,7 +277,8 @@ UICollectionViewDelegateFlowLayout
                             kTKPDHOME_APIURLKEY         : hotlist.url,
                             kTKPDHOME_APITITLEKEY       : hotlist.title,
                             };
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     } else if ([hotlist.url rangeOfString:@"/p/"].length) {
         
@@ -327,7 +346,7 @@ UICollectionViewDelegateFlowLayout
         
         viewController.hidesBottomBarWhenPushed = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:@{@"hide_segment" : @"1"}];
-        [self.delegate pushViewController:viewController];
+        [self.navigationController pushViewController:viewController animated:YES];
         
         
 //        [self.delegate pushViewController:controller];
@@ -340,7 +359,8 @@ UICollectionViewDelegateFlowLayout
         controller.catalogName = hotlist.title;
         controller.catalogImage = hotlist.image_url_600;
         controller.catalogPrice = hotlist.price_start;
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     }
 }
@@ -561,7 +581,8 @@ UICollectionViewDelegateFlowLayout
                             kTKPDHOME_APIURLKEY         : hotlist.url,
                             kTKPDHOME_APITITLEKEY       : hotlist.title,
                             };
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     } else if ([hotlist.url rangeOfString:@"/p/"].length) {
         
@@ -600,7 +621,7 @@ UICollectionViewDelegateFlowLayout
         controller.title = hotlist.title;
         controller.hidesBottomBarWhenPushed = YES;
         
-        [self.delegate pushViewController:controller];
+        [self.navigationController pushViewController:controller animated:YES];
         
     } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
         
@@ -610,7 +631,8 @@ UICollectionViewDelegateFlowLayout
         controller.catalogName = hotlist.title;
         controller.catalogImage = hotlist.image_url_600;
         controller.catalogPrice = hotlist.price_start;
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     }
 }

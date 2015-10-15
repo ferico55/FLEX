@@ -34,7 +34,7 @@
 - (void)initButton {
 
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*1, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-    [button1 setTitle:@"Hot List" forState:UIControlStateNormal];
+    [button1 setTitle:@"Beranda" forState:UIControlStateNormal];
     [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
     button1.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
     button1.tag = 1;

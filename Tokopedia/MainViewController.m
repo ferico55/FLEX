@@ -34,6 +34,7 @@
 #import "AlertBaseUrl.h"
 
 #import "InboxRootViewController.h"
+#import "CategoryViewController.h"
 
 #import "RequestNotifyLBLM.h"
 
@@ -203,15 +204,18 @@ typedef enum TagRequest {
     /** create new view controller **/
     if (!isauth) {
         // before login
-        HotlistViewController *v = [HotlistViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-        [viewcontrollers addObject:v];
+//        HotlistViewController *v = [HotlistViewController new];
+//        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
+//        [viewcontrollers addObject:v];
+        CategoryViewController *controller = [[CategoryViewController alloc] init];
+        controller.data = @{@"auth" : _auth?:@{}};
+        [viewcontrollers addObject:controller];
     }
     else{
         // after login
-        HotlistViewController *v = [HotlistViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-        [viewcontrollers addObject:v];
+        CategoryViewController *controller = [[CategoryViewController alloc] init];
+        controller.data = @{@"auth" : _auth?:@{}};
+        [viewcontrollers addObject:controller];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
         [viewcontrollers addObject:v1];
         HistoryProductViewController *v2 = [HistoryProductViewController new];
@@ -222,14 +226,17 @@ typedef enum TagRequest {
     
     _swipevc = [HomeTabViewController new];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
+    [swipevcNav.navigationBar setTranslucent:NO];
     
     /** TAB BAR INDEX 2 **/
-    CategoryViewController *categoryvc = [CategoryViewController new];
+    HotlistViewController *categoryvc = [HotlistViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
+
     [categoryNavBar.navigationBar setTranslucent:NO];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    categoryvc.delegate = self;
     
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];

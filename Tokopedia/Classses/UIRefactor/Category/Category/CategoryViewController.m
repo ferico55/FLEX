@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet UIView *cellView;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
 
 @end
@@ -54,6 +55,11 @@
     /** Initialization variable **/
     _category = [NSMutableArray new];
     
+    _flowLayout.headerReferenceSize = CGSizeMake(_collectionView.frame.size.width, 175);
+    [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width + 175, _collectionView.frame.size.height)];
+    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, ([[UIScreen mainScreen]bounds].size.height) )];
+    
+    
     /** Set title and icon for category **/
     NSArray *titles = kTKPDCATEGORY_TITLEARRAY;
     NSArray *dataids = kTKPDCATEGORY_IDARRAY;
@@ -70,7 +76,9 @@
 
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
-
+    
+    UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
 
 }
 
@@ -161,20 +169,34 @@
     return cellSize;
 }
 
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    if (kind == UICollectionElementKindSectionHeader) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                              withReuseIdentifier:@"BannerView"
+                                                                     forIndexPath:indexPath];
+    }
+    
+    return reusableView;
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger index =  indexPath.row;
     
     SearchResultViewController *vc = [SearchResultViewController new];
+    vc.hidesBottomBarWhenPushed = YES;
     vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc1.hidesBottomBarWhenPushed = YES;
     vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc2.hidesBottomBarWhenPushed = YES;
     vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
@@ -186,11 +208,10 @@
     [viewController setNavigationTitle:[_category[index] objectForKey:kTKPDCATEGORY_DATATITLEKEY]];
     [viewController setSelectedIndex:0];
     [viewController setViewControllers:viewcontrollers];
+    viewController.hidesBottomBarWhenPushed = YES;
     [viewController setNavigationTitle:[_category[index] objectForKey:@"title"]?:@""];
 
-    self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
 }
 
 #pragma mark - Notification Manager
