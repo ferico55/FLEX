@@ -23,6 +23,7 @@
 		45BB226E1BCCE3480013BE85 /* RequestUploadImageSteps.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB22681BCCE3480013BE85 /* RequestUploadImageSteps.m */; settings = {ASSET_TAGS = (); }; };
 		45BB226F1BCCE3480013BE85 /* RequestUploadImageSubmit.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB226A1BCCE3480013BE85 /* RequestUploadImageSubmit.m */; settings = {ASSET_TAGS = (); }; };
 		45BB22701BCCE3480013BE85 /* RequestUploadImageValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB226C1BCCE3480013BE85 /* RequestUploadImageValidation.m */; settings = {ASSET_TAGS = (); }; };
+		45BB358A1BCF4CB10013BE85 /* ALAsset+Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB35891BCF4CB10013BE85 /* ALAsset+Date.m */; settings = {ASSET_TAGS = (); }; };
 		45CC34521BBE23C900180B89 /* ResizeableImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CC34511BBE23C900180B89 /* ResizeableImageCell.m */; settings = {ASSET_TAGS = (); }; };
 		45CC34581BBE375400180B89 /* ResizeableImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CC34571BBE375400180B89 /* ResizeableImageCell.xib */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1885,6 +1886,8 @@
 		45BB226A1BCCE3480013BE85 /* RequestUploadImageSubmit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageSubmit.m; sourceTree = "<group>"; };
 		45BB226B1BCCE3480013BE85 /* RequestUploadImageValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageValidation.h; sourceTree = "<group>"; };
 		45BB226C1BCCE3480013BE85 /* RequestUploadImageValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageValidation.m; sourceTree = "<group>"; };
+		45BB35881BCF4CB10013BE85 /* ALAsset+Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+Date.h"; sourceTree = "<group>"; };
+		45BB35891BCF4CB10013BE85 /* ALAsset+Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+Date.m"; sourceTree = "<group>"; };
 		45CC344E1BBE223100180B89 /* saldo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = saldo.png; path = ../../../../../Desktop/saldo.png; sourceTree = "<group>"; };
 		45CC34501BBE23C900180B89 /* ResizeableImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResizeableImageCell.h; sourceTree = "<group>"; };
 		45CC34511BBE23C900180B89 /* ResizeableImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResizeableImageCell.m; sourceTree = "<group>"; };
@@ -4811,6 +4814,8 @@
 				85A18C111BAFEF9C002F1382 /* UITextView+UITextView_Placeholder.m */,
 				85A18C121BAFEF9C002F1382 /* ViewLabelUser.h */,
 				85A18C131BAFEF9C002F1382 /* ViewLabelUser.m */,
+				45BB35881BCF4CB10013BE85 /* ALAsset+Date.h */,
+				45BB35891BCF4CB10013BE85 /* ALAsset+Date.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -11148,6 +11153,7 @@
 				85A1991F1BAFEFA1002F1382 /* CameraAlbumListCell.m in Sources */,
 				85A199821BAFEFA1002F1382 /* GeneralProductCell.m in Sources */,
 				85A199AB1BAFEFA1002F1382 /* HotlistViewController.m in Sources */,
+				45BB358A1BCF4CB10013BE85 /* ALAsset+Date.m in Sources */,
 				85A19B931BAFEFA1002F1382 /* ProductTableViewCell.m in Sources */,
 				85A1996A1BAFEFA1002F1382 /* TKPDTextView.m in Sources */,
 				85A199CE1BAFEFA1002F1382 /* ResolutionCenterDetailCell.m in Sources */,

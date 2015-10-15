@@ -178,9 +178,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         }];
         
         
-        //NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
-        //self.assets = [tmpAssets sortedArrayUsingDescriptors:@[sort]];
-        self.assets = tmpAssets;
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
+        [self.assets addObjectsFromArray:[tmpAssets sortedArrayUsingDescriptors:@[sort]]];
+//        self.assets = tmpAssets;
         
         [_collectionview reloadData];
     } failureBlock:failureBlock];
@@ -200,11 +200,12 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 {
     _assetsGroup = album;
     self.title = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName];
+    __block NSMutableArray *tmpAssets = [@[] mutableCopy];
     
     ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {
-            [_assets addObject:result];
+            [tmpAssets addObject:result];
         }
     };
     
@@ -212,6 +213,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     [self.assetsGroup setAssetsFilter:onlyPhotosFilter];
     
     [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
+    
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
+    [self.assets addObjectsFromArray:[tmpAssets sortedArrayUsingDescriptors:@[sort]]];
     [_collectionview reloadData];
 }
 
