@@ -84,6 +84,9 @@ UICollectionViewDelegateFlowLayout
         _isrefreshview = NO;
         _isnodata = YES;
         _isNeedToRemoveAllObject = NO;
+        
+        UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+        [self.navigationItem setTitleView:logo];
     }
     return self;
 }
