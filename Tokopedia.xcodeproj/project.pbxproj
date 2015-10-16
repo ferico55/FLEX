@@ -16,17 +16,24 @@
 		45CC34581BBE375400180B89 /* ResizeableImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CC34571BBE375400180B89 /* ResizeableImageCell.xib */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AB7D0F51BD0FD61008E4C7A /* UIViewController+TKPAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7D0F41BD0FD61008E4C7A /* UIViewController+TKPAdditions.m */; settings = {ASSET_TAGS = (); }; };
+		7AB7D1011BD0FDCF008E4C7A /* BannerCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7D0F81BD0FDCF008E4C7A /* BannerCollectionReusableView.m */; settings = {ASSET_TAGS = (); }; };
+		7AB7D1021BD0FDCF008E4C7A /* BannerCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB7D0F91BD0FDCF008E4C7A /* BannerCollectionReusableView.xib */; settings = {ASSET_TAGS = (); }; };
+		7AB7D1031BD0FDCF008E4C7A /* Banner.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7D0FC1BD0FDCF008E4C7A /* Banner.m */; settings = {ASSET_TAGS = (); }; };
+		7AB7D1041BD0FDCF008E4C7A /* BannerList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7D0FE1BD0FDCF008E4C7A /* BannerList.m */; settings = {ASSET_TAGS = (); }; };
+		7AB7D1051BD0FDCF008E4C7A /* BannerResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7D1001BD0FDCF008E4C7A /* BannerResult.m */; settings = {ASSET_TAGS = (); }; };
+		7AB7D1081BD0FE16008E4C7A /* TKPHomeBannerStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB7D1071BD0FE16008E4C7A /* TKPHomeBannerStore.m */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C561BB00956006C4BB7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; settings = {ASSET_TAGS = (); }; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; settings = {ASSET_TAGS = (); }; };
-		7AD9D3F91BCD0ADD002E69DB /* BannerCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD9D3F71BCD0ADD002E69DB /* BannerCollectionReusableView.m */; settings = {ASSET_TAGS = (); }; };
-		7AD9D3FA1BCD0ADD002E69DB /* BannerCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3F81BCD0ADD002E69DB /* BannerCollectionReusableView.xib */; settings = {ASSET_TAGS = (); }; };
 		7AD9D3FE1BCD2E8A002E69DB /* banner_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3FB1BCD2E8A002E69DB /* banner_1.jpg */; settings = {ASSET_TAGS = (); }; };
 		7AD9D3FF1BCD2E8A002E69DB /* banner_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3FC1BCD2E8A002E69DB /* banner_2.jpg */; settings = {ASSET_TAGS = (); }; };
 		7AD9D4001BCD2E8A002E69DB /* banner_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7AD9D3FD1BCD2E8A002E69DB /* banner_3.jpg */; settings = {ASSET_TAGS = (); }; };
+		7AF75E221BD0EE32005AFA95 /* TKPHomeProductsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF75E1D1BD0EE32005AFA95 /* TKPHomeProductsStore.m */; settings = {ASSET_TAGS = (); }; };
+		7AF75E231BD0EE32005AFA95 /* TKPStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF75E201BD0EE32005AFA95 /* TKPStoreManager.m */; settings = {ASSET_TAGS = (); }; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1863,18 +1870,34 @@
 		45CC34571BBE375400180B89 /* ResizeableImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResizeableImageCell.xib; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AB7D0F21BD0FD61008E4C7A /* TKPAppFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPAppFlow.h; sourceTree = "<group>"; };
+		7AB7D0F31BD0FD61008E4C7A /* UIViewController+TKPAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TKPAdditions.h"; sourceTree = "<group>"; };
+		7AB7D0F41BD0FD61008E4C7A /* UIViewController+TKPAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TKPAdditions.m"; sourceTree = "<group>"; };
+		7AB7D0F71BD0FDCF008E4C7A /* BannerCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerCollectionReusableView.h; sourceTree = "<group>"; };
+		7AB7D0F81BD0FDCF008E4C7A /* BannerCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerCollectionReusableView.m; sourceTree = "<group>"; };
+		7AB7D0F91BD0FDCF008E4C7A /* BannerCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionReusableView.xib; sourceTree = "<group>"; };
+		7AB7D0FB1BD0FDCF008E4C7A /* Banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Banner.h; sourceTree = "<group>"; };
+		7AB7D0FC1BD0FDCF008E4C7A /* Banner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Banner.m; sourceTree = "<group>"; };
+		7AB7D0FD1BD0FDCF008E4C7A /* BannerList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerList.h; sourceTree = "<group>"; };
+		7AB7D0FE1BD0FDCF008E4C7A /* BannerList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerList.m; sourceTree = "<group>"; };
+		7AB7D0FF1BD0FDCF008E4C7A /* BannerResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerResult.h; sourceTree = "<group>"; };
+		7AB7D1001BD0FDCF008E4C7A /* BannerResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerResult.m; sourceTree = "<group>"; };
+		7AB7D1061BD0FE16008E4C7A /* TKPHomeBannerStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPHomeBannerStore.h; sourceTree = "<group>"; };
+		7AB7D1071BD0FE16008E4C7A /* TKPHomeBannerStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPHomeBannerStore.m; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
-		7AD9D3F61BCD0ADD002E69DB /* BannerCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerCollectionReusableView.h; sourceTree = "<group>"; };
-		7AD9D3F71BCD0ADD002E69DB /* BannerCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerCollectionReusableView.m; sourceTree = "<group>"; };
-		7AD9D3F81BCD0ADD002E69DB /* BannerCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BannerCollectionReusableView.xib; sourceTree = "<group>"; };
 		7AD9D3FB1BCD2E8A002E69DB /* banner_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = banner_1.jpg; sourceTree = "<group>"; };
 		7AD9D3FC1BCD2E8A002E69DB /* banner_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = banner_2.jpg; sourceTree = "<group>"; };
 		7AD9D3FD1BCD2E8A002E69DB /* banner_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = banner_3.jpg; sourceTree = "<group>"; };
+		7AF75E1C1BD0EE32005AFA95 /* TKPHomeProductsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPHomeProductsStore.h; sourceTree = "<group>"; };
+		7AF75E1D1BD0EE32005AFA95 /* TKPHomeProductsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPHomeProductsStore.m; sourceTree = "<group>"; };
+		7AF75E1E1BD0EE32005AFA95 /* TKPObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPObjectMapping.h; sourceTree = "<group>"; };
+		7AF75E1F1BD0EE32005AFA95 /* TKPStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPStoreManager.h; sourceTree = "<group>"; };
+		7AF75E201BD0EE32005AFA95 /* TKPStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPStoreManager.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -4670,9 +4693,51 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7AB7D0F61BD0FDCF008E4C7A /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				7AB7D0F71BD0FDCF008E4C7A /* BannerCollectionReusableView.h */,
+				7AB7D0F81BD0FDCF008E4C7A /* BannerCollectionReusableView.m */,
+				7AB7D0F91BD0FDCF008E4C7A /* BannerCollectionReusableView.xib */,
+				7AB7D0FA1BD0FDCF008E4C7A /* ObjectMapping */,
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
+		7AB7D0FA1BD0FDCF008E4C7A /* ObjectMapping */ = {
+			isa = PBXGroup;
+			children = (
+				7AB7D0FB1BD0FDCF008E4C7A /* Banner.h */,
+				7AB7D0FC1BD0FDCF008E4C7A /* Banner.m */,
+				7AB7D0FD1BD0FDCF008E4C7A /* BannerList.h */,
+				7AB7D0FE1BD0FDCF008E4C7A /* BannerList.m */,
+				7AB7D0FF1BD0FDCF008E4C7A /* BannerResult.h */,
+				7AB7D1001BD0FDCF008E4C7A /* BannerResult.m */,
+			);
+			path = ObjectMapping;
+			sourceTree = "<group>";
+		};
+		7AF75E191BD0EE32005AFA95 /* TKPStoreManager */ = {
+			isa = PBXGroup;
+			children = (
+				7AB7D0F21BD0FD61008E4C7A /* TKPAppFlow.h */,
+				7AB7D0F31BD0FD61008E4C7A /* UIViewController+TKPAdditions.h */,
+				7AB7D0F41BD0FD61008E4C7A /* UIViewController+TKPAdditions.m */,
+				7AF75E1C1BD0EE32005AFA95 /* TKPHomeProductsStore.h */,
+				7AF75E1D1BD0EE32005AFA95 /* TKPHomeProductsStore.m */,
+				7AF75E1E1BD0EE32005AFA95 /* TKPObjectMapping.h */,
+				7AF75E1F1BD0EE32005AFA95 /* TKPStoreManager.h */,
+				7AF75E201BD0EE32005AFA95 /* TKPStoreManager.m */,
+				7AB7D1061BD0FE16008E4C7A /* TKPHomeBannerStore.h */,
+				7AB7D1071BD0FE16008E4C7A /* TKPHomeBannerStore.m */,
+			);
+			path = TKPStoreManager;
+			sourceTree = "<group>";
+		};
 		85A18BE11BAFEF9B002F1382 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				7AF75E191BD0EE32005AFA95 /* TKPStoreManager */,
 				85A18BE21BAFEF9B002F1382 /* CacheController */,
 				85A18BE91BAFEF9B002F1382 /* Cocoa */,
 				85A18C141BAFEF9C002F1382 /* Encryption */,
@@ -6409,6 +6474,7 @@
 		85A18FBA1BAFEF9D002F1382 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7AB7D0F61BD0FDCF008E4C7A /* Banner */,
 				85A18FBB1BAFEF9D002F1382 /* Activation */,
 				85A18FCD1BAFEF9D002F1382 /* Address */,
 				85A18FD71BAFEF9D002F1382 /* Alert */,
@@ -7599,9 +7665,6 @@
 				85A1926F1BAFEF9D002F1382 /* RetryCollectionReusableView.h */,
 				85A192701BAFEF9D002F1382 /* RetryCollectionReusableView.m */,
 				85A192711BAFEF9D002F1382 /* RetryCollectionReusableView.xib */,
-				7AD9D3F61BCD0ADD002E69DB /* BannerCollectionReusableView.h */,
-				7AD9D3F71BCD0ADD002E69DB /* BannerCollectionReusableView.m */,
-				7AD9D3F81BCD0ADD002E69DB /* BannerCollectionReusableView.xib */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -10274,7 +10337,6 @@
 				85A19CBF1BAFEFA1002F1382 /* icon_netral25@2x.png in Resources */,
 				85A19B961BAFEFA1002F1382 /* ProductThumbCell.xib in Resources */,
 				85A19CF11BAFEFA1002F1382 /* icon_plus_blue.png in Resources */,
-				7AD9D3FA1BCD0ADD002E69DB /* BannerCollectionReusableView.xib in Resources */,
 				85A19C7F1BAFEFA1002F1382 /* icon_login@2x.png in Resources */,
 				85A19C421BAFEFA1002F1382 /* icon_clock@2x.png in Resources */,
 				85A19C791BAFEFA1002F1382 /* icon_like_active@3x.png in Resources */,
@@ -10517,6 +10579,7 @@
 				85A19D9C1BAFEFA1002F1382 /* logo_indomaret.png in Resources */,
 				85A19C581BAFEFA1002F1382 /* icon_dislike_active@2x.png in Resources */,
 				85A19A5F1BAFEFA1002F1382 /* ProfileContactViewController.xib in Resources */,
+				7AB7D1021BD0FDCF008E4C7A /* BannerCollectionReusableView.xib in Resources */,
 				85A199451BAFEFA1002F1382 /* CategoryResultViewController.xib in Resources */,
 				85A199DF1BAFEFA1002F1382 /* ReviewFormViewController.xib in Resources */,
 				85A19D461BAFEFA1002F1382 /* icon_speed_bad_large.png in Resources */,
@@ -10717,6 +10780,7 @@
 				85A1988C1BAFEFA0002F1382 /* AddProductPictureResult.m in Sources */,
 				85A1988A1BAFEFA0002F1382 /* Shop.m in Sources */,
 				85A19A501BAFEFA1002F1382 /* MyReviewReputationViewController.m in Sources */,
+				7AB7D0F51BD0FD61008E4C7A /* UIViewController+TKPAdditions.m in Sources */,
 				85A197761BAFEFA0002F1382 /* DepositFormResult.m in Sources */,
 				85A19B5E1BAFEFA1002F1382 /* TxOrderConfirmationDropshipCell.m in Sources */,
 				85A198101BAFEFA0002F1382 /* NotificationInbox.m in Sources */,
@@ -10944,11 +11008,14 @@
 				85A198FC1BAFEFA1002F1382 /* LogoutViewController.m in Sources */,
 				85A199A21BAFEFA1002F1382 /* ProductFeedViewController.m in Sources */,
 				85A19AC21BAFEFA1002F1382 /* SettingBankNameViewController.m in Sources */,
+				7AF75E231BD0EE32005AFA95 /* TKPStoreManager.m in Sources */,
 				85A197A31BAFEFA0002F1382 /* WholesalePrice.m in Sources */,
 				85A19A481BAFEFA1002F1382 /* DetailMyReviewReputationCell.m in Sources */,
 				85A1976F1BAFEFA0002F1382 /* CategoryList.m in Sources */,
 				85A198A61BAFEFA0002F1382 /* TransactionAction.m in Sources */,
 				85A198541BAFEFA0002F1382 /* OrderDestination.m in Sources */,
+				7AB7D1081BD0FE16008E4C7A /* TKPHomeBannerStore.m in Sources */,
+				7AB7D1011BD0FDCF008E4C7A /* BannerCollectionReusableView.m in Sources */,
 				85A19B7E1BAFEFA1002F1382 /* ProfileBiodataShopCell.m in Sources */,
 				85A197E21BAFEFA0002F1382 /* InboxTalkList.m in Sources */,
 				85A19A1D1BAFEFA1002F1382 /* PriceAlertViewController.m in Sources */,
@@ -11005,6 +11072,7 @@
 				85A19AF11BAFEFA1002F1382 /* ShopInfoAddressView.m in Sources */,
 				85A19B141BAFEFA1002F1382 /* FilterLocationViewController.m in Sources */,
 				85A19B501BAFEFA1002F1382 /* TxOrderStatusDetailViewController.m in Sources */,
+				7AB7D1031BD0FDCF008E4C7A /* Banner.m in Sources */,
 				85A1981E1BAFEFA0002F1382 /* ProductTalkCommentAction.m in Sources */,
 				85A198191BAFEFA0002F1382 /* PriceAlert.m in Sources */,
 				85A19B231BAFEFA1002F1382 /* TokopediaCacheManager.m in Sources */,
@@ -11049,7 +11117,6 @@
 				85A198681BAFEFA0002F1382 /* SearchAutoCompleteGeneral.m in Sources */,
 				85A197D61BAFEFA0002F1382 /* ResolutionDispute.m in Sources */,
 				85A199661BAFEFA1002F1382 /* StarsRateView.m in Sources */,
-				7AD9D3F91BCD0ADD002E69DB /* BannerCollectionReusableView.m in Sources */,
 				85A197801BAFEFA0002F1382 /* CatalogPrice.m in Sources */,
 				85A197F11BAFEFA0002F1382 /* RatingResult.m in Sources */,
 				85A197441BAFEFA0002F1382 /* URLCacheConnection.m in Sources */,
@@ -11137,6 +11204,7 @@
 				85A19B8D1BAFEFA1002F1382 /* CatalogModelView.m in Sources */,
 				85A198801BAFEFA0002F1382 /* Notes.m in Sources */,
 				85A19B121BAFEFA1002F1382 /* FilterLocationViewCell.m in Sources */,
+				7AB7D1041BD0FDCF008E4C7A /* BannerList.m in Sources */,
 				85A19B671BAFEFA1002F1382 /* TableViewCell.m in Sources */,
 				85A197C81BAFEFA0002F1382 /* ResolutionAction.m in Sources */,
 				85A1988F1BAFEFA0002F1382 /* AddProductValidation.m in Sources */,
@@ -11327,6 +11395,7 @@
 				85A19B911BAFEFA1002F1382 /* ProductSingleViewCell.m in Sources */,
 				85A198001BAFEFA0002F1382 /* ManageProduct.m in Sources */,
 				85A19A8D1BAFEFA1002F1382 /* SalesOrderCell.m in Sources */,
+				7AB7D1051BD0FDCF008E4C7A /* BannerResult.m in Sources */,
 				85A19B1D1BAFEFA1002F1382 /* ProductTalkDetailViewController.m in Sources */,
 				85A197E41BAFEFA0002F1382 /* ConversationViewModel.m in Sources */,
 				85A19B421BAFEFA1002F1382 /* TransactionCartResultPaymentCell.m in Sources */,
@@ -11386,6 +11455,7 @@
 				45A254E81BBD4FD000742479 /* TagManagerHandler.m in Sources */,
 				85A197671BAFEFA0002F1382 /* AddressCity.m in Sources */,
 				85A1975F1BAFEFA0002F1382 /* CreatePassword.m in Sources */,
+				7AF75E221BD0EE32005AFA95 /* TKPHomeProductsStore.m in Sources */,
 				85A1974E1BAFEFA0002F1382 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				85A199731BAFEFA1002F1382 /* DepositSummaryCell.m in Sources */,
 				85A198991BAFEFA0002F1382 /* POSIndonesia.m in Sources */,

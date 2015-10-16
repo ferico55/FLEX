@@ -16,6 +16,11 @@
 #import "SearchResultShopViewController.h"
 #import "NotificationManager.h"
 
+#import "UIViewController+TKPAdditions.h"
+#import "TKPHomeBannerStore.h"
+#import "TKPStoreManager.h"
+
+
 
 @interface CategoryViewController ()
 <
@@ -79,6 +84,8 @@
     
     UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
     [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
+    
+    [self loadBanners];
 
 }
 
@@ -313,5 +320,20 @@
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
+#pragma mark - Request Banner 
+- (void)loadBanners {
+    TKPHomeBannerStore *bannersStore = [[[[self class] TKP_rootController] storeManager] homeBannerStore];
+    __weak typeof(self) wself = self;
+    
+    [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
+        if (wself != nil) {
+            typeof(self) sself = wself;
+            
+        }
+    }];
+}
+
+
 
 @end
