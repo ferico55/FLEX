@@ -36,6 +36,7 @@
     [_scrollView setDelegate:self];
     [_scrollView setContentSize:scrollSize];
     [_scrollView setPagingEnabled:YES];
+    [_scrollView setBounces:NO];
     [_scrollView setCanCancelContentTouches:NO];
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     [_scrollView setClipsToBounds:YES];
