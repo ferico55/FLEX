@@ -45,6 +45,11 @@
     [self.wireframe presentPhotoPickerFromNavigation:navigation];
 }
 
+- (void)deletePhotoAtIndex:(NSInteger)index {
+    [self.dataCollector.selectedImagesCameraController removeObjectAtIndex:index];
+    [self.dataCollector.selectedIndexPathCameraController removeObjectAtIndex:index];
+}
+
 - (void)showInboxTicketDetailFromNavigation:(UINavigationController *)navigation {
     [self.wireframe pushToInboxDetailFromNavigation:navigation];
 }
@@ -99,7 +104,6 @@
 
 - (void)didFailedUploadPhoto:(UIImage *)photo {
     [self.userInterface removeFailUploadPhoto:photo];
-    [self.userInterface showSubmitButton];
 }
 
 - (void)didReceiveFileUploaded:(NSString *)fileUploaded {
@@ -111,12 +115,17 @@
 #pragma mark - Camera Delegate
 
 -(void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)photosData {
-    NSMutableArray *selectedImages = [[photosData objectForKey:@"selected_images"] mutableCopy];
-    NSMutableArray *selectedIndexPaths = [[photosData objectForKey:@"selected_indexpath"] mutableCopy];
+    NSMutableArray *selectedImages = [NSMutableArray arrayWithArray:[photosData objectForKey:@"selected_images"]];
+    NSMutableArray *selectedIndexPaths = [NSMutableArray arrayWithArray:[photosData objectForKey:@"selected_indexpath"]];
     
-    self.dataCollector.selectedImagesCameraController = selectedImages;
-    self.dataCollector.selectedIndexPathCameraController = selectedIndexPaths;
+    for (NSDictionary *imageData in selectedImages) {
+        [self.dataCollector addImageFromImageController:imageData];
+    }
     
+    for (NSDictionary *indexPath in selectedIndexPaths) {
+        [self.dataCollector addIndexPathFromImageController:indexPath];
+    }
+        
     NSArray *selectedPhotos = [self.dataCollector getPhotosFromPhotoPickerData:photosData];
     [self.userInterface showSelectedPhotos:selectedPhotos];    
 }

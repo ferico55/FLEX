@@ -39,13 +39,8 @@
     CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
     photoVC.title = @"All Picture";
     photoVC.delegate = self.presenter;
+    photoVC.maxSelected = 1;
     
-    NSArray *selectedImagesArray = self.presenter.dataCollector.selectedImagesCameraController;
-    photoVC.selectedImagesArray = selectedImagesArray;
-
-    NSArray *selectedIndexPath = self.presenter.dataCollector.selectedIndexPathCameraController;
-    photoVC.selectedIndexPath = [selectedIndexPath mutableCopy];
-
     UINavigationController *nav = [[UINavigationController alloc]init];
     UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
     nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];

@@ -276,7 +276,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 {
     [_selectedImages removeAllObjects];
     for (NSIndexPath *selected in _selectedIndexPath) {
-        if (selected.row>0) {
+        if (selected.row == 0) {
+            
+        } else if (selected.row > 0) {
             ALAsset *asset = _assets[selected.row-1];
             UIImage *rawImage = [UIImage imageWithCGImage:[[asset defaultRepresentation]
                                                            fullScreenImage]];

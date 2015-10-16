@@ -37,4 +37,7 @@
 - (void)addUploadedPhoto:(UIImage *)photo photoURL:(NSString *)url;
 - (BOOL)allPhotosUploaded;
 
+- (void)addImageFromImageController:(NSDictionary *)imageData;
+- (void)addIndexPathFromImageController:(NSDictionary *)indexPath;
+
 @end

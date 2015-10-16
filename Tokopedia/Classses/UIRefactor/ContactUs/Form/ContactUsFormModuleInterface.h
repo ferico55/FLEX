@@ -25,4 +25,6 @@
 
 - (void)showInboxTicketFromNavigation:(UINavigationController *)navigation;
 
+- (void)deletePhotoAtIndex:(NSInteger)index;
+
 @end

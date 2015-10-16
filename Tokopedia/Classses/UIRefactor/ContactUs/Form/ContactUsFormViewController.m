@@ -44,6 +44,8 @@
 @property BOOL invoiceTextFieldIsVisible;
 @property BOOL photoPickerIsVisible;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableBottomConstraint;
+
 @end
 
 @implementation ContactUsFormViewController
@@ -197,12 +199,14 @@
                 NSParagraphStyleAttributeName  : style,
             };
             
-            NSString *text = [_subCategories[indexPath.row - 1] ticket_category_name];
-            
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text
-                                                                                   attributes:attributes];
-
-            ((ContactUsFormCategoryCell *)cell).categoryNameLabel.attributedText = attributedString;
+            if (_subCategories.count > 0) {
+                NSString *text = [_subCategories[indexPath.row - 1] ticket_category_name];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text
+                                                                                       attributes:attributes];
+                ((ContactUsFormCategoryCell *)cell).categoryNameLabel.attributedText = attributedString;
+            } else {
+                ((ContactUsFormCategoryCell *)cell).textLabel.text = @"";
+            }
         }
     } else if (indexPath.section == 1) {
         if (_invoiceTextFieldIsVisible) {
@@ -232,7 +236,9 @@
         if (indexPath.row == 0) {
             text = _mainCategory.ticket_category_name;
         } else {
-            text = [_subCategories[indexPath.row - 1] ticket_category_name];
+            if (_subCategories.count > 0) {
+                text = [_subCategories[indexPath.row - 1] ticket_category_name];
+            }
         }
         CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
         CGSize expectedLabelSize = [text sizeWithFont:FONT_GOTHAM_BOOK_14
@@ -263,6 +269,7 @@
 
 - (IBAction)didTapDeletePhotoButton:(UIButton *)button {
     [self.photos removeObjectAtIndex:button.tag - 1];
+    [self.eventHandler deletePhotoAtIndex:button.tag - 1];
     [self refreshPhotos];
 }
 
@@ -316,10 +323,17 @@
 #pragma mark - Text view delegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    CGPoint localPoint = [textView bounds].origin;
-    CGPoint basePoint = [textView convertPoint:localPoint toView:nil];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:basePoint];
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
+        CGPoint offset = self.tableView.contentOffset;
+        if (_photoPickerIsVisible && _invoiceTextFieldIsVisible) {
+            offset.y += 300;
+        } else if (_photoPickerIsVisible) {
+            offset.y += 180;
+        } else if (_invoiceTextFieldIsVisible) {
+            offset.y += 100;
+        }
+        [self.tableView setContentOffset:offset animated:YES];
+    }
 }
 
 #pragma mark - View delegate
@@ -344,17 +358,25 @@
     [self refreshPhotos];
 }
 
+- (BOOL)image:(UIImage *)image1 isEqualTo:(UIImage *)image2 {
+    NSData *data1 = UIImagePNGRepresentation(image1);
+    NSData *data2 = UIImagePNGRepresentation(image2);
+    return [data1 isEqual:data2];
+}
+
 - (void)refreshPhotos {
     for (int i = 0; i < 5; i++) {
         UIImageView *imageView = [self.photoImageViews objectAtIndex:i];
         UIButton *deleteButton = [self.photoDeleteButtons objectAtIndex:i];
         if (i < self.photos.count) {
-            imageView.alpha =1;
+            imageView.alpha = 1;
             imageView.image = [self.photos objectAtIndex:i];
+            imageView.userInteractionEnabled = NO;
             deleteButton.hidden = NO;
         } else {
             imageView.alpha = 1;
             imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
+            imageView.userInteractionEnabled = YES;
             deleteButton.hidden = YES;
         }
     }
