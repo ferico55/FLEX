@@ -235,11 +235,16 @@
         }
     }
     else{
+        _isNewRekening = !(_isNewRekening);
         if (_isNewRekening) {
             BankAccountFormList *bankAccount = [BankAccountFormList new];
             [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
         }
-        _isNewRekening = !(_isNewRekening);
+        else
+        {
+            BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY]?:[BankAccountFormList new];
+            [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+        }
         [_tableView reloadData];
     }
 }
@@ -860,9 +865,9 @@
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     TxOrderPaymentEditForm *formIsConfirmed = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
     
-    SystemBankAcount *selectedSystemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
-    MethodList *selectedMethod = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-    BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    SystemBankAcount *selectedSystemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY]?:[SystemBankAcount new];
+    MethodList *selectedMethod = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY]?:[MethodList new];
+    BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     
     NSString *systemBankString = (!selectedSystemBank.sysbank_name)?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];
     
@@ -1076,6 +1081,7 @@
     
     [_dataInput setObject:selectedMethod?:[MethodList new] forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY];
     [_dataInput setObject:selectedSystemBank?:[SystemBankAcount new] forKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
