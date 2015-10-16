@@ -1164,14 +1164,14 @@
 #pragma mark - Bank Account Delegate
 -(void)SettingBankNameViewController:(UIViewController *)vc withData:(NSDictionary *)data
 {
-    BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     NSString *name;
     NSInteger bankid;
     name = [data objectForKey:API_BANK_NAME_KEY];
     bankid = [[data objectForKey:API_BANK_ID_KEY] integerValue];
     bankAccount.bank_id = bankid;
     bankAccount.bank_name = name;
-    [_dataInput setObject:bankAccount?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     [_tableView reloadData];
 }
 
