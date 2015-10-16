@@ -10,4 +10,12 @@
 
 @implementation TokopediaDeepLink
 
++ (BOOL)handleURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication
+       annotation:(id)annotation {
+    BOOL shouldHandleURL = NO;
+    
+    return shouldHandleURL;
+}
+
 @end

@@ -10,4 +10,8 @@
 
 @interface TokopediaDeepLink : NSObject
 
++ (BOOL)handleURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication
+       annotation:(id)annotation;
+
 @end

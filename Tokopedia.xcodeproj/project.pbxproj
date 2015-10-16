@@ -1806,6 +1806,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		85E4D5F61BD0AA57008463E2 /* TokopediaDeepLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E4D5F51BD0AA57008463E2 /* TokopediaDeepLink.m */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4526,6 +4527,8 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		85E4D5F41BD0AA57008463E2 /* TokopediaDeepLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokopediaDeepLink.h; sourceTree = "<group>"; };
+		85E4D5F51BD0AA57008463E2 /* TokopediaDeepLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokopediaDeepLink.m; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -6765,6 +6768,8 @@
 			children = (
 				7ADFABE21BBB869200EDF90C /* DeeplinkController.h */,
 				7ADFABE31BBB869200EDF90C /* DeeplinkController.m */,
+				85E4D5F41BD0AA57008463E2 /* TokopediaDeepLink.h */,
+				85E4D5F51BD0AA57008463E2 /* TokopediaDeepLink.m */,
 			);
 			path = Deeplink;
 			sourceTree = "<group>";
@@ -11153,6 +11158,7 @@
 				7ADFB4D61BBB869500EDF90C /* GeneralAlertCell.m in Sources */,
 				7ADFB39C1BBB869500EDF90C /* PromoProduct.m in Sources */,
 				7ADFB41B1BBB869500EDF90C /* TxOrderConfirmationList.m in Sources */,
+				85E4D5F61BD0AA57008463E2 /* TokopediaDeepLink.m in Sources */,
 				7ADFB2B01BBB869500EDF90C /* RKObjectManagerCategory.m in Sources */,
 				7ADFB6351BBB869500EDF90C /* SettingUserProfileViewController.m in Sources */,
 				7ADFB4891BBB869500EDF90C /* CatalogProductViewController.m in Sources */,
