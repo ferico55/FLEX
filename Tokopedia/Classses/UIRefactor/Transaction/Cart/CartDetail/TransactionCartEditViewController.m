@@ -35,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintTextView;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *borders;
 
 @property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
 
@@ -44,6 +45,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -68,22 +70,65 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification object:nil];
+                                                 name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
+                                                 name:UIKeyboardDidHideNotification object:nil];
 }
 
--(void)viewDidLayoutSubviews
+-(void)viewWillLayoutSubviews
 {
+    [super viewWillLayoutSubviews];
+    
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
     inset.top = 50;
     _remarkTextView.textContainerInset = inset;
     inset = _remarkTextView.contentInset;
-    inset.top = _headerView.frame.size.height;
+    inset.top = _headerView.frame.size.height+0;
     [_remarkTextView setContentInset:inset];
+    
+    [self adjustWidthSubviewsOfView:_headerView];
+}
+
+- (void)adjustWidthSubviewsOfView:(UIView *)view {
+    
+    [view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    CGRect frame = view.frame;
+    frame.size.width = [UIScreen mainScreen].bounds.size.width;
+    view.frame = frame;
+    
+    // Get the subviews of the view
+    NSArray *subviews = [view subviews];
+    
+    // Return if there are no subviews
+    if ([subviews count] == 0) return; // COUNT CHECK LINE
+    
+    for (UIView *subview in subviews) {
+        
+        CGRect frame = subview.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width;
+        subview.frame = frame;
+    }
+    
+    for (UIView *subview in _borders) {
+        
+        CGRect frame = subview.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width;
+        subview.frame = frame;
+    }
+    frame = _quantityTextField.frame;
+    frame.origin.x = [UIScreen mainScreen].bounds.size.width - frame.size.width-15;
+    _quantityTextField.frame = frame;
+    
+    frame = _labelCounter.frame;
+    frame.origin.x = [UIScreen mainScreen].bounds.size.width - frame.size.width-15;
+    _labelCounter.frame = frame;
+    
+    [self.view layoutIfNeeded];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -184,7 +229,8 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [_quantityTextField resignFirstResponder];
+//    [_quantityTextField resignFirstResponder];
+//    [_activeTextView resignFirstResponder];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
@@ -193,6 +239,11 @@
 
     if ([_quantityTextField.text integerValue] < 1)
         _quantityTextField.text = product.product_min_order;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    _activeTextView = nil;
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
@@ -209,6 +260,7 @@ replacementString:(NSString*)string
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     [_quantityTextField resignFirstResponder];
+    _activeTextView = textView;
 }
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
@@ -244,8 +296,15 @@ replacementString:(NSString*)string
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
     
-    _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+//    if (_activeTextView != nil) {
+//        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    UIEdgeInsets inset = _remarkTextView.contentInset;
+    inset.top = 0;
+    inset.bottom = 50;
+    [_remarkTextView setContentInset:inset];
     _bottomConstraintTextView.constant = _headerView.frame.size.height;
+//    }
+
 //    if (_bottomConstraintTextView.constant - _keyboardSize.height <= 50) {
 //        _bottomConstraintTextView.constant = 60;
 //        [self.view setFrame:CGRectMake(0, -_bottomConstraintTextView.constant, self.view.frame.size.width, self.view.frame.size.height)];
@@ -254,10 +313,12 @@ replacementString:(NSString*)string
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
     
-//    UIEdgeInsets inset = _remarkTextView.contentInset;
-//    inset.top = 0;
-//    [_remarkTextView setContentInset:inset];
-//    
+    UIEdgeInsets inset = _remarkTextView.contentInset;
+    inset.bottom = 0;
+    inset.top = 0;
+    [_remarkTextView setContentInset:inset];
+    _bottomConstraintTextView.constant = 0;
+//
 //    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
 //                          delay:0
 //                        options: UIViewAnimationOptionCurveEaseInOut
