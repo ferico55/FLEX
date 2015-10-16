@@ -23,8 +23,6 @@
                 attachments:(NSArray *)attachments
              ticketCategory:(TicketCategory *)category {
     [self.userInterface showLoadingBar];
-    [self.dataCollector.uploadedPhotos removeAllObjects];
-    [self.dataCollector.uploadedPhotosURL removeAllObjects];
     self.dataCollector.message = message;
     self.dataCollector.invoice = invoice;
     self.dataCollector.attachments = attachments;
@@ -34,6 +32,13 @@
     } else {
         [self.interactor createTicketValidation];
     }
+}
+
+- (void)resetData {
+    [self.dataCollector.selectedImagesCameraController removeAllObjects];
+    [self.dataCollector.selectedIndexPathCameraController removeAllObjects];
+    [self.dataCollector.uploadedPhotos removeAllObjects];
+    [self.dataCollector.uploadedPhotosURL removeAllObjects];
 }
 
 - (void)showPhotoPickerFromNavigation:(UINavigationController *)navigation {

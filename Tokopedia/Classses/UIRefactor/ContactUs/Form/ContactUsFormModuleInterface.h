@@ -12,6 +12,8 @@
 
 - (void)showFormWithCategory:(TicketCategory *)category;
 
+- (void)resetData;
+
 - (void)submitTicketMessage:(NSString *)message
                     invoice:(NSString *)invoice
                 attachments:(NSArray *)attachments

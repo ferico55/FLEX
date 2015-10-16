@@ -98,6 +98,8 @@
                      selector:@selector(showMessageAlert:)
                          name:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
                        object:nil];
+    
+    [self.eventHandler resetData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
