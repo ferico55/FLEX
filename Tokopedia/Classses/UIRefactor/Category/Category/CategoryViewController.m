@@ -182,7 +182,75 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger index =  indexPath.row;
+    /**
+    //animate
+    CategoryViewCell *cell = [self collectionView:collectionView cellForItemAtIndexPath:indexPath];
+    UIGraphicsBeginImageContext(cell.bounds.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    UIView *view = cell.contentView;
+    [view.layer renderInContext:context];
+    UIImage *screenShot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
+    UIImageView *screenShotView = [[UIImageView alloc] initWithImage:screenShot];
+    CGRect ssFrame = screenShotView.frame;
+    ssFrame.size.width = cell.frame.size.width;
+    ssFrame.size.height = cell.frame.size.height;
+    ssFrame.origin.x = (self.view.center.x + cell.frame.size.width*2) / 2;
+    ssFrame.origin.y = (self.view.center.y + cell.frame.size.height*2) / 2;
+    screenShotView.frame = ssFrame;
+    
+    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    UIView *backgroundView = [[UIView alloc] initWithFrame:frame];
+    [backgroundView setBackgroundColor:[[UIColor alloc] initWithRed:0./255 green:0./255 blue:0./255 alpha:0.9]];
+    [self.view addSubview:backgroundView];
+    [self.view addSubview:screenShotView];
+    
+    CGAffineTransform tr = CGAffineTransformScale(screenShotView.transform, 0.1, 0.1);
+    screenShotView.transform = tr;
+    screenShotView.hidden = NO;
+    
+    [UIView animateWithDuration:0.4 delay:0
+         usingSpringWithDamping:0.5 initialSpringVelocity:0.0f
+                        options:0 animations:^{
+                            screenShotView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 2, 2);
+                        } completion:^(BOOL finised){
+                            if(finised) {
+                                SearchResultViewController *vc = [SearchResultViewController new];
+                                vc.hidesBottomBarWhenPushed = YES;
+                                vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+                                           kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+                                           kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+                                
+                                SearchResultViewController *vc1 = [SearchResultViewController new];
+                                vc1.hidesBottomBarWhenPushed = YES;
+                                vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+                                            kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+                                            kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+                                
+                                SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+                                vc2.hidesBottomBarWhenPushed = YES;
+                                vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+                                            kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+                                            kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+                                
+                                NSArray *viewcontrollers = @[vc,vc1,vc2];
+                                
+                                TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+                                [viewController setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"", }];
+                                [viewController setNavigationTitle:[_category[index] objectForKey:kTKPDCATEGORY_DATATITLEKEY]];
+                                [viewController setSelectedIndex:0];
+                                [viewController setViewControllers:viewcontrollers];
+                                viewController.hidesBottomBarWhenPushed = YES;
+                                [viewController setNavigationTitle:[_category[index] objectForKey:@"title"]?:@""];
+                                [screenShotView removeFromSuperview];
+                                [backgroundView removeFromSuperview];
+                                
+                                [self.navigationController pushViewController:viewController animated:YES];
+                            }
+                        }];
+     **/
+
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.hidesBottomBarWhenPushed = YES;
     vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
@@ -200,7 +268,7 @@
     vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
-
+    
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
@@ -210,7 +278,7 @@
     [viewController setViewControllers:viewcontrollers];
     viewController.hidesBottomBarWhenPushed = YES;
     [viewController setNavigationTitle:[_category[index] objectForKey:@"title"]?:@""];
-
+    
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
