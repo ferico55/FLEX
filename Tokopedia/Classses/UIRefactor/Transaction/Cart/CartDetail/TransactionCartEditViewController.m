@@ -79,55 +79,32 @@
 
 -(void)constraint
 {
-    // Width constraint, half of parent view width
+    // Width constraint
     [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
                                                           attribute:NSLayoutAttributeWidth
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:_remarkTextView
                                                           attribute:NSLayoutAttributeWidth
                                                          multiplier:1.0
-                                                           constant:10]];
+                                                           constant:0.0]];
 
-//    // Height constraint, half of parent view height
+//    // Height constraint
     [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
                                                           attribute:NSLayoutAttributeHeight
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:_remarkTextView
+                                                             toItem:nil
                                                           attribute:NSLayoutAttributeHeight
                                                          multiplier:1.0
-                                                           constant:-50]];
-//    // Center horizontally
-//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
-//                                                          attribute:NSLayoutAttributeTop
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:_remarkTextView
-//                                                          attribute:NSLayoutAttributeTop
-//                                                         multiplier:1.0
-//                                                           constant:0.0]];
-//    
-//    // Center vertically
-//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
-//                                                          attribute:NSLayoutAttributeBottom
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:_remarkTextView
-//                                                          attribute:NSLayoutAttributeBottom
-//                                                         multiplier:1.0
-//                                                           constant:0.0]];
-//    
-//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
-//                                                                attribute:NSLayoutAttributeTrailing
-//                                                                relatedBy:NSLayoutRelationEqual
-//                                                                   toItem:_remarkTextView
-//                                                                attribute:NSLayoutAttributeTrailing
-//                                                               multiplier:1.0
-//                                                                 constant:0.0]];
-//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
-//                                                                attribute:NSLayoutAttributeLeading
-//                                                                relatedBy:NSLayoutRelationEqual
-//                                                                   toItem:_remarkTextView
-//                                                                attribute:NSLayoutAttributeLeading
-//                                                               multiplier:1.0
-//                                                                 constant:0.0]];
+                                                           constant:182.0]];
+   // Top constraint
+    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:_remarkTextView
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+
 }
 
 -(void)viewWillLayoutSubviews
@@ -145,56 +122,8 @@
         inset.top = _headerView.frame.size.height;
         _remarkTextView.textContainerInset = inset;
         
-//        if (_activeTextView != nil) {
-//        inset = _remarkTextView.contentInset;
-//        inset.top = 146;
-//        [_remarkTextView setContentInset:inset];
-//        }
-        
-//        [self adjustWidthSubviewsOfView:_headerView];
-        
         _isFirstLoad = YES;
     }
-
-}
-
-- (void)adjustWidthSubviewsOfView:(UIView *)view {
-    
-    [view setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    // Get the subviews of the view
-    NSArray *subviews = [view subviews];
-    
-    // Return if there are no subviews
-    if ([subviews count] == 0) return; // COUNT CHECK LINE
-    
-    for (UIView *subview in subviews) {
-        CGRect frame = view.frame;
-        frame.size.width = [UIScreen mainScreen].bounds.size.width;
-        frame.size.height = 182;
-        view.frame = frame;
-        
-        frame = subview.frame;
-        frame.size.width = [UIScreen mainScreen].bounds.size.width;
-        subview.frame = frame;
-    }
-    
-    for (UIView *subview in _borders) {
-        
-        CGRect frame = subview.frame;
-        frame.size.width = [UIScreen mainScreen].bounds.size.width;
-        subview.frame = frame;
-    }
-    CGRect frame = _quantityTextField.frame;
-    frame.origin.x = [UIScreen mainScreen].bounds.size.width - frame.size.width-15;
-    frame.size.width = 320;
-    _quantityTextField.frame = frame;
-    
-    frame = _labelCounter.frame;
-    frame.origin.x = [UIScreen mainScreen].bounds.size.width - frame.size.width-15;
-    _labelCounter.frame = frame;
-    
-    [self.view layoutIfNeeded];
 
 }
 
