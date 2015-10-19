@@ -23,8 +23,13 @@
 @property (weak, nonatomic) id<DeeplinkControllerDelegate> delegate;
 
 - (BOOL)shouldRedirectToWebView;
+
 - (void)redirectToAppsViewController:(NSString*)url;
 - (void)redirectToWebViewController;
 - (void)doRedirect;
+
++ (BOOL)handleURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication
+       annotation:(id)annotation;
 
 @end

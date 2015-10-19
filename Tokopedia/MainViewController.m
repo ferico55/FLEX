@@ -108,7 +108,11 @@ typedef enum TagRequest {
                selector:@selector(applicationLogin:)
                    name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
                  object:nil];
-    [center addObserver:self selector:@selector(forceLogout) name:TkpdNotificationForcedLogout object:nil];
+    
+    [center addObserver:self
+               selector:@selector(forceLogout)
+                   name:TkpdNotificationForcedLogout
+                 object:nil];
     
     [center addObserver:self
                selector:@selector(applicationlogout:)
@@ -117,7 +121,8 @@ typedef enum TagRequest {
     
     [center addObserver:self
                selector:@selector(redirectNotification:)
-                   name:@"redirectNotification" object:nil];
+                   name:@"redirectNotification"
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(updateTabBarMore:)
@@ -125,7 +130,13 @@ typedef enum TagRequest {
 
     [center addObserver:self
                selector:@selector(didReceiveShowRatingNotification:)
-                   name:kTKPD_SHOW_RATING_ALERT object:nil];
+                   name:kTKPD_SHOW_RATING_ALERT
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(redirectToHomeViewController)
+                   name:kTKPD_REDIRECT_TO_HOME
+                 object:nil];
 
     //refresh timer for GTM Container
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
@@ -856,6 +867,10 @@ typedef enum TagRequest {
         [defaults setObject:reviewData forKey:kTKPD_USER_REVIEW_DATA];
         [defaults synchronize];
     }
+}
+
+- (void)redirectToHomeViewController {
+    self.tabBarController.selectedIndex = 0;
 }
 
 @end

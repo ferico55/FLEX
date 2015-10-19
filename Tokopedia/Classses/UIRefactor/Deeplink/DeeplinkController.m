@@ -110,4 +110,36 @@
     }
 }
 
++ (BOOL)handleURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication
+       annotation:(id)annotation {
+    BOOL shouldHandleURL = YES;
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    if([[url scheme] isEqualToString:@"tokopedia"]){
+        if([[url host] isEqualToString:@"home"]){
+            [notificationCenter postNotificationName:kTKPD_REDIRECT_TO_HOME object:nil];
+        } else if([[url host] isEqualToString:@"category"]){
+            
+        } else if([[url host] isEqualToString:@"hotlist"]){
+            
+        } else if([[url host] isEqualToString:@"cart"]){
+            
+        } else if([[url host] isEqualToString:@"shop"]){
+            
+        } else if([[url host] isEqualToString:@"wishlist"]){
+            
+        } else if([[url host] isEqualToString:@"add-product"]){
+            
+        } else {
+            shouldHandleURL = NO;
+        }
+    } else {
+        shouldHandleURL = NO;
+    }
+    
+    return shouldHandleURL;
+}
+
 @end

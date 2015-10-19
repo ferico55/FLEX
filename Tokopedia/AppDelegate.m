@@ -17,6 +17,7 @@
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
 #import "NavigateViewController.h"
+#import "DeeplinkController.h"
 
 @implementation AppDelegate
 
@@ -168,6 +169,8 @@
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
     } else if ([Localytics handleTestModeURL:url]) {
+        return YES;
+    } else if ([DeeplinkController handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     }
     return NO;

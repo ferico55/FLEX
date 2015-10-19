@@ -279,4 +279,6 @@ typedef enum {
 #define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
 #define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
 
+#define kTKPD_REDIRECT_TO_HOME  @"tokopedia.kTKPD_REDIRECT_TO_HOME"
+
 #endif
