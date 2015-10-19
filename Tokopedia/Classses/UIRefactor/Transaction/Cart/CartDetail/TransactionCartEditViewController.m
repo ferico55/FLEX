@@ -24,6 +24,8 @@
     CGSize _keyboardSize;
     CGSize _scrollviewContentSize;
     
+    BOOL _isFirstLoad;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
@@ -46,7 +48,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
@@ -63,7 +64,6 @@
     }
     
     _remarkTextView.delegate = self;
-    [_remarkTextView addSubview:_headerView];
     [self setDefaultData:_data];
     [_remarkTextView becomeFirstResponder];
     
@@ -77,28 +77,90 @@
                                                  name:UIKeyboardDidHideNotification object:nil];
 }
 
+-(void)constraint
+{
+    // Width constraint, half of parent view width
+    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:_remarkTextView
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:1.0
+                                                           constant:10]];
+
+//    // Height constraint, half of parent view height
+    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:_remarkTextView
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1.0
+                                                           constant:-50]];
+//    // Center horizontally
+//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+//                                                          attribute:NSLayoutAttributeTop
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:_remarkTextView
+//                                                          attribute:NSLayoutAttributeTop
+//                                                         multiplier:1.0
+//                                                           constant:0.0]];
+//    
+//    // Center vertically
+//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+//                                                          attribute:NSLayoutAttributeBottom
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:_remarkTextView
+//                                                          attribute:NSLayoutAttributeBottom
+//                                                         multiplier:1.0
+//                                                           constant:0.0]];
+//    
+//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+//                                                                attribute:NSLayoutAttributeTrailing
+//                                                                relatedBy:NSLayoutRelationEqual
+//                                                                   toItem:_remarkTextView
+//                                                                attribute:NSLayoutAttributeTrailing
+//                                                               multiplier:1.0
+//                                                                 constant:0.0]];
+//    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+//                                                                attribute:NSLayoutAttributeLeading
+//                                                                relatedBy:NSLayoutRelationEqual
+//                                                                   toItem:_remarkTextView
+//                                                                attribute:NSLayoutAttributeLeading
+//                                                               multiplier:1.0
+//                                                                 constant:0.0]];
+}
+
 -(void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
     
-    UIEdgeInsets inset = _remarkTextView.textContainerInset;
-    inset.left = 15;
-    inset.top = 50;
-    _remarkTextView.textContainerInset = inset;
-    inset = _remarkTextView.contentInset;
-    inset.top = _headerView.frame.size.height+0;
-    [_remarkTextView setContentInset:inset];
+    if (_isFirstLoad == NO) {
     
-    [self adjustWidthSubviewsOfView:_headerView];
+        [_remarkTextView addSubview:_headerView];
+        
+        [self constraint];
+        
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.left = 15;
+        inset.top = _headerView.frame.size.height;
+        _remarkTextView.textContainerInset = inset;
+        
+//        if (_activeTextView != nil) {
+//        inset = _remarkTextView.contentInset;
+//        inset.top = 146;
+//        [_remarkTextView setContentInset:inset];
+//        }
+        
+//        [self adjustWidthSubviewsOfView:_headerView];
+        
+        _isFirstLoad = YES;
+    }
+
 }
 
 - (void)adjustWidthSubviewsOfView:(UIView *)view {
     
     [view setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    CGRect frame = view.frame;
-    frame.size.width = [UIScreen mainScreen].bounds.size.width;
-    view.frame = frame;
     
     // Get the subviews of the view
     NSArray *subviews = [view subviews];
@@ -107,8 +169,12 @@
     if ([subviews count] == 0) return; // COUNT CHECK LINE
     
     for (UIView *subview in subviews) {
+        CGRect frame = view.frame;
+        frame.size.width = [UIScreen mainScreen].bounds.size.width;
+        frame.size.height = 182;
+        view.frame = frame;
         
-        CGRect frame = subview.frame;
+        frame = subview.frame;
         frame.size.width = [UIScreen mainScreen].bounds.size.width;
         subview.frame = frame;
     }
@@ -119,8 +185,9 @@
         frame.size.width = [UIScreen mainScreen].bounds.size.width;
         subview.frame = frame;
     }
-    frame = _quantityTextField.frame;
+    CGRect frame = _quantityTextField.frame;
     frame.origin.x = [UIScreen mainScreen].bounds.size.width - frame.size.width-15;
+    frame.size.width = 320;
     _quantityTextField.frame = frame;
     
     frame = _labelCounter.frame;
@@ -297,12 +364,11 @@ replacementString:(NSString*)string
 - (void)keyboardWillShow:(NSNotification *)aNotification {
     
 //    if (_activeTextView != nil) {
-//        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-    UIEdgeInsets inset = _remarkTextView.contentInset;
-    inset.top = 0;
-    inset.bottom = 50;
-    [_remarkTextView setContentInset:inset];
-    _bottomConstraintTextView.constant = _headerView.frame.size.height;
+        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.bottom = _keyboardSize.height;
+        _remarkTextView.textContainerInset = inset;
 //    }
 
 //    if (_bottomConstraintTextView.constant - _keyboardSize.height <= 50) {
@@ -312,12 +378,11 @@ replacementString:(NSString*)string
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
-    
-    UIEdgeInsets inset = _remarkTextView.contentInset;
-    inset.bottom = 0;
-    inset.top = 0;
-    [_remarkTextView setContentInset:inset];
-    _bottomConstraintTextView.constant = 0;
+        UIEdgeInsets inset = _remarkTextView.contentInset;
+        inset.bottom = 0;
+        inset.top = 0;
+        [_remarkTextView setContentInset:inset];
+        _bottomConstraintTextView.constant = 0;
 //
 //    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
 //                          delay:0
