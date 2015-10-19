@@ -67,7 +67,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [imageView setImage:image];
-            [imageView setContentMode:UIViewContentModeTopLeft];
+            [imageView setContentMode:UIViewContentModeScaleAspectFit];
 #pragma clang diagnostic pop
         } failure:nil];
         
