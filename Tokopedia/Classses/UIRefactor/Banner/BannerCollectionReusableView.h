@@ -7,12 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Banner.h"
+
+@protocol BannerDelegate <NSObject>
+
+- (void)didReceiveBanner:(Banner *)banner;
+
+@end
 
 @interface BannerCollectionReusableView : UICollectionReusableView <UIScrollViewDelegate> {
-    int numberOfBanners;
+    NSInteger numberOfBanners;
+    Banner *_banners;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+
+@property (weak, nonatomic) id<BannerDelegate> delegate;
+
 
 @end

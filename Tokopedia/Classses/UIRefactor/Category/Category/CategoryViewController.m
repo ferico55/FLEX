@@ -26,11 +26,14 @@
 <
     NotificationManagerDelegate,
     UICollectionViewDataSource,
-    UICollectionViewDelegate
+    UICollectionViewDelegate,
+    BannerDelegate
 >
 {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
+    
+    Banner *_banner;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -84,6 +87,7 @@
     
     UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
     [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
+    
     
     [self loadBanners];
 
@@ -182,6 +186,8 @@
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                               withReuseIdentifier:@"BannerView"
                                                                      forIndexPath:indexPath];
+        ((BannerCollectionReusableView*)reusableView).delegate = self;
+
     }
     
     return reusableView;
@@ -328,12 +334,10 @@
     
     [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
         if (wself != nil) {
-            typeof(self) sself = wself;
-            
+            if (!error)[[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : banner}];
         }
     }];
 }
-
 
 
 @end

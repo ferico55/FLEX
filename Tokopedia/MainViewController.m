@@ -41,6 +41,10 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
+#import "TKPAppFlow.h"
+#import "TKPStoreManager.h"
+
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -48,7 +52,8 @@
     UITabBarControllerDelegate,
     UIAlertViewDelegate,
     LoginViewDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    TKPAppFlow
 >
 {
     UITabBarController *_tabBarController;
@@ -67,6 +72,7 @@
     NSTimer *_containerTimer;
     
     RequestNotifyLBLM *_requestLBLM;
+    TKPStoreManager *_storeManager;
 }
 
 @end
@@ -864,5 +870,16 @@ typedef enum TagRequest {
         [defaults synchronize];
     }
 }
+
+// MARK: TKPAppFlow methods
+
+- (TKPStoreManager *)storeManager {
+    if (_storeManager == nil) {
+        _storeManager = [[TKPStoreManager alloc] init];
+    }
+    return _storeManager;
+}
+
+
 
 @end

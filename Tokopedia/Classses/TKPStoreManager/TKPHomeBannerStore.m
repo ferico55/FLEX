@@ -28,10 +28,10 @@ NSInteger const TKPSuccessStatusCode = 200;
 
 - (void)fetchBannerWithCompletion:(void (^)(Banner *, NSError *))completion {
     RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Banner mapping] method:RKRequestMethodPOST pathPattern:@"home.pl" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndex:TKPSuccessStatusCode]];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Banner mapping] method:RKRequestMethodPOST pathPattern:@"banner.pl" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndex:TKPSuccessStatusCode]];
     [objectManager addResponseDescriptor:responseDescriptor];
 
-    NSDictionary *parameters = [@{@"action" : @"get_hotlist"} encrypt];
+    NSDictionary *parameters = [@{@"action" : @"get_banner"} encrypt];
     RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodPOST path:@"banner.pl" parameters:parameters];
 
     [operation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
