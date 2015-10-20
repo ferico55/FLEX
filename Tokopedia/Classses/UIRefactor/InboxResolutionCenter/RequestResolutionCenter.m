@@ -119,7 +119,7 @@
                             @"photos"            :photo?:@"",
                             @"server_id"         :serverID?:@"",
                             @"solution"          :solution?:@"",
-                            @"refund_amt"        :refundAmount?:@"",
+                            @"refund_amount"     :refundAmount?:@"",
                             @"flag_received"     :flagReceived?:@"",
                             @"trouble_type"      :troubleType?:@""
                             };

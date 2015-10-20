@@ -368,7 +368,9 @@
 -(void)didTapDoneBarButtonItem
 {
     if ([self isValidInput]) {
-        [_delegate setGenerateHost:_generatedHost];
+        if (_delegate!= nil && [_delegate respondsToSelector:@selector(setGenerated_host:)]) {
+            [_delegate setGenerateHost:_generatedHost];
+        }
         NSString *troubleType = [self troubleType]?:@"";
         NSString *solutionType = [self solutionType]?:@"";
 
