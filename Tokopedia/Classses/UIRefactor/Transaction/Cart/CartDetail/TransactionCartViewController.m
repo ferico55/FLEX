@@ -34,8 +34,15 @@
 
 #import "TransactionObjectManager.h"
 #import "RequestCart.h"
+#import "TAGDataLayer.h"
+
+#import "TagManagerHandler.h"
 
 #import "LoadingView.h"
+
+#import "GeneralTableViewController.h"
+
+#define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
 <
@@ -56,7 +63,8 @@
     TokopediaNetworkManagerDelegate,
     LoadingViewDelegate,
     RequestCartDelegate,
-    TransactionCCViewControllerDelegate
+    TransactionCCViewControllerDelegate,
+    GeneralTableViewControllerDelegate
 >
 {
     NSMutableArray *_list;
@@ -120,6 +128,13 @@
     UIAlertView *_alertLoading;
     
     LoadingView *_loadingView;
+    TAGContainer *_gtmContainer;
+    
+    InstallmentBank *_selectedInstallmentBank;
+    InstallmentTerm *_selectedInstallmentDuration;
+    
+    BOOL _isSelectBankInstallment;
+    BOOL _isSelectDurationInstallment;
     
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -176,6 +191,13 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *voucherUsedCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *klikBCAUserIDCell;
 @property (weak, nonatomic) IBOutlet UITextField *userIDKlikBCATextField;
+
+@property (strong, nonatomic) IBOutlet UIView *chooseBankDurationView;
+@property (weak, nonatomic) IBOutlet UILabel *bankInstallmentLabel;
+@property (weak, nonatomic) IBOutlet UILabel *durationInstallmentLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *bankView;
+@property (weak, nonatomic) IBOutlet UIView *durationView;
 
 @property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
@@ -293,6 +315,10 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
+    
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TagManagerHandler *gtmHandler = [TagManagerHandler new];
+    [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
 }
 
 
@@ -303,11 +329,12 @@
     if (_indexPage == 0) {
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+        _tableView.tableHeaderView = nil;
     }
     else
     {
         if (!_popFromShipment) {
-            [_tableView setContentOffset:CGPointMake(0, -40) animated:YES];
+            _tableView.contentOffset = CGPointZero;
         }
         if (_popFromShipment) {
             _popFromShipment = NO;
@@ -317,6 +344,8 @@
         _passwordTextField.text = @"";
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+        _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
+        
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -330,7 +359,20 @@
     
 
     [self adjustPaymentMethodView];
-    [self swipePaymentMethod];
+    //[self swipePaymentMethod];
+    [self swipeView:_paymentMethodView];
+}
+
+-(void)headerInstallmentAnimating
+{
+    if ([_durationInstallmentLabel.text isEqualToString:@"Pilih"]) {
+        _tableView.contentOffset = CGPointZero;
+        [self swipeView:_durationView];
+    }
+    if ([_bankInstallmentLabel.text isEqualToString:@"Pilih"]) {
+        _tableView.contentOffset = CGPointZero;
+        [self swipeView:_bankView];
+    }
 }
 
 -(void)adjustPaymentMethodView
@@ -402,6 +444,7 @@
     UITableViewCell* cell = nil;
 
     NSInteger shopCount = _list.count;
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (indexPath.section <shopCount)
         cell = [self cellListCartByShopAtIndexPath:indexPath];
@@ -415,7 +458,6 @@
     {
         if (indexPath.row == 1) {
             cell = _ccFeeCell;
-            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
             if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INDOMARET) {
                 _ccFeeCell.textLabel.text = @"Total belum termasuk biaya administrasi.";
             }
@@ -427,7 +469,19 @@
         else
         {
             cell = _totalPaymentCell;
-            [cell.detailTextLabel setText:(_indexPage ==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
+            NSString *isAvailableInstallment = [[self gtmContainer]stringForKey:GTMIsLuckyInstallmentAvailableKey];
+            NSString *totalPayment;
+            if (_indexPage == 0) {
+                if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isAvailableInstallment integerValue] == 0) {
+                    totalPayment = _cart.grand_total_without_lp_idr;
+                }
+                else
+                    totalPayment = _cart.grand_total_idr;
+            }
+            else
+                totalPayment = _cartSummary.payment_left_idr;
+            
+            [cell.detailTextLabel setText:totalPayment animated:YES];
         }
     }
     
@@ -740,6 +794,7 @@
                 }
                     break;
                 case TYPE_GATEWAY_CC:
+                case TYPE_GATEWAY_INSTALLMENT:
                 {
                     [self pushToCCInformation];
                 }
@@ -751,6 +806,60 @@
         }
     }
 }
+- (IBAction)tapBankInstallment:(id)sender {
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.title = @"Pilih Bank";
+    controller.delegate = self;
+    
+    NSMutableArray *objects = [NSMutableArray new];
+    
+    for (InstallmentBank *bank in _cartSummary.installment_bank_option) {
+        [objects addObject:bank.bank_name];
+    }
+    
+    controller.objects = [objects copy];
+    controller.selectedObject = _selectedInstallmentBank.bank_name;
+    controller.tag = 1;
+    _isSelectBankInstallment = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
+- (IBAction)tapBankDuration:(id)sender {
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.title = @"Pilih Durasi";
+    controller.delegate = self;
+    
+    NSMutableArray *objects = [NSMutableArray new];
+    
+    for (InstallmentTerm *term in _selectedInstallmentBank.installment_term) {
+        [objects addObject:[NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price_idr]];
+    }
+    controller.objects = [objects copy];
+    controller.selectedObject = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price_idr];
+    controller.tag = 2;
+    _isSelectDurationInstallment = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+//-(BOOL)isValidInputInstallment
+//{
+//    BOOL isvalid = YES;
+//    NSMutableArray *errorMessage = [NSMutableArray new];
+//
+//    if ([_durationInstallmentLabel.text isEqualToString:@"Pilih"]) {
+//        [errorMessage addObject:@"Durasi harus dipilih"];
+//        isvalid = NO;
+//    }
+//    if ([_bankInstallmentLabel.text isEqualToString:@"Pilih"]) {
+//        [errorMessage addObject:@"Durasi harus dipilih"];
+//        isvalid = NO;
+//    }
+//    
+//    [self headerInstallmentAnimating];
+//    return isvalid;
+//}
+
+
 
 -(BOOL)isValidInputCC
 {
@@ -808,7 +917,10 @@
     TransactionCCViewController *vc = [TransactionCCViewController new];
     vc.cartSummary = _cartSummary;
     vc.delegate = self;
+    vc.selectedBank = _selectedInstallmentBank?:[InstallmentBank new];
+    vc.selectedTerm = _selectedInstallmentDuration?:[InstallmentTerm new];
     vc.ccData = [_data objectForKey:DATA_CC_KEY]?:[CCData new];
+    vc.data = [_dataInput copy];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -867,21 +979,49 @@
 - (IBAction)tapChoosePayment:(id)sender {
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY]?:[TransactionCartGateway new];
     
-    NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
+    NSMutableArray *gatewayListWithoutHiddenPayment= [NSMutableArray new];
+    NSMutableArray *gatewayImages= [NSMutableArray new];
+    
+    NSString *hiddenGatewayString = [[self gtmContainer] stringForKey:GTMHiddenPaymentKey]?:@"-1";
+    hiddenGatewayString = ([hiddenGatewayString isEqualToString:@""])?@"-1":hiddenGatewayString;
+    NSArray *hiddenGatewayArray = [hiddenGatewayString componentsSeparatedByString: @","];
+    
+    NSMutableArray *hiddenGatewayName = [NSMutableArray new];
+    NSMutableArray *hiddenGatewayImage = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(11)] ) {
-            [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
+        [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
+        [gatewayImages addObject:gateway.gateway_image?:@""];
+        for (NSString *hiddenGateway in hiddenGatewayArray) {
+            if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
+                [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
+                [hiddenGatewayName addObject:gateway.gateway_name];
+            }
         }
     }
     
+    [gatewayImages removeObjectsInArray:hiddenGatewayImage];
+    [gatewayListWithoutHiddenPayment removeObjectsInArray:hiddenGatewayName];
+    
     GeneralTableViewController *vc = [GeneralTableViewController new];
+    vc.tableViewCellStyle = UITableViewCellStyleDefault;
     vc.selectedObject = selectedGateway.gateway_name;
-    vc.objects = gatewayListWithoutCreditCart;
+    vc.objectImages = [gatewayImages copy];
+    vc.objects = [gatewayListWithoutHiddenPayment copy];
     vc.delegate = self;
     vc.title = @"Metode Pembayaran";
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+#pragma mark - GTM
+-(TAGContainer *)gtmContainer
+{
+    if (!_gtmContainer) {
+        _gtmContainer = [TagManagerHandler getContainer];
+    }
+    return _gtmContainer;
+}
+
 
 #pragma mark - Delegate
 -(void)TransactionCartShippingViewController:(TransactionCartShippingViewController *)viewController withUserInfo:(NSDictionary *)userInfo
@@ -988,8 +1128,19 @@
     NSArray *dropshipPhoneArray = [_data objectForKey:DATA_DROPSHIPPER_PHONE_KEY];
     [_senderPhoneDropshipper removeAllObjects];
     [_senderPhoneDropshipper addObjectsFromArray:dropshipPhoneArray];
+    
+    TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
+    if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
+        if (!_selectedInstallmentBank) _selectedInstallmentBank = _cartSummary.installment_bank_option[0];
+        if (!_selectedInstallmentDuration) _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+        
+        _bankInstallmentLabel.text = _selectedInstallmentBank.bank_name;
+        _durationInstallmentLabel.text = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price_idr];
+    }
+    
     [_tableView reloadData];
 }
+
 
 -(BOOL)isValidInput
 {
@@ -1004,7 +1155,8 @@
         if (gateway == -1) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
-            [self swipePaymentMethod];
+            //[self swipePaymentMethod];
+            [self swipeView:_paymentMethodView];
         }
         if (gateway == TYPE_GATEWAY_CC) {
             return [self isValidInputCC];
@@ -1234,6 +1386,11 @@
     }
 }
 
+-(void)addData:(NSDictionary *)dataInput
+{
+    [_dataInput addEntriesFromDictionary:dataInput];
+}
+
 #pragma mark - Actionsheet Delegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -1314,6 +1471,27 @@
         _saldoTokopediaAmountTextField.text = @"";
         
     }
+    
+    if (_isSelectBankInstallment) { //bank
+        for (InstallmentBank *bank in _cartSummary.installment_bank_option) {
+            if ([bank.bank_name isEqualToString:object]) {
+                _selectedInstallmentBank = bank;
+            }
+        }
+        _selectedInstallmentDuration = _selectedInstallmentBank.installment_term[0];
+        _isSelectBankInstallment = NO;
+    }
+    
+    if (_isSelectDurationInstallment) { //duration
+        for (InstallmentTerm *term in _selectedInstallmentBank.installment_term) {
+            NSString *termNow = [NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price_idr];
+            if ([termNow isEqualToString:object]) {
+                _selectedInstallmentDuration = term;
+            }
+        }
+        _isSelectDurationInstallment = NO;
+    }
+    
     [_tableView reloadData];
 }
 
@@ -1609,7 +1787,7 @@
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -1663,7 +1841,7 @@
 {
     [self doClearAllData];
     
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height-48) animated:YES];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     [_refreshControl beginRefreshing];
     
     if ([_refreshControl isRefreshing]) {
@@ -1709,6 +1887,9 @@
     
     _refreshFromShipment = NO;
     
+    _selectedInstallmentBank = nil;
+    _selectedInstallmentDuration = nil;
+    
     [_tableView reloadData];
 }
 
@@ -1725,13 +1906,13 @@
     }
 }
 
-
-- (void)swipePaymentMethod {
-    CGAffineTransform tr = CGAffineTransformTranslate(_paymentMethodView.transform, -40, 0);
-    _paymentMethodView.transform = tr;
+-(void)swipeView:(UIView*)view{
+//- (void)swipePaymentMethod {
+    CGAffineTransform tr = CGAffineTransformTranslate(view.transform, -40, 0);
+    view.transform = tr;
     
     [UIView animateWithDuration:2.0 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0.0f options:0 animations:^{
-        _paymentMethodView.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
+        view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, 0);
     } completion:^(BOOL finished) {
         
     }];
@@ -1751,6 +1932,7 @@
     
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+    
 }
 
 #pragma mark - Footer View
@@ -1917,7 +2099,6 @@
     cell.clipsToBounds = YES;
     cell.contentView.clipsToBounds = YES;
     
-    
     return cell;
 }
 
@@ -1962,7 +2143,11 @@
         {
             cell = _ccAdministrationCell;
             NSString *administrationFeeStr = _cartSummary.credit_card.charge_idr?:@"Rp 0";
-            [cell.detailTextLabel setText:administrationFeeStr];
+            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
+                [cell.detailTextLabel setText:_cartSummary.conf_code_idr?:@"Rp 0"];
+            }
+            else [cell.detailTextLabel setText:administrationFeeStr];
         }
             break;
         case 7:
@@ -2249,6 +2434,7 @@
 -(CGFloat)rowHeightPage1AtIndexPath:(NSIndexPath*)indexPath
 {
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    NSString *isInstallmentAvailable = [[self gtmContainer] stringForKey:GTMIsLuckyInstallmentAvailableKey];
     
     if (indexPath.section < _list.count) {
         TransactionCartList *list = _list[indexPath.section];
@@ -2285,15 +2471,27 @@
         }
     }
     else if (indexPath.section == _list.count) {
+        if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isInstallmentAvailable integerValue] == 0) {
+            return 0;
+        }
+        
         if ([_cart.cashback integerValue] == 0) {
             return 0;
         }
+        
+        return 44;
     }
     else if (indexPath.section == _list.count+1) {
         if (indexPath.row == 1) {
-            if ([_cart.lp_amount integerValue] == 0) {
+            if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isInstallmentAvailable integerValue] == 0) {
                 return 0;
             }
+            
+            if ([_cart.lp_amount integerValue] <= 0) {
+                return 0;
+            }
+            
+            return 44;
         }
         else if (indexPath.row >1) {
             return 0;
@@ -2408,9 +2606,11 @@
                 return 0;
         }
         if (indexPath.row == 6) {
-            if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_CC) {
-                return 0;
+            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC || ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [_cartSummary.conf_code integerValue] != 0)) {
+                return 44;
             }
+            else
+                return 0;
         }
         if (indexPath.row == 7) {
             if ([_cartSummary.lp_amount integerValue] == 0) {
@@ -2438,7 +2638,8 @@
         {
             if (([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
                 [_cartSummary.deposit_amount integerValue] <= 0)||
-                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC) {
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC ||
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT ) {
                 return 0;
             }
         }
@@ -2706,7 +2907,7 @@
 -(void)endRefreshing
 {
     if (_refreshControl.isRefreshing) {
-        [_tableView setContentOffset:CGPointMake(0, -80) animated:YES];
+        _tableView.contentOffset = CGPointZero;
         [_refreshControl endRefreshing];
     }
 }
@@ -2744,6 +2945,7 @@
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
     }
+    
     [self endRefreshing];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
@@ -2935,7 +3137,6 @@
                                DATA_CC_KEY : cart.result.credit_card_data?:[CCData new]
                                };
     [_delegate didFinishRequestCheckoutData:userInfo];
-    
     _checkoutButton.enabled = YES;
     _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];

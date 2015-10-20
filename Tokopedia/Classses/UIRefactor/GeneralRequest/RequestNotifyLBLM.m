@@ -122,10 +122,10 @@
 -(void)showLuckyMerchant
 {
     AlertLuckyView *alertLucky = [AlertLuckyView new];
-    NSString *line1 = [_gtmContainer stringForKey:@"string_notify_merchant_line_1"]?:@"Anda berhasil menjadi Lucky Merchant";
-    NSString *line2 = [_gtmContainer stringForKey:@"string_notify_merchant_line_2"]?:@"Kesempatan mendapatkan pesanan lebih banyak setiap harinya";
-    NSString *line3 = [_gtmContainer stringForKey:@"string_notify_merchant_line_3"]?:@"Berlaku hingga 30 hari kedepan";
-    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"http://blog.tokopedia.com";
+    NSString *line1 = _notifyData.attributes.content_merchant_1?:[_gtmContainer stringForKey:@"string_notify_merchant_line_1"]?:@"Anda berhasil menjadi Lucky Merchant";
+    NSString *line2 = _notifyData.attributes.content_merchant_2?:[_gtmContainer stringForKey:@"string_notify_merchant_line_2"]?:@"Kesempatan mendapatkan pesanan lebih banyak setiap harinya";
+    NSString *line3 = _notifyData.attributes.content_merchant_3?:[_gtmContainer stringForKey:@"string_notify_merchant_line_3"]?:@"Berlaku hingga 30 hari kedepan";
+    NSString *urlString = @"https://www.tokopedia.com/lucky-deal/";//_notifyData.attributes.link?:[_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"https://www.tokopedia.com/lucky-deal/";
     
     alertLucky.upperView.backgroundColor = [UIColor colorWithRed:(12.0f/255.0f) green:(170.0f/255.0f) blue:85.0f/255.0f alpha:1];
     alertLucky.upperColor = alertLucky.upperView.backgroundColor;
@@ -141,10 +141,10 @@
 -(void)showLuckyBuyer
 {
     AlertLuckyView *alertLucky = [AlertLuckyView new];
-    NSString *line1 = [_gtmContainer stringForKey:@"string_notify_buyer_line_1"]?:@"Anda berhasil menjadi Lucky Buyer";
-    NSString *line2 = [_gtmContainer stringForKey:@"string_notify_buyer_line_2"]?:@"Dapatkan cashback dan diskon setiap belanja dari Lucky Merchant";
-    NSString *line3 = [_gtmContainer stringForKey:@"string_notify_buyer_line_3"]?:@"Berlaku hingga 30 hari kedepan";
-    NSString *urlString = [_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"http://blog.tokopedia.com";
+    NSString *line1 = _notifyData.attributes.content_buyer_1?:[_gtmContainer stringForKey:@"string_notify_buyer_line_1"]?:@"Anda berhasil menjadi Lucky Buyer";
+    NSString *line2 = _notifyData.attributes.content_buyer_2?:[_gtmContainer stringForKey:@"string_notify_buyer_line_2"]?:@"Dapatkan cashback dan diskon setiap belanja dari Lucky Merchant";
+    NSString *line3 = _notifyData.attributes.content_buyer_3?:[_gtmContainer stringForKey:@"string_notify_buyer_line_3"]?:@"Berlaku hingga 30 hari kedepan";
+    NSString *urlString =  @"https://www.tokopedia.com/lucky-deal/";//_notifyData.attributes.link?:[_gtmContainer stringForKey:@"string_notify_buyer_link"]?:@"https://www.tokopedia.com/lucky-deal/";
     alertLucky.upperView.backgroundColor = [UIColor colorWithRed:(42.0f/255.0f) green:(180.0f/255.0f) blue:193.0f/255.0f alpha:1];
     alertLucky.upperColor = alertLucky.upperView.backgroundColor;
     [alertLucky.FirstLineLabel setCustomAttributedText:line1];

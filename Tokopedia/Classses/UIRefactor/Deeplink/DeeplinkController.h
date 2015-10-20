@@ -18,6 +18,8 @@
 @interface DeeplinkController : NSObject {
     TAGContainer *_gtmContainer;
     NSURL *_sanitizedURL;
+    
+    BOOL isMatchUrl;
 }
 
 @property (weak, nonatomic) id<DeeplinkControllerDelegate> delegate;

@@ -11,7 +11,16 @@
 #import "WebViewController.h"
 #import "RequestUtils.h"
 #import "TAGDataLayer.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
+#import "TKPDTabNavigationController.h"
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
+#import "MyWishlistViewController.h"
+#import "CreateShopViewController.h"
+#import "ProductAddEditViewController.h"
+#import "TransactionCartRootViewController.h"
+
+#import "string_product.h"
 
 @implementation DeeplinkController
 
@@ -38,15 +47,22 @@
         return YES;
     }
     
-    if([[url host] isEqualToString:@"www.tokopedia.com"]) {
-        return NO;
+    
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern: @"/tokopedia.com/" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRange textRange = NSMakeRange(0, [url host].length);
+    NSRange matchRange = [regex rangeOfFirstMatchInString:[url host] options:NSMatchingReportProgress range:textRange];
+    
+    if (matchRange.location != NSNotFound) {
+        return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 - (void)redirectToAppsViewController {
     NSURL *url = _sanitizedURL;
+    
     NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     NavigateViewController *navigator = [NavigateViewController new];
     
@@ -61,9 +77,59 @@
     }
     else if ([explodedPathUrl[1] isEqualToString:@"search"]) {
         //search
-        NSString *urlString = [url absoluteString];
+        NSString *urlString = [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *urlDict = [urlString URLQueryParametersWithOptions:URLQueryOptionDefault];
-        [navigator navigateToSearchFromViewController:(UIViewController*)_delegate withData:urlDict];
+        NSDictionary *data = urlDict;
+        
+        SearchResultViewController *vc = [SearchResultViewController new];
+        vc.data = @{
+                    @"search" : [data objectForKey:@"q"]?:@"",
+                    @"type" : @"search_product",
+                    @"location" : [data objectForKey:@"floc"]?:@"",
+                    @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                    @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                    @"order_by" :[data objectForKey:@"ob"]?:@"",
+                    @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                    @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                    @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                    @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                    };
+        SearchResultViewController *vc1 = [SearchResultViewController new];
+        vc1.data = @{
+                     @"search" : [data objectForKey:@"q"]?:@"",
+                     @"type" : @"search_catalog",
+                     @"location" : [data objectForKey:@"floc"]?:@"",
+                     @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                     @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                     @"order_by" :[data objectForKey:@"ob"]?:@"",
+                     @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                     @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                     @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                     @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                     };
+        SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+        vc2.data = @{
+                     @"search" : [data objectForKey:@"q"]?:@"",
+                     @"type" : @"search_shop",
+                     @"location" : [data objectForKey:@"floc"]?:@"",
+                     @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                     @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                     @"order_by" :[data objectForKey:@"ob"]?:@"",
+                     @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                     @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                     @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                     @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                     };
+        NSArray *viewcontrollers = @[vc,vc1,vc2];
+        
+        TKPDTabNavigationController *vcs = [[TKPDTabNavigationController alloc] init];
+        
+        [vcs setSelectedIndex:0];
+        [vcs setViewControllers:viewcontrollers];
+        [vcs setNavigationTitle:[data objectForKey:@"q"]];
+        
+        vcs.hidesBottomBarWhenPushed = YES;
+        [((UIViewController*)_delegate).navigationController pushViewController:vcs animated:YES];
     }
     else if([explodedPathUrl[1] isEqualToString:@"hot"]) {
         //hot
@@ -73,10 +139,39 @@
         //catalog
         [navigator navigateToCatalogFromViewController:(UIViewController*)_delegate withCatalogID:explodedPathUrl[2] andCatalogKey:explodedPathUrl[3]];
     }
+    else if ([[url absoluteString] rangeOfString:@"tx.pl"].location != NSNotFound) {
+        //cart
+        TransactionCartRootViewController *controller = [TransactionCartRootViewController new];
+        [((UIViewController*)_delegate).navigationController pushViewController:controller animated:YES];
+    }
+    else if ([[url absoluteString] rangeOfString:@"tab=wishlist"].location != NSNotFound) {
+        //wishlist
+        MyWishlistViewController *controller = [MyWishlistViewController new];
+        [((UIViewController*)_delegate).navigationController pushViewController:controller animated:YES];
+    }
+    else if ([[url absoluteString] rangeOfString:@"create-shop"].location != NSNotFound) {
+        //create shops
+        CreateShopViewController *controller = [CreateShopViewController new];
+        [((UIViewController*)_delegate).navigationController pushViewController:controller animated:YES];
+    }
+    else if ([[url absoluteString] rangeOfString:@"product-add.pl"].location != NSNotFound) {
+        //add product
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *dataAuth = [secureStorage keychainDictionary];
+        
+        ProductAddEditViewController *controller = [ProductAddEditViewController new];
+        controller.data = @{
+            kTKPD_AUTHKEY                   : dataAuth?:@{},
+            DATA_TYPE_ADD_EDIT_PRODUCT_KEY  : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+        };
+        
+        [((UIViewController*)_delegate).navigationController pushViewController:controller animated:YES];
+    }
     else if(explodedPathUrl.count == 2) {
         //shop
         [navigator navigateToShopFromViewController:(UIViewController*)_delegate withShopName:explodedPathUrl[1]];
-    } else if(explodedPathUrl.count == 3) {
+    }
+    else if(explodedPathUrl.count == 3) {
         //product
         [navigator navigateToProductFromViewController:(UIViewController*)_delegate withData:@{@"product_key":explodedPathUrl[2], @"shop_domain" : explodedPathUrl[1]}];
     }
@@ -98,6 +193,7 @@
 }
 
 - (void)doRedirect {
+    _sanitizedURL = [GSDDeepLink handleDeepLink:[_delegate sanitizedURL]];
     NSURL *url = _sanitizedURL;
     if ([[url host] rangeOfString:@"testMode"].location != NSNotFound ||
         [[url host] rangeOfString:@"localytics"].location != NSNotFound) {

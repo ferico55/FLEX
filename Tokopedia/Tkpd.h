@@ -257,11 +257,22 @@ typedef enum {
 #define GTMKeyPromoPostAction   @"promo_post_action_url"
 #define GTMKeyPromoFullAction   @"promo_full_action_url"
 
+#define GTMKeyCancelPromoProductFeed  @"cancel_promo_product_feed"
+#define GTMKeyCancelPromoHotlist      @"cancel_promo_hotlist"
+#define GTMKeyCancelPromoSearch       @"cancel_promo_search"
+#define GTMKeyCancelPromoShopFeed     @"cancel_promo_shop_feed"
+
 #define GTMKeyNotifyLBLMBase @"notify_base_url"
 #define GTMKeyNotifyLBLMPost @"notify_post_url"
 #define GTMKeyNotifyLBLMFull @"notify_full_url"
 
 #define GTMVeritransClientKey @"veritrans_client_key"
+
+#define GTMHiddenPaymentKey @"hidden_payment_gateways"
+
+#define GTMIsLuckyInstallmentAvailableKey @"is_installment_available"
+
+#define GTMKeyComplainNotifString @"complain_notif_string"
 
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 

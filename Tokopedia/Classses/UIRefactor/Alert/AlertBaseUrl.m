@@ -7,34 +7,23 @@
 //
 
 #import "AlertBaseUrl.h"
-#import "Localytics.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @implementation AlertBaseUrl
 
+
+
 - (void)awakeFromNib {
     self.layer.cornerRadius = 5;
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     baseUrl = kTkpdBaseURLString;
+    
+    [_baseUrlText setText:baseUrl];
 }
 
-- (IBAction)tapBeta:(id)sender {
-    baseUrl = @"http://staging.tokopedia.com/ws";
-    [self didChangeButtonColor:_betaButton];
-}
-
-- (IBAction)tapDev:(id)sender {
-    baseUrl = @"http://alpha.tokopedia.com/ws";
-    [self didChangeButtonColor:_devButton];
-    [Localytics tagEvent:@"Developer Options"];
-}
-
-- (IBAction)tapLive:(id)sender {
-    baseUrl = @"http://www.tokopedia.com/ws";
-    [self didChangeButtonColor:_liveButton];
-}
-
-- (void)didChangeButtonColor:(UIButton*)button {
+- (IBAction)tapSwithButton:(id)sender {
+    baseUrl = _baseUrlText.text;
     [self dismissWithClickedButtonIndex:-1 animated:YES];
     [self dismissindex:-1 silent:YES animated:YES];
     
@@ -43,8 +32,12 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didChangeBaseUrl" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil];
-    
-    [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
 }
+
+- (IBAction)tapCancelButton:(id)sender {
+    [self dismissWithClickedButtonIndex:-1 animated:YES];
+    [self dismissindex:-1 silent:YES animated:YES];
+}
+
 
 @end

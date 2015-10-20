@@ -23,6 +23,7 @@
 #import "HotlistResultViewController.h"
 #import "CatalogViewController.h"
 #import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
 
 #import "InboxRootViewController.h"
 #import "InboxMessageViewController.h"
@@ -340,23 +341,42 @@
 }
 
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
-    SearchResultViewController *vc = [SearchResultViewController new];
-    vc.delegate = viewController;
-    vc.data =@{
-               @"search" : [data objectForKey:@"q"]?:@"",
-               @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
-               @"location" : [data objectForKey:@"floc"]?:@"",
-               @"price_min" : [data objectForKey:@"pmin"]?:@"",
-               @"price_max" : [data objectForKey:@"pmax"]?:@"",
-               @"order_by" :[data objectForKey:@"ob"]?:@"",
-               @"shop_type" : [data objectForKey:@"fshop"]?:@"",
-               @"department_1" : [data objectForKey:@"department_1"]?:@"",
-               @"department_2" : [data objectForKey:@"department_2"]?:@"",
-               @"department_3" : [data objectForKey:@"department_3"]?:@"",
-               };
-    vc.title = [data objectForKey:@"q"];
-    vc.hidesBottomBarWhenPushed = YES;
-    [viewController.navigationController pushViewController:vc animated:YES];
+    if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
+        SearchResultViewController *vc = [SearchResultViewController new];
+        vc.delegate = viewController;
+        vc.data =@{
+                   @"search" : [data objectForKey:@"q"]?:@"",
+                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
+                   @"location" : [data objectForKey:@"floc"]?:@"",
+                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                   @"order_by" :[data objectForKey:@"ob"]?:@"",
+                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                   };
+        vc.title = [data objectForKey:@"q"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:vc animated:YES];
+    } else {
+        SearchResultShopViewController *vc = [SearchResultShopViewController new];
+        vc.data =@{
+                   @"search" : [data objectForKey:@"q"]?:@"",
+                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
+                   @"location" : [data objectForKey:@"floc"]?:@"",
+                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                   @"order_by" :[data objectForKey:@"ob"]?:@"",
+                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                   };
+        vc.title = [data objectForKey:@"q"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {

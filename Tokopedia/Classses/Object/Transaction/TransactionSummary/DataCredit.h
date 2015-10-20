@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSString *payment_id;
 @property (nonatomic, strong) NSString *cc_agent;
 @property (nonatomic, strong) NSString *cc_type;
+@property (nonatomic, strong) NSString *cc_card_bank_type;
 
 @end

@@ -220,6 +220,26 @@
     return bcaParamMapping;
 }
 
+-(RKObjectMapping*)installmentBankMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[InstallmentBank class]];
+    [mapping addAttributeMappingsFromArray:@[@"percentage",
+                                             @"bank_id",
+                                             @"bank_name"
+                                            ]];
+    return mapping;
+}
+
+-(RKObjectMapping*)installmentTermMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[InstallmentTerm class]];
+    [mapping addAttributeMappingsFromArray:@[@"duration",
+                                             @"monthly_price",
+                                             @"monthly_price_idr"
+                                             ]];
+    return mapping;
+}
+
 -(RKObjectMapping*)systemBankMapping
 {
     RKObjectMapping *sbMapping = [RKObjectMapping mappingForClass:[TransactionSystemBank class]];
@@ -274,7 +294,8 @@
     [mapping addAttributeMappingsFromArray:@[@"user_email",
                                              @"payment_id",
                                              @"cc_agent",
-                                             @"cc_type"]];
+                                             @"cc_type",
+                                             @"cc_card_bank_type"]];
     return mapping;
 }
 

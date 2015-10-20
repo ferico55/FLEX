@@ -51,10 +51,25 @@
         [self preparePersistData];
     });
     
+    //opening URL in background state
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+        } else {
+            //universal search link, only available in iOS 9
+            if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+                NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+                if (userActivityDictionary) {
+                    [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                        if ([obj isKindOfClass:[NSUserActivity class]]) {
+                            NSUserActivity *userActivity = obj;
+                            NSURL *url = userActivity.webpageURL;
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+                        }
+                    }];
+                }
+            }
         }
 
     });
@@ -161,6 +176,10 @@
                                                                         openURL:url
                                                               sourceApplication:sourceApplication
                                                                      annotation:annotation];
+    
+    //open app indexing (deeplink URL)
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+    
     if (shouldOpenURL) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
@@ -171,6 +190,13 @@
         return YES;
     }
     return NO;
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
+    NSURL *url = userActivity.webpageURL;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+    
+    return YES;
 }
 
 

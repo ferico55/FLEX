@@ -15,7 +15,8 @@
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "NotificationManager.h"
-#import "Localytics.h"
+#import "DeeplinkController.h"
+
 
 @interface CategoryViewController ()
 <
@@ -26,6 +27,7 @@
 {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
+    NSURL *_deeplinkUrl;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -67,12 +69,36 @@
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDeeplinkUrl:)
+                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+
 
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
 
 
 }
+
+#pragma mark - Deeplink Delegate
+- (NSURL *)sanitizedURL {
+    return _deeplinkUrl;
+}
+
+- (void)didReceiveDeeplinkUrl:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSURL *deeplinkUrl = [userInfo objectForKey:@"url"];
+    
+    if(deeplinkUrl) {
+        DeeplinkController *dlc = [DeeplinkController new];
+        __weak typeof(self) weakSelf = self;
+        dlc.delegate = weakSelf;
+        _deeplinkUrl = deeplinkUrl;
+        [dlc doRedirect];
+    }
+}
+
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -87,7 +113,7 @@
     
     [self initNotificationManager];
     
-    [Localytics triggerInAppMessage:@"Home - Category"];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -163,32 +189,21 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger index =  indexPath.row;
-    NSString *categoryId = [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"";
-    NSString *categoryTitle = [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""];
-    
-    NSDictionary *attributes = @{@"Category Name" : categoryTitle};
-    [Localytics tagEvent:@"Event : Clicked Category" attributes:attributes];
     
     SearchResultViewController *vc = [SearchResultViewController new];
-    vc.data = @{
-                kTKPDSEARCH_APIDEPARTMENTIDKEY : categoryId,
-                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : categoryTitle,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY
-                };
+    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+               kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data = @{
-                 kTKPDSEARCH_APIDEPARTMENTIDKEY : categoryId,
-                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : categoryTitle,
-                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY
-                 };
+    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data = @{
-                 kTKPDSEARCH_APIDEPARTMENTIDKEY : categoryId,
-                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : categoryTitle,
-                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY
-                 };
+    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
 
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     

@@ -23,6 +23,8 @@
 #import "Localytics.h"
 
 static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
+#define normalWidth 320
+#define normalHeight 568
 
 @interface MyWishlistViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
 
@@ -73,6 +75,11 @@ typedef enum TagRequest {
 {
     [super viewDidLoad];
     
+    self.title = @"Wishlist";
+    
+    double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
+    double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
+    
     //todo with variable
     _product = [NSMutableArray new];
     _isNoData = (_product.count > 0);
@@ -96,13 +103,10 @@ typedef enum TagRequest {
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     
-    if([[UIScreen mainScreen]bounds].size.width > 320) {
-        [_flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidth6plus, productCollectionViewCellHeight6plus)];
-    } else {
-        [_flowLayout setItemSize:CGSizeMake(productCollectionViewCellWidthNormal, productCollectionViewCellHeightNormal)];
-    }
+    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     
-    [self setTableInset];
+    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
+    
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
     UINib *cellNib = [UINib nibWithNibName:@"GeneralProductCollectionViewCell" bundle:nil];
@@ -456,12 +460,6 @@ typedef enum TagRequest {
     [_collectionView reloadData];
 }
 
-- (void) setTableInset {
-    if([[UIScreen mainScreen]bounds].size.height > 568) {
-        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
-    } else {
-        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
-    }
-}
+
 
 @end
