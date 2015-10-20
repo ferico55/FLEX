@@ -734,7 +734,7 @@
                     _cart.grand_total_without_lp = _cart.grand_total;
                     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
                     [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
-                    
+                    _voucherData = [TransactionVoucherData new];
                     [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
                     [_dataInput setObject:@(0) forKey:DATA_VOUCHER_AMOUNT];
                     [_dataInput setObject:@"" forKey:DATA_CART_USED_VOUCHER_AMOUNT];
@@ -1476,6 +1476,18 @@
 
 -(void)adjustGrandTotalWithDeposit:(NSString*)deposit
 {
+    NSInteger voucher = [_voucherData.voucher_amount integerValue];
+    NSInteger grandTotal = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_W_LP] integerValue];
+    
+    if (grandTotal<=voucher) {
+        [_dataInput setObject:@(grandTotal) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+    }
+    else
+    {
+        [_dataInput setObject:@(voucher) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+    }
+    [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
+    
     NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
     NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
     
@@ -1495,7 +1507,6 @@
         [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
     }
     
-    NSInteger grandTotal = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
     
     NSInteger grandTotalInteger = grandTotal - depositAmount - voucherAmount;
     grandTotalInteger = (grandTotalInteger<0)?0:grandTotalInteger;
@@ -1505,6 +1516,7 @@
     _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
+    _grandTotalLabel.text = _cart.grand_total_without_lp_idr;
 }
 
 #pragma mark - UIAlertview delegate
@@ -1677,40 +1689,9 @@
         {
             
             NSString *textFieldRemoveOneChar = [[textField.text substringToIndex:[textField.text length]-1] stringByReplacingOccurrencesOfString:@"." withString:@""];
-            NSInteger deposit = [textFieldRemoveOneChar integerValue];
-            NSInteger grandTotalInteger = grandTotal - deposit;
-                        NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
-            NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
-            NSInteger grandTotalCartFromWS = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
-            
-            if (grandTotalInteger<0) {
-                if (voucherUsedAmount<voucherAmount && voucherUsedAmount< grandTotalCartFromWS) {
-                    voucherUsedAmount = voucherUsedAmount+ deposit;
-                    if (voucherUsedAmount>voucherAmount) {
-                        voucherUsedAmount = voucherAmount;
-                    }
-                    else
-                    {
-                        depositAmount = 0;
-                    }
-                    //[_dataInput setObject:@(deposit) forKey:DATA_USED_SALDO_KEY];
-                    [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
-                }
-                grandTotalInteger = 0;
-            }
-            grandTotalInteger -= voucherUsedAmount;
-            if (grandTotalInteger <0) {
-                grandTotalInteger = 0;
-            }
-            
-            _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
-            _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
-            _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
-            _cart.grand_total_without_lp = _cart.grand_total;
-            _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
-            
             NSString *depositAmount = [textFieldRemoveOneChar stringByReplacingOccurrencesOfString:@"." withString:@""];
             [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
+            [self adjustGrandTotalWithDeposit:textFieldRemoveOneChar];
             
         }
         else if ([textFieldText integerValue] <= grandTotal || [textFieldText integerValue] <= [self depositAmountUser])
@@ -1765,7 +1746,7 @@
         isNotUsingLP = YES;
     }
     
-    if (_voucherData.no_other_promotion) {
+    if ([_voucherData.voucher_no_other_promotion integerValue] == 1) {
         isNotUsingLP = YES;
     }
     
@@ -2434,7 +2415,6 @@
 -(CGFloat)rowHeightPage1AtIndexPath:(NSIndexPath*)indexPath
 {
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    NSString *isInstallmentAvailable = [[self gtmContainer] stringForKey:GTMIsLuckyInstallmentAvailableKey];
     
     if (indexPath.section < _list.count) {
         TransactionCartList *list = _list[indexPath.section];
@@ -2471,7 +2451,7 @@
         }
     }
     else if (indexPath.section == _list.count) {
-        if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isInstallmentAvailable integerValue] == 0) {
+        if ([self isUseGrandTotalWithoutLP]) {
             return 0;
         }
         
@@ -2483,7 +2463,7 @@
     }
     else if (indexPath.section == _list.count+1) {
         if (indexPath.row == 1) {
-            if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [isInstallmentAvailable integerValue] == 0) {
+            if ([self isUseGrandTotalWithoutLP]) {
                 return 0;
             }
             
@@ -3208,31 +3188,8 @@
     _buttonVoucherInfo.hidden = YES;
     _buttonCancelVoucher.hidden = NO;
     
-    NSString *grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
-    grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    grandTotal = [_cart.grand_total stringByReplacingOccurrencesOfString:@"," withString:@""];
-    NSInteger totalInteger = [grandTotal integerValue];
+    [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
     
-    if (totalInteger<=voucher) {
-        [_dataInput setObject:@(totalInteger) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
-    }
-    else
-    {
-        [_dataInput setObject:@(voucher) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
-    }
-    
-    
-    totalInteger -= voucher;
-    if (totalInteger <0) {
-        totalInteger = 0;
-    }
-    _cart.grand_total = [NSString stringWithFormat:@"%zd",totalInteger];
-    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
-    _cart.grand_total_without_lp = _cart.grand_total;
-    _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
-    [_dataInput setObject:@(voucher) forKey:DATA_VOUCHER_AMOUNT];
-    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
     [_tableView reloadData];
     
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
