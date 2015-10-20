@@ -9,10 +9,8 @@
 #import "Tkpd.h"
 #import "RKObjectManagerCategory.h"
 
-// Set this to your Trakt API Key
-NSString * const kTraktAPIKey = @"8b0c367dd3ef0860f5730ec64e3bbdc9";
-NSString * const kTraktBaseURLString = kTkpdBaseURLString;
-NSString * const kTraktBaseURLHttpsString = kTkpdBaseURLHttpsString;
+NSString * const TKPDBaseUrl = kTkpdBaseURLString;
+
 NSString *_selectedBaseUrl;
 static RKObjectManager *_sharedClient = nil;
 static RKObjectManager *_sharedClientHttps = nil;
@@ -23,7 +21,7 @@ static RKObjectManager *_sharedClientHttps = nil;
     static dispatch_once_t oncePredicate;
     
     dispatch_once(&oncePredicate, ^{
-        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
+        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:TKPDBaseUrl]];
     });
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
@@ -33,9 +31,8 @@ static RKObjectManager *_sharedClientHttps = nil;
 
 + (RKObjectManager *)sharedClientHttps {
     static dispatch_once_t oncePredicate;
-    
     dispatch_once(&oncePredicate, ^{
-        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLHttpsString]];
+        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[self TKPDStringHttps:TKPDBaseUrl]]];
     });
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
@@ -46,7 +43,7 @@ static RKObjectManager *_sharedClientHttps = nil;
 + (RKObjectManager *)sharedClient:(NSString*)baseUrl{
     static RKObjectManager *_sharedClient = nil;
     
-    _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseUrl?:kTraktBaseURLString]];
+    _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseUrl?:TKPDBaseUrl]];
     return _sharedClient;
 }
 
@@ -68,7 +65,21 @@ static RKObjectManager *_sharedClientHttps = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:_selectedBaseUrl]];
+        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[self TKPDStringHttps:_selectedBaseUrl]]];
     });
+}
+
++ (NSString*)TKPDStringHttps:(NSString*)url {
+    NSString *httpsUrl;
+    if([url isEqualToString:@"http://www.tokopedia.com/ws"]) {
+        httpsUrl = @"https://ws.tokopedia.com";
+    } else {
+        httpsUrl = [url stringByReplacingOccurrencesOfString:@"http://" withString:@"https://ws-"];
+        httpsUrl = [httpsUrl stringByReplacingOccurrencesOfString:@"com/ws" withString:@"com"];
+    }
+
+    
+    return httpsUrl;
 }
 
 
