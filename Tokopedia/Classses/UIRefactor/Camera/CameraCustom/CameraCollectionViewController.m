@@ -217,6 +217,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
     [self.assets addObjectsFromArray:[tmpAssets sortedArrayUsingDescriptors:@[sort]]];
     [_collectionview reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning
