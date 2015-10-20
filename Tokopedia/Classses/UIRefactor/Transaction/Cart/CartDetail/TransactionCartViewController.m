@@ -707,37 +707,9 @@
                     _buttonCancelVoucher.hidden = YES;
                     _buttonVoucherInfo.hidden = NO;
                     
-                    NSString *voucher = [_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT];
-                    NSInteger grandTotalCartFromWS = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
-                    
-                    NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-                    grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-                    grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
-                    grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
-                    NSInteger totalInteger = [grandTotal integerValue];
-                    
-                    if (totalInteger>=[voucher integerValue]) {
-                        voucher = [_dataInput objectForKey:DATA_VOUCHER_AMOUNT];
-                    }
-                    
-                    if ([voucher integerValue] == grandTotalCartFromWS) {
-                        NSInteger depositAmount = [[_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""] integerValue];
-                        
-                        totalInteger -= depositAmount;
-                    }
-                    
-                    totalInteger += [voucher integerValue];
-
-                    
-                    _cart.grand_total = [NSString stringWithFormat:@"%zd", totalInteger];
-                    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:totalInteger]] stringByAppendingString:@",-"];
-                    _cart.grand_total_without_lp = _cart.grand_total;
-                    _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
-                    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
                     _voucherData = [TransactionVoucherData new];
                     [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
-                    [_dataInput setObject:@(0) forKey:DATA_VOUCHER_AMOUNT];
-                    [_dataInput setObject:@"" forKey:DATA_CART_USED_VOUCHER_AMOUNT];
+                    [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
                     [_tableView reloadData];
                 }
                     break;
@@ -932,51 +904,8 @@
 {
     _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
     if (!_isUsingSaldoTokopedia) {
-        NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        NSInteger depositAmount = [[_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""] integerValue];
-        NSInteger grandTotalInteger = [grandTotal integerValue] + depositAmount;
-        
-        NSInteger grandTotalCartFromWS = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
-        
-        NSInteger voucherAmount = [[_dataInput objectForKey:DATA_VOUCHER_AMOUNT]integerValue];
-        NSInteger voucherUsedAmount = [[_dataInput objectForKey:DATA_CART_USED_VOUCHER_AMOUNT]integerValue];
-        
-        if (voucherUsedAmount<voucherAmount) {
-            if (voucherUsedAmount+ depositAmount > grandTotalCartFromWS) {
-                
-            }
-            else
-                voucherUsedAmount = voucherUsedAmount+ depositAmount;
-            
-            if (voucherUsedAmount>voucherAmount) {
-                voucherUsedAmount = voucherAmount;
-                grandTotalInteger = voucherUsedAmount - voucherAmount;
-            }
-            else
-            {
-                depositAmount = 0;
-                grandTotalInteger = 0;
-            }
-            
-
-            [_dataInput setObject:@(depositAmount) forKey:DATA_USED_SALDO_KEY];
-            [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
-        }
-        
-        if (grandTotalInteger>grandTotalCartFromWS) {
-            grandTotalInteger = grandTotalCartFromWS;
-        }
-
-        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
-        
-        _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
-        _cart.grand_total_without_lp = _cart.grand_total;
-        _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
         _saldoTokopediaAmountTextField.text = @"";
-        
+        [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
     }
     [_tableView reloadData];
 
@@ -2729,9 +2658,14 @@
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     NSDictionary *partialDetail = [_dataInput objectForKey:DATA_PARTIAL_LIST_KEY]?:@{};
     
-    NSNumber *usedSaldo = _isUsingSaldoTokopedia?[_dataInput objectForKey:DATA_USED_SALDO_KEY]?:@"0":@"0";
-    
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
+    
+    NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    
+    NSString *usedSaldo = _isUsingSaldoTokopedia?deposit?:@"0":@"0";
     
     NSMutableDictionary *param = [NSMutableDictionary new];
     NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
