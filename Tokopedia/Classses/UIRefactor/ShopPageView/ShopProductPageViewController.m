@@ -335,6 +335,16 @@ TokopediaNetworkManagerDelegate
     return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+
+    if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
+        size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    return size;
+}
+
+
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
@@ -383,7 +393,7 @@ TokopediaNetworkManagerDelegate
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
-        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
