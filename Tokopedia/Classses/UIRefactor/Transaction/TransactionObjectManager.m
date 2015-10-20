@@ -315,7 +315,8 @@
                                                  API_DATA_VOUCHER_EXPIRED_KEY,
                                                  API_DATA_VOUCHER_ID_KEY,
                                                  API_DATA_VOUCHER_MINIMAL_AMOUNT_KEY,
-                                                 API_DATA_VOUCHER_STATUS_KEY
+                                                 API_DATA_VOUCHER_STATUS_KEY,
+                                                 @"no_other_promotion"
                                                  ]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
