@@ -541,7 +541,7 @@ PromoCollectionViewDelegate
                 title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
                          [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString]];
             }
-            NSURL *url = [NSURL URLWithString: _searchObject.result.search_url?:@"www.tokopedia.com"];
+            NSURL *url = [NSURL URLWithString: _searchObject.result.share_url?:@"www.tokopedia.com"];
             UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                              applicationActivities:nil];
             activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
@@ -669,7 +669,7 @@ PromoCollectionViewDelegate
     
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
                                                         kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
-                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id"
+                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
                                                         }];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];

@@ -49,6 +49,11 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     NSString *_promoActionBaseURL;
     NSString *_promoActionPostURL;
     NSString *_promoActionFullURL;
+    
+    BOOL _cancelRequestProductFeed;
+    BOOL _cancelRequestHotlist;
+    BOOL _cancelRequestShopFeed;
+    BOOL _cancelRequestSearch;
 }
 
 @end
@@ -281,23 +286,23 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _query = query;
     _departmentId = department;
     _requestType = PromoRequestTypeProductSearch;
-    [self requestPromo];
+    if (!_cancelRequestHotlist) [self requestPromo];
 }
 
 - (void)requestForProductHotlist:(NSString *)key {
     _key = key;
     _requestType = PromoRequestTypeProductHotlist;
-    [self requestPromo];
+    if (!_cancelRequestHotlist) [self requestPromo];
 }
 
 - (void)requestForProductFeed {
     _requestType = PromoRequestTypeProductFeed;
-    [self requestPromo];
+    if (!_cancelRequestProductFeed) [self requestPromo];
 }
 
 - (void)requestForShopFeed {
     _requestType = PromoRequestTypeShopFeed;
-    [self requestPromo];
+    if (!_cancelRequestShopFeed) [self requestPromo];
 }
 
 - (void)requestActionPromo {
@@ -333,6 +338,11 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _promoActionBaseURL = [_gtmContainer stringForKey:GTMKeyPromoBaseAction];
     _promoActionPostURL = [_gtmContainer stringForKey:GTMKeyPromoPostAction];
     _promoActionFullURL = [_gtmContainer stringForKey:GTMKeyPromoFullAction];
+    
+    _cancelRequestHotlist = [[_gtmContainer stringForKey:GTMKeyCancelPromoHotlist] boolValue];
+    _cancelRequestProductFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoProductFeed] boolValue];
+    _cancelRequestSearch = [[_gtmContainer stringForKey:GTMKeyCancelPromoSearch] boolValue];
+    _cancelRequestShopFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoShopFeed] boolValue];
 }
 
 @end

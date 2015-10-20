@@ -42,6 +42,7 @@
 
 - (UIButton *)getBtnKomentar;
 - (UIButton *)getBtnUbah;
+- (UIButton *)getBtnProduct;
 - (void)setHiddenAction:(BOOL)hidden;
 - (void)setHiddenRating:(BOOL)hidden;
 - (IBAction)actionUbah:(id)sender;

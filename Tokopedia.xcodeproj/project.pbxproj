@@ -8,7 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		456C420A1BBB8B2B008CAA35 /* InstallmentBank.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C42091BBB8B2B008CAA35 /* InstallmentBank.m */; settings = {ASSET_TAGS = (); }; };
+		456C420D1BBB8BA8008CAA35 /* InstallmentTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */; settings = {ASSET_TAGS = (); }; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		45A254E81BBD4FD000742479 /* TagManagerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A254E71BBD4FD000742479 /* TagManagerHandler.m */; settings = {ASSET_TAGS = (); }; };
+		45CC34521BBE23C900180B89 /* ResizeableImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CC34511BBE23C900180B89 /* ResizeableImageCell.m */; settings = {ASSET_TAGS = (); }; };
+		45CC34581BBE375400180B89 /* ResizeableImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CC34571BBE375400180B89 /* ResizeableImageCell.xib */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; settings = {ASSET_TAGS = (); }; };
@@ -1842,7 +1847,17 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		456C42081BBB8B2B008CAA35 /* InstallmentBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentBank.h; sourceTree = "<group>"; };
+		456C42091BBB8B2B008CAA35 /* InstallmentBank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallmentBank.m; sourceTree = "<group>"; };
+		456C420B1BBB8BA8008CAA35 /* InstallmentTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentTerm.h; sourceTree = "<group>"; };
+		456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallmentTerm.m; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		45A254E61BBD4FD000742479 /* TagManagerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagManagerHandler.h; sourceTree = "<group>"; };
+		45A254E71BBD4FD000742479 /* TagManagerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagManagerHandler.m; sourceTree = "<group>"; };
+		45CC344E1BBE223100180B89 /* saldo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = saldo.png; path = ../../../../../Desktop/saldo.png; sourceTree = "<group>"; };
+		45CC34501BBE23C900180B89 /* ResizeableImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResizeableImageCell.h; sourceTree = "<group>"; };
+		45CC34511BBE23C900180B89 /* ResizeableImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResizeableImageCell.m; sourceTree = "<group>"; };
+		45CC34571BBE375400180B89 /* ResizeableImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResizeableImageCell.xib; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -4630,6 +4645,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45A254E51BBD4FD000742479 /* GoogleTagManager */ = {
+			isa = PBXGroup;
+			children = (
+				45A254E61BBD4FD000742479 /* TagManagerHandler.h */,
+				45A254E71BBD4FD000742479 /* TagManagerHandler.m */,
+			);
+			path = GoogleTagManager;
+			sourceTree = "<group>";
+		};
 		53AC970CF2132927344A64C3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -6205,6 +6229,10 @@
 				85A18F521BAFEF9D002F1382 /* TransactionSummaryResult.m */,
 				85A18F531BAFEF9D002F1382 /* Veritrans.h */,
 				85A18F541BAFEF9D002F1382 /* Veritrans.m */,
+				456C42081BBB8B2B008CAA35 /* InstallmentBank.h */,
+				456C42091BBB8B2B008CAA35 /* InstallmentBank.m */,
+				456C420B1BBB8BA8008CAA35 /* InstallmentTerm.h */,
+				456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */,
 			);
 			path = TransactionSummary;
 			sourceTree = "<group>";
@@ -6411,6 +6439,7 @@
 				85A191A61BAFEF9D002F1382 /* MyShopPayment */,
 				85A191AD1BAFEF9D002F1382 /* MyShopShipment */,
 				85A191B41BAFEF9D002F1382 /* Navigator */,
+				45A254E51BBD4FD000742479 /* GoogleTagManager */,
 				85A191B71BAFEF9D002F1382 /* NotificationManager */,
 				85A191C11BAFEF9D002F1382 /* PriceAlert */,
 				85A191D61BAFEF9D002F1382 /* Product */,
@@ -6862,6 +6891,9 @@
 				85A190CC1BAFEF9D002F1382 /* GeneralTableViewController.h */,
 				85A190CD1BAFEF9D002F1382 /* GeneralTableViewController.m */,
 				85A190CE1BAFEF9D002F1382 /* GeneralTableViewController.xib */,
+				45CC34501BBE23C900180B89 /* ResizeableImageCell.h */,
+				45CC34511BBE23C900180B89 /* ResizeableImageCell.m */,
+				45CC34571BBE375400180B89 /* ResizeableImageCell.xib */,
 			);
 			path = GeneralViewController;
 			sourceTree = "<group>";
@@ -8535,6 +8567,7 @@
 		85A194981BAFEF9E002F1382 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				45CC344E1BBE223100180B89 /* saldo.png */,
 				85A194991BAFEF9E002F1382 /* badges_gold_merchant.png */,
 				85A1949A1BAFEF9E002F1382 /* balloon_read_left.png */,
 				85A1949B1BAFEF9E002F1382 /* balloon_read_right.png */,
@@ -9644,6 +9677,7 @@
 				85A199021BAFEFA1002F1382 /* AddressViewController.xib in Resources */,
 				85A19BB51BAFEFA1002F1382 /* icon_10.png in Resources */,
 				85A19DD61BAFEFA1002F1382 /* ic_category@2x.png in Resources */,
+				45CC34581BBE375400180B89 /* ResizeableImageCell.xib in Resources */,
 				85A19BEA1BAFEFA1002F1382 /* icon_arrow_right_gray@2x.png in Resources */,
 				85A19C5B1BAFEFA1002F1382 /* icon_edit_grey@2x.png in Resources */,
 				85A199B71BAFEFA1002F1382 /* InboxMessageCell.xib in Resources */,
@@ -10824,6 +10858,7 @@
 				85A199E71BAFEFA1002F1382 /* InboxTicketDetailViewController.m in Sources */,
 				85A197DD1BAFEFA0002F1382 /* InboxReviewList.m in Sources */,
 				85A19B091BAFEFA1002F1382 /* ShopTalkPageViewController.m in Sources */,
+				456C420A1BBB8B2B008CAA35 /* InstallmentBank.m in Sources */,
 				85A1984B1BAFEFA0002F1382 /* ShopBadgeLevel.m in Sources */,
 				85A19ABA1BAFEFA1002F1382 /* SettingAddressEditViewController.m in Sources */,
 				85A198051BAFEFA0002F1382 /* DetailReviewReputaionViewModel.m in Sources */,
@@ -11218,6 +11253,7 @@
 				85A197EC1BAFEFA0002F1382 /* InboxTicketResult.m in Sources */,
 				85A19AA71BAFEFA1002F1382 /* ShipmentStatusViewController.m in Sources */,
 				85A198751BAFEFA0002F1382 /* ShipmentResult.m in Sources */,
+				456C420D1BBB8BA8008CAA35 /* InstallmentTerm.m in Sources */,
 				85A1982A1BAFEFA0002F1382 /* FavoriteShopResult.m in Sources */,
 				85A1984F1BAFEFA0002F1382 /* ActionOrder.m in Sources */,
 				85A1974C1BAFEFA0002F1382 /* NSData+Encryption.m in Sources */,
@@ -11337,6 +11373,7 @@
 				85A19A161BAFEFA1002F1382 /* DetailPriceAlertTableViewCell.m in Sources */,
 				85A199D01BAFEFA1002F1382 /* ResolutionCenterDetailViewController.m in Sources */,
 				85A19ADA1BAFEFA1002F1382 /* BerhasilBukaTokoViewController.m in Sources */,
+				45A254E81BBD4FD000742479 /* TagManagerHandler.m in Sources */,
 				85A197671BAFEFA0002F1382 /* AddressCity.m in Sources */,
 				85A1975F1BAFEFA0002F1382 /* CreatePassword.m in Sources */,
 				85A1974E1BAFEFA0002F1382 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
@@ -11364,6 +11401,7 @@
 				85A198251BAFEFA0002F1382 /* ProfileEditForm.m in Sources */,
 				85A198721BAFEFA0002F1382 /* ShipmentCourier.m in Sources */,
 				85A19B7A1BAFEFA1002F1382 /* TxOrderTabViewController.m in Sources */,
+				45CC34521BBE23C900180B89 /* ResizeableImageCell.m in Sources */,
 				85A197931BAFEFA0002F1382 /* ReviewList.m in Sources */,
 				85A198EB1BAFEFA1002F1382 /* TxOrderStatusList.m in Sources */,
 				85A19AD61BAFEFA1002F1382 /* SettingUserPhoneViewController.m in Sources */,
@@ -11648,8 +11686,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

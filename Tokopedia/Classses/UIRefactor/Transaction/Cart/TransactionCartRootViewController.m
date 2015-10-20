@@ -430,7 +430,7 @@
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
     _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+    self.navigationItem.rightBarButtonItem = (_index == 0)?_notifManager.notificationButton:nil;
 }
 
 - (void)tapNotificationBar {
