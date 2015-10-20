@@ -451,7 +451,7 @@
         case 1:
         {
             BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || !selectedBank ) && indexPath.row == 2) {
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 ) && indexPath.row == 2) {
                 return 0;
             }
         }
@@ -1116,6 +1116,7 @@
     {
         BankAccountFormList *selectedBank = bankAccountList[0];
         [_dataInput setObject:selectedBank forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+        [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY];
     }
     
     if ([self isPaymentTypeSaldoTokopedia]) {
@@ -1123,7 +1124,6 @@
         NSString *leftAmount = form.order.order_left_amount;
         [_dataInput setObject:leftAmount forKey:DATA_TOTAL_PAYMENT_KEY];
     }
-    
     [_dataInput setObject:selectedMethod forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
 }
