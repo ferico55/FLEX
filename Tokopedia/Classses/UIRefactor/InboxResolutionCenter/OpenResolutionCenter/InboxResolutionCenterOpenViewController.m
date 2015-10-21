@@ -988,14 +988,18 @@
     [_uploadingPhotos addObject:object];
     _isFinishUploadingImage = NO;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = object;
-    uploadImage.delegate = self;
-//    uploadImage.isNotUsingNewAdd = YES;
-    uploadImage.generateHost = _generatehost;
-    uploadImage.action = ACTION_UPLOAD_CONTACT_IMAGE;
-    uploadImage.fieldName = API_UPLOAD_PRODUCT_IMAGE_DATA_NAME;
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    [uploadImage requestActionUploadObject:object
+                             generatedHost:_generatehost.result.generated_host
+                                    action:ACTION_UPLOAD_CONTACT_IMAGE
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:API_UPLOAD_PRODUCT_IMAGE_DATA_NAME
+                                   success:^(id imageObject, UploadImage *image) {
+       [self successUploadObject:object withMappingResult:image];
+    } failure:^(id imageObject, NSError *error) {
+        [self failedUploadObject:object];
+    }];
 }
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage

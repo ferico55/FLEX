@@ -170,9 +170,7 @@
     tokopediaNetworkManager = nil;
     
     uploadImageRequest.delegate = nil;
-    [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
-    
     
     [tokopediaNetworkManagerOpenShopPict requestCancel];
     tokopediaNetworkManagerOpenShopPict.delegate = nil;
@@ -1185,7 +1183,6 @@
 {
     filePath = uploadImage.result.upload.src;
     uploadImageRequest.delegate = nil;
-    [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
     
     //Call Open shop validation
@@ -1196,7 +1193,6 @@
 {
     [self isLoading:NO];
     uploadImageRequest.delegate = nil;
-    [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
 }
 
