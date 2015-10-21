@@ -30,39 +30,12 @@
     NSString *urlString = [NSString stringWithFormat:@"http://%@",_generateHost.result.generated_host.upload_host];
     
     _objectManagerUploadPhoto = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
-        
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY,
-                                                        kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY:kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY,
-                                                        @"file_name" : @"file_name",
-                                                        @"pic_id" : @"pic_id",
-                                                        @"pic_obj" : @"pic_obj",
-                                                        @"file_uploaded" : @"file_uploaded",
-                                                        @"pic_src" : @"pic_src"
-                                                        }];
-    
-
-    RKObjectMapping *subResultMapping = [RKObjectMapping mappingForClass:[Upload class]];
-    [subResultMapping addAttributeMappingsFromDictionary:@{kTKPD_SRC:kTKPD_SRC}];
-    
-    RKObjectMapping *imageResultMapping = [RKObjectMapping mappingForClass:[UploadImageImage class]];
-    [imageResultMapping addAttributeMappingsFromDictionary:@{@"pic_code":@"pic_code",
-                                                           @"pic_src":@"pic_src"}];
-    
-    
-    // Relationship Mapping
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIUPLOADKEY toKeyPath:kTKPD_APIUPLOADKEY withMapping:subResultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:imageResultMapping]];
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[UploadImage mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     [_objectManagerUploadPhoto addResponseDescriptor:responseDescriptor];
 }
 
