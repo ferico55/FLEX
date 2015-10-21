@@ -89,6 +89,7 @@
         
         positionX += imageView.frame.size.width;
         [_scrollView addSubview:imageView];
+        
     }
     
     CGSize scrollSize = CGSizeMake(positionX, _scrollView.frame.size.height);
@@ -110,6 +111,7 @@
     
     [_pageControl setNumberOfPages:numberOfBanners];
     [_pageControl setCurrentPage:0];
+    [_scrollView addSubview:_pageControl];
 }
 
 - (void)setTicker:(NSString*)imageUrl {
