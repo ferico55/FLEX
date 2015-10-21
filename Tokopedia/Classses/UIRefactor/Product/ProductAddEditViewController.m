@@ -1429,6 +1429,14 @@
     uploadImage.fieldName = @"fileToUpload";
     [uploadImage configureRestkitUploadPhoto];
     [uploadImage requestActionUploadPhoto];
+    
+    NSString *productID = @"";
+    if (type != TYPE_ADD_EDIT_PRODUCT_COPY) {
+        productID = _product.result.product.product_id;
+    }
+    uploadImage requestActionUploadPhoto:object generatedHost:_generateHost action:ACTION_UPLOAD_PRODUCT_IMAGE newAdd:1 productID:productID paymentID:@"" completion:^(id imageObject, UploadImage *image, bool isSuccess) {
+        
+    }
 }
 
 #pragma mark - Category Delegate

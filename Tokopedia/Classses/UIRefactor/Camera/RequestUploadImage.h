@@ -37,4 +37,12 @@
 @property NSString *paymentID;
 @property BOOL isNotUsingNewAdd;
 
+- (void)requestActionUploadPhoto:(id)imageObject
+                   generatedHost:(GeneratedHost*)generatedHots
+                          action:(NSString*)action
+                          newAdd:(NSInteger)newAdd
+                       productID:(NSString*)productID
+                       paymentID:(NSString*)paymentID
+                      completion:(void (^)(id imageObject, UploadImage*image, bool isSuccess))completion;
+
 @end
