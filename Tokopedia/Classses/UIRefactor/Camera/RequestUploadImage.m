@@ -59,12 +59,15 @@
     NSString *userID = [NSString stringWithFormat:@"%zd", generatedHost.user_id];
     NSString *newAddParam = [NSString stringWithFormat:@"%zd", newAdd];
     
+    NSString *uploadVersion = (newAdd == 1)?@"2":@"0";
+    
     NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY           : action,
                              kTKPDGENERATEDHOST_APISERVERIDKEY  : serverID,
                              kTKPD_USERIDKEY                    : userID,
                              @"product_id"                      : productID?:@"",
                              @"new_add"                         : newAddParam,
-                             @"payment_id"                      : paymentID?:@""
+                             @"payment_id"                      : paymentID?:@"",
+                             @"upload_version"                  : uploadVersion
                              };
     
     
