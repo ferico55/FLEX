@@ -70,4 +70,5 @@ enum emoticonTag
     #import "GAI.h"
     #import "GAIFields.h"
     #import "TokopediaNetworkManager.h"
+    #import "TKPString.h"
 #endif
