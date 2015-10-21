@@ -324,7 +324,7 @@
     NSString *lastSolution;
     
     if (lastSolutionType == SOLUTION_REFUND) {
-        lastSolution = [NSString stringWithFormat:@"Pembelian dana kepada pembeli sebesar %@",resolution.resolution_last.last_refund_amt_idr];
+        lastSolution = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",resolution.resolution_last.last_refund_amt_idr];
     }
     else if (lastSolutionType == SOLUTION_RETUR) {
         lastSolution = [NSString stringWithFormat:@"Tukar barang sesuai pesanan"];
