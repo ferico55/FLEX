@@ -66,15 +66,6 @@
     [_objectManagerUploadPhoto addResponseDescriptor:responseDescriptor];
 }
 
-
-- (void)cancelActionUploadPhoto
-{
-    _requestActionUploadPhoto = nil;
-    
-    [_operationQueue cancelAllOperations];
-    _objectManagerUploadPhoto = nil;
-}
-
 - (void)requestActionUploadObject:(id)imageObject
                    generatedHost:(GeneratedHost*)generatedHost
                           action:(NSString*)action
@@ -121,117 +112,16 @@
     [NSURLConnection sendAsynchronousRequest:_requestActionUploadPhoto
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                               NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                               NSLog(@"responsestring %@",responsestring);
                                
-                               if ([httpResponse statusCode] == 200) {
-                                   id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-                                   if (parsedData == nil && error) {
-                                       [self showErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
-                                       failure(imageObject,error);
-                                       return;
-                                   }
-                                   
-                                   NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-                                   for (RKResponseDescriptor *descriptor in _objectManagerUploadPhoto.responseDescriptors) {
-                                       [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-                                   }
-                                   
-                                   RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-                                   NSError *mappingError = nil;
-                                   BOOL isMapped = [mapper execute:&mappingError];
-                                   if (isMapped && !mappingError) {
-                                       NSLog(@"result %@",[mapper mappingResult]);
-                                       RKMappingResult *mappingresult = [mapper mappingResult];
-                                       NSDictionary *result = mappingresult.dictionary;
-                                       id stat = [result objectForKey:@""];
-                                       UploadImage *images = stat;
-                                       BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-                                       
-                                       if (status) {
-                                           if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
-                                               success(imageObject,images);
-                                           }
-                                           else
-                                           {
-                                               NSArray *array = images.message_error;
-                                               [self showErrorMessages:array?:@[]];
-                                               failure(imageObject,error);
-                                           }
-                                       }
-                                       else
-                                       {
-                                           [self showErrorMessages:@[]];
-                                           failure(imageObject, error);
-                                       }
-                                   }
-                                   else
-                                   {
-                                       [self showErrorMessages:@[]];
-                                       failure(imageObject, error);
-                                   }
-                               }
-                               else
-                               {
-                                   if ([error code] == NSURLErrorNotConnectedToInternet)
-                                       [self showErrorMessages:@[@"Tidak ada koneksi internet"]];
-                                   else
-                                       [self showErrorMessages:@[]];
-                                   failure(imageObject, error);
-                               }
-                               
-                           }];
-}
-
-- (void)requestActionUploadPhoto
-{
-    NSDictionary *selectedImage = [_imageObject objectForKey:DATA_SELECTED_PHOTO_KEY];
-    NSDictionary* photo = [selectedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA]?:@"";
-    NSString* imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME] lowercaseString]?:@"";
-    NSString *serverID = _generateHost.result.generated_host.server_id?:@"0";
-    NSString *userID = [NSString stringWithFormat:@"%d", _generateHost.result.generated_host.user_id];
-    NSString *newAdd = [NSString stringWithFormat:@"%d", _isNotUsingNewAdd?0:1];
-
-    NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY           : _action,
-                             kTKPDGENERATEDHOST_APISERVERIDKEY  : serverID,
-                             kTKPD_USERIDKEY                    : userID,
-                             @"product_id"                      : _productID?:@"",
-                             @"new_add"                         : newAdd,
-                             @"payment_id"                      : _paymentID?:@""
-                         };
-    
-    
-    _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
-                                                                   withName:_fieldName
-                                                                andFileName:imageName
-                                                      withRequestParameters:param
-                                 uploadHost:_generateHost.result.generated_host.upload_host
-                                 ];
-    
-    NSLog(@"%@",_requestActionUploadPhoto);
-    NSLog(@"param %@ field name %@ ImageName %@",param,_fieldName,imageName);
-    
-    UIImageView *thumbProductImage = [_imageObject objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    thumbProductImage.alpha = 0.5f;
-    thumbProductImage.userInteractionEnabled = NO;
-    
-    [NSURLConnection sendAsynchronousRequest:_requestActionUploadPhoto
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                               NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                               NSLog(@"responsestring %@",responsestring);
-                               
+       NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+       NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+       NSLog(@"responsestring %@",responsestring);
+       
        if ([httpResponse statusCode] == 200) {
            id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
            if (parsedData == nil && error) {
-//               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."] delegate:_delegate];
-//               [alert show];
-               [_delegate failedUploadErrorMessage:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
-               [_delegate failedUploadObject:_imageObject];
-               NSLog(@"parser error");
+               [self showErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+               failure(imageObject,error);
                return;
            }
            
@@ -253,25 +143,25 @@
                
                if (status) {
                    if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
-                       [_delegate successUploadObject:_imageObject withMappingResult:images];
+                       success(imageObject,images);
                    }
                    else
                    {
                        NSArray *array = images.message_error;
-                      [self showErrorMessages:array?:@[]];
-                       [_delegate failedUploadObject:_imageObject];
+                       [self showErrorMessages:array?:@[]];
+                       failure(imageObject,error);
                    }
                }
                else
                {
                    [self showErrorMessages:@[]];
-                   [_delegate failedUploadObject:_imageObject];
+                   failure(imageObject, error);
                }
            }
            else
            {
                [self showErrorMessages:@[]];
-               [_delegate failedUploadObject:_imageObject];
+               failure(imageObject, error);
            }
        }
        else
@@ -280,9 +170,20 @@
                [self showErrorMessages:@[@"Tidak ada koneksi internet"]];
            else
                [self showErrorMessages:@[]];
-           [_delegate failedUploadObject:_imageObject];
+           failure(imageObject, error);
        }
                                
+    }];
+}
+
+- (void)requestActionUploadPhoto
+{
+    NSInteger newAdd = _isNotUsingNewAdd?0:1;
+    
+    [self requestActionUploadObject:_imageObject generatedHost:_generateHost.result.generated_host action:_action newAdd:newAdd productID:_productID paymentID:_paymentID fieldName:_fieldName success:^(id imageObject, UploadImage *image) {
+        [_delegate successUploadObject:imageObject withMappingResult:image];
+    } failure:^(id imageObject, NSError *error) {
+        [_delegate failedUploadObject:imageObject];
     }];
 }
 
@@ -324,9 +225,5 @@
     return range.length != 0;
 }
 
--(void)requesttimeoutUploadPhoto
-{
-    //[self cancelActionUploadPhoto];
-}
 
 @end
