@@ -10,18 +10,21 @@
 #import <RestKit/ObjectMapping/RKObjectMapping.h>
 
 NSString *const TKPBannerKey = @"banner";
+NSString *const TKPTickerKey = @"ticker";
 
 @implementation BannerResult
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:TKPBannerKey toKeyPath:TKPBannerKey withMapping:[BannerList mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:TKPTickerKey toKeyPath:TKPTickerKey withMapping:[BannerTicker mapping]]];
     
     return mapping;
 }
 
 + (NSDictionary *)attributeMappingDictionary {
-    return nil;
+    NSArray *keys = @[TKPTickerKey];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
 @end

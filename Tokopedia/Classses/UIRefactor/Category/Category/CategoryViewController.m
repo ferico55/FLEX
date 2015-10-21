@@ -63,8 +63,8 @@
     /** Initialization variable **/
     _category = [NSMutableArray new];
     
-    _flowLayout.headerReferenceSize = CGSizeMake(_collectionView.frame.size.width, 175);
-    [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width + 175, _collectionView.frame.size.height)];
+    _flowLayout.headerReferenceSize = CGSizeMake(_collectionView.frame.size.width, 290);
+    [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width + 290, _collectionView.frame.size.height)];
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, ([[UIScreen mainScreen]bounds].size.height) )];
     
     
@@ -130,6 +130,7 @@
 
 }
 
+
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellid = @"CategoryViewCellIdentifier";
     CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -150,6 +151,7 @@
     
 	return cell;
 }
+
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -334,7 +336,13 @@
     
     [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
         if (wself != nil) {
-            if (!error)[[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : banner}];
+            _banner = banner;
+            if(_banner.result.banner.count > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
+            } else {
+                _flowLayout.headerReferenceSize = CGSizeZero;
+            }
+
         }
     }];
 }

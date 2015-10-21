@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "TKPObjectMapping.h"
 #import "BannerList.h"
+#import "BannerTicker.h"
 
 @interface BannerResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *banner;
+@property (nonatomic, strong) BannerTicker *ticker;
 
 @end

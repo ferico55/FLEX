@@ -22,6 +22,7 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (weak, nonatomic) IBOutlet UIImageView *tickerImage;
 
 @property (weak, nonatomic) id<BannerDelegate> delegate;
 
