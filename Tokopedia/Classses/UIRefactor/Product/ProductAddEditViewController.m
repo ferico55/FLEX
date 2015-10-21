@@ -1014,7 +1014,6 @@
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
     _images = uploadImage;
-
     
     [_uploadingImages removeObject:object];
     
@@ -1417,26 +1416,24 @@
 {
     _isFinishedUploadImages = NO;
     [_uploadingImages addObject:object];
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = object;
-    uploadImage.delegate = self;
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    if (type != TYPE_ADD_EDIT_PRODUCT_COPY) {
-        uploadImage.productID = _product.result.product.product_id;
-    }
-    uploadImage.generateHost = _generateHost;
-    uploadImage.action = ACTION_UPLOAD_PRODUCT_IMAGE;
-    uploadImage.fieldName = @"fileToUpload";
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
     
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSString *productID = @"";
     if (type != TYPE_ADD_EDIT_PRODUCT_COPY) {
         productID = _product.result.product.product_id;
     }
-    uploadImage requestActionUploadPhoto:object generatedHost:_generateHost action:ACTION_UPLOAD_PRODUCT_IMAGE newAdd:1 productID:productID paymentID:@"" completion:^(id imageObject, UploadImage *image, bool isSuccess) {
-        
-    }
+    [uploadImage requestActionUploadObject:object?:@{}
+                            generatedHost:_generateHost.result.generated_host?:[GeneratedHost new]
+                                   action:ACTION_UPLOAD_PRODUCT_IMAGE
+                                   newAdd:1
+                                productID:productID paymentID:@""
+                                fieldName:@"fileToUpload"
+                                  success:^(id imageObject, UploadImage *image) {
+        [self successUploadObject:imageObject withMappingResult:image];
+    } failure:^(id imageObject, NSError *error) {
+        [self failedUploadObject:imageObject];
+    }];
 }
 
 #pragma mark - Category Delegate

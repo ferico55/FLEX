@@ -75,22 +75,24 @@
     _objectManagerUploadPhoto = nil;
 }
 
-- (void)requestActionUploadPhoto:(id)imageObject
-                   generatedHost:(GeneratedHost*)generatedHots
+- (void)requestActionUploadObject:(id)imageObject
+                   generatedHost:(GeneratedHost*)generatedHost
                           action:(NSString*)action
                           newAdd:(NSInteger)newAdd
                        productID:(NSString*)productID
                        paymentID:(NSString*)paymentID
+                       fieldName:(NSString*)fieldName
                          success:(void (^)(id imageObject, UploadImage*image))success
                          failure:(void(^)(id imageObject, NSError *error))failure
 {
+    [self configureRestkitUploadPhoto];
     
     NSDictionary *selectedImage = [imageObject objectForKey:DATA_SELECTED_PHOTO_KEY];
     NSDictionary* photo = [selectedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA]?:@"";
     NSString* imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME] lowercaseString]?:@"";
-    NSString *serverID = generatedHots.server_id?:@"0";
-    NSString *userID = [NSString stringWithFormat:@"%zd", generatedHots.user_id];
+    NSString *serverID = generatedHost.server_id?:@"0";
+    NSString *userID = [NSString stringWithFormat:@"%zd", generatedHost.user_id];
     NSString *newAddParam = [NSString stringWithFormat:@"%zd", newAdd];
     
     NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY           : action,
@@ -103,14 +105,14 @@
     
     
     _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
-                                                                   withName:_fieldName
+                                                                   withName:fieldName
                                                                 andFileName:imageName
                                                       withRequestParameters:param
-                                                                 uploadHost:_generateHost.result.generated_host.upload_host
+                                                                 uploadHost:generatedHost.upload_host?:@""
                                  ];
     
     NSLog(@"%@",_requestActionUploadPhoto);
-    NSLog(@"param %@ field name %@ ImageName %@",param,_fieldName,imageName);
+    NSLog(@"param %@ field name %@ ImageName %@",param,fieldName,imageName);
     
     UIImageView *thumbProductImage = [_imageObject objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     thumbProductImage.alpha = 0.5f;
@@ -127,7 +129,7 @@
                                    id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
                                    if (parsedData == nil && error) {
                                        [self showErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
-                                       failure(_imageObject,error);
+                                       failure(imageObject,error);
                                        return;
                                    }
                                    
@@ -149,25 +151,25 @@
                                        
                                        if (status) {
                                            if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
-                                               success(_imageObject,images);
+                                               success(imageObject,images);
                                            }
                                            else
                                            {
                                                NSArray *array = images.message_error;
                                                [self showErrorMessages:array?:@[]];
-                                               failure(_imageObject,error);
+                                               failure(imageObject,error);
                                            }
                                        }
                                        else
                                        {
                                            [self showErrorMessages:@[]];
-                                           failure(_imageObject, error);
+                                           failure(imageObject, error);
                                        }
                                    }
                                    else
                                    {
                                        [self showErrorMessages:@[]];
-                                       failure(_imageObject, error);
+                                       failure(imageObject, error);
                                    }
                                }
                                else
@@ -176,7 +178,7 @@
                                        [self showErrorMessages:@[@"Tidak ada koneksi internet"]];
                                    else
                                        [self showErrorMessages:@[]];
-                                   failure(_imageObject, error);
+                                   failure(imageObject, error);
                                }
                                
                            }];

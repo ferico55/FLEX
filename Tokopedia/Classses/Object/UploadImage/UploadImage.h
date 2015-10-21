@@ -10,7 +10,7 @@
 
 #import "UploadImageResult.h"
 
-@interface UploadImage : NSObject
+@interface UploadImage : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
