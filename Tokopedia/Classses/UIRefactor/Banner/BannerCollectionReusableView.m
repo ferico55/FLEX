@@ -71,7 +71,7 @@
             [imageView setImage:image];
             [imageView setContentMode:UIViewContentModeScaleAspectFit];
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 NSDictionary *mainColor = [self mainColoursInImage:image detail:1];
                 UIColor *bgColor = [mainColor objectForKey:@"colours"][0];
                 [imageView setBackgroundColor:bgColor];
@@ -125,7 +125,7 @@
         [_tickerImage setImage:image];
         [_tickerImage setContentMode:UIViewContentModeScaleAspectFit];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             NSDictionary *mainColor = [self mainColoursInImage:image detail:1];
             UIColor *bgColor = [mainColor objectForKey:@"colours"][0];
             [_tickerImage setBackgroundColor:bgColor];
