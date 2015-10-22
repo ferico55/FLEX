@@ -18,7 +18,7 @@
 #import "VTConfig.h"
 #import "VTDirect.h"
 #import "VTCardDetails.h"
-
+#import "TAGDataLayer.h"
 
 @interface TransactionCCDetailViewController ()
 <
@@ -57,10 +57,17 @@
     
     UITextField *_activeTextField;
     BOOL _isFailMaxRequest;
+    
+    TAGContainer *_gtmContainer;
+    
+    NSMutableDictionary *_dataInput;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _dataInput = [NSMutableDictionary new];
+    [_dataInput addEntriesFromDictionary:_data];
     
     _tableViewCells = [NSArray sortViewsWithTagInArray:_tableViewCells];
     
@@ -98,6 +105,48 @@
     _isFailMaxRequest = NO;
     
     _tableview.tableFooterView = [UIView new];
+    
+    [self configureGTM];
+    [self setDefaultData];
+
+}
+
+-(void)setDefaultData
+{
+    _nameTextField.text = [_dataInput objectForKey:API_CC_OWNER_KEY]?:@"";
+    
+    NSString *ccNumber = [_dataInput objectForKey:API_CC_CARD_NUMBER_KEY]?:@"";
+    NSString *newString = @"";
+    while (ccNumber.length >0) {
+        NSString *subString = [ccNumber substringToIndex:MIN(ccNumber.length, 4)];
+        newString = [newString stringByAppendingString:subString];
+        if (subString.length == 4 && ccNumber.length >4) {
+            newString = [newString stringByAppendingString:@" "];
+        }
+        ccNumber = [ccNumber substringFromIndex:MIN(ccNumber.length, 4)];
+    }
+    ccNumber = newString;
+
+    _CCNumberTextField.text = ccNumber;
+    
+    _selectedMonth = [_dataInput objectForKey:API_CC_EXP_MONTH_KEY];
+    if (_selectedMonth.length ==1 && _selectedMonth) {
+        _selectedMonth = [NSString stringWithFormat:@"0%@",_selectedMonth];
+    }
+    _selectedMonth = ([_selectedMonth integerValue]==0)?@"mm": _selectedMonth;
+    _selectedYear = [_dataInput objectForKey:API_CC_EXP_YEAR_KEY]?:@"yyyy";
+    _expDateLabel.text = [NSString stringWithFormat:@"%@/%@",_selectedMonth,_selectedYear];
+
+    _CVVTextField.text = [_dataInput objectForKey:API_CC_CVV_KEY];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [_dataInput addEntriesFromDictionary:[self param]];
+    [_dataInput addEntriesFromDictionary:[self paramCC]];
+    [_delegate addData:_dataInput];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -163,6 +212,8 @@
     _selectedYear = _years[[[alertData objectForKey:DATA_INDEX_SECOND_KEY] integerValue]][DATA_NAME_KEY];
     _expDateLabel.text = [NSString stringWithFormat:@"%@/%@",_selectedMonth,_selectedYear];
     _selectedMonth = [NSString stringWithFormat:@"%zd",[[alertData objectForKey:DATA_INDEX_KEY] integerValue]+1];
+    [_dataInput setObject:_months forKey:API_CC_EXP_MONTH_KEY];
+    [_dataInput setObject:_years forKey:API_CC_EXP_YEAR_KEY];
     _alertPickerData = alertView.data;
 }
 
@@ -200,10 +251,31 @@
     
 }
 
+#pragma mark - GTM
+- (void)configureGTM {
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    _gtmContainer = appDelegate.container;
+}
+
 -(void)shouldDoRequestCCVeritrans
 {
+    
+    NSString *clientKey = [_gtmContainer stringForKey:GTMVeritransClientKey]?:@"e9e0c15c-40e1-47fb-a303-43743550549a";
+    
+    //Production : e9e0c15c-40e1-47fb-a303-43743550549a
+    //SandBox : a2ce64ee-ecc5-4cff-894d-c789ff2ab003
+
+#if DEBUG
     [VTConfig setCLIENT_KEY:@"a2ce64ee-ecc5-4cff-894d-c789ff2ab003"];
     [VTConfig setVT_IsProduction:NO];
+#else
+    [VTConfig setCLIENT_KEY:clientKey];
+    [VTConfig setVT_IsProduction:YES];
+#endif
     
     VTDirect *vtDirect = [VTDirect new];
     VTCardDetails *cardDetails = [VTCardDetails new];
@@ -215,6 +287,14 @@
     cardDetails.secure = YES;
     cardDetails.gross_amount = _cartSummary.payment_left;
     
+    if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
+        cardDetails.installment = YES;
+        cardDetails.installment_term = [_dataInput objectForKey:API_CC_DURATION_INSTALLMENT_KEY]?:@"";
+    }
+    cardDetails.bank = _dataCC.cc_card_bank_type?:@"mandiri";
+    //cardDetails.bank = _dataCC.
+    //TODO::Bank
+    
     vtDirect.card_details = cardDetails;
     
     [vtDirect getToken:^(VTToken *token, NSException *exception) {
@@ -223,7 +303,7 @@
             if (token.redirect_url != nil) {
                 [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
                 TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-                vc.gateway = @(TYPE_GATEWAY_CC);
+                vc.gateway = _cartSummary.gateway?:@(TYPE_GATEWAY_CC);
                 vc.token = _cartSummary.token;
                 vc.URLString = token.redirect_url?:@"";
                 vc.cartDetail = _cartSummary;
@@ -260,13 +340,13 @@
     
     NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURL];
     
-    NSString *CCFirstName=[_data objectForKey:API_CC_FIRST_NAME_KEY]?:@"";
-    NSString *CCLastName =[_data objectForKey:API_CC_LAST_NAME_KEY]?:@"";
-    NSString *CCCity =[_data objectForKey:API_CC_CITY_KEY]?:@"";
-    NSString *CCPostalCode =[_data objectForKey:API_CC_POSTAL_CODE_KEY]?:@"";
-    NSString *CCAddress =[_data objectForKey:API_CC_ADDRESS_KEY]?:@"";
-    NSString *CCPhone =[_data objectForKey:API_CC_PHONE_KEY]?:@"";
-    NSString *CCState =[_data objectForKey:API_CC_STATE_KEY]?:@"";
+    NSString *CCFirstName=[_dataInput objectForKey:API_CC_FIRST_NAME_KEY]?:@"";
+    NSString *CCLastName =[_dataInput objectForKey:API_CC_LAST_NAME_KEY]?:@"";
+    NSString *CCCity =[_dataInput objectForKey:API_CC_CITY_KEY]?:@"";
+    NSString *CCPostalCode =[_dataInput objectForKey:API_CC_POSTAL_CODE_KEY]?:@"";
+    NSString *CCAddress =[_dataInput objectForKey:API_CC_ADDRESS_KEY]?:@"";
+    NSString *CCPhone =[_dataInput objectForKey:API_CC_PHONE_KEY]?:@"";
+    NSString *CCState =[_dataInput objectForKey:API_CC_STATE_KEY]?:@"";
     NSString *CCOwnerName =_nameTextField.text?:@"";
     NSString *CCNumber =[self CCNumber]?:@"";
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
@@ -318,7 +398,7 @@
 
     [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
     TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-    vc.gateway = @(TYPE_GATEWAY_CC);
+    vc.gateway = _cartSummary.gateway?:@(TYPE_GATEWAY_CC);
     vc.token = _cartSummary.token;
     vc.URLString = stringURL?:@"";
     vc.cartDetail = _cartSummary;
@@ -331,7 +411,7 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
--(void)doRequestCC:(NSDictionary *)param
+-(NSDictionary *)paramCC
 {
     NSMutableDictionary *dataInput = [NSMutableDictionary new];
     [dataInput addEntriesFromDictionary:_data];
@@ -342,7 +422,14 @@
     [dataInput setObject:_selectedYear?:@"" forKey:API_CC_EXP_YEAR_KEY];
     [dataInput setObject:_token.token_id?:@"" forKey:API_CC_TOKEN_ID_KEY];
     
-    [_delegate doRequestCC:dataInput];
+    [_dataInput addEntriesFromDictionary:dataInput];
+    
+    return [dataInput copy];
+}
+
+-(void)doRequestCC:(NSDictionary *)param
+{
+    [_delegate doRequestCC:[self paramCC]];
     [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
 }
 
@@ -364,14 +451,16 @@
 {
     NSDictionary *param = @{@"action":@"step_1_process_credit_card",
                             @"credit_card_edit_flag":@"1",
-                            API_CC_FIRST_NAME_KEY:[_data objectForKey:API_CC_FIRST_NAME_KEY]?:@"",
-                            API_CC_LAST_NAME_KEY:[_data objectForKey:API_CC_LAST_NAME_KEY]?:@"",
-                            API_CC_CITY_KEY:[_data objectForKey:API_CC_CITY_KEY]?:@"",
-                            API_CC_POSTAL_CODE_KEY:[_data objectForKey:API_CC_POSTAL_CODE_KEY]?:@"",
-                            API_CC_ADDRESS_KEY:[_data objectForKey:API_CC_ADDRESS_KEY]?:@"",
-                            API_CC_PHONE_KEY:[_data objectForKey:API_CC_PHONE_KEY]?:@"",
-                            API_CC_STATE_KEY:[_data objectForKey:API_CC_STATE_KEY]?:@"",
-                            API_CC_CARD_NUMBER_KEY:[self CCNumber]?:@""
+                            API_CC_FIRST_NAME_KEY:[_dataInput objectForKey:API_CC_FIRST_NAME_KEY]?:@"",
+                            API_CC_LAST_NAME_KEY:[_dataInput objectForKey:API_CC_LAST_NAME_KEY]?:@"",
+                            API_CC_CITY_KEY:[_dataInput objectForKey:API_CC_CITY_KEY]?:@"",
+                            API_CC_POSTAL_CODE_KEY:[_dataInput objectForKey:API_CC_POSTAL_CODE_KEY]?:@"",
+                            API_CC_ADDRESS_KEY:[_dataInput objectForKey:API_CC_ADDRESS_KEY]?:@"",
+                            API_CC_PHONE_KEY:[_dataInput objectForKey:API_CC_PHONE_KEY]?:@"",
+                            API_CC_STATE_KEY:[_dataInput objectForKey:API_CC_STATE_KEY]?:@"",
+                            API_CC_CARD_NUMBER_KEY:[self CCNumber]?:@"",
+                            API_CC_BANK_INSTALLMENT_KEY: [_dataInput objectForKey:API_CC_BANK_INSTALLMENT_KEY]?:@"",
+                            API_CC_DURATION_INSTALLMENT_KEY: [_dataInput objectForKey:API_CC_DURATION_INSTALLMENT_KEY]?:@""
                             };
     
     return param;
@@ -397,9 +486,16 @@
 }
 - (IBAction)infoCVC:(id)sender {
     AlertInfoView *alertInfo = [AlertInfoView newview];
-    alertInfo.text = @"Info CVC/CVV2";
+    alertInfo.text = @"Info CVC/CVV";
     alertInfo.detailText = @"CVC atau Card Verification Code adalah tiga digit angka terakhir yang terdapat pada bagian belakang kartu kredit.";
     [alertInfo show];
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == _CVVTextField) {
+        [_dataInput setObject:textField.text forKey:API_CC_CVV_KEY];
+    }
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField

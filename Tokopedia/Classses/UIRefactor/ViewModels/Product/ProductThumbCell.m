@@ -47,13 +47,16 @@
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
+    UIImageView *thumb =self.luckyMerchantBadge;
+    thumb.image = nil;
     request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [self.luckyMerchantBadge setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [self.luckyMerchantBadge setImage:image];
+        thumb.image = image;
+        thumb.contentMode = UIViewContentModeScaleAspectFill;
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [self.luckyMerchantBadge setImage:[UIImage imageNamed:@""]];
+        thumb.image = [UIImage imageNamed:@""];
     }];
     
 }
@@ -73,14 +76,6 @@
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
-    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [self.luckyMerchantBadge setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [self.luckyMerchantBadge setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [self.luckyMerchantBadge setImage:[UIImage imageNamed:@""]];
-    }];
 }
 
 

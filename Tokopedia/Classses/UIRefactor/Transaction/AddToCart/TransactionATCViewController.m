@@ -485,7 +485,7 @@
             cell = _tableViewPaymentDetailCell[indexPath.row];
             if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
                 if ([_productQuantityTextField.text integerValue]<=1) {
-                //if (_productQuantityStepper.value<=1) {
+                    //if (_productQuantityStepper.value<=1) {
                     return 0;
                 }
                 else

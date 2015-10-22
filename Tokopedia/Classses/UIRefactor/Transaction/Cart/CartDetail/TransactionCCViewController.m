@@ -30,6 +30,9 @@
 @property (weak, nonatomic) IBOutlet UITextView *addressTextView;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTextField;
 
+@property NSMutableDictionary *dataInput;
+
+
 @end
 
 @implementation TransactionCCViewController
@@ -42,6 +45,8 @@
     [super viewDidLoad];
     
     _tableCells = [NSArray sortViewsWithTagInArray:_tableCells];
+    _dataInput = [NSMutableDictionary new];
+    [_dataInput addEntriesFromDictionary:_data];
     
     self.title = @"Informasi Tagihan";
     
@@ -67,6 +72,13 @@
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc]initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(nextButton:)];
     self.navigationItem.backBarButtonItem = backBarButton;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [_delegate addData:_dataInput];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -194,6 +206,11 @@
 
 #pragma mark - Methods
 
+-(void)addData:(NSDictionary *)dataInput
+{
+    [_dataInput addEntriesFromDictionary:dataInput];
+}
+
 -(void)setTextFieldData
 {
     _firstNameTextField.text = _ccData.first_name?:@"";
@@ -216,14 +233,18 @@
     
     if ([self isValidInput]) {
         TransactionCCDetailViewController *vc = [TransactionCCDetailViewController new];
-        vc.data = @{API_CC_FIRST_NAME_KEY :_firstNameTextField.text,
-                     API_CC_LAST_NAME_KEY :_lastNameTextField.text,
-                     API_CC_CITY_KEY :_cityTextField.text,
-                     API_CC_POSTAL_CODE_KEY :_postCodeTextField.text,
-                     API_CC_ADDRESS_KEY :_addressTextView.text,
-                     API_CC_PHONE_KEY :_phoneTextField.text,
-                     API_CC_STATE_KEY :_provinceTextField.text,
+        NSDictionary *data = @{API_CC_FIRST_NAME_KEY :_firstNameTextField.text,
+                    API_CC_LAST_NAME_KEY :_lastNameTextField.text,
+                    API_CC_CITY_KEY :_cityTextField.text,
+                    API_CC_POSTAL_CODE_KEY :_postCodeTextField.text,
+                    API_CC_ADDRESS_KEY :_addressTextView.text,
+                    API_CC_PHONE_KEY :_phoneTextField.text,
+                    API_CC_STATE_KEY :_provinceTextField.text,
+                    API_CC_BANK_INSTALLMENT_KEY : _selectedBank.bank_id?:@"",
+                    API_CC_DURATION_INSTALLMENT_KEY : _selectedTerm.duration?:@"",
                     };
+        [_dataInput addEntriesFromDictionary:data];
+        vc.data = [_dataInput copy];
         vc.delegate = self;
         vc.cartSummary = _cartSummary;
         [self.navigationController pushViewController:vc animated:YES];

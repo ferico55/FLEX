@@ -61,7 +61,13 @@ GeneralTableViewControllerDelegate
     
     ShippingInfoShipments *_pandu;
     ShippingInfoShipmentPackage *_panduPackageRegular;
-    
+
+    ShippingInfoShipments *_first;
+    ShippingInfoShipmentPackage *_firstPackageRegular;
+
+    ShippingInfoShipments *_siCepat;
+    ShippingInfoShipmentPackage *_siCepatPackageRegular;
+
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
@@ -154,6 +160,21 @@ GeneralTableViewControllerDelegate
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingView;
 
+@property (weak, nonatomic) IBOutlet UILabel *firstNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *firstLogoImageView;
+@property (weak, nonatomic) IBOutlet UILabel *firstRegulerLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *firstRegulerSwitch;
+@property (weak, nonatomic) IBOutlet UITableViewCell *firstMoreInfoCell;
+@property (weak, nonatomic) IBOutlet UILabel *firstNoteLabel;
+@property (weak, nonatomic) IBOutlet UILabel *firstNotAvailableLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *siCepatNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *siCepatLogoImageView;
+@property (weak, nonatomic) IBOutlet UILabel *siCepatRegulerLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *siCepatRegulerSwitch;
+@property (weak, nonatomic) IBOutlet UITableViewCell *siCepatMoreInfoCell;
+@property (weak, nonatomic) IBOutlet UILabel *siCepatNotAvailableLabel;
+
 @end
 
 @implementation MyShopShipmentTableViewController
@@ -230,6 +251,10 @@ GeneralTableViewControllerDelegate
     
     _shipmentPosNotAvailabelLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentPosNotAvailabelLabel.text attributes:attributes];
     
+    _firstNotAvailableLabel.attributedText = [[NSAttributedString alloc] initWithString:_firstNotAvailableLabel.text attributes:attributes];
+
+    _siCepatNotAvailableLabel.attributedText = [[NSAttributedString alloc] initWithString:_siCepatNotAvailableLabel.text attributes:attributes];
+
     NSString *note = @"Berat maksimum paket biasa 30 kg. Berat maksimum paket lain nya 150 kg.";
     _shipmentPosNoteCell.attributedText = [[NSAttributedString alloc] initWithString:note attributes:attributes];
     
@@ -249,7 +274,7 @@ GeneralTableViewControllerDelegate
     if (_shipment) {
         if(createShopViewController!=nil && !_hasSelectKotaAsal)
             return 1;
-        return 8;
+        return 10;
     } else {
         return 0;
     }
@@ -303,6 +328,16 @@ GeneralTableViewControllerDelegate
             break;
         }
             
+        case 8: {
+            height = [self heightForFirstAtRow:indexPath.row];
+            break;
+        }
+
+        case 9: {
+            height = [self heightForSiCepatAtRow:indexPath.row];
+            break;
+        }
+
         default:
             height = 0;
             break;
@@ -748,7 +783,83 @@ GeneralTableViewControllerDelegate
             height = 50;
         }
         else if (row == 4) {
-            height = 60;
+            height = 70;
+        } else {
+            height = 0;
+        }
+    }
+    return height;
+}
+
+- (CGFloat)heightForFirstAtRow:(NSInteger)row
+{
+    CGFloat height = 0.0f;
+    if ([_availableShipments containsObject:_first.shipment_id]) {
+        
+        // cell to show courier name and logo
+        if (row == 0) {
+            height = 50;
+        }
+        
+        // return cell if information about package is existing
+        else if (row == 1) {
+            if (_firstPackageRegular) {
+                return 44;
+            } else {
+                return 0;
+            }
+        }
+        
+        else if (row == 2) {
+            height = 44;
+        }
+        
+        else if (row == 3) {
+            height = 70;
+        }
+        
+    } else {
+        if (row == 0) {
+            height = 50;
+        }
+        else if (row == 4) {
+            height = 70;
+        } else {
+            height = 0;
+        }
+    }
+    return height;
+}
+
+- (CGFloat)heightForSiCepatAtRow:(NSInteger)row
+{
+    CGFloat height = 0.0f;
+    if ([_availableShipments containsObject:_siCepat.shipment_id]) {
+        
+        // cell to show courier name and logo
+        if (row == 0) {
+            height = 50;
+        }
+        
+        // return cell if information about package is existing
+        else if (row == 1) {
+            if (_siCepatPackageRegular) {
+                return 44;
+            } else {
+                return 0;
+            }
+        }
+        
+        else if (row == 2) {
+            height = 44;
+        }
+        
+    } else {
+        if (row == 0) {
+            height = 50;
+        }
+        else if (row == 3) {
+            height = 70;
         } else {
             height = 0;
         }
@@ -790,6 +901,14 @@ GeneralTableViewControllerDelegate
         case 7:
             numberOfRows = 5;
             break;
+        
+        case 8:
+            numberOfRows = 5;
+            break;
+            
+        case 9:
+            numberOfRows = 4;
+            break;
             
         default:
             numberOfRows = 0;
@@ -820,6 +939,10 @@ GeneralTableViewControllerDelegate
         } else if ([cell isEqual:_shipmentCahayaMoreInfoCell]) {
             shouldHighlight = YES;
         } else if ([cell isEqual:_shipmentPanduMoreInfoCell]) {
+            shouldHighlight = YES;
+        } else if ([cell isEqual:_firstMoreInfoCell]) {
+            shouldHighlight = YES;
+        } else if ([cell isEqual:_siCepatMoreInfoCell]) {
             shouldHighlight = YES;
         }
     }
@@ -1084,6 +1207,24 @@ GeneralTableViewControllerDelegate
             _panduPackageRegular.active = @"1";
         } else {
             _panduPackageRegular.active = @"0";
+        }
+    }
+
+    // actions for First
+    else if ([sender isEqual:_firstRegulerSwitch]) {
+        if (sender.isOn) {
+            _firstPackageRegular.active = @"1";
+        } else {
+            _firstPackageRegular.active = @"0";
+        }
+    }
+
+    // actions for SiCepat
+    else if ([sender isEqual:_siCepatRegulerSwitch]) {
+        if (sender.isOn) {
+            _siCepatPackageRegular.active = @"1";
+        } else {
+            _siCepatPackageRegular.active = @"0";
         }
     }
     
@@ -1433,6 +1574,20 @@ GeneralTableViewControllerDelegate
                         _panduPackageRegular = package;
                     }
                 }
+            } else if ([shipment.shipment_name isEqualToString:@"First"]) {
+                _first = shipment;
+                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if ([package.name isEqualToString:@"Reguler Service"]) {
+                        _firstPackageRegular = package;
+                    }
+                }
+            } else if ([shipment.shipment_name isEqualToString:@"SiCepat"]) {
+                _siCepat = shipment;
+                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if ([package.name isEqualToString:@"Regular Package"]) {
+                        _siCepatPackageRegular = package;
+                    }
+                }
             }
             
             if (_JNE) {
@@ -1632,6 +1787,38 @@ GeneralTableViewControllerDelegate
                     _shipmentPanduRegulerSwitch.on = [_panduPackageRegular.active boolValue];
                 }
             }
+            
+            if (_first) {
+                _firstNameLabel.text = _first.shipment_name;
+                NSURL *url = [NSURL URLWithString:_first.shipment_image];
+                NSURLRequest *request = [NSURLRequest requestWithURL:url];
+                [_firstLogoImageView setImageWithURLRequest:request
+                                           placeholderImage:nil
+                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                        _firstLogoImageView.image = image;
+                                                    } failure:nil];
+                
+                if (_firstPackageRegular) {
+                    _firstRegulerLabel.text = _firstPackageRegular.name;
+                    _firstRegulerSwitch.on = [_firstPackageRegular.active boolValue];
+                }
+            }
+            
+            if (_siCepat) {
+                _siCepatNameLabel.text = _siCepat.shipment_name;
+                NSURL *url = [NSURL URLWithString:_siCepat.shipment_image];
+                NSURLRequest *request = [NSURLRequest requestWithURL:url];
+                [_siCepatLogoImageView setImageWithURLRequest:request
+                                             placeholderImage:nil
+                                                      success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                          _siCepatLogoImageView.image = image;
+                                                      } failure:nil];
+                
+                if (_siCepatPackageRegular) {
+                    _siCepatRegulerLabel.text = _siCepatPackageRegular.name;
+                    _siCepatRegulerSwitch.on = [_siCepatPackageRegular.active boolValue];
+                }
+            }
         }
     }
 }
@@ -1718,7 +1905,29 @@ GeneralTableViewControllerDelegate
         }
     }
 
+    //first
+    if ([[self getAvailShipment] containsObject:[self getFirst].shipment_id]) {
+        if ([[self getFirstPackageRegular].active boolValue]) {
+            return YES;
+        }
+    }
+
+    //si cepat
+    if ([[self getAvailShipment] containsObject:[self getSiCepat].shipment_id]) {
+        if ([[self getSiCepatPackageRegular].active boolValue]) {
+            return YES;
+        }
+    }
+    
     return NO;
+}
+
+- (ShippingInfoShipments *)getFirst {
+    return _first;
+}
+
+- (ShippingInfoShipments *)getSiCepat {
+    return _siCepat;
 }
 
 - (ShippingInfoShipments *)getPandu
@@ -1774,6 +1983,16 @@ GeneralTableViewControllerDelegate
 - (ShippingInfoShipmentPackage *)getPanduPackageRegular
 {
     return _panduPackageRegular;
+}
+
+- (ShippingInfoShipmentPackage *)getFirstPackageRegular
+{
+    return _firstPackageRegular;
+}
+
+- (ShippingInfoShipmentPackage *)getSiCepatPackageRegular
+{
+    return _siCepatPackageRegular;
 }
 
 - (ShippingInfoShipmentPackage *)getPosPackageExpress
@@ -2111,6 +2330,26 @@ GeneralTableViewControllerDelegate
         }
     }
     
+    NSMutableDictionary *first = [NSMutableDictionary new];
+    if ([_availableShipments containsObject:_first.shipment_id]) {
+        if ([_firstPackageRegular.active boolValue]) {
+            [first setObject:@"1" forKey:_firstPackageRegular.sp_id];
+        }
+        if ([[first allValues] count] > 0) {
+            [shipments setObject:first forKey:_first.shipment_id];
+        }
+    }
+
+    NSMutableDictionary *siCepat = [NSMutableDictionary new];
+    if ([_availableShipments containsObject:_siCepat.shipment_id]) {
+        if ([_siCepatPackageRegular.active boolValue]) {
+            [siCepat setObject:@"1" forKey:_siCepatPackageRegular.sp_id];
+        }
+        if ([[siCepat allValues] count] > 0) {
+            [shipments setObject:siCepat forKey:_siCepat.shipment_id];
+        }
+    }
+
     NSData *data = [NSJSONSerialization dataWithJSONObject:shipments
                                                    options:0
                                                      error:nil];
@@ -2168,6 +2407,12 @@ GeneralTableViewControllerDelegate
     } else if ([cell isEqual:_shipmentPanduMoreInfoCell]) {
         title = _pandu.shipment_name;
         shipmentPackages = @[_panduPackageRegular];
+    } else if ([cell isEqual:_firstMoreInfoCell]) {
+        title = _first.shipment_name;
+        shipmentPackages = @[_firstPackageRegular];
+    } else if ([cell isEqual:_siCepatMoreInfoCell]) {
+        title = _siCepat.shipment_name;
+        shipmentPackages = @[_siCepatPackageRegular];
     }
     
     MyShopShipmentInfoViewController *controller = (MyShopShipmentInfoViewController *)segue.destinationViewController;
