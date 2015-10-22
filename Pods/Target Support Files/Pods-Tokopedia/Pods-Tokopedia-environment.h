@@ -16,7 +16,7 @@
 #define COCOAPODS_POD_AVAILABLE_Localytics
 #define COCOAPODS_VERSION_MAJOR_Localytics 3
 #define COCOAPODS_VERSION_MINOR_Localytics 5
-#define COCOAPODS_VERSION_PATCH_Localytics 0
+#define COCOAPODS_VERSION_PATCH_Localytics 1
 
 // NJKWebViewProgress
 #define COCOAPODS_POD_AVAILABLE_NJKWebViewProgress
