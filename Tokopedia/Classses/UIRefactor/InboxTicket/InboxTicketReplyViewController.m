@@ -724,6 +724,12 @@
     }
 }
 
+-(void)failedUploadErrorMessage:(NSArray *)errorMessage
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+    [stickyAlertView show];
+}
+
 #pragma mark Request Generate Host
 
 - (void)successGenerateHost:(GenerateHost *)generateHost

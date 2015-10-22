@@ -33,7 +33,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZF-jR-FgY">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZF-jR-FgY">
                     <rect key="frame" x="155" y="55" width="290" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="ek1-l9-tWa"/>
@@ -52,7 +52,7 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                         </mask>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan Saldo Tokopedia." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mF2-Is-kca">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan Saldo Tokopedia." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mF2-Is-kca">
                     <rect key="frame" x="155" y="89" width="290" height="58"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="58" id="54p-7E-5v0">
@@ -78,7 +78,7 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                         </mask>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pembayaran Anda akan diverifikasi oleh Tokopedia dalam 1 x 24 jam dan akan diteruskan kepada penjual." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SI-bg-yxa">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Pembayaran Anda akan diverifikasi oleh Tokopedia dalam 1 x 24 jam dan akan diteruskan kepada penjual." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SI-bg-yxa">
                     <rect key="frame" x="155" y="311" width="289" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="BTg-zB-MXl"/>
@@ -102,10 +102,10 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                         </mask>
                     </variation>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XBL-Mv-7jJ">
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XBL-Mv-7jJ">
                     <rect key="frame" x="0.0" y="174" width="600" height="110"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 0,-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqL-jT-XLh">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Rp. 0,-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqL-jT-XLh">
                             <rect key="frame" x="0.0" y="59" width="600" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="wKh-r7-fRI"/>
@@ -114,7 +114,7 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                             <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah Pembayaran" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r52-tG-qtj">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Jumlah Pembayaran" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r52-tG-qtj">
                             <rect key="frame" x="0.0" y="30" width="600" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="AiO-1S-1w5"/>
@@ -123,14 +123,14 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="osh-lu-E0y" userLabel="Horizontal Border">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="osh-lu-E0y" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="31J-mM-Q9H"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5i-Fw-6ny" userLabel="Horizontal Border">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L5i-Fw-6ny" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="109" width="600" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
@@ -175,7 +175,7 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                         </mask>
                     </variation>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Klik disini untuk memantau status pemesanan Anda." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTg-F7-3Ys">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Klik disini untuk memantau status pemesanan Anda." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wTg-F7-3Ys">
                     <rect key="frame" x="166" y="384" width="267" height="50"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="267" id="aAV-Ny-1fd">
@@ -187,7 +187,7 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYh-og-O2J">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYh-og-O2J">
                     <rect key="frame" x="177" y="384" width="246" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="246" id="64V-JF-1yv">
@@ -218,7 +218,7 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                 <constraint firstItem="mF2-Is-kca" firstAttribute="top" secondItem="GZF-jR-FgY" secondAttribute="bottom" constant="25" id="CS3-Rc-Lni"/>
                 <constraint firstItem="XBL-Mv-7jJ" firstAttribute="top" secondItem="mF2-Is-kca" secondAttribute="bottom" constant="23" id="GpH-qM-K95"/>
                 <constraint firstItem="XBL-Mv-7jJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Hqv-w4-hDw">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
                 <constraint firstItem="3SI-bg-yxa" firstAttribute="top" secondItem="XBL-Mv-7jJ" secondAttribute="bottom" constant="27" id="Kb9-EQ-iCZ"/>
                 <constraint firstItem="3SI-bg-yxa" firstAttribute="top" secondItem="XBL-Mv-7jJ" secondAttribute="bottom" constant="27" id="Miq-ZD-KWt"/>
@@ -228,7 +228,7 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                 <constraint firstItem="GZF-jR-FgY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="91" id="RGz-GR-KDA"/>
                 <constraint firstItem="wTg-F7-3Ys" firstAttribute="top" secondItem="FYh-og-O2J" secondAttribute="bottom" constant="23" id="RgP-3X-Fly"/>
                 <constraint firstAttribute="trailing" secondItem="XBL-Mv-7jJ" secondAttribute="trailing" id="U8J-8d-fT3">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
                 <constraint firstItem="FYh-og-O2J" firstAttribute="bottom" secondItem="wTg-F7-3Ys" secondAttribute="bottom" id="Ula-zV-ITR"/>
                 <constraint firstItem="FYh-og-O2J" firstAttribute="top" secondItem="3SI-bg-yxa" secondAttribute="bottom" constant="29" id="Vxv-JF-7M6"/>
@@ -250,15 +250,15 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
             </constraints>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="CS3-Rc-Lni"/>
-                    <exclude reference="Pde-Ql-zMz"/>
-                    <exclude reference="fmQ-24-25X"/>
                     <exclude reference="RGz-GR-KDA"/>
                     <exclude reference="d7h-88-uvd"/>
                     <exclude reference="eem-MB-czN"/>
                     <exclude reference="1G8-oT-cbh"/>
                     <exclude reference="GpH-qM-K95"/>
                     <exclude reference="liF-gW-HEA"/>
+                    <exclude reference="CS3-Rc-Lni"/>
+                    <exclude reference="Pde-Ql-zMz"/>
+                    <exclude reference="fmQ-24-25X"/>
                     <exclude reference="Kb9-EQ-iCZ"/>
                     <exclude reference="Miq-ZD-KWt"/>
                     <exclude reference="bjn-q8-f5p"/>
@@ -273,9 +273,9 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
             </variation>
             <variation key="heightClass=regular-widthClass=compact">
                 <mask key="constraints">
-                    <include reference="Pde-Ql-zMz"/>
                     <include reference="d7h-88-uvd"/>
                     <include reference="1G8-oT-cbh"/>
+                    <include reference="Pde-Ql-zMz"/>
                     <include reference="Miq-ZD-KWt"/>
                     <exclude reference="RgP-3X-Fly"/>
                     <include reference="ZbS-CU-oUk"/>
@@ -284,12 +284,12 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
             </variation>
             <variation key="heightClass=regular-widthClass=regular">
                 <mask key="constraints">
-                    <exclude reference="CS3-Rc-Lni"/>
-                    <include reference="fmQ-24-25X"/>
                     <exclude reference="RGz-GR-KDA"/>
                     <include reference="eem-MB-czN"/>
                     <exclude reference="GpH-qM-K95"/>
                     <include reference="liF-gW-HEA"/>
+                    <exclude reference="CS3-Rc-Lni"/>
+                    <include reference="fmQ-24-25X"/>
                     <include reference="Kb9-EQ-iCZ"/>
                     <exclude reference="bjn-q8-f5p"/>
                     <include reference="0Le-B5-8Fm"/>

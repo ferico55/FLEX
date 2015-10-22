@@ -70,6 +70,8 @@
     NSArray *_shipmentCouriers;
     
     NSInteger _numberOfProcessedOrder;
+    
+    FilterShipmentConfirmationViewController *_filterController;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -111,6 +113,9 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
+    
+    _filterController = [FilterShipmentConfirmationViewController new];
+    _filterController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -704,10 +709,8 @@
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    FilterShipmentConfirmationViewController *controller = [FilterShipmentConfirmationViewController new];
-    controller.delegate = self;
-    controller.couriers = _shipmentCouriers;
-    navigationController.viewControllers = @[controller];
+    _filterController.couriers = _shipmentCouriers;
+    navigationController.viewControllers = @[_filterController];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 

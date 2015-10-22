@@ -154,6 +154,7 @@
         [cell setUnClickViewAction];
         
         cell.delegate = self;
+        cell.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
         [self setPropertyLabelDesc:cell.getLabelDesc];
     }
     
@@ -161,6 +162,7 @@
     cell.getLabelDesc.tag = indexPath.row;
     cell.getBtnKomentar.tag = indexPath.row;
     cell.getBtnUbah.tag = indexPath.row;
+    cell.getBtnProduct.tag = indexPath.row;
     cell.strRole = _detailMyInboxReputation.role;
     [cell setView:detailReputationReview.viewModel];
     
@@ -385,19 +387,21 @@
         [myReviewReputationCell setView:_detailMyInboxReputation.viewModel];
         [myReviewReputationCell isLoadInView:NO withView:myReviewReputationCell.getBtnReview];
 
-        NSString *strMessage = @"";
-        if([emoticonState isEqualToString:CRevieweeScroreBad]) {
-            strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
+        if(UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+            NSString *strMessage = @"";
+            if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+                strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
+            }
+            else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+                strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
+            }
+            else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+                strMessage = [NSString stringWithFormat:@"Saya Puas!"];
+            }
+            
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
+            [stickyAlertView show];
         }
-        else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
-            strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
-        }
-        else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
-            strMessage = [NSString stringWithFormat:@"Saya Puas!"];
-        }
-
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
-        [stickyAlertView show];
     }
 }
 
@@ -440,7 +444,6 @@
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
     productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
-    detailReputationReview.review_user_label = [detailReputationReview.review_user_label isEqualToString:CBuyer]? CPembeli:CPenjual;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
     
     if(_detailMyInboxReputation.updated_reputation_review!=nil && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@""] && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@"0"]) {
@@ -508,6 +511,7 @@
         [dictResult setObject:CGetListReputationReview forKey:@"action"];
         [dictResult setObject:_detailMyInboxReputation.reputation_inbox_id forKey:@"reputation_inbox_id"];
         [dictResult setObject:_detailMyInboxReputation.reputation_id forKey:@"reputation_id"];
+        [dictResult setObject:self.autoRead forKey:@"auto_read"];
         
         return dictResult;
     }

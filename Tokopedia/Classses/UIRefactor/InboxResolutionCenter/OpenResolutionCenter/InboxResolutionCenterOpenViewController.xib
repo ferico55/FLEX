@@ -203,10 +203,10 @@
                         <rect key="frame" x="0.0" y="44" width="320" height="44"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dari Total Invoice" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-n6-Vwo">
-                                <rect key="frame" x="15" y="11" width="130" height="21"/>
+                                <rect key="frame" x="15" y="11" width="166" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="BQh-Lc-V7r"/>
-                                    <constraint firstAttribute="width" constant="130" id="p2L-gw-TcK"/>
+                                    <constraint firstAttribute="width" constant="166" id="p2L-gw-TcK"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -227,7 +227,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 514.000,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Tq-Yr-44M">
-                                <rect key="frame" x="153" y="11" width="152" height="21"/>
+                                <rect key="frame" x="184" y="11" width="121" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -245,7 +245,7 @@
                             <constraint firstAttribute="height" constant="44" id="ChA-xo-eZg"/>
                             <constraint firstItem="LEI-E9-apz" firstAttribute="trailing" secondItem="4LJ-eW-Cab" secondAttribute="trailing" id="K7u-UA-AdT"/>
                             <constraint firstItem="5Tq-Yr-44M" firstAttribute="top" secondItem="4LJ-eW-Cab" secondAttribute="bottom" constant="10" id="MwI-zk-3mU"/>
-                            <constraint firstItem="5Tq-Yr-44M" firstAttribute="leading" secondItem="XKM-n6-Vwo" secondAttribute="trailing" constant="8" id="SXa-NW-iUy"/>
+                            <constraint firstItem="5Tq-Yr-44M" firstAttribute="leading" secondItem="XKM-n6-Vwo" secondAttribute="trailing" constant="3" id="SXa-NW-iUy"/>
                             <constraint firstAttribute="trailing" secondItem="LEI-E9-apz" secondAttribute="trailing" id="gjC-dX-4bt"/>
                             <constraint firstItem="LEI-E9-apz" firstAttribute="leading" secondItem="4LJ-eW-Cab" secondAttribute="leading" id="yfB-Sg-REa"/>
                         </constraints>

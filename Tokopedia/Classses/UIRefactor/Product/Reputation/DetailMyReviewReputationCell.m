@@ -80,6 +80,11 @@
     return btnUbah;
 }
 
+- (UIButton *)getBtnProduct {
+    return btnProduct;
+}
+
+
 - (IBAction)actionBeriReview:(id)sender {
     [_delegate actionBeriReview:sender];
 }

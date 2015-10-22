@@ -44,6 +44,7 @@
 
 #import "StarsRateView.h"
 #import "MarqueeLabel.h"
+#import "PromoRequest.h"
 
 #import "DetailProductViewController.h"
 #import "DetailProductWholesaleCell.h"
@@ -59,11 +60,6 @@
 #import "ProductAddEditViewController.h"
 
 #import "DetailProductOtherView.h"
-
-#import "TKPDTabShopViewController.h"
-#import "ShopTalkViewController.h"
-#import "ShopReviewViewController.h"
-#import "ShopNotesViewController.h"
 
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
@@ -202,6 +198,7 @@ UIAlertViewDelegate
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *otherProductIndicator;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIView *infoShopView;
 
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (weak, nonatomic) IBOutlet UIButton *reviewbutton;
@@ -215,6 +212,9 @@ UIAlertViewDelegate
 @property (weak, nonatomic) IBOutlet StarsRateView *qualityrateview;
 @property (weak, nonatomic) IBOutlet StarsRateView *accuracyrateview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
+@property (weak, nonatomic) IBOutlet UIImageView *luckyBadgeImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBadgeGoldWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBadgeLuckySpace;
 
 @property (weak, nonatomic) IBOutlet UILabel *countsoldlabel;
 @property (weak, nonatomic) IBOutlet UILabel *countviewlabel;
@@ -224,9 +224,14 @@ UIAlertViewDelegate
 @property (strong, nonatomic) IBOutlet UIView *shopClickView;
 @property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightBuyButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightDinkButton;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (weak, nonatomic) IBOutlet UIButton *favButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightShare;
 @property (weak, nonatomic) IBOutlet UIButton *dinkButton;
 
 -(void)cancel;
@@ -363,13 +368,13 @@ UIAlertViewDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
-    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
-        _dinkButton.hidden = NO;
-        _buyButton.hidden = YES;
-    } else {
-        _dinkButton.hidden = YES;
-        _buyButton.hidden = NO;
-    }
+//    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
+//        _dinkButton.hidden = NO;
+//        _buyButton.hidden = YES;
+//    } else {
+//        _dinkButton.hidden = YES;
+//        _buyButton.hidden = NO;
+//    }
     
     //Set corner btn share
     btnShare.layer.cornerRadius = 5.0f;
@@ -383,6 +388,13 @@ UIAlertViewDelegate
     
     //Add observer
     [self initNotification];
+    
+    _infoShopView.layer.cornerRadius = 5;
+    self.infoShopView.layer.borderWidth = 0.5f;
+    self.infoShopView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
+    self.infoShopView.layer.masksToBounds = YES;
+    _constraintHeightBuyButton.constant = 0;
+    _constraintHeightDinkButton.constant = 0;
 }
 
 - (void)initNotification {
@@ -467,6 +479,7 @@ UIAlertViewDelegate
         Product *product = [Product new];
         product.result = result;
         product.status = @"OK";
+        product.isDummyProduct = YES;
         [self requestprocess:product];
         
         [self configureRestKit];
@@ -971,7 +984,7 @@ UIAlertViewDelegate
         else
             return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_formattedProductDescription withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft] + (_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC? 40 : 25) + CgapTitleAndContentDesc;
     }
-    
+
     return 40;
 }
 
@@ -1094,6 +1107,7 @@ UIAlertViewDelegate
         if (indexPath.section == 2) {
             NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
             DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+
             if (descriptionCell == nil) {
                 descriptionCell = [DetailProductDescriptionCell newcell];
                 if(!_isnodata) {
@@ -1326,6 +1340,7 @@ UIAlertViewDelegate
                                                               kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON:kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON,
                                                               kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE:kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE,
                                                               kTKPDDETAILPRODUCT_APISHOPURLKEY:kTKPDDETAILPRODUCT_APISHOPURLKEY
+                                                              ,@"shop_lucky":@"shop_lucky"
                                                               }];
         
         RKObjectMapping *productRatingMapping = [RKObjectMapping mappingForClass:[Rating class]];
@@ -1734,6 +1749,7 @@ UIAlertViewDelegate
         }
         [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
+    [_table reloadData];
 }
 
 
@@ -1988,11 +2004,17 @@ UIAlertViewDelegate
                 [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
            }
             
-            [viewContentWarehouse removeConstraints:_constraint];
-            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
+//            [viewContentWarehouse removeConstraints:_constraint];
+            constraintHeightWarehouse.constant = 50;
+            _constraintHeightShare.constant = 0;
+//            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
             [viewContentWarehouse setHidden:NO];
             _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
             _table.tableHeaderView = _header;
+        }
+        else
+        {
+            [self unsetWarehouse];
         }
         
         _table.tableHeaderView = _header;
@@ -2006,10 +2028,13 @@ UIAlertViewDelegate
 }
 
 - (void)unsetWarehouse {
-    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
-    [viewContentWarehouse addConstraints:_constraint];
+    constraintHeightWarehouse.constant = 0;
+    _constraintHeightShare.constant = 50;
+//    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
+//    [viewContentWarehouse addConstraints:_constraint];
     viewContentWarehouse.hidden = YES;
-    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
+    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height
+                            );
     _table.tableHeaderView = _header;
 
 }
@@ -2027,6 +2052,7 @@ UIAlertViewDelegate
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
             id stats = [result objectForKey:@""];
             _product = stats;
+            _product.isDummyProduct = NO;
         }
 
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
@@ -2034,6 +2060,9 @@ UIAlertViewDelegate
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
+            
+            _constraintHeightBuyButton.constant = 48;
+            _constraintHeightDinkButton.constant = 48;
             
             if (_product.result.wholesale_price.count > 0) {
                 _isnodatawholesale = NO;
@@ -2045,8 +2074,9 @@ UIAlertViewDelegate
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             self.navigationItem.rightBarButtonItems = nil;
             
-            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin]) {
+            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin] && !_product.isDummyProduct) {
                 //MyShop
+                [_dinkButton setHidden:NO];
                 UIBarButtonItem *barbutton;
                 barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
                 
@@ -2083,6 +2113,11 @@ UIAlertViewDelegate
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
             } else {
+                if(!_product.isDummyProduct) {
+                    [_buyButton setHidden:NO];
+                }
+                
+                
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
@@ -2112,6 +2147,13 @@ UIAlertViewDelegate
                 [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
             }
             
+            if(_product.isDummyProduct) {
+                [viewContentWishList setHidden:YES];
+                self.navigationItem.rightBarButtonItems = nil;
+            } else {
+                [viewContentWishList setHidden:NO];
+            }
+            
             //decide description height
             id cell = [DetailProductDescriptionCell newcell];
             NSString *productdesc = _formattedProductDescription;
@@ -2125,6 +2167,8 @@ UIAlertViewDelegate
             [self setHeaderviewData];
             [self setFooterViewData];
             [self setOtherProducts];
+            [self addImpressionClick];
+            
             _isnodata = NO;
             [_table reloadData];
             
@@ -2173,7 +2217,7 @@ UIAlertViewDelegate
             //TODO::
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
-            backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+            backgroundGreyView.backgroundColor = [UIColor clearColor];
             [self.view insertSubview:backgroundGreyView belowSubview:self.table];
             
         }
@@ -2295,6 +2339,7 @@ UIAlertViewDelegate
     cmPopTitpView.backgroundColor = [UIColor blackColor];
     cmPopTitpView.animation = CMPopTipAnimationSlide;
     cmPopTitpView.dismissTapAnywhere = YES;
+    cmPopTitpView.leftPopUp = YES;
     
     UIButton *button = (UIButton *)sender;
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
@@ -2345,15 +2390,19 @@ UIAlertViewDelegate
 {
     _dinkButton.hidden = YES;
     _buyButton.hidden = YES;
-    [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
-                                                                        options:0
-                                                                        metrics:nil
-                                                                          views:NSDictionaryOfVariableBindings(_dinkButton)]];
     
-    [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
+    _constraintHeightBuyButton.constant = 0;
+    _constraintHeightDinkButton.constant = 0;
+    
+//    [_dinkButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_dinkButton(==0)]"
+//                                                                        options:0
+//                                                                        metrics:nil
+//                                                                          views:NSDictionaryOfVariableBindings(_dinkButton)]];
+//    
+//    [_buyButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_buyButton(==0)]"
+//                                                                       options:0
+//                                                                       metrics:nil
+//                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
 }
 
 - (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment
@@ -2378,7 +2427,10 @@ UIAlertViewDelegate
     [self initAttributeText:lblSize withStrText:strText withColor:color withFont:font withAlignment:textAlignment];
     lblSize.numberOfLines = 0;
     
-    return [lblSize sizeThatFits:size].height;
+    NSInteger lblHeight =[lblSize sizeThatFits:size].height;
+    lblHeight = lblHeight<30?30:lblHeight;
+    
+    return lblHeight;
 }
 
 
@@ -2600,21 +2652,24 @@ UIAlertViewDelegate
     NSMutableAttributedString *myString= [[NSMutableAttributedString alloc]initWithAttributedString:attachmentString ];
     NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location?:@"" attributes:nil];
     [myString appendAttributedString:newAttString];
-    
     _shoplocation.attributedText = myString;
+    //_shoplocation.text = _product.result.shop_info.shop_location?:@"";
     
     if(_product.result.shop_info.shop_is_gold == 1) {
         _goldShop.hidden = NO;
     } else {
         _goldShop.hidden = YES;
     }
+    _constraintBadgeGoldWidth.constant = (_product.result.shop_info.shop_is_gold == 1)?20:0;
+    _constraintBadgeLuckySpace.constant = (_product.result.shop_info.shop_is_gold == 1)?4:0;
+    
     
     UIImageView *thumb = _shopthumb;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     //request.URL = url;
     
-    thumb.image = nil;
+    thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
     thumb.layer.cornerRadius = thumb.layer.frame.size.width/2;
     
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -2631,6 +2686,14 @@ UIAlertViewDelegate
         
     }];
     
+    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_lucky] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [self.luckyBadgeImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        self.luckyBadgeImageView.image = image;
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        self.luckyBadgeImageView.image = [UIImage imageNamed:@""];
+    }];
 }
 
 -(void)setOtherProducts
@@ -2991,7 +3054,7 @@ UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id];
+        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id etalaseName:_product.result.product.product_etalase];
     }
 }
 
@@ -3004,6 +3067,7 @@ UIAlertViewDelegate
 
 -(void)successMoveToWithMessages:(NSArray *)successMessages
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
     StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successMessages delegate:self];
     [alert show];
 }
@@ -3078,5 +3142,15 @@ UIAlertViewDelegate
     
     _detailProductBaseUrl = [_gtmContainer stringForKey:GTMKeyProductBase];
     _detailProductPostUrl = [_gtmContainer stringForKey:GTMKeyProductPost];
+}
+
+- (void)addImpressionClick {
+    __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+    NSString *adKey = [_data objectForKey:PromoImpressionKey];
+    NSString *adSemKey = [_data objectForKey:PromoSemKey];
+    NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
+    if (adKey) {
+        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+    }
 }
 @end

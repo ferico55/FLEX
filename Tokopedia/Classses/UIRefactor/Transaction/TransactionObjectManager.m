@@ -45,7 +45,13 @@
                                                    API_DEPOSIT_IDR_KEY,
                                                    API_GRAND_TOTAL_KEY,
                                                    API_GRAND_TOTAL_IDR_KEY,
-                                                   API_GATEWAY_LIST_ID_KEY]];
+                                                   API_GATEWAY_LIST_ID_KEY,
+                                                   @"lp_amount_idr",
+                                                   @"lp_amount",
+                                                   @"cashback_idr",
+                                                   @"cashback",
+                                                   @"grand_total_without_lp_idr"
+                                                   ]];
     
     RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
     RKObjectMapping *productMapping = [[self mapping] productMapping];
@@ -135,6 +141,9 @@
     RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
     RKObjectMapping *indomaretMapping   = [[self mapping] indomaretMapping];
     
+    RKObjectMapping *installmentBankMapping =[[self mapping]installmentBankMapping];
+    RKObjectMapping *installmentTermMapping =[[self mapping] installmentTermMapping];
+    
     if(_gatewayID == TYPE_GATEWAY_BCA_CLICK_PAY){
         RKObjectMapping *BCAParamMapping = [[self mapping] BCAParamMapping];
         RKRelationshipMapping *bcaParamRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_BCA_PARAM_KEY
@@ -171,6 +180,18 @@
                                                                                                  toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
                                                                                                withMapping:listMapping];
     [transactionMapping addPropertyMapping:listRelationshipMapping];
+    
+    RKRelationshipMapping *installmentBankRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"installment_bank_option"
+                                                                                                 toKeyPath:@"installment_bank_option"
+                                                                                               withMapping:installmentBankMapping];
+    [transactionMapping addPropertyMapping:installmentBankRelationshipMapping];
+    
+    
+    RKRelationshipMapping *installmentTermRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"installment_term"
+                                                                                                            toKeyPath:@"installment_term"
+                                                                                                          withMapping:installmentTermMapping];
+    [installmentBankMapping addPropertyMapping:installmentTermRelationshipMapping];
+    
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY
                                                                                 toKeyPath:API_CART_DESTINATION_KEY

@@ -14,6 +14,7 @@
 @protocol TxOrderStatusDetailViewControllerDelegate <NSObject>
 @required
 -(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath;
+-(void)delegateViewController:(UIViewController*)viewController;
 -(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath;
 -(void)complainOrder:(TxOrderStatusList *)order;
 - (void)shouldCancelComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;

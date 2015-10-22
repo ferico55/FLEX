@@ -28,6 +28,7 @@ static NSString *TKPDTabNotification = @"TKPDTabNotification";
 @property (strong, nonatomic) NSArray *viewControllers;
 @property (strong, nonatomic) NSArray *tabTitles;
 @property (strong, nonatomic) NSArray *menuTitles;
+@property (strong, nonatomic) UIViewController *splitVC;
 
 @property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;
 

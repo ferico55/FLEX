@@ -77,6 +77,8 @@
     LoadingView *_loadingView;
     
     RequestCancelResolution *_requestCancelComplain;
+    
+    UIViewController *_detailViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -224,6 +226,11 @@
 }
 
 #pragma mark - Detail delegate
+-(void)delegateViewController:(UIViewController *)viewController
+{
+    _detailViewController = viewController;
+}
+
 -(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath
 {
     NSMutableDictionary *object = [NSMutableDictionary new];
@@ -843,6 +850,8 @@
         {
             [self failedConfirmDelivery:object];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
+            StickyAlertView *alertDelegate = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:_detailViewController];
+            [alertDelegate show];
             [alert show];
         }
     }
@@ -851,6 +860,8 @@
         [self failedConfirmDelivery:object];
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
         [alert show];
+        StickyAlertView *alertDelegate = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:_detailViewController];
+        [alertDelegate show];
     }
 }
 
@@ -1057,6 +1068,7 @@
     ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
     vc.indexPath = indexPath;
     vc.delegate = self;
+    vc.isNeedRequestListDetail = YES;
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     vc.resolutionID = resolutionID;

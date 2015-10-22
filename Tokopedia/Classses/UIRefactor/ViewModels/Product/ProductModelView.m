@@ -10,4 +10,12 @@
 
 @implementation ProductModelView
 
+- (NSString*)productName {
+    return [_productName kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString*)productShop {
+    return [_productShop kv_decodeHTMLCharacterEntities];
+}
+
 @end

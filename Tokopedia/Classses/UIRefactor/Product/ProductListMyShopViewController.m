@@ -86,13 +86,16 @@
     LoadingView *_loadingView;
     
     BOOL _isNeedToSearch;
+    
+    SortViewController *_sortViewController;
+    ProductListMyShopFilterViewController *_filterViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-
+@property (strong, nonatomic) NSIndexPath *lastActionIndexPath;
 
 @end
 
@@ -158,11 +161,28 @@
     
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(updateView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+    [center addObserver:self
+               selector:@selector(updateView:)
+                   name:ADD_PRODUCT_POST_NOTIFICATION_NAME
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(moveProductToWirehouse)
+                   name:MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(moveProductToEtalase:)
+                   name:MOVE_PRODUCT_TO_ETALASE_NOTIFICATION
+                 object:nil];
+
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     
     [_networkManager doRequest];
+    
+    _sortViewController = [SortViewController new];
+    _filterViewController = [ProductListMyShopFilterViewController new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -315,11 +335,14 @@
             case BUTTON_FILTER_TYPE_SORT:
             {
                 NSIndexPath *indexpath = [_dataFilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
+                
+                _sortViewController.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                vc.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                _sortViewController.delegate = self;
+                
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_sortViewController];
+                nav.navigationBar.translucent = NO;
+                
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
@@ -327,12 +350,11 @@
             {
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
                 
-                ProductListMyShopFilterViewController *controller = [ProductListMyShopFilterViewController new];
-                controller.delegate = self;
-                controller.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
-                controller.shopID = [auth getShopId];
+                _filterViewController.delegate = self;
+                _filterViewController.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
+                _filterViewController.shopID = [auth getShopId];
                 
-                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:_filterViewController];
                 navigation.navigationBar.translucent = NO;
                 
                 [self.navigationController presentViewController:navigation animated:YES completion:nil];
@@ -847,7 +869,21 @@
 -(void)updateView:(NSNotification*)notification
 {
     [self refreshView:nil];
-    
+}
+
+- (void)moveProductToWirehouse {
+    ManageProductList *product = [_list objectAtIndex:_lastActionIndexPath.row];
+    product.product_etalase = @"Gudang";
+    product.product_status = [NSString stringWithFormat:@"%d", PRODUCT_STATE_WAREHOUSE];
+    [self.table reloadData];
+}
+
+- (void)moveProductToEtalase:(NSNotification *)notification {
+    NSDictionary *data = [notification userInfo];
+    ManageProductList *product = [_list objectAtIndex:_lastActionIndexPath.row];
+    product.product_etalase = [data objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+    product.product_status = [NSString stringWithFormat:@"%d", PRODUCT_STATE_ACTIVE];
+    [self.table reloadData];
 }
 
 #pragma mark - Swipe Delegate
@@ -880,6 +916,8 @@
             return YES;
         }];
         
+        __weak typeof(self) welf = self;
+
         MGSwipeButton * warehouse = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_WAREHOUSE backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             if ([list.product_status integerValue] == PRODUCT_STATE_BANNED || [list.product_status integerValue] == PRODUCT_STATE_PENDING) {
                 StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
@@ -891,10 +929,16 @@
                 alert.tag = indexPath.row;
                 [alert show];
             }
+            welf.lastActionIndexPath = [welf.table indexPathForCell:cell];
             return YES;
         }];
         
-        MGSwipeButton * etalase = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_ETALASE backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        UIColor *etalaseColor = [UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0];
+        MGSwipeButton *etalase = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_ETALASE
+                                                backgroundColor:etalaseColor
+                                                        padding:padding
+                                                       callback:^BOOL(MGSwipeTableCell *sender) {
+            welf.lastActionIndexPath = [welf.table indexPathForCell:cell];
             // Move To Etalase
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             
@@ -963,7 +1007,7 @@
 {
     if (buttonIndex == 1) {
         ManageProductList *list = _list[alertView.tag];
-        [_requestMoveTo requestActionMoveToWarehouse:[@(list.product_id) stringValue]];
+        [_requestMoveTo requestActionMoveToWarehouse:[@(list.product_id) stringValue] etalaseName:list.product_etalase];
     }
 }
 

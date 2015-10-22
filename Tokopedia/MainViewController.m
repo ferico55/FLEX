@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import <FacebookSDK/FacebookSDK.h>
-
-
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "SearchViewController.h"
@@ -38,6 +35,11 @@
 
 #import "InboxRootViewController.h"
 
+#import "RequestNotifyLBLM.h"
+
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -62,6 +64,8 @@
     
     UIAlertView *_logingOutAlertView;
     NSTimer *_containerTimer;
+    
+    RequestNotifyLBLM *_requestLBLM;
 }
 
 @end
@@ -175,7 +179,7 @@ typedef enum TagRequest {
     
     _tabBarController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	[self presentViewController:_tabBarController animated:YES completion:^{
-		
+
 	}];
 }
 
@@ -560,16 +564,14 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar"
                                                         object:nil];
 
-    if ([FBSession activeSession].state == FBSessionStateOpen &&
-        [FBSession activeSession].state == FBSessionStateOpenTokenExtended) {
-        [FBSession.activeSession closeAndClearTokenInformation];
-    }
+    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    [loginManager logOut];
+    [FBSDKAccessToken setCurrentAccessToken:nil];
     
-    [_logoutRequestManager doRequest];
+    [[GPPSignIn sharedInstance] signOut];
+    [[GPPSignIn sharedInstance] disconnect];
 
-//    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-//    [_cacheController initCacheWithDocumentPath:path];
-//    [_cacheController clearCache];
+    [_logoutRequestManager doRequest];
     
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;

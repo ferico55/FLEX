@@ -111,7 +111,7 @@
         urlAddress = _URLString;
         url = [NSURL URLWithString:urlAddress];
     }
-    else if (gateway == TYPE_GATEWAY_CC && !_isVeritrans) {
+    else if ((gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT) && !_isVeritrans) {
         urlAddress = _URLString;
         
         NSDictionary *paramEncrypt = [_CCParam encrypt];
@@ -158,7 +158,7 @@
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     [_act startAnimating];
-     NSLog(@"%@", webView.request.URL.absoluteString);
+     NSLog(@"URL %@", webView.request.URL.absoluteString);
 
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_BCA_CLICK_PAY)
@@ -190,7 +190,14 @@
     else if(gateway == TYPE_GATEWAY_MANDIRI_E_CASH)
     {
         //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
-            if ([request.URL.absoluteString rangeOfString:@"http://www.tokopedia.com/ws-new/tx-payment-emoney.pl?id="].location != NSNotFound) {
+        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+        NSString *baseURLFull = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+        NSURL *url = [NSURL URLWithString:baseURLFull];
+        NSURL *root = [NSURL URLWithString:@"/" relativeToURL:url];
+        NSString *baseURL = root.absoluteString;
+        
+        NSString *stringURLEMoney = [NSString stringWithFormat:@"%@ws-new/tx-payment-emoney.pl?id=",baseURL];
+            if ([request.URL.absoluteString rangeOfString:stringURLEMoney].location != NSNotFound) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     [_delegate shouldDoRequestEMoney:YES];
                 UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -207,7 +214,7 @@
         //}
 
     }
-    else if (gateway == TYPE_GATEWAY_CC && !_isVeritrans)
+    else if ((gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT)&& !_isVeritrans)
     {
         
     }
@@ -221,11 +228,11 @@
     [_act stopAnimating];
     NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
     NSLog(@"html String WebView %@", html);
-    NSLog(@"%@", webView.request.URL.absoluteString);
+    NSLog(@"URL %@", webView.request.URL.absoluteString);
     
     NSInteger gateway = [_gateway integerValue];
     
-    if(gateway == TYPE_GATEWAY_CC)
+    if(gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT)
     {
         if (_isVeritrans)
         {
@@ -235,7 +242,7 @@
         }
         else
         {
-            if ([webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca.pl"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+            if (([webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca.pl"].location != NSNotFound || [webView.request.URL.absoluteString rangeOfString:@"tx-payment-cc-bca-installment.pl"].location != NSNotFound) && webView.request.URL.absoluteString != nil) {
                 // get issuccess value
                 NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
                 if ([html rangeOfString:@"value=\"1\""].location != NSNotFound && webView.request.URL.absoluteString != nil) {

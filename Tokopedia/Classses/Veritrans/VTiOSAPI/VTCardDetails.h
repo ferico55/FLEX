@@ -21,6 +21,11 @@
 @property (nonatomic,assign) NSInteger card_exp_month;
 @property (nonatomic,assign) NSInteger card_exp_year;
 
+@property (nonatomic,assign) BOOL installment;
+@property (nonatomic,copy) NSString* installment_term;
+
+//TODO::Installment:true/false, Installment_term:1
+
 @property (nonatomic,assign) BOOL secure;
 
 -(NSString*) getParamUrl;

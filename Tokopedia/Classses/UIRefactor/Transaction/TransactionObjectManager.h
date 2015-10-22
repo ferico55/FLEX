@@ -16,12 +16,12 @@
 
 -(RKObjectManager *)objectManagerCart;
 -(RKObjectManager *)objectManagerCancelCart;
--(RKObjectManager*)objectManagerCheckout;
+-(RKObjectManager *)objectManagerCheckout;
 -(RKObjectManager *)objectManagerBuy;
--(RKObjectManager*)objectManagerVoucher;
--(RKObjectManager*)objectMangerEditProduct;
+-(RKObjectManager *)objectManagerVoucher;
+-(RKObjectManager *)objectMangerEditProduct;
 -(RKObjectManager *)objectManagerEMoney;
--(RKObjectManager*)objectManagerBCAClickPay;
--(RKObjectManager*)objectManagerCC;
+-(RKObjectManager *)objectManagerBCAClickPay;
+-(RKObjectManager *)objectManagerCC;
 
 @end

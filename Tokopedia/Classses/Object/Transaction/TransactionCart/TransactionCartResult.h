@@ -23,5 +23,11 @@
 @property (nonatomic,strong) NSString *not_empty;
 @property (nonatomic,strong) NSString *ecash_flag;
 @property (nonatomic,strong) NSString *token;
+@property (nonatomic,strong) NSString *lp_amount_idr;
+@property (nonatomic,strong) NSString *lp_amount;
+@property (nonatomic,strong) NSString *cashback_idr;
+@property (nonatomic,strong) NSString *cashback;
+@property (nonatomic,strong) NSString *grand_total_without_lp_idr;
+
 
 @end

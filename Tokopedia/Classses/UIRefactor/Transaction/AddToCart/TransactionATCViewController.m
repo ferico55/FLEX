@@ -82,7 +82,7 @@
     TokopediaNetworkManager *_networkManager;
     TokopediaNetworkManager *_networkManagerATC;
     TokopediaNetworkManager *_networkManagerCalculate;
-    
+    TransactionATCForm *_ATCForm;
     
     NSArray *_shipments;
 }
@@ -112,6 +112,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *arrowInsuranceImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *insuraceConstraint;
 @property (weak, nonatomic) IBOutlet UITextField *productQuantityTextField;
+@property (strong, nonatomic) IBOutlet UIView *messageZeroShipmentView;
+@property (weak, nonatomic) IBOutlet UILabel *messageZeroShipmentLabel;
 
 @end
 
@@ -184,6 +186,8 @@
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    [_messageZeroShipmentLabel setCustomAttributedText:_messageZeroShipmentLabel.text];
     
 }
 
@@ -295,6 +299,7 @@
         ShippingInfoShipments *shipment = _selectedShipment;
         ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
         AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+        
         [self setAddress:address];
         ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
         switch (indexPath.section) {
@@ -455,29 +460,32 @@
     switch (indexPath.section) {
         case 0:
             cell = _tableViewProductCell[indexPath.row];
-            break;
-        case 1:
-            cell = _tableViewShipmentCell[indexPath.row];
             if (indexPath.row == 1) {
-                NSString *textString = _addressLabel.text;
-                //Calculate the expected size based on the font and linebreak mode of your label
-                CGSize maximumLabelSize = CGSizeMake(190,9999);
-                
-                CGSize expectedLabelSize = [textString sizeWithFont:_addressLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:_addressLabel.lineBreakMode];
-                
-                //adjust the label the the new height.
-                CGRect newFrame = _addressLabel.frame;
-                newFrame.size.height = expectedLabelSize.height;
-                return 243-50+newFrame.size.height;
+                return 73;
+            }
+            if (indexPath.row == 3) {
+                return 163;
             }
             break;
+        case 1:
+        {
+            cell = _tableViewShipmentCell[indexPath.row];
+            if (indexPath.row == 1) {
+                [_addressLabel sizeToFit];
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                if ([address.address_name isEqualToString:@"0"])
+                {
+                    return 0;
+                }
+                return 243-50+_addressLabel.frame.size.height;
+            }
+            break;
+        }
         case 2:
             cell = _tableViewPaymentDetailCell[indexPath.row];
             if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
                 if ([_productQuantityTextField.text integerValue]<=1) {
-                //if (_productQuantityStepper.value<=1) {
+                    //if (_productQuantityStepper.value<=1) {
                     return 0;
                 }
                 else
@@ -488,7 +496,7 @@
         default:
             break;
     }
-    return cell.frame.size.height;
+    return 44;//cell.frame.size.height; //case for ios9 can't use frame height
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -803,8 +811,6 @@
         _isRequestFrom = NO;
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
-        [self buyButtonIsLoading:NO];
-        _buyButton.hidden = NO;
         [self requestSuccessFormATC:successResult withOperation:operation];
     }
     if (tag == TAG_REQUEST_ATC) {
@@ -896,21 +902,21 @@
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
-    TransactionATCForm *ATCForm = stat;
-    BOOL status = [ATCForm.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    _ATCForm = stat;
+    BOOL status = [_ATCForm.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if(ATCForm.message_error)
+        if(_ATCForm.message_error)
         {
-            NSArray *messages = ATCForm.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            NSArray *messages = _ATCForm.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
             [alert show];
         }
         else{
-            AddressFormList *address = ATCForm.result.form.destination;
+            AddressFormList *address = _ATCForm.result.form.destination;
             [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
             
-            NSArray *shipments = ATCForm.result.form.shipment;
+            NSArray *shipments = _ATCForm.result.form.shipment;
             _shipments = shipments;
             [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
             
@@ -934,7 +940,7 @@
             _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
             
             ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
-            product = ATCForm.result.form.product_detail;
+            product = _ATCForm.result.form.product_detail;
             _productQuantityStepper.value = [product.product_min_order integerValue]?:1;
             _productQuantityTextField.text = product.product_min_order?:@"1";
             _productQuantityLabel.text = product.product_min_order?:@"1";
@@ -945,6 +951,14 @@
             
             [self setAddress:address];
             _isnodata = NO;
+            if (![address.address_name isEqualToString:@"0"] && [_ATCForm.result.form.available_count integerValue] == 0)
+                _tableView.tableHeaderView = _messageZeroShipmentView;
+            else
+                _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+            
+            [self buyButtonIsLoading:NO];
+            _buyButton.hidden = NO;
+            
             [_tableView reloadData];
         }
     }
@@ -992,8 +1006,6 @@
             [alert show];
         }
         if (setting.result.is_success == 1) {
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:SHOULD_REFRESH_CART object:nil userInfo:nil];
             
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[setting.message_status firstObject] delegate:self cancelButtonTitle:@"Kembali Belanja" otherButtonTitles:@"Ke Keranjang Belanja",nil];
             alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
@@ -1099,7 +1111,7 @@
                 UILabel *label = (UILabel *)[cell viewWithTag:1];
                 label.hidden = NO;
             }
-            
+            _tableView.tableHeaderView = (_shipments.count <= 0)?_messageZeroShipmentView:[[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
             [_tableView reloadData];
         }
     }
@@ -1191,6 +1203,7 @@
                 //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
                 //[self.navigationController pushViewController:cartViewController animated:YES];
             }
+            
             break;
         }
         default:
@@ -1375,19 +1388,7 @@ replacementString:(NSString*)string
                                postalCode];
     addressStreet = [NSString convertHTML:addressStreet];
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    
-    NSAttributedString *addressAttributedText = [[NSAttributedString alloc] initWithString:addressStreet
-                                                                                attributes:attributes];
-    _addressLabel.attributedText = addressAttributedText;
+    [_addressLabel setCustomAttributedText:addressStreet];
     
     NSString *receiverPhone = ([address.receiver_phone isEqualToString:@"0"]||!address.receiver_phone)?@"":address.receiver_phone;
     NSString *receiverName = ([address.receiver_name isEqualToString:@"0"]||!address.receiver_name)?@"":address.receiver_name;

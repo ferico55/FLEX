@@ -79,6 +79,9 @@
     NSInteger _numberOfProcessedOrder;
     
     NSArray *_selectedProducts;
+    
+    UINavigationController *_filterNavigationController;
+    FilterNewOrderViewController *_filterViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -291,12 +294,14 @@
 
 #pragma mark - Action
 
-- (IBAction)tap:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"FilterNewOrderNavigationController"];
-    FilterNewOrderViewController *controller = (FilterNewOrderViewController *)navigationController.topViewController;
-    controller.delegate = self;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+- (void)tap:(id)sender {
+    if (!_filterNavigationController) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        _filterNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"FilterNewOrderNavigationController"];
+        _filterViewController = (FilterNewOrderViewController *)_filterNavigationController.topViewController;
+        _filterViewController.delegate = self;
+    }
+    [self.navigationController presentViewController:_filterNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - Cell delegate

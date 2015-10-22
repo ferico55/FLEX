@@ -12,7 +12,7 @@
 //#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.py-purnaresa.ndvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 
 
 //#if DEBUG
@@ -20,7 +20,7 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-//#define kTkpdBaseURLString @"http://sx-suwarnold.dvl/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -112,6 +112,7 @@ typedef enum {
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 #define iOS7_0 @"7.0"
+#define iOS8_0 @"8.0"
 
 #define TKPD_FADEANIMATIONDURATION 0.3
 
@@ -137,6 +138,8 @@ typedef enum {
 #define DID_CANCEL_COMPLAIN_NOTIFICATION_NAME @"DidCancelComplain"
 
 #define ADD_PRODUCT_POST_NOTIFICATION_NAME @"tokopedia.ADDPRODUCTPOSTNOTIFICATIONNAME"
+#define MOVE_PRODUCT_TO_ETALASE_NOTIFICATION @"tokopedia.MOVE_PRODUCT_TO_ETALASE_NOTIFICATION"
+#define MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION @"tokopedia.MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION"
 
 #define REFRESH_TX_ORDER_POST_NOTIFICATION_NAME @"tokopedia.REFRESH_TX_ORDER_POST_NOTIFICATION_NAME"
 
@@ -205,7 +208,6 @@ typedef enum {
 #define productCollectionViewCellHeight6plus 250
 #define productCollectionViewCellHeightNormal 205
 
-
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"
@@ -246,4 +248,46 @@ typedef enum {
 
 #define GTMKeyActionReviewBase @"action_review_base_url"
 #define GTMKeyActionReviewPost @"action_review_post_url"
+
+#define GTMKeyPromoBase @"promo_base_url"
+#define GTMKeyPromoPost @"promo_post_url"
+#define GTMKeyPromoFull @"promo_full_url"
+
+#define GTMKeyPromoBaseAction   @"promo_base_action_url"
+#define GTMKeyPromoPostAction   @"promo_post_action_url"
+#define GTMKeyPromoFullAction   @"promo_full_action_url"
+
+#define GTMKeyCancelPromoProductFeed  @"cancel_promo_product_feed"
+#define GTMKeyCancelPromoHotlist      @"cancel_promo_hotlist"
+#define GTMKeyCancelPromoSearch       @"cancel_promo_search"
+#define GTMKeyCancelPromoShopFeed     @"cancel_promo_shop_feed"
+
+#define GTMKeyNotifyLBLMBase @"notify_base_url"
+#define GTMKeyNotifyLBLMPost @"notify_post_url"
+#define GTMKeyNotifyLBLMFull @"notify_full_url"
+
+#define GTMVeritransClientKey @"veritrans_client_key"
+
+#define GTMHiddenPaymentKey @"hidden_payment_gateways"
+
+#define GTMIsLuckyInstallmentAvailableKey @"is_installment_available"
+
+#define GTMKeyComplainNotifString @"complain_notif_string"
+
+#define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
+
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IS_RETINA ([[UIScreen mainScreen] scale] >= 2.0)
+
+#define SCREEN_WIDTH ([[UIScreen mainScreen] bounds].size.width)
+#define SCREEN_HEIGHT ([[UIScreen mainScreen] bounds].size.height)
+#define SCREEN_MAX_LENGTH (MAX(SCREEN_WIDTH, SCREEN_HEIGHT))
+#define SCREEN_MIN_LENGTH (MIN(SCREEN_WIDTH, SCREEN_HEIGHT))
+
+#define IS_IPHONE_4_OR_LESS (IS_IPHONE && SCREEN_MAX_LENGTH < 568.0)
+#define IS_IPHONE_5 (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
+#define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
+#define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
+
 #endif

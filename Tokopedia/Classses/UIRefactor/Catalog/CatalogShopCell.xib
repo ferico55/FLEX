@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -24,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="245"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="244.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hrF-rD-JaS" userLabel="Container View">
@@ -49,9 +49,9 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPx-vr-edZ">
-                                        <rect key="frame" x="68" y="15" width="212" height="21"/>
+                                        <rect key="frame" x="68" y="15" width="173" height="21"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="dl1-ox-j8Q"/>
+                                            <constraint firstAttribute="height" constant="21" id="3ix-NZ-MHa"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                                         <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -131,26 +131,44 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="3sT-F4-CIm">
+                                        <rect key="frame" x="270" y="15" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="pDW-25-UFk"/>
+                                            <constraint firstAttribute="height" constant="20" id="zQr-7Z-nTE"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PXw-WE-AVV">
+                                        <rect key="frame" x="248" y="15" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="JSq-J1-1Es"/>
+                                            <constraint firstAttribute="width" constant="20" id="XrG-0H-UtX"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="XZa-rX-g75" secondAttribute="bottom" id="2sL-J5-KrL"/>
                                     <constraint firstItem="J4b-sz-bsl" firstAttribute="trailing" secondItem="f78-6x-PHe" secondAttribute="trailing" id="31r-Mz-Udq"/>
                                     <constraint firstAttribute="trailing" secondItem="XZa-rX-g75" secondAttribute="trailing" constant="10" id="6Rr-es-l6m"/>
+                                    <constraint firstItem="3sT-F4-CIm" firstAttribute="leading" secondItem="PXw-WE-AVV" secondAttribute="trailing" constant="2" id="6iA-vl-A6L"/>
+                                    <constraint firstItem="aAd-Lg-sdc" firstAttribute="top" secondItem="J4b-sz-bsl" secondAttribute="top" id="7H0-5y-C6b"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="gtP-EX-b5j" secondAttribute="bottom" constant="9" id="8nd-Ht-BOW"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="KoK-Sg-dzi"/>
                                     <constraint firstAttribute="height" constant="70" id="LKR-zX-qiE"/>
-                                    <constraint firstAttribute="trailing" secondItem="YPx-vr-edZ" secondAttribute="trailing" constant="20" id="RSO-ie-m83"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="10" id="S7q-Fa-pco"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="SdP-UN-Zvl"/>
-                                    <constraint firstItem="YPx-vr-edZ" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="U2p-se-lS2"/>
+                                    <constraint firstItem="YPx-vr-edZ" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="cCR-dg-9hZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="3sT-F4-CIm" secondAttribute="trailing" constant="10" id="jZl-pP-Eca"/>
                                     <constraint firstAttribute="trailing" secondItem="aAd-Lg-sdc" secondAttribute="trailing" constant="15" id="lUb-aG-HxJ"/>
-                                    <constraint firstItem="aAd-Lg-sdc" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" id="lZa-GV-vIy"/>
-                                    <constraint firstItem="J4b-sz-bsl" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" id="o2D-Mu-C4j"/>
+                                    <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="aAd-Lg-sdc" secondAttribute="bottom" constant="11" id="qwN-Lb-pGE"/>
+                                    <constraint firstItem="YPx-vr-edZ" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="15" id="rM1-GY-ZmO"/>
                                     <constraint firstItem="J4b-sz-bsl" firstAttribute="top" secondItem="f78-6x-PHe" secondAttribute="top" id="sMw-XG-kzq"/>
                                     <constraint firstItem="J4b-sz-bsl" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="vZs-aS-eUu"/>
+                                    <constraint firstItem="PXw-WE-AVV" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="15" id="vmR-hO-aBy"/>
+                                    <constraint firstItem="3sT-F4-CIm" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="15" id="y76-ci-O8u"/>
                                     <constraint firstItem="J4b-sz-bsl" firstAttribute="leading" secondItem="f78-6x-PHe" secondAttribute="leading" id="yax-iK-gzs"/>
-                                    <constraint firstItem="YPx-vr-edZ" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="15" id="zU9-FM-plW"/>
+                                    <constraint firstItem="PXw-WE-AVV" firstAttribute="leading" secondItem="YPx-vr-edZ" secondAttribute="trailing" constant="7" id="zck-Ej-Hpc"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="0ys-W8-mYU" appends="YES" id="w7m-jM-U5B"/>
@@ -283,8 +301,12 @@
             <connections>
                 <outlet property="btnLocation" destination="aAd-Lg-sdc" id="wxF-7m-EFR"/>
                 <outlet property="buyButton" destination="5A0-aT-MsB" id="cor-eS-RFW"/>
+                <outlet property="constraintSpaceLuckyMerchant" destination="6iA-vl-A6L" id="vvX-Xw-2ep"/>
+                <outlet property="constraintWidthGoldMerchant" destination="pDW-25-UFk" id="Xr7-PY-5Md"/>
                 <outlet property="containerView" destination="hrF-rD-JaS" id="k70-do-fR2"/>
                 <outlet property="expandViewContentStar" destination="f78-6x-PHe" id="YuC-8h-zyw"/>
+                <outlet property="goldMerchantBadge" destination="3sT-F4-CIm" id="50i-lf-ySB"/>
+                <outlet property="luckyMerchantBadge" destination="PXw-WE-AVV" id="uqy-QG-Sz6"/>
                 <outlet property="masking" destination="Gpw-rT-PUR" id="6hY-f8-uqC"/>
                 <outlet property="productConditionLabel" destination="Hjz-np-IZz" id="14v-qa-7hx"/>
                 <outlet property="productNameLabel" destination="gzI-ib-jqq" id="v5g-E5-1SW"/>
@@ -327,13 +349,9 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_location.png" width="14" height="14"/>
         <image name="icon_star.png" width="20" height="20"/>
         <image name="icon_toped_loading_grey-02.png" width="30" height="30"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

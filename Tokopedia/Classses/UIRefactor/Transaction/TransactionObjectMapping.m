@@ -146,7 +146,8 @@
                                                           kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
+                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
+                                                          @"lucky_merchant" : @"lucky_merchant"
                                                           }];
     return shopinfoMapping;
 }
@@ -192,7 +193,11 @@
                                                         API_TOKEN_KEY,
                                                         API_STEP_KEY,
                                                         API_DROPSHIP_LIST_KEY,
-                                                        @"klikbca_user"
+                                                        @"klikbca_user",
+                                                        @"cashback_idr",
+                                                        @"cashback",
+                                                        @"lp_amount_idr",
+                                                        @"lp_amount"
                                                         ]];
     return transactionMapping;
 }
@@ -213,6 +218,26 @@
                                                      API_BCA_TYPE_PAYMENT_KEY
                                                      ]];
     return bcaParamMapping;
+}
+
+-(RKObjectMapping*)installmentBankMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[InstallmentBank class]];
+    [mapping addAttributeMappingsFromArray:@[@"percentage",
+                                             @"bank_id",
+                                             @"bank_name"
+                                            ]];
+    return mapping;
+}
+
+-(RKObjectMapping*)installmentTermMapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[InstallmentTerm class]];
+    [mapping addAttributeMappingsFromArray:@[@"duration",
+                                             @"monthly_price",
+                                             @"monthly_price_idr"
+                                             ]];
+    return mapping;
 }
 
 -(RKObjectMapping*)systemBankMapping
@@ -269,7 +294,8 @@
     [mapping addAttributeMappingsFromArray:@[@"user_email",
                                              @"payment_id",
                                              @"cc_agent",
-                                             @"cc_type"]];
+                                             @"cc_type",
+                                             @"cc_card_bank_type"]];
     return mapping;
 }
 

@@ -73,6 +73,11 @@
     [self configureGTM];
     [self initTable];
     [self initNavigation];
+    
+    CGRect newFrame = [UIScreen mainScreen].bounds;
+    newFrame.size.height -= 60;
+    self.view.frame = newFrame;
+    
     btnSend.layer.cornerRadius = 5.0f;
     btnSend.layer.masksToBounds = isSuccessSentMessage = YES;
     _TKPDNavigator = [NavigateViewController new];

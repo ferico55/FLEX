@@ -113,6 +113,22 @@
 */
 
 #pragma mark - Method
+- (void)showAlertAfterGiveRate {
+    NSString *strMessage = @"";
+    if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+        strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
+    }
+    else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+        strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
+    }
+    else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+        strMessage = [NSString stringWithFormat:@"Saya Puas!"];
+    }
+    
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
+    [stickyAlertView show];
+}
+
 - (void)alertWarningReviewSmiley {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Anda hanya bisa mengubah nilai reputasi menjadi lebih baik." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
     [alertView show];
@@ -333,6 +349,7 @@
                                                                  CCreateTimeAgo,
                                                                  CRevieweeRole,
                                                                  COrderID,
+                                                                 @"auto_read",
                                                                  CUnaccessedReputationReview,
                                                                  CShowRevieweeSCore,
                                                                  CRole]];
@@ -480,21 +497,12 @@
         //Update ui detail reputation
         if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
             [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id withState:emoticonState];
+            
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                [self showAlertAfterGiveRate];
         }
         else {
-            NSString *strMessage = @"";
-            if([emoticonState isEqualToString:CRevieweeScroreBad]) {
-                strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
-            }
-            else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
-                strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
-            }
-            else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
-                strMessage = [NSString stringWithFormat:@"Saya Puas!"];
-            }
-            
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[strMessage] delegate:self];
-            [stickyAlertView show];
+            [self showAlertAfterGiveRate];
         }
         
         strInsertReputationRole = strRequestingInsertReputation = emoticonState = nil;
@@ -754,6 +762,7 @@
         DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
         detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
         detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
+        detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
 
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
