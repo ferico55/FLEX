@@ -12,14 +12,14 @@
 #import "NSDictionaryCategory.h"
 #import "TKPStoreManager.h"
 
-NSString *const TKPAPIActionKey = @"action";
-NSString *const TKPAPIPageKey = @"page";
-NSString *const TKPAPILimitKey = @"per_page";
-NSUInteger const TKPAPIResultLimit = 10;
-NSInteger const TKPSuccessStatusCode = 200;
-NSString *const TKPHotListArchiveFileName = @"home-hotlist";
-NSString *const TKPHotListArchiveNextPageKey = @"nextPage";
-NSString *const TKPHotListArchiveProductsKey = @"products";
+NSString static *const TKPAPIActionKey = @"action";
+NSString static *const TKPAPIPageKey = @"page";
+NSString static *const TKPAPILimitKey = @"per_page";
+NSUInteger static const TKPAPIResultLimit = 10;
+NSInteger static const TKPSuccessStatusCode = 200;
+NSString static *const TKPHotListArchiveFileName = @"home-hotlist";
+NSString static *const TKPHotListArchiveNextPageKey = @"nextPage";
+NSString static *const TKPHotListArchiveProductsKey = @"products";
 
 @implementation TKPHomeProductsStore
 

@@ -10,9 +10,9 @@
 #import "Banner.h"
 #import "TKPStoreManager.h"
 
-NSString *const TKPAPIPageKey = @"page";
-NSString *const TKPAPILimitKey = @"per_page";
-NSInteger const TKPSuccessStatusCode = 200;
+NSString static *const TKPAPIPageKey = @"page";
+NSString static *const TKPAPILimitKey = @"per_page";
+NSInteger static const TKPSuccessStatusCode = 200;
 
 @implementation TKPHomeBannerStore
 
