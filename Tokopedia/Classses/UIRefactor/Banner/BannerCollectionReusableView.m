@@ -157,7 +157,7 @@
 - (void)tapTicker {
     WebViewController *webViewController = [WebViewController new];
     webViewController.strTitle = @"Promo";
-    webViewController.strURL = _banners.result.ticker.url;
+    webViewController.strURL = @"http://webdav.tokopedia.dev/kucing-ganteng/";
     
     if(_delegate != nil) {
         [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];
