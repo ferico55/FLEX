@@ -355,6 +355,7 @@
                    @"department_1" : [data objectForKey:@"department_1"]?:@"",
                    @"department_2" : [data objectForKey:@"department_2"]?:@"",
                    @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                   @"sc_identifier" : [data objectForKey:@"sc_identifier"]?:@"",
                    };
         NSString *title = @"";
         if ([data objectForKey:@"q"]) {

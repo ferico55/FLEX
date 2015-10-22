@@ -186,7 +186,6 @@ PromoCollectionViewDelegate
     [_firstFooter setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 50)];
     [_collectionView addSubview:_firstFooter];
     
-    //    [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [_params setDictionary:_data];
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
@@ -735,7 +734,9 @@ PromoCollectionViewDelegate
     if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
         NSString *departementID = search.result.department_id?:@"";
         [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-        [_delegate updateTabCategory:departementID];
+        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
+            [_delegate updateTabCategory:departementID];            
+        }
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
         
