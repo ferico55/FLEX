@@ -141,7 +141,6 @@
     
     if (_generatehost.result == nil && _indexPage !=1) {
         RequestGenerateHost *requestHost = [RequestGenerateHost new];
-//        requestHost.isNotUsingNewAdd = YES;
         [requestHost configureRestkitGenerateHost];
         [requestHost requestGenerateHost];
         requestHost.delegate = self;

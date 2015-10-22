@@ -135,8 +135,6 @@
     [self adjustFooterButton];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
-//    requestHost.isNotUsingNewAdd = YES;
-//    requestHost.isResolutionInput = YES;
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
