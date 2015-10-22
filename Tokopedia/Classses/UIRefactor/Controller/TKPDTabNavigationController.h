@@ -34,6 +34,8 @@
 
 @property (nonatomic, strong) NSString *navigationTitle;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
+
 @property (nonatomic, copy, setter = setViewControllers:) NSArray *viewControllers;
 @property (nonatomic, weak, setter = setSelectedViewController:) UIViewController *selectedViewController;
 @property (nonatomic, setter = setSelectedIndex:) NSInteger selectedIndex;

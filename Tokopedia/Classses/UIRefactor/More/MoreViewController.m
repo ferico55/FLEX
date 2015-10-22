@@ -59,7 +59,6 @@
 #import "LoyaltyPoint.h"
 
 #import "TAGDataLayer.h"
-#import "DeeplinkController.h"
 
 #import <MessageUI/MessageUI.h>
 
@@ -133,10 +132,10 @@
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didReceiveDeeplinkUrl:)
-                                                     name:@"didReceiveDeeplinkUrl" object:nil];
-         
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(didReceiveDeeplinkUrl:)
+//                                                     name:@"didReceiveDeeplinkUrl" object:nil];
+        
     }
     return self;
 }
@@ -240,25 +239,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
-#pragma mark - Deeplink Delegate
-- (NSURL *)sanitizedURL {
-    return _deeplinkUrl;
-}
-
-- (void)didReceiveDeeplinkUrl:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSURL *deeplinkUrl = [userInfo objectForKey:@"url"];
-    
-    if(deeplinkUrl) {
-        DeeplinkController *dlc = [DeeplinkController new];
-        __weak typeof(self) weakSelf = self;
-        dlc.delegate = weakSelf;
-        _deeplinkUrl = deeplinkUrl;
-        [dlc doRedirect];
-    }
-}
-
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag

@@ -161,8 +161,10 @@
             [self loadData];
         }
     }
-//    self.table.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
+
     self.screenName = @"Search Result - Shop Tab";
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }
 
 - (void)viewDidAppear:(BOOL)animated

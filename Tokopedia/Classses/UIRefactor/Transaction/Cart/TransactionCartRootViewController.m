@@ -17,7 +17,6 @@
 #import "TransactionCartFormMandiriClickPayViewController.h"
 
 #import "NotificationManager.h"
-#import "DeeplinkController.h"
 
 #import "Localytics.h"
 
@@ -172,25 +171,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-
-#pragma mark - Deeplink Delegate
-- (NSURL *)sanitizedURL {
-    return _deeplinkUrl;
-}
-
-- (void)didReceiveDeeplinkUrl:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSURL *deeplinkUrl = [userInfo objectForKey:@"url"];
-    
-    if(deeplinkUrl) {
-        DeeplinkController *dlc = [DeeplinkController new];
-        __weak typeof(self) weakSelf = self;
-        dlc.delegate = weakSelf;
-        _deeplinkUrl = deeplinkUrl;
-        [dlc doRedirect];
-    }
 }
 
 #pragma mark - Methods
@@ -500,9 +480,9 @@
                                              selector:@selector(doRefreshingCart)
                                                  name:@"doRefreshingCart" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveDeeplinkUrl:)
-                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didReceiveDeeplinkUrl:)
+//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
 }
 
 - (void)doRefreshingCart {

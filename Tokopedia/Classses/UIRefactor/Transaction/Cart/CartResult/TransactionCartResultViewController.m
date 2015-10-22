@@ -617,7 +617,9 @@
 
     NSDictionary *attributes = @{
         @"Payment Method" : paymentMethod,
-        @"Total Transaction" : paymentTotal
+        @"Total Transaction" : paymentTotal,
+        @"Total Quantity" : @"",
+        @"Total Shipping Fee" : @""
     };
     
     NSInteger totalPayment = 0;

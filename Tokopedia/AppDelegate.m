@@ -17,6 +17,7 @@
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
 #import "NavigateViewController.h"
+#import "DeeplinkController.h"
 
 @implementation AppDelegate
 
@@ -55,7 +56,7 @@
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
         if(url) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+            [DeeplinkController handleURL:url];
         } else {
             //universal search link, only available in iOS 9
             if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
@@ -65,7 +66,7 @@
                         if ([obj isKindOfClass:[NSUserActivity class]]) {
                             NSUserActivity *userActivity = obj;
                             NSURL *url = userActivity.webpageURL;
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+                            [DeeplinkController handleURL:url];
                         }
                     }];
                 }
@@ -102,7 +103,7 @@
     NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
     if(url != nil) {
         [_tagManager previewWithUrl:url];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
+        [DeeplinkController handleURL:url];
     }
     
     [TAGContainerOpener openContainerWithId:@"GTM-NCTWRP"   // Update with your Container ID.
@@ -117,8 +118,8 @@
                 launchOptions:launchOptions];
 #ifdef DEBUG
     [Localytics setTestModeEnabled:YES];
+    [Localytics tagEvent:@"Developer Options"];
 #endif
-    [Localytics triggerInAppMessage:@"Home: Launch App"];
 }
 
 - (void)configurePushNotificationsInApplication:(UIApplication *)application {
@@ -166,6 +167,10 @@
         NSDictionary *attributes = @{@"Campaign" : campaign};
         [Localytics tagEvent:@"Event : App Launch" attributes:attributes];
     }
+    if ([userInfo objectForKey:@"Localytics Deeplink"]) {
+        NSURL *url = [NSURL URLWithString:[userInfo objectForKey:@"Localytics Deeplink"]];
+        [DeeplinkController handleURL:url];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -176,10 +181,6 @@
                                                                         openURL:url
                                                               sourceApplication:sourceApplication
                                                                      annotation:annotation];
-    
-    //open app indexing (deeplink URL)
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
-    
     if (shouldOpenURL) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
@@ -188,18 +189,17 @@
         return YES;
     } else if ([Localytics handleTestModeURL:url]) {
         return YES;
+    } else if ([DeeplinkController handleURL:url]) {
+        return YES;
     }
     return NO;
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
     NSURL *url = userActivity.webpageURL;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didReceiveDeeplinkUrl" object:nil userInfo:@{@"url" : url}];
-    
+    [DeeplinkController handleURL:url];
     return YES;
 }
-
-
 
 #pragma mark - reset persist data if freshly installed
 - (void)preparePersistData

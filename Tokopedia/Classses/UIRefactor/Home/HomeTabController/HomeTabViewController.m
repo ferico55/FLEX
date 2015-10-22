@@ -25,7 +25,6 @@
 #import "InboxReviewViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
-#import "DeeplinkController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -36,11 +35,14 @@
 
 #import "Localytics.h"
 
-@interface HomeTabViewController () <UIScrollViewDelegate,
-                                    NotificationManagerDelegate,
-                                    RedirectHandlerDelegate,
-                                    DeeplinkControllerDelegate,
-                                    TKPDTabHomeDelegate> {
+@interface HomeTabViewController ()
+<
+    UIScrollViewDelegate,
+    NotificationManagerDelegate,
+    RedirectHandlerDelegate,
+    TKPDTabHomeDelegate
+>
+{
     NotificationManager *_notifManager;
     NSInteger _page;
     BOOL _isAbleToSwipe;
@@ -86,25 +88,6 @@
 
     
 }
-
-#pragma mark - Deeplink Delegate
-- (NSURL *)sanitizedURL {
-    return _deeplinkUrl;
-}
-
-- (void)didReceiveDeeplinkUrl:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSURL *deeplinkUrl = [userInfo objectForKey:@"url"];
-    
-    if(deeplinkUrl) {
-        DeeplinkController *dlc = [DeeplinkController new];
-        __weak typeof(self) weakSelf = self;
-        dlc.delegate = weakSelf;
-        _deeplinkUrl = deeplinkUrl;
-        [dlc doRedirect];
-    }
-}
-
 
 #pragma mark - Lifecycle
 

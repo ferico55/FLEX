@@ -356,7 +356,14 @@
                    @"department_2" : [data objectForKey:@"department_2"]?:@"",
                    @"department_3" : [data objectForKey:@"department_3"]?:@"",
                    };
-        vc.title = [data objectForKey:@"q"];
+        NSString *title = @"";
+        if ([data objectForKey:@"q"]) {
+            title = [[data objectForKey:@"q"] capitalizedString];
+        } else if ([data objectForKey:@"department_1"]) {
+            title = [[data objectForKey:@"department_1"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+            title = [title capitalizedString];
+        }
+        vc.title = title;
         vc.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:vc animated:YES];
     } else {

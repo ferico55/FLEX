@@ -2916,6 +2916,7 @@ UIAlertViewDelegate
         [tokopediaNetworkManagerWishList doRequest];
 
         NSString *productId = _product.result.product.product_id;
+        NSString *productName = _product.result.product.product_name;
         
         NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
@@ -2926,6 +2927,7 @@ UIAlertViewDelegate
 
         NSDictionary *attributes = @{
                                      @"Product Id" : productId,
+                                     @"Product Name" : productName,
                                      @"Product Price" : productPrice,
                                      @"Product Category" : productCategory
                                      };

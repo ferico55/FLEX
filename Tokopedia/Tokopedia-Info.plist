@@ -23,12 +23,12 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.tokopedia.Tokopedia</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>tokopedia</string>
 			</array>
-			<key>CFBundleURLName</key>
-			<string>com.tokopedia.Tokopedia</string>
 		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
@@ -114,6 +114,10 @@
 		<string>GothamBlack.ttf</string>
 		<string>Lato-Regular.ttf</string>
 		<string>Lato-Bold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>

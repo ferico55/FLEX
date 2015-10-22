@@ -8,25 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol DeeplinkControllerDelegate <NSObject>
+@interface DeeplinkController : NSObject
 
-@required
-- (NSURL*)sanitizedURL;
-
-@end
-
-@interface DeeplinkController : NSObject {
-    TAGContainer *_gtmContainer;
-    NSURL *_sanitizedURL;
-    
-    BOOL isMatchUrl;
-}
-
-@property (weak, nonatomic) id<DeeplinkControllerDelegate> delegate;
-
-- (BOOL)shouldRedirectToWebView;
-- (void)redirectToAppsViewController:(NSString*)url;
-- (void)redirectToWebViewController;
-- (void)doRedirect;
++ (BOOL)handleURL:(NSURL *)url;
 
 @end
