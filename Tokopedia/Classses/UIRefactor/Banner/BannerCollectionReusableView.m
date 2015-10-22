@@ -15,6 +15,7 @@
     // Initialization code
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveBanners:) name:@"TKPDidReceiveBanners" object:nil];
     [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(scrollTimerBased) userInfo:nil repeats:YES];
+    _scrollView.hidden = YES;
 }
 
 
@@ -54,6 +55,7 @@
     [self setTicker:_banners.result.ticker.img_uri];
     
     numberOfBanners = _banners.result.banner.count;
+    _scrollView.hidden = NO;
     
     CGFloat positionX = 0;
     for(int i=0;i<numberOfBanners;i++) {
@@ -115,6 +117,9 @@
 }
 
 - (void)setTicker:(NSString*)imageUrl {
+    if([imageUrl isEqualToString:@""]) {
+        return;
+    }
     [_tickerImage setContentMode:UIViewContentModeCenter];
     
     NSURLRequest* requestImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:imageUrl]

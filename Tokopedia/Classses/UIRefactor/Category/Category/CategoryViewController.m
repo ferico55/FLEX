@@ -339,8 +339,12 @@
             _banner = banner;
             if(_banner.result.banner.count > 0) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
-            } else {
-                _flowLayout.headerReferenceSize = CGSizeZero;
+            } else  {
+                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-175);
+            }
+            
+            if([_banner.result.ticker.img_uri isEqualToString:@""]) {
+                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-96);
             }
 
         }
