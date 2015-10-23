@@ -19,6 +19,8 @@
 #import "TxOrderConfirmationList.h"
 #import "TxOrderPaymentViewController.h"
 
+#import "TransactionCartCell.h"
+
 @interface TxOrderConfirmationDetailViewController ()
 <
     UITableViewDataSource,
@@ -300,9 +302,9 @@
 {
     NSString *cellid = TRANSACTION_ORDER_CONFIRMATION_PRODUCT_CELL_IDENTIFIER;
     
-    TxOrderConfirmationProductCell *cell = (TxOrderConfirmationProductCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
+    TransactionCartCell *cell = (TransactionCartCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
-        cell = [TxOrderConfirmationProductCell newCell];
+        cell = [TransactionCartCell newcell];
         cell.delegate = self;
     }
     

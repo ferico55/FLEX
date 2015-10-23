@@ -139,11 +139,11 @@
     CGSize maximumLabelSize = CGSizeMake(190,9999);
     NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
     NSString *string = productNotes;
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_13
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
                                   constrainedToSize:maximumLabelSize
                                       lineBreakMode:NSLineBreakByTruncatingTail];
     
-    return 210+expectedLabelSize.height;
+    return 126+expectedLabelSize.height;
 }
 
 

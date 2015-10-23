@@ -214,7 +214,7 @@
 #define HEIGHT_VIEW_SUBTOTAL 156
 #define HEIGHT_VIEW_TOTAL_DEPOSIT 30
 #define DEFAULT_ROW_HEIGHT 44
-#define CELL_PRODUCT_ROW_HEIGHT 212
+#define CELL_PRODUCT_ROW_HEIGHT 126
 
 #define TAG_REQUEST_CART 10
 #define TAG_REQUEST_CANCEL_CART 11
@@ -2374,6 +2374,7 @@
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section];
     ((TransactionCartCell*)cell).indexPath = indexPathCell;
     NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+    productNotes = ([productNotes isEqualToString:@""])?@"-":productNotes;
     [cell.remarkLabel setCustomAttributedText:productNotes?:@"-"];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -2686,10 +2687,14 @@
     NSString *string = productNotes;
     
     //Calculate the expected size based on the font and linebreak mode of your label
-    CGSize maximumLabelSize = CGSizeMake(290,9999);
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
+    CGSize maximumLabelSize = CGSizeMake(250,9999);
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
                                   constrainedToSize:maximumLabelSize
                                       lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    if ([productNotes isEqualToString:@""]) {
+        expectedLabelSize.height = 0;
+    }
     
     return CELL_PRODUCT_ROW_HEIGHT+expectedLabelSize.height;
 }
