@@ -196,8 +196,17 @@
     NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
     NSArray *listProducts = _order.order_products;
     OrderProduct *product = listProducts[indexProduct];
+    
     ((TransactionCartCell*)cell).indexPage = 1;
+    ((TransactionCartCell*)cell).indexPath = indexPath;
     [(TransactionCartCell*)cell setViewModel:product.viewModel];
+    NSString *productNotes = product.viewModel.productNotes;
+    
+    if ([productNotes isEqualToString:@""] || [productNotes isEqualToString:@"0"]) {
+        productNotes = @"-";
+    }
+    [cell.remarkLabel setCustomAttributedText:productNotes];
+    
     return cell;
 }
 

@@ -2331,8 +2331,9 @@
     ProductDetail *product = listProducts[indexProduct];
     
     ((TransactionCartCell*)cell).indexPage = _indexPage;
+    ((TransactionCartCell*)cell).indexPath = indexPath;
     [(TransactionCartCell*)cell setViewModel:product.viewModel];
-    
+    ((TransactionCartCell*)cell).userInteractionEnabled = (_indexPage ==0);
     return cell;
 }
 

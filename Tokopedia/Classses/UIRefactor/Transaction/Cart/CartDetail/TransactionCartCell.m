@@ -151,15 +151,15 @@
     self.quantityLabel.attributedText = attributedString;
     
     
-    
     NSString *productNotes = [viewModel.productNotes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
+    if ([productNotes isEqualToString:@""] || [productNotes isEqualToString:@"0"]) {
+        productNotes = @"-";
+    }
     
     [self.remarkLabel setCustomAttributedText:productNotes?:@"-"];
     
     
-    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
     
     
     UIImageView *thumb = self.productThumbImageView;
@@ -167,6 +167,7 @@
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey2.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         
         [thumb setImage:image];
+        [thumb setContentMode:UIViewContentModeScaleAspectFill];
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         
@@ -235,33 +236,7 @@
         else
             
             self.errorProductLabel.text = @"TIDAK VALID";
-        
-        
-        
     }
-    self.userInteractionEnabled = (_indexPage ==0);
-    
-}
-
-
-
--(NSInteger)integerPriceFromString:(NSString*)price
-
-{
-    
-    price = [price stringByReplacingOccurrencesOfString:@"," withString:@""];
-    
-    price = [price stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    
-    price = [price stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    
-    price = [price stringByReplacingOccurrencesOfString:@"," withString:@""];
-    
-    NSInteger totalInteger = [price integerValue];
-    
-    
-    
-    return totalInteger;
     
 }
 

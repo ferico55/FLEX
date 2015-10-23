@@ -153,7 +153,7 @@
 }
 
 #pragma mark - Table View Delegate
-#define PRODUCT_CELL_HEIGHT 210
+#define PRODUCT_CELL_HEIGHT 126
 #define DROPSHIP_HEIGHT 165
 #define SHIPMENT_HEIGHT 200
 #define COST_CELL_HEIGHT 435
@@ -169,7 +169,7 @@
         
         CGSize maximumLabelSize = CGSizeMake(190,9999);
         
-        NSString *string = [orderProduct.product_notes isEqualToString:@"0"]?@"":[NSString convertHTML:orderProduct.product_notes];
+        NSString *string = [orderProduct.viewModel.productNotes isEqualToString:@"0"]?@"":orderProduct.viewModel.productNotes;
         
         //Calculate the expected size based on the font and linebreak mode of your label
         CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
@@ -313,6 +313,12 @@
     
     ((TransactionCartCell*)cell).indexPage = 1;
     [(TransactionCartCell*)cell setViewModel:orderProduct.viewModel];
+    NSString *productNotes = orderProduct.viewModel.productNotes;
+    
+    if ([productNotes isEqualToString:@""] || [productNotes isEqualToString:@"0"]) {
+        productNotes = @"-";
+    }
+    [cell.remarkLabel setCustomAttributedText:productNotes];
     
     cell.indexPath = indexPath;
     

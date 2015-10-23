@@ -35,7 +35,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notebook" lineBreakMode="middleTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9B8-Qh-nPX">
-                                <rect key="frame" x="95" y="10" width="175" height="20"/>
+                                <rect key="frame" x="95" y="12" width="175" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="XYT-c2-4yL"/>
                                 </constraints>
@@ -55,7 +55,7 @@
                                 </connections>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 10.000" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="syi-Ey-9on">
-                                <rect key="frame" x="95" y="40" width="210" height="21"/>
+                                <rect key="frame" x="95" y="37" width="210" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="JfF-bH-xAB"/>
                                 </constraints>
@@ -88,7 +88,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 Barang (12. kg)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2I2-9g-225">
-                                <rect key="frame" x="95" y="60" width="210" height="23"/>
+                                <rect key="frame" x="95" y="56" width="210" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="23" id="gys-Yp-P7P"/>
                                 </constraints>
@@ -106,12 +106,12 @@
                             <constraint firstItem="syi-Ey-9on" firstAttribute="leading" secondItem="ArF-vS-sw3" secondAttribute="trailing" constant="10" id="VJO-NO-Y2m"/>
                             <constraint firstItem="ArF-vS-sw3" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" constant="15" id="VRL-Cz-UEa"/>
                             <constraint firstItem="2I2-9g-225" firstAttribute="leading" secondItem="ArF-vS-sw3" secondAttribute="trailing" constant="10" id="Xqr-uq-T7I"/>
-                            <constraint firstItem="2I2-9g-225" firstAttribute="top" secondItem="9B8-Qh-nPX" secondAttribute="bottom" constant="30" id="YDn-D4-PHB"/>
+                            <constraint firstItem="2I2-9g-225" firstAttribute="top" secondItem="9B8-Qh-nPX" secondAttribute="bottom" constant="24" id="YDn-D4-PHB"/>
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="YGL-Gh-nDz"/>
-                            <constraint firstItem="syi-Ey-9on" firstAttribute="top" secondItem="VEf-5u-Ef6" secondAttribute="bottom" id="aHf-My-abZ"/>
+                            <constraint firstItem="syi-Ey-9on" firstAttribute="top" secondItem="VEf-5u-Ef6" secondAttribute="bottom" constant="-3" id="aHf-My-abZ"/>
                             <constraint firstItem="tiN-DT-ee1" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="b68-Dc-1j6"/>
                             <constraint firstAttribute="height" constant="83" id="ctX-gc-l4n"/>
-                            <constraint firstItem="9B8-Qh-nPX" firstAttribute="top" secondItem="tiN-DT-ee1" secondAttribute="bottom" constant="9" id="cvG-iZ-vG3"/>
+                            <constraint firstItem="9B8-Qh-nPX" firstAttribute="top" secondItem="tiN-DT-ee1" secondAttribute="bottom" constant="11" id="cvG-iZ-vG3"/>
                             <constraint firstAttribute="trailing" secondItem="VEf-5u-Ef6" secondAttribute="trailing" constant="5" id="gY1-NU-3sm"/>
                             <constraint firstItem="ArF-vS-sw3" firstAttribute="top" secondItem="tiN-DT-ee1" secondAttribute="bottom" constant="49" id="kiq-vO-gRk"/>
                             <constraint firstAttribute="trailing" secondItem="2I2-9g-225" secondAttribute="trailing" constant="15" id="kwp-sZ-NbN"/>
