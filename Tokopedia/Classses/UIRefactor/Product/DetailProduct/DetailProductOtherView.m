@@ -10,6 +10,7 @@
 
 @interface DetailProductOtherView ()
 
+
 @end
 
 #pragma mark - Detail Product View
