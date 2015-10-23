@@ -1782,7 +1782,6 @@
 		7A080B3B1BD9DF5C00BE02A5 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08044E1BD9DF5B00BE02A5 /* MGSwipeTableCell.m */; settings = {ASSET_TAGS = (); }; };
 		7A080B3C1BD9DF5C00BE02A5 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7A08044F1BD9DF5B00BE02A5 /* MGSwipeTableCell.podspec */; settings = {ASSET_TAGS = (); }; };
 		7A080B3D1BD9DF5C00BE02A5 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7A0804501BD9DF5B00BE02A5 /* README.md */; settings = {ASSET_TAGS = (); }; };
-		7A080B3E1BD9DF5C00BE02A5 /* libVTiOSAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0804521BD9DF5B00BE02A5 /* libVTiOSAPI.a */; settings = {ASSET_TAGS = (); }; };
 		7A080B3F1BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7A0804531BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.tar.gz */; settings = {ASSET_TAGS = (); }; };
 		7A080B401BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A0804541BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.zip */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1812,6 +1811,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		926BEDBC1BDA346400D4A93D /* UIActivityViewController+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 926BEDBB1BDA346400D4A93D /* UIActivityViewController+Extensions.m */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -2886,7 +2886,6 @@
 		7A08044E1BD9DF5B00BE02A5 /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCell.m; sourceTree = "<group>"; };
 		7A08044F1BD9DF5B00BE02A5 /* MGSwipeTableCell.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MGSwipeTableCell.podspec; sourceTree = "<group>"; };
 		7A0804501BD9DF5B00BE02A5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		7A0804521BD9DF5B00BE02A5 /* libVTiOSAPI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVTiOSAPI.a; sourceTree = "<group>"; };
 		7A0804531BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "vt-iOSlib-1.0.1.tar.gz"; sourceTree = "<group>"; };
 		7A0804541BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		7A08F8E51BD9DF5700BE02A5 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -4544,6 +4543,8 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		926BEDBA1BDA346400D4A93D /* UIActivityViewController+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityViewController+Extensions.h"; sourceTree = "<group>"; };
+		926BEDBB1BDA346400D4A93D /* UIActivityViewController+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityViewController+Extensions.m"; sourceTree = "<group>"; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
@@ -4588,7 +4589,6 @@
 			files = (
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
-				7A080B3E1BD9DF5C00BE02A5 /* libVTiOSAPI.a in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
@@ -6242,7 +6242,6 @@
 		7A0804511BD9DF5B00BE02A5 /* Veritrans */ = {
 			isa = PBXGroup;
 			children = (
-				7A0804521BD9DF5B00BE02A5 /* libVTiOSAPI.a */,
 				7A0804531BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.tar.gz */,
 				7A0804541BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.zip */,
 			);
@@ -6278,6 +6277,8 @@
 		7A08F8EB1BD9DF5700BE02A5 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				926BEDBA1BDA346400D4A93D /* UIActivityViewController+Extensions.h */,
+				926BEDBB1BDA346400D4A93D /* UIActivityViewController+Extensions.m */,
 				7A08F8EC1BD9DF5700BE02A5 /* CMPopTipView.h */,
 				7A08F8ED1BD9DF5700BE02A5 /* CMPopTipView.m */,
 				7A08F8EE1BD9DF5700BE02A5 /* DBManager.h */,
@@ -10704,6 +10705,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				926BEDBC1BDA346400D4A93D /* UIActivityViewController+Extensions.m in Sources */,
 				7A0804A31BD9DF5C00BE02A5 /* Rating.m in Sources */,
 				7A0804571BD9DF5C00BE02A5 /* URLCacheController.m in Sources */,
 				7A0808771BD9DF5C00BE02A5 /* TxOrderConfirmationDropshipCell.m in Sources */,
