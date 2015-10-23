@@ -1782,7 +1782,6 @@
 		7A080B3B1BD9DF5C00BE02A5 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08044E1BD9DF5B00BE02A5 /* MGSwipeTableCell.m */; settings = {ASSET_TAGS = (); }; };
 		7A080B3C1BD9DF5C00BE02A5 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7A08044F1BD9DF5B00BE02A5 /* MGSwipeTableCell.podspec */; settings = {ASSET_TAGS = (); }; };
 		7A080B3D1BD9DF5C00BE02A5 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7A0804501BD9DF5B00BE02A5 /* README.md */; settings = {ASSET_TAGS = (); }; };
-		7A080B3E1BD9DF5C00BE02A5 /* libVTiOSAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0804521BD9DF5B00BE02A5 /* libVTiOSAPI.a */; settings = {ASSET_TAGS = (); }; };
 		7A080B3F1BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7A0804531BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.tar.gz */; settings = {ASSET_TAGS = (); }; };
 		7A080B401BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A0804541BD9DF5C00BE02A5 /* vt-iOSlib-1.0.1.zip */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -4588,7 +4587,6 @@
 			files = (
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
-				7A080B3E1BD9DF5C00BE02A5 /* libVTiOSAPI.a in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
