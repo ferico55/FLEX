@@ -82,6 +82,8 @@
 #import "EtalaseList.h"
 #import "TAGDataLayer.h"
 
+#import "UIActivityViewController+Extensions.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -2466,9 +2468,8 @@ UIAlertViewDelegate
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
-        activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+        UIActivityViewController *activityController = [UIActivityViewController shareDialogWithTitle:title url:url anchor:btnShare];
+        
         [self presentViewController:activityController animated:YES completion:nil];
     }
 }
