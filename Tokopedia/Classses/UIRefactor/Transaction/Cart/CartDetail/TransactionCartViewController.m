@@ -2329,6 +2329,10 @@
     NSInteger indexProduct = indexPath.row;
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
+    
+    ((TransactionCartCell*)cell).indexPage = _indexPage;
+    [(TransactionCartCell*)cell setViewModel:product.modelView];
+    
     cell.backgroundColor = (_indexPage==0)?[UIColor whiteColor]:[UIColor colorWithRed:247.0f/255.0f green:247.0f/255.0f blue:247.0f/255.0f alpha:1];
 
     NSAttributedString *attributedText;

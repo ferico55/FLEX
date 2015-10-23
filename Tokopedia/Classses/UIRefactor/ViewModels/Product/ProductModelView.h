@@ -12,11 +12,18 @@
 
 @property (strong, nonatomic) NSString *productName;
 @property (strong, nonatomic) NSString *productPrice;
+@property (strong, nonatomic) NSString *productPriceIDR;
 @property (strong, nonatomic) NSString *productShop;
 @property (strong, nonatomic) NSString *productThumbUrl;
 @property (strong, nonatomic) NSString *productReview;
 @property (strong, nonatomic) NSString *productTalk;
 @property (strong, nonatomic) NSString *luckyMerchantImageURL;
+
+@property (strong, nonatomic) NSString *productPriceBeforeChange;
+@property (strong, nonatomic) NSString *productQuantity;
+@property (strong, nonatomic) NSString *productTotalWeight;
+@property (strong, nonatomic) NSString *productNotes;
+@property (strong, nonatomic) NSString *prodcutErrorMessage;
 
 @property BOOL isGoldShopProduct;
 

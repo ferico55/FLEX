@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		45438C981BDA1378001F1C05 /* CartModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45438C971BDA1378001F1C05 /* CartModelView.m */; settings = {ASSET_TAGS = (); }; };
 		4595BBBE1BD8CA5F00893015 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4595B0521BD8CA5900893015 /* URLCacheAlert.m */; settings = {ASSET_TAGS = (); }; };
 		4595BBBF1BD8CA5F00893015 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4595B0541BD8CA5900893015 /* URLCacheConnection.m */; settings = {ASSET_TAGS = (); }; };
 		4595BBC01BD8CA5F00893015 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4595B0561BD8CA5900893015 /* URLCacheController.m */; settings = {ASSET_TAGS = (); }; };
@@ -1845,6 +1846,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		45438C961BDA1378001F1C05 /* CartModelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartModelView.h; sourceTree = "<group>"; };
+		45438C971BDA1378001F1C05 /* CartModelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartModelView.m; sourceTree = "<group>"; };
 		4595B0511BD8CA5900893015 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		4595B0521BD8CA5900893015 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		4595B0531BD8CA5900893015 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -4640,6 +4643,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45438C951BDA1378001F1C05 /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				45438C961BDA1378001F1C05 /* CartModelView.h */,
+				45438C971BDA1378001F1C05 /* CartModelView.m */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
 		4595B04F1BD8CA5900893015 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -8451,6 +8463,7 @@
 		4595B8D71BD8CA5C00893015 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				45438C951BDA1378001F1C05 /* Cart */,
 				4595B8D81BD8CA5C00893015 /* Catalog */,
 				4595B8DB1BD8CA5C00893015 /* Product */,
 				4595B8EA1BD8CA5C00893015 /* Talk */,
@@ -10763,6 +10776,7 @@
 				4595BD431BD8CA5F00893015 /* TransactionSummaryBCAParam.m in Sources */,
 				4595BBED1BD8CA5F00893015 /* Deposit.m in Sources */,
 				4595BD381BD8CA5F00893015 /* TxOrderConfirmation.m in Sources */,
+				45438C981BDA1378001F1C05 /* CartModelView.m in Sources */,
 				4595BE301BD8CA5F00893015 /* HotlistResultViewController.m in Sources */,
 				4595BF701BD8CA5F00893015 /* ShopInfoAddressView.m in Sources */,
 				4595BCAC1BD8CA5F00893015 /* AddressFormList.m in Sources */,
