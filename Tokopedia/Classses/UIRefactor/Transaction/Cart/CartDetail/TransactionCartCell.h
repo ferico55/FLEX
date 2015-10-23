@@ -41,5 +41,6 @@
 
 +(id)newcell;
 - (void)setViewModel:(ProductModelView*)viewModel;
+- (void)setCartViewModel:(CartModelView*)viewModel;
 
 @end

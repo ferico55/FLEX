@@ -2332,6 +2332,7 @@
     
     ((TransactionCartCell*)cell).indexPage = _indexPage;
     ((TransactionCartCell*)cell).indexPath = indexPath;
+    [(TransactionCartCell*)cell setCartViewModel:list.viewModel];
     [(TransactionCartCell*)cell setViewModel:product.viewModel];
     ((TransactionCartCell*)cell).userInteractionEnabled = (_indexPage ==0);
     return cell;

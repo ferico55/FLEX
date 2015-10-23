@@ -53,8 +53,6 @@
     _viewModelCart = viewModel;
 }
 
-
-
 - (void)setViewModel:(ProductModelView *)viewModel {
     
     _viewModelProduct = viewModel;
