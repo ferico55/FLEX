@@ -154,12 +154,17 @@
     _textviewdesc.placeholder = @"Tulis Deskripsi";
     _textviewslogan.placeholder = @"Tulis Slogan";
     
+    
+    
 }
 
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    _scrollview.contentSize = _viewcontent.frame.size;
+    
+    CGRect frame = _viewcontent.frame;
+    frame.size.height = [[UIScreen mainScreen] bounds].size.height + 20;
+    _scrollview.contentSize =  frame.size;//_viewcontent.frame.size;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -177,7 +182,9 @@
 -(void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    _scrollview.contentSize = _viewcontent.frame.size;
+    CGRect frame = _viewcontent.frame;
+    frame.size.height = [[UIScreen mainScreen] bounds].size.height + 20;
+    _scrollview.contentSize =  frame.size;
 }
 
 #pragma mark - Memory Management
@@ -768,8 +775,11 @@
     _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
     _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
     
-    CGPoint cgpoint = CGPointMake(0, _keyboardSize.height + 20);
-    _scrollview.contentOffset = cgpoint;
+    if ((_activetextview.frame.origin.y + _activetextview.frame.size.height) >_keyboardPosition.y) {
+        CGPoint cgpoint = CGPointMake(0, _keyboardSize.height + 20);
+        _scrollview.contentOffset = cgpoint;
+    }
+
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {

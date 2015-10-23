@@ -293,6 +293,10 @@ static CGFloat rowHeight = 40;
     return view;
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor clearColor];
+}
 
 #pragma mark - RestKit Methods
 

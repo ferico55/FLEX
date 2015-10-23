@@ -281,7 +281,7 @@
             [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
         }
         else {
-            [cell.btnReputation setTitle:[NSString stringWithFormat:@"%@%%", resolution.resolution_customer.customer_reputation.positive_percentage] forState:UIControlStateNormal];
+            [cell.btnReputation setTitle:[NSString stringWithFormat:@" %@%%", resolution.resolution_customer.customer_reputation.positive_percentage] forState:UIControlStateNormal];
             [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
         }
     }

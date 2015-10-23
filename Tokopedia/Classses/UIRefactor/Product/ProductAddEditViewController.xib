@@ -166,7 +166,7 @@
                                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ja9-vy-77n">
-                                <rect key="frame" x="20" y="11" width="121" height="21"/>
+                                <rect key="frame" x="15" y="11" width="121" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="4jp-ro-uGd"/>
                                     <constraint firstAttribute="width" constant="121" id="Fso-Ko-zPN"/>
@@ -175,7 +175,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Produk" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-N2-pnu">
-                                <rect key="frame" x="192" y="0.0" width="113" height="44"/>
+                                <rect key="frame" x="187" y="0.0" width="118" height="44"/>
                                 <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -193,7 +193,7 @@
                             <constraint firstItem="ja9-vy-77n" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" constant="11" id="VEi-Ao-D4F"/>
                             <constraint firstItem="1mA-N2-pnu" firstAttribute="leading" secondItem="ja9-vy-77n" secondAttribute="trailing" constant="51" id="Z8O-0L-mVJ"/>
                             <constraint firstItem="rlF-jb-gcm" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" id="caH-dh-uik"/>
-                            <constraint firstItem="ja9-vy-77n" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" constant="20" id="e3E-cs-lZb"/>
+                            <constraint firstItem="ja9-vy-77n" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" constant="15" id="e3E-cs-lZb"/>
                             <constraint firstItem="rlF-jb-gcm" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" id="lLI-t4-8HD"/>
                             <constraint firstAttribute="bottom" secondItem="1mA-N2-pnu" secondAttribute="bottom" id="zof-0l-yWx"/>
                         </constraints>
@@ -236,7 +236,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k4w-qB-h49">
-                        <rect key="frame" x="225" y="0.0" width="80" height="43"/>
+                        <rect key="frame" x="220" y="0.0" width="85" height="43"/>
                         <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -245,7 +245,7 @@
                         </connections>
                     </textField>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minimum Pesanan / Buah" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Te9-PK-5tZ">
-                        <rect key="frame" x="20" y="11" width="177" height="21"/>
+                        <rect key="frame" x="15" y="11" width="177" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="177" id="fnE-1b-UzO"/>
                             <constraint firstAttribute="height" constant="21" id="uDf-Hi-hQ3"/>
@@ -255,7 +255,7 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Te9-PK-5tZ" firstAttribute="leading" secondItem="T1h-pG-Ex3" secondAttribute="leading" constant="20" id="JgJ-s9-1hm"/>
+                    <constraint firstItem="Te9-PK-5tZ" firstAttribute="leading" secondItem="T1h-pG-Ex3" secondAttribute="leading" constant="15" id="JgJ-s9-1hm"/>
                     <constraint firstItem="Te9-PK-5tZ" firstAttribute="top" secondItem="T1h-pG-Ex3" secondAttribute="top" constant="11" id="LZ5-EF-sLz"/>
                     <constraint firstItem="k4w-qB-h49" firstAttribute="top" secondItem="T1h-pG-Ex3" secondAttribute="top" id="X3b-7b-OaT"/>
                     <constraint firstAttribute="bottom" secondItem="k4w-qB-h49" secondAttribute="bottom" id="cw4-Hr-xpm"/>

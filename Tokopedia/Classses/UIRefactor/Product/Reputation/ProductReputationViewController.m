@@ -258,6 +258,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    cell.backgroundColor = [UIColor clearColor];
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
             [self setLoadingView:YES];
@@ -380,7 +381,6 @@
 {
     return arrList.count;
 }
-
 
 #pragma mark - TTTAttributeLabel Delegate
 - (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point

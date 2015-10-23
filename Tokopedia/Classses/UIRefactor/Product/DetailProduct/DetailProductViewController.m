@@ -1107,6 +1107,7 @@ UIAlertViewDelegate
         if (indexPath.section == 2) {
             NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
             DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+
             if (descriptionCell == nil) {
                 descriptionCell = [DetailProductDescriptionCell newcell];
                 if(!_isnodata) {
@@ -1748,6 +1749,7 @@ UIAlertViewDelegate
         }
         [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
+    [_table reloadData];
 }
 
 
@@ -2425,7 +2427,10 @@ UIAlertViewDelegate
     [self initAttributeText:lblSize withStrText:strText withColor:color withFont:font withAlignment:textAlignment];
     lblSize.numberOfLines = 0;
     
-    return [lblSize sizeThatFits:size].height;
+    NSInteger lblHeight =[lblSize sizeThatFits:size].height;
+    lblHeight = lblHeight<30?30:lblHeight;
+    
+    return lblHeight;
 }
 
 
