@@ -180,11 +180,11 @@
     
     
     
-    if (([viewModel.prodcutErrorMessage isEqualToString:@""] ||
+    if (([viewModel.productErrorMessage isEqualToString:@""] ||
          
-         [viewModel.prodcutErrorMessage isEqualToString:@"0"] ||
+         [viewModel.productErrorMessage isEqualToString:@"0"] ||
          
-         viewModel.prodcutErrorMessage == nil ) &&
+         viewModel.productErrorMessage == nil ) &&
         
         [[viewModel.productPriceBeforeChange priceFromStringIDR] integerValue] == 0) {
         
@@ -198,13 +198,13 @@
         
         self.errorProductLabel.hidden = NO;
         
-        if ([viewModel.prodcutErrorMessage isEqualToString:@"Produk ini berada di gudang"]) {
+        if ([viewModel.productErrorMessage isEqualToString:@"Produk ini berada di gudang"]) {
             
             self.errorProductLabel.text = @"GUDANG";
             
         }
         
-        else if ([viewModel.prodcutErrorMessage isEqualToString:@"Produk ini dalam moderasi"])
+        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini dalam moderasi"])
             
         {
             
@@ -212,7 +212,7 @@
             
         }
         
-        else if ([viewModel.prodcutErrorMessage isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
+        else if ([viewModel.productErrorMessage isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
             
         {
             
@@ -220,7 +220,7 @@
             
         }
         
-        else if ([viewModel.prodcutErrorMessage isEqualToString:@"Produk ini sudah dihapus oleh penjual"])
+        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini sudah dihapus oleh penjual"])
             
             self.errorProductLabel.text = @"HAPUS";
         
@@ -239,6 +239,7 @@
         
         
     }
+    self.userInteractionEnabled = (_indexPage ==0);
     
 }
 

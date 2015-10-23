@@ -311,28 +311,8 @@
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
     OrderProduct *orderProduct = orderList.order_products[indexPath.row];
     
-    NSString *weightTotal = [NSString stringWithFormat:@"%zd Barang (%@ kg)",orderProduct.product_quantity,orderProduct.product_weight];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:weightTotal];
-    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",orderProduct.product_weight]]];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",orderProduct.product_weight]]];
-    cell.productWeightLabel.attributedText = attributedString;
-    
-    cell.productNameLabel.text = orderProduct.product_name;
-    cell.productPriceLabel.text = orderProduct.product_price;
-    [cell.remarkLabel setCustomAttributedText:[orderProduct.product_notes isEqualToString:@"0"]?@"":[NSString convertHTML:orderProduct.product_notes]];
-    _remarkLabel = cell.remarkLabel;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:orderProduct.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = cell.productThumbImageView;
-    thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    ((TransactionCartCell*)cell).indexPage = 1;
+    [(TransactionCartCell*)cell setViewModel:orderProduct.viewModel];
     
     cell.indexPath = indexPath;
     

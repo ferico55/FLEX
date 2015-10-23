@@ -61,6 +61,6 @@
 @property (nonatomic, strong) NSString *product_error_msg;
 @property (nonatomic, strong) NSString *product_price_last;
 
-@property (nonatomic, strong) ProductModelView *modelView;
+@property (nonatomic, strong) ProductModelView *viewModel;
 
 @end

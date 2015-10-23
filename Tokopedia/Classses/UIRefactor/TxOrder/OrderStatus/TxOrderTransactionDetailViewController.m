@@ -196,34 +196,8 @@
     NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
     NSArray *listProducts = _order.order_products;
     OrderProduct *product = listProducts[indexProduct];
-    cell.backgroundColor = [UIColor colorWithRed:249.0f/255.0f green:249.0f/255.0f blue:249.0f/255.0f alpha:1];
-    [cell.productNameLabel setText:product.product_name animated:YES];
-    [cell.productPriceLabel setText:product.order_subtotal_price_idr animated:YES];
-    
-    NSString *weightTotal = [NSString stringWithFormat:@"%zd Barang (%@ kg)",product.product_quantity, product.product_weight];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:weightTotal];
-    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_weight]]];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_weight]]];
-    cell.quantityLabel.attributedText = attributedString;
-    
-    NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section-1];
-    cell.indexPath = indexPathCell;
-    cell.editButton.hidden = YES;
-    NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
-    [cell.remarkLabel setCustomAttributedText:[NSString convertHTML:productNotes]];
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = cell.productThumbImageView;
-    thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
-    
+    ((TransactionCartCell*)cell).indexPage = 1;
+    [(TransactionCartCell*)cell setViewModel:product.viewModel];
     return cell;
 }
 

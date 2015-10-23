@@ -23,7 +23,7 @@
 @property (strong, nonatomic) NSString *productQuantity;
 @property (strong, nonatomic) NSString *productTotalWeight;
 @property (strong, nonatomic) NSString *productNotes;
-@property (strong, nonatomic) NSString *prodcutErrorMessage;
+@property (strong, nonatomic) NSString *productErrorMessage;
 
 @property BOOL isGoldShopProduct;
 
