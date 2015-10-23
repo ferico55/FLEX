@@ -337,7 +337,8 @@
 
 + (BOOL)handleURL:(NSURL *)deeplinkURL {
     BOOL canOpenURL = NO;
-    if ([[deeplinkURL scheme] isEqualToString:@"gsd-tokopedia"]) {
+    if ([[deeplinkURL scheme] isEqualToString:@"gsd-tokopedia"] ||
+        [[deeplinkURL host] rangeOfString:@"tokopedia.com"].location != NSNotFound) {
         canOpenURL = YES;
         
         DeeplinkController *deeplinkController = [DeeplinkController new];
