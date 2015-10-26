@@ -10,6 +10,10 @@
 
 @implementation ProductList
 
+- (NSString*)shop_name {
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
 - (NSString *)product_name {
     return [_product_name kv_decodeHTMLCharacterEntities];
 }

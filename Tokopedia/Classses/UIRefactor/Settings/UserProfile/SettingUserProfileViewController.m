@@ -169,11 +169,6 @@
     self.scrollview.contentSize = CGSizeMake(self.view.frame.size.width,
                                              _contentView.frame.size.height);
     self.scrollview.contentOffset = CGPointZero;
-
-    CGRect frame = _contentView.frame;
-    frame.origin = CGPointZero;
-    frame.size.width = self.view.bounds.size.width;
-    _contentView.frame = frame;
 }
 
 #pragma mark - Memory Management

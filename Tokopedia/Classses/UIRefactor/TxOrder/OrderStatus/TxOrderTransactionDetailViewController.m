@@ -13,6 +13,8 @@
 #import "TransactionCartCell.h"
 #import "string_tx_order.h"
 
+#import "AlertInfoView.h"
+
 #define CTagAddress 2
 #define CTagPhone 3
 
@@ -20,6 +22,8 @@
 {
     NavigateViewController *_navigate;
 }
+@property (weak, nonatomic) IBOutlet UILabel *insuranceTextLabel;
+@property (weak, nonatomic) IBOutlet UIButton *infoAddFeeButton;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *shopView;
@@ -113,6 +117,12 @@
     {
         [_navigate navigateToShopFromViewController:self withShopID:_order.order_shop.shop_id];
     }
+}
+- (IBAction)tapInfoAddFee:(id)sender {
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info Biaya Tambahan";
+    alertInfo.detailText = @"Biaya tambahan termasuk biaya asuransi dan biaya administrasi pengiriman";
+    [alertInfo show];
 }
 
 #pragma mark - Table View Data Source
@@ -282,6 +292,10 @@
     _transactionDateLabel.text = _order.order_detail.detail_order_date;
     _subtotalLabel.text = _order.order_detail.detail_product_price_idr;
     _insurancePriceLabel.text = _order.order_detail.detail_insurance_price_idr;
+    _insuranceTextLabel.text = ([_order.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    _insurancePriceLabel.text = ([_order.order_detail.detail_additional_fee integerValue]==0)?_order.order_detail.detail_insurance_price_idr:_order.order_detail.detail_total_add_fee_idr;
+    _infoAddFeeButton.hidden = ([_order.order_detail.detail_additional_fee integerValue]==0);
+    
     _shipmentPriceLabel.text = _order.order_detail.detail_shipping_price_idr;
     _totalPaymentLabel.text = _order.order_detail.detail_open_amount_idr;
     _recieverName.text = _order.order_destination.receiver_name;

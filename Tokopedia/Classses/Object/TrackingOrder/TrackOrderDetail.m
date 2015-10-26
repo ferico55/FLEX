@@ -10,4 +10,13 @@
 
 @implementation TrackOrderDetail
 
+- (NSString *)receiver_name {
+    return [_receiver_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString *)shipper_name {
+    return [_shipper_name kv_decodeHTMLCharacterEntities];
+}
+
+
 @end

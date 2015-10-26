@@ -349,10 +349,11 @@
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
     
     cell.subtotalLabel.text = orderList.order_detail.detail_product_price_idr;
-    cell.insuranceLabel.text = orderList.order_detail.detail_insurance_price_idr;
     cell.shipmentFeeLabel.text = orderList.order_detail.detail_shipping_price_idr;
     cell.totalPaymentLabel.text = orderList.order_detail.detail_open_amount_idr;
-    
+    cell.InsuranceTitle.text = ([orderList.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    cell.insuranceLabel.text = ([orderList.order_detail.detail_additional_fee integerValue]==0)?orderList.order_detail.detail_insurance_price_idr:orderList.order_detail.detail_total_add_fee_idr;
+    cell.infoButton.hidden = ([orderList.order_detail.detail_additional_fee integerValue]==0);
     cell.recieverNameLabel.text = orderList.order_destination.receiver_name;
     NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@ %@",
                          orderList.order_destination.address_street,

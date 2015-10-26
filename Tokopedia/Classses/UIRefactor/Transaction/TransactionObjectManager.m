@@ -50,7 +50,8 @@
                                                    @"lp_amount",
                                                    @"cashback_idr",
                                                    @"cashback",
-                                                   @"grand_total_without_lp_idr"
+                                                   @"grand_total_without_lp_idr",
+                                                   @"grand_total_without_lp"
                                                    ]];
     
     RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
@@ -314,7 +315,8 @@
                                                  API_DATA_VOUCHER_EXPIRED_KEY,
                                                  API_DATA_VOUCHER_ID_KEY,
                                                  API_DATA_VOUCHER_MINIMAL_AMOUNT_KEY,
-                                                 API_DATA_VOUCHER_STATUS_KEY
+                                                 API_DATA_VOUCHER_STATUS_KEY,
+                                                 @"voucher_no_other_promotion"
                                                  ]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
