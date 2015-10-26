@@ -235,11 +235,16 @@
         }
     }
     else{
+        _isNewRekening = !(_isNewRekening);
         if (_isNewRekening) {
             BankAccountFormList *bankAccount = [BankAccountFormList new];
             [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
         }
-        _isNewRekening = !(_isNewRekening);
+        else
+        {
+            BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY]?:[BankAccountFormList new];
+            [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+        }
         [_tableView reloadData];
     }
 }
@@ -446,7 +451,7 @@
         case 1:
         {
             BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || !selectedBank ) && indexPath.row == 2) {
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 ) && indexPath.row == 2) {
                 return 0;
             }
         }
@@ -860,9 +865,9 @@
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     TxOrderPaymentEditForm *formIsConfirmed = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
     
-    SystemBankAcount *selectedSystemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
-    MethodList *selectedMethod = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-    BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    SystemBankAcount *selectedSystemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY]?:[SystemBankAcount new];
+    MethodList *selectedMethod = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY]?:[MethodList new];
+    BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     
     NSString *systemBankString = (!selectedSystemBank.sysbank_name)?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];
     
@@ -1076,6 +1081,7 @@
     
     [_dataInput setObject:selectedMethod?:[MethodList new] forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY];
     [_dataInput setObject:selectedSystemBank?:[SystemBankAcount new] forKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
@@ -1110,6 +1116,7 @@
     {
         BankAccountFormList *selectedBank = bankAccountList[0];
         [_dataInput setObject:selectedBank forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+        [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY];
     }
     
     if ([self isPaymentTypeSaldoTokopedia]) {
@@ -1117,7 +1124,6 @@
         NSString *leftAmount = form.order.order_left_amount;
         [_dataInput setObject:leftAmount forKey:DATA_TOTAL_PAYMENT_KEY];
     }
-    
     [_dataInput setObject:selectedMethod forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
 }
@@ -1164,14 +1170,14 @@
 #pragma mark - Bank Account Delegate
 -(void)SettingBankNameViewController:(UIViewController *)vc withData:(NSDictionary *)data
 {
-    BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     NSString *name;
     NSInteger bankid;
     name = [data objectForKey:API_BANK_NAME_KEY];
     bankid = [[data objectForKey:API_BANK_ID_KEY] integerValue];
     bankAccount.bank_id = bankid;
     bankAccount.bank_name = name;
-    [_dataInput setObject:bankAccount?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     [_tableView reloadData];
 }
 
