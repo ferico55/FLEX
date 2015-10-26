@@ -27,6 +27,8 @@
 #import "TokopediaNetworkManager.h"
 #import "GalleryViewController.h"
 
+#import "UIActivityViewController+Extensions.h"
+
 #define CTagGetAddCatalogPriceAlert 2
 
 static NSString *cellIdentifer = @"CatalogSpecificationCell";
@@ -726,10 +728,12 @@ static CGFloat rowHeight = 40;
             if (_catalog) {
                 NSString *title = _catalog.result.catalog_info.catalog_name;
                 NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
-                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:controller animated:YES completion:nil];
+                
+                UIActivityViewController* shareDialogController = [UIActivityViewController
+                                                                   shareDialogWithTitle:title
+                                                                   url:url
+                                                                   anchor:view];
+                [self presentViewController:shareDialogController animated:YES completion:nil];
             }
         }
         else {

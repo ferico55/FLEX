@@ -24,6 +24,8 @@
 #import "LoadingView.h"
 #import "Paging.h"
 
+#import "UIActivityViewController+Extensions.h"
+
 @interface CatalogShopViewController ()
 <
     UITableViewDataSource,
@@ -256,10 +258,12 @@
             if (_catalog) {
                 NSString *title = _catalog.result.catalog_info.catalog_name;
                 NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
-                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:controller animated:YES completion:nil];
+                
+                UIActivityViewController* shareDialogController = [UIActivityViewController
+                                                                   shareDialogWithTitle:title
+                                                                   url:url
+                                                                   anchor:sender];
+                [self presentViewController:shareDialogController animated:YES completion:nil];
             }
         }
     }
