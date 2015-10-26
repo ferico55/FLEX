@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Upload : NSObject
+@interface Upload : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) NSString *src;
 @end
