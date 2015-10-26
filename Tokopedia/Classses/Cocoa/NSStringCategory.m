@@ -128,6 +128,7 @@
 
 -(BOOL)isAllNonNumber
 {
+    
     NSCharacterSet* numbers = [NSCharacterSet decimalDigitCharacterSet];
     NSRange rnumbers = [self rangeOfCharacterFromSet: numbers];
     
@@ -142,6 +143,17 @@
     //    NSRange rnumbers = [self rangeOfCharacterFromSet: numbers];
     NSCharacterSet * set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ "]invertedSet];
     return [self rangeOfCharacterFromSet:set].location != NSNotFound;
+}
+
+-(NSString *)priceFromStringIDR
+{
+    NSString *price = self;
+    price = [price stringByReplacingOccurrencesOfString:@"." withString:@""];
+    price = [price stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    price = [price stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    price = [price stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+    return price;
 }
 
 @end

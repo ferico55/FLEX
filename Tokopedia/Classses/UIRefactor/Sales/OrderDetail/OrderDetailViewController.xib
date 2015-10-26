@@ -68,6 +68,8 @@
                 <outlet property="dropshipSenderPhoneLabel" destination="gwk-gN-t0r" id="QLx-kN-feZ"/>
                 <outlet property="dropshipView" destination="sS0-GQ-ltG" id="QhF-5M-1eP"/>
                 <outlet property="dropshipViewHeightConstraint" destination="Tj1-q5-p8W" id="ORn-ao-eGG"/>
+                <outlet property="infoAddFeeButton" destination="bAd-7t-tcO" id="IyS-Kh-0wZ"/>
+                <outlet property="insuranceTextLabel" destination="bhW-ta-Unf" id="tV3-YH-WM9"/>
                 <outlet property="invoiceDateLabel" destination="VbM-p4-974" id="Pdq-2v-AAV"/>
                 <outlet property="invoiceNumberLabel" destination="Q5n-8Z-LHW" id="fu0-H0-x8y"/>
                 <outlet property="orderFooterView" destination="N7K-ia-t5J" id="pLi-qx-yJc"/>
@@ -392,7 +394,7 @@
                         <constraint firstAttribute="trailing" secondItem="BgM-zg-lHQ" secondAttribute="trailing" id="sZD-nd-nek"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Produk :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pgv-sr-WVI">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pgv-sr-WVI">
                     <rect key="frame" x="14" y="615" width="105" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="HTE-RE-OAV"/>
@@ -454,7 +456,7 @@
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtotal :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BsD-hY-jib">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtotal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BsD-hY-jib">
                     <rect key="frame" x="14" y="684" width="98" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="98" id="4Ae-MH-FMh"/>
@@ -463,7 +465,7 @@
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biaya Asuransi :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhW-ta-Unf">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhW-ta-Unf">
                     <rect key="frame" x="14" y="714" width="118" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="H07-Lg-fEj"/>
@@ -472,7 +474,7 @@
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ongkos Kirim :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jdt-I1-uoK">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jdt-I1-uoK">
                     <rect key="frame" x="14" y="744" width="110" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="JrE-95-IhZ"/>
@@ -508,6 +510,19 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAd-7t-tcO">
+                    <rect key="frame" x="119" y="708" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="oxK-id-fS2"/>
+                        <constraint firstAttribute="height" constant="32" id="rGY-dL-EhY"/>
+                    </constraints>
+                    <state key="normal" image="icon_info_grey_small.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tapInfoAddFee:" destination="-1" eventType="touchUpInside" id="cuf-8d-hni"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -577,7 +592,9 @@
                 <constraint firstItem="BsD-hY-jib" firstAttribute="top" secondItem="hgK-hm-NHk" secondAttribute="bottom" constant="18" id="qKZ-3M-bUl"/>
                 <constraint firstAttribute="trailing" secondItem="3dZ-CP-M6c" secondAttribute="trailing" constant="16" id="qfO-HZ-A9o"/>
                 <constraint firstAttribute="trailing" secondItem="H2p-DJ-0dH" secondAttribute="trailing" constant="16" id="rh2-3v-TO7"/>
+                <constraint firstItem="bAd-7t-tcO" firstAttribute="top" secondItem="FJf-nY-1wK" secondAttribute="bottom" constant="3" id="spC-jF-hYD"/>
                 <constraint firstAttribute="trailing" secondItem="c41-Wt-7i7" secondAttribute="trailing" constant="16" id="tgF-72-EKS"/>
+                <constraint firstItem="bAd-7t-tcO" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" constant="119" id="wHa-kS-ARe"/>
                 <constraint firstItem="fIO-Ky-eEN" firstAttribute="top" secondItem="ceH-fr-HCk" secondAttribute="bottom" constant="16" id="zwz-wG-jSJ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -807,6 +824,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="icon_info_grey_small.png" width="14" height="14"/>
         <image name="icon_order_cancel.png" width="14" height="14"/>
         <image name="icon_order_check.png" width="14" height="14"/>
         <image name="icon_profile_picture.jpeg" width="200" height="200"/>

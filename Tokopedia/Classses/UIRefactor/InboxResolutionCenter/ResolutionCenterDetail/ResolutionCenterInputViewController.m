@@ -102,8 +102,8 @@
     
     _uploadingPhotos = [NSMutableArray new];
     _uploadedPhotos = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
-    _selectedImagesCameraController = [NSMutableArray new];
-    _selectedIndexPathCameraController = [NSMutableArray new];
+    _selectedImagesCameraController = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
+    _selectedIndexPathCameraController = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     
     _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
@@ -145,6 +145,10 @@
     [formatter setDateFormat:@"dd MMMM yyyy HH:mm"];
     
     _createDateLabel.text = [formatter stringFromDate:[NSDate date]];
+    
+    frame = _imageScrollView.frame;
+    frame.size.width = [UIScreen mainScreen].bounds.size.width;
+    _imageScrollView.frame = frame;
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -297,7 +301,14 @@
         }
         else if (barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_SEND) {
             if ([self isValid]) {
-                NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+                NSMutableArray *photoArray = [NSMutableArray new];
+                for (NSString *photo in _uploadedPhotos) {
+                    if (![photo isEqualToString:@""])
+                    {
+                        [photoArray addObject:photo];
+                    }
+                }
+                NSString *photos = [[photoArray valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
                 [_delegate message:_messageTextView.text
                              photo:photos?:@""
                           serverID:_generatehost.result.generated_host.server_id?:@""];
@@ -361,33 +372,27 @@
 
 - (IBAction)tapDeleteImage:(UIButton*)sender {
     
-    [_uploadedPhotos replaceObjectAtIndex:sender.tag-10 withObject:@""];
-    [_selectedImagesCameraController replaceObjectAtIndex:sender.tag - 10 withObject:@""];
-    [_selectedIndexPathCameraController replaceObjectAtIndex:sender.tag -10 withObject:@""];
+    NSUInteger index = sender.tag - 10;
+    [_uploadedPhotos replaceObjectAtIndex:index withObject:@""];
+    [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
+    [_selectedIndexPathCameraController replaceObjectAtIndex:index withObject:@""];
     
     if ([self totalUploadedAndUploadingImage] == 0) {
         [_imageScrollView removeFromSuperview];
     }
     
-    for (UIImageView *imageView in _thumbImages) {
-        if (imageView.tag == sender.tag)
-        {
-            imageView.image = nil;
-        }
-    }
-    for (UIButton *button in _cancelButtons) {
-        if (button.tag == sender.tag)
-        {
-            button.hidden = YES;
-        }
-    }
-    for (UIButton *button in _uploadButtons) {
-        if (button.tag == sender.tag)
-        {
-            button.hidden = NO;
-            button.enabled = YES;
-        }
-    }
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:_selectedImagesCameraController[index]  forKey:DATA_SELECTED_PHOTO_KEY];
+    [object setObject:_thumbImages[index] forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    [object setObject:_selectedIndexPathCameraController[index] forKey:DATA_SELECTED_INDEXPATH_KEY];
+    
+    ((UIButton*)_uploadButtons[index]).hidden = NO;
+    ((UIButton*)_uploadButtons[index]).enabled = YES;
+    [_uploadedPhotos replaceObjectAtIndex:index withObject:@""];
+    ((UIImageView*)_thumbImages[index]).image = nil;
+    ((UIImageView*)_thumbImages[index]).hidden = YES;
+    
+    [self failedUploadObject:object];
 }
 
 -(void)didTapImageButton:(UIButton*)sender
@@ -406,21 +411,39 @@
     CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
     photoVC.title = @"All Picture";
     photoVC.delegate = self;
+    photoVC.isAddEditProduct = YES;
     photoVC.tag = sender.tag;
+    NSMutableArray *notEmptyImageIndex = [NSMutableArray new];
+    for (UIImageView *image in _thumbImages) {
+        if (image.image == nil)
+        {
+            [notEmptyImageIndex addObject:@(image.tag - 20)];
+        }
+    }
     NSMutableArray *selectedImage = [NSMutableArray new];
-    for (NSIndexPath *selected in _selectedImagesCameraController) {
+    for (id selected in _selectedImagesCameraController) {
         if (![selected isEqual:@""]) {
             [selectedImage addObject: selected];
         }
     }
-    photoVC.selectedImagesArray = [selectedImage copy];
     NSMutableArray *selectedIndexPath = [NSMutableArray new];
     for (NSIndexPath *selected in _selectedIndexPathCameraController) {
         if (![selected isEqual:@""]) {
-            [selectedIndexPath addObject: selected];
+            [selectedIndexPath addObject:selected];
         }
     }
-    photoVC.selectedIndexPath = selectedIndexPath;
+    photoVC.maxSelected = 5;
+    
+    photoVC.selectedImagesArray = selectedImage;
+    
+    selectedIndexPath = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedIndexPath addObject:selected];
+        }
+    }
+    photoVC.selectedIndexPath = _selectedIndexPathCameraController;
+    
     UINavigationController *nav = [[UINavigationController alloc]init];
     nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     nav.navigationBar.translucent = NO;
@@ -563,19 +586,8 @@
 -(void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo
 {
     NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexPaths = [userinfo objectForKey:@"selected_indexpath"];
-    
-    _selectedIndexPathCameraController = [selectedIndexPaths mutableCopy];
-        
-    //Hapus data yg equal @""
-    NSMutableArray *selectedImageTemp = [NSMutableArray new];
-    for (NSDictionary *selected in _selectedImagesCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedImageTemp addObject:selected];
-        }
-    }
-    
-    _selectedImagesCameraController = selectedImageTemp;
+    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
+    NSInteger sourceType = [[userinfo objectForKey:DATA_CAMERA_SOURCE_TYPE] integerValue];
     
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
@@ -589,66 +601,60 @@
     //Upload Image yg belum diupload tp dipilih
     int j = 0;
     for (NSDictionary *selected in selectedImages) {
-        if (![self Array:[_selectedImagesCameraController copy] containObject:selected])
-        {
-            [_selectedImagesCameraController addObject:selected];
-            [self setImageData:selected tag:[emptyImageIndex[j] integerValue]];
-            j++;
+        if ([selected isKindOfClass:[NSDictionary class]]) {
+            if (j>=emptyImageIndex.count) {
+                return;
+            }
+            if (![self Array:[_selectedImagesCameraController copy] containObject:selected])
+            {
+                NSUInteger index = [emptyImageIndex[j] integerValue];
+                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
+                NSMutableDictionary *data = [NSMutableDictionary new];
+                [data addEntriesFromDictionary:selected];
+                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
+                if (sourceType == UIImagePickerControllerSourceTypeCamera)
+                    [data setObject:[NSIndexPath indexPathForRow:0 inSection:0] forKey:@"selected_indexpath"];
+                else [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+                [self setImageData:[data copy] tag:index];
+                j++;
+            }
         }
     }
     
     if ([self totalUploadedAndUploadingImage] == 0) {
         [_imageScrollView removeFromSuperview];
     }
+    
 
 }
 
 -(void)didRemoveImageDictionary:(NSDictionary *)removedImage
 {
     //Hapus Image dari camera controller
-    NSMutableArray *removedImages = [NSMutableArray new];
-     for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-         if ([_selectedImagesCameraController[i] isEqual:@""]) {
-             ((UIImageView*)_thumbImages[i]).image = nil;
-         }
-         else
-         {
-             NSDictionary *photoObjectInArray = [_selectedImagesCameraController[i] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-             NSDictionary *photoObject = [removedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-             
-             UIImage* imageObject = [photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-             UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imageObject.scale);
-             [imageObject drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-             imageObject = UIGraphicsGetImageFromCurrentImageContext();
-             UIGraphicsEndImageContext();
-             
-             if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
-                 
-                 NSMutableDictionary *object = [NSMutableDictionary new];
-                 [object setObject:removedImage forKey:DATA_SELECTED_PHOTO_KEY];
-                 UIImageView *imageView;
-                 
-                 for (UIImageView *image in _thumbImages) {
-                     
-                     if ([self image:image.image isEqualTo:imageObject])
-                     {
-                         imageView = image;
-                         break;
-                     }
-                 }
-                 if (imageView != nil) {
-                     [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-                     [self failedUploadObject:object];
-                 }
-                 
-                 [removedImages addObject:object];
-                 [_selectedIndexPathCameraController removeObjectAtIndex:i];
-                 
-                 break;
-             }
-         }
-
-     }
+    //    NSMutableArray *removedImages = [NSMutableArray new];
+    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
+        if ([_selectedImagesCameraController[i] isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *photoObjectInArray = [_selectedImagesCameraController[i] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+            NSDictionary *photoObject = [removedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+            
+            UIImage* imageObject = [photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+            UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imageObject.scale);
+            [imageObject drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+            imageObject = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+                
+                NSMutableDictionary *object = [NSMutableDictionary new];
+                [object setObject:_selectedImagesCameraController[i] forKey:DATA_SELECTED_PHOTO_KEY];
+                [object setObject:_selectedIndexPathCameraController[i] forKey:DATA_SELECTED_INDEXPATH_KEY];
+                [object setObject:_thumbImages[i] forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+                
+                [self failedUploadObject:object];
+                break;
+            }
+        }
+    }
 }
 
 - (BOOL)image:(UIImage *)image1 isEqualTo:(UIImage *)image2
@@ -661,11 +667,15 @@
 
 -(BOOL)Array:(NSArray*)array containObject:(NSDictionary*)object
 {
-    for (NSDictionary *objectInArray in array) {
-        NSDictionary *photoObjectInArray = [objectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-        NSDictionary *photoObject = [object objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-        if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
-            return YES;
+    if (object && [object isKindOfClass:[NSDictionary class]]) {
+        for (id objectInArray in array) {
+            if ([objectInArray isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *photoObjectInArray = [objectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+                NSDictionary *photoObject = [object objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+                if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+                    return YES;
+                }
+            }
         }
     }
     return NO;
@@ -673,6 +683,9 @@
 
 -(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
 {
+    id selectedIndexpaths = [data objectForKey:@"selected_indexpath"];
+    [_selectedIndexPathCameraController replaceObjectAtIndex:tag withObject:selectedIndexpaths?:@""];
+    
     NSInteger tagView = tag +10;
     NSMutableDictionary *object = [NSMutableDictionary new];
     [object setObject:data forKey:DATA_SELECTED_PHOTO_KEY];
@@ -691,10 +704,12 @@
             image.alpha = 0.5f;
         }
     }
+    
     if (imageView != nil) {
-        [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];   
+        [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     }
     
+    [object setObject:_selectedImagesCameraController[tag] forKey:DATA_SELECTED_PHOTO_KEY];
     [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
     
     for (UIButton *button in _uploadButtons) {
@@ -838,6 +853,7 @@
 -(void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generatehost = generateHost;
+    [_delegate setGenerateHost:_generatehost.result.generated_host];
     [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(YES)];
 }
 
@@ -856,19 +872,25 @@
     
     _isFinishUploadingImage = NO;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = object;
-    uploadImage.delegate = self;
-    uploadImage.generateHost = _generatehost;
-    uploadImage.action = ACTION_UPLOAD_CONTACT_IMAGE;
-    uploadImage.fieldName = API_UPLOAD_PRODUCT_IMAGE_DATA_NAME;
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    [uploadImage requestActionUploadObject:object
+                             generatedHost:_generatehost.result.generated_host
+                                    action:ACTION_UPLOAD_CONTACT_IMAGE
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:API_UPLOAD_PRODUCT_IMAGE_DATA_NAME
+                                   success:^(id imageObject, UploadImage *image) {
+                                       [self successUploadObject:object withMappingResult:image];
+                                   } failure:^(id imageObject, NSError *error) {
+                                       [self failedUploadObject:object];
+                                   }];
 }
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.alpha = 1.0;
+    
     if (![_uploadedPhotos containsObject:uploadImage.result.file_th]) {
         [_uploadedPhotos replaceObjectAtIndex:imageView.tag-10 withObject:uploadImage.result.file_th];
     }
@@ -898,19 +920,22 @@
             button.enabled = YES;
         }
     }
-    for (UIButton *button in _cancelButtons) {
-        if (button.tag == imageView.tag)
-        {
-            button.hidden = YES;
+    
+    ((UIButton*)_cancelButtons[imageView.tag-10]).hidden = YES;
+    
+    imageView.hidden = YES;
+    
+    [_uploadingPhotos removeObject:object];
+    NSMutableArray *objectProductPhoto = [NSMutableArray new];
+    objectProductPhoto = _uploadedPhotos;
+    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
+        if ([_selectedImagesCameraController[i]isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
+            [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
+            [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
+            [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
         }
     }
-    
-    [_uploadedPhotos replaceObjectAtIndex:imageView.tag-10 withObject:@""];
-    
-    _isFinishUploadingImage = YES;
-    [_uploadingPhotos removeObject:object];
-    [_selectedIndexPathCameraController removeObject:[object objectForKey:DATA_SELECTED_INDEXPATH_KEY]];
-    [_selectedImagesCameraController removeObject:[object objectForKey:DATA_SELECTED_PHOTO_KEY]];
+
     [self requestProcessUploadPhoto];
 }
 

@@ -30,4 +30,5 @@
 @property(nonatomic, strong) NSMutableArray *selectedIndexPath;
 @property NSInteger maxSelected;
 
+@property BOOL isAddEditProduct;
 @end

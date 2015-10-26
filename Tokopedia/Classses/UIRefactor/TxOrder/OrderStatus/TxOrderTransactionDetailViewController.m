@@ -13,6 +13,8 @@
 #import "TransactionCartCell.h"
 #import "string_tx_order.h"
 
+#import "AlertInfoView.h"
+
 #define CTagAddress 2
 #define CTagPhone 3
 
@@ -20,6 +22,8 @@
 {
     NavigateViewController *_navigate;
 }
+@property (weak, nonatomic) IBOutlet UILabel *insuranceTextLabel;
+@property (weak, nonatomic) IBOutlet UIButton *infoAddFeeButton;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *shopView;
@@ -114,6 +118,12 @@
         [_navigate navigateToShopFromViewController:self withShopID:_order.order_shop.shop_id];
     }
 }
+- (IBAction)tapInfoAddFee:(id)sender {
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info Biaya Tambahan";
+    alertInfo.detailText = @"Biaya tambahan termasuk biaya asuransi dan biaya administrasi pengiriman";
+    [alertInfo show];
+}
 
 #pragma mark - Table View Data Source
 
@@ -139,11 +149,11 @@
     CGSize maximumLabelSize = CGSizeMake(190,9999);
     NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
     NSString *string = productNotes;
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_13
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
                                   constrainedToSize:maximumLabelSize
                                       lineBreakMode:NSLineBreakByTruncatingTail];
     
-    return 210+expectedLabelSize.height;
+    return 126+expectedLabelSize.height;
 }
 
 
@@ -196,33 +206,16 @@
     NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
     NSArray *listProducts = _order.order_products;
     OrderProduct *product = listProducts[indexProduct];
-    cell.backgroundColor = [UIColor colorWithRed:249.0f/255.0f green:249.0f/255.0f blue:249.0f/255.0f alpha:1];
-    [cell.productNameLabel setText:product.product_name animated:YES];
-    [cell.productPriceLabel setText:product.order_subtotal_price_idr animated:YES];
     
-    NSString *weightTotal = [NSString stringWithFormat:@"%zd Barang (%@ kg)",product.product_quantity, product.product_weight];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:weightTotal];
-    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_weight]]];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_weight]]];
-    cell.quantityLabel.attributedText = attributedString;
+    ((TransactionCartCell*)cell).indexPage = 1;
+    ((TransactionCartCell*)cell).indexPath = indexPath;
+    [(TransactionCartCell*)cell setViewModel:product.viewModel];
+    NSString *productNotes = product.viewModel.productNotes;
     
-    NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section-1];
-    cell.indexPath = indexPathCell;
-    cell.editButton.hidden = YES;
-    NSString *productNotes = (product.product_notes && ![product.product_notes isEqualToString:@"0"])?product.product_notes:@"-";
-    [cell.remarkLabel setCustomAttributedText:[NSString convertHTML:productNotes]];
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = cell.productThumbImageView;
-    thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    if ([productNotes isEqualToString:@""] || [productNotes isEqualToString:@"0"]) {
+        productNotes = @"-";
+    }
+    [cell.remarkLabel setCustomAttributedText:productNotes];
     
     return cell;
 }
@@ -282,6 +275,10 @@
     _transactionDateLabel.text = _order.order_detail.detail_order_date;
     _subtotalLabel.text = _order.order_detail.detail_product_price_idr;
     _insurancePriceLabel.text = _order.order_detail.detail_insurance_price_idr;
+    _insuranceTextLabel.text = ([_order.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    _insurancePriceLabel.text = ([_order.order_detail.detail_additional_fee integerValue]==0)?_order.order_detail.detail_insurance_price_idr:_order.order_detail.detail_total_add_fee_idr;
+    _infoAddFeeButton.hidden = ([_order.order_detail.detail_additional_fee integerValue]==0);
+    
     _shipmentPriceLabel.text = _order.order_detail.detail_shipping_price_idr;
     _totalPaymentLabel.text = _order.order_detail.detail_open_amount_idr;
     _recieverName.text = _order.order_destination.receiver_name;

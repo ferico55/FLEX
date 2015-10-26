@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -46,7 +46,9 @@
                 <outlet property="detailView" destination="nTK-iz-s4n" id="ttA-Fk-Um3"/>
                 <outlet property="dropshipHeightConstraint" destination="s3d-A1-1oc" id="JNZ-l1-WhC"/>
                 <outlet property="dropshipView" destination="ZYM-gf-Qjk" id="BO7-CQ-NAu"/>
+                <outlet property="infoAddFeeButton" destination="KP8-RB-rXO" id="B1T-KQ-ln6"/>
                 <outlet property="insurancePriceLabel" destination="kjP-6Y-EQC" id="gQk-hp-87I"/>
+                <outlet property="insuranceTextLabel" destination="2ra-U4-trg" id="TGO-h9-9eV"/>
                 <outlet property="invoiceLabel" destination="oEA-an-8q3" id="VOb-1c-Gx0"/>
                 <outlet property="partialLabel" destination="Ma8-2R-gsF" id="RAW-Lx-0nB"/>
                 <outlet property="recieverName" destination="PyN-5E-Thj" id="0RD-rg-IHV"/>
@@ -318,6 +320,9 @@
                             <state key="normal" image="icon_info_grey_small.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tapInfoAddFee:" destination="-1" eventType="touchUpInside" id="k1Q-8B-hk3"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -613,9 +618,4 @@
         <image name="icon_default_shop.jpg" width="80" height="80"/>
         <image name="icon_info_grey_small.png" width="14" height="14"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
