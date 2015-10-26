@@ -15,7 +15,13 @@
 {
     UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url] applicationActivities:nil];
     
-    controller.excludedActivityTypes = @[UIActivityTypeMessage, UIActivityTypeMail];
+    controller.excludedActivityTypes = @[
+                                         UIActivityTypeMessage,
+                                         UIActivityTypeMail,
+                                         UIActivityTypeAirDrop,
+                                         UIActivityTypeCopyToPasteboard,
+                                         UIActivityTypeAddToReadingList
+                                         ];
     
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS8_0)) {
         controller.popoverPresentationController.sourceView = anchor;
