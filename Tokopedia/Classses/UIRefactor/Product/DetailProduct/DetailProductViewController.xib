@@ -877,12 +877,9 @@
                 <outlet property="namelabel" destination="Q5e-TV-sDK" id="POK-md-cQc"/>
                 <outlet property="pricelabel" destination="Va7-Ts-UVQ" id="gn2-kp-LuS"/>
                 <outlet property="thumb" destination="Whf-o7-mYJ" id="nff-qM-iFa"/>
-                <outletCollection property="gestureRecognizers" destination="n1N-Gx-LcD" appends="YES" id="oVn-ve-1DD"/>
             </connections>
             <point key="canvasLocation" x="127" y="285.5"/>
         </view>
-        <tapGestureRecognizer id="n1N-Gx-LcD"/>
-        <tapGestureRecognizer id="shy-zk-4bX"/>
     </objects>
     <resources>
         <image name="Badges_gold_merchant" width="40" height="40"/>
