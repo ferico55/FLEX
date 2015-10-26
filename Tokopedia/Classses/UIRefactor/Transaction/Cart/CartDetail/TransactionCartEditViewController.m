@@ -79,16 +79,8 @@
 
 -(void)constraint
 {
-    // Width constraint
-    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:_remarkTextView
-                                                          attribute:NSLayoutAttributeWidth
-                                                         multiplier:1.0
-                                                           constant:0.0]];
 
-//    // Height constraint
+    // Height constraint
     [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
                                                           attribute:NSLayoutAttributeHeight
                                                           relatedBy:NSLayoutRelationEqual
@@ -100,11 +92,18 @@
     [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:_remarkTextView
+                                                             toItem:nil
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0
                                                            constant:0.0]];
-
+    // width constraint
+    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                                attribute:NSLayoutAttributeWidth
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeWidth
+                                                               multiplier:1.0
+                                                                 constant:[[UIScreen mainScreen] bounds].size.width]];
 }
 
 -(void)viewWillLayoutSubviews
