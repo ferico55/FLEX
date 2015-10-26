@@ -8,10 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		4502302E1BCB59F000E3EF38 /* UploadImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502302B1BCB59F000E3EF38 /* UploadImageHelper.m */; settings = {ASSET_TAGS = (); }; };
+		4502302F1BCB59F000E3EF38 /* UploadImageHelperResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502302D1BCB59F000E3EF38 /* UploadImageHelperResult.m */; settings = {ASSET_TAGS = (); }; };
+		450230431BCBB73800E3EF38 /* UploadImageSubmit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502303B1BCBB73800E3EF38 /* UploadImageSubmit.m */; settings = {ASSET_TAGS = (); }; };
+		450230441BCBB73800E3EF38 /* UploadImageSubmitResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 4502303D1BCBB73800E3EF38 /* UploadImageSubmitResult.m */; settings = {ASSET_TAGS = (); }; };
+		450230451BCBB73800E3EF38 /* UploadImageValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 450230401BCBB73800E3EF38 /* UploadImageValidation.m */; settings = {ASSET_TAGS = (); }; };
+		450230461BCBB73800E3EF38 /* UploadImageValidationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 450230421BCBB73800E3EF38 /* UploadImageValidationResult.m */; settings = {ASSET_TAGS = (); }; };
+		454D09211BC7B1610092CD92 /* RequestResolutionCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 454D09201BC7B1610092CD92 /* RequestResolutionCenter.m */; settings = {ASSET_TAGS = (); }; };
 		456C420A1BBB8B2B008CAA35 /* InstallmentBank.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C42091BBB8B2B008CAA35 /* InstallmentBank.m */; settings = {ASSET_TAGS = (); }; };
 		456C420D1BBB8BA8008CAA35 /* InstallmentTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 456C420C1BBB8BA8008CAA35 /* InstallmentTerm.m */; settings = {ASSET_TAGS = (); }; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		45A254E81BBD4FD000742479 /* TagManagerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A254E71BBD4FD000742479 /* TagManagerHandler.m */; settings = {ASSET_TAGS = (); }; };
+		45BB226D1BCCE3480013BE85 /* RequestUploadImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB22661BCCE3480013BE85 /* RequestUploadImageHelper.m */; settings = {ASSET_TAGS = (); }; };
+		45BB226E1BCCE3480013BE85 /* RequestUploadImageSteps.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB22681BCCE3480013BE85 /* RequestUploadImageSteps.m */; settings = {ASSET_TAGS = (); }; };
+		45BB226F1BCCE3480013BE85 /* RequestUploadImageSubmit.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB226A1BCCE3480013BE85 /* RequestUploadImageSubmit.m */; settings = {ASSET_TAGS = (); }; };
+		45BB22701BCCE3480013BE85 /* RequestUploadImageValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB226C1BCCE3480013BE85 /* RequestUploadImageValidation.m */; settings = {ASSET_TAGS = (); }; };
+		45BB358A1BCF4CB10013BE85 /* ALAsset+Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB35891BCF4CB10013BE85 /* ALAsset+Date.m */; settings = {ASSET_TAGS = (); }; };
 		45CC34521BBE23C900180B89 /* ResizeableImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CC34511BBE23C900180B89 /* ResizeableImageCell.m */; settings = {ASSET_TAGS = (); }; };
 		45CC34581BBE375400180B89 /* ResizeableImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CC34571BBE375400180B89 /* ResizeableImageCell.xib */; settings = {ASSET_TAGS = (); }; };
 		45CEBA9B1BD73C2A0081A842 /* TKPString.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEBA9A1BD73C2A0081A842 /* TKPString.m */; settings = {ASSET_TAGS = (); }; };
@@ -1846,6 +1858,20 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		4502302A1BCB59F000E3EF38 /* UploadImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageHelper.h; sourceTree = "<group>"; };
+		4502302B1BCB59F000E3EF38 /* UploadImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageHelper.m; sourceTree = "<group>"; };
+		4502302C1BCB59F000E3EF38 /* UploadImageHelperResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageHelperResult.h; sourceTree = "<group>"; };
+		4502302D1BCB59F000E3EF38 /* UploadImageHelperResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageHelperResult.m; sourceTree = "<group>"; };
+		4502303A1BCBB73800E3EF38 /* UploadImageSubmit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageSubmit.h; sourceTree = "<group>"; };
+		4502303B1BCBB73800E3EF38 /* UploadImageSubmit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageSubmit.m; sourceTree = "<group>"; };
+		4502303C1BCBB73800E3EF38 /* UploadImageSubmitResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageSubmitResult.h; sourceTree = "<group>"; };
+		4502303D1BCBB73800E3EF38 /* UploadImageSubmitResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageSubmitResult.m; sourceTree = "<group>"; };
+		4502303F1BCBB73800E3EF38 /* UploadImageValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageValidation.h; sourceTree = "<group>"; };
+		450230401BCBB73800E3EF38 /* UploadImageValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageValidation.m; sourceTree = "<group>"; };
+		450230411BCBB73800E3EF38 /* UploadImageValidationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageValidationResult.h; sourceTree = "<group>"; };
+		450230421BCBB73800E3EF38 /* UploadImageValidationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageValidationResult.m; sourceTree = "<group>"; };
+		454D091F1BC7B1610092CD92 /* RequestResolutionCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionCenter.h; sourceTree = "<group>"; };
+		454D09201BC7B1610092CD92 /* RequestResolutionCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionCenter.m; sourceTree = "<group>"; };
 		456C42081BBB8B2B008CAA35 /* InstallmentBank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentBank.h; sourceTree = "<group>"; };
 		456C42091BBB8B2B008CAA35 /* InstallmentBank.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstallmentBank.m; sourceTree = "<group>"; };
 		456C420B1BBB8BA8008CAA35 /* InstallmentTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstallmentTerm.h; sourceTree = "<group>"; };
@@ -1853,6 +1879,16 @@
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		45A254E61BBD4FD000742479 /* TagManagerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagManagerHandler.h; sourceTree = "<group>"; };
 		45A254E71BBD4FD000742479 /* TagManagerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagManagerHandler.m; sourceTree = "<group>"; };
+		45BB22651BCCE3480013BE85 /* RequestUploadImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageHelper.h; sourceTree = "<group>"; };
+		45BB22661BCCE3480013BE85 /* RequestUploadImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageHelper.m; sourceTree = "<group>"; };
+		45BB22671BCCE3480013BE85 /* RequestUploadImageSteps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageSteps.h; sourceTree = "<group>"; };
+		45BB22681BCCE3480013BE85 /* RequestUploadImageSteps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageSteps.m; sourceTree = "<group>"; };
+		45BB22691BCCE3480013BE85 /* RequestUploadImageSubmit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageSubmit.h; sourceTree = "<group>"; };
+		45BB226A1BCCE3480013BE85 /* RequestUploadImageSubmit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageSubmit.m; sourceTree = "<group>"; };
+		45BB226B1BCCE3480013BE85 /* RequestUploadImageValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImageValidation.h; sourceTree = "<group>"; };
+		45BB226C1BCCE3480013BE85 /* RequestUploadImageValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImageValidation.m; sourceTree = "<group>"; };
+		45BB35881BCF4CB10013BE85 /* ALAsset+Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+Date.h"; sourceTree = "<group>"; };
+		45BB35891BCF4CB10013BE85 /* ALAsset+Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+Date.m"; sourceTree = "<group>"; };
 		45CC344E1BBE223100180B89 /* saldo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = saldo.png; path = ../../../../../Desktop/saldo.png; sourceTree = "<group>"; };
 		45CC34501BBE23C900180B89 /* ResizeableImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResizeableImageCell.h; sourceTree = "<group>"; };
 		45CC34511BBE23C900180B89 /* ResizeableImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResizeableImageCell.m; sourceTree = "<group>"; };
@@ -4642,6 +4678,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		450230291BCB59F000E3EF38 /* UploadImageHelper */ = {
+			isa = PBXGroup;
+			children = (
+				4502302A1BCB59F000E3EF38 /* UploadImageHelper.h */,
+				4502302B1BCB59F000E3EF38 /* UploadImageHelper.m */,
+				4502302C1BCB59F000E3EF38 /* UploadImageHelperResult.h */,
+				4502302D1BCB59F000E3EF38 /* UploadImageHelperResult.m */,
+			);
+			path = UploadImageHelper;
+			sourceTree = "<group>";
+		};
+		450230391BCBB73800E3EF38 /* UploadImageSubmit */ = {
+			isa = PBXGroup;
+			children = (
+				4502303A1BCBB73800E3EF38 /* UploadImageSubmit.h */,
+				4502303B1BCBB73800E3EF38 /* UploadImageSubmit.m */,
+				4502303C1BCBB73800E3EF38 /* UploadImageSubmitResult.h */,
+				4502303D1BCBB73800E3EF38 /* UploadImageSubmitResult.m */,
+			);
+			path = UploadImageSubmit;
+			sourceTree = "<group>";
+		};
+		4502303E1BCBB73800E3EF38 /* UploadImageValidation */ = {
+			isa = PBXGroup;
+			children = (
+				4502303F1BCBB73800E3EF38 /* UploadImageValidation.h */,
+				450230401BCBB73800E3EF38 /* UploadImageValidation.m */,
+				450230411BCBB73800E3EF38 /* UploadImageValidationResult.h */,
+				450230421BCBB73800E3EF38 /* UploadImageValidationResult.m */,
+			);
+			path = UploadImageValidation;
+			sourceTree = "<group>";
+		};
 		45A254E51BBD4FD000742479 /* GoogleTagManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -4649,6 +4718,21 @@
 				45A254E71BBD4FD000742479 /* TagManagerHandler.m */,
 			);
 			path = GoogleTagManager;
+			sourceTree = "<group>";
+		};
+		45BB22641BCCE3480013BE85 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				45BB22651BCCE3480013BE85 /* RequestUploadImageHelper.h */,
+				45BB22661BCCE3480013BE85 /* RequestUploadImageHelper.m */,
+				45BB22671BCCE3480013BE85 /* RequestUploadImageSteps.h */,
+				45BB22681BCCE3480013BE85 /* RequestUploadImageSteps.m */,
+				45BB22691BCCE3480013BE85 /* RequestUploadImageSubmit.h */,
+				45BB226A1BCCE3480013BE85 /* RequestUploadImageSubmit.m */,
+				45BB226B1BCCE3480013BE85 /* RequestUploadImageValidation.h */,
+				45BB226C1BCCE3480013BE85 /* RequestUploadImageValidation.m */,
+			);
+			path = Request;
 			sourceTree = "<group>";
 		};
 		53AC970CF2132927344A64C3 /* Pods */ = {
@@ -4733,6 +4817,8 @@
 				85A18C111BAFEF9C002F1382 /* UITextView+UITextView_Placeholder.m */,
 				85A18C121BAFEF9C002F1382 /* ViewLabelUser.h */,
 				85A18C131BAFEF9C002F1382 /* ViewLabelUser.m */,
+				45BB35881BCF4CB10013BE85 /* ALAsset+Date.h */,
+				45BB35891BCF4CB10013BE85 /* ALAsset+Date.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -6359,6 +6445,9 @@
 		85A18FA11BAFEF9D002F1382 /* UploadImage */ = {
 			isa = PBXGroup;
 			children = (
+				450230391BCBB73800E3EF38 /* UploadImageSubmit */,
+				4502303E1BCBB73800E3EF38 /* UploadImageValidation */,
+				450230291BCB59F000E3EF38 /* UploadImageHelper */,
 				85A18FA21BAFEF9D002F1382 /* GenerateHost */,
 				85A18FA91BAFEF9D002F1382 /* Upload.h */,
 				85A18FAA1BAFEF9D002F1382 /* Upload.m */,
@@ -6579,6 +6668,7 @@
 		85A190001BAFEF9D002F1382 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				45BB22641BCCE3480013BE85 /* Request */,
 				85A190011BAFEF9D002F1382 /* camera.h */,
 				85A190021BAFEF9D002F1382 /* CameraController.h */,
 				85A190031BAFEF9D002F1382 /* CameraController.m */,
@@ -7067,6 +7157,8 @@
 		85A191241BAFEF9D002F1382 /* InboxResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				454D091F1BC7B1610092CD92 /* RequestResolutionCenter.h */,
+				454D09201BC7B1610092CD92 /* RequestResolutionCenter.m */,
 				85A191251BAFEF9D002F1382 /* Complain */,
 				85A1912F1BAFEF9D002F1382 /* InboxResolSplitViewController.h */,
 				85A191301BAFEF9D002F1382 /* InboxResolSplitViewController.m */,
@@ -10698,6 +10790,7 @@
 				85A19A731BAFEFA1002F1382 /* FooterCollectionReusableView.m in Sources */,
 				85A199691BAFEFA1002F1382 /* TextField.m in Sources */,
 				85A1978B1BAFEFA0002F1382 /* OtherProduct.m in Sources */,
+				450230451BCBB73800E3EF38 /* UploadImageValidation.m in Sources */,
 				85A1988C1BAFEFA0002F1382 /* AddProductPictureResult.m in Sources */,
 				85A1988A1BAFEFA0002F1382 /* Shop.m in Sources */,
 				85A19A501BAFEFA1002F1382 /* MyReviewReputationViewController.m in Sources */,
@@ -10716,6 +10809,7 @@
 				85A1995B1BAFEFA1002F1382 /* ImageShaper.m in Sources */,
 				85A198C21BAFEFA0002F1382 /* CCData.m in Sources */,
 				85A198F81BAFEFA1002F1382 /* CreatePasswordViewController.m in Sources */,
+				450230431BCBB73800E3EF38 /* UploadImageSubmit.m in Sources */,
 				85A197881BAFEFA0002F1382 /* CountRatingResult.m in Sources */,
 				85A197941BAFEFA0002F1382 /* ReviewProductOwner.m in Sources */,
 				85A197891BAFEFA0002F1382 /* DetailProductResult.m in Sources */,
@@ -10882,6 +10976,7 @@
 				85A19A341BAFEFA1002F1382 /* ProductReviewViewController.m in Sources */,
 				85A1977C1BAFEFA0002F1382 /* CatalogImages.m in Sources */,
 				85A19A4E1BAFEFA1002F1382 /* MyReviewReputationCell.m in Sources */,
+				450230461BCBB73800E3EF38 /* UploadImageValidationResult.m in Sources */,
 				85A19A4A1BAFEFA1002F1382 /* DetailMyReviewReputationViewController.m in Sources */,
 				85A199B31BAFEFA1002F1382 /* TKPDTabHomeViewController.m in Sources */,
 				85A199101BAFEFA1002F1382 /* AlertListViewCell.m in Sources */,
@@ -10953,6 +11048,7 @@
 				85A198631BAFEFA0002F1382 /* HotlistDetail.m in Sources */,
 				85A199931BAFEFA1002F1382 /* GeneralTableViewController.m in Sources */,
 				85A19A811BAFEFA1002F1382 /* ProductQuantityCell.m in Sources */,
+				45BB226D1BCCE3480013BE85 /* RequestUploadImageHelper.m in Sources */,
 				85A198B41BAFEFA0002F1382 /* TransactionCartGateway.m in Sources */,
 				85A197841BAFEFA0002F1382 /* DetailCatalogResult.m in Sources */,
 				85A19A0E1BAFEFA1002F1382 /* NavigateViewController.m in Sources */,
@@ -11004,6 +11100,7 @@
 				85A199181BAFEFA1002F1382 /* StickyAlertView.m in Sources */,
 				85A197D91BAFEFA0002F1382 /* ResolutionShop.m in Sources */,
 				85A19ACC1BAFEFA1002F1382 /* SettingNotificationViewController.m in Sources */,
+				45BB226F1BCCE3480013BE85 /* RequestUploadImageSubmit.m in Sources */,
 				85A1976E1BAFEFA0002F1382 /* CatalogResult.m in Sources */,
 				85A19AD41BAFEFA1002F1382 /* ProfileSettingViewController.m in Sources */,
 				85A198781BAFEFA0002F1382 /* OpenShopPicture.m in Sources */,
@@ -11052,6 +11149,7 @@
 				85A1981C1BAFEFA0002F1382 /* ProductFeedList.m in Sources */,
 				85A19A9F1BAFEFA1002F1382 /* DetailShipmentStatusCell.m in Sources */,
 				85A198281BAFEFA0002F1382 /* ProfileEditResult.m in Sources */,
+				4502302E1BCB59F000E3EF38 /* UploadImageHelper.m in Sources */,
 				85A197C71BAFEFA0002F1382 /* InboxMessageResult.m in Sources */,
 				85A198411BAFEFA0002F1382 /* PromoProductImage.m in Sources */,
 				85A19A751BAFEFA1002F1382 /* HeaderCollectionReusableView.m in Sources */,
@@ -11061,6 +11159,7 @@
 				85A1991F1BAFEFA1002F1382 /* CameraAlbumListCell.m in Sources */,
 				85A199821BAFEFA1002F1382 /* GeneralProductCell.m in Sources */,
 				85A199AB1BAFEFA1002F1382 /* HotlistViewController.m in Sources */,
+				45BB358A1BCF4CB10013BE85 /* ALAsset+Date.m in Sources */,
 				85A19B931BAFEFA1002F1382 /* ProductTableViewCell.m in Sources */,
 				85A1996A1BAFEFA1002F1382 /* TKPDTextView.m in Sources */,
 				85A199CE1BAFEFA1002F1382 /* ResolutionCenterDetailCell.m in Sources */,
@@ -11212,6 +11311,7 @@
 				85A19A621BAFEFA1002F1382 /* PromoInfoAlertView.m in Sources */,
 				85A1982F1BAFEFA0002F1382 /* ProfileSettings.m in Sources */,
 				85A197791BAFEFA0002F1382 /* DepositSummaryList.m in Sources */,
+				45BB226E1BCCE3480013BE85 /* RequestUploadImageSteps.m in Sources */,
 				85A19B0B1BAFEFA1002F1382 /* SmileyAndMedal.m in Sources */,
 				85A198491BAFEFA0002F1382 /* ReputationList.m in Sources */,
 				85A1997B1BAFEFA1002F1382 /* GeneralCheckmarkCell.m in Sources */,
@@ -11324,6 +11424,7 @@
 				85A1989B1BAFEFA0002F1382 /* ShippingInfo.m in Sources */,
 				85A1987F1BAFEFA0002F1382 /* NoteDetails.m in Sources */,
 				85A1982E1BAFEFA0002F1382 /* UserInfo.m in Sources */,
+				4502302F1BCB59F000E3EF38 /* UploadImageHelperResult.m in Sources */,
 				85A19B2D1BAFEFA1002F1382 /* TransactionCartCostView.m in Sources */,
 				85A197991BAFEFA0002F1382 /* Statistic.m in Sources */,
 				85A19B8B1BAFEFA1002F1382 /* UserProfileBiodataViewController.m in Sources */,
@@ -11346,6 +11447,7 @@
 				85A1981A1BAFEFA0002F1382 /* PriceAlertResult.m in Sources */,
 				85A19A231BAFEFA1002F1382 /* DetailProductOtherView.m in Sources */,
 				85A1989A1BAFEFA0002F1382 /* PosMinWeight.m in Sources */,
+				454D09211BC7B1610092CD92 /* RequestResolutionCenter.m in Sources */,
 				85A199921BAFEFA1002F1382 /* RequestNotifyLBLM.m in Sources */,
 				85A199801BAFEFA1002F1382 /* GeneralPhotoProductCell.m in Sources */,
 				85A197601BAFEFA0002F1382 /* CreatePasswordResult.m in Sources */,
@@ -11399,6 +11501,7 @@
 				85A197931BAFEFA0002F1382 /* ReviewList.m in Sources */,
 				85A198EB1BAFEFA1002F1382 /* TxOrderStatusList.m in Sources */,
 				85A19AD61BAFEFA1002F1382 /* SettingUserPhoneViewController.m in Sources */,
+				450230441BCBB73800E3EF38 /* UploadImageSubmitResult.m in Sources */,
 				85A197871BAFEFA0002F1382 /* Breadcrumb.m in Sources */,
 				85A198381BAFEFA0002F1382 /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
 				85A197CC1BAFEFA0002F1382 /* InboxResolutionCenterResult.m in Sources */,
@@ -11446,6 +11549,7 @@
 				85A1992F1BAFEFA1002F1382 /* CatalogSectionHeaderView.m in Sources */,
 				85A198551BAFEFA0002F1382 /* OrderDetail.m in Sources */,
 				85A1983A1BAFEFA0002F1382 /* NotificationForm.m in Sources */,
+				45BB22701BCCE3480013BE85 /* RequestUploadImageValidation.m in Sources */,
 				85A19A3E1BAFEFA1002F1382 /* ProductEditWholesaleCell.m in Sources */,
 				85A198361BAFEFA0002F1382 /* BankAccountFormResult.m in Sources */,
 				85A197951BAFEFA0002F1382 /* ReviewResponse.m in Sources */,
@@ -11567,8 +11671,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tokopedia App (TT6A3N9KTC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -11609,8 +11713,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
