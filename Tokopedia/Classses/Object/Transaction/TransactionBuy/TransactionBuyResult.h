@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "TransactionSummaryDetail.h"
 #import "TransactionSystemBank.h"
+#import "TKPObjectMapping.h"
 
-@interface TransactionBuyResult : NSObject
+@interface TransactionBuyResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TransactionSummaryDetail *transaction;
 @property (nonatomic, strong) NSArray *system_bank;

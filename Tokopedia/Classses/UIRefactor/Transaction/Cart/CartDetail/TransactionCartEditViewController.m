@@ -24,6 +24,8 @@
     CGSize _keyboardSize;
     CGSize _scrollviewContentSize;
     
+    BOOL _isFirstLoad;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
@@ -35,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintTextView;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *borders;
 
 @property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
 
@@ -56,32 +59,69 @@
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
-    if ([_remarkTextView.text isEqualToString:@""]) {
-        [self setTextViewPlaceholder:@"Tulis Keterangan"];
-    }
-    
     _remarkTextView.delegate = self;
-//    [_remarkTextView addSubview:_headerView];
-    
     [self setDefaultData:_data];
+    [self setTextViewPlaceholder:@"Tulis Keterangan"];
+    
     [_remarkTextView becomeFirstResponder];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification object:nil];
+                                                 name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
+                                                 name:UIKeyboardDidHideNotification object:nil];
 }
 
--(void)viewDidLayoutSubviews
+-(void)constraint
 {
-    UIEdgeInsets inset = _remarkTextView.textContainerInset;
-    inset.left = 15;
-    inset.top = 12;//_headerView.frame.size.height + 10;
-    _remarkTextView.textContainerInset = inset;
+
+    // Height constraint
+    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1.0
+                                                           constant:182.0]];
+   // Top constraint
+    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    // width constraint
+    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                                attribute:NSLayoutAttributeWidth
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeWidth
+                                                               multiplier:1.0
+                                                                 constant:[[UIScreen mainScreen] bounds].size.width]];
+}
+
+-(void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    if (_isFirstLoad == NO) {
+    
+        [_remarkTextView addSubview:_headerView];
+        
+        [self constraint];
+        
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.left = 15;
+        inset.top = _headerView.frame.size.height;
+        _remarkTextView.textContainerInset = inset;
+        
+        _isFirstLoad = YES;
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -182,7 +222,8 @@
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [_quantityTextField resignFirstResponder];
+//    [_quantityTextField resignFirstResponder];
+//    [_activeTextView resignFirstResponder];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
@@ -191,6 +232,11 @@
 
     if ([_quantityTextField.text integerValue] < 1)
         _quantityTextField.text = product.product_min_order;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    _activeTextView = nil;
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
@@ -207,18 +253,20 @@ replacementString:(NSString*)string
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     [_quantityTextField resignFirstResponder];
+    _activeTextView = textView;
 }
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
-    inset.left = 15;
-    inset.top = 0;
+    inset.left = 20;
+    inset.top = _headerView.frame.size.height-12;
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, inset.top, _remarkTextView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
     placeholderLabel.font = [UIFont fontWithName:_remarkTextView.font.fontName size:_remarkTextView.font.pointSize];
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
+    placeholderLabel.hidden = (![_remarkTextView.text isEqualToString:@""] && _remarkTextView.text != nil);
     [_remarkTextView addSubview:placeholderLabel];
 }
 
@@ -242,24 +290,35 @@ replacementString:(NSString*)string
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
     
-    _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-    _bottomConstraintTextView.constant = _keyboardSize.height-40;
+//    if (_activeTextView != nil) {
+        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.bottom = _keyboardSize.height;
+        _remarkTextView.textContainerInset = inset;
+//    }
+
+//    if (_bottomConstraintTextView.constant - _keyboardSize.height <= 50) {
+//        _bottomConstraintTextView.constant = 60;
+//        [self.view setFrame:CGRectMake(0, -_bottomConstraintTextView.constant, self.view.frame.size.width, self.view.frame.size.height)];
+//    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
-    
-    UIEdgeInsets inset = _remarkTextView.contentInset;
-    inset.bottom = 0;
-    [_remarkTextView setContentInset:inset];
-    
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-
-                     }
-                     completion:^(BOOL finished){
-                     }];
+        UIEdgeInsets inset = _remarkTextView.contentInset;
+        inset.bottom = 0;
+        inset.top = 0;
+        [_remarkTextView setContentInset:inset];
+        _bottomConstraintTextView.constant = 0;
+//
+//    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+//                          delay:0
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations:^{
+//                        [self.view setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+//                     }
+//                     completion:^(BOOL finished){
+//                     }];
     
 }
 

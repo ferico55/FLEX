@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#import "ProductModelView.h"
+
 #define CProductID @"product_id"
 #define CProductPrice @"product_price"
 #define CProductCondition @"product_condition"
@@ -57,5 +60,7 @@
 @property (nonatomic, strong) NSString *product_total_weight;
 @property (nonatomic, strong) NSString *product_error_msg;
 @property (nonatomic, strong) NSString *product_price_last;
+
+@property (nonatomic, strong) ProductModelView *viewModel;
 
 @end

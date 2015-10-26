@@ -506,13 +506,18 @@
 {
     _thumb.alpha = 0.5;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = object;
-    uploadImage.delegate = self;
-    uploadImage.generateHost = _generatehost;
-    uploadImage.action = kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY;
-    uploadImage.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    [uploadImage requestActionUploadObject:object
+                             generatedHost:_generatehost.result.generated_host
+                                    action:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME
+                                   success:^(id imageObject, UploadImage *image) {
+                                       [self successUploadObject:object withMappingResult:image];
+                                   } failure:^(id imageObject, NSError *error) {
+                                       [self failedUploadObject:object];
+                                   }];
     
     _buttoneditimage.enabled = NO;
 }

@@ -2006,12 +2006,18 @@ UIAlertViewDelegate
                 [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
            }
             
-//            [viewContentWarehouse removeConstraints:_constraint];
             constraintHeightWarehouse.constant = 50;
-            _constraintHeightShare.constant = 0;
-//            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
+            UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+            if(![userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]){
+                _constraintHeightShare.constant = 50;
+                _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 570);
+            }
+            else
+            {
+               _constraintHeightShare.constant = 0;
+                _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
+            }
             [viewContentWarehouse setHidden:NO];
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
             _table.tableHeaderView = _header;
         }
         else
@@ -2035,7 +2041,7 @@ UIAlertViewDelegate
 //    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
 //    [viewContentWarehouse addConstraints:_constraint];
     viewContentWarehouse.hidden = YES;
-    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height
+    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520
                             );
     _table.tableHeaderView = _header;
 
@@ -2114,6 +2120,7 @@ UIAlertViewDelegate
                 [btnShare removeConstraints:btnShare.constraints];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+                
             } else {
                 if(!_product.isDummyProduct) {
                     [_buyButton setHidden:NO];
@@ -2213,6 +2220,7 @@ UIAlertViewDelegate
                 _favButton.hidden = YES;
             } else {
                 _favButton.hidden = NO;
+                
             }
             
             // UIView below table view (View More Product button)

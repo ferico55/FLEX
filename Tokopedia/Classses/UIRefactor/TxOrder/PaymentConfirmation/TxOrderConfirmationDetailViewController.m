@@ -18,6 +18,11 @@
 #import "TxOrderConfirmationShipmentCell.h"
 #import "TxOrderConfirmationList.h"
 #import "TxOrderPaymentViewController.h"
+#import "AlertListBankView.h"
+
+#import "ListRekeningBank.h"
+
+#import "TransactionCartCell.h"
 
 @interface TxOrderConfirmationDetailViewController ()
 <
@@ -43,6 +48,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *depositAmountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transferCodeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *grandTotalLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintRekeningInfo;
 
 @end
 
@@ -93,6 +99,13 @@
         vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (IBAction)tapRekInfo:(id)sender {
+    AlertListBankView *popUp = [AlertListBankView newview];
+    ListRekeningBank *listBank = [ListRekeningBank new];
+    popUp.list = [listBank getRekeningBankList];
+    [popUp show];
 }
 
 
@@ -151,7 +164,7 @@
 }
 
 #pragma mark - Table View Delegate
-#define PRODUCT_CELL_HEIGHT 210
+#define PRODUCT_CELL_HEIGHT 126
 #define DROPSHIP_HEIGHT 165
 #define SHIPMENT_HEIGHT 200
 #define COST_CELL_HEIGHT 435
@@ -167,7 +180,7 @@
         
         CGSize maximumLabelSize = CGSizeMake(190,9999);
         
-        NSString *string = [orderProduct.product_notes isEqualToString:@"0"]?@"":[NSString convertHTML:orderProduct.product_notes];
+        NSString *string = [orderProduct.viewModel.productNotes isEqualToString:@"0"]?@"":orderProduct.viewModel.productNotes;
         
         //Calculate the expected size based on the font and linebreak mode of your label
         CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
@@ -300,37 +313,23 @@
 {
     NSString *cellid = TRANSACTION_ORDER_CONFIRMATION_PRODUCT_CELL_IDENTIFIER;
     
-    TxOrderConfirmationProductCell *cell = (TxOrderConfirmationProductCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
+    TransactionCartCell *cell = (TransactionCartCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
-        cell = [TxOrderConfirmationProductCell newCell];
+        cell = [TransactionCartCell newcell];
         cell.delegate = self;
     }
     
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
     OrderProduct *orderProduct = orderList.order_products[indexPath.row];
     
-    NSString *weightTotal = [NSString stringWithFormat:@"%zd Barang (%@ kg)",orderProduct.product_quantity,orderProduct.product_weight];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:weightTotal];
-    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",orderProduct.product_weight]]];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",orderProduct.product_weight]]];
-    cell.productWeightLabel.attributedText = attributedString;
+    ((TransactionCartCell*)cell).indexPage = 1;
+    [(TransactionCartCell*)cell setViewModel:orderProduct.viewModel];
+    NSString *productNotes = orderProduct.viewModel.productNotes;
     
-    cell.productNameLabel.text = orderProduct.product_name;
-    cell.productPriceLabel.text = orderProduct.product_price;
-    [cell.remarkLabel setCustomAttributedText:[orderProduct.product_notes isEqualToString:@"0"]?@"":[NSString convertHTML:orderProduct.product_notes]];
-    _remarkLabel = cell.remarkLabel;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:orderProduct.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = cell.productThumbImageView;
-    thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    if ([productNotes isEqualToString:@""] || [productNotes isEqualToString:@"0"]) {
+        productNotes = @"-";
+    }
+    [cell.remarkLabel setCustomAttributedText:productNotes];
     
     cell.indexPath = indexPath;
     
@@ -349,10 +348,11 @@
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
     
     cell.subtotalLabel.text = orderList.order_detail.detail_product_price_idr;
-    cell.insuranceLabel.text = orderList.order_detail.detail_insurance_price_idr;
     cell.shipmentFeeLabel.text = orderList.order_detail.detail_shipping_price_idr;
     cell.totalPaymentLabel.text = orderList.order_detail.detail_open_amount_idr;
-    
+    cell.InsuranceTitle.text = ([orderList.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    cell.insuranceLabel.text = ([orderList.order_detail.detail_additional_fee integerValue]==0)?orderList.order_detail.detail_insurance_price_idr:orderList.order_detail.detail_total_add_fee_idr;
+    cell.infoButton.hidden = ([orderList.order_detail.detail_additional_fee integerValue]==0);
     cell.recieverNameLabel.text = orderList.order_destination.receiver_name;
     NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@ %@",
                          orderList.order_destination.address_street,

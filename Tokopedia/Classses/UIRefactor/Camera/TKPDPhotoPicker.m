@@ -146,8 +146,8 @@
         float actualHeight = rawImage.size.height;
         float actualWidth = rawImage.size.width;
         float imgRatio = actualWidth/actualHeight;
-        float widthView = wself.parentViewController.view.frame.size.width;
-        float heightView = wself.parentViewController.view.frame.size.height;
+        float widthView = kTKPDCAMERA_MAXIMAGESIZE.width;//wself.parentViewController.view.frame.size.width;
+        float heightView = kTKPDCAMERA_MAXIMAGESIZE.height;//wself.parentViewController.view.frame.size.height;
         float maxRatio = widthView/heightView;
         
         if(imgRatio!=maxRatio){
