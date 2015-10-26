@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ProductModelView.h"
 
 @interface OrderProduct : NSObject
 
@@ -24,5 +25,7 @@
 @property NSInteger product_reject_quantity;
 @property (strong, nonatomic) NSString *product_name;
 @property (strong, nonatomic) NSString *product_url;
+
+@property (strong, nonatomic) ProductModelView *viewModel;
 
 @end

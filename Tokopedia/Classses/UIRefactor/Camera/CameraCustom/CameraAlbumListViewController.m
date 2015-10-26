@@ -79,7 +79,6 @@
     
     // emumerate through our groups and only add groups that contain photos
     ALAssetsLibraryGroupsEnumerationResultsBlock listGroupBlock = ^(ALAssetsGroup *group, BOOL *stop) {
-        
         ALAssetsFilter *onlyPhotosFilter = [ALAssetsFilter allPhotos];
         [group setAssetsFilter:onlyPhotosFilter];
         if ([group numberOfAssets] > 0)
@@ -93,7 +92,7 @@
     };
     
     // enumerate only photos
-    NSUInteger groupTypes = ALAssetsGroupAlbum | ALAssetsGroupEvent | ALAssetsGroupFaces | ALAssetsGroupSavedPhotos;
+    NSUInteger groupTypes = ALAssetsGroupAll;
     [_assetsLibrary enumerateGroupsWithTypes:groupTypes usingBlock:listGroupBlock failureBlock:failureBlock];
 }
 

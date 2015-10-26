@@ -7,6 +7,7 @@
 //
 
 #import "TransactionCartCostView.h"
+#import "AlertInfoView.h"
 
 @implementation TransactionCartCostView
 
@@ -22,8 +23,10 @@
     return nil;
 }
 - (IBAction)tap:(id)sender {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Biaya tambahan termasuk biaya asuransi dan biaya administrasi pengiriman" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info Biaya Tambahan";
+    alertInfo.detailText = @"Biaya tambahan termasuk biaya asuransi dan biaya administrasi pengiriman";
+    [alertInfo show];
 }
 
 @end

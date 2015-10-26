@@ -50,7 +50,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     BOOL _didPresentPicker;
     
     TKPDPhotoPicker *_photoPicker;
-    
+    NSMutableArray *selectedIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionview;
@@ -110,6 +110,13 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     [_selectedImages addObjectsFromArray:_selectedImagesArray];
     
     _collectionview.contentInset = UIEdgeInsetsMake(0, 0, 5, 0);
+    
+    selectedIndexPath = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedIndexPath) {
+        if (![selected isEqual:@""]) {
+            [selectedIndexPath addObject:selected];
+        }
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -171,9 +178,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         }];
         
         
-        //NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
-        //self.assets = [tmpAssets sortedArrayUsingDescriptors:@[sort]];
-        self.assets = tmpAssets;
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
+        [self.assets addObjectsFromArray:[tmpAssets sortedArrayUsingDescriptors:@[sort]]];
+//        self.assets = tmpAssets;
         
         [_collectionview reloadData];
     } failureBlock:failureBlock];
@@ -193,11 +200,12 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 {
     _assetsGroup = album;
     self.title = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName];
+    __block NSMutableArray *tmpAssets = [@[] mutableCopy];
     
     ALAssetsGroupEnumerationResultsBlock assetsEnumerationBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {
-            [_assets addObject:result];
+            [tmpAssets addObject:result];
         }
     };
     
@@ -205,7 +213,11 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     [self.assetsGroup setAssetsFilter:onlyPhotosFilter];
     
     [self.assetsGroup enumerateAssetsUsingBlock:assetsEnumerationBlock];
+    
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
+    [self.assets addObjectsFromArray:[tmpAssets sortedArrayUsingDescriptors:@[sort]]];
     [_collectionview reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -275,40 +287,42 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 -(IBAction)tap:(id)sender
 {
     [_selectedImages removeAllObjects];
-    for (NSIndexPath *selected in _selectedIndexPath) {
-        if (selected.row>0) {
-            ALAsset *asset = _assets[selected.row-1];
-            UIImage *rawImage = [UIImage imageWithCGImage:[[asset defaultRepresentation]
-                                                           fullScreenImage]];
-            NSString* mediaType = @"public.image";
-            NSString* imageName = [[asset defaultRepresentation] filename];
-            
-            UIImage *resizedImage = [self resizedImage:rawImage];
-            
-            NSData* imageDataResizedImage;
-            if (imageName) {
-                NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
-                if ([extensionOFImage isEqualToString:@"jpg"])
+    NSArray *arrayIndexPath = (_isAddEditProduct)?_selectedIndexPath:selectedIndexPath;
+    for (id selected in arrayIndexPath) {
+        if ([selected isKindOfClass:[NSIndexPath class]]) {
+            if (((NSIndexPath*)selected).row>0) {
+                ALAsset *asset = _assets[((NSIndexPath*)selected).row-1];
+                UIImage *rawImage = [UIImage imageWithCGImage:[[asset defaultRepresentation]
+                                                               fullScreenImage]];
+                NSString* mediaType = @"public.image";
+                NSString* imageName = [[asset defaultRepresentation] filename];
+                
+                UIImage *resizedImage = [self resizedImage:rawImage];
+                
+                NSData* imageDataResizedImage;
+                if (imageName) {
+                    NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
+                    if ([extensionOFImage isEqualToString:@"jpg"])
+                        imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
+                    else
+                        imageDataResizedImage = UIImageJPEGRepresentation(resizedImage, 1.0);
+                }
+                else{
                     imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
-                else
-                    imageDataResizedImage = UIImageJPEGRepresentation(resizedImage, 1.0);
+                }
+                
+                NSDictionary *selectedImage = @{kTKPDCAMERA_DATAPHOTOKEY:@{
+                                                        kTKPDCAMERA_DATARAWPHOTOKEY:rawImage?:@"",
+                                                        kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
+                                                        kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
+                                                        DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
+                                                        DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
+                                                        }};
+                [_selectedImages addObject:selectedImage];
             }
-            else{
-                imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
-            }
-            
-            NSDictionary *selectedImage = @{kTKPDCAMERA_DATAPHOTOKEY:@{
-                                                    kTKPDCAMERA_DATARAWPHOTOKEY:rawImage?:@"",
-                                                    kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
-                                                    kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
-                                                    DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
-                                                    DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
-                                                    }};
-            [_selectedImages addObject:selectedImage];
-            
         }
     }
-    [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":[_selectedIndexPath copy]}];
+    [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -325,7 +339,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     if (indexPath.row == 0) {
         _didPresentPicker = YES;
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+//            TKPDLiveCameraTableViewCell *cameraCell = (TKPDLiveCameraTableViewCell *)[collectionView cellForItemAtIndexPath:indexPath];selectedIndexPath
 //            [cameraCell freezeCapturedContent];
 //        });
         
@@ -365,16 +379,36 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         CameraCollectionCell* cell = (CameraCollectionCell*)[collectionView cellForItemAtIndexPath:indexPath];
         if ([_selectedIndexPath containsObject:indexPath]) {
             cell.checkmarkImageView.hidden = YES;
-            [_selectedIndexPath removeObject:indexPath];
+            [selectedIndexPath removeObject:indexPath];
             if ([self.delegate respondsToSelector:@selector(didRemoveImageDictionary:)]) {
                 [_delegate didRemoveImageDictionary:selectedImage];
+            }
+            if(!_isAddEditProduct)[_selectedIndexPath removeObject:indexPath];
+            else
+            {
+                for (int i=0; i<_selectedIndexPath.count; i++) {
+                    if ([_selectedIndexPath[i] isEqual:indexPath]) {
+                        [_selectedIndexPath replaceObjectAtIndex:i withObject:@""];
+                        break;
+                    }
+                }
             }
         }
         else
         {
-            if (_selectedIndexPath.count < _maxSelected) {
+            if (selectedIndexPath.count < _maxSelected) {
                 cell.checkmarkImageView.hidden = NO;
-                [_selectedIndexPath addObject:indexPath];
+                [selectedIndexPath addObject:indexPath];
+                if(!_isAddEditProduct)[_selectedIndexPath addObject:indexPath];
+                else
+                {
+                    for (int i=0; i<_selectedIndexPath.count; i++) {
+                        if ([_selectedIndexPath[i] isEqual:@""]) {
+                            [_selectedIndexPath replaceObjectAtIndex:i withObject:indexPath];
+                            break;
+                        }
+                    }
+                }
             }
             
         }
@@ -398,8 +432,8 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     float actualHeight = rawImage.size.height;
     float actualWidth = rawImage.size.width;
     float imgRatio = actualWidth/actualHeight;
-    float widthView = self.view.frame.size.width;
-    float heightView = self.view.frame.size.height;
+    float widthView = kTKPDCAMERA_MAXIMAGESIZE.width;//self.view.frame.size.width;
+    float heightView = kTKPDCAMERA_MAXIMAGESIZE.height;//self.view.frame.size.height;
     float maxRatio = widthView/heightView;
     
     if(imgRatio!=maxRatio){
@@ -432,7 +466,6 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 // MARK: TKPDPhotoPickerDelegate methods
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
-    [_selectedIndexPath addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
     [_selectedImages addObject:userInfo];
     NSDictionary *userInfoDict = @{@"selected_images":[_selectedImages copy], DATA_CAMERA_SOURCE_TYPE:@(UIImagePickerControllerSourceTypeCamera), @"selected_indexpath":_selectedIndexPath};
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
