@@ -82,7 +82,7 @@
             } else
             {
                 NSError *error = processResult;
-                StickyAlertView *alert = [[StickyAlertView alloc]init];
+                StickyAlertView *alert;
                 NSArray *errors;
                 if(error.code == -1011) {
                     errors = @[@"Mohon maaf, terjadi kendala pada server"];
@@ -92,7 +92,11 @@
                     errors = @[error.localizedDescription];
                 }
                 
-                [alert initWithErrorMessages:errors delegate:_delegate];
+                if ([_delegate isKindOfClass:[UIViewController class]])
+                    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:_delegate];
+                else
+                    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:                    [((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+                
                 [alert show];
             
             }

@@ -18,6 +18,9 @@
 #import "TxOrderConfirmationShipmentCell.h"
 #import "TxOrderConfirmationList.h"
 #import "TxOrderPaymentViewController.h"
+#import "AlertListBankView.h"
+
+#import "ListRekeningBank.h"
 
 @interface TxOrderConfirmationDetailViewController ()
 <
@@ -43,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *depositAmountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transferCodeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *grandTotalLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintRekeningInfo;
 
 @end
 
@@ -93,6 +97,13 @@
         vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (IBAction)tapRekInfo:(id)sender {
+    AlertListBankView *popUp = [AlertListBankView newview];
+    ListRekeningBank *listBank = [ListRekeningBank new];
+    popUp.list = [listBank getRekeningBankList];
+    [popUp show];
 }
 
 
