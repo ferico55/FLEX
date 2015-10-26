@@ -21,6 +21,8 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "NavigateViewController.h"
 
+#import "AlertInfoView.h"
+
 #define CTagAddress 2
 #define CTagPhone 3
 
@@ -83,10 +85,13 @@ CancelShipmentConfirmationDelegate
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDueDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *receivePartialOrderLabel;
+@property (weak, nonatomic) IBOutlet UIButton *infoAddFeeButton;
+@property (weak, nonatomic) IBOutlet UILabel *insuranceTextLabel;
 
 @end
 
 @implementation OrderDetailViewController
+
 
 - (void)viewDidLoad
 {
@@ -201,6 +206,10 @@ CancelShipmentConfirmationDelegate
     
     _subTotalFeeLabel.text = _transaction.order_detail.detail_product_price_idr;
     _assuranceFeeLabel.text = _transaction.order_detail.detail_insurance_price_idr;
+    _insuranceTextLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    _assuranceFeeLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?_transaction.order_detail.detail_insurance_price_idr:_transaction.order_detail.detail_total_add_fee_idr;
+    _infoAddFeeButton.hidden = ([_transaction.order_detail.detail_additional_fee integerValue]==0);
+    
     _shipmentFeeLabel.text = _transaction.order_detail.detail_shipping_price_idr;
     _totalFeeLabel.text = _transaction.order_detail.detail_open_amount_idr;
     
@@ -609,6 +618,13 @@ CancelShipmentConfirmationDelegate
             
         }
     }
+}
+
+- (IBAction)tapInfoAddFee:(id)sender {
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info Biaya Tambahan";
+    alertInfo.detailText = @"Biaya tambahan termasuk biaya asuransi dan biaya administrasi pengiriman";
+    [alertInfo show];
 }
 
 #pragma mark - Alert delegate
