@@ -59,12 +59,10 @@
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
-    if ([_remarkTextView.text isEqualToString:@""]) {
-        [self setTextViewPlaceholder:@"Tulis Keterangan"];
-    }
-    
     _remarkTextView.delegate = self;
     [self setDefaultData:_data];
+    [self setTextViewPlaceholder:@"Tulis Keterangan"];
+    
     [_remarkTextView becomeFirstResponder];
     
     
@@ -261,13 +259,14 @@ replacementString:(NSString*)string
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
 {
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
-    inset.left = 15;
-    inset.top = 37;
+    inset.left = 20;
+    inset.top = _headerView.frame.size.height-12;
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, inset.top, _remarkTextView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
     placeholderLabel.font = [UIFont fontWithName:_remarkTextView.font.fontName size:_remarkTextView.font.pointSize];
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
+    placeholderLabel.hidden = (![_remarkTextView.text isEqualToString:@""] && _remarkTextView.text != nil);
     [_remarkTextView addSubview:placeholderLabel];
 }
 
