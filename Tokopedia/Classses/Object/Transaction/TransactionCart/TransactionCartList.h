@@ -12,6 +12,8 @@
 #import "AddressFormList.h"
 #import "ShopInfo.h"
 
+#import "CartModelView.h"
+
 @interface TransactionCartList : NSObject
 
 @property (nonatomic, strong) NSString *cart_total_logistic_fee;
@@ -46,7 +48,8 @@
 @property (nonatomic, strong) NSString *cart_logistic_fee;
 
 @property (nonatomic, strong) NSString *cart_is_price_changed;
-
 @property (nonatomic, strong) ShopInfo *cart_shop;
+
+@property (nonatomic, strong) CartModelView *viewModel;
 
 @end

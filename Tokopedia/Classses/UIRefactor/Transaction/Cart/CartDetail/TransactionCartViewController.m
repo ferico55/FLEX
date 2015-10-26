@@ -225,7 +225,7 @@
 #define HEIGHT_VIEW_SUBTOTAL 156
 #define HEIGHT_VIEW_TOTAL_DEPOSIT 30
 #define DEFAULT_ROW_HEIGHT 44
-#define CELL_PRODUCT_ROW_HEIGHT 212
+#define CELL_PRODUCT_ROW_HEIGHT 126
 
 #define TAG_REQUEST_CART 10
 #define TAG_REQUEST_CANCEL_CART 11
@@ -2254,91 +2254,12 @@
     NSInteger indexProduct = indexPath.row;
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
-    cell.backgroundColor = (_indexPage==0)?[UIColor whiteColor]:[UIColor colorWithRed:247.0f/255.0f green:247.0f/255.0f blue:247.0f/255.0f alpha:1];
-
-    NSAttributedString *attributedText;
-    if (_indexPage==0) {
-        UIColor *color = [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1];
-        [_textAttributes setObject:color forKey:NSForegroundColorAttributeName];
-        attributedText = [[NSAttributedString alloc] initWithString:product.product_name
-                                                         attributes:_textAttributes];
-    } else {
-        [_textAttributes setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
-        attributedText = [[NSAttributedString alloc] initWithString:product.product_name
-                                                         attributes:_textAttributes];
-    }
-    [cell.productNameLabel setAttributedText:attributedText];
-
-    NSString *priceIsChangedString = [NSString stringWithFormat:@"%@ (Sebelumnya %@)", product.product_price_idr, product.product_price_last];
-    NSString *productSebelumnya = [NSString stringWithFormat:@"(Sebelumnya %@)", product.product_price_last];
-    NSString *priceString = product.product_price_idr;
     
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:priceIsChangedString];
-    [attributedString addAttribute:NSFontAttributeName
-                             value:FONT_GOTHAM_BOOK_10
-                             range:[priceIsChangedString rangeOfString:productSebelumnya]];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[priceIsChangedString rangeOfString:productSebelumnya]];
-    
-    NSString *productPriceWORp = [product.product_price_last stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
-    productPriceWORp = [productPriceWORp stringByReplacingOccurrencesOfString:@"." withString:@""];
-    if ([productPriceWORp integerValue] != 0)
-        cell.productPriceLabel.attributedText = attributedString;
-    else
-        cell.productPriceLabel.text = priceString;
-    
-    product.product_total_weight = [self roundingFloatFromString:product.product_total_weight];
-    
-    NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",product.product_quantity, product.product_total_weight];
-    attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
-    [attributedString addAttribute:NSFontAttributeName
-                             value:FONT_GOTHAM_BOOK_12
-                             range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_total_weight]]];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_total_weight]]];
-    cell.quantityLabel.attributedText = attributedString;
-    
-    NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section];
-    ((TransactionCartCell*)cell).indexPath = indexPathCell;
-    NSString *productNotes = [product.product_notes stringByReplacingOccurrencesOfString:@"\n" withString:@"; "];
-    [cell.remarkLabel setCustomAttributedText:productNotes?:@"-"];
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = cell.productThumbImageView;
-    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey2.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [thumb setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        thumb.image = [UIImage imageNamed:@"Icon_no_photo_transparan.png"];
-    }];
-    
-    cell.editButton.hidden = (_indexPage == 1);
-    
-    if (([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil ) && [productPriceWORp integerValue] == 0) {
-        cell.errorProductLabel.hidden = YES;
-    }
-    else
-    {
-        cell.errorProductLabel.hidden = NO;
-        if ([product.product_error_msg isEqualToString:@"Produk ini berada di gudang"]) {
-            cell.errorProductLabel.text = @"GUDANG";
-        }
-        else if ([product.product_error_msg isEqualToString:@"Produk ini dalam moderasi"])
-        {
-            cell.errorProductLabel.text = @"MODERASI";
-        }
-        else if ([product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
-        {
-            [cell.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
-        }
-        else if ([list.cart_is_price_changed integerValue] == 1)
-        {
-            [cell.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
-        }
-        else
-            cell.errorProductLabel.text = @"HAPUS";
-    }
-    
-
-    cell.userInteractionEnabled = (_indexPage ==0);
+    ((TransactionCartCell*)cell).indexPage = _indexPage;
+    ((TransactionCartCell*)cell).indexPath = indexPath;
+    [(TransactionCartCell*)cell setCartViewModel:list.viewModel];
+    [(TransactionCartCell*)cell setViewModel:product.viewModel];
+    ((TransactionCartCell*)cell).userInteractionEnabled = (_indexPage ==0);
     return cell;
 }
 
@@ -2610,10 +2531,14 @@
     NSString *string = productNotes;
     
     //Calculate the expected size based on the font and linebreak mode of your label
-    CGSize maximumLabelSize = CGSizeMake(290,9999);
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
+    CGSize maximumLabelSize = CGSizeMake(250,9999);
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
                                   constrainedToSize:maximumLabelSize
                                       lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    if ([productNotes isEqualToString:@""]) {
+        expectedLabelSize.height = 0;
+    }
     
     return CELL_PRODUCT_ROW_HEIGHT+expectedLabelSize.height;
 }
