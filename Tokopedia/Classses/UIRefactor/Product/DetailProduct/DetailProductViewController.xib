@@ -668,9 +668,6 @@
                                 <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="dNf-fw-tsP"/>
-                            </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jakarta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6SQ-DJ-iQi">
                             <rect key="frame" x="18" y="93" width="150" height="21"/>
@@ -884,16 +881,8 @@
             </connections>
             <point key="canvasLocation" x="127" y="285.5"/>
         </view>
-        <tapGestureRecognizer id="n1N-Gx-LcD">
-            <connections>
-                <action selector="gesture:" destination="P75-Lv-uni" id="7BF-SF-lfr"/>
-            </connections>
-        </tapGestureRecognizer>
-        <tapGestureRecognizer id="shy-zk-4bX">
-            <connections>
-                <action selector="gesture:" destination="-1" id="9Cu-40-dVb"/>
-            </connections>
-        </tapGestureRecognizer>
+        <tapGestureRecognizer id="n1N-Gx-LcD"/>
+        <tapGestureRecognizer id="shy-zk-4bX"/>
     </objects>
     <resources>
         <image name="Badges_gold_merchant" width="40" height="40"/>
