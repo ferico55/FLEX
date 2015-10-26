@@ -12,6 +12,14 @@
 
 @implementation SearchAWSProduct
 
+- (NSString*)shop_name {
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString*)product_name {
+    return [_product_name kv_decodeHTMLCharacterEntities];
+}
+
 - (ProductModelView *)viewModel {
     if(!_viewModel) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
