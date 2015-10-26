@@ -91,7 +91,7 @@
     [self loadBanners];
     
     //add timer so it will refreshed periodically
-    NSTimer* timer = [NSTimer timerWithTimeInterval:10.0f target:self selector:@selector(loadBanners) userInfo:nil repeats:YES];
+    NSTimer* timer = [NSTimer timerWithTimeInterval:300.0f target:self selector:@selector(loadBanners) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
