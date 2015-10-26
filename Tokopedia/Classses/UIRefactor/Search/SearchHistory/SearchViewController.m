@@ -469,7 +469,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 #pragma mark - Network
 - (void)configureRestkit {
     NSString *urlString = [NSString stringWithFormat:@"http://jahe.tokopedia.com/"];
-    _objectManager = [RKObjectManager sharedClientUploadImage:urlString];
+    _objectManager = [RKObjectManager sharedClient:urlString];
     
     RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteObject class]];;
     RKObjectMapping *domainsMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteDomains class]];
