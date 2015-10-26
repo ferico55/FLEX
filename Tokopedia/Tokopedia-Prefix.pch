@@ -71,4 +71,5 @@ enum emoticonTag
     #import "GAIFields.h"
     #import "TokopediaNetworkManager.h"
     #import "TKPString.h"
+    #import "TKPObjectMapping.h"
 #endif

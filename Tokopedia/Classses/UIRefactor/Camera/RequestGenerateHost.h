@@ -34,6 +34,7 @@
 
 
 @property NSString *prodct_id;
+@property BOOL isNotUsingNewAdd;
 
 - (void)configureRestkitGenerateHost;
 - (void)requestGenerateHost;

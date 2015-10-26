@@ -18,6 +18,8 @@
 #import "TransactionSummary.h"
 #import "TransactionSystemBank.h"
 
+#import <objc/runtime.h>
+
 @implementation TransactionObjectMapping
 
 #pragma mark - Cart
@@ -156,6 +158,7 @@
 -(RKObjectMapping*)transactionDetailSummaryMapping
 {
     RKObjectMapping *transactionMapping = [RKObjectMapping mappingForClass:[TransactionSummaryDetail class]];
+//    [transactionMapping addAttributeMappingsFromArray:[self allPropertyNames]];
     [transactionMapping addAttributeMappingsFromArray:@[API_CONFIRMATION_CODE_KEY,
                                                         API_SUMMARY_GRAN_TOTAL_BEFORE_FEE_IDR_KEY,
                                                         API_PROCESSING_KEY,
@@ -200,6 +203,26 @@
                                                         @"lp_amount"
                                                         ]];
     return transactionMapping;
+}
+
+- (NSArray *)allPropertyNames
+{
+    unsigned count;
+    objc_property_t *properties = class_copyPropertyList([TransactionSummaryDetail class], &count);
+    
+    NSMutableArray *rv = [NSMutableArray array];
+    
+    unsigned i;
+    for (i = 0; i < count; i++)
+    {
+        objc_property_t property = properties[i];
+        NSString *name = [NSString stringWithUTF8String:property_getName(property)];
+        [rv addObject:name];
+    }
+    
+    free(properties);
+    
+    return rv;
 }
 
 -(RKObjectMapping*)BCAParamMapping

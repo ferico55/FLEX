@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "UploadImageImage.h"
-@class Upload;
+#import "Upload.h"
 
-@interface UploadImageResult : NSObject
+@interface UploadImageResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *pic_id;
 @property (nonatomic, strong) NSString *file_path;

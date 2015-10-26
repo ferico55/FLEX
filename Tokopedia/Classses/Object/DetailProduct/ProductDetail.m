@@ -10,6 +10,24 @@
 
 @implementation ProductDetail
 
+- (ProductModelView *)viewModel {
+    if(_viewModel == nil) {
+        ProductModelView *tempViewModel = [ProductModelView new];
+        tempViewModel.productName= _product_name;
+        tempViewModel.productPriceIDR = _product_price_idr;
+        tempViewModel.productThumbUrl = _product_pic;
+        tempViewModel.productPriceBeforeChange = _product_price_last;
+        tempViewModel.productQuantity = _product_quantity;
+        tempViewModel.productTotalWeight = _product_total_weight;
+        tempViewModel.productNotes = _product_notes;
+        tempViewModel.productErrorMessage = _product_error_msg;
+        
+        _viewModel = tempViewModel;
+    }
+    
+    return _viewModel;
+}
+
 - (NSString *)product_description {
     return [_product_description kv_decodeHTMLCharacterEntities];
 }

@@ -13,7 +13,9 @@
 #import "IndomaretData.h"
 #import "InstallmentBank.h"
 
-@interface TransactionSummaryDetail : NSObject
+#import "TKPObjectMapping.h"
+
+@interface TransactionSummaryDetail : NSObject <TKPObjectMapping>
 
 @property (nonatomic,strong) NSArray *carts;
 

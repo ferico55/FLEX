@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ResolutionDetailConversation.h"
+@class GeneratedHost;
 
 @protocol ResolutionCenterInputViewControllerDelegate <NSObject>
 @optional
 -(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID;
 -(void)message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID;
+-(void)setGenerateHost:(GeneratedHost*)generateHost;
 -(void)reportResolution;
 
 @end

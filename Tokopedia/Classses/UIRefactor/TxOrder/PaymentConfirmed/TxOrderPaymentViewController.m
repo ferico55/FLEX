@@ -8,7 +8,7 @@
 
 #import "TxOrderObjectMapping.h"
 #import "TxOrderPaymentEdit.h"
-
+#import "AlertListBankView.h"
 #import "TxOrderPaymentViewController.h"
 #import "TxOrderConfirmPaymentForm.h"
 #import "TxOrderConfirmationList.h"
@@ -34,6 +34,8 @@
 
 #import "RequestPayment.h"
 #import "AlertInfoView.h"
+
+#import "ListRekeningBank.h"
 
 @interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate, RequestPaymentDelegate>
 {
@@ -103,6 +105,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *markTextView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UITableViewCell *RekInfoCell;
 
 @end
 
@@ -247,6 +250,12 @@
         }
         [_tableView reloadData];
     }
+}
+- (IBAction)tapRekeningInfo:(id)sender {
+    AlertListBankView *popUp = [AlertListBankView newview];
+    ListRekeningBank *listBank = [ListRekeningBank new];
+    popUp.list = [listBank getRekeningBankList];
+    [popUp show];
 }
 
 -(void)requestPaymentConfirmation
@@ -453,6 +462,13 @@
             BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
             if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 ) && indexPath.row == 2) {
                 return 0;
+            }
+            if(indexPath.row == 3)
+            {
+                if ([self isPaymentTypeSaldoTokopedia])
+                    return 0;
+                else
+                    return 54;
             }
         }
             break;
