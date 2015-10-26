@@ -48,6 +48,8 @@
 #import "HotlistBannerRequest.h"
 #import "HotlistBannerResult.h"
 
+#import "UIActivityViewController+Extensions.h"
+
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
 #define CTagFooterCollectionView @"FooterCollectionReusableView"
@@ -471,10 +473,9 @@ HotlistBannerDelegate
                     }
                     
                     if (title && url) {
-                        UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                          applicationActivities:nil];
-                        act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                        [self presentViewController:act animated:YES completion:nil];
+                        UIActivityViewController *shareDialogController = [UIActivityViewController shareDialogWithTitle:title url:url anchor:sender];
+
+                       [self presentViewController:shareDialogController animated:YES completion:nil];
                     }
                     
                     break;

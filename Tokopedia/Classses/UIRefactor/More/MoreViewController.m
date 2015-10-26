@@ -62,6 +62,8 @@
 
 #import <MessageUI/MessageUI.h>
 
+#import "UIActivityViewController+Extensions.h"
+
 #define CTagProfileInfo 12
 #define CTagLP 13
 
@@ -799,10 +801,13 @@
             
             NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
-            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                             applicationActivities:nil];
-            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-            [self presentViewController:activityController animated:YES completion:nil];
+            
+            UIActivityViewController *shareDialogController = [UIActivityViewController
+                                                               shareDialogWithTitle:title
+                                                               url:url
+                                                               anchor:[tableView cellForRowAtIndexPath:indexPath]];
+            
+            [self presentViewController:shareDialogController animated:YES completion:nil];
         }
     }
     

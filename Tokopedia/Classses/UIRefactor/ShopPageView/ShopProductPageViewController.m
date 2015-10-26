@@ -49,6 +49,8 @@
 
 #import "PromoRequest.h"
 
+#import "UIActivityViewController+Extensions.h"
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -623,10 +625,11 @@ TokopediaNetworkManagerDelegate
                            _shop.result.info.shop_name,
                            _shop.result.info.shop_location];
         NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
-        activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-        [self presentViewController:activityController animated:YES completion:nil];
+        
+        UIActivityViewController* shareDialogController = [UIActivityViewController
+                                                           shareDialogWithTitle:title url:url
+                                                           anchor:sender];
+        [self presentViewController:shareDialogController animated:YES completion:nil];
     }
 }
 

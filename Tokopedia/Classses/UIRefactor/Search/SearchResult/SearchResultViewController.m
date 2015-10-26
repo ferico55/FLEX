@@ -48,6 +48,8 @@
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
 
+#import "UIActivityViewController+Extensions.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -542,10 +544,13 @@ PromoCollectionViewDelegate
                          [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString]];
             }
             NSURL *url = [NSURL URLWithString: _searchObject.result.share_url?:@"www.tokopedia.com"];
-            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                             applicationActivities:nil];
-            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-            [self presentViewController:activityController animated:YES completion:nil];
+            
+            UIActivityViewController* shareDialogController = [UIActivityViewController
+                                                               shareDialogWithTitle:title
+                                                               url:url
+                                                               anchor:sender];
+            
+            [self presentViewController:shareDialogController animated:YES completion:nil];
             break;
         }
         case 13:
