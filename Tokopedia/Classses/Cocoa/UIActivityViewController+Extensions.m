@@ -17,10 +17,7 @@
     
     controller.excludedActivityTypes = @[
                                          UIActivityTypeMessage,
-                                         UIActivityTypeMail,
-                                         UIActivityTypeAirDrop,
-                                         UIActivityTypeCopyToPasteboard,
-                                         UIActivityTypeAddToReadingList
+                                         UIActivityTypeMail
                                          ];
     
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS8_0)) {
