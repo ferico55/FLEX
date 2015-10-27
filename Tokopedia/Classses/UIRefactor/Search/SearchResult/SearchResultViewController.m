@@ -761,9 +761,15 @@ PromoCollectionViewDelegate
         
         
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-            [_product addObject: search.result.products];
+            if(search.result.products.count > 0) {
+                [_product addObject: search.result.products];
+            }
+
         } else {
-            [_product addObject: search.result.catalogs];
+            if(search.result.catalogs.count > 0) {
+                [_product addObject: search.result.catalogs];                
+            }
+
         }
         
         if(_start == 0) {
