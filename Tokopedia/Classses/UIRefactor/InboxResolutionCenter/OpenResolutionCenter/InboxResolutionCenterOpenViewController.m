@@ -284,7 +284,7 @@
             if (button.tag == picker.tag) {
                 button.enabled = NO;
                 button.hidden = YES;
-            } else if (button.tag == picker.tag+1) {
+            } else if (button.tag == picker.tag+1 && ((UIImageView*)_uploadedImages[(picker.tag+1)-10]).image == nil) {
                 button.enabled = YES;
                 button.hidden = NO;
             }
@@ -293,6 +293,9 @@
         imageView.image = image;
         imageView.hidden = NO;
         imageView.alpha = 0.5f;
+        
+        [imageView setContentMode:UIViewContentModeScaleAspectFill];
+        [imageView setClipsToBounds:YES];
         
         [self actionUploadImage:object];   
     }
