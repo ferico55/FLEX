@@ -71,13 +71,13 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [imageView setImage:image];
-            [imageView setContentMode:UIViewContentModeScaleAspectFit];
+            [imageView setContentMode:UIViewContentModeScaleAspectFill];
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                NSDictionary *mainColor = [self mainColoursInImage:image detail:1];
-                UIColor *bgColor = [mainColor objectForKey:@"colours"][0];
-                [imageView setBackgroundColor:bgColor];
-            });
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//                NSDictionary *mainColor = [self mainColoursInImage:image detail:1];
+//                UIColor *bgColor = [mainColor objectForKey:@"colours"][0];
+//                [imageView setBackgroundColor:bgColor];
+//            });
             
 #pragma clang diagnostic pop
         } failure:nil];
@@ -130,13 +130,13 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [_tickerImage setImage:image];
-        [_tickerImage setContentMode:UIViewContentModeScaleAspectFit];
+        [_tickerImage setContentMode:UIViewContentModeScaleAspectFill];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            NSDictionary *mainColor = [self mainColoursInImage:image detail:1];
-            UIColor *bgColor = [mainColor objectForKey:@"colours"][0];
-            [_tickerImage setBackgroundColor:bgColor];
-        });
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//            NSDictionary *mainColor = [self mainColoursInImage:image detail:1];
+//            UIColor *bgColor = [mainColor objectForKey:@"colours"][0];
+//            [_tickerImage setBackgroundColor:bgColor];
+//        });
 #pragma clang diagnostic pop
     } failure:nil];
 }
@@ -157,7 +157,7 @@
 - (void)tapTicker {
     WebViewController *webViewController = [WebViewController new];
     webViewController.strTitle = @"Promo";
-    webViewController.strURL = @"http://webdav.tokopedia.dev/kucing-ganteng/";
+    webViewController.strURL = @"http://staging2.tokopedia.com/kucing-kucing/";
     
     if(_delegate != nil) {
         [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];
