@@ -119,7 +119,7 @@ typedef enum {
 
 #define kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY @"setetalase"
 #define kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY @"setuserinfo"
-//#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
+#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
 //#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
 
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"

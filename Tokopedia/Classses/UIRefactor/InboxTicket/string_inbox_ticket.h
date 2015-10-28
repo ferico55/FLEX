@@ -59,6 +59,8 @@
 #define API_LIST_TICKET_ID_KEY                  @"ticket_id"
 #define API_LIST_TICKET_UPDATE_BY_NAME_KEY      @"ticket_update_by_name"
 #define API_LIST_TICKET_CATEGORY_ID_KEY         @"ticket_category_id"
+#define API_LIST_TICKET_ATTACHMENT_KEY          @"ticket_attachment"
+#define API_LIST_TICKET_INVOICE_REF_NUM_KEY     @"ticket_invoice_ref_num"
 
 #define API_TICKET_KEY                          @"ticket"
 

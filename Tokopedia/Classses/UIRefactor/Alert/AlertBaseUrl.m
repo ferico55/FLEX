@@ -39,5 +39,4 @@
     [self dismissindex:-1 silent:YES animated:YES];
 }
 
-
 @end
