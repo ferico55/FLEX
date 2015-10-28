@@ -149,14 +149,22 @@
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
     
     InboxTicketDetailViewController *controller = [InboxTicketDetailViewController new];
+    if (self.detailViewController != nil) {
+        controller = self.detailViewController;
+    }
+    
     controller.inboxTicket = ticket;
     controller.delegate = self;
     
     _selectedIndexPath = indexPath;
     
-    if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [self.detailViewController updateTicket:ticket];
+    } else if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
         [self.delegate pushViewController:controller];
     }
+    
+    
 }
 
 #pragma mark - Tokopedia network manager

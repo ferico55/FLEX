@@ -1831,6 +1831,8 @@
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		92AC291C1BDE48E0001C86B3 /* UIActivityViewController+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 92AC291B1BDE48E0001C86B3 /* UIActivityViewController+Extensions.m */; settings = {ASSET_TAGS = (); }; };
+		92AC29201BDF6656001C86B3 /* InboxTicketSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92AC291E1BDF6656001C86B3 /* InboxTicketSplitViewController.m */; settings = {ASSET_TAGS = (); }; };
+		92AC29211BDF6656001C86B3 /* InboxTicketSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92AC291F1BDF6656001C86B3 /* InboxTicketSplitViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4599,6 +4601,9 @@
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92AC291A1BDE48E0001C86B3 /* UIActivityViewController+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityViewController+Extensions.h"; sourceTree = "<group>"; };
 		92AC291B1BDE48E0001C86B3 /* UIActivityViewController+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityViewController+Extensions.m"; sourceTree = "<group>"; };
+		92AC291D1BDF6656001C86B3 /* InboxTicketSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTicketSplitViewController.h; sourceTree = "<group>"; };
+		92AC291E1BDF6656001C86B3 /* InboxTicketSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTicketSplitViewController.m; sourceTree = "<group>"; };
+		92AC291F1BDF6656001C86B3 /* InboxTicketSplitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTicketSplitViewController.xib; sourceTree = "<group>"; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
@@ -7322,6 +7327,9 @@
 				7A27D06E1BDE42C000905D4F /* InboxTicketViewController.h */,
 				7A27D06F1BDE42C000905D4F /* InboxTicketViewController.m */,
 				7A27D0701BDE42C000905D4F /* string_inbox_ticket.h */,
+				92AC291D1BDF6656001C86B3 /* InboxTicketSplitViewController.h */,
+				92AC291E1BDF6656001C86B3 /* InboxTicketSplitViewController.m */,
+				92AC291F1BDF6656001C86B3 /* InboxTicketSplitViewController.xib */,
 			);
 			path = InboxTicket;
 			sourceTree = "<group>";
@@ -9887,6 +9895,7 @@
 				7A27DB441BDE42C300905D4F /* icon_3@3x.png in Resources */,
 				7A27DD1B1BDE42C300905D4F /* Icon_check_green_bg@2x.png in Resources */,
 				7A27DD071BDE42C300905D4F /* icon_more@2x.png in Resources */,
+				92AC29211BDF6656001C86B3 /* InboxTicketSplitViewController.xib in Resources */,
 				7A27DBA41BDE42C300905D4F /* icon_maintenance_grey.png in Resources */,
 				7A27DC6C1BDE42C300905D4F /* icon_speed_grey@2x.png in Resources */,
 				7A27D8FB1BDE42C300905D4F /* InboxTalkCell.xib in Resources */,
@@ -11595,6 +11604,7 @@
 				7A27D69A1BDE42C300905D4F /* ReviewProductOwner.m in Sources */,
 				7A27D7FD1BDE42C300905D4F /* UploadImageImage.m in Sources */,
 				7A27DAB11BDE42C300905D4F /* ProductThumbCell.m in Sources */,
+				92AC29201BDF6656001C86B3 /* InboxTicketSplitViewController.m in Sources */,
 				7A27D6501BDE42C300905D4F /* NSData+Encryption.m in Sources */,
 				7A27D9F31BDE42C300905D4F /* SettingUserProfileViewController.m in Sources */,
 				7A27D8361BDE42C300905D4F /* CameraCollectionCell.m in Sources */,

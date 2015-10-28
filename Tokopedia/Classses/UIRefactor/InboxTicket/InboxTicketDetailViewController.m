@@ -189,6 +189,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                                object:nil];
 }
 
+- (void)updateTicket:(InboxTicketList *)inboxTicket {
+    self.inboxTicket = inboxTicket;
+    [_networkManager doRequest];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 }
@@ -334,10 +339,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                            API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id
                            };
         } else {
+            if (_inboxTicket != nil)
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_DETAIL,
                            API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id,
                            };
+            
+            else dictionary = @{};
         }
     } else {
         
@@ -538,7 +546,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)loadTicketsData:(RKMappingResult *)mappingResult {
     DetailInboxTicket *response = [mappingResult.dictionary objectForKey:@""];
     
-    if (!_ticketInformation) {
+//    if (!_ticketInformation) {
         _ticketInformation = response.result.ticket;
         if ([_ticketInformation.ticket_status isEqualToString:@"2"] &&
             ![_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
@@ -550,7 +558,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
         }
-    }
+//    }
 
     self.tableView.sectionHeaderHeight = 0;
     
@@ -560,6 +568,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     if (!_ticketDetail) {
         _ticketDetail = [InboxTicketDetail new];
+    }
+    
+//    if (!_ticketDetail) {
+//        _ticketDetail = [InboxTicketDetail new];
         _ticketDetail.ticket_detail_user_name = _ticketInformation.ticket_first_message_name;
         _ticketDetail.ticket_detail_user_image = _ticketInformation.ticket_first_message_image;
         _ticketDetail.ticket_detail_message = _ticketInformation.ticket_first_message;
@@ -571,7 +583,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         } else {
             _ticketDetail.ticket_detail_is_cs = @"0";
         }
-    }
+//    }
     
     NSMutableArray *tickets = [NSMutableArray new];
     for (InboxTicketDetail *message in response.result.ticket_reply.ticket_reply_data) {

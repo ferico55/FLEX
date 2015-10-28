@@ -30,6 +30,7 @@
 #import "InboxTalkSplitViewController.h"
 #import "InboxReviewSplitViewController.h"
 #import "InboxResolSplitViewController.h"
+#import "InboxTicketSplitViewController.h"
 
 
 @interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate, SplitReputationVcProtocol>
@@ -409,26 +410,32 @@
             }
             case 4:
             {
-                TKPDTabViewController *controller = [TKPDTabViewController new];
-                controller.hidesBottomBarWhenPushed = YES;
-                
-                InboxTicketViewController *allInbox = [InboxTicketViewController new];
-                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-                allInbox.delegate = controller;
-                
-                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-                unreadInbox.delegate = controller;
-                
-                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
-                closedInbox.delegate = controller;
-                
-                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-                
-                [self.delegate pushViewController:controller];
+                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                    InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
+                    
+                    [self.delegate pushViewController:controller]; 
+                } else {
+                    TKPDTabViewController *controller = [TKPDTabViewController new];
+                    controller.hidesBottomBarWhenPushed = YES;
+                    
+                    InboxTicketViewController *allInbox = [InboxTicketViewController new];
+                    allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+                    allInbox.delegate = controller;
+                    
+                    InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+                    unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+                    unreadInbox.delegate = controller;
+                    
+                    InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+                    closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+                    closedInbox.delegate = controller;
+                    
+                    controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+                    controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+                    controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+                    
+                    [self.delegate pushViewController:controller];
+                }
                 break;
             }
                 

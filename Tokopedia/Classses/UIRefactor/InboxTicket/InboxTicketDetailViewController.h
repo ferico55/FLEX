@@ -20,4 +20,6 @@
 @property (strong, nonatomic) InboxTicketList *inboxTicket;
 @property (weak, nonatomic) id<InboxTicketDetailDelegate> delegate;
 
+- (void)updateTicket:(InboxTicketList *)inboxTicket;
+
 @end
