@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopname;
 @property (weak, nonatomic) IBOutlet UIButton *favbutton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-
+@property (weak, nonatomic) IBOutlet UIImageView *goldBadgeView;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 + (id)newcell;
