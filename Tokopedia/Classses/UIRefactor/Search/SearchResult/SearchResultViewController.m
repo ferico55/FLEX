@@ -949,11 +949,18 @@ PromoCollectionViewDelegate
                                       @"product_price"    :product.product_price?:@"",
                                       @"shop_name"        : product.shop_name?:@""
                                       };
+        PromoRequestSourceType source;
+        if ([_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]) {
+            source = PromoRequestSourceCategory;
+        } else if ([_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
+            source = PromoRequestSourceSearch;
+        }
         NSDictionary *promoData = @{
                                     kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
                                     PromoImpressionKey          : product.ad_key,
                                     PromoSemKey                 : product.ad_sem_key,
-                                    PromoReferralKey            : product.ad_r
+                                    PromoReferralKey            : product.ad_r,
+                                    PromoRequestSource          : @(source)
                                     };
         [navigateController navigateToProductFromViewController:self
                                                       promoData:promoData

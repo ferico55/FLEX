@@ -192,6 +192,8 @@ UIAlertViewDelegate
     NSString *_detailProductBaseUrl;
     NSString *_detailProductPostUrl;
     NSString *_detailProductFullUrl;
+
+    PromoRequest *_promoRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -3148,12 +3150,16 @@ UIAlertViewDelegate
 }
 
 - (void)addImpressionClick {
-    __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+    _promoRequest = [[PromoRequest alloc] init];
     NSString *adKey = [_data objectForKey:PromoImpressionKey];
     NSString *adSemKey = [_data objectForKey:PromoSemKey];
     NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
+    PromoRequestSourceType source = [[_data objectForKey:PromoRequestSource] integerValue];
     if (adKey) {
-        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+        [_promoRequest addImpressionKey:adKey
+                                 semKey:adSemKey
+                            referralKey:adReferralKey
+                                 source:source];
     }
 }
 @end
