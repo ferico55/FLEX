@@ -190,6 +190,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (void)updateTicket:(InboxTicketList *)inboxTicket {
     self.inboxTicket = inboxTicket;
+    [self setTitleView];
     [_networkManager doRequest];
 }
 
