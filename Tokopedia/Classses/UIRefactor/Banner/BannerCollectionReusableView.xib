@@ -20,7 +20,7 @@
                         <action selector="changePage:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="tfb-oR-fgp"/>
                     </connections>
                 </pageControl>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yxQ-YZ-cor">
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="yxQ-YZ-cor">
                     <rect key="frame" x="0.0" y="184" width="320" height="96"/>
                     <animations/>
                 </imageView>
@@ -64,4 +64,7 @@
             <point key="canvasLocation" x="170" y="275.5"/>
         </collectionReusableView>
     </objects>
+    <resources>
+        <image name="icon_toped_loading_grey-02.png" width="30" height="30"/>
+    </resources>
 </document>

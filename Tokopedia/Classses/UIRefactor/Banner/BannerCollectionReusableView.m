@@ -14,7 +14,7 @@
 - (void)awakeFromNib {
     // Initialization code
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveBanners:) name:@"TKPDidReceiveBanners" object:nil];
-    [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(scrollTimerBased) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:900.0 target:self selector:@selector(scrollTimerBased) userInfo:nil repeats:YES];
     _scrollView.hidden = YES;
 }
 
@@ -157,7 +157,7 @@
 - (void)tapTicker {
     WebViewController *webViewController = [WebViewController new];
     webViewController.strTitle = @"Promo";
-    webViewController.strURL = @"http://staging2.tokopedia.com/kucing-kucing/";
+    webViewController.strURL = _banners.result.ticker.url;
     
     if(_delegate != nil) {
         [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];
