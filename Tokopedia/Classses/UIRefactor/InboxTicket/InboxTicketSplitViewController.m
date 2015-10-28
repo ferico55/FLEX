@@ -58,6 +58,7 @@
     self.splitViewController = [[UISplitViewController alloc] init];
     self.splitViewController.delegate = detailVC;
     self.splitViewController.viewControllers = [NSArray arrayWithObjects:masterNav, detailNav, nil];
+    controller.splitVC = self;
     
     if ([self.splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {
         [self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAllVisible];
