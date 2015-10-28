@@ -68,6 +68,8 @@
 {
     if(_requestGenerateHost.isExecuting) return;
     
+    [self configureRestkitGenerateHost];
+
     _requestCount ++;
     
     NSTimer *timer;
@@ -152,7 +154,6 @@
                 {
                     if (_generatehost.result.generated_host == 0) {
                         if (_requestCount<3) {
-                            [self configureRestkitGenerateHost];
                             [self requestGenerateHost];
                         }
                         else{

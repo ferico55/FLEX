@@ -515,7 +515,9 @@
     _requestCount ++;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPDETAILKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue])};
+                            kTKPDDETAIL_APISHOPIDKEY : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]),
+                            @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
+                            };
     
     [_cacheController getFileModificationDate];
     _timeInterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);

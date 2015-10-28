@@ -113,9 +113,12 @@
         cell.statusLabel.layer.cornerRadius = 2;
     }
     
-    NSInteger index = ticket.ticket_update_time_fmt.length;
     if (![ticket.ticket_update_time_fmt isEqualToString:@"0"]) {
+        NSInteger index = ticket.ticket_update_time_fmt.length;
         cell.dateLabel.text = [ticket.ticket_update_time_fmt substringToIndex:index-7];
+    } else if (![ticket.ticket_create_time_fmt isEqualToString:@"0"]) {
+        NSInteger index = ticket.ticket_create_time_fmt.length;
+        cell.dateLabel.text = [ticket.ticket_create_time_fmt substringToIndex:index-7];
     }
     
     cell.titleLabel.text = ticket.ticket_title;
@@ -197,7 +200,8 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxTicketResult class]];
     
     RKObjectMapping *inboxTicketMapping = [RKObjectMapping mappingForClass:[InboxTicketList class]];
-    [inboxTicketMapping addAttributeMappingsFromArray:@[API_LIST_TICKET_CREATE_TIME_FMT2_KEY,
+    [inboxTicketMapping addAttributeMappingsFromArray:@[API_LIST_TICKET_CREATE_TIME_KEY,
+                                                        API_LIST_TICKET_CREATE_TIME_FMT2_KEY,
                                                         API_LIST_TICKET_FIRST_MESSAGE_NAME_KEY,
                                                         API_LIST_TICKET_UPDATE_TIME_FMT2_KEY,
                                                         API_LIST_TICKET_UPDATE_TIME_FMT_KEY,
