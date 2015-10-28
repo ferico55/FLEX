@@ -48,6 +48,8 @@
 #import "HotlistBannerRequest.h"
 #import "HotlistBannerResult.h"
 
+#import "Localytics.h"
+
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
 #define CTagFooterCollectionView @"FooterCollectionReusableView"
@@ -336,14 +338,10 @@ HotlistBannerDelegate
     } else {
         self.screenName = @"Browse HotList Detail";
     }
-
-//    [self configureRestKit];
-//    if (_isnodata) {
-//        [self request];
-//    }
-    
     
     self.hidesBottomBarWhenPushed = YES;
+    
+    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

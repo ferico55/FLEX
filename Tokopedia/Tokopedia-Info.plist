@@ -27,7 +27,22 @@
 			<string>com.tokopedia.Tokopedia</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>tokopedia</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.tokopedia.Tokopedia</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
 				<string>amp97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tokopedia</string>
+				<string>gsd-tokopedia</string>
 			</array>
 		</dict>
 		<dict>
@@ -99,6 +114,10 @@
 		<string>GothamBlack.ttf</string>
 		<string>Lato-Regular.ttf</string>
 		<string>Lato-Bold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>

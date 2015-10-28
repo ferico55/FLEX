@@ -82,6 +82,8 @@
 #import "EtalaseList.h"
 #import "TAGDataLayer.h"
 
+#import "Localytics.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -1183,7 +1185,9 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
         return @{
                  kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"
+                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0",
+                 @"product_key" : [_data objectForKey:@"product_key"]?:@"",
+                 @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
                  };
     else if(tag == CTagOtherProduct)
         return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"};
@@ -2918,6 +2922,30 @@ UIAlertViewDelegate
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
+
+        NSString *productId = _product.result.product.product_id;
+        NSString *productName = _product.result.product.product_name;
+        
+        NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
+        Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
+        NSString *productCategory = lastCategory.department_name;
+
+        NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+
+        NSDictionary *attributes = @{
+                                     @"Product Id" : productId,
+                                     @"Product Name" : productName,
+                                     @"Product Price" : productPrice,
+                                     @"Product Category" : productCategory
+                                     };
+        
+        [Localytics tagEvent:@"Event : Add To Wishlist" attributes:attributes];
+        
+        [Localytics incrementValueBy:1
+                 forProfileAttribute:@"Profile : Has Wishlist"
+                           withScope:LLProfileScopeApplication];
+        
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];

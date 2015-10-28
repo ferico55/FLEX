@@ -86,6 +86,8 @@
     TokopediaNetworkManager *_LPNetworkManager;
     LoyaltyPointResult *_LPResult;
     TAGContainer *_gtmContainer;
+    NSURL *_deeplinkUrl;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -129,7 +131,11 @@
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-         
+        
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(didReceiveDeeplinkUrl:)
+//                                                     name:@"didReceiveDeeplinkUrl" object:nil];
+        
     }
     return self;
 }
@@ -233,7 +239,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag

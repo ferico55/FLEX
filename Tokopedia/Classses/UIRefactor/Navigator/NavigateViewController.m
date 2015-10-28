@@ -20,6 +20,10 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "DetailProductViewController.h"
 #import "ProductGalleryViewController.h"
+#import "HotlistResultViewController.h"
+#import "CatalogViewController.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
 
 #import "InboxRootViewController.h"
 #import "InboxMessageViewController.h"
@@ -132,6 +136,14 @@
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withLoadedData:(NSDictionary*)loadedData {
     DetailProductViewController *productController = [DetailProductViewController new];
     productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
+- (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.data = data;
     productController.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:productController animated:YES];
@@ -305,6 +317,81 @@
         priceAlertVC.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:priceAlertVC animated:YES];
     }
+}
+
+
+- (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName {
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+
+    container.data = @{
+                       @"shop_domain" : shopName
+                       };
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
+- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key{
+    CatalogViewController *catalogViewController = [CatalogViewController new];
+    catalogViewController.catalogID = catalogID;
+    catalogViewController.catalogName = key;
+    catalogViewController.catalogImage = @"";
+    catalogViewController.catalogPrice = @"";
+    
+    catalogViewController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:catalogViewController animated:YES];
+}
+
+- (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
+    if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
+        SearchResultViewController *vc = [SearchResultViewController new];
+        vc.delegate = viewController;
+        vc.data =@{
+                   @"search" : [data objectForKey:@"q"]?:@"",
+                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
+                   @"location" : [data objectForKey:@"floc"]?:@"",
+                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                   @"order_by" :[data objectForKey:@"ob"]?:@"",
+                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                   @"sc_identifier" : [data objectForKey:@"sc_identifier"]?:@"",
+                   };
+        NSString *title = @"";
+        if ([data objectForKey:@"q"]) {
+            title = [[data objectForKey:@"q"] capitalizedString];
+        } else if ([data objectForKey:@"department_1"]) {
+            title = [[data objectForKey:@"department_1"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+            title = [title capitalizedString];
+        }
+        vc.title = title;
+        vc.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:vc animated:YES];
+    } else {
+        SearchResultShopViewController *vc = [SearchResultShopViewController new];
+        vc.data =@{
+                   @"search" : [data objectForKey:@"q"]?:@"",
+                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
+                   @"location" : [data objectForKey:@"floc"]?:@"",
+                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                   @"order_by" :[data objectForKey:@"ob"]?:@"",
+                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                   };
+        vc.title = [data objectForKey:@"q"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
+    HotlistResultViewController *controller = [HotlistResultViewController new];
+    controller.data = data;
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
 }
 
 
