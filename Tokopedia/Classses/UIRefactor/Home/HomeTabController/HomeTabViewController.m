@@ -25,7 +25,6 @@
 #import "InboxReviewViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
-//#import "WishListViewController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -34,17 +33,23 @@
 #import "InboxRootViewController.h"
 #import "NavigateViewController.h"
 
-@interface HomeTabViewController () <UIScrollViewDelegate,
-                                    NotificationManagerDelegate,
-                                    RedirectHandlerDelegate,
-                                    TKPDTabHomeDelegate> {
+#import "Localytics.h"
+
+@interface HomeTabViewController ()
+<
+    UIScrollViewDelegate,
+    NotificationManagerDelegate,
+    RedirectHandlerDelegate,
+    TKPDTabHomeDelegate
+>
+{
     NotificationManager *_notifManager;
     NSInteger _page;
     BOOL _isAbleToSwipe;
     UserAuthentificationManager *_userManager;
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
-    
+    NSURL *_deeplinkUrl;
 }
 
 @property (strong, nonatomic) HotlistViewController *hotlistController;
@@ -61,6 +66,13 @@
 @implementation HomeTabViewController
 
 #pragma mark - Init
+
+- (instancetype)init {
+    self = [super init];
+    [self initNotificationCenter];
+    return self;
+}
+
 - (void)initNotificationCenter {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomePage:)
@@ -70,6 +82,11 @@
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDeeplinkUrl:)
+                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+
+    
 }
 
 #pragma mark - Lifecycle
@@ -77,17 +94,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    __weak typeof(self) weakSelf = self;
+    
     _hotlistController = [HotlistViewController new];
-    _hotlistController.delegate = self;
+    _hotlistController.delegate = weakSelf;
     
     _productFeedController = [ProductFeedViewController new];
-    _productFeedController.delegate = self;
+    _productFeedController.delegate = weakSelf;
     
     _historyController = [HistoryProductViewController new];
-    _historyController.delegate = self;
+    _historyController.delegate = weakSelf;
     
     _shopViewController = [FavoritedShopViewController new];
-    _shopViewController.delegate = self;
+    _shopViewController.delegate = weakSelf;
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     
@@ -98,9 +117,6 @@
     _redirectHandler.delegate = self;
     
     _navigate = [NavigateViewController new];
-    
-    
-    [self initNotificationCenter];
 
     
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -130,7 +146,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-//    [_scrollView setFrame:self.view.frame];
     self.navigationController.title = @"Beranda";
     
     [self goToPage:_page];
@@ -151,6 +166,8 @@
         [_scrollView setContentSize:CGSizeMake(300, 300)];
         [_scrollView setPagingEnabled:NO];
     }
+    
+    [Localytics triggerInAppMessage:@"Home - Hot List"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -387,5 +404,6 @@
     
     [_redirectHandler proxyRequest:code];
 }
+
 
 @end

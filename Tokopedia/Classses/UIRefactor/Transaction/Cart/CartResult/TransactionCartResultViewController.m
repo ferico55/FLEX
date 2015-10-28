@@ -21,6 +21,8 @@
 #import "AppsFlyerTracker.h"
 #import "GalleryViewController.h"
 
+#import "Localytics.h"
+
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate,GalleryViewControllerDelegate,GalleryPhotoDelegate, PaymentCellDelegate>
 {
     NSMutableArray *_listSystemBank;
@@ -100,10 +102,6 @@
     [self adjustFooterPurchaseStatus];
     
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-
-    
-//    _tableView.tableFooterView = _klikBCAStepsView;
-//    _tableView.tableFooterView = _indomaretStepsView;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -616,15 +614,37 @@
                                                                               AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
                                                                               }];
     
+    NSString *paymentMethod = _cartBuy.transaction.gateway_name;
+    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *paymentTotal = [[_cartBuy.transaction.grand_total_before_fee componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+
+    NSDictionary *attributes = @{
+        @"Payment Method" : paymentMethod,
+        @"Total Transaction" : paymentTotal,
+        @"Total Quantity" : @"",
+        @"Total Shipping Fee" : @""
+    };
+    
+    NSInteger totalPayment = 0;
+    
+    [Localytics tagEvent:@"Event : Finished Transaction"
+              attributes:attributes
+   customerValueIncrease:[NSNumber numberWithInteger:totalPayment]];
+
+    NSString *profileAttribute = @"Profile : Total Transaction";
+    
+    [Localytics incrementValueBy:totalPayment
+             forProfileAttribute:profileAttribute
+                       withScope:LLProfileScopeApplication];
+    
     [_footerLabel setCustomAttributedText:_footerLabel.text];
     [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
     
-    NSString *tableTitleLabel = @"";//[NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
+    NSString *tableTitleLabel = @"";
     
     [_tableTitleLabel setCustomAttributedText:tableTitleLabel];
 
     if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
-//        tableTitleLabel = [NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran KlikBCA\n\nUser ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user];
         
         tableTitleLabel = [NSString stringWithFormat:@"User ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user];
         

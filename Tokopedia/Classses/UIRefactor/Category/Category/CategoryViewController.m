@@ -16,6 +16,7 @@
 #import "SearchResultShopViewController.h"
 #import "NotificationManager.h"
 
+#import "Localytics.h"
 
 @interface CategoryViewController ()
 <
@@ -26,6 +27,7 @@
 {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
+    NSURL *_deeplinkUrl;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -67,6 +69,11 @@
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
                                                object:nil];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didReceiveDeeplinkUrl:)
+//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+
 
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
@@ -162,31 +169,39 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger index =  indexPath.row;
     
+    NSInteger index =  indexPath.row;
+    NSString *title = [_category[index] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+    NSString *id = [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"";
+    
+    [Localytics tagEvent:@"Event : Clicked Category" attributes:@{@"Category Name" : title}];
+
     SearchResultViewController *vc = [SearchResultViewController new];
-    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
-               kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
+               kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
-                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
+                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
-                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
+    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
+                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
 
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-    [viewController setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"", }];
-    [viewController setNavigationTitle:[_category[index] objectForKey:kTKPDCATEGORY_DATATITLEKEY]];
+    NSDictionary *data = @{
+        kTKPDCATEGORY_DATATYPEKEY : @(kTKPDCATEGORY_DATATYPECATEGORYKEY),
+        kTKPDSEARCH_APIDEPARTMENTIDKEY : id
+    };
+    [viewController setData:data];
+    [viewController setNavigationTitle:title];
     [viewController setSelectedIndex:0];
     [viewController setViewControllers:viewcontrollers];
-    [viewController setNavigationTitle:[_category[index] objectForKey:@"title"]?:@""];
 
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];

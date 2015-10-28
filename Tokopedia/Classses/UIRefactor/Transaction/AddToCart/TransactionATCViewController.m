@@ -27,6 +27,8 @@
 
 #import "TokopediaNetworkManager.h"
 
+#import "Localytics.h"
+
 #define TAG_REQUEST_FORM 10
 #define TAG_REQUEST_ATC 11
 #define TAG_REQUEST_CALCULATE 12
@@ -1006,10 +1008,15 @@
             [alert show];
         }
         if (setting.result.is_success == 1) {
-            
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[setting.message_status firstObject] delegate:self cancelButtonTitle:@"Kembali Belanja" otherButtonTitles:@"Ke Keranjang Belanja",nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:[setting.message_status firstObject]
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Kembali Belanja"
+                                                      otherButtonTitles:@"Ke Keranjang Belanja",nil];
             alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
             [alertView show];
+            
+            [self pushLocalyticsData];
         }
     }
 }
@@ -1497,6 +1504,34 @@ replacementString:(NSString*)string
     }
     
     return insurance;
+}
+
+- (void)pushLocalyticsData {
+    ProductDetail *product = [[_data objectForKey:@"product"] product];
+    NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
+    Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
+    NSString *productId = product.product_id;
+    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+    NSInteger totalPrice = [productPrice integerValue] * [self.productQuantityTextField.text integerValue];
+    NSString *total = [NSString stringWithFormat:@"%d", totalPrice];
+    NSString *productQuantity = _productQuantityTextField.text;
+    
+    NSDictionary *attributes = @{
+                                 @"Product Id" : productId,
+                                 @"Product Category" : lastCategory.department_name?:@"",
+                                 @"Price Per Item" : productPrice,
+                                 @"Price Total" : total,
+                                 @"Quantity" : productQuantity
+                                 };
+    
+    [Localytics tagEvent:@"Event : Add To Cart" attributes:attributes];
+    
+    NSString *profileAttribute = @"Profile : Last date has product in cart";
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+    NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+    [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
 }
 
 #pragma mark - Memory Management
