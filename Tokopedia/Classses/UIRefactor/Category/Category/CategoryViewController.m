@@ -17,22 +17,31 @@
 #import "NotificationManager.h"
 
 #import "Localytics.h"
+#import "UIViewController+TKPAdditions.h"
+#import "TKPHomeBannerStore.h"
+#import "TKPStoreManager.h"
+
+
 
 @interface CategoryViewController ()
 <
     NotificationManagerDelegate,
     UICollectionViewDataSource,
-    UICollectionViewDelegate
+    UICollectionViewDelegate,
+    BannerDelegate
 >
 {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
     NSURL *_deeplinkUrl;
+    
+    Banner *_banner;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet UIView *cellView;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
 
 @end
@@ -56,6 +65,11 @@
     /** Initialization variable **/
     _category = [NSMutableArray new];
     
+    _flowLayout.headerReferenceSize = CGSizeMake(_collectionView.frame.size.width, 290);
+    [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width + 290, _collectionView.frame.size.height)];
+    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, ([[UIScreen mainScreen]bounds].size.height) )];
+    
+    
     /** Set title and icon for category **/
     NSArray *titles = kTKPDCATEGORY_TITLEARRAY;
     NSArray *dataids = kTKPDCATEGORY_IDARRAY;
@@ -77,8 +91,15 @@
 
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
-
-
+    
+    UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
+    
+    [self loadBanners];
+    
+    //add timer so it will refreshed periodically
+    NSTimer* timer = [NSTimer timerWithTimeInterval:300.0f target:self selector:@selector(loadBanners) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -118,6 +139,7 @@
 
 }
 
+
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellid = @"CategoryViewCellIdentifier";
     CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -138,6 +160,7 @@
     
 	return cell;
 }
+
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -168,6 +191,19 @@
     return cellSize;
 }
 
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    if (kind == UICollectionElementKindSectionHeader) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                              withReuseIdentifier:@"BannerView"
+                                                                     forIndexPath:indexPath];
+        ((BannerCollectionReusableView*)reusableView).delegate = self;
+
+    }
+    
+    return reusableView;
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSInteger index =  indexPath.row;
@@ -177,20 +213,23 @@
     [Localytics tagEvent:@"Event : Clicked Category" attributes:@{@"Category Name" : title}];
 
     SearchResultViewController *vc = [SearchResultViewController new];
+	vc.hidesBottomBarWhenPushed = YES;
     vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
+	vc.hidesBottomBarWhenPushed = YES;
     vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+	vc.hidesBottomBarWhenPushed = YES;
     vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
-
+    
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
@@ -202,10 +241,10 @@
     [viewController setNavigationTitle:title];
     [viewController setSelectedIndex:0];
     [viewController setViewControllers:viewcontrollers];
-
-    self.hidesBottomBarWhenPushed = YES;
+    viewController.hidesBottomBarWhenPushed = YES;
+    [viewController setNavigationTitle:[_category[index] objectForKey:@"title"]?:@""];
+    
     [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
 }
 
 #pragma mark - Notification Manager
@@ -239,5 +278,28 @@
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
+#pragma mark - Request Banner 
+- (void)loadBanners {
+    TKPHomeBannerStore *bannersStore = [[[[self class] TKP_rootController] storeManager] homeBannerStore];
+    __weak typeof(self) wself = self;
+    
+    [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
+        if (wself != nil) {
+            _banner = banner;
+            if(_banner.result.banner.count > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
+            } else  {
+                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-175);
+            }
+            
+            if([_banner.result.ticker.img_uri isEqualToString:@""]) {
+                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-96);
+            }
+
+        }
+    }];
+}
+
 
 @end
