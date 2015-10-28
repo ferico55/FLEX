@@ -1867,6 +1867,7 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		7A1659871BE08A23004F353F /* Tokopedia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		7A27CAAF1BDE42BF00905D4F /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7A27CAB01BDE42BF00905D4F /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7A27CAB11BDE42BF00905D4F /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -9654,6 +9655,7 @@
 		FC36DF8C19B0656400AF74C1 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				7A1659871BE08A23004F353F /* Tokopedia.entitlements */,
 				7A27CAAD1BDE42BF00905D4F /* Classses */,
 				7A27D3911BDE42C100905D4F /* Resources */,
 				FC1C7B5C1AAD56A3001C510E /* Main.storyboard */,
@@ -9756,6 +9758,11 @@
 				TargetAttributes = {
 					FC36DF8219B0656400AF74C1 = {
 						DevelopmentTeam = YQP4A2M94J;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 					FC36DF9D19B0656400AF74C1 = {
 						DevelopmentTeam = YQP4A2M94J;
@@ -11807,6 +11814,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -11850,6 +11858,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
