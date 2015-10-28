@@ -308,6 +308,10 @@
     
     [self.tableView reloadData];
     
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [self.detailViewController updateTicket:[_tickets objectAtIndex:0]];
+    }
+    
     [_refreshControl endRefreshing];
 }
 
