@@ -81,6 +81,8 @@
 }
 
 - (void)didReceiveCreateTicketError:(NSArray *)error {
+    [self.dataCollector.uploadedPhotos removeAllObjects];
+    [self.dataCollector.uploadedPhotosURL removeAllObjects];
     [self.userInterface showSubmitButton];
     [self.userInterface showErrorMessages:error];
 }
@@ -96,9 +98,13 @@
 
 - (void)didReceiveUploadedPhoto:(UIImage *)photo urlPath:(NSString *)urlPath {
     [self.userInterface showUploadedPhoto:photo];
+    self.dataCollector.failPhotoUpload = NO;
     [self.dataCollector addUploadedPhoto:photo photoURL:urlPath];
     if ([self.dataCollector allPhotosUploaded]) {
         [self.interactor replyTicketPictures];
+        [self.userInterface showLoadingBar];
+    } else {
+        [self.userInterface showSubmitButton];        
     }
 }
 

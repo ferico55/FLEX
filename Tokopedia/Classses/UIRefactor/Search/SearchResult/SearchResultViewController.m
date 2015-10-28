@@ -655,7 +655,7 @@ PromoCollectionViewDelegate
 
 - (id)getObjectManager:(int)tag {
     if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+        _objectmanager = [RKObjectManager sharedClient:@"https://ajax-staging.tokopedia.com/"];
     } else {
         _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
     }

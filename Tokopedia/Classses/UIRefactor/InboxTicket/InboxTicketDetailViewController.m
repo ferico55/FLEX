@@ -113,7 +113,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setTitleView];
+    if (self.inboxTicket) {
+        [self setTitleView];
+    }
     
     UIView *emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 44)];
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:emptyView];

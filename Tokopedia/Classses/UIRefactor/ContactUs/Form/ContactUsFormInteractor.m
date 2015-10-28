@@ -125,7 +125,13 @@
 }
 
 - (void)uploadContactImages {
-    [self.requestHost requestGenerateHost];
+    if (self.dataCollector.generateHost) {
+        for (NSDictionary *photoData in self.dataCollector.selectedImagesCameraController) {
+            [self uploadImage:@{DATA_SELECTED_PHOTO_KEY : photoData} host:self.dataCollector.generateHost];
+        }
+    } else {
+        [self.requestHost requestGenerateHost];
+    }
 }
 
 #pragma mark Request Generate Host
@@ -146,13 +152,18 @@
 
 - (void)uploadImage:(NSDictionary *)imageData host:(GenerateHost *)host {
     RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject  = imageData;
-    uploadImage.delegate = self;
-    uploadImage.generateHost = host;
-    uploadImage.action = @"upload_contact_image";
-    uploadImage.fieldName = @"fileToUpload";
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    [uploadImage requestActionUploadObject:imageData
+                             generatedHost:host.result.generated_host
+                                    action:@"upload_contact_image"
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:@"fileToUpload"
+                                   success:^(id imageObject, UploadImage *image) {
+                                       [self successUploadObject:imageObject withMappingResult:image];
+    } failure:^(id imageObject, NSError *error) {
+        [self failedUploadObject:imageObject];
+    }];
 }
 
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
