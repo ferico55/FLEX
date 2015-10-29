@@ -191,9 +191,16 @@
         }
     }
     
-    [_delegate failedUploadErrorMessage:messagesError];
-//    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError delegate:_delegate];
-//    [alert show];
+    if ([_delegate isKindOfClass:[NSObject class]]) {
+        NSDictionary *userInfo = @{kTKPD_SETUSERSTICKYERRORMESSAGEKEY:messagesError};
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
+                                                            object:self
+                                                          userInfo:userInfo];
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messagesError
+                                                                      delegate:_delegate];
+        [alert show];
+    }
 }
 
 - (BOOL)string:(NSString*)string containsString:(NSString*)other {

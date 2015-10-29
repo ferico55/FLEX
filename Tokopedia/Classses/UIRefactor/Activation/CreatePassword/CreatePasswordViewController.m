@@ -16,6 +16,8 @@
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
 #import "WebViewController.h"
+#import "Localytics.h"
+#import "AppsFlyerTracker.h"
 
 @interface CreatePasswordViewController ()
 <
@@ -661,6 +663,19 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
                                                                 object:nil];
             
+            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+            
+            NSDictionary *trackerValues;
+            if (_googleUser) {
+                trackerValues = @{AFEventParamRegistrationMethod : @"Google Registration"};
+            } else if (_facebookUserData) {
+                trackerValues = @{AFEventParamRegistrationMethod : @"Facebook Registration"};
+            } else {
+                trackerValues = @{};
+            }
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
+
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             
         } else {

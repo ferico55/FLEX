@@ -341,6 +341,7 @@
     
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPNOTESKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
+                                                        @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
                             };
     
     

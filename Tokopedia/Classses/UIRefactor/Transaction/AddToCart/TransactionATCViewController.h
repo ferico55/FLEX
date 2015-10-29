@@ -11,7 +11,7 @@
 @interface TransactionATCViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
-@property NSArray *wholeSales;
-@property NSString *productPrice;
+@property (strong,nonatomic) NSArray *wholeSales;
+@property (strong,nonatomic) NSString *productPrice;
 
 @end

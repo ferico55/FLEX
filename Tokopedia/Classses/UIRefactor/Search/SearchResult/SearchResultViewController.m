@@ -48,6 +48,8 @@
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
 
+#import "Localytics.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -184,7 +186,6 @@ PromoCollectionViewDelegate
     [_firstFooter setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 50)];
     [_collectionView addSubview:_firstFooter];
     
-    //    [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [_params setDictionary:_data];
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
@@ -748,12 +749,14 @@ PromoCollectionViewDelegate
     }
     
     NSString *redirect_url = search.result.redirect_url;
-    if(search.result.department_id) {
+    if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
         NSString *departementID = search.result.department_id?:@"";
         [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-        [_delegate updateTabCategory:departementID];
+        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
+            [_delegate updateTabCategory:departementID];            
+        }
     }
-    if([redirect_url isEqualToString:@""] || redirect_url == nil) {
+    if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
         
         
         NSString *hascatalog = search.result.has_catalog;
@@ -774,9 +777,15 @@ PromoCollectionViewDelegate
         
         
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-            [_product addObject: search.result.products];
+            if(search.result.products.count > 0) {
+                [_product addObject: search.result.products];
+            }
+
         } else {
-            [_product addObject: search.result.catalogs];
+            if(search.result.catalogs.count > 0) {
+                [_product addObject: search.result.catalogs];                
+            }
+
         }
         
         if(_start == 0) {
@@ -804,7 +813,6 @@ PromoCollectionViewDelegate
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
             [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
-            //            [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
         } else  {
             [_collectionView reloadData];
         }
@@ -817,26 +825,29 @@ PromoCollectionViewDelegate
         if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
             [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
         }
+
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.result.department_id?:@"";
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [_params removeObjectForKey:@"search"];
-            //            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
             [_networkManager requestCancel];
-            //            [_act startAnimating];
-            //
+
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
                 [self.delegate updateTabCategory:departementID];
             }
             
             [self refreshView:nil];
-            //            [_networkManager doRequest];
+            
+            [Localytics triggerInAppMessage:@"Category Result Screen"];
         }
-        
         
         else if ([query[1] isEqualToString:@"catalog"]) {
             [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
+        }
+        
+        else {
+            [Localytics triggerInAppMessage:@"Search Result Screen"];
         }
     }
 }
@@ -865,6 +876,8 @@ PromoCollectionViewDelegate
 }
 
 - (void)redirectToHotlistResult{
+    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
+    
     NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
@@ -956,18 +969,28 @@ PromoCollectionViewDelegate
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         NavigateViewController *navigateController = [NavigateViewController new];
         NSDictionary *productData = @{
-                                      @"product_id"       : product.product_id?:@"",
-                                      @"product_name"     : product.product_name?:@"",
-                                      @"product_image"    : product.product_image_200?:@"",
-                                      @"product_price"    :product.product_price?:@"",
-                                      @"shop_name"        : product.shop_name?:@""
-                                      };
+            @"product_id"       : product.product_id?:@"",
+            @"product_name"     : product.product_name?:@"",
+            @"product_image"    : product.product_image_200?:@"",
+            @"product_price"    :product.product_price?:@"",
+            @"shop_name"        : product.shop_name?:@""
+        };
+
+        PromoRequestSourceType source;
+        if ([_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]) {
+            source = PromoRequestSourceCategory;
+        } else if ([_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
+            source = PromoRequestSourceSearch;
+        }
+
         NSDictionary *promoData = @{
-                                    kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-                                    PromoImpressionKey          : product.ad_key,
-                                    PromoSemKey                 : product.ad_sem_key,
-                                    PromoReferralKey            : product.ad_r
-                                    };
+            kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+            PromoImpressionKey          : product.ad_key,
+            PromoSemKey                 : product.ad_sem_key,
+            PromoReferralKey            : product.ad_r,
+            PromoRequestSource          : @(source)
+        };
+
         [navigateController navigateToProductFromViewController:self
                                                       promoData:promoData
                                                     productData:productData];

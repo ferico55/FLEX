@@ -74,10 +74,16 @@
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
     } else {
+        NSDictionary *parameters;
+        if (self.isParameterNotEncrypted) {
+            parameters = [_delegate getParameter:self.tagRequest];
+        } else {
+            parameters = [[_delegate getParameter:self.tagRequest] encrypt];
+        }
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
                                                                               method:RKRequestMethodPOST
                                                                                 path:[_delegate getPath:self.tagRequest]
-                                                                          parameters:[[_delegate getParameter:self.tagRequest] encrypt]];
+                                                                          parameters:parameters];
         
     }
     

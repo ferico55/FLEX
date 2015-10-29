@@ -23,6 +23,8 @@
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
 
+#import "Localytics.h"
+
 NSString *const searchPath = @"search/%@";
 
 @interface SearchViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UICollectionViewDataSource, UICollectionViewDelegate, SearchResultDelegate, NotificationDelegate,NotificationManagerDelegate> {
@@ -44,6 +46,7 @@ NSString *const searchPath = @"search/%@";
     NSMutableArray *_hotlist;
     NSMutableArray *_historyResult;
     NSMutableArray *_typedHistoryResult;
+    NSURL *_deeplinkUrl;
     
 }
 
@@ -109,6 +112,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                                                  name:kTKPD_REMOVE_SEARCH_HISTORY
                                                object:nil];
     
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didReceiveDeeplinkUrl:)
+//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -137,6 +145,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
+    [Localytics triggerInAppMessage:@"Search Product"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
