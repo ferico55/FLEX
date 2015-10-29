@@ -87,13 +87,27 @@
                                                          multiplier:1.0
                                                            constant:182.0]];
    // Top constraint
-    [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:nil
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0
-                                                           constant:0.0]];
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:nil
+                                                                    attribute:NSLayoutAttributeTop
+                                                                   multiplier:1.0
+                                                                     constant:0.0]];
+        
+    }
+    else
+    {
+        [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:_headerView.superview
+                                                                    attribute:NSLayoutAttributeTop
+                                                                   multiplier:1.0
+                                                                     constant:0.0]];
+    }
+    
     // width constraint
     [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
                                                                 attribute:NSLayoutAttributeWidth
