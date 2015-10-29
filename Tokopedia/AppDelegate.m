@@ -18,6 +18,7 @@
 #import <GooglePlus/GooglePlus.h>
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation AppDelegate
 
@@ -48,7 +49,9 @@
         [self configurePushNotificationsInApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-
+        
+        [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
+        
         [self preparePersistData];
     });
     
@@ -74,6 +77,7 @@
         }
 
     });
+
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;

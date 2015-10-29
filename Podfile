@@ -7,6 +7,7 @@ target "Tokopedia" do
     pod 'TTTAttributedLabel'
     pod 'Localytics',  '~> 3.5.0'
     pod 'GoogleAppIndexing'
+    pod 'GoogleMaps'
 end
 
 target "TokopediaTests" do

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		45B358411BE1DB5B007F706C /* PickLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B358401BE1DB5B007F706C /* PickLocationViewController.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F31BE0DD1F000CCD72 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F41BE0DD1F000CCD72 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE91BE0DD1B000CCD72 /* URLCacheConnection.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F51BE0DD1F000CCD72 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCEB1BE0DD1B000CCD72 /* URLCacheController.m */; settings = {ASSET_TAGS = (); }; };
@@ -1933,6 +1934,8 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		45B3583F1BE1DB5B007F706C /* PickLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickLocationViewController.h; sourceTree = "<group>"; };
+		45B358401BE1DB5B007F706C /* PickLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickLocationViewController.m; sourceTree = "<group>"; };
 		7A33DCE61BE0DD1B000CCD72 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7A33DCE81BE0DD1B000CCD72 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -4877,6 +4880,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		45B3583E1BE1DAE8007F706C /* TKPGooglePlaces */ = {
+			isa = PBXGroup;
+			children = (
+				45B3583F1BE1DB5B007F706C /* PickLocationViewController.h */,
+				45B358401BE1DB5B007F706C /* PickLocationViewController.m */,
+			);
+			path = TKPGooglePlaces;
+			sourceTree = "<group>";
+		};
 		53AC970CF2132927344A64C3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -6770,6 +6782,7 @@
 				7A33E52F1BE0DD1D000CCD72 /* Talk */,
 				7A33E5371BE0DD1D000CCD72 /* TokopediaNetworkManager */,
 				7A33E53F1BE0DD1D000CCD72 /* TrackingOrder */,
+				45B3583E1BE1DAE8007F706C /* TKPGooglePlaces */,
 				7A33E5471BE0DD1D000CCD72 /* Transaction */,
 				7A33E5861BE0DD1D000CCD72 /* TxOrder */,
 				7A33E5D31BE0DD1D000CCD72 /* UserPageView */,
@@ -11678,6 +11691,7 @@
 				7A33EA3E1BE0DD1F000CCD72 /* Address.m in Sources */,
 				7A33EBCD1BE0DD1F000CCD72 /* InboxReviewSplitViewController.m in Sources */,
 				7A33EB451BE0DD1F000CCD72 /* TKPDTabViewController.m in Sources */,
+				45B358411BE1DB5B007F706C /* PickLocationViewController.m in Sources */,
 				7A33EA3B1BE0DD1F000CCD72 /* Notes.m in Sources */,
 				7A33ECEC1BE0DD1F000CCD72 /* ShopNotesDetailViewController.m in Sources */,
 				7A33E9551BE0DD1F000CCD72 /* Statistic.m in Sources */,
