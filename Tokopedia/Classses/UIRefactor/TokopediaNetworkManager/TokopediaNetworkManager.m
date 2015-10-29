@@ -44,7 +44,7 @@
 
 #pragma mark - Process Request
 - (void)doRequest {
-    if(_objectRequest.isExecuting) return;
+    if(_objectRequest.isExecuting || !_delegate) return;
     
     _requestCount ++;
     
