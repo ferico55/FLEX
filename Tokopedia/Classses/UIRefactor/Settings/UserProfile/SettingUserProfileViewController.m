@@ -209,7 +209,13 @@
                 NSDictionary *userinfo = _datainput;
                 NSString *password = [_datainput objectForKey:kTKPDPROFILE_APIPASSKEY];
                 if (password && ![password isEqualToString:@""]) {
-                     [self requestActionSubmit:userinfo];
+                    if (_textviewhobbies.text.length > 128) {
+                        [messages addObject:ERRORMESSAGE_INVALID_HOBBY_CHARACTER_COUNT];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                        [alert show];
+                        break;
+                    }
+                    [self requestActionSubmit:userinfo];
                 } else {
                     [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];

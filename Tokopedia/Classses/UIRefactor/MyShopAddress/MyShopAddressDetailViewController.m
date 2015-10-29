@@ -233,7 +233,7 @@
     _labelemail.text = email;
     
     _labelphonenumber.text = address.location_phone?:@"-";
-    _faxLabel.text = address.location_fax;
+    _faxLabel.text = address.location_fax?:@"-";
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
