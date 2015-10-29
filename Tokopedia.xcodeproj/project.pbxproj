@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
-		45B358411BE1DB5B007F706C /* PickLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B358401BE1DB5B007F706C /* PickLocationViewController.m */; settings = {ASSET_TAGS = (); }; };
+		45CEB2831BE1DE24003A5238 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */; settings = {ASSET_TAGS = (); }; };
+		45CEB2841BE1DE24003A5238 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F31BE0DD1F000CCD72 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F41BE0DD1F000CCD72 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE91BE0DD1B000CCD72 /* URLCacheConnection.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F51BE0DD1F000CCD72 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCEB1BE0DD1B000CCD72 /* URLCacheController.m */; settings = {ASSET_TAGS = (); }; };
@@ -1934,8 +1935,10 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
-		45B3583F1BE1DB5B007F706C /* PickLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickLocationViewController.h; sourceTree = "<group>"; };
-		45B358401BE1DB5B007F706C /* PickLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickLocationViewController.m; sourceTree = "<group>"; };
+		45CEB2801BE1DE24003A5238 /* PlacePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePickerViewController.h; sourceTree = "<group>"; };
+		45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePickerViewController.m; sourceTree = "<group>"; };
+		45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlacePickerViewController.xib; sourceTree = "<group>"; };
+		45CEB2851BE1DED2003A5238 /* TKPAPIKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKPAPIKey.h; sourceTree = "<group>"; };
 		7A33DCE61BE0DD1B000CCD72 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7A33DCE81BE0DD1B000CCD72 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -4883,8 +4886,9 @@
 		45B3583E1BE1DAE8007F706C /* TKPGooglePlaces */ = {
 			isa = PBXGroup;
 			children = (
-				45B3583F1BE1DB5B007F706C /* PickLocationViewController.h */,
-				45B358401BE1DB5B007F706C /* PickLocationViewController.m */,
+				45CEB2801BE1DE24003A5238 /* PlacePickerViewController.h */,
+				45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */,
+				45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */,
 			);
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
@@ -10012,6 +10016,7 @@
 				FC0D6D3C1A42F3B1000696A9 /* stringrestkit.h */,
 				FCAAEA4319F7534B00904AFB /* MainViewController.h */,
 				FCAAEA4419F7534B00904AFB /* MainViewController.m */,
+				45CEB2851BE1DED2003A5238 /* TKPAPIKey.h */,
 				FCFF56EE1AB6D5CD0076000E /* MainViewController.xib */,
 				FC36DF9519B0656400AF74C1 /* AppDelegate.h */,
 				FC36DF9619B0656400AF74C1 /* AppDelegate.m */,
@@ -10667,6 +10672,7 @@
 				7A33EBBC1BE0DD1F000CCD72 /* InboxResolutionCenterTabViewController.xib in Resources */,
 				7A33EFCA1BE0DD1F000CCD72 /* icon_grid_satu@3x.png in Resources */,
 				7A33EE7F1BE0DD1F000CCD72 /* icon_login_active.png in Resources */,
+				45CEB2841BE1DE24003A5238 /* PlacePickerViewController.xib in Resources */,
 				7A33ECC81BE0DD1F000CCD72 /* ProfileSettingViewController.xib in Resources */,
 				7A33EB5D1BE0DD1F000CCD72 /* DepositFormViewController.xib in Resources */,
 				7A33ED831BE0DD1F000CCD72 /* ProductCell.xib in Resources */,
@@ -11691,7 +11697,6 @@
 				7A33EA3E1BE0DD1F000CCD72 /* Address.m in Sources */,
 				7A33EBCD1BE0DD1F000CCD72 /* InboxReviewSplitViewController.m in Sources */,
 				7A33EB451BE0DD1F000CCD72 /* TKPDTabViewController.m in Sources */,
-				45B358411BE1DB5B007F706C /* PickLocationViewController.m in Sources */,
 				7A33EA3B1BE0DD1F000CCD72 /* Notes.m in Sources */,
 				7A33ECEC1BE0DD1F000CCD72 /* ShopNotesDetailViewController.m in Sources */,
 				7A33E9551BE0DD1F000CCD72 /* Statistic.m in Sources */,
@@ -11819,6 +11824,7 @@
 				7A33EC2D1BE0DD1F000CCD72 /* ProductAddEditViewController.m in Sources */,
 				7A33ED091BE0DD1F000CCD72 /* FilterViewController.m in Sources */,
 				7A33EC201BE0DD1F000CCD72 /* GalleryViewController.m in Sources */,
+				45CEB2831BE1DE24003A5238 /* PlacePickerViewController.m in Sources */,
 				7A33ECFE1BE0DD1F000CCD72 /* SmileyAndMedal.m in Sources */,
 				7A33EAE51BE0DD1F000CCD72 /* StickyAlertView.m in Sources */,
 				7A33EB861BE0DD1F000CCD72 /* TagManagerHandler.m in Sources */,

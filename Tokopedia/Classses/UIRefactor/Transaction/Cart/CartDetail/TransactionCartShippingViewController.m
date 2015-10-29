@@ -841,86 +841,107 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
             {
                 if (_indexPage == 0) {
-                    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                    SettingAddressViewController *addressViewController = [SettingAddressViewController new];
-                    addressViewController.delegate = self;
-                    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                                   DATA_INDEXPATH_KEY: selectedIndexPath,
-                                                   DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
-                    [self.navigationController pushViewController:addressViewController animated:YES];
+                    [self chooseAddress];
                 }
                 break;
             }
             case 2:
             {
-                if (_isFinishCalculate) {
-                    
-                    NSMutableArray *shipmentName = [NSMutableArray new];
-                    for (ShippingInfoShipments *package in _shipments) {
-                            [shipmentName addObject:package.shipment_name];
-                    }
-                    
-                    GeneralTableViewController *vc = [GeneralTableViewController new];
-                    vc.title = @"Kurir Pengiriman";
-                    vc.selectedObject = _selectedShipment.shipment_name;
-                    vc.objects = shipmentName;
-                    vc.senderIndexPath = indexPath;
-                    vc.delegate = self;
-                    
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
+                [self chooseShipmentAtIndexPath:indexPath];
                 break;
             }
             case 3:
             {
-                if (_isFinishCalculate) {
-                    NSMutableArray *shipmentPackages = [NSMutableArray new];
-                    NSMutableArray *shipmentPackagesName = [NSMutableArray new];
-                    
-                    for (ShippingInfoShipments *shipment in _shipments) {
-                        if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
-                            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                                if (![package.price isEqualToString:@"0"]) {
-                                    [shipmentPackages addObject:package];
-                                    [shipmentPackagesName addObject:package.name];
-                                }
-                            }
-                            break;
-                        }
-                    }
-
-                    GeneralTableViewController *vc = [GeneralTableViewController new];
-                    vc.title = @"Paket Pengiriman";
-                    vc.selectedObject = _selectedShipmentPackage.name;
-                    vc.objects = shipmentPackagesName;
-                    vc.senderIndexPath = indexPath;
-                    vc.delegate = self;
-                    
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
+                [self chooseShipmentPackageAtIndexPath:indexPath];
                 break;
             }
             case 4: // insurance
             {
-                if ([cart.cart_force_insurance integerValue]!=1&&[cart.cart_cannot_insurance integerValue]!=1) {
-                    AlertPickerView *picker = [AlertPickerView newview];
-                    picker.delegate = self;
-                    picker.tag = TAG_PICKER_ALERT_INSURANCE;
-                    picker.pickerData = ARRAY_INSURACE;
-                    [picker show];
-                }
+                [self chooseInsurance];
                 break;
             }
             default:
                 break;
         }
+    }
+}
+
+-(void)chooseAddress
+{
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+    addressViewController.delegate = self;
+    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
+                                   DATA_INDEXPATH_KEY: selectedIndexPath,
+                                   DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
+    [self.navigationController pushViewController:addressViewController animated:YES];
+}
+
+-(void)chooseShipmentAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (_isFinishCalculate) {
+        
+        NSMutableArray *shipmentName = [NSMutableArray new];
+        for (ShippingInfoShipments *package in _shipments) {
+            [shipmentName addObject:package.shipment_name];
+        }
+        
+        GeneralTableViewController *vc = [GeneralTableViewController new];
+        vc.title = @"Kurir Pengiriman";
+        vc.selectedObject = _selectedShipment.shipment_name;
+        vc.objects = shipmentName;
+        vc.senderIndexPath = indexPath;
+        vc.delegate = self;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+-(void)chooseShipmentPackageAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (_isFinishCalculate) {
+        NSMutableArray *shipmentPackages = [NSMutableArray new];
+        NSMutableArray *shipmentPackagesName = [NSMutableArray new];
+        
+        for (ShippingInfoShipments *shipment in _shipments) {
+            if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
+                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if (![package.price isEqualToString:@"0"]) {
+                        [shipmentPackages addObject:package];
+                        [shipmentPackagesName addObject:package.name];
+                    }
+                }
+                break;
+            }
+        }
+        
+        GeneralTableViewController *vc = [GeneralTableViewController new];
+        vc.title = @"Paket Pengiriman";
+        vc.selectedObject = _selectedShipmentPackage.name;
+        vc.objects = shipmentPackagesName;
+        vc.senderIndexPath = indexPath;
+        vc.delegate = self;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+-(void)chooseInsurance
+{
+    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+
+    if ([cart.cart_force_insurance integerValue]!=1&&[cart.cart_cannot_insurance integerValue]!=1) {
+        AlertPickerView *picker = [AlertPickerView newview];
+        picker.delegate = self;
+        picker.tag = TAG_PICKER_ALERT_INSURANCE;
+        picker.pickerData = ARRAY_INSURACE;
+        [picker show];
     }
 }
 

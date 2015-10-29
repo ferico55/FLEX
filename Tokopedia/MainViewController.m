@@ -46,6 +46,8 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 
+#import "PlacePickerViewController.h"
+
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -248,14 +250,13 @@ typedef enum TagRequest {
     [swipevcNav.navigationBar setTranslucent:NO];
     
     /** TAB BAR INDEX 2 **/
-    HotlistViewController *categoryvc = [HotlistViewController new];
+    PlacePickerViewController *categoryvc = [PlacePickerViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
 
     [categoryNavBar.navigationBar setTranslucent:NO];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    categoryvc.delegate = self;
     
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];

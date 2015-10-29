@@ -1,13 +1,13 @@
 //
-//  PickLocationViewController.m
+//  PlacePickerViewController.h
 //  Tokopedia
 //
 //  Created by Renny Runiawati on 10/29/15.
 //  Copyright © 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "PickLocationViewController.h"
+#import <UIKit/UIKit.h>
 
-@implementation PickLocationViewController
+@interface PlacePickerViewController : UIViewController
 
 @end
