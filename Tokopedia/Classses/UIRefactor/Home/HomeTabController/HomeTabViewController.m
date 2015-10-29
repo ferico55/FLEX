@@ -32,6 +32,7 @@
 
 #import "InboxRootViewController.h"
 #import "NavigateViewController.h"
+#import "CategoryViewController.h"
 
 #import "Localytics.h"
 
@@ -52,6 +53,7 @@
     NSURL *_deeplinkUrl;
 }
 
+@property (strong, nonatomic) CategoryViewController *categoryController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
@@ -94,10 +96,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    __weak typeof(self) weakSelf = self;
+	__weak typeof(self) weakSelf = self;
+    _categoryController = [CategoryViewController new];
+    _categoryController.delegate = weakSelf;
     
-    _hotlistController = [HotlistViewController new];
-    _hotlistController.delegate = weakSelf;
+    
     
     _productFeedController = [ProductFeedViewController new];
     _productFeedController.delegate = weakSelf;
@@ -135,10 +138,10 @@
     [_scrollView setPagingEnabled:YES];
     _scrollView.delegate = self;
 
-    [self addChildViewController:_hotlistController];
-    [self.scrollView addSubview:_hotlistController.view];
+    [self addChildViewController:_categoryController];
+    [self.scrollView addSubview:_categoryController.view];
     
-    [_hotlistController didMoveToParentViewController:self];
+    [_categoryController didMoveToParentViewController:self];
     [self setArrow];
     [self setHeaderBar];
 }
@@ -227,13 +230,13 @@
 
 - (void)goToPage:(NSInteger)page {
     if(page == 0) {
-        CGRect frame = _hotlistController.view.frame;
+        CGRect frame = _categoryController.view.frame;
         frame.origin.x = 0;
-        _hotlistController.view.frame = frame;
+        _categoryController.view.frame = frame;
         
-        [self addChildViewController:_hotlistController];
-        [self.scrollView addSubview:_hotlistController.view];
-        [_hotlistController didMoveToParentViewController:self];
+        [self addChildViewController:_categoryController];
+        [self.scrollView addSubview:_categoryController.view];
+        [_categoryController didMoveToParentViewController:self];
     }
     if(page == 1) {
         CGRect frame = _productFeedController.view.frame;
