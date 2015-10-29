@@ -519,8 +519,6 @@
     }
     
     _catalogId = _catalog.result.catalog_info.catalog_id;
-    _location = @"";
-    _condition = @"";
     _orderBy = orderBy;
     _page = 1;
     
@@ -541,7 +539,6 @@
     _catalogId = catalog.result.catalog_info.catalog_id;
     _location = location;
     _condition = condition;
-    _orderBy = @"";
     _page = 1;
     
     [_networkManager doRequest];
