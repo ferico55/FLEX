@@ -2925,15 +2925,15 @@ UIAlertViewDelegate
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
 
-        NSString *productId = _product.result.product.product_id;
-        NSString *productName = _product.result.product.product_name;
+        NSString *productId = _product.result.product.product_id?:@"";
+        NSString *productName = _product.result.product.product_name?:@"";
         
         NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
-        NSString *productCategory = lastCategory.department_name;
+        NSString *productCategory = lastCategory.department_name?:@"";
 
         NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
 
         NSDictionary *attributes = @{
                                      @"Product Id" : productId,
