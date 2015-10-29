@@ -134,7 +134,7 @@
     [users addObjectsFromArray:ticket.ticket_user_involve];
     cell.userInvolvedNameLabel.text = [[users valueForKey:@"description"] componentsJoinedByString:@", "];
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 
