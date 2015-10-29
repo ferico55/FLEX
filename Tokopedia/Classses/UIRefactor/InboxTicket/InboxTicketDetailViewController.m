@@ -195,9 +195,17 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                                object:nil];
 }
 
+- (void)showRefreshControl {
+    [_refreshControl beginRefreshing];
+    [self.tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+}
+
 - (void)updateTicket:(InboxTicketList *)inboxTicket {
     self.inboxTicket = inboxTicket;
     [self setTitleView];
+    
+    [self showRefreshControl];
+    
     [_networkManager doRequest];
 }
 
@@ -927,7 +935,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventValueChanged];
     [_refreshControl setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin)];
-    [[_refreshControl.subviews objectAtIndex:0] setFrame:CGRectMake(0, 20, 0, 20)];
+    [[_refreshControl.subviews objectAtIndex:0] setFrame:CGRectMake(0, 0, 20, 20)];
     [self.tableView addSubview:_refreshControl];
 }
 
