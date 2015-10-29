@@ -131,14 +131,20 @@
     self.photoScrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 10);
     [self.photoScrollView addSubview:_scrollViewContentView];
     
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+
     CGRect frame = _scrollViewContentView.frame;
     frame.origin = CGPointZero;
+    frame.size.width = screenWidth;
     _scrollViewContentView.frame = frame;
 
+    CGRect scrollViewContentFrame = _scrollViewInputContent.frame;
+    scrollViewContentFrame.size.width = screenWidth;
+    self.scrollViewInputContent.frame = scrollViewContentFrame;
+    
     self.pageScrollView.delegate = self;
     [self.pageScrollView addSubview:_scrollViewInputContent];
-    self.pageScrollView.contentSize = CGSizeMake(self.scrollViewInputContent.frame.size.width,
-                                                 self.scrollViewInputContent.frame.size.height);
+    self.pageScrollView.contentSize = CGSizeMake(screenWidth, self.scrollViewInputContent.frame.size.height);
     
     CGRect pageFrame = _scrollViewInputContent.frame;
     pageFrame.origin = CGPointZero;

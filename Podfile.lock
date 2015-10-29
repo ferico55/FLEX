@@ -1,6 +1,6 @@
 PODS:
   - AFNetworking (1.3.4)
-  - GoogleAppIndexing (2.0.2)
+  - GoogleAppIndexing (2.0.1)
   - Localytics (3.5.1)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
@@ -35,7 +35,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
-  GoogleAppIndexing: ea7715d00baa8ca6714725fd26663ec33baad168
+  GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   Localytics: da06c00606839b53978ca093adbca1d8afdeeb3e
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   RestKit: ddc3c3a2b6cbe4578c4193d8e0dfe93d79333c3b
@@ -43,4 +43,4 @@ SPEC CHECKSUMS:
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

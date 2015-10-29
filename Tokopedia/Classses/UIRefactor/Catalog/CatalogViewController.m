@@ -119,9 +119,6 @@ static CGFloat rowHeight = 40;
     [priceAlertItem setTarget:self];
     self.navigationItem.rightBarButtonItems = @[actionButton, priceAlertItem];
     [self setBackgroundPriceAlert:NO];
-
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
     
     _specificationTitles = [NSMutableArray new];
 
@@ -133,42 +130,65 @@ static CGFloat rowHeight = 40;
     
     _hideTableRows = NO;
     
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:15],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:66.0/255.0
-                                                                                  green:66.0/255.0
-                                                                                   blue:66.0/255.0
-                                                                                  alpha:1],
-                                 };
-    
-    NSString *catalogName, *catalogPrice;
-    
-    if (_catalogID) {
-        catalogName = _catalogName;
-        catalogPrice = _catalogPrice;
-    } else if (_list) {
-        catalogName = _list.catalog_name;
-        catalogPrice = _list.catalog_price;
-    }
-    
-    if ([catalogPrice isEqualToString:@"0"]) {
-        catalogPrice = @"-";
-    }
-
-    self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:catalogName
-                                                                           attributes:attributes];
-    self.productNameLabel.numberOfLines = 0;
-    [self.productNameLabel sizeToFit];
-    
-    self.productPriceLabel.text = catalogPrice;
-    [self.productPriceLabel sizeToFit];
+    [self setCatalogName];
+    [self setCatalogPrice];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [self.productPhotoScrollView setUserInteractionEnabled:YES];
     [self.productPhotoScrollView addGestureRecognizer:tap];
     
     [self request];
+}
+
+- (void)setCatalogName {
+
+    NSString *catalogName;
+    if (_catalog) {
+        catalogName = _catalog.result.catalog_info.catalog_name;
+    } else if (_catalogName) {
+        catalogName = _catalogName;
+    } else if (_list) {
+        catalogName = _list.catalog_name;
+    }
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    
+    UIColor *titleColor = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
+    NSDictionary *attributes = @{
+        NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:15],
+        NSParagraphStyleAttributeName  : style,
+        NSForegroundColorAttributeName : titleColor,
+    };
+
+    self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:catalogName attributes:attributes];
+    self.productNameLabel.numberOfLines = 0;
+    [self.productNameLabel sizeToFit];
+    
+}
+
+- (void)setCatalogPrice {
+    if (_catalog) {
+        if (![_catalog.result.catalog_info.catalog_price.price_min isEqualToString:@"0"] &&
+            ![_catalog.result.catalog_info.catalog_price.price_max isEqualToString:@"0"]) {
+            _productPriceLabel.text = [NSString stringWithFormat:@"%@ - %@",
+                                       _catalog.result.catalog_info.catalog_price.price_min,
+                                       _catalog.result.catalog_info.catalog_price.price_max];
+            [self.productPriceLabel sizeToFit];
+        }
+    } else if (_catalogPrice) {
+        if ([_catalogPrice isEqualToString:@"0"]) {
+            self.productPriceLabel.text = @"-";
+        } else {
+            self.productPriceLabel.text = _catalogPrice;
+        }
+    } else if (_list) {
+        if ([_catalogPrice isEqualToString:@"0"]) {
+            self.productPriceLabel.text = @"-";
+        } else {
+            self.productPriceLabel.text = _list.catalog_price;
+        }
+    }
 }
 
 - (void)dealloc {
@@ -513,7 +533,12 @@ static CGFloat rowHeight = 40;
 - (void)loadMappingResult:(RKMappingResult *)result
 {
     if (result && [result isKindOfClass:[RKMappingResult class]]) {
+
         _catalog = [result.dictionary objectForKey:@""];
+        
+        [self setCatalogName];
+        [self setCatalogPrice];
+        
         for (CatalogSpecs *catalog_specs in _catalog.result.catalog_specs) {
             NSMutableArray *values = [NSMutableArray new];
             NSMutableArray *keys = [NSMutableArray new];
@@ -545,13 +570,6 @@ static CGFloat rowHeight = 40;
             [_specificationTitles addObject:catalog_specs.spec_header];
         }
         
-        if (![_catalog.result.catalog_info.catalog_price.price_min isEqualToString:@"0"] &&
-            ![_catalog.result.catalog_info.catalog_price.price_max isEqualToString:@"0"]) {
-            _productPriceLabel.text = [NSString stringWithFormat:@"%@ - %@",
-                                       _catalog.result.catalog_info.catalog_price.price_min,
-                                       _catalog.result.catalog_info.catalog_price.price_max];
-        }
-
         if (_catalog.result.catalog_info.catalog_images.count > 0) {
             _placeholderImageView.hidden = YES;
             _arrayCatalogImage = [NSMutableArray new];

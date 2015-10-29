@@ -20,6 +20,8 @@
 #import "WishListObject.h"
 #import "WishListObjectList.h"
 
+#import "Localytics.h"
+
 static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
@@ -73,6 +75,8 @@ typedef enum TagRequest {
 {
     [super viewDidLoad];
     
+    self.title = @"Wishlist";
+    
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
     
@@ -120,6 +124,8 @@ typedef enum TagRequest {
     _networkManager.tagRequest = ProductTag;
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
+    
+    [Localytics triggerInAppMessage:@"Wishlist Screen"];
 }
 
 -(void)viewWillAppear:(BOOL)animated

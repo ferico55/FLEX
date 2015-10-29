@@ -50,6 +50,8 @@
 
 #import "UIActivityViewController+Extensions.h"
 
+#import "Localytics.h"
+
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
 #define CTagFooterCollectionView @"FooterCollectionReusableView"
@@ -338,14 +340,10 @@ HotlistBannerDelegate
     } else {
         self.screenName = @"Browse HotList Detail";
     }
-
-//    [self configureRestKit];
-//    if (_isnodata) {
-//        [self request];
-//    }
-    
     
     self.hidesBottomBarWhenPushed = YES;
+    
+    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -1184,7 +1182,8 @@ HotlistBannerDelegate
         kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
         PromoImpressionKey          : product.ad_key,
         PromoSemKey                 : product.ad_sem_key,
-        PromoReferralKey            : product.ad_r
+        PromoReferralKey            : product.ad_r,
+        PromoRequestSource          : @(PromoRequestSourceHotlist)
     };
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData

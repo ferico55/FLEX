@@ -100,6 +100,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 @property (weak, nonatomic) IBOutlet UIButton *automaticCloseRatingYesButton;
 @property (weak, nonatomic) IBOutlet UIButton *automaticCloseReopenButton;
 
+@property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
+@property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *invoiceTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *invoiceNumberLabel;
+
 @end
 
 @implementation InboxTicketDetailViewController
@@ -107,7 +112,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setTitleView];
+    if (self.inboxTicket) {
+        [self setTitleView];
+    }
     
     UIView *emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 44)];
     UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:emptyView];
@@ -210,8 +217,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     } else {
         status = @"Ditutup";
     }
-    NSString *ticketCategory = _ticketInformation.ticket_category?:self.inboxTicket.ticket_category;
-    NSString *title = [NSString stringWithFormat:@"%@\n%@ - Status : %@", ticketID, ticketCategory, status];
+
+    NSString *title = [NSString stringWithFormat:@"%@\nStatus : %@", ticketID?:@"", status?:@""];
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
     [attributedText addAttribute:NSFontAttributeName
@@ -226,6 +233,58 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     label.attributedText = attributedText;
     
     self.navigationItem.titleView = label;
+}
+
+- (void)setCategoryView {
+    NSString *category = _ticketInformation.ticket_category?:self.inboxTicket.ticket_category;
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                 NSParagraphStyleAttributeName  : style,
+                                 };
+    
+    NSMutableAttributedString *categoryAttributedString = [[NSMutableAttributedString alloc] initWithString:category?:@""];
+    [categoryAttributedString addAttributes:attributes range:NSMakeRange(0, category.length)];
+    
+    self.categoryLabel.attributedText = categoryAttributedString;
+    [self.categoryLabel sizeToFit];
+    
+    CGSize maximumLabelSize = CGSizeMake(320, CGFLOAT_MAX);
+    
+    CGFloat width = self.view.frame.size.width - 30;
+    CGRect categoryLabelSize = [categoryAttributedString boundingRectWithSize:CGSizeMake(width, 10000)
+                                                                      options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                                      context:nil];
+    
+    NSString *invoice = _ticketInformation.ticket_invoice_ref_num;
+    if (![invoice isEqualToString:@"0"] ) {
+        self.invoiceNumberLabel.text = invoice;
+        [self.invoiceNumberLabel sizeToFit];
+        
+        CGSize invoiceLabelSize = [invoice sizeWithFont:FONT_GOTHAM_BOOK_14
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGRect frame = self.tableHeaderView.frame;
+        // 20 magin top and bottom
+        frame.size.height = categoryLabelSize.size.height + invoiceLabelSize.height + 83;
+        self.tableHeaderView.frame = frame;
+    } else {
+        CGRect frame = self.tableHeaderView.frame;
+        // 20 magin top and bottom
+        frame.size.height = categoryLabelSize.size.height + 48;
+        self.tableHeaderView.frame = frame;
+        
+        self.invoiceTitleLabel.hidden = YES;
+        self.invoiceNumberLabel.hidden = YES;
+    }
+    self.tableView.tableHeaderView = _tableHeaderView;
+    self.tableView.contentInset = UIEdgeInsetsZero;
+    [self.tableView reloadData];
+    [self.tableView setContentOffset:CGPointZero];
 }
 
 #pragma mark - Table view data source
@@ -336,13 +395,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         if (_isLoadingMore) {
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_VIEW_MORE,
-                           API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id
+                           API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId
                            };
         } else {
             if (_inboxTicket != nil)
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_DETAIL,
-                           API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id,
+                           API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id?:_inboxTicketId,
                            };
             
             else dictionary = @{};
@@ -438,12 +497,14 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                                        API_LIST_TICKET_UPDATE_BY_ID_KEY,
                                                        API_LIST_TICKET_ID_KEY,
                                                        API_LIST_TICKET_UPDATE_BY_NAME_KEY,
-                                                       API_LIST_TICKET_TOTAL_MESSAGE_KEY]];
+                                                       API_LIST_TICKET_TOTAL_MESSAGE_KEY,
+                                                       API_LIST_TICKET_INVOICE_REF_NUM_KEY]];
         
         [statusMapping addRelationshipMappingWithSourceKeyPath:kTKPD_APIRESULTKEY mapping:resultMapping];
         
         [resultMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_REPLY_KEY mapping:replyMapping];
         [resultMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_KEY mapping:ticketMapping];
+        [ticketMapping addRelationshipMappingWithSourceKeyPath:API_LIST_TICKET_ATTACHMENT_KEY mapping:attachmentMapping];
         
         [replyMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_REPLY_DATA_KEY mapping:replyDataMapping];
         [replyDataMapping addRelationshipMappingWithSourceKeyPath:API_TICKET_DETAIL_ATTACHMENT_KEY mapping:attachmentMapping];
@@ -506,6 +567,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     // action after request ticket detail
     if (tag == 1) {
         [self loadTicketsData:mappingResult];
+        [self setTitleView];
+        [self setCategoryView];
     }
     
     // action after request give rating
@@ -572,6 +635,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     ticketDetail.ticket_detail_user_image = _ticketInformation.ticket_first_message_image;
     ticketDetail.ticket_detail_message = _ticketInformation.ticket_first_message;
     ticketDetail.ticket_detail_create_time = _ticketInformation.ticket_create_time;
+	ticketDetail.ticket_detail_attachment = _ticketInformation.ticket_attachment;
     
     NSString *ticketCategoryId = self.inboxTicket.ticket_category_id;
     if ([ticketCategoryId isEqualToString:@"0"]) {
@@ -733,7 +797,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (IBAction)didTouchUpReplyButton:(UIButton *)sender {
     InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
-    controller.inboxTicket = self.inboxTicket;
+    InboxTicketList *newTicket = [InboxTicketList new];
+    newTicket.ticket_id = _ticketInformation.ticket_id;
+    newTicket.ticket_status = _ticketInformation.ticket_status;
+    controller.inboxTicket = self.inboxTicket?:newTicket;
     
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     navigation.navigationBar.translucent = NO;
@@ -745,7 +812,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (IBAction)didTouchUpCloseButton:(UIButton *)sender {
     InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
-    controller.inboxTicket = self.inboxTicket;
+    InboxTicketList *newTicket = [InboxTicketList new];
+    newTicket.ticket_id = _ticketInformation.ticket_id;
+    newTicket.ticket_status = _ticketInformation.ticket_status;
+    controller.inboxTicket = self.inboxTicket?:newTicket;
     controller.isCloseTicketForm = YES;
     
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];

@@ -13,6 +13,15 @@
 #define PromoImpressionKey   @"ad_key"
 #define PromoSemKey          @"ad_sem_key"
 #define PromoReferralKey     @"ad_r"
+#define PromoRequestSource   @"promo_request_source"
+
+typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
+    PromoRequestSourceSearch,
+    PromoRequestSourceCategory,
+    PromoRequestSourceHotlist,
+    PromoRequestSourceFavoriteProduct,
+    PromoRequestSourceFavoriteShop,
+};
 
 @protocol PromoRequestDelegate <NSObject>
 
@@ -28,10 +37,14 @@
 @property NSInteger page;
 @property (weak, nonatomic) id<PromoRequestDelegate> delegate;
 
-- (void)requestForProductQuery:(NSString *)query department:(NSString *)department;
+- (void)requestForProductQuery:(NSString *)query
+                    department:(NSString *)department;
 - (void)requestForProductHotlist:(NSString *)key;
 - (void)requestForProductFeed;
 - (void)requestForShopFeed;
-- (void)addImpressionKey:(NSString *)key semKey:(NSString *)semKey referralKey:(NSString *)referralKey;
+- (void)addImpressionKey:(NSString *)key
+                  semKey:(NSString *)semKey
+             referralKey:(NSString *)referralKey
+                  source:(PromoRequestSourceType)source;
 
 @end

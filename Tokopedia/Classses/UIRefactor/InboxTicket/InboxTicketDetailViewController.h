@@ -17,6 +17,7 @@
 
 @interface InboxTicketDetailViewController : UIViewController
 
+@property (strong, nonatomic) NSString *inboxTicketId;
 @property (strong, nonatomic) InboxTicketList *inboxTicket;
 @property (weak, nonatomic) id<InboxTicketDetailDelegate> delegate;
 

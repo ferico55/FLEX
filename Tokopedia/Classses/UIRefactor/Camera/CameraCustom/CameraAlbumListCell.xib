@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -16,17 +16,13 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vf8-CP-VGU" id="UWE-xZ-NNx">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="95"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="adI-We-Vd6">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="adI-We-Vd6">
                         <rect key="frame" x="15" y="5" width="90" height="90"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="90" id="MTS-jL-WJy"/>
-                            <constraint firstAttribute="width" constant="90" id="cfE-cU-037"/>
-                        </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Flv-Dx-9EP">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Flv-Dx-9EP">
                         <rect key="frame" x="113" y="4" width="192" height="90"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -34,21 +30,8 @@
                     </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                <constraints>
-                    <constraint firstAttribute="trailing" secondItem="Flv-Dx-9EP" secondAttribute="trailing" constant="15" id="4zj-Eo-4CE"/>
-                    <constraint firstAttribute="bottom" secondItem="Flv-Dx-9EP" secondAttribute="bottom" constant="5.5" id="83X-ZY-sy6"/>
-                    <constraint firstItem="Flv-Dx-9EP" firstAttribute="top" secondItem="UWE-xZ-NNx" secondAttribute="top" constant="4" id="Ank-2v-ASh"/>
-                    <constraint firstItem="Flv-Dx-9EP" firstAttribute="leading" secondItem="adI-We-Vd6" secondAttribute="trailing" constant="8" id="N4y-0C-W3T"/>
-                    <constraint firstItem="adI-We-Vd6" firstAttribute="leading" secondItem="UWE-xZ-NNx" secondAttribute="leading" constant="15" id="NOg-JB-9E4"/>
-                    <constraint firstItem="adI-We-Vd6" firstAttribute="top" secondItem="UWE-xZ-NNx" secondAttribute="top" constant="5" id="el4-Jl-RIy"/>
-                </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="161" y="110"/>
         </tableViewCell>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
