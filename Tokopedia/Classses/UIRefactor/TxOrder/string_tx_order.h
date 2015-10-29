@@ -43,6 +43,7 @@ typedef enum
 #define DATA_SELECTED_PAYMENT_METHOD_KEY @"selected_payment_method"
 #define DATA_PAYMENT_DATE_KEY @"payment_date"
 #define DATA_SELECTED_BANK_ACCOUNT_KEY @"selected_bank_account"
+#define DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY @"selected_bank_account_default"
 #define DATA_INDEXPATH_SYSTEM_BANK_KEY @"indexpath_system_bank"
 #define DATA_INDEXPATH_PAYMENT_METHOD_KEY @"indexpath_payment_method"
 #define DATA_INDEXPATH_BANK_ACCOUNT_KEY @"indexpath_bank_account"

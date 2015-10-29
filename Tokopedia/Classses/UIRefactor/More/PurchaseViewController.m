@@ -11,6 +11,7 @@
 #import "TxOrderTabViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "NotificationManager.h"
+#import "Localytics.h"
 
 @interface PurchaseViewController ()<NotificationManagerDelegate>
 {
@@ -44,6 +45,8 @@
                                               object:nil];
     
     [self setValues];
+
+    [Localytics triggerInAppMessage:@"Pembelian Screen"];
 }
 
 - (void)viewWillAppear:(BOOL)animated

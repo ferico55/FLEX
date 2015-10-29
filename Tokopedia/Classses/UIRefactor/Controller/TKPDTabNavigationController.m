@@ -28,7 +28,6 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIView *container;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
 @property (weak, nonatomic) IBOutlet UIView *tabView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tabViewHeightConstraint;
 
@@ -108,13 +107,17 @@
     [_barbuttoncategory setEnabled:NO];
     
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setTabShopActive)
+                                                 name:@"setTabShopActive"
+                                               object:nil];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
     [super viewWillAppear:animated];
-    
     self.navigationItem.title = [self.navigationTitle capitalizedString];
     self.hidesBottomBarWhenPushed = YES;
 }
@@ -549,22 +552,42 @@
     NSInteger count = [[userinfo objectForKey:@"count"] integerValue];
     
     if (count == 2) {
+        
         _segmentcontrol.hidden = NO;
         [_segmentcontrol removeAllSegments];
         [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
         [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:1 animated:NO];
-        _tabbar = _segmentcontrol;
-        [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+
         _hascatalog = NO;
+        
+        _tabbar = _segmentcontrol;
+        
+        if ([userinfo objectForKey:@"selectedIndex"]) {
+            _selectedIndex = [[userinfo objectForKey:@"selectedIndex"] integerValue];
+            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+        } else {
+            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+        }
+        
     } else if (count == 3) {	//not default to 3
         _segmentcontrol.hidden = NO;
+        _tabbar = _segmentcontrol;
+
+        _hascatalog = YES;
+        
         [_segmentcontrol removeAllSegments];
         [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
         [_segmentcontrol insertSegmentWithTitle:@"Katalog" atIndex:1 animated:NO];
         [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:2 animated:NO];
-        _tabbar = _segmentcontrol;
-        [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-        _hascatalog = YES;
+        
+        if ([userinfo objectForKey:@"selectedIndex"]) {
+            _selectedIndex = [[userinfo objectForKey:@"selectedIndex"] integerValue];
+            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+            [self tap:_segmentcontrol];
+        } else {
+            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+        }
+        
     }
     if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)] ||
         [[_data objectForKey:kTKPDHASHTAG_HOTLIST]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]
@@ -603,6 +626,14 @@
 - (void)updateTabCategory:(NSString *)categoryID
 {
     _categoryID = categoryID;
+}
+
+- (void)setTabShopActive {
+    if (_hascatalog) {
+        _segmentcontrol.selectedSegmentIndex = 2;
+    } else {
+        _segmentcontrol.selectedSegmentIndex = 1;
+    }
 }
 
 @end

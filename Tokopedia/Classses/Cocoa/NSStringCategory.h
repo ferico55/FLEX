@@ -19,4 +19,6 @@
 
 - (BOOL) isNotAllBaseCharacter;
 
+-(NSString *)priceFromStringIDR;
+
 @end

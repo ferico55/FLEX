@@ -26,6 +26,8 @@
 #import "requestGenerateHost.h"
 #import "TKPDPhotoPicker.h"
 
+#import "RequestResolutionCenter.h"
+
 #define TITLE_APPEAL @"Naik Banding"
 #define TITLE_CHANGE_SOLUTION @"Ubah Solusi"
 #define TITLE_OPEN_COMPLAIN @"Buka Komplain"
@@ -42,7 +44,8 @@
     RequestUploadImageDelegate,
     SyncroDelegate,
     TKPDPhotoPickerDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    RequestResolutionCenterDelegate
 >
 {
     BOOL _isNodata;
@@ -64,7 +67,13 @@
 
     TKPDPhotoPicker *_photoPicker;
     
-    TokopediaNetworkManager *_networkManagerOpenComplain;
+    NSString *_serverID;
+    NSString *_uploadHost;
+    NSInteger _userID;
+    
+    RequestResolutionCenter *_requestResolutionCenter;
+    
+    GeneratedHost *_generatedHost;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewUploadPhoto;
@@ -108,10 +117,6 @@
     _photos = (_photos)?_photos:[[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _uploadingPhotos = [NSMutableArray new];
     
-    _networkManagerOpenComplain = [TokopediaNetworkManager new];
-    _networkManagerOpenComplain.delegate = self;
-    _networkManagerOpenComplain.tagRequest = TAG_REQUEST_OPEN_COMPLAIN;
-    
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
     _uploadedImages = [NSArray sortViewsWithTagInArray:_uploadedImages];
     _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
@@ -134,18 +139,42 @@
     
     _isFinishUploadingImage = YES;
     
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    if (_generatehost.result == nil && _indexPage !=1) {
+        RequestGenerateHost *requestHost = [RequestGenerateHost new];
+        [requestHost configureRestkitGenerateHost];
+        [requestHost requestGenerateHost];
+        requestHost.delegate = self;
+    }
 
     [self adjustNavigationTitle];
+    
+    _generatedHost = [GeneratedHost new];
+    _generatedHost.upload_host = _uploadHost;
+    _generatedHost.server_id = _serverID;
+    _generatedHost.user_id = _userID;
+}
+
+-(void)setGeneratehost:(GenerateHost *)generatehost
+{
+    _generatehost = generatehost;
+    _serverID = generatehost.result.generated_host.server_id;
+    _uploadHost = generatehost.result.generated_host.upload_host;
+    _userID = generatehost.result.generated_host.user_id;
 }
 
 -(void)setControllerTitle:(NSString *)controllerTitle
 {
     _controllerTitle = controllerTitle;
     [self adjustNavigationTitle];
+}
+
+-(RequestResolutionCenter*)requestResolutionCenter
+{
+    if (!_requestResolutionCenter) {
+        _requestResolutionCenter = [RequestResolutionCenter new];
+        _requestResolutionCenter.delegate = self;
+    }
+    return _requestResolutionCenter;
 }
 
 -(void)adjustNavigationTitle
@@ -225,8 +254,6 @@
 
 -(void)dealloc
 {
-    _networkManagerOpenComplain.delegate = nil;
-    _networkManagerOpenComplain = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -256,7 +283,7 @@
             if (button.tag == picker.tag) {
                 button.enabled = NO;
                 button.hidden = YES;
-            } else if (button.tag == picker.tag+1) {
+            } else if (button.tag == picker.tag+1 && ((UIImageView*)_uploadedImages[(picker.tag+1)-10]).image == nil) {
                 button.enabled = YES;
                 button.hidden = NO;
             }
@@ -265,6 +292,9 @@
         imageView.image = image;
         imageView.hidden = NO;
         imageView.alpha = 0.5f;
+        
+        [imageView setContentMode:UIViewContentModeScaleAspectFill];
+        [imageView setClipsToBounds:YES];
         
         [self actionUploadImage:object];   
     }
@@ -340,16 +370,19 @@
 -(void)didTapDoneBarButtonItem
 {
     if ([self isValidInput]) {
+        if (_delegate!= nil && [_delegate respondsToSelector:@selector(setGenerated_host:)]) {
+            [_delegate setGenerateHost:_generatedHost];
+        }
         NSString *troubleType = [self troubleType]?:@"";
         NSString *solutionType = [self solutionType]?:@"";
 
         NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
        
-        NSString *serverID = _generatehost.result.generated_host.server_id?:@"0";
+        NSString *server_id = _generatehost.result.generated_host.server_id?:_serverID?:@"0";
         
         if ([self.title isEqualToString:TITLE_APPEAL]) {
 
-            [_delegate appealSolution:solutionType refundAmount:_totalRefund remark:_note photo:photos serverID:serverID];
+            [_delegate appealSolution:solutionType refundAmount:_totalRefund remark:_note photo:photos serverID:server_id];
             NSArray *viewControllers = self.navigationController.viewControllers;
             UIViewController *destinationVC;
             for (UIViewController *vc in viewControllers) {
@@ -361,7 +394,7 @@
         }
         else if([self.title isEqualToString:TITLE_CHANGE_SOLUTION])
         {
-            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:serverID];
+            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:_serverID];
             NSArray *viewControllers = self.navigationController.viewControllers;
             UIViewController *destinationVC;
             for (UIViewController *vc in viewControllers) {
@@ -373,7 +406,21 @@
         }
         else
         {
-            [_networkManagerOpenComplain doRequest];
+            NSString *troubleType = [self troubleType]?:@"";
+            NSString *solutionType = [self solutionType]?:@"";
+            
+            NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+
+            [self requestResolutionCenter].generatedHost = _generatedHost;
+            [[self requestResolutionCenter] setParamCreateValidationFromID:_order.order_detail.detail_order_id?:@""
+                                                              flagReceived:[@(_isGotTheOrder) stringValue]
+                                                               troubleType:troubleType
+                                                                  solution:solutionType
+                                                              refundAmount:_totalRefund?:@""
+                                                                    remark:_note?:@""
+                                                                    photos:photos
+                                                                   serverID: _generatehost.result.generated_host.server_id?:_serverID?:@"0"];
+            [[self requestResolutionCenter] doRequestCreate];
         }
     }
 }
@@ -847,7 +894,6 @@
     vc.isGotTheOrder = _isGotTheOrder;
     vc.order = _order?:[TxOrderStatusList new];
     vc.uploadedPhotos = (_uploadedPhotos.count>0)?_uploadedPhotos:_photos?:@[];
-    vc.generatehost = _generatehost;
     vc.delegate = _delegate;
     vc.detailOpenAmount = _detailOpenAmount;
     vc.detailOpenAmountIDR = _detailOpenAmountIDR;
@@ -862,111 +908,25 @@
     vc.totalRefund = _totalRefund;
     vc.syncroDelegate = self;
     vc.controllerTitle = _controllerTitle;
+    vc.generatehost = _generatehost;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Request Complaint
 
--(id)getObjectManager:(int)tag
+-(void)didSuccessCreate
 {
-    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
-        return [self objectManagerOpenComplain];
+    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:self];
+    [[NSNotificationCenter defaultCenter]postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:self];
+    NSArray *viewControllers = self.navigationController.viewControllers;
+    UIViewController *destinationVC;
+    for (UIViewController *vc in viewControllers) {
+        if ([vc isKindOfClass:[_delegate class]]) {
+            destinationVC = vc;
+        }
     }
-    
-    return nil;
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
-        NSString *troubleType = [self troubleType]?:@"";
-        NSString *solutionType = [self solutionType]?:@"";
-        
-        NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-        
-        NSDictionary* param = @{API_ACTION_KEY : ACTION_CREATE_RESOLUTION,
-                                API_ORDER_ID_KEY : _order.order_detail.detail_order_id?:@"",
-                                API_FLAG_RECIEVED_KEY : @(_isGotTheOrder),
-                                API_TROUBLE_TYPE_KEY: troubleType,
-                                API_SOLUTION_KEY : solutionType,
-                                API_REFUND_AMOUNT_KEY : _totalRefund?:@"",
-                                API_REMARK_KEY : _note?:@"",
-                                API_PHOTOS_KEY : photos,
-                                API_SERVER_ID_KEY : _generatehost.result.generated_host.server_id?:@"0"
-                                };
-        return param;
-    }
-    return nil;
-}
-
--(NSString *)getPath:(int)tag
-{
-    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
-        return API_PATH_ACTION_RESOLUTION_CENTER;
-    }
-    return nil;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
-        TransactionAction *order = stat;
-        return order.status;
-    }
-    return nil;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
-        [self requestSuccessComplain:successResult withOperation:operation];
-    }
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    if (tag == TAG_REQUEST_OPEN_COMPLAIN) {
-        
-    }
-}
-
--(RKObjectManager*)objectManagerOpenComplain
-{
-    RKObjectManager *objectManagerComplain = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_PATH_ACTION_RESOLUTION_CENTER keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManagerComplain addResponseDescriptor:responseDescriptor];
-    
-    return objectManagerComplain;
+    [self.navigationController popToViewController:destinationVC animated:YES];
 }
 
 //TROUBLE_DIFF_DESCRIPTION    => 1,
@@ -1017,46 +977,12 @@
     return solutionType;
 }
 
-
--(void)requestSuccessComplain:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (order.result.is_success == 1) {
-            NSArray *array = order.message_status?:@[@"Anda telah berhasil membuka komplain."];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-            [alert show];
-            
-            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:self];
-            [[NSNotificationCenter defaultCenter]postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:self];
-            NSArray *viewControllers = self.navigationController.viewControllers;
-            UIViewController *destinationVC;
-            for (UIViewController *vc in viewControllers) {
-                if ([vc isKindOfClass:[_delegate class]]) {
-                    destinationVC = vc;
-                }
-            }
-            [self.navigationController popToViewController:destinationVC animated:YES];
-        }
-        else
-        {
-            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-            [alert show];
-        }
-    }
-}
-
 #pragma mark Request Action Upload Photo
 -(void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generatehost = generateHost;
     [[_uploadButtons objectAtIndex:0] setEnabled:YES];
-    [_dataInput setObject:_generatehost.result.generated_host.server_id forKey:API_SERVER_ID_KEY];
+    [_dataInput setObject:_generatehost.result.generated_host forKey:@"generated_host"];
 }
 
 -(void)actionUploadImage:(id)object
@@ -1064,14 +990,18 @@
     [_uploadingPhotos addObject:object];
     _isFinishUploadingImage = NO;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = object;
-    uploadImage.delegate = self;
-    uploadImage.isNotUsingNewAdd = YES;
-    uploadImage.generateHost = _generatehost;
-    uploadImage.action = ACTION_UPLOAD_CONTACT_IMAGE;
-    uploadImage.fieldName = API_UPLOAD_PRODUCT_IMAGE_DATA_NAME;
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    [uploadImage requestActionUploadObject:object
+                             generatedHost:_generatehost.result.generated_host
+                                    action:ACTION_UPLOAD_CONTACT_IMAGE
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:API_UPLOAD_PRODUCT_IMAGE_DATA_NAME
+                                   success:^(id imageObject, UploadImage *image) {
+       [self successUploadObject:object withMappingResult:image];
+    } failure:^(id imageObject, NSError *error) {
+        [self failedUploadObject:object];
+    }];
 }
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage

@@ -28,6 +28,8 @@
 #import "ShopReputation.h"
 #import "SmileyAndMedal.h"
 
+#import "TagManagerHandler.h"
+
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
 #define DATA_FILTER_SORTING_KEY @"filter_sorting"
@@ -81,6 +83,8 @@
     LoadingView *_loadingView;
     
     NSIndexPath *_selectedDetailIndexPath;
+    
+    TAGContainer *_gtmContainer;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -142,6 +146,18 @@
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TagManagerHandler *gtmHandler = [TagManagerHandler new];
+    [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
+}
+
+-(TAGContainer *)gtmContainer
+{
+    if (!_gtmContainer) {
+        _gtmContainer = [TagManagerHandler getContainer];
+    }
+    return _gtmContainer;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -308,13 +324,13 @@
     NSString *lastSolution;
     
     if (lastSolutionType == SOLUTION_REFUND) {
-        lastSolution = [NSString stringWithFormat:@"Pembelian dana kepada pembeli sebesar %@",resolution.resolution_last.last_refund_amt_idr];
+        lastSolution = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",resolution.resolution_last.last_refund_amt_idr];
     }
     else if (lastSolutionType == SOLUTION_RETUR) {
         lastSolution = [NSString stringWithFormat:@"Tukar barang sesuai pesanan"];
     }
     else if (lastSolutionType == SOLUTION_RETUR_REFUND) {
-        lastSolution = [NSString stringWithFormat:@"Pembelian barang dan dana sebesar %@",resolution.resolution_last.last_refund_amt_idr];
+        lastSolution = [NSString stringWithFormat:@"Pengembalian barang dan dana sebesar %@",resolution.resolution_last.last_refund_amt_idr];
     }
     else if (lastSolutionType == SOLUTION_SELLER_WIN) {
         lastSolution = [NSString stringWithFormat:@"Pengembalian dana penuh"];
@@ -335,11 +351,14 @@
     cell.unreadBorderView.hidden = (((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status == 2)?YES:NO;
     cell.unreadIconImageView.hidden = cell.unreadBorderView.hidden;
     
+    [cell.warningLabel setCustomAttributedText:[[self gtmContainer] stringForKey:GTMKeyComplainNotifString]?:@""];
     cell.warningLabel.hidden = !(resolution.resolution_dispute.dispute_30_days == 1);
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
+
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

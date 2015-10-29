@@ -844,8 +844,6 @@
     NSString *productPrice = product.product_price?:@"";
     NSString *productWeightUnitID = product.product_weight_unit?:@"";
     NSString *productWeight = product.product_weight?:@"";
-    NSString *productImage = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
-    NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
     NSString *photoDefaultIndex = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_INDEX]?:@"0";
     NSString *productInsurance = product.product_must_insurance?:@"";
     NSString *moveToWarehouse = product.product_move_to?:@"";
@@ -860,19 +858,7 @@
     
     NSString *productID = product.product_id?:@"";
     NSInteger returnableProduct = [product.product_returnable integerValue];
-    //NSInteger returnableProduct = [[_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
-    //if (returnableProduct == -1) {
-    //    returnableProduct = 0; // Not Set
-    //}
-    //else if(returnableProduct == 1)
-    //{
-    //    returnableProduct = 1; //returnable
-    //}
-    //else
-    //{
-    //    returnableProduct = 2; // not returnable
-    //}
-    
+
     NSString *catalogID = catalog.catalog_id?:@"";
     
     NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
@@ -889,17 +875,6 @@
     
     _uniqueID = uniqueID;
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
-    
-    NSString *myString = productImage;
-    NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
-                              [NSCharacterSet characterSetWithCharactersInString:@"~"]
-                              ];
-    
-    for (int i = 0; i<productImages.count; i++) {
-        if ([productImages[i] isEqualToString:photoDefault]) {
-            photoDefault = [NSString stringWithFormat:@"%d",i];
-        }
-    }
     
     NSString *productPhotoDesc = [[[_data objectForKey:@"Image_desc_array"] valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
     
@@ -920,13 +895,13 @@
                                       API_PRODUCT_ETALASE_ID_KEY : etalaseID,
                                       API_PRODUCT_ETALASE_NAME_KEY : etalaseName,
                                       API_PRODUCT_CONDITION_KEY : productConditionID,
-                                      API_PRODUCT_IMAGE_TOUPLOAD_KEY : productImage?:@(0),
-                                      API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
+                                      API_PRODUCT_IMAGE_TOUPLOAD_KEY : [self paramPhoto]?:@"",
+                                      API_PRODUCT_IMAGE_DEFAULT_KEY: [self photoDefault]?:@"",
                                       API_PRODUCT_IS_RETURNABLE_KEY : @(returnableProduct),
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       API_UNIQUE_ID_KEY:uniqueID,
                                       API_IS_DUPLICATE_KEY : @(duplicate),
-                                      API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc
+                                      API_PRODUCT_IMAGE_DESCRIPTION_KEY: [self paramPhotoDesc]?:@""
                                       };
     NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
     [paramMutableDict addEntriesFromDictionary:paramDictionary];
@@ -1019,9 +994,7 @@
 -(NSDictionary*)paramAddPicture
 {
     NSString *action = ACTION_ADD_PRODUCT_PICTURE;
-    NSString *productPhoto = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSString *productPhotoDesc = [_dataInput objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
-    NSString *photoDefault = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
     NSString *photoDefaultIndex = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_INDEX]?:@"0";
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
 
@@ -1032,28 +1005,75 @@
     
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     NSString *userID = [auth getUserId]?:@"";
-    
-    NSString *myString = productPhoto;
+
+    NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY:action?:@"",
+                            API_SERVER_ID_KEY : serverID?:@"",
+                            API_PRODUCT_IMAGE_TOUPLOAD_KEY : [self paramPhoto]?:@"",
+                            API_PRODUCT_IMAGE_DESCRIPTION_KEY: [self paramPhotoDesc]?:@"",
+                            API_PRODUCT_IMAGE_DEFAULT_KEY: [self photoDefault]?:@"",
+                            API_IS_DUPLICATE_KEY :@(duplicate),
+                            @"user_id" :userID
+                            };
+    return param;
+}
+
+-(NSString*)photoDefault
+{
+    NSString *photoDefault = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
+    NSString *productImage = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
+
+    NSString *myString = productImage;
     NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
                               [NSCharacterSet characterSetWithCharactersInString:@"~"]
                               ];
     
+    NSMutableArray *paramPhotoArray = [NSMutableArray new];
     for (int i = 0; i<productImages.count; i++) {
+        if (![productImages[i] isEqualToString:@""]) {
+            [paramPhotoArray addObject:productImages[i]];
+        }
+    }
+    
+    for (int i = 0; i<paramPhotoArray.count; i++) {
         if ([productImages[i] isEqualToString:photoDefault]) {
             photoDefault = [NSString stringWithFormat:@"%d",i];
         }
     }
     
-    NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY:action?:@"",
-                            API_SERVER_ID_KEY : serverID,
-                            API_PRODUCT_IMAGE_TOUPLOAD_KEY : productPhoto?:@(0),
-                            API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc,
-                            API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
-                            API_IS_DUPLICATE_KEY :@(duplicate),
-                            @"user_id" :userID
-                            };
-    return param;
+    return photoDefault;
+}
+
+-(NSString *)paramPhoto
+{
+    NSString *myString = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
+    NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
+                              [NSCharacterSet characterSetWithCharactersInString:@"~"]
+                              ];
+    NSMutableArray *paramPhotoArray = [NSMutableArray new];
+    for (int i = 0; i<productImages.count; i++) {
+        if (![productImages[i] isEqualToString:@""]) {
+            [paramPhotoArray addObject:productImages[i]];
+        }
+    }
+    NSString *paramPhoto = [[[paramPhotoArray copy] valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+
+    return paramPhoto;
+}
+
+-(NSString *)paramPhotoDesc
+{
+    NSArray *photodescriptions = [_data objectForKey:@"Image_desc_array"];
+    NSMutableArray *paramPhotoDescArray = [NSMutableArray new];
+    for (NSString *desc in photodescriptions) {
+        if (![desc isEqualToString:@""]) {
+            [paramPhotoDescArray addObject:desc];
+        }
+    }
+    
+    NSString *paramPhotoDesc = [[[paramPhotoDescArray copy] valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+    
+    return paramPhotoDesc;
 }
 
 -(void)requestSuccessActionAddProductPicture:(id)object withOperation:(RKObjectRequestOperation *)operation

@@ -161,8 +161,10 @@
             [self loadData];
         }
     }
-//    self.table.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
+
     self.screenName = @"Search Result - Shop Tab";
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -250,6 +252,12 @@
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
+            
+            if([list.shop_gold_status isEqualToString:@"1"]){
+                ((SearchResultShopCell*)cell).goldBadgeView.hidden = NO;
+            }else{
+                ((SearchResultShopCell*)cell).goldBadgeView.hidden = YES;
+            }
             
             if([list.shop_is_fave_shop isEqualToString:@"1"]) {
                 [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];

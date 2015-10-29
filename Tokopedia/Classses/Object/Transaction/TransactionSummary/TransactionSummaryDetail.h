@@ -11,8 +11,11 @@
 #import "TransactionSummaryBCAParam.h"
 #import "CCFee.h"
 #import "IndomaretData.h"
+#import "InstallmentBank.h"
 
-@interface TransactionSummaryDetail : NSObject
+#import "TKPObjectMapping.h"
+
+@interface TransactionSummaryDetail : NSObject <TKPObjectMapping>
 
 @property (nonatomic,strong) NSArray *carts;
 
@@ -64,6 +67,5 @@
 @property (nonatomic,strong) NSString *cashback_idr;
 @property (nonatomic,strong) NSString *cashback;
 
-
-
+@property (nonatomic, strong) NSArray *installment_bank_option;
 @end

@@ -10,4 +10,8 @@
 
 @implementation TrackOrder
 
+- (NSString *)receiver_name {
+    return [_receiver_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

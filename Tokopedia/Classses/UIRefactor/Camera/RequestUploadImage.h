@@ -28,7 +28,7 @@
 
 -(void)configureRestkitUploadPhoto;
 - (void)requestActionUploadPhoto;
-- (void)cancelActionUploadPhoto;
+
 @property GenerateHost *generateHost;
 @property id imageObject;
 @property NSString *action;
@@ -36,5 +36,15 @@
 @property NSString *productID;
 @property NSString *paymentID;
 @property BOOL isNotUsingNewAdd;
+
+- (void)requestActionUploadObject:(id)imageObject
+                   generatedHost:(GeneratedHost*)generatedHost
+                          action:(NSString*)action
+                          newAdd:(NSInteger)newAdd
+                       productID:(NSString*)productID
+                       paymentID:(NSString*)paymentID
+                       fieldName:(NSString*)fieldName
+                         success:(void (^)(id imageObject, UploadImage*image))success
+                         failure:(void(^)(id imageObject, NSError *error))failure;
 
 @end

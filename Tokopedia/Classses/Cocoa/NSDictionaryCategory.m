@@ -16,17 +16,17 @@
 
 - (BOOL)isMutable
 {
-	@try {
+    @try {
         if ([self objectForKey:@""]) {
             [(id)self setObject:@"" forKey:@""];	//TODO: unique key...
             [(id)self removeObjectForKey:@""];
             return YES;
         }
         return NO;
-	}
-	@catch (NSException *exception) {
-		return NO;
-	}
+    }
+    @catch (NSException *exception) {
+        return NO;
+    }
     return YES;
 }
 
@@ -44,6 +44,15 @@
         NSDictionary *keyAndParam = @{@"key" : encodedKey, @"param" : encodedParam};
         
         return keyAndParam;
+    }
+    return nil;
+}
+
+- (NSDictionary*)autoParameters {
+    if ([self isKindOfClass:[NSDictionary class]]) {
+        UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+        NSDictionary *parameters = [userManager autoAddParameter:self];
+        return parameters;
     }
     return nil;
 }

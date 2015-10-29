@@ -49,7 +49,9 @@
                                                    @"lp_amount_idr",
                                                    @"lp_amount",
                                                    @"cashback_idr",
-                                                   @"cashback"
+                                                   @"cashback",
+                                                   @"grand_total_without_lp_idr",
+                                                   @"grand_total_without_lp"
                                                    ]];
     
     RKObjectMapping *listMapping = [[self mapping] transactionCartListMapping];
@@ -140,6 +142,9 @@
     RKObjectMapping *ccFeeMapping       = [[self mapping] ccFeeMapping];
     RKObjectMapping *indomaretMapping   = [[self mapping] indomaretMapping];
     
+    RKObjectMapping *installmentBankMapping =[[self mapping]installmentBankMapping];
+    RKObjectMapping *installmentTermMapping =[[self mapping] installmentTermMapping];
+    
     if(_gatewayID == TYPE_GATEWAY_BCA_CLICK_PAY){
         RKObjectMapping *BCAParamMapping = [[self mapping] BCAParamMapping];
         RKRelationshipMapping *bcaParamRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_BCA_PARAM_KEY
@@ -176,6 +181,18 @@
                                                                                                  toKeyPath:API_TRANSACTION_SUMMARY_PRODUCT_KET
                                                                                                withMapping:listMapping];
     [transactionMapping addPropertyMapping:listRelationshipMapping];
+    
+    RKRelationshipMapping *installmentBankRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"installment_bank_option"
+                                                                                                 toKeyPath:@"installment_bank_option"
+                                                                                               withMapping:installmentBankMapping];
+    [transactionMapping addPropertyMapping:installmentBankRelationshipMapping];
+    
+    
+    RKRelationshipMapping *installmentTermRelationshipMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"installment_term"
+                                                                                                            toKeyPath:@"installment_term"
+                                                                                                          withMapping:installmentTermMapping];
+    [installmentBankMapping addPropertyMapping:installmentTermRelationshipMapping];
+    
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CART_DESTINATION_KEY
                                                                                 toKeyPath:API_CART_DESTINATION_KEY
@@ -298,7 +315,8 @@
                                                  API_DATA_VOUCHER_EXPIRED_KEY,
                                                  API_DATA_VOUCHER_ID_KEY,
                                                  API_DATA_VOUCHER_MINIMAL_AMOUNT_KEY,
-                                                 API_DATA_VOUCHER_STATUS_KEY
+                                                 API_DATA_VOUCHER_STATUS_KEY,
+                                                 @"voucher_no_other_promotion"
                                                  ]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];

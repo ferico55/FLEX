@@ -21,6 +21,8 @@
 #import "AppsFlyerTracker.h"
 #import "GalleryViewController.h"
 
+#import "Localytics.h"
+
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate,GalleryViewControllerDelegate,GalleryPhotoDelegate, PaymentCellDelegate>
 {
     NSMutableArray *_listSystemBank;
@@ -32,6 +34,9 @@
     
     BOOL _isWillApearFromGallery;
     BOOL _isExpanding;
+    
+    URLCacheConnection *_cacheConnection;
+    URLCacheController *_cacheController;
 }
 @property (weak, nonatomic) IBOutlet UIButton *confirmPaymentButton;
 @property (weak, nonatomic) IBOutlet UILabel *listPaymentTitleLabel;
@@ -97,10 +102,6 @@
     [self adjustFooterPurchaseStatus];
     
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-
-    
-//    _tableView.tableFooterView = _klikBCAStepsView;
-//    _tableView.tableFooterView = _indomaretStepsView;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -171,7 +172,8 @@
             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)] ||
             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
-            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]
             ){
             return _paymentStatusView;
         }
@@ -208,7 +210,7 @@
         }
         return 7;
     }
-    else if (section == _listTotalPayment.count && _cartBuy.transaction.lp_amount >= 0) {
+    else if (section == _listTotalPayment.count && _cartBuy.transaction.cashback >= 0) {
         return 10;
     }
     else if (section == _listTotalPayment.count+1) {
@@ -235,7 +237,7 @@
     }
     else if (indexPath.section == _listTotalPayment.count)
     {
-        if ([_cartBuy.transaction.lp_amount integerValue] == 0)
+        if ([_cartBuy.transaction.cashback integerValue] == 0)
             return 0;
         else
         return 44;
@@ -551,7 +553,8 @@
     else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)] ||
-             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]||
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]
              )
     {
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]) {
@@ -562,6 +565,8 @@
             self.screenName = @"Thank you Page - KlikBca";
         }else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]) {
             self.screenName = @"Thank you Page - Credit Card";
+        }else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]) {
+            self.screenName = @"Thank you Page - Installment";
         }
         NSArray *detailPaymentIfUsingSaldo = @[
                                                @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
@@ -609,15 +614,37 @@
                                                                               AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
                                                                               }];
     
+    NSString *paymentMethod = _cartBuy.transaction.gateway_name;
+    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *paymentTotal = [[_cartBuy.transaction.grand_total_before_fee componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+
+    NSDictionary *attributes = @{
+        @"Payment Method" : paymentMethod,
+        @"Total Transaction" : paymentTotal,
+        @"Total Quantity" : @"",
+        @"Total Shipping Fee" : @""
+    };
+    
+    NSInteger totalPayment = 0;
+    
+    [Localytics tagEvent:@"Event : Finished Transaction"
+              attributes:attributes
+   customerValueIncrease:[NSNumber numberWithInteger:totalPayment]];
+
+    NSString *profileAttribute = @"Profile : Total Transaction";
+    
+    [Localytics incrementValueBy:totalPayment
+             forProfileAttribute:profileAttribute
+                       withScope:LLProfileScopeApplication];
+    
     [_footerLabel setCustomAttributedText:_footerLabel.text];
     [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
     
-    NSString *tableTitleLabel = @"";//[NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
+    NSString *tableTitleLabel = @"";
     
     [_tableTitleLabel setCustomAttributedText:tableTitleLabel];
 
     if ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_BCA_KLIK_BCA) {
-//        tableTitleLabel = [NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran KlikBCA\n\nUser ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user];
         
         tableTitleLabel = [NSString stringWithFormat:@"User ID KlikBCA Anda: %@",_cartBuy.transaction.klikbca_user];
         

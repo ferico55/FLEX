@@ -18,6 +18,8 @@
 
 #import "NotificationManager.h"
 
+#import "Localytics.h"
+
 @interface TransactionCartRootViewController ()
 <
     UIPageViewControllerDataSource,
@@ -37,6 +39,8 @@
     BOOL _isShouldRefreshingCart;
     
     NotificationManager *_notifManager;
+    
+    NSURL *_deeplinkUrl;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *noLoginView;
@@ -135,6 +139,8 @@
             [self initNotificationManager];
         }
     }
+    
+    [Localytics triggerInAppMessage:@"Cart Screen"];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -430,7 +436,7 @@
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
     _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+    self.navigationItem.rightBarButtonItem = (_index == 0)?_notifManager.notificationButton:nil;
 }
 
 - (void)tapNotificationBar {
@@ -474,6 +480,9 @@
                                              selector:@selector(doRefreshingCart)
                                                  name:@"doRefreshingCart" object:nil];
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didReceiveDeeplinkUrl:)
+//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
 }
 
 - (void)doRefreshingCart {

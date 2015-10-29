@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 
 @interface PromoRequest () <TokopediaNetworkManagerDelegate> {
     UserAuthentificationManager *_userManager;
-
+    
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager *_objectManager;
     
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     __weak RKObjectManager *_actionObjectManager;
     
     PromoRequestType _requestType;
-
+    
     NSString *_query;
     NSString *_departmentId;
     NSString *_key;
@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     NSString *_adKey;
     NSString *_adSemKey;
     NSString *_adR;
+    NSInteger _source;
     
     TAGContainer *_gtmContainer;
     NSString *_promoBaseURL;
@@ -49,6 +50,11 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     NSString *_promoActionBaseURL;
     NSString *_promoActionPostURL;
     NSString *_promoActionFullURL;
+    
+    BOOL _cancelRequestProductFeed;
+    BOOL _cancelRequestHotlist;
+    BOOL _cancelRequestShopFeed;
+    BOOL _cancelRequestSearch;
 }
 
 @end
@@ -70,39 +76,51 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     if (tag == PromoNetworkManagerGet) {
         if (_requestType == PromoRequestTypeProductSearch) {
             parameters = @{
-                           @"action" : @"ad_product_search",
-                           @"query" : _query,
-                           @"department_id" : _departmentId,
-                           @"page" : [NSString stringWithFormat:@"%d", _page],
-                           @"per_page" : @"4",
+                           @"action"       : @"ad_product_search",
+                           @"query"        : _query,
+                           @"department_id": _departmentId,
+                           @"page"         : [NSString stringWithFormat:@"%d", _page],
+                           @"per_page"     : @"4",
                            };
         } else if (_requestType == PromoRequestTypeProductHotlist) {
             parameters = @{
-                           @"action" : @"ad_product_hotlist",
-                           @"key" : _key,
-                           @"page" : [NSString stringWithFormat:@"%d", _page],
-                           @"per_page" : @"4",
+                           @"action"       : @"ad_product_hotlist",
+                           @"key"          : _key,
+                           @"page"         : [NSString stringWithFormat:@"%d", _page],
+                           @"per_page"     : @"4",
                            };
         } else if (_requestType == PromoRequestTypeProductFeed) {
             parameters = @{
-                           @"action" : @"ad_product_feed",
-                           @"page" : [NSString stringWithFormat:@"%d", _page],
+                           @"action"   : @"ad_product_feed",
+                           @"page"     : [NSString stringWithFormat:@"%d", _page],
                            @"per_page" : @"4",
                            };
         } else if (_requestType == PromoRequestTypeShopFeed) {
             parameters = @{
-                           @"action" : @"ad_shop_feed",
-                           @"page" : [NSString stringWithFormat:@"%d", _page],
+                           @"action"   : @"ad_shop_feed",
+                           @"page"     : [NSString stringWithFormat:@"%d", _page],
                            @"per_page" : @"4",
                            };
         }
     } else if (tag == PromoNetworkManagerAction) {
+        NSString *source;
+        if (_source == PromoRequestSourceHotlist) {
+            source = @"hotlist";
+        } else if (_source == PromoRequestSourceCategory) {
+            source = @"directory";
+        } else if (_source == PromoRequestSourceSearch) {
+            source = @"search";
+        } else if (_source == PromoRequestSourceFavoriteProduct) {
+            source = @"fav_product";
+        } else if (_source == PromoRequestSourceFavoriteShop) {
+            source = @"fav_shop";
+        }
         parameters = @{
-                       @"action" : @"ad_impression_click",
-                       @"ad_key" : _adKey,
-                       @"ad_sem_key" : _adSemKey,
-                       @"ad_r" : _adR
-                       ,
+                       @"action"       : @"ad_impression_click",
+                       @"ad_key"       : _adKey,
+                       @"ad_sem_key"   : _adSemKey,
+                       @"ad_r"         : _adR,
+                       @"src"          : source
                        };
     }
     return parameters;
@@ -120,11 +138,15 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 
 - (RKObjectManager *)configureObjectManager {
     
+#ifdef DEBUG
+    _objectManager = [RKObjectManager sharedClient];
+#else
     if([_promoBaseURL isEqualToString:kTkpdBaseURLString] || [_promoBaseURL isEqualToString:@""]) {
         _objectManager = [RKObjectManager sharedClient];
     } else {
         _objectManager = [RKObjectManager sharedClient:_promoBaseURL];
     }
+#endif
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[PromoResponse class]];
     [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSKEY, kTKPD_APISERVERPROCESSTIMEKEY]];
@@ -223,9 +245,9 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
-
+    
     NSString *pathPattern = [_promoActionPostURL isEqualToString:@""] ? API_PATH_ACTION_PROMO : _promoActionPostURL;
-
+    
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:pathPattern
@@ -277,23 +299,23 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _query = query;
     _departmentId = department;
     _requestType = PromoRequestTypeProductSearch;
-    [self requestPromo];
+    if (!_cancelRequestSearch) [self requestPromo];
 }
 
 - (void)requestForProductHotlist:(NSString *)key {
     _key = key;
     _requestType = PromoRequestTypeProductHotlist;
-    [self requestPromo];
+    if (!_cancelRequestHotlist) [self requestPromo];
 }
 
 - (void)requestForProductFeed {
     _requestType = PromoRequestTypeProductFeed;
-    [self requestPromo];
+    if (!_cancelRequestProductFeed) [self requestPromo];
 }
 
 - (void)requestForShopFeed {
     _requestType = PromoRequestTypeShopFeed;
-    [self requestPromo];
+    if (!_cancelRequestShopFeed) [self requestPromo];
 }
 
 - (void)requestActionPromo {
@@ -304,10 +326,14 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     [_actionNetworkManager doRequest];
 }
 
-- (void)addImpressionKey:(NSString *)key semKey:(NSString *)semKey referralKey:(NSString *)referralKey {
+- (void)addImpressionKey:(NSString *)key
+                  semKey:(NSString *)semKey
+             referralKey:(NSString *)referralKey
+                  source:(PromoRequestSourceType)source {
     _adKey = key;
     _adSemKey = semKey;
     _adR = referralKey;
+    _source = source;
     [self requestActionPromo];
 }
 
@@ -315,13 +341,29 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 
 - (void)configureGTM {
     _userManager = [UserAuthentificationManager new];
-
+    
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
     [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
+
+#ifdef DEBUG
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     
+    _promoBaseURL = [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"];
+    _promoPostURL = @"promo.pl";
+    _promoFullURL = @"";
+    
+    _promoActionBaseURL = [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"];
+    _promoActionPostURL = @"promo.pl";
+    _promoActionFullURL = @"";
+    
+    _cancelRequestHotlist = NO;
+    _cancelRequestProductFeed = NO;
+    _cancelRequestSearch = NO;
+    _cancelRequestShopFeed = NO;
+#else
     _promoBaseURL = [_gtmContainer stringForKey:GTMKeyPromoBase];
     _promoPostURL = [_gtmContainer stringForKey:GTMKeyPromoPost];
     _promoFullURL = [_gtmContainer stringForKey:GTMKeyPromoFull];
@@ -329,6 +371,12 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _promoActionBaseURL = [_gtmContainer stringForKey:GTMKeyPromoBaseAction];
     _promoActionPostURL = [_gtmContainer stringForKey:GTMKeyPromoPostAction];
     _promoActionFullURL = [_gtmContainer stringForKey:GTMKeyPromoFullAction];
+    
+    _cancelRequestHotlist = [[_gtmContainer stringForKey:GTMKeyCancelPromoHotlist] boolValue];
+    _cancelRequestProductFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoProductFeed] boolValue];
+    _cancelRequestSearch = [[_gtmContainer stringForKey:GTMKeyCancelPromoSearch] boolValue];
+    _cancelRequestShopFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoShopFeed] boolValue];
+#endif
 }
 
 @end

@@ -16,6 +16,7 @@
 @interface SearchAWSResult : NSObject
 
 @property (nonatomic, strong) NSString *search_url;
+@property (nonatomic, strong) NSString *share_url;
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSString *st;
 @property (nonatomic, strong) NSString *has_catalog;

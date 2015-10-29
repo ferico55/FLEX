@@ -107,6 +107,7 @@ typedef enum TagRequest {
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductTag;
+    _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
 }
 
@@ -158,7 +159,7 @@ typedef enum TagRequest {
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     HistoryProductList *product = [_product objectAtIndex:indexPath.row];
-//    [navigateController navigateToProductFromViewController:self withProductID:[NSString stringWithFormat:@"%@", product.product_id]];
+    //    [navigateController navigateToProductFromViewController:self withProductID:[NSString stringWithFormat:@"%@", product.product_id]];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -224,7 +225,7 @@ typedef enum TagRequest {
 
 #pragma mark - Tokopedia Network Delegate
 - (NSString *)getPath:(int)tag {
-    return kTKPDHOMEHOTLIST_APIPATH;
+    return @"/v4/home/get_recent_view_product.pl";
 }
 
 - (NSDictionary *)getParameter:(int)tag {
@@ -241,14 +242,14 @@ typedef enum TagRequest {
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectmanager =  [RKObjectManager sharedClient];
+    _objectmanager =  [RKObjectManager sharedClientHttps];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[HistoryProduct class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HistoryProductResult class]];
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[HistoryProductResult class]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
@@ -266,24 +267,28 @@ typedef enum TagRequest {
                                                  ]];
     
     //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
+    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
+    [statusMapping addPropertyMapping:dataRel];
     
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
+    [dataMapping addPropertyMapping:pageRel];
     
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
+    [dataMapping addPropertyMapping:listRel];
     
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH
+                                                                                                  method:[self getRequestMethod:nil]
+                                                                                             pathPattern:[self getPath:nil]
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
     return _objectmanager;
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
 }
 
 - (void)actionBeforeRequest:(int)tag {
@@ -295,15 +300,15 @@ typedef enum TagRequest {
     HistoryProduct *feed = [result objectForKey:@""];
     
     if(_page == 1) {
-        _product = [feed.result.list mutableCopy];
+        _product = [feed.data.list mutableCopy];
     } else {
-        [_product addObjectsFromArray: feed.result.list];
+        [_product addObjectsFromArray: feed.data.list];
     }
     
     [_noResult removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
-        _nextPageUri =  feed.result.paging.uri_next;
+        _nextPageUri =  feed.data.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
         //        if(_nextPageUri!=nil && [_nextPageUri isEqualToString:@"0"]) {

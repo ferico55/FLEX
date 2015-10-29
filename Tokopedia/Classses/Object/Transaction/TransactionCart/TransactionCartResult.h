@@ -27,5 +27,7 @@
 @property (nonatomic,strong) NSString *lp_amount;
 @property (nonatomic,strong) NSString *cashback_idr;
 @property (nonatomic,strong) NSString *cashback;
+@property (nonatomic,strong) NSString *grand_total_without_lp_idr;
+@property (nonatomic,strong) NSString *grand_total_without_lp;
 
 @end

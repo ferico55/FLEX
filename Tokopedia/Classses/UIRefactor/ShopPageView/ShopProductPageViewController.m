@@ -158,6 +158,8 @@ TokopediaNetworkManagerDelegate
     CGSize _keyboardSize;
 
     BOOL _isFailRequest;
+    
+    PromoRequest *_promoRequest;
 }
 
 #pragma mark - Initialization
@@ -247,7 +249,7 @@ TokopediaNetworkManagerDelegate
     UIView *header = [[UIView alloc] initWithFrame:_header.frame];
     [header setBackgroundColor:[UIColor whiteColor]];
     [header addSubview:_header];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, _header.frame.size.height, 320, 200)];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 200)];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
@@ -335,6 +337,16 @@ TokopediaNetworkManagerDelegate
     return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+
+    if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
+        size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    return size;
+}
+
+
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
@@ -383,7 +395,7 @@ TokopediaNetworkManagerDelegate
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
-        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
@@ -585,73 +597,19 @@ TokopediaNetworkManagerDelegate
         switch (button.tag) {
             case 10: {
                 // sort button action
-                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                vc.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                self.navigationController.navigationBar.alpha = 0;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                
                 break;
             }
                 
             case 11 : {
                 // etalase button action
-                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
-                //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
-                            @"product_etalase_name" : [_detailfilter objectForKey:@"product_etalase_name"]?:@"",
-                            @"product_etalase_id" : [_detailfilter objectForKey:@"product_etalase_id"]?:@"",
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                vc.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                self.navigationController.navigationBar.alpha = 0;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                
                 break;
             }
                 
-            case 12 : {
-                if (_shop) {
-                    NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
-                                       _shop.result.info.shop_name,
-                                       _shop.result.info.shop_location];
-                    NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
-                    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                                     applicationActivities:nil];
-                    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                    [self presentViewController:activityController animated:YES completion:nil];
-                }
-                break;
-            }
             case 13:
             {
-                TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 
-                if (self.cellType == UITableViewCellTypeOneColumn) {
-                    self.cellType = UITableViewCellTypeTwoColumn;
-                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
-                                           forState:UIControlStateNormal];
-                    
-                } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-                    self.cellType = UITableViewCellTypeThreeColumn;
-                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
-                                           forState:UIControlStateNormal];
-                    
-                } else if (self.cellType == UITableViewCellTypeThreeColumn) {
-                    self.cellType = UITableViewCellTypeOneColumn;
-                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
-                                           forState:UIControlStateNormal];
-                    
-                }
-                
-                //self.table.contentOffset = CGPointMake(0, 0);
-                [_collectionView reloadData];
-                
-                NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
-                [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
                 
                 break;
             }
@@ -659,6 +617,85 @@ TokopediaNetworkManagerDelegate
                 break;
         }
     }
+}
+
+- (IBAction)tapToShare:(id)sender {
+    if (_shop) {
+        NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
+                           _shop.result.info.shop_name,
+                           _shop.result.info.shop_location];
+        NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                         applicationActivities:nil];
+        activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+            if (!completed) return;
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+        }];
+        
+        [self presentViewController:activityController animated:YES completion:^{
+            // color needs to be changed because of 'share to whatsapp' bug:
+            // same color with navigation bar background (white)
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+            [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+        }];
+    }
+}
+
+- (IBAction)tapToEtalase:(id)sender {
+    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
+    //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+    vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
+                @"product_etalase_name" : [_detailfilter objectForKey:@"product_etalase_name"]?:@"",
+                @"product_etalase_id" : [_detailfilter objectForKey:@"product_etalase_id"]?:@"",
+                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+    vc.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    self.navigationController.navigationBar.alpha = 0;
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (IBAction)tapToGrid:(id)sender {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        self.cellType = UITableViewCellTypeTwoColumn;
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                               forState:UIControlStateNormal];
+        
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        self.cellType = UITableViewCellTypeThreeColumn;
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                               forState:UIControlStateNormal];
+        
+    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+        self.cellType = UITableViewCellTypeOneColumn;
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                               forState:UIControlStateNormal];
+        
+    }
+    
+    //self.table.contentOffset = CGPointMake(0, 0);
+    [_collectionView reloadData];
+    
+    NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
+    [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
+}
+
+- (IBAction)tapToSort:(id)sender {
+    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    SortViewController *vc = [SortViewController new];
+    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
+                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+    vc.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    self.navigationController.navigationBar.alpha = 0;
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - Shop header delegate
@@ -762,6 +799,7 @@ TokopediaNetworkManagerDelegate
     
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY    :   kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
                             kTKPDDETAIL_APISHOPIDKEY    :   @(shopID),
+                            @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
                             kTKPDDETAIL_APIPAGEKEY      :   @(_page),
                             kTKPDDETAIL_APILIMITKEY     :   @(_limit),
                             kTKPDDETAIL_APIORERBYKEY    :   @(sort),
@@ -906,11 +944,14 @@ TokopediaNetworkManagerDelegate
 
 - (void)addImpressionClick {
     if ([_data objectForKey:PromoImpressionKey]) {
-        __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+        _promoRequest = [[PromoRequest alloc] init];
         NSString *adKey = [_data objectForKey:PromoImpressionKey];
         NSString *adSemKey = [_data objectForKey:PromoSemKey];
         NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
-        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+        [_promoRequest addImpressionKey:adKey
+                                 semKey:adSemKey
+                            referralKey:adReferralKey
+                                 source:PromoRequestSourceFavoriteShop];
     }
 }
 

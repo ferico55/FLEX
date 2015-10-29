@@ -37,8 +37,10 @@
 -(RKObjectMapping*)systemBankMapping;
 -(RKObjectMapping*)transactionCCDataMapping;
 -(RKObjectMapping*)veritransDataMapping;
--(RKObjectMapping *)dataCreditMapping;
--(RKObjectMapping *)ccFeeMapping;
--(RKObjectMapping *)indomaretMapping;
+-(RKObjectMapping*)dataCreditMapping;
+-(RKObjectMapping*)ccFeeMapping;
+-(RKObjectMapping*)indomaretMapping;
+-(RKObjectMapping*)installmentBankMapping;
+-(RKObjectMapping*)installmentTermMapping;
 
 @end

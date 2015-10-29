@@ -21,6 +21,7 @@
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLHttpsString @"https://ws.tokopedia.com"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -118,7 +119,7 @@ typedef enum {
 
 #define kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY @"setetalase"
 #define kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY @"setuserinfo"
-//#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
+#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
 //#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
 
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"
@@ -191,7 +192,7 @@ typedef enum {
 #define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsMake(0.0f, 35.0f, 0.0f, 0.0f)
 #define kTKPD_SETUSERSTICKYMESSAGEKEY @"stickymessage"
 
-#define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
+#define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(181/255.0) blue:(73/255.0) alpha:1]
 #define kTKPDNAVIGATION_NAVIGATIONITEMCOLOR [UIColor whiteColor]
 
 #define HelpshiftKey @"a61b53892e353d1828be5154db0ac6c2"
@@ -257,9 +258,22 @@ typedef enum {
 #define GTMKeyPromoPostAction   @"promo_post_action_url"
 #define GTMKeyPromoFullAction   @"promo_full_action_url"
 
+#define GTMKeyCancelPromoProductFeed  @"cancel_promo_product_feed"
+#define GTMKeyCancelPromoHotlist      @"cancel_promo_hotlist"
+#define GTMKeyCancelPromoSearch       @"cancel_promo_search"
+#define GTMKeyCancelPromoShopFeed     @"cancel_promo_shop_feed"
+
 #define GTMKeyNotifyLBLMBase @"notify_base_url"
 #define GTMKeyNotifyLBLMPost @"notify_post_url"
 #define GTMKeyNotifyLBLMFull @"notify_full_url"
+
+#define GTMVeritransClientKey @"veritrans_client_key"
+
+#define GTMHiddenPaymentKey @"hidden_payment_gateways"
+
+#define GTMIsLuckyInstallmentAvailableKey @"is_installment_available"
+
+#define GTMKeyComplainNotifString @"complain_notif_string"
 
 #define kTKPDForceUpdateFacebookButton @"kTKPDForceUpdateFacebookButton"
 
@@ -276,5 +290,7 @@ typedef enum {
 #define IS_IPHONE_5 (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
 #define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
 #define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
+
+#define kTKPD_REDIRECT_TO_HOME  @"tokopedia.kTKPD_REDIRECT_TO_HOME"
 
 #endif

@@ -170,9 +170,7 @@
     tokopediaNetworkManager = nil;
     
     uploadImageRequest.delegate = nil;
-    [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
-    
     
     [tokopediaNetworkManagerOpenShopPict requestCancel];
     tokopediaNetworkManagerOpenShopPict.delegate = nil;
@@ -912,6 +910,28 @@
             [shipments setObject:pandu forKey:[myShopShipmentTableViewController getPandu].shipment_id];
         }
     }
+
+    NSMutableDictionary *first = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getFirst].shipment_id]) {
+        if ([[myShopShipmentTableViewController getFirstPackageRegular].active boolValue]) {
+            [first setObject:@"1" forKey:[myShopShipmentTableViewController getFirstPackageRegular].sp_id];
+        }
+        
+        if ([[first allValues] count] > 0) {
+            [shipments setObject:first forKey:[myShopShipmentTableViewController getFirst].shipment_id];
+        }
+    }
+    
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getFirst].shipment_id]) {
+        NSMutableDictionary *siCepat = [NSMutableDictionary new];
+        if ([[myShopShipmentTableViewController getSiCepatPackageRegular].active boolValue]) {
+            [siCepat setObject:@"1" forKey:[myShopShipmentTableViewController getSiCepatPackageRegular].sp_id];
+        }
+        
+        if ([[siCepat allValues] count] > 0) {
+            [shipments setObject:siCepat forKey:[myShopShipmentTableViewController getSiCepat].shipment_id];
+        }
+    }
     
     NSData *data = [NSJSONSerialization dataWithJSONObject:shipments options:0 error:nil];
     NSString *shipments_ids = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
@@ -1163,7 +1183,6 @@
 {
     filePath = uploadImage.result.upload.src;
     uploadImageRequest.delegate = nil;
-    [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
     
     //Call Open shop validation
@@ -1174,7 +1193,6 @@
 {
     [self isLoading:NO];
     uploadImageRequest.delegate = nil;
-    [uploadImageRequest cancelActionUploadPhoto];
     uploadImageRequest = nil;
 }
 

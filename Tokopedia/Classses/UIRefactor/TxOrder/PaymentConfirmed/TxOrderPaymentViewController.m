@@ -8,7 +8,7 @@
 
 #import "TxOrderObjectMapping.h"
 #import "TxOrderPaymentEdit.h"
-
+#import "AlertListBankView.h"
 #import "TxOrderPaymentViewController.h"
 #import "TxOrderConfirmPaymentForm.h"
 #import "TxOrderConfirmationList.h"
@@ -34,6 +34,8 @@
 
 #import "RequestPayment.h"
 #import "AlertInfoView.h"
+
+#import "ListRekeningBank.h"
 
 @interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate, RequestPaymentDelegate>
 {
@@ -103,6 +105,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *markTextView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UITableViewCell *RekInfoCell;
 
 @end
 
@@ -235,13 +238,24 @@
         }
     }
     else{
+        _isNewRekening = !(_isNewRekening);
         if (_isNewRekening) {
             BankAccountFormList *bankAccount = [BankAccountFormList new];
             [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
         }
-        _isNewRekening = !(_isNewRekening);
+        else
+        {
+            BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY]?:[BankAccountFormList new];
+            [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+        }
         [_tableView reloadData];
     }
+}
+- (IBAction)tapRekeningInfo:(id)sender {
+    AlertListBankView *popUp = [AlertListBankView newview];
+    ListRekeningBank *listBank = [ListRekeningBank new];
+    popUp.list = [listBank getRekeningBankList];
+    [popUp show];
 }
 
 -(void)requestPaymentConfirmation
@@ -446,8 +460,15 @@
         case 1:
         {
             BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || !selectedBank ) && indexPath.row == 2) {
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 ) && indexPath.row == 2) {
                 return 0;
+            }
+            if(indexPath.row == 3)
+            {
+                if ([self isPaymentTypeSaldoTokopedia])
+                    return 0;
+                else
+                    return 54;
             }
         }
             break;
@@ -860,9 +881,9 @@
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     TxOrderPaymentEditForm *formIsConfirmed = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
     
-    SystemBankAcount *selectedSystemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
-    MethodList *selectedMethod = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-    BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    SystemBankAcount *selectedSystemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY]?:[SystemBankAcount new];
+    MethodList *selectedMethod = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY]?:[MethodList new];
+    BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     
     NSString *systemBankString = (!selectedSystemBank.sysbank_name)?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];
     
@@ -1076,6 +1097,7 @@
     
     [_dataInput setObject:selectedMethod?:[MethodList new] forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY];
     [_dataInput setObject:selectedSystemBank?:[SystemBankAcount new] forKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
@@ -1110,6 +1132,7 @@
     {
         BankAccountFormList *selectedBank = bankAccountList[0];
         [_dataInput setObject:selectedBank forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+        [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_DEFAULT_KEY];
     }
     
     if ([self isPaymentTypeSaldoTokopedia]) {
@@ -1117,7 +1140,6 @@
         NSString *leftAmount = form.order.order_left_amount;
         [_dataInput setObject:leftAmount forKey:DATA_TOTAL_PAYMENT_KEY];
     }
-    
     [_dataInput setObject:selectedMethod forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
 }
@@ -1164,7 +1186,7 @@
 #pragma mark - Bank Account Delegate
 -(void)SettingBankNameViewController:(UIViewController *)vc withData:(NSDictionary *)data
 {
-    BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    BankAccountFormList *bankAccount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     NSString *name;
     NSInteger bankid;
     name = [data objectForKey:API_BANK_NAME_KEY];
@@ -1228,7 +1250,7 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    BankAccountFormList *bankAcount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    BankAccountFormList *bankAcount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     if (textField == _accountNameTextField) {
         bankAcount.bank_account_name = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];

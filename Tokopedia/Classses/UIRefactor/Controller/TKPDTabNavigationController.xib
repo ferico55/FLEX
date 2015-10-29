@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabNavigationController">
             <connections>
                 <outlet property="container" destination="h6P-fn-Wnp" id="quZ-Kg-XgS"/>
-                <outlet property="segmentcontrol" destination="04q-Fv-Gk4" id="3DZ-WE-gWR"/>
+                <outlet property="segmentcontrol" destination="04q-Fv-Gk4" id="fBt-3a-xMm"/>
                 <outlet property="tabView" destination="oab-Fo-r2Z" id="J9R-Cw-Qg4"/>
                 <outlet property="tabViewHeightConstraint" destination="dii-Bx-S5z" id="0PU-nm-fIR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -63,9 +63,4 @@
             <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

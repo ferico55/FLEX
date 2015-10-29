@@ -39,13 +39,13 @@ typedef enum ScrollDirection {
 
 @interface ProductFeedViewController()
 <
-    UICollectionViewDataSource,
-    UICollectionViewDelegate,
-    UICollectionViewDelegateFlowLayout,
-    UIScrollViewDelegate,
-    TokopediaNetworkManagerDelegate,
-    PromoCollectionViewDelegate,
-    PromoRequestDelegate
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,
+UIScrollViewDelegate,
+TokopediaNetworkManagerDelegate,
+PromoCollectionViewDelegate,
+PromoRequestDelegate
 >
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -100,7 +100,7 @@ typedef enum ScrollDirection {
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
-
+    
     _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
     _isNoData = (_product.count > 0);
     _page = 1;
@@ -128,6 +128,7 @@ typedef enum ScrollDirection {
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductFeedTag;
+    _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
     
     _promoRequest = [PromoRequest new];
@@ -213,7 +214,7 @@ typedef enum ScrollDirection {
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     ProductFeedList *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-//    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+    //    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -284,15 +285,14 @@ typedef enum ScrollDirection {
 
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:kTKPDHOMEPRODUCTFEEDACT, kTKPDHOME_APIACTIONKEY,
-                               @(_page), kTKPDHOME_APIPAGEKEY,
+    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:@(_page), kTKPDHOME_APIPAGEKEY,
                                @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
     
     return parameter;
 }
 
 - (NSString *)getPath:(int)tag {
-    return kTKPDHOMEHOTLIST_APIPATH;
+    return @"/v4/home/get_product_feed.pl";
 }
 
 - (NSString *)getRequestStatus:(id)result withTag:(int)tag {
@@ -303,16 +303,20 @@ typedef enum ScrollDirection {
     return list.status;
 }
 
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
+}
+
 - (id)getObjectManager:(int)tag {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    _objectmanager =  [RKObjectManager sharedClientHttps];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductFeed class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductFeedResult class]];
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ProductFeedResult class]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
@@ -329,19 +333,19 @@ typedef enum ScrollDirection {
                                                  @"shop_lucky"
                                                  ]];
     //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
+    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
+    [statusMapping addPropertyMapping:dataRel];
     
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
+    [dataMapping addPropertyMapping:pageRel];
     
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
+    [dataMapping addPropertyMapping:listRel];
     
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
+                                                                                             pathPattern:[self getPath:nil] keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
@@ -359,7 +363,7 @@ typedef enum ScrollDirection {
     [_noResult removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
-    if (feed.result.list.count > 0) {
+    if (feed.data.list.count > 0) {
         
         if (_page == 1) {
             [_product removeAllObjects];
@@ -367,10 +371,10 @@ typedef enum ScrollDirection {
             [_firstFooter removeFromSuperview];
         }
         
-        [_product addObject:feed.result.list];
+        [_product addObject:feed.data.list];
         
         _isNoData = NO;
-        _nextPageUri =  feed.result.paging.uri_next;
+        _nextPageUri =  feed.data.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
         if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
@@ -488,18 +492,19 @@ typedef enum ScrollDirection {
 - (void)didSelectPromoProduct:(PromoProduct *)product {
     NavigateViewController *navigateController = [NavigateViewController new];
     NSDictionary *productData = @{
-        @"product_id"       : product.product_id?:@"",
-        @"product_name"     : product.product_name?:@"",
-        @"product_image"    : product.product_image_200?:@"",
-        @"product_price"    :product.product_price?:@"",
-        @"shop_name"        : product.shop_name?:@""
-    };
+                                  @"product_id"       : product.product_id?:@"",
+                                  @"product_name"     : product.product_name?:@"",
+                                  @"product_image"    : product.product_image_200?:@"",
+                                  @"product_price"    :product.product_price?:@"",
+                                  @"shop_name"        : product.shop_name?:@""
+                                  };
     NSDictionary *promoData = @{
-        kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-        PromoImpressionKey          : product.ad_key,
-        PromoSemKey                 : product.ad_sem_key,
-        PromoReferralKey            : product.ad_r
-    };
+                                kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+                                PromoImpressionKey          : product.ad_key,
+                                PromoSemKey                 : product.ad_sem_key,
+                                PromoReferralKey            : product.ad_r,
+                                PromoRequestSource          : @(PromoRequestSourceFavoriteProduct)
+                                };
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData
                                                 productData:productData];

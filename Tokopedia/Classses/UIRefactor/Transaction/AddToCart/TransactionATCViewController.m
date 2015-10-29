@@ -27,6 +27,8 @@
 
 #import "TokopediaNetworkManager.h"
 
+#import "Localytics.h"
+
 #define TAG_REQUEST_FORM 10
 #define TAG_REQUEST_ATC 11
 #define TAG_REQUEST_CALCULATE 12
@@ -460,6 +462,12 @@
     switch (indexPath.section) {
         case 0:
             cell = _tableViewProductCell[indexPath.row];
+            if (indexPath.row == 1) {
+                return 73;
+            }
+            if (indexPath.row == 3) {
+                return 163;
+            }
             break;
         case 1:
         {
@@ -479,7 +487,7 @@
             cell = _tableViewPaymentDetailCell[indexPath.row];
             if (indexPath.row == TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE) {
                 if ([_productQuantityTextField.text integerValue]<=1) {
-                //if (_productQuantityStepper.value<=1) {
+                    //if (_productQuantityStepper.value<=1) {
                     return 0;
                 }
                 else
@@ -490,7 +498,7 @@
         default:
             break;
     }
-    return cell.frame.size.height;
+    return 44;//cell.frame.size.height; //case for ios9 can't use frame height
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1000,10 +1008,15 @@
             [alert show];
         }
         if (setting.result.is_success == 1) {
-            
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[setting.message_status firstObject] delegate:self cancelButtonTitle:@"Kembali Belanja" otherButtonTitles:@"Ke Keranjang Belanja",nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:[setting.message_status firstObject]
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Kembali Belanja"
+                                                      otherButtonTitles:@"Ke Keranjang Belanja",nil];
             alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
             [alertView show];
+            
+            [self pushLocalyticsData];
         }
     }
 }
@@ -1269,7 +1282,7 @@ replacementString:(NSString*)string
     return YES;
 }
 
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+- (void)textViewDidChange:(UITextView *)textView
 {
     UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
     if (textView.text.length > 0) {
@@ -1277,7 +1290,6 @@ replacementString:(NSString*)string
     } else {
         placeholderLabel.hidden = NO;
     }
-    return YES;
 }
 
 -(BOOL)textViewShouldReturn:(UITextView *)textView{
@@ -1491,6 +1503,34 @@ replacementString:(NSString*)string
     }
     
     return insurance;
+}
+
+- (void)pushLocalyticsData {
+    ProductDetail *product = [[_data objectForKey:@"product"] product];
+    NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
+    Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
+    NSString *productId = product.product_id;
+    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+    NSInteger totalPrice = [productPrice integerValue] * [self.productQuantityTextField.text integerValue];
+    NSString *total = [NSString stringWithFormat:@"%d", totalPrice];
+    NSString *productQuantity = _productQuantityTextField.text;
+    
+    NSDictionary *attributes = @{
+                                 @"Product Id" : productId,
+                                 @"Product Category" : lastCategory.department_name?:@"",
+                                 @"Price Per Item" : productPrice,
+                                 @"Price Total" : total,
+                                 @"Quantity" : productQuantity
+                                 };
+    
+    [Localytics tagEvent:@"Event : Add To Cart" attributes:attributes];
+    
+    NSString *profileAttribute = @"Profile : Last date has product in cart";
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+    NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+    [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
 }
 
 #pragma mark - Memory Management

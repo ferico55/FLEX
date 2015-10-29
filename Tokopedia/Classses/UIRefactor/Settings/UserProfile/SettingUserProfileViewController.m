@@ -169,11 +169,6 @@
     self.scrollview.contentSize = CGSizeMake(self.view.frame.size.width,
                                              _contentView.frame.size.height);
     self.scrollview.contentOffset = CGPointZero;
-
-    CGRect frame = _contentView.frame;
-    frame.origin = CGPointZero;
-    frame.size.width = self.view.bounds.size.width;
-    _contentView.frame = frame;
 }
 
 #pragma mark - Memory Management
@@ -354,13 +349,19 @@
 {
     _thumb.alpha = 0.5;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
-    uploadImage.imageObject = object;
-    uploadImage.delegate = self;
-    uploadImage.generateHost = _generatehost;
-    uploadImage.action = kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY;
-    uploadImage.fieldName = API_UPLOAD_PROFILE_IMAGE_DATA_NAME;
-    [uploadImage configureRestkitUploadPhoto];
-    [uploadImage requestActionUploadPhoto];
+    [uploadImage requestActionUploadObject:object
+                             generatedHost:_generatehost.result.generated_host
+                                    action:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:API_UPLOAD_PROFILE_IMAGE_DATA_NAME
+                                   success:^(id imageObject, UploadImage *image) {
+                                       [self successUploadObject:object withMappingResult:image];
+                                   } failure:^(id imageObject, NSError *error) {
+                                       [self failedUploadObject:object];
+                                   }];
+    
     _editProfilePictButton.enabled = NO;
 }
 

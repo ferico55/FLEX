@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TransactionSystemBank : NSObject
+#import "TKPObjectMapping.h"
+
+@interface TransactionSystemBank : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *sb_bank_cabang;
 @property (nonatomic, strong) NSString *sb_picture;

@@ -15,6 +15,7 @@
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
     IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle, *lblTitleWarehouse, *lblDescWarehouse;
+
     IBOutlet NSLayoutConstraint *constraintHeightWarehouse, *constraintHeightScrollOtherView;
 }
 @property (strong,nonatomic) NSDictionary *data;

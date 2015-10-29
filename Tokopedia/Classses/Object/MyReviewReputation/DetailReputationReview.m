@@ -35,6 +35,14 @@
     return _viewModel;
 }
 
+- (NSString*)shop_name {
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString*)product_name {
+    return [_product_name kv_decodeHTMLCharacterEntities];
+}
+
 - (NSString*)review_message {
     return [_review_message kv_decodeHTMLCharacterEntities];
 }

@@ -10,4 +10,17 @@
 
 @implementation UploadImageImage
 
+// MARK: TKPRootObjectMapping methods
++ (NSDictionary *)attributeMappingDictionary {
+    NSArray *keys = @[@"pic_src",
+                      @"pic_code"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
+
 @end
