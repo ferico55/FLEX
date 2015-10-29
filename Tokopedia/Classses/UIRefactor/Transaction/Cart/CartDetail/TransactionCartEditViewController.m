@@ -95,7 +95,7 @@
                                                                     attribute:NSLayoutAttributeTop
                                                                    multiplier:1.0
                                                                      constant:0.0]];
-
+        
     }
     else
     {
@@ -107,7 +107,7 @@
                                                                    multiplier:1.0
                                                                      constant:0.0]];
     }
-
+    
     // width constraint
     [_remarkTextView addConstraint:[NSLayoutConstraint constraintWithItem:_headerView
                                                                 attribute:NSLayoutAttributeWidth

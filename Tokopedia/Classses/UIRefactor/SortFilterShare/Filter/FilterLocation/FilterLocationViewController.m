@@ -131,6 +131,8 @@
                 
                 NSArray *value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select distinct sc.district_id from ws_shipping_city sc, ws_district d where sc.district_id = d.district_id order by d.district_name"]];
                 
+                [_locationnames addObjectsFromArray:@[@"Jabodetabek"]];
+                [_locationvalues addObjectsFromArray:@[@"2210,2228,5573,1940,1640,2197"]];
                 [_locationnames addObjectsFromArray:name];
                 [_locationvalues addObjectsFromArray:value];
             }

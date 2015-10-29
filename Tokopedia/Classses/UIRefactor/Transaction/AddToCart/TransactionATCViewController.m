@@ -1282,7 +1282,7 @@ replacementString:(NSString*)string
     return YES;
 }
 
--(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+- (void)textViewDidChange:(UITextView *)textView
 {
     UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
     if (textView.text.length > 0) {
@@ -1290,7 +1290,6 @@ replacementString:(NSString*)string
     } else {
         placeholderLabel.hidden = NO;
     }
-    return YES;
 }
 
 -(BOOL)textViewShouldReturn:(UITextView *)textView{
