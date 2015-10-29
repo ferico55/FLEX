@@ -62,6 +62,8 @@
     [_refreshControl addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
     
+    [_refreshControl beginRefreshing];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadDataSource:)
                                                  name:TKPDTabNotification
