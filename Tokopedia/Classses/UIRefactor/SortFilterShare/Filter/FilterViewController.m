@@ -254,7 +254,7 @@
                 NSInteger priceMin = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
                 NSInteger priceMax = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
  
-                if (priceMax < priceMin) {
+                if (priceMax != nil && priceMax < priceMin) {
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Harga minimum harus lebih kecil dari harga maksimum."] delegate:self];
                     [alert show];
                 } else {

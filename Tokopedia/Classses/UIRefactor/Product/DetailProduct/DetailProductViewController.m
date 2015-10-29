@@ -454,7 +454,7 @@ UIAlertViewDelegate
     inset.bottom += 20;
     _table.contentInset = inset;
     
-
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     _favButton.layer.cornerRadius = 3;
     _favButton.layer.borderWidth = 1;
@@ -629,7 +629,20 @@ UIAlertViewDelegate
                     UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                       applicationActivities:nil];
                     act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                    [self presentViewController:act animated:YES completion:nil];
+                    [act setCompletionHandler:^(NSString *activityType, BOOL completed) {
+                        if (!completed) return;
+                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+                    }];
+                    
+                    [self presentViewController:act animated:YES completion:^{
+                        // color needs to be changed because of 'share to whatsapp' bug:
+                        // same color with navigation bar background (white)
+                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+                        [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+                    }];
                 }
                 break;
             }
@@ -2475,10 +2488,25 @@ UIAlertViewDelegate
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
+        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]                                                                                     applicationActivities:nil];
+        
         activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-        [self presentViewController:activityController animated:YES completion:nil];
+
+        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+            if (!completed) return;
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+        }];
+        
+        [self presentViewController:activityController animated:YES completion:^{
+            // color needs to be changed because of 'share to whatsapp' bug:
+            // same color with navigation bar background (white)
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+            [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+        }];
+        
     }
 }
 
@@ -2925,15 +2953,15 @@ UIAlertViewDelegate
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
 
-        NSString *productId = _product.result.product.product_id;
-        NSString *productName = _product.result.product.product_name;
+        NSString *productId = _product.result.product.product_id?:@"";
+        NSString *productName = _product.result.product.product_name?:@"";
         
         NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
-        NSString *productCategory = lastCategory.department_name;
+        NSString *productCategory = lastCategory.department_name?:@"";
 
         NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
 
         NSDictionary *attributes = @{
                                      @"Product Id" : productId,
