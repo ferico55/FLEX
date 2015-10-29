@@ -45,6 +45,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     NSMutableArray *_messages;
     InboxTicketTicket *_ticketInformation;
+    InboxTicketDetail *_ticketDetail;
 
     BOOL _isLoadingMore;
     
@@ -202,6 +203,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (void)updateTicket:(InboxTicketList *)inboxTicket {
     self.inboxTicket = inboxTicket;
+    _ticketDetail = nil;
     [self setTitleView];
     
     [self showRefreshControl];
@@ -637,19 +639,20 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         self.tableView.sectionFooterHeight = 0;
     }
     
-    InboxTicketDetail* ticketDetail = [InboxTicketDetail new];
-
-    ticketDetail.ticket_detail_user_name = _ticketInformation.ticket_first_message_name;
-    ticketDetail.ticket_detail_user_image = _ticketInformation.ticket_first_message_image;
-    ticketDetail.ticket_detail_message = _ticketInformation.ticket_first_message;
-    ticketDetail.ticket_detail_create_time = _ticketInformation.ticket_create_time;
-	ticketDetail.ticket_detail_attachment = _ticketInformation.ticket_attachment;
-    
-    NSString *ticketCategoryId = self.inboxTicket.ticket_category_id;
-    if ([ticketCategoryId isEqualToString:@"0"]) {
-        ticketDetail.ticket_detail_is_cs = @"1";
-    } else {
-        ticketDetail.ticket_detail_is_cs = @"0";
+    if(_ticketDetail == nil) {
+        _ticketDetail = [InboxTicketDetail new];
+        _ticketDetail.ticket_detail_user_name = _ticketInformation.ticket_first_message_name;
+        _ticketDetail.ticket_detail_user_image = _ticketInformation.ticket_first_message_image;
+        _ticketDetail.ticket_detail_message = _ticketInformation.ticket_first_message;
+        _ticketDetail.ticket_detail_create_time = _ticketInformation.ticket_create_time;
+        _ticketDetail.ticket_detail_attachment = _ticketInformation.ticket_attachment;
+        
+        NSString *ticketCategoryId = self.inboxTicket.ticket_category_id;
+        if ([ticketCategoryId isEqualToString:@"0"]) {
+            _ticketDetail.ticket_detail_is_cs = @"1";
+        } else {
+            _ticketDetail.ticket_detail_is_cs = @"0";
+        }
     }
     
     NSMutableArray *tickets = [NSMutableArray new];
@@ -658,10 +661,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
     
     if (self.inboxTicket.ticket_show_more_messages) {
-        NSArray *array = @[@[ticketDetail], tickets];
+        NSArray *array = @[@[_ticketDetail], tickets];
         _messages = [NSMutableArray arrayWithArray:array];
     } else {
-        _messages = [NSMutableArray arrayWithArray:@[ticketDetail]];
+        _messages = [NSMutableArray arrayWithArray:@[_ticketDetail]];
         [_messages addObjectsFromArray:tickets];
     }
     
