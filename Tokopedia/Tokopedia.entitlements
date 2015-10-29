@@ -4,8 +4,8 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:tokopedia.com</string>
 		<string>applinks:www.tokopedia.com</string>
+		<string>applinks:tokopedia.com</string>
 		<string>applinks:m.tokopedia.com</string>
 	</array>
 </dict>
