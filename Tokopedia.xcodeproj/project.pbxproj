@@ -1886,6 +1886,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BBC4B8B61BE37EEE002802C3 /* UIActivityViewController+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC4B8B51BE37EEE002802C3 /* UIActivityViewController+Extensions.m */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4771,6 +4772,8 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BBC4B8B41BE37EEE002802C3 /* UIActivityViewController+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityViewController+Extensions.h"; sourceTree = "<group>"; };
+		BBC4B8B51BE37EEE002802C3 /* UIActivityViewController+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityViewController+Extensions.m"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4960,6 +4963,8 @@
 				7A33DD181BE0DD1B000CCD72 /* UITextView+UITextView_Placeholder.m */,
 				7A33DD191BE0DD1B000CCD72 /* ViewLabelUser.h */,
 				7A33DD1A1BE0DD1B000CCD72 /* ViewLabelUser.m */,
+				BBC4B8B41BE37EEE002802C3 /* UIActivityViewController+Extensions.h */,
+				BBC4B8B51BE37EEE002802C3 /* UIActivityViewController+Extensions.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -11617,6 +11622,7 @@
 				7A33E9A11BE0DD1F000CCD72 /* InboxTicket.m in Sources */,
 				7A33E9121BE0DD1F000CCD72 /* UserAuthentificationManager.m in Sources */,
 				7A33EC7A1BE0DD1F000CCD72 /* OrderDetailProductCell.m in Sources */,
+				BBC4B8B61BE37EEE002802C3 /* UIActivityViewController+Extensions.m in Sources */,
 				7A33EA4D1BE0DD1F000CCD72 /* SettingLocationResult.m in Sources */,
 				7A33E9061BE0DD1F000CCD72 /* TextMenu.m in Sources */,
 				7A33EAF61BE0DD1F000CCD72 /* CameraCollectionCell.m in Sources */,
