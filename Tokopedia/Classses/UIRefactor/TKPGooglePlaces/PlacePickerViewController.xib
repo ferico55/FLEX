@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlacePickerViewController">
             <connections>
+                <outlet property="searchDisplayController" destination="7eI-Di-NVA" id="K8b-ch-Gid"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -13,7 +15,30 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="uZa-XG-HnW">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="7gc-cz-3go"/>
+                    </connections>
+                </searchBar>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="uZa-XG-HnW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2zJ-Sf-oD4"/>
+                <constraint firstItem="uZa-XG-HnW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="V9m-b5-9q0"/>
+                <constraint firstAttribute="trailing" secondItem="uZa-XG-HnW" secondAttribute="trailing" id="fcR-LA-h7l"/>
+            </constraints>
         </view>
+        <searchDisplayController id="7eI-Di-NVA">
+            <connections>
+                <outlet property="delegate" destination="-1" id="6ab-Pz-d7P"/>
+                <outlet property="searchBar" destination="uZa-XG-HnW" id="8R2-r4-Ray"/>
+                <outlet property="searchContentsController" destination="-1" id="cY2-w6-qMa"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="4tc-Mf-8Ue"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="SBw-W3-YHL"/>
+            </connections>
+        </searchDisplayController>
     </objects>
 </document>

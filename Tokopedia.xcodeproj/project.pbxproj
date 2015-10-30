@@ -11,6 +11,7 @@
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		45CEB2831BE1DE24003A5238 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		45CEB2841BE1DE24003A5238 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		45CEB2881BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F31BE0DD1F000CCD72 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F41BE0DD1F000CCD72 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE91BE0DD1B000CCD72 /* URLCacheConnection.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F51BE0DD1F000CCD72 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCEB1BE0DD1B000CCD72 /* URLCacheController.m */; settings = {ASSET_TAGS = (); }; };
@@ -1929,6 +1930,8 @@
 		45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePickerViewController.m; sourceTree = "<group>"; };
 		45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlacePickerViewController.xib; sourceTree = "<group>"; };
 		45CEB2851BE1DED2003A5238 /* TKPAPIKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKPAPIKey.h; sourceTree = "<group>"; };
+		45CEB2861BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.h"; sourceTree = "<group>"; };
+		45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.m"; sourceTree = "<group>"; };
 		7A33DCE61BE0DD1B000CCD72 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7A33DCE81BE0DD1B000CCD72 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -4885,6 +4888,8 @@
 				45CEB2801BE1DE24003A5238 /* PlacePickerViewController.h */,
 				45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */,
 				45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */,
+				45CEB2861BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */,
+				45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */,
 			);
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
@@ -11903,6 +11908,7 @@
 				7A33E9ED1BE0DD1F000CCD72 /* AddressFormList.m in Sources */,
 				7A33EC471BE0DD1F000CCD72 /* ProductDetailReputationViewController.m in Sources */,
 				7A33EA401BE0DD1F000CCD72 /* DetailShopResult.m in Sources */,
+				45CEB2881BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */,
 				7A33ED531BE0DD1F000CCD72 /* TxOrderConfirmationProductCell.m in Sources */,
 				7A33E9BF1BE0DD1F000CCD72 /* DetailReputationReview.m in Sources */,
 				7A33E9501BE0DD1F000CCD72 /* ReviewProductOwner.m in Sources */,
