@@ -153,9 +153,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
     
-    InboxTicketDetailViewController *controller = [InboxTicketDetailViewController new];
-    if (self.detailViewController != nil) {
-        controller = self.detailViewController;
+    InboxTicketDetailViewController *controller = self.detailViewController;
+    if (self.detailViewController == nil) {
+        controller = [InboxTicketDetailViewController new];
     }
     
     controller.inboxTicket = ticket;

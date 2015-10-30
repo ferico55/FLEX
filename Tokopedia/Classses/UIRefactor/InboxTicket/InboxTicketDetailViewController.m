@@ -204,6 +204,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)updateTicket:(InboxTicketList *)inboxTicket {
     self.inboxTicket = inboxTicket;
     _ticketDetail = nil;
+    _ticketInformation = nil;
+    _isLoadingMore = NO;
+    [_loadMoreButton setTitle:@"Lihat Semua" forState:UIControlStateNormal];
+    
     [self setTitleView];
     
     [self showRefreshControl];
@@ -619,7 +623,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)loadTicketsData:(RKMappingResult *)mappingResult {
     DetailInboxTicket *response = [mappingResult.dictionary objectForKey:@""];
     
-//    if (!_ticketInformation) {
+    if (!_ticketInformation) {
         _ticketInformation = response.result.ticket;
         if ([_ticketInformation.ticket_status isEqualToString:@"2"] &&
             ![_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
@@ -631,7 +635,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
         }
-//    }
+    }
 
     self.tableView.sectionHeaderHeight = 0;
     
