@@ -25,13 +25,13 @@
 
 - (instancetype)init {
     if ((self = [super init])) {
-//        CLLocationCoordinate2D southWestJakarta = CLLocationCoordinate2DMake(-6.2614927, 106.81059979999998);
-//        CLLocationCoordinate2D northEastJakarta = CLLocationCoordinate2DMake(-6.211544, 106.845172);
-//        GMSCoordinateBounds *JakartaBounds =
-//        [[GMSCoordinateBounds alloc] initWithCoordinate:southWestJakarta coordinate:northEastJakarta];
-//        GMSPlacePickerConfig *config =
-//        [[GMSPlacePickerConfig alloc] initWithViewport:JakartaBounds];
-//        _placePicker = [[GMSPlacePicker alloc] initWithConfig:config];
+        CLLocationCoordinate2D southWestJakarta = CLLocationCoordinate2DMake(-6.2614927, 106.81059979999998);
+        CLLocationCoordinate2D northEastJakarta = CLLocationCoordinate2DMake(-6.211544, 106.845172);
+        GMSCoordinateBounds *JakartaBounds =
+        [[GMSCoordinateBounds alloc] initWithCoordinate:southWestJakarta coordinate:northEastJakarta];
+        GMSPlacePickerConfig *config =
+        [[GMSPlacePickerConfig alloc] initWithViewport:JakartaBounds];
+        _placePicker = [[GMSPlacePicker alloc] initWithConfig:config];
         _placesClient = [[GMSPlacesClient alloc] init];
         _autoCompleteResults = [NSMutableArray new];
         shouldBeginEditing = YES;
@@ -73,9 +73,10 @@
         }
     }];
     
-    self.searchDisplayController.searchBar.placeholder = @"Search or Address";
-    self.searchDisplayController.searchBar.barTintColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
-    
+    self.searchDisplayController.searchBar.placeholder = @"Cari Alamat";
+    [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
+                                                forBarPosition:0
+                                                    barMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark -
