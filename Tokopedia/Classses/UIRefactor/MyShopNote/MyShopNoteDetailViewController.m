@@ -981,7 +981,9 @@
 - (void)successEditNote:(NotesList *)noteList
 {
     _noteList = noteList;
- 
+    _note.result.detail.notes_title = noteList.note_title;
+    _note.result.detail.notes_content = noteList.note_status;
+    
     self.title = _noteList.note_title;
 
     _titleNoteTextField.text = _noteList.note_title;

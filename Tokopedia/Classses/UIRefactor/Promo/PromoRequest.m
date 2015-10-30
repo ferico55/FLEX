@@ -355,7 +355,9 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _promoPostURL = @"promo.pl";
     _promoFullURL = @"";
     
-    _promoActionBaseURL = [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"];
+    NSString *promoActionBaseURL = [NSString stringWithFormat:@"%@/action/",
+                                    [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"]];
+    _promoActionBaseURL = promoActionBaseURL;
     _promoActionPostURL = @"promo.pl";
     _promoActionFullURL = @"";
     

@@ -291,6 +291,7 @@
 {
     ((ProfileBiodataCell*)cell).labelbirth.text = _profile.result.user_info.user_birth?:@"-";
     ((ProfileBiodataCell*)cell).labelhobbies.text = (_profile.result.user_info.user_hobbies == nil || [_profile.result.user_info.user_hobbies isEqualToString:@"0"])?@"-":_profile.result.user_info.user_hobbies;
+    [((ProfileBiodataCell*)cell).labelhobbies sizeToFit];
 }
 
 
