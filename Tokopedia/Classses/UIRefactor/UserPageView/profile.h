@@ -227,6 +227,7 @@ typedef enum
 #define ERRORMESSAGE_NULL_REKENING_NUMBER @"Nomor rekening harus diisi."
 
 #define ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT @"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."
+#define ERRORMESSAGE_INVALID_HOBBY_CHARACTER_COUNT @"Hobi terlalu panjang. Maksimum 128 karakter."
 
 #define kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDPROFILE_NODATACELLTITLE @"no data"
