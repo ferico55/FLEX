@@ -262,6 +262,8 @@ GeneralTableViewControllerDelegate
     
     [self configureRestKit];
     [self request];
+    
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -1249,6 +1251,12 @@ GeneralTableViewControllerDelegate
     } else if ([textField isEqual:_shipmentPosExtraFeeTextField]) {
         _shipment.pos.pos_fee = [textField.text integerValue];
     }
+}
+
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
 }
 
 #pragma mark - General table delegate

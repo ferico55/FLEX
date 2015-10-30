@@ -627,11 +627,24 @@ TokopediaNetworkManagerDelegate
                            _shop.result.info.shop_name,
                            _shop.result.info.shop_location];
         NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
+        UIActivityViewController* activityController = [UIActivityViewController
+                                                                   shareDialogWithTitle:title
+                                                                   url:url
+                                                                   anchor:sender];
+        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+            if (!completed) return;
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+        }];
         
-        UIActivityViewController* shareDialogController = [UIActivityViewController
-                                                           shareDialogWithTitle:title url:url
-                                                           anchor:sender];
-        [self presentViewController:shareDialogController animated:YES completion:nil];
+        [self presentViewController:activityController animated:YES completion:^{
+            // color needs to be changed because of 'share to whatsapp' bug:
+            // same color with navigation bar background (white)
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+            [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+        }];
     }
 }
 

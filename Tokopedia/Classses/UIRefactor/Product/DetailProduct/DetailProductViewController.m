@@ -456,7 +456,7 @@ UIAlertViewDelegate
     inset.bottom += 20;
     _table.contentInset = inset;
     
-
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     _favButton.layer.cornerRadius = 3;
     _favButton.layer.borderWidth = 1;
@@ -533,103 +533,239 @@ UIAlertViewDelegate
 
 
 #pragma mark - View Action
--(IBAction)showDiscussions:(id)sender {
-    // got to talk page
-    ProductTalkViewController *vc = [ProductTalkViewController new];
-    NSArray *images = _product.result.product_images;
-    ProductImages *image = images.count>0? images[0]:nil;
-    
-    [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
-    [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
-    [_datatalk setObject:_product.result.statistic.product_sold_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
-    [_datatalk setObject:_product.result.statistic.product_view_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
-    [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
-    [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
-    
-    NSMutableDictionary *data = [NSMutableDictionary new];
-    [data addEntriesFromDictionary:_datatalk];
-    [data setObject:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null] forKey:kTKPD_AUTHKEY];
-    [data setObject:image.image_src==nil?@"":image.image_src forKey:@"talk_product_image"];
-    
-    vc.data = data;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
--(IBAction)showReviews:(id)sender {
-    if(_product.result.shop_info.shop_domain != nil) {
-        ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
-        productReputationViewController.strShopDomain = _product.result.shop_info.shop_domain;
-        productReputationViewController.strProductID = _product.result.product.product_id;
-        [self.navigationController pushViewController:productReputationViewController animated:YES];
+-(IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
+        switch (btn.tag) {
+            case 22 : {
+                ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
+                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.result.product.product_id,
+                                       kTKPD_AUTHKEY : _auth?:@{},
+                                       DATA_PRODUCT_DETAIL_KEY : _product.result.product,
+                                       DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
+                                       DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
+                                       };
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 23:
+            {
+                // Move To warehouse
+                if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                    [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                    [alert show];
+                }
+                else
+                {
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    [alert show];
+                }
+                break;
+            }
+        }
     }
-    return;
-    
-    
-    
-    // go to review page
-    ProductReviewViewController *vc = [ProductReviewViewController new];
-    NSArray *images = _product.result.product_images;
-    ProductImages *image = images[0];
-    
-    vc.data = @{
-                kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                API_PRODUCT_NAME_KEY : _formattedProductTitle,
-                kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
-                };
-    [self.navigationController pushViewController:vc animated:YES];
-}
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)sender;
+        switch (btn.tag) {
+            case 12:
+            {
+                if(_product.result.shop_info.shop_domain != nil) {
+                    ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
+                    productReputationViewController.strShopDomain = _product.result.shop_info.shop_domain;
+                    productReputationViewController.strProductID = _product.result.product.product_id;
+                    [self.navigationController pushViewController:productReputationViewController animated:YES];
+                }
+                return;
+                
+                
+                
+                // go to review page
+                ProductReviewViewController *vc = [ProductReviewViewController new];
+                NSArray *images = _product.result.product_images;
+                ProductImages *image = images[0];
+                
+                vc.data = @{
+                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+                            API_PRODUCT_NAME_KEY : _formattedProductTitle,
+                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 13:
+            {
+                // got to talk page
+                ProductTalkViewController *vc = [ProductTalkViewController new];
+                NSArray *images = _product.result.product_images;
+                ProductImages *image = images.count>0? images[0]:nil;
+                
+                [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
+                [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
+                [_datatalk setObject:_product.result.statistic.product_sold_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
+                [_datatalk setObject:_product.result.statistic.product_view_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
+                [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
+                [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
+                
+                NSMutableDictionary *data = [NSMutableDictionary new];
+                [data addEntriesFromDictionary:_datatalk];
+                [data setObject:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null] forKey:kTKPD_AUTHKEY];
+                [data setObject:image.image_src==nil?@"":image.image_src forKey:@"talk_product_image"];
 
--(IBAction)promoteProduct:(id)sender {
-    [_promoteNetworkManager resetRequestCount];
-    [_promoteNetworkManager doRequest];
-}
-
--(IBAction)buyProduct:(id)sender {
-    if(_auth) {
-        TransactionATCViewController *transactionVC = [TransactionATCViewController new];
-        transactionVC.wholeSales = _product.result.wholesale_price;
-        transactionVC.productPrice = _product.result.product.product_price;
-        transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
-        [self.navigationController pushViewController:transactionVC animated:YES];
-    } else {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                vc.data = data;
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 15:
+            {
+                if (_product) {
+                    NSString *title = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia ",
+                                       _formattedProductTitle,
+                                       _product.result.shop_info.shop_name];
+                    NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
+                    UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
+                                                                                      applicationActivities:nil];
+                    act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                    [act setCompletionHandler:^(NSString *activityType, BOOL completed) {
+                        if (!completed) return;
+                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+                    }];
+                    
+                    [self presentViewController:act animated:YES completion:^{
+                        // color needs to be changed because of 'share to whatsapp' bug:
+                        // same color with navigation bar background (white)
+                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+                        [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+                    }];
+                }
+                break;
+            }
+            case 16:
+            {
+                //Buy
+                if(_auth) {
+                    TransactionATCViewController *transactionVC = [TransactionATCViewController new];
+                    transactionVC.wholeSales = _product.result.wholesale_price;
+                    transactionVC.productPrice = _product.result.product.product_price;
+                    transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
+                    [self.navigationController pushViewController:transactionVC animated:YES];
+                } else {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+                break;
+            }
+            case 17 : {
+                if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
+                if(_auth) {
+                    [self favoriteShop:_product.result.shop_info.shop_id];
+                } else {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    isDoingFavorite = isNeedLogin = YES;
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+                break;
+            }
+            case 18 : {
+                if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
+                if(_auth) {
+                    //UnLove Shop
+                    [self configureFavoriteRestkit];
+                    [self favoriteShop:_product.result.shop_info.shop_id];
+                } else {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    isDoingFavorite = isNeedLogin = YES;
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+                break;
+            }
+            case 20 : {
+                NSString *shopid = _product.result.shop_info.shop_id;
+                if(!shopid) {
+                    return;
+                }
+                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else{
+                    
+                    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+                    
+                    container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
+                                       kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
+                                       kTKPD_AUTHKEY:_auth?:@{}};
+                    [self.navigationController pushViewController:container animated:YES];
+                    
+                }
+                break;
+            }
+            case 21 : {
+                [_promoteNetworkManager resetRequestCount];
+                [_promoteNetworkManager doRequest];
+                break;
+            }
+            default:
+                break;
+        }
     }
 }
 
--(IBAction)toggleFavorite:(id)sender {
-    UIView* button = (UIView*) sender;
-    
-    if (button.tag != 17 && button.tag != 18) return;
-    
-    if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
-    if(_auth) {
-        [self favoriteShop:_product.result.shop_info.shop_id];
-    } else {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        isDoingFavorite = isNeedLogin = YES;
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+-(IBAction)gesture:(id)sender
+{
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                
+            }
+                
+            default:
+                break;
+        }
     }
 }
 
@@ -2359,9 +2495,26 @@ UIAlertViewDelegate
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-        UIActivityViewController *activityController = [UIActivityViewController shareDialogWithTitle:title url:url anchor:btnShare];
+        UIActivityViewController* activityController = [UIActivityViewController
+                                                                   shareDialogWithTitle:title
+                                                                   url:url
+                                                                   anchor:sender];
+
+        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+            if (!completed) return;
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+        }];
         
-        [self presentViewController:activityController animated:YES completion:nil];
+        [self presentViewController:activityController animated:YES completion:^{
+            // color needs to be changed because of 'share to whatsapp' bug:
+            // same color with navigation bar background (white)
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+            [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+        }];
+        
     }
 }
 
@@ -2808,15 +2961,15 @@ UIAlertViewDelegate
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
 
-        NSString *productId = _product.result.product.product_id;
-        NSString *productName = _product.result.product.product_name;
+        NSString *productId = _product.result.product.product_id?:@"";
+        NSString *productName = _product.result.product.product_name?:@"";
         
         NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
-        NSString *productCategory = lastCategory.department_name;
+        NSString *productCategory = lastCategory.department_name?:@"";
 
         NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
 
         NSDictionary *attributes = @{
                                      @"Product Id" : productId,

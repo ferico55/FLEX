@@ -721,7 +721,20 @@ static CGFloat rowHeight = 40;
                 UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                          applicationActivities:nil];
                 controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:controller animated:YES completion:nil];
+                [controller setCompletionHandler:^(NSString *activityType, BOOL completed) {
+                    if (!completed) return;
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+                }];
+                
+                [self presentViewController:controller animated:YES completion:^{
+                    // color needs to be changed because of 'share to whatsapp' bug:
+                    // same color with navigation bar background (white)
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+                    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+                }];
             }
         }
     } else if ([sender isKindOfClass:[UIButton class]]) {
@@ -747,11 +760,25 @@ static CGFloat rowHeight = 40;
                 NSString *title = _catalog.result.catalog_info.catalog_name;
                 NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
                 
-                UIActivityViewController* shareDialogController = [UIActivityViewController
+				UIActivityViewController* controller = [UIActivityViewController
                                                                    shareDialogWithTitle:title
                                                                    url:url
-                                                                   anchor:view];
-                [self presentViewController:shareDialogController animated:YES completion:nil];
+                                                                   anchor:sender];
+
+                [controller setCompletionHandler:^(NSString *activityType, BOOL completed) {
+                    if (!completed) return;
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+                }];
+                
+                [self presentViewController:controller animated:YES completion:^{
+                    // color needs to be changed because of 'share to whatsapp' bug:
+                    // same color with navigation bar background (white)
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+                    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+                }];
             }
         }
         else {
@@ -771,7 +798,20 @@ static CGFloat rowHeight = 40;
                 UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
                                                                                          applicationActivities:nil];
                 controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:controller animated:YES completion:nil];
+                [controller setCompletionHandler:^(NSString *activityType, BOOL completed) {
+                    if (!completed) return;
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+                }];
+                
+                [self presentViewController:controller animated:YES completion:^{
+                    // color needs to be changed because of 'share to whatsapp' bug:
+                    // same color with navigation bar background (white)
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+                    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+                }];
             }
         }
     }

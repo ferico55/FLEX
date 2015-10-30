@@ -259,12 +259,25 @@
                 NSString *title = _catalog.result.catalog_info.catalog_name;
                 NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
                 
-                UIActivityViewController* shareDialogController = [UIActivityViewController
+				UIActivityViewController* controller = [UIActivityViewController
                                                                    shareDialogWithTitle:title
                                                                    url:url
                                                                    anchor:sender];
-                [self presentViewController:shareDialogController animated:YES completion:nil];
-            }
+
+                [controller setCompletionHandler:^(NSString *activityType, BOOL completed) {
+                    if (!completed) return;
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+                }];
+                
+                [self presentViewController:controller animated:YES completion:^{
+                    // color needs to be changed because of 'share to whatsapp' bug:
+                    // same color with navigation bar background (white)
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+                    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
+                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
+                }];            }
         }
     }
 }
@@ -511,8 +524,6 @@
     }
     
     _catalogId = _catalog.result.catalog_info.catalog_id;
-    _location = @"";
-    _condition = @"";
     _orderBy = orderBy;
     _page = 1;
     
@@ -533,7 +544,6 @@
     _catalogId = catalog.result.catalog_info.catalog_id;
     _location = location;
     _condition = condition;
-    _orderBy = @"";
     _page = 1;
     
     [_networkManager doRequest];
