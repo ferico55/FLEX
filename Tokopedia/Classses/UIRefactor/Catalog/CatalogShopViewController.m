@@ -262,6 +262,7 @@
                                                                                                anchor:button];
                 
                 [self presentViewController:controller animated:YES completion:nil];
+            }
         }
     }
 }
@@ -614,4 +615,4 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-@end
+    @end
