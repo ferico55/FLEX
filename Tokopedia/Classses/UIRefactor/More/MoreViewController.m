@@ -32,7 +32,7 @@
 
 #import "ShopFavoritedViewController.h"
 
-#import "InboxTicketSplitViewController.h"
+
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
@@ -62,10 +62,9 @@
 
 #import <MessageUI/MessageUI.h>
 
-#import "UIActivityViewController+Extensions.h"
-
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
+#import "UIActivityViewController+Extensions.h"
 
 #define CTagProfileInfo 12
 #define CTagLP 13
@@ -716,32 +715,26 @@
             [_navigate navigateToInboxPriceAlertFromViewController:self];
             
         } else if (indexPath.row == 4) {
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
-                
-                [self.navigationController pushViewController:controller animated:YES];
-            } else {
-                TKPDTabViewController *controller = [TKPDTabViewController new];
-                controller.hidesBottomBarWhenPushed = YES;
-                
-                InboxTicketViewController *allInbox = [InboxTicketViewController new];
-                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-                allInbox.delegate = controller;
-                
-                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-                unreadInbox.delegate = controller;
-                
-                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
-                closedInbox.delegate = controller;
-                
-                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-                
-                [self.navigationController pushViewController:controller animated:YES];
-            }
+            TKPDTabViewController *controller = [TKPDTabViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            
+            InboxTicketViewController *allInbox = [InboxTicketViewController new];
+            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+            allInbox.delegate = controller;
+            
+            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+            unreadInbox.delegate = controller;
+            
+            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+            closedInbox.delegate = controller;
+            
+            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+            controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+            
+            [self.navigationController pushViewController:controller animated:YES];
         } else if (indexPath.row == 5) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
@@ -790,26 +783,11 @@
             
             NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
+            UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                              url:url
+                                                                                           anchor:tableView];
             
-			UIActivityViewController* activityController = [UIActivityViewController
-                                                                   shareDialogWithTitle:title
-                                                                   url:url
-                                                                   anchor:[tableView cellForRowAtIndexPath:indexPath]];
-
-            [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-                if (!completed) return;
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-                [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-                [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-            }];
-            
-            [self presentViewController:activityController animated:YES completion:^{
-                // color needs to be changed because of 'share to whatsapp' bug:
-                // same color with navigation bar background (white)
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-                [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-                [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-            }];
+            [self presentViewController:controller animated:YES completion:nil];
         }
     }
     

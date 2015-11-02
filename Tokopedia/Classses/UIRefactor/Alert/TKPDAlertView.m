@@ -167,6 +167,7 @@
 	
     dispatch_once(&once, ^{
         window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        window.tag = 99;
 		window.windowLevel = UIWindowLevelAlert - 1.0f;
 		window.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		

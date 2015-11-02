@@ -23,7 +23,6 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "Paging.h"
-
 #import "UIActivityViewController+Extensions.h"
 
 @interface CatalogShopViewController ()
@@ -258,26 +257,12 @@
             if (_catalog) {
                 NSString *title = _catalog.result.catalog_info.catalog_name;
                 NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
+                UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                                  url:url
+                                                                                               anchor:button];
                 
-				UIActivityViewController* controller = [UIActivityViewController
-                                                                   shareDialogWithTitle:title
-                                                                   url:url
-                                                                   anchor:sender];
-
-                [controller setCompletionHandler:^(NSString *activityType, BOOL completed) {
-                    if (!completed) return;
-                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-                    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-                }];
-                
-                [self presentViewController:controller animated:YES completion:^{
-                    // color needs to be changed because of 'share to whatsapp' bug:
-                    // same color with navigation bar background (white)
-                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-                    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-                    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-                }];            }
+                [self presentViewController:controller animated:YES completion:nil];
+            }
         }
     }
 }
@@ -630,4 +615,4 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-@end
+    @end

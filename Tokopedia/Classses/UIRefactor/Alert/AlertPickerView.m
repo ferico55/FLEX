@@ -174,6 +174,8 @@
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	
+    _window.tag = 99;
+    
 	[UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionNone | UIViewAnimationOptionAllowAnimatedContent) animations:^{
 		
 		//[_window addSubview:self];	//moved before animation call above

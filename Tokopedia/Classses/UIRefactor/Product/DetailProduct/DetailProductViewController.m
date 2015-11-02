@@ -82,9 +82,8 @@
 #import "EtalaseList.h"
 #import "TAGDataLayer.h"
 
-#import "UIActivityViewController+Extensions.h"
-
 #import "Localytics.h"
+#import "UIActivityViewController+Extensions.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -628,23 +627,11 @@ UIAlertViewDelegate
                                        _formattedProductTitle,
                                        _product.result.shop_info.shop_name];
                     NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-                    UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                      applicationActivities:nil];
-                    act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                    [act setCompletionHandler:^(NSString *activityType, BOOL completed) {
-                        if (!completed) return;
-                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-                        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-                    }];
+                    UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                                      url:url
+                                                                                                   anchor:btn];
                     
-                    [self presentViewController:act animated:YES completion:^{
-                        // color needs to be changed because of 'share to whatsapp' bug:
-                        // same color with navigation bar background (white)
-                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-                        [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-                    }];
+                    [self presentViewController:controller animated:YES completion:nil];
                 }
                 break;
             }
@@ -1126,7 +1113,6 @@ UIAlertViewDelegate
         if (indexPath.section == 2) {
             NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
             DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
-
             if (descriptionCell == nil) {
                 descriptionCell = [DetailProductDescriptionCell newcell];
                 if(!_isnodata) {
@@ -1770,7 +1756,6 @@ UIAlertViewDelegate
         }
         [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
-    [_table reloadData];
 }
 
 
@@ -2102,7 +2087,7 @@ UIAlertViewDelegate
             self.navigationItem.rightBarButtonItems = nil;
             
             if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin] && !_product.isDummyProduct) {
-                //MyShpo
+                //MyShop
                 [_dinkButton setHidden:NO];
                 UIBarButtonItem *barbutton;
                 barbutton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting.png"] withAction:@selector(gestureSetting:)];
@@ -2456,10 +2441,7 @@ UIAlertViewDelegate
     [self initAttributeText:lblSize withStrText:strText withColor:color withFont:font withAlignment:textAlignment];
     lblSize.numberOfLines = 0;
     
-    NSInteger lblHeight =[lblSize sizeThatFits:size].height;
-    lblHeight = lblHeight<30?30:lblHeight;
-    
-    return lblHeight;
+    return [lblSize sizeThatFits:size].height;
 }
 
 
@@ -2495,25 +2477,11 @@ UIAlertViewDelegate
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-        UIActivityViewController* activityController = [UIActivityViewController
-                                                                   shareDialogWithTitle:title
-                                                                   url:url
-                                                                   anchor:sender];
-
-        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-            if (!completed) return;
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-            [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-        }];
+        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                          url:url
+                                                                                       anchor:sender];
         
-        [self presentViewController:activityController animated:YES completion:^{
-            // color needs to be changed because of 'share to whatsapp' bug:
-            // same color with navigation bar background (white)
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-            [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-        }];
+        [self presentViewController:controller animated:YES completion:nil];
         
     }
 }

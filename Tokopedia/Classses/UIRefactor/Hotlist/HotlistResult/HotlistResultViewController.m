@@ -48,9 +48,9 @@
 #import "HotlistBannerRequest.h"
 #import "HotlistBannerResult.h"
 
-#import "UIActivityViewController+Extensions.h"
-
 #import "Localytics.h"
+
+#import "UIActivityViewController+Extensions.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -471,26 +471,11 @@ HotlistBannerDelegate
                     }
                     
                     if (title && url) {
+                        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                                          url:url
+                                                                                                       anchor:button];
                         
-						UIActivityViewController* act = [UIActivityViewController
-                                                                   shareDialogWithTitle:title
-                                                                   url:url
-                                                                   anchor:sender];
-
-                        [act setCompletionHandler:^(NSString *activityType, BOOL completed) {
-                            if (!completed) return;
-                            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-                            [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-                            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-                        }];
-                        
-                        [self presentViewController:act animated:YES completion:^{
-                            // color needs to be changed because of 'share to whatsapp' bug:
-                            // same color with navigation bar background (white)
-                            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-                            [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-                            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-                        }];
+                        [self presentViewController:controller animated:YES completion:nil];
                     }
                     
                     break;
@@ -595,6 +580,17 @@ HotlistBannerDelegate
 
 - (void)configureRestKit {
     _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+#ifdef DEBUG
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+    NSString *baseUrl;
+    if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+        baseUrl = @"https://ace-staging.tokopedia.com/";
+    } else {
+        baseUrl = @"https://ajax.tokopedia.com/";
+    }
+    _objectmanager = [RKObjectManager sharedClient:baseUrl];
+#endif
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
