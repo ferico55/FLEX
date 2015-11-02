@@ -669,6 +669,18 @@ PromoCollectionViewDelegate
 - (id)getObjectManager:(int)tag {
     if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
         _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+#ifdef DEBUG
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+        NSString *baseUrl;
+        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+            baseUrl = @"https://ace-staging.tokopedia.com/";
+        } else {
+            baseUrl = @"https://ajax.tokopedia.com/";
+        }
+        _objectmanager = [RKObjectManager sharedClient:baseUrl];
+#endif
+
     } else {
         _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
     }
