@@ -590,6 +590,17 @@ HotlistBannerDelegate
 
 - (void)configureRestKit {
     _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+#ifdef DEBUG
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+    NSString *baseUrl;
+    if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+        baseUrl = @"https://ace-staging.tokopedia.com/";
+    } else {
+        baseUrl = @"https://ajax.tokopedia.com/";
+    }
+    _objectmanager = [RKObjectManager sharedClient:baseUrl];
+#endif
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
