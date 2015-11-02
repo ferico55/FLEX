@@ -98,25 +98,21 @@
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
     }
     else
-//        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-
-    _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Ketegori" style:UIBarButtonItemStyleBordered target:self action:nil];
-    _barbuttoncategory.tintColor = [UIColor whiteColor];
-        
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    
     _barbuttoncategory.tag = 11;
     [_barbuttoncategory setEnabled:NO];
     
-
-    self.navigationController.navigationItem.rightBarButtonItem = _barbuttoncategory;
+    self.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(setTabShopActive)
                                                  name:@"setTabShopActive"
                                                object:nil];
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -137,31 +133,31 @@
 
 - (void)viewDidLayoutSubviews
 {
-	[super viewDidLayoutSubviews];
-	_selectedViewController.view.frame = _container.bounds;
-
-// Did not remove this because of the todo
-//	UIEdgeInsets inset = [self contentInsetForContainerController];
-//	
-//	UIView* tabbar;
-//	CGRect frame;
-//	tabbar = _tabbar;
-//	frame = tabbar.frame;
-//	frame.origin.y = inset.top;
-//	
-//	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-//		UINavigationController* n = (UINavigationController*)_selectedViewController;
-//		
-//		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
-//			CGRect rect = n.navigationBar.frame;
-//			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
-//		}
-//	}
-	
-	UIEdgeInsets inset = [self contentInsetForChildController];
-	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
-		[_delegate tabBarController:self childControllerContentInset:inset];
-	}
+    [super viewDidLayoutSubviews];
+    _selectedViewController.view.frame = _container.bounds;
+    
+    // Did not remove this because of the todo
+    //	UIEdgeInsets inset = [self contentInsetForContainerController];
+    //
+    //	UIView* tabbar;
+    //	CGRect frame;
+    //	tabbar = _tabbar;
+    //	frame = tabbar.frame;
+    //	frame.origin.y = inset.top;
+    //
+    //	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+    //		UINavigationController* n = (UINavigationController*)_selectedViewController;
+    //
+    //		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
+    //			CGRect rect = n.navigationBar.frame;
+    //			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
+    //		}
+    //	}
+    
+    UIEdgeInsets inset = [self contentInsetForChildController];
+    if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
+        [_delegate tabBarController:self childControllerContentInset:inset];
+    }
 }
 
 #pragma mark -
@@ -234,33 +230,6 @@
         UIViewController* c;
         NSInteger i;
         
-        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                              style:UIBarButtonItemStyleBordered
-                                                                             target:self
-                                                                             action:@selector(tapbutton:)];
-        backBarButtonItem.tag = 10;
-        self.navigationItem.backBarButtonItem = backBarButtonItem;
-        
-        NSBundle* bundle = [NSBundle mainBundle];
-        UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
-        
-        
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-            UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            //        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-        }
-        else
-            //        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-            
-            _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Ketegori" style:UIBarButtonItemStyleBordered target:self action:nil];
-        _barbuttoncategory.tintColor = [UIColor whiteColor];
-        
-        _barbuttoncategory.tag = 11;
-        [_barbuttoncategory setEnabled:NO];
-        
-        
-        self.navigationController.navigationItem.rightBarButtonItem = _barbuttoncategory;
-        
         for (i = 0; i < _viewControllers.count; i++) {
             c = _viewControllers[i];
             if (c == selectedViewController) {
@@ -281,46 +250,46 @@
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
 {
-	if (selectedIndex == _selectedIndex) return;
-	
-	if (_viewControllers != nil) {
-		UIViewController* deselect = _selectedViewController;
+    if (selectedIndex == _selectedIndex) return;
+    
+    if (_viewControllers != nil) {
+        UIViewController* deselect = _selectedViewController;
         if (selectedIndex < 0) {
             selectedIndex = 0;
         }
-		UIViewController* select = _viewControllers[selectedIndex];
-
-//      Did not remove this because of the todo
-//		UIEdgeInsets inset = [self contentInsetForContainerController];
-//		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-//			
-//			UINavigationController* n = (UINavigationController*)select;
-//			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-//				selectframe.origin.y = inset.top;
-//				selectframe = CGRectZero;
-//			} else {
-//                selectframe = CGRectZero;
-//			}
-//		} else {
-//            selectframe = CGRectZero;
-//		}
-		
-		int navigate = 0;
-
-		if (_selectedIndex < selectedIndex) {
-			navigate = +1;
-		} else {
-			navigate = -1;
-		}
-		
-		_selectedIndex = selectedIndex;
-		_selectedViewController = _viewControllers[selectedIndex];
-
+        UIViewController* select = _viewControllers[selectedIndex];
+        
+        //      Did not remove this because of the todo
+        //		UIEdgeInsets inset = [self contentInsetForContainerController];
+        //		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+        //
+        //			UINavigationController* n = (UINavigationController*)select;
+        //			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
+        //				selectframe.origin.y = inset.top;
+        //				selectframe = CGRectZero;
+        //			} else {
+        //                selectframe = CGRectZero;
+        //			}
+        //		} else {
+        //            selectframe = CGRectZero;
+        //		}
+        
+        int navigate = 0;
+        
+        if (_selectedIndex < selectedIndex) {
+            navigate = +1;
+        } else {
+            navigate = -1;
+        }
+        
+        _selectedIndex = selectedIndex;
+        _selectedViewController = _viewControllers[selectedIndex];
+        
         if ([_selectedViewController isKindOfClass:[SearchResultShopViewController class]]) {
             self.navigationItem.rightBarButtonItem = nil;
         } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
             ((SearchResultViewController *)_selectedViewController).delegate = self;
-            self.navigationController.navigationItem.rightBarButtonItem = _barbuttoncategory;
+            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
         }
         
         if (animated && (deselect != nil) && (navigate != 0)) {
@@ -588,7 +557,7 @@
         [_segmentcontrol removeAllSegments];
         [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
         [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:1 animated:NO];
-
+        
         _hascatalog = NO;
         
         _tabbar = _segmentcontrol;
@@ -603,7 +572,7 @@
     } else if (count == 3) {	//not default to 3
         _segmentcontrol.hidden = NO;
         _tabbar = _segmentcontrol;
-
+        
         _hascatalog = YES;
         
         [_segmentcontrol removeAllSegments];
