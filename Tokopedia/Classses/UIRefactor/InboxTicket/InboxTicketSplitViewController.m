@@ -10,7 +10,7 @@
 #import "InboxTicketViewController.h"
 #import "InboxTicketDetailViewController.h"
 
-@interface InboxTicketSplitViewController ()
+@interface InboxTicketSplitViewController () <UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) UISplitViewController *splitViewController;
 
@@ -56,7 +56,7 @@
     self.view.frame = [UIScreen mainScreen].bounds;
     
     self.splitViewController = [[UISplitViewController alloc] init];
-    self.splitViewController.delegate = detailVC;
+    self.splitViewController.delegate = self;
     self.splitViewController.viewControllers = [NSArray arrayWithObjects:masterNav, detailNav, nil];
     controller.splitVC = self;
     
@@ -83,6 +83,11 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 @end
