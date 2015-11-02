@@ -17,6 +17,6 @@
 @interface DueDateViewController : UITableViewController
 
 @property (weak, nonatomic) id<DueDateDelegate> delegate;
-@property (weak, nonatomic) NSString *dueDate;
+@property (strong, nonatomic) NSString *dueDate;
 
 @end

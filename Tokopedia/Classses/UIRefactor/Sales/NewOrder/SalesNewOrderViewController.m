@@ -79,9 +79,6 @@
     NSInteger _numberOfProcessedOrder;
     
     NSArray *_selectedProducts;
-    
-    UINavigationController *_filterNavigationController;
-    FilterNewOrderViewController *_filterViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -91,7 +88,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
-@property (weak, nonatomic) IBOutlet UIView *footerView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
@@ -295,13 +292,18 @@
 #pragma mark - Action
 
 - (void)tap:(id)sender {
-    if (!_filterNavigationController) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        _filterNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"FilterNewOrderNavigationController"];
-        _filterViewController = (FilterNewOrderViewController *)_filterNavigationController.topViewController;
-        _filterViewController.delegate = self;
-    }
-    [self.navigationController presentViewController:_filterNavigationController animated:YES completion:nil];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    FilterNewOrderViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"FilterNewOrderViewController"];
+    controller.delegate = self;
+    controller.dueDate = _deadline;
+    controller.filter = _filter;
+    
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigation.navigationBar.translucent = NO;
+    
+    [self.navigationController presentViewController:navigation animated:YES completion:nil];
 }
 
 #pragma mark - Cell delegate
@@ -804,7 +806,7 @@
                             kTKPDDETAIL_APIACTIONKEY : API_GET_NEW_ORDER_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
                             API_DEADLINE_KEY         : _deadline,
-                            API_FILTER_KEY           : _filter,
+                            API_STATUS_KEY           : _filter,
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
                             };
     
@@ -900,10 +902,14 @@
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         Order *newOrder = [result objectForKey:@""];
         
-        if (_page == 1) {
-            _transactions = newOrder.result.list;
+        if (newOrder.result.list.count > 0) {
+            if (_page == 1) {
+                _transactions = newOrder.result.list;
+            } else {
+                [_transactions addObjectsFromArray:newOrder.result.list];
+            }
         } else {
-            [_transactions addObjectsFromArray:newOrder.result.list];
+            [_transactions removeAllObjects];
         }
         
         NSLog(@"\n\n\n%@\n\n\n", _transactions);
