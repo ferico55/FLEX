@@ -157,6 +157,12 @@ PromoCollectionViewDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
     _userManager = [UserAuthentificationManager new];
     _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
     _isNeedToRemoveAllObject = YES;

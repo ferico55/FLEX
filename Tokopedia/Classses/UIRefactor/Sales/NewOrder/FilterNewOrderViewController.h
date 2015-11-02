@@ -16,6 +16,8 @@
 
 @interface FilterNewOrderViewController : UITableViewController
 
+@property (strong, nonatomic) NSString *dueDate;
+@property (strong, nonatomic) NSString *filter;
 @property (weak, nonatomic) id<FilterDelegate> delegate;
 
 @end

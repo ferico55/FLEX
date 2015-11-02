@@ -98,15 +98,19 @@
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+//        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
     }
     else
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    
+//        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+
+    _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Ketegori" style:UIBarButtonItemStyleBordered target:self action:nil];
+    _barbuttoncategory.tintColor = [UIColor whiteColor];
+        
     _barbuttoncategory.tag = 11;
     [_barbuttoncategory setEnabled:NO];
     
-    self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+
+    self.navigationController.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(setTabShopActive)
@@ -230,6 +234,33 @@
         UIViewController* c;
         NSInteger i;
         
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:self
+                                                                             action:@selector(tapbutton:)];
+        backBarButtonItem.tag = 10;
+        self.navigationItem.backBarButtonItem = backBarButtonItem;
+        
+        NSBundle* bundle = [NSBundle mainBundle];
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_category_list_white" ofType:@"png"]];
+        
+        
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+            UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            //        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        }
+        else
+            //        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+            
+            _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Ketegori" style:UIBarButtonItemStyleBordered target:self action:nil];
+        _barbuttoncategory.tintColor = [UIColor whiteColor];
+        
+        _barbuttoncategory.tag = 11;
+        [_barbuttoncategory setEnabled:NO];
+        
+        
+        self.navigationController.navigationItem.rightBarButtonItem = _barbuttoncategory;
+        
         for (i = 0; i < _viewControllers.count; i++) {
             c = _viewControllers[i];
             if (c == selectedViewController) {
@@ -289,7 +320,7 @@
             self.navigationItem.rightBarButtonItem = nil;
         } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
             ((SearchResultViewController *)_selectedViewController).delegate = self;
-            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+            self.navigationController.navigationItem.rightBarButtonItem = _barbuttoncategory;
         }
         
         if (animated && (deselect != nil) && (navigate != 0)) {
