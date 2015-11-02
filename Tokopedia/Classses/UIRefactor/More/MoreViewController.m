@@ -64,7 +64,7 @@
 
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
-#import "UIActivityViewController.h"
+#import "UIActivityViewController+Extensions.h"
 
 #define CTagProfileInfo 12
 #define CTagLP 13
