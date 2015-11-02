@@ -306,6 +306,7 @@
         cell = _ownerCell;
     }
     
+    [cell layoutIfNeeded];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -318,15 +319,17 @@
         cell = _topCell;
     }
     else if (indexPath.row <=_shop.result.address.count) {
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+        cell = [self addressCellIndexPath:newIndexPath];
+        [cell layoutIfNeeded];
+
         if (_isHideAddress) {
             return 0;
         }
         else
         {
-            return 190;
+            return ((ShopInfoAddressCell*)cell).borderView.frame.origin.y + ((ShopInfoAddressCell*)cell).borderView.frame.size.height;
         }
-        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
-        cell = [self addressCellIndexPath:newIndexPath];
     }
     else if (indexPath.row == _shop.result.address.count+1)
     {
@@ -487,6 +490,7 @@
     [_labelshoptagline sizeToFit];
     
     _labelshopdescription.text = _shop.result.info.shop_description;
+    [_labelshopdescription sizeToFit];
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
     [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
 //    _speedrate.starscount = _shop.result.stats.shop_service_rate;
