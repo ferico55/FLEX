@@ -123,7 +123,7 @@
                         <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="buyProduct:" destination="-1" eventType="touchUpInside" id="LcW-bY-ZeN"/>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="T0l-CC-jwq"/>
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" tag="21" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bXH-te-xtZ">
@@ -139,7 +139,7 @@
                         <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="promoteProduct:" destination="-1" eventType="touchUpInside" id="dih-tX-O2T"/>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="OZu-pd-RKk"/>
                     </connections>
                 </button>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u8Q-zU-EhA">
@@ -407,7 +407,7 @@
                                     </connections>
                                 </view>
                                 <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZA-uO-b4x">
-                                    <rect key="frame" x="0.0" y="124" width="162" height="50"/>
+                                    <rect key="frame" x="0.0" y="124" width="161.5" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="50" id="qbw-7C-j2o"/>
@@ -418,11 +418,11 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="showReviews:" destination="-1" eventType="touchUpInside" id="6to-D0-kWX"/>
+                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yn8-uD-2tT"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" tag="13" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtP-j2-yZq">
-                                    <rect key="frame" x="160" y="124" width="162" height="50"/>
+                                <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtP-j2-yZq">
+                                    <rect key="frame" x="159.5" y="124" width="161.5" height="50"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                                     <state key="normal" title="Talk About it">
@@ -430,7 +430,7 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="showDiscussions:" destination="-1" eventType="touchUpInside" id="vQK-Zj-tge"/>
+                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="DPn-WS-RdG"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kualitas" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RTa-kE-XJL">
@@ -668,6 +668,9 @@
                                 <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="dNf-fw-tsP"/>
+                            </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jakarta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6SQ-DJ-iQi">
                             <rect key="frame" x="18" y="93" width="150" height="21"/>
@@ -716,7 +719,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="toggleFavorite:" destination="-1" eventType="touchUpInside" id="lQh-Xa-E1k"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="KGS-xU-2Md"/>
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="q89-lk-mkR" userLabel="Gold Badges">
@@ -877,9 +880,20 @@
                 <outlet property="namelabel" destination="Q5e-TV-sDK" id="POK-md-cQc"/>
                 <outlet property="pricelabel" destination="Va7-Ts-UVQ" id="gn2-kp-LuS"/>
                 <outlet property="thumb" destination="Whf-o7-mYJ" id="nff-qM-iFa"/>
+                <outletCollection property="gestureRecognizers" destination="n1N-Gx-LcD" appends="YES" id="oVn-ve-1DD"/>
             </connections>
             <point key="canvasLocation" x="127" y="285.5"/>
         </view>
+        <tapGestureRecognizer id="n1N-Gx-LcD">
+            <connections>
+                <action selector="gesture:" destination="P75-Lv-uni" id="7BF-SF-lfr"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="shy-zk-4bX">
+            <connections>
+                <action selector="gesture:" destination="-1" id="9Cu-40-dVb"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="Badges_gold_merchant" width="40" height="40"/>
