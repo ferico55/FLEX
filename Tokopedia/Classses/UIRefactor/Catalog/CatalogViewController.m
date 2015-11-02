@@ -287,7 +287,12 @@ static CGFloat rowHeight = 40;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *text = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if (text.length < 20) {
-        return rowHeight;
+        text = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        CGSize maximumLabelSize = CGSizeMake(115, CGFLOAT_MAX);
+        CGSize expectedLabelSize = [text sizeWithFont:[UIFont fontWithName:@"GothamMedium" size:14]
+                                    constrainedToSize:maximumLabelSize
+                                        lineBreakMode:NSLineBreakByWordWrapping];
+        return rowHeight + expectedLabelSize.height;
     } else {
         CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
         CGSize expectedLabelSize = [text sizeWithFont:FONT_GOTHAM_BOOK_14
