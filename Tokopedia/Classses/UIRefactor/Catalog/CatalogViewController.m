@@ -575,7 +575,7 @@ static CGFloat rowHeight = 40;
             _arrayCatalogImage = [NSMutableArray new];
             NSInteger x = 0;
             for (CatalogImages *image in _catalog.result.catalog_info.catalog_images) {
-                CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, self.view.frame.size.width);
+                CGRect frame = CGRectMake(x, 0, self.view.frame.size.width, _productPhotoScrollView.frame.size.height);
                 UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
                 
                 NSURLRequest* requestCatalogImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src]
