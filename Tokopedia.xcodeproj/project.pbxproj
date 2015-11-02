@@ -9,9 +9,23 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		45CA59501BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA594F1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59601BE6FF6B00F229A7 /* GoogleDistanceMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59561BE6FF6B00F229A7 /* GoogleDistanceMatrix.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59611BE6FF6B00F229A7 /* GooglePlaceDetailGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59591BE6FF6B00F229A7 /* GooglePlaceDetailGeometry.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59621BE6FF6B00F229A7 /* GooglePlaceDetailLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA595B1BE6FF6B00F229A7 /* GooglePlaceDetailLocation.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59631BE6FF6B00F229A7 /* GoogleplaceDetailResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA595D1BE6FF6B00F229A7 /* GoogleplaceDetailResult.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59641BE6FF6B00F229A7 /* GooglePlacesDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA595F1BE6FF6B00F229A7 /* GooglePlacesDetail.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59671BE7000000F229A7 /* GoogleDistanceMatrixRows.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59661BE7000000F229A7 /* GoogleDistanceMatrixRows.m */; settings = {ASSET_TAGS = (); }; };
+		45CA596A1BE7008600F229A7 /* GoogleDistanceMatrixElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59691BE7008600F229A7 /* GoogleDistanceMatrixElement.m */; settings = {ASSET_TAGS = (); }; };
+		45CA596D1BE700ED00F229A7 /* GoogleDistanceMatrixDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA596C1BE700ED00F229A7 /* GoogleDistanceMatrixDetail.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59701BE70BFC00F229A7 /* GoogleDistanceMatrixDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA596F1BE70BFC00F229A7 /* GoogleDistanceMatrixDuration.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59731BE70F7F00F229A7 /* GoogleDistanceMatrixRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59721BE70F7F00F229A7 /* GoogleDistanceMatrixRow.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59761BE723B000F229A7 /* GooglePlaceDetailResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59751BE723B000F229A7 /* GooglePlaceDetailResults.m */; settings = {ASSET_TAGS = (); }; };
+		45CA59791BE73D1400F229A7 /* GoogleDistanceMatrixElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59781BE73D1400F229A7 /* GoogleDistanceMatrixElements.m */; settings = {ASSET_TAGS = (); }; };
 		45CEB2831BE1DE24003A5238 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		45CEB2841BE1DE24003A5238 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		45CEB2881BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */; settings = {ASSET_TAGS = (); }; };
+		45EEF18B1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EEF18A1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F31BE0DD1F000CCD72 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F41BE0DD1F000CCD72 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE91BE0DD1B000CCD72 /* URLCacheConnection.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F51BE0DD1F000CCD72 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCEB1BE0DD1B000CCD72 /* URLCacheController.m */; settings = {ASSET_TAGS = (); }; };
@@ -1926,12 +1940,40 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		45CA594E1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPGoogleDistanceMatrixProductStore.h; sourceTree = "<group>"; };
+		45CA594F1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPGoogleDistanceMatrixProductStore.m; sourceTree = "<group>"; };
+		45CA59551BE6FF6B00F229A7 /* GoogleDistanceMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrix.h; sourceTree = "<group>"; };
+		45CA59561BE6FF6B00F229A7 /* GoogleDistanceMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrix.m; sourceTree = "<group>"; };
+		45CA59581BE6FF6B00F229A7 /* GooglePlaceDetailGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlaceDetailGeometry.h; sourceTree = "<group>"; };
+		45CA59591BE6FF6B00F229A7 /* GooglePlaceDetailGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlaceDetailGeometry.m; sourceTree = "<group>"; };
+		45CA595A1BE6FF6B00F229A7 /* GooglePlaceDetailLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlaceDetailLocation.h; sourceTree = "<group>"; };
+		45CA595B1BE6FF6B00F229A7 /* GooglePlaceDetailLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlaceDetailLocation.m; sourceTree = "<group>"; };
+		45CA595C1BE6FF6B00F229A7 /* GoogleplaceDetailResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleplaceDetailResult.h; sourceTree = "<group>"; };
+		45CA595D1BE6FF6B00F229A7 /* GoogleplaceDetailResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleplaceDetailResult.m; sourceTree = "<group>"; };
+		45CA595E1BE6FF6B00F229A7 /* GooglePlacesDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlacesDetail.h; sourceTree = "<group>"; };
+		45CA595F1BE6FF6B00F229A7 /* GooglePlacesDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlacesDetail.m; sourceTree = "<group>"; };
+		45CA59651BE7000000F229A7 /* GoogleDistanceMatrixRows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrixRows.h; sourceTree = "<group>"; };
+		45CA59661BE7000000F229A7 /* GoogleDistanceMatrixRows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrixRows.m; sourceTree = "<group>"; };
+		45CA59681BE7008600F229A7 /* GoogleDistanceMatrixElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrixElement.h; sourceTree = "<group>"; };
+		45CA59691BE7008600F229A7 /* GoogleDistanceMatrixElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrixElement.m; sourceTree = "<group>"; };
+		45CA596B1BE700ED00F229A7 /* GoogleDistanceMatrixDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrixDetail.h; sourceTree = "<group>"; };
+		45CA596C1BE700ED00F229A7 /* GoogleDistanceMatrixDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrixDetail.m; sourceTree = "<group>"; };
+		45CA596E1BE70BFC00F229A7 /* GoogleDistanceMatrixDuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrixDuration.h; sourceTree = "<group>"; };
+		45CA596F1BE70BFC00F229A7 /* GoogleDistanceMatrixDuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrixDuration.m; sourceTree = "<group>"; };
+		45CA59711BE70F7F00F229A7 /* GoogleDistanceMatrixRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrixRow.h; sourceTree = "<group>"; };
+		45CA59721BE70F7F00F229A7 /* GoogleDistanceMatrixRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrixRow.m; sourceTree = "<group>"; };
+		45CA59741BE723B000F229A7 /* GooglePlaceDetailResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlaceDetailResults.h; sourceTree = "<group>"; };
+		45CA59751BE723B000F229A7 /* GooglePlaceDetailResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlaceDetailResults.m; sourceTree = "<group>"; };
+		45CA59771BE73D1400F229A7 /* GoogleDistanceMatrixElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrixElements.h; sourceTree = "<group>"; };
+		45CA59781BE73D1400F229A7 /* GoogleDistanceMatrixElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrixElements.m; sourceTree = "<group>"; };
 		45CEB2801BE1DE24003A5238 /* PlacePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePickerViewController.h; sourceTree = "<group>"; };
 		45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePickerViewController.m; sourceTree = "<group>"; };
 		45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlacePickerViewController.xib; sourceTree = "<group>"; };
 		45CEB2851BE1DED2003A5238 /* TKPAPIKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKPAPIKey.h; sourceTree = "<group>"; };
 		45CEB2861BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.h"; sourceTree = "<group>"; };
 		45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.m"; sourceTree = "<group>"; };
+		45EEF1891BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPGooglePlaceDetailProductStore.h; sourceTree = "<group>"; };
+		45EEF18A1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPGooglePlaceDetailProductStore.m; sourceTree = "<group>"; };
 		7A33DCE61BE0DD1B000CCD72 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7A33DCE81BE0DD1B000CCD72 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -4894,6 +4936,53 @@
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
 		};
+		45CA59541BE6FF6B00F229A7 /* GoogleDistanceMatrix */ = {
+			isa = PBXGroup;
+			children = (
+				45CA59551BE6FF6B00F229A7 /* GoogleDistanceMatrix.h */,
+				45CA59561BE6FF6B00F229A7 /* GoogleDistanceMatrix.m */,
+				45CA59651BE7000000F229A7 /* GoogleDistanceMatrixRows.h */,
+				45CA59661BE7000000F229A7 /* GoogleDistanceMatrixRows.m */,
+				45CA59711BE70F7F00F229A7 /* GoogleDistanceMatrixRow.h */,
+				45CA59721BE70F7F00F229A7 /* GoogleDistanceMatrixRow.m */,
+				45CA59771BE73D1400F229A7 /* GoogleDistanceMatrixElements.h */,
+				45CA59781BE73D1400F229A7 /* GoogleDistanceMatrixElements.m */,
+				45CA59681BE7008600F229A7 /* GoogleDistanceMatrixElement.h */,
+				45CA59691BE7008600F229A7 /* GoogleDistanceMatrixElement.m */,
+				45CA596B1BE700ED00F229A7 /* GoogleDistanceMatrixDetail.h */,
+				45CA596C1BE700ED00F229A7 /* GoogleDistanceMatrixDetail.m */,
+				45CA596E1BE70BFC00F229A7 /* GoogleDistanceMatrixDuration.h */,
+				45CA596F1BE70BFC00F229A7 /* GoogleDistanceMatrixDuration.m */,
+			);
+			path = GoogleDistanceMatrix;
+			sourceTree = "<group>";
+		};
+		45CA59571BE6FF6B00F229A7 /* GooglePlaceDetail */ = {
+			isa = PBXGroup;
+			children = (
+				45CA59581BE6FF6B00F229A7 /* GooglePlaceDetailGeometry.h */,
+				45CA59591BE6FF6B00F229A7 /* GooglePlaceDetailGeometry.m */,
+				45CA595A1BE6FF6B00F229A7 /* GooglePlaceDetailLocation.h */,
+				45CA595B1BE6FF6B00F229A7 /* GooglePlaceDetailLocation.m */,
+				45CA595C1BE6FF6B00F229A7 /* GoogleplaceDetailResult.h */,
+				45CA595D1BE6FF6B00F229A7 /* GoogleplaceDetailResult.m */,
+				45CA59741BE723B000F229A7 /* GooglePlaceDetailResults.h */,
+				45CA59751BE723B000F229A7 /* GooglePlaceDetailResults.m */,
+				45CA595E1BE6FF6B00F229A7 /* GooglePlacesDetail.h */,
+				45CA595F1BE6FF6B00F229A7 /* GooglePlacesDetail.m */,
+			);
+			path = GooglePlaceDetail;
+			sourceTree = "<group>";
+		};
+		45EEF17C1BE368180050EC83 /* GooglePlaces */ = {
+			isa = PBXGroup;
+			children = (
+				45CA59541BE6FF6B00F229A7 /* GoogleDistanceMatrix */,
+				45CA59571BE6FF6B00F229A7 /* GooglePlaceDetail */,
+			);
+			path = GooglePlaces;
+			sourceTree = "<group>";
+		};
 		53AC970CF2132927344A64C3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -5006,6 +5095,7 @@
 		7A33DD271BE0DD1B000CCD72 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				45EEF17C1BE368180050EC83 /* GooglePlaces */,
 				7A33DD281BE0DD1B000CCD72 /* Activation */,
 				7A33DD3D1BE0DD1B000CCD72 /* Address */,
 				7A33DD481BE0DD1B000CCD72 /* Catalog */,
@@ -6727,6 +6817,10 @@
 				7A33E0F31BE0DD1C000CCD72 /* TKPStoreManager.m */,
 				7A33E0F41BE0DD1C000CCD72 /* UIViewController+TKPAdditions.h */,
 				7A33E0F51BE0DD1C000CCD72 /* UIViewController+TKPAdditions.m */,
+				45EEF1891BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.h */,
+				45EEF18A1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m */,
+				45CA594E1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.h */,
+				45CA594F1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m */,
 			);
 			path = TKPStoreManager;
 			sourceTree = "<group>";
@@ -11240,6 +11334,7 @@
 				7A33EA721BE0DD1F000CCD72 /* TransactionCartList.m in Sources */,
 				7A33EA0A1BE0DD1F000CCD72 /* ActionOrder.m in Sources */,
 				7A33EC1C1BE0DD1F000CCD72 /* DetailProductWholesaleTableCell.m in Sources */,
+				45CA59501BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m in Sources */,
 				7A33E93B1BE0DD1F000CCD72 /* CatalogMarketPlace.m in Sources */,
 				7A33EA281BE0DD1F000CCD72 /* SearchModel.xcdatamodeld in Sources */,
 				7A33EC061BE0DD1F000CCD72 /* AlertPriceNotificationViewController.m in Sources */,
@@ -11262,6 +11357,7 @@
 				7A33EB061BE0DD1F000CCD72 /* CatalogSectionHeaderView.m in Sources */,
 				7A33E9991BE0DD1F000CCD72 /* InboxReviewProductOwner.m in Sources */,
 				7A33E9C51BE0DD1F000CCD72 /* ResponseComment.m in Sources */,
+				45CA59631BE6FF6B00F229A7 /* GoogleplaceDetailResult.m in Sources */,
 				7A33EA941BE0DD1F000CCD72 /* TxOrderConfirmedList.m in Sources */,
 				7A33E9971BE0DD1F000CCD72 /* InboxReviewActionResult.m in Sources */,
 				7A33E9AE1BE0DD1F000CCD72 /* ReplyInboxTicketResult.m in Sources */,
@@ -11288,6 +11384,7 @@
 				7A33E9291BE0DD1F000CCD72 /* ContactUsActionResultStatus.m in Sources */,
 				7A33EB601BE0DD1F000CCD72 /* DepositListBankViewController.m in Sources */,
 				7A33ED221BE0DD1F000CCD72 /* TransactionCartEditViewController.m in Sources */,
+				45CA59701BE70BFC00F229A7 /* GoogleDistanceMatrixDuration.m in Sources */,
 				7A33E9871BE0DD1F000CCD72 /* InboxResolutionCenterResult.m in Sources */,
 				7A33E9A81BE0DD1F000CCD72 /* InboxTicketResultDetail.m in Sources */,
 				7A33EA081BE0DD1F000CCD72 /* Quality.m in Sources */,
@@ -11297,6 +11394,7 @@
 				7A33EC571BE0DD1F000CCD72 /* PromoRequest.m in Sources */,
 				7A33E9921BE0DD1F000CCD72 /* ResolutionLast.m in Sources */,
 				7A33EBFC1BE0DD1F000CCD72 /* MyShopPaymentViewController.m in Sources */,
+				45CA596A1BE7008600F229A7 /* GoogleDistanceMatrixElement.m in Sources */,
 				7A33EAE11BE0DD1F000CCD72 /* AlertPickerView.m in Sources */,
 				7A33EC041BE0DD1F000CCD72 /* NotificationRequest.m in Sources */,
 				7A33E9FB1BE0DD1F000CCD72 /* PromoProduct.m in Sources */,
@@ -11449,6 +11547,7 @@
 				7A33EA191BE0DD1F000CCD72 /* WarehouseResponse.m in Sources */,
 				7A33ED551BE0DD1F000CCD72 /* TxOrderConfirmationShipmentCell.m in Sources */,
 				7A33E9001BE0DD1F000CCD72 /* NSString+HTML.m in Sources */,
+				45CA59761BE723B000F229A7 /* GooglePlaceDetailResults.m in Sources */,
 				7A33E9B81BE0DD1F000CCD72 /* LoyaltyPointDetail.m in Sources */,
 				7A33E9491BE0DD1F000CCD72 /* ProductDetail.m in Sources */,
 				7A33ED201BE0DD1F000CCD72 /* TransactionCartCostView.m in Sources */,
@@ -11468,6 +11567,7 @@
 				7A33ED911BE0DD1F000CCD72 /* VTBaseTransactionMethod.m in Sources */,
 				7A33EB081BE0DD1F000CCD72 /* CatalogShopCell.m in Sources */,
 				7A33EB291BE0DD1F000CCD72 /* TPContactUsDependencies.m in Sources */,
+				45CA59731BE70F7F00F229A7 /* GoogleDistanceMatrixRow.m in Sources */,
 				7A33E9F91BE0DD1F000CCD72 /* PrivacyFormPrivacy.m in Sources */,
 				7A33EAAC1BE0DD1F000CCD72 /* GeneratedHost.m in Sources */,
 				7A33ED8D1BE0DD1F000CCD72 /* TalkModelView.m in Sources */,
@@ -11507,6 +11607,7 @@
 				7A33EBC31BE0DD1F000CCD72 /* ResolutionCenterDetailViewController.m in Sources */,
 				7A33ED841BE0DD1F000CCD72 /* ProductModelView.m in Sources */,
 				7A33E9311BE0DD1F000CCD72 /* DepositFormBankAccountList.m in Sources */,
+				45CA59621BE6FF6B00F229A7 /* GooglePlaceDetailLocation.m in Sources */,
 				7A33E9711BE0DD1F000CCD72 /* DepartmentChild.m in Sources */,
 				7A33EBA81BE0DD1F000CCD72 /* InboxMessageCell.m in Sources */,
 				7A33EB811BE0DD1F000CCD72 /* RequestNotifyLBLM.m in Sources */,
@@ -11572,6 +11673,7 @@
 				7A33EA931BE0DD1F000CCD72 /* TxOrderConfirmed.m in Sources */,
 				7A33EC031BE0DD1F000CCD72 /* NotificationManager.m in Sources */,
 				7A33EB531BE0DD1F000CCD72 /* ScrollViewSimultaneousGesture.m in Sources */,
+				45CA596D1BE700ED00F229A7 /* GoogleDistanceMatrixDetail.m in Sources */,
 				7A33EBBD1BE0DD1F000CCD72 /* InboxResolutionCenterOpenViewController.m in Sources */,
 				7A33EC661BE0DD1F000CCD72 /* FooterCollectionReusableView.m in Sources */,
 				7A33E9D71BE0DD1F000CCD72 /* ProductFeedList.m in Sources */,
@@ -11812,10 +11914,12 @@
 				7A33EAB21BE0DD1F000CCD72 /* UploadImageHelperResult.m in Sources */,
 				7A33E9391BE0DD1F000CCD72 /* CatalogInfo.m in Sources */,
 				7A33EC1E1BE0DD1F000CCD72 /* GalleryPhoto.m in Sources */,
+				45CA59641BE6FF6B00F229A7 /* GooglePlacesDetail.m in Sources */,
 				7A33EBE81BE0DD1F000CCD72 /* MyShopAddressEditViewController.m in Sources */,
 				7A33EAAE1BE0DD1F000CCD72 /* GenerateHostResult.m in Sources */,
 				7A33E9371BE0DD1F000CCD72 /* Catalog.m in Sources */,
 				7A33EABC1BE0DD1F000CCD72 /* WishListObjectResult.m in Sources */,
+				45CA59791BE73D1400F229A7 /* GoogleDistanceMatrixElements.m in Sources */,
 				7A33F02F1BE0DD1F000CCD72 /* README.md in Sources */,
 				7A33E98B1BE0DD1F000CCD72 /* ResolutionCenterDetail.m in Sources */,
 				7A33EC2D1BE0DD1F000CCD72 /* ProductAddEditViewController.m in Sources */,
@@ -11939,6 +12043,7 @@
 				7A33E9B91BE0DD1F000CCD72 /* LoyaltyPointMerchant.m in Sources */,
 				7A33EA471BE0DD1F000CCD72 /* AddProductPictureResult.m in Sources */,
 				7A33EC141BE0DD1F000CCD72 /* DetailProductInfoCell.m in Sources */,
+				45CA59611BE6FF6B00F229A7 /* GooglePlaceDetailGeometry.m in Sources */,
 				7A33ED411BE0DD1F000CCD72 /* TxOrderStatusCell.m in Sources */,
 				7A33ECA41BE0DD1F000CCD72 /* SearchResultCell.m in Sources */,
 				7A33E93A1BE0DD1F000CCD72 /* CatalogLocation.m in Sources */,
@@ -11954,6 +12059,7 @@
 				7A33EC271BE0DD1F000CCD72 /* ProductReviewViewController.m in Sources */,
 				7A33EA6D1BE0DD1F000CCD72 /* TransactionSystemBank.m in Sources */,
 				7A33EBBA1BE0DD1F000CCD72 /* InboxResolutionCenterObjectMapping.m in Sources */,
+				45CA59671BE7000000F229A7 /* GoogleDistanceMatrixRows.m in Sources */,
 				7A33EBA51BE0DD1F000CCD72 /* TKPDTabHomeViewController.m in Sources */,
 				7A33ECE21BE0DD1F000CCD72 /* ShopInfoAddressCell.m in Sources */,
 				7A33EC961BE0DD1F000CCD72 /* FilterShipmentStatusViewController.m in Sources */,
@@ -12023,6 +12129,7 @@
 				7A33ED301BE0DD1F000CCD72 /* TransactionCCViewController.m in Sources */,
 				7A33ED281BE0DD1F000CCD72 /* TransactionCartShippingViewController.m in Sources */,
 				7A33E9F31BE0DD1F000CCD72 /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
+				45CA59601BE6FF6B00F229A7 /* GoogleDistanceMatrix.m in Sources */,
 				7A33ECEA1BE0DD1F000CCD72 /* ShopInfoViewController.m in Sources */,
 				7A33E9A31BE0DD1F000CCD72 /* InboxTicketDetailAttachment.m in Sources */,
 				7A33E92B1BE0DD1F000CCD72 /* ContactUsResponse.m in Sources */,
@@ -12087,6 +12194,7 @@
 				7A33ECA71BE0DD1F000CCD72 /* SearchResultShopViewController.m in Sources */,
 				7A33E9FE1BE0DD1F000CCD72 /* PromoResult.m in Sources */,
 				7A33EC121BE0DD1F000CCD72 /* DetailProductDescriptionCell.m in Sources */,
+				45EEF18B1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m in Sources */,
 				7A33ECF61BE0DD1F000CCD72 /* ShopPageHeader.m in Sources */,
 				7A33EB491BE0DD1F000CCD72 /* ImageShaper.m in Sources */,
 				7A33EB341BE0DD1F000CCD72 /* ContactUsFormViewController.m in Sources */,

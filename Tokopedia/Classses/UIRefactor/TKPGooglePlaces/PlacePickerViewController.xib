@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlacePickerViewController">
             <connections>
+                <outlet property="mapview" destination="Ebd-kK-MKe" id="cCl-aM-elx"/>
                 <outlet property="searchDisplayController" destination="7eI-Di-NVA" id="K8b-ch-Gid"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -23,12 +24,20 @@
                         <outlet property="delegate" destination="-1" id="7gc-cz-3go"/>
                     </connections>
                 </searchBar>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ebd-kK-MKe" customClass="GMSMapView">
+                    <rect key="frame" x="0.0" y="44" width="600" height="556"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="uZa-XG-HnW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2zJ-Sf-oD4"/>
+                <constraint firstItem="Ebd-kK-MKe" firstAttribute="top" secondItem="uZa-XG-HnW" secondAttribute="bottom" id="Ph6-WB-5ol"/>
+                <constraint firstAttribute="bottom" secondItem="Ebd-kK-MKe" secondAttribute="bottom" id="Pui-XP-ODt"/>
                 <constraint firstItem="uZa-XG-HnW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="V9m-b5-9q0"/>
+                <constraint firstItem="Ebd-kK-MKe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Y4R-Px-1Vp"/>
                 <constraint firstAttribute="trailing" secondItem="uZa-XG-HnW" secondAttribute="trailing" id="fcR-LA-h7l"/>
+                <constraint firstAttribute="trailing" secondItem="Ebd-kK-MKe" secondAttribute="trailing" id="n2L-FN-MyC"/>
             </constraints>
         </view>
         <searchDisplayController id="7eI-Di-NVA">

@@ -8,8 +8,13 @@
 
 #import <GoogleMaps/GoogleMaps.h>
 #import "PlacePickerViewController.h"
+#import "TKPGooglePlaceDetailProductStore.h"
+#import "GooglePlacesDetail.h"
 
-@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate>
+@import GoogleMaps;
+
+@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate>
+@property (weak, nonatomic) IBOutlet GMSMapView *mapview;
 
 @end
 
@@ -21,20 +26,25 @@
     NSMutableArray *_autoCompleteResults;
     
     BOOL shouldBeginEditing;
+    
+    GMSMapView *_mapView;
 }
 
 - (instancetype)init {
     if ((self = [super init])) {
-        CLLocationCoordinate2D southWestJakarta = CLLocationCoordinate2DMake(-6.2614927, 106.81059979999998);
-        CLLocationCoordinate2D northEastJakarta = CLLocationCoordinate2DMake(-6.211544, 106.845172);
-        GMSCoordinateBounds *JakartaBounds =
-        [[GMSCoordinateBounds alloc] initWithCoordinate:southWestJakarta coordinate:northEastJakarta];
-        GMSPlacePickerConfig *config =
-        [[GMSPlacePickerConfig alloc] initWithViewport:JakartaBounds];
-        _placePicker = [[GMSPlacePicker alloc] initWithConfig:config];
+//        CLLocationCoordinate2D southWestJakarta = CLLocationCoordinate2DMake(-6.2614927, 106.81059979999998);
+//        CLLocationCoordinate2D northEastJakarta = CLLocationCoordinate2DMake(-6.211544, 106.845172);
+//        GMSCoordinateBounds *JakartaBounds =
+//        [[GMSCoordinateBounds alloc] initWithCoordinate:southWestJakarta coordinate:northEastJakarta];
+//        GMSPlacePickerConfig *config =
+//        [[GMSPlacePickerConfig alloc] initWithViewport:JakartaBounds];
+//        _placePicker = [[GMSPlacePicker alloc] initWithConfig:config];
+        
         _placesClient = [[GMSPlacesClient alloc] init];
         _autoCompleteResults = [NSMutableArray new];
         shouldBeginEditing = YES;
+        
+        
     }
     return self;
 }
@@ -55,23 +65,25 @@
             NSLog(@"Place address %@", place.formattedAddress);
             NSLog(@"Place attributions %@", place.attributions.string);
             
-//            GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:place.coordinate.latitude
-//                                                                    longitude:place.coordinate.longitude
-//                                                                         zoom:6];
-//            GMSMapView *mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-//            
-//            GMSMarker *marker = [[GMSMarker alloc] init];
-//            marker.position = camera.target;
-//            marker.snippet = place.name;
-//            marker.appearAnimation = kGMSMarkerAnimationPop;
-//            marker.map = mapView;
-//            
-//            self.view = mapView;
-            
         } else {
             NSLog(@"No place selected");
         }
     }];
+    
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-6.193161
+                                                            longitude:106.7892532
+                                                                 zoom:6];
+    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    _mapView.myLocationEnabled = YES;
+    _mapView.delegate = self;
+    self.mapview = _mapView;
+    
+    // Creates a marker in the center of the map.
+    GMSMarker *marker = [[GMSMarker alloc] init];
+    marker.position = CLLocationCoordinate2DMake(-6.193161, 106.7892532);
+//    marker.title = @"";
+//    marker.snippet = @"Australia";
+    marker.map = _mapView;
     
     self.searchDisplayController.searchBar.placeholder = @"Cari Alamat";
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
@@ -107,6 +119,13 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self streetRowHeight:[self placeAtIndexPath:indexPath]];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    [self doCalculateDistanceOrigin:@"Binus University - Syahdan Campus, Jalan Kh. Syahdan, Palmerah, Special Capital Region of Jakarta" withDestination:[self placeAtIndexPath:indexPath].attributedFullText.string];
+    [self doRequestPlaceID:[self placeAtIndexPath:indexPath].placeID];
+//    [self doGeneratePlaceDetailAddress:[self placeAtIndexPath:indexPath].attributedFullText.string];
 }
 
 -(CGFloat)streetRowHeight:(GMSAutocompletePrediction*)place
@@ -205,6 +224,45 @@ shouldInteractWithURL:(NSURL *)url
          inRange:(NSRange)characterRange {
     // Make links clickable.
     return YES;
+}
+
+#pragma mark - Place Detail
+-(void)doRequestPlaceID:(NSString*)placeID
+{
+    [_placesClient lookUpPlaceID:placeID callback:^(GMSPlace * _Nullable result, NSError * _Nullable error) {
+        if (!error && result) {
+            NSString *destination = [NSString stringWithFormat:@"%f,%f",result.coordinate.latitude, result.coordinate.longitude];
+            [self doCalculateDistanceOrigin:@"-6.193161,106.7892532" withDestination:destination];
+        }
+    }];
+}
+
+-(void)doGeneratePlaceDetailAddress:(NSString*)address
+{
+    TKPGooglePlaceDetailProductStore *store = [[[[self class] TKP_rootController] storeManager] placeDetailStore];
+    __weak typeof(self) wself = self;
+    
+    [store fetchGeocodeAddress:address success:^(NSString *address, GooglePlacesDetail *placeDetail) {
+        NSString *destination = [NSString stringWithFormat:@"%@,%@",placeDetail.result.geometry.location.lat, placeDetail.result.geometry.location.lng];
+        [self doCalculateDistanceOrigin:@"-6.193161,106.7892532" withDestination:destination];
+    } failure:^(NSString *address, NSError *error) {
+        
+    }];
+    
+}
+
+
+
+-(void)doCalculateDistanceOrigin:(NSString*)origin withDestination:(NSString*)destination
+{
+    TKPGooglePlaceDetailProductStore *store = [[[[self class] TKP_rootController] storeManager] placeDetailStore];
+    __weak typeof(self) wself = self;
+    
+    [store fetchDistanceFromOrigin:origin toDestination:destination success:^(NSString *origin, NSString *destination, GoogleDistanceMatrix *dinstanceMatrix) {
+        //((GoogleDistanceMatrixElement*)((GoogleDistanceMatrixRow*)placeDistance.rows[0]).elements[0]).distance.text
+    } failure:^(NSString *origin, NSString *destination, NSError *error) {
+        
+    }];
 }
 
 @end
