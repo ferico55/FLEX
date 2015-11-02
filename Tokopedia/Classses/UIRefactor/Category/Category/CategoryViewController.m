@@ -121,6 +121,9 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
+    TKPHomeBannerStore *bannersStore = [[[[self class] TKP_rootController] storeManager] homeBannerStore];
+    [bannersStore stopBannerRequest];
+    
 }
 
 - (void)viewDidLayoutSubviews {
