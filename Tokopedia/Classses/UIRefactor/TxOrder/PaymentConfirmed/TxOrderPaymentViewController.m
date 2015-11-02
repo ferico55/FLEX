@@ -759,7 +759,8 @@
     NSString *token = form.token?:@"";
     NSString *methodID = method.method_id?:@"";
     NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY]?:[NSDate date];
-    NSString *paymentAmount = [_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY]?:@"";
+    NSString *totalPayment = [_totalPaymentTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+    NSString *paymentAmount = totalPayment?:@"";
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:paymentDate];
     NSNumber *year = @([components year])?:@(0);
     NSNumber *month = @([components month])?:@(0);
@@ -804,6 +805,7 @@
                             @"pic_obj":picObj
                             };
     return param;
+    
 }
 
 -(void)requestSuccessConfirmPayment:(TransactionAction*)action
