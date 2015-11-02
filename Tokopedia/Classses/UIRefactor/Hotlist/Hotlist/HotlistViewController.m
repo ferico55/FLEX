@@ -26,6 +26,7 @@
 #import "TableViewScrollAndSwipe.h"
 
 #import "RequestNotifyLBLM.h"
+#import "NotificationManager.h"
 
 #pragma mark - HotlistView
 
@@ -37,7 +38,8 @@ UITableViewDelegate,
 UIGestureRecognizerDelegate,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
-UICollectionViewDelegateFlowLayout
+UICollectionViewDelegateFlowLayout,
+NotificationDelegate
 >
 {
     NSMutableArray *_product;
@@ -65,6 +67,7 @@ UICollectionViewDelegateFlowLayout
     BOOL _isFailRequest;
     
     RequestNotifyLBLM *_requestLBLM;
+    NotificationManager *_notifManager;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
@@ -90,6 +93,7 @@ UICollectionViewDelegateFlowLayout
     }
     return self;
 }
+
 
 
 #pragma mark - View Lifecylce
@@ -123,6 +127,7 @@ UICollectionViewDelegateFlowLayout
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
     _cacheConnection = [URLCacheConnection new];
     _cacheController = [URLCacheController new];
+    
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -199,6 +204,9 @@ UICollectionViewDelegateFlowLayout
         [_networkManager doRequest];
         _collectionView.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
+    
+    [self initNotificationManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
     [self doRequestNotify];
 }
@@ -655,6 +663,35 @@ UICollectionViewDelegateFlowLayout
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
     }
     
+}
+
+#pragma mark - Notification Manager
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:self];
+    _notifManager.delegate = self;
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+- (void)tapNotificationBar {
+    [_notifManager tapNotificationBar];
+}
+
+- (void)tapWindowBar {
+    [_notifManager tapWindowBar];
+}
+
+
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
+
+- (void)pushViewController:(id)viewController {
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 @end

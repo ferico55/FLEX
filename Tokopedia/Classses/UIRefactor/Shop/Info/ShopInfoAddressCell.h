@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelphone;
 @property (weak, nonatomic) IBOutlet UILabel *labelfax;
 
+@property (weak, nonatomic) IBOutlet UIView *borderView;
+
 + (id)newcell;
 
 @end

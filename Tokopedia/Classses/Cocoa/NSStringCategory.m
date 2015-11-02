@@ -38,6 +38,10 @@
     html = [html stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
+    html = [html stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+    html = [html stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
+    html = [html stringByReplacingOccurrencesOfString:@"&#39;" withString:@"'"];
+    html = [html stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""];
     
     myScanner = [NSScanner scannerWithString:html];
     

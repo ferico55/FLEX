@@ -14,7 +14,7 @@
 - (void)awakeFromNib {
     // Initialization code
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveBanners:) name:@"TKPDidReceiveBanners" object:nil];
-    [NSTimer scheduledTimerWithTimeInterval:900.0 target:self selector:@selector(scrollTimerBased) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(scrollTimerBased) userInfo:nil repeats:YES];
     _scrollView.hidden = YES;
 }
 
