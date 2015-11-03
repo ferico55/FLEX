@@ -147,7 +147,7 @@
         [self redirectToAddProduct];
     }
     else if ([[url absoluteString] rangeOfString:@"contact-us-faq.pl"].location != NSNotFound) {
-        
+        [self redirectToContactUs];
     }
     else if(explodedPathUrl.count == 2) {
         //shop
