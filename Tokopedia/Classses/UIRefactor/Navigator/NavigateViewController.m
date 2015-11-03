@@ -49,12 +49,17 @@
 
 #import "PromoRequest.h"
 
-@interface NavigateViewController()<SplitReputationVcProtocol>
+#import "GalleryViewController.h"
+
+@interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
 @end
 
 @implementation NavigateViewController {
     UISplitViewController *splitViewController;
+    NSArray *_images;
+    NSUInteger *_indexImage;
+    NSArray *_imageDescriptions;
 }
 -(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
 {
@@ -89,27 +94,17 @@
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
--(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index
+-(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray *)images imageDescriptions:(NSArray *)imageDesc indexImage:(NSInteger)index
 {
     
-    NSMutableArray *productImages = [NSMutableArray new];
-
-    for (NSString *image in imageURLStrings) {
-        ProductImages* images = [ProductImages new];
-        images.image_src = image;
-        images.image_description = @"";
-        [productImages addObject:images];
-    }
-
-    NSDictionary *data = @{
-                           @"image_index" : @(index),
-                           @"images" : productImages
-                           };
+    _images = images;
+    _imageDescriptions = imageDesc;
+    _indexImage = index;
     
-    ProductGalleryViewController *vc = [ProductGalleryViewController new];
-    vc.data = data;
-    
-    [viewController.navigationController presentViewController:vc animated:YES completion:nil];
+    GalleryViewController *gallery = [GalleryViewController new];
+    gallery.canDownload = YES;
+    [gallery initWithPhotoSource:self withStartingIndex:(int)index];
+    [viewController.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
@@ -399,4 +394,42 @@
 - (void)deallocVC {
     splitViewController = nil;
 }
+
+#pragma mark - Photo Gallery Delegate
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
+{
+    if(_images == nil)
+        return 0;
+    
+    return (int)_images.count;
+}
+
+
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
+{
+    if (_imageDescriptions.count==0) {
+        return @"";
+    }
+    
+    if(((int) index) < 0)
+        return _imageDescriptions[0];
+    else if(((int)index) > _imageDescriptions.count-1)
+        return _imageDescriptions[_imageDescriptions.count - 1];
+    
+    return _imageDescriptions[index];
+}
+
+- (UIImage *)photoGallery:(NSUInteger)index {
+    if(((int) index) < 0)
+        return ((UIImageView*)_images[0]).image;
+    else if(((int)index) > _images.count-1)
+        return ((UIImageView*)_images[_images.count-1]).image;
+    return ((UIImageView*)_images[index]).image;
+}
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
+    return nil;
+}
+
 @end

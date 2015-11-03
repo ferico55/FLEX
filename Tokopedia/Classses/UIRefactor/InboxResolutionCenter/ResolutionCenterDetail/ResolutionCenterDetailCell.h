@@ -17,6 +17,8 @@
 - (void)tapCellButton:(UIButton*)sender atIndexPath:(NSIndexPath*)indexPath;
 - (void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath;
 - (void)goToImageViewerIndex:(NSInteger)index atIndexPath:(NSIndexPath*)indexPath;
+- (void)goToImageViewerImages:(NSArray*)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath*)indexPath;
+
 @end
 
 @interface ResolutionCenterDetailCell : UITableViewCell
