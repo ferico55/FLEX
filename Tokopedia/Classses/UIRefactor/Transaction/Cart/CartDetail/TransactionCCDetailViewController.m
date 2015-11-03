@@ -269,13 +269,13 @@
     //Production : e9e0c15c-40e1-47fb-a303-43743550549a
     //SandBox : a2ce64ee-ecc5-4cff-894d-c789ff2ab003
 
-//#if DEBUG
-//    [VTConfig setCLIENT_KEY:@"a2ce64ee-ecc5-4cff-894d-c789ff2ab003"];
-//    [VTConfig setVT_IsProduction:NO];
-//#else
+#if DEBUG
+    [VTConfig setCLIENT_KEY:@"a2ce64ee-ecc5-4cff-894d-c789ff2ab003"];
+    [VTConfig setVT_IsProduction:NO];
+#else
     [VTConfig setCLIENT_KEY:clientKey];
     [VTConfig setVT_IsProduction:YES];
-//#endif
+#endif
     
     VTDirect *vtDirect = [VTDirect new];
     VTCardDetails *cardDetails = [VTCardDetails new];
