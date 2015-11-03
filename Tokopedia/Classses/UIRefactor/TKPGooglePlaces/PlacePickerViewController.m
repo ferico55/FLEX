@@ -11,13 +11,17 @@
 #import "PlacePickerViewController.h"
 #import "TKPGooglePlaceDetailProductStore.h"
 #import "GooglePlacesDetail.h"
+#import "TKPAnnotation.h"
 
 @import GoogleMaps;
 
 
 @interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, MKMapViewDelegate>
+
 @property (weak, nonatomic) IBOutlet GMSMapView *mapview;
 @property (weak, nonatomic) IBOutlet MKMapView *mapMKView;
+
+@property (nonatomic, weak) id<MKAnnotation> droppedAnnotation;
 
 @end
 
@@ -29,6 +33,7 @@
     NSMutableArray *_autoCompleteResults;
     
     BOOL shouldBeginEditing;
+    BOOL _isDragging;
     
     GMSMapView *_mapView;
     GMSMarker *_marker;
@@ -47,26 +52,12 @@
         _placesClient = [[GMSPlacesClient alloc] init];
         _autoCompleteResults = [NSMutableArray new];
         shouldBeginEditing = YES;
+        _mapMKView.delegate = self;
         
-        
+
     }
     return self;
 }
-//#define METERS_PER_MILE 1609.344
-
-//- (void)viewWillAppear:(BOOL)animated {
-//    // 1
-//    CLLocationCoordinate2D zoomLocation;
-//    zoomLocation.latitude = 39.281516;
-//    zoomLocation.longitude= -76.580806;
-//    
-//    // 2
-//    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
-//    
-//    // 3
-//    [_mapMKView setRegion:viewRegion animated:YES];
-//}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -89,40 +80,66 @@
     
     // Create a GMSCameraPosition that tells the map to display the
     // coordinate -33.86,151.20 at zoom level 6.
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
-                                                            longitude:151.20
-                                                                 zoom:6];
 //    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     _mapView.myLocationEnabled = YES;
 //    self.view = _mapView;
-    _mapView = [GMSMapView mapWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height) camera:camera];
-    [self.view insertSubview:_mapView atIndex:0];
-
+    
     CLLocationCoordinate2D vancouver = CLLocationCoordinate2DMake(-6.1823102, 106.8135506);
     CLLocationCoordinate2D calgary = CLLocationCoordinate2DMake(-6.211544, 106.845172);
     
-    GMSMarker *vancouverMarker = [[GMSMarker alloc] init];
-    vancouverMarker.position = vancouver;
-    vancouverMarker.title = @"Vancouver";
-    vancouverMarker.map = _mapview;
+    _marker = [[GMSMarker alloc] init];
+    [_marker setDraggable:YES];
+    _marker.position = vancouver;
+    _marker.map = _mapview;
     
-    GMSMarker *calgaryMarker = [[GMSMarker alloc] init];
-    calgaryMarker.position = calgary;
-    calgaryMarker.title = @"Calgary";
-    calgaryMarker.map = _mapview;
+    GMSCameraPosition *camera =
+    [[GMSCameraPosition alloc] initWithTarget:_marker.position
+                                         zoom:6
+                                      bearing:0
+                                 viewingAngle:0];
+    [_mapView animateToCameraPosition:camera];
+    
+    _mapView = [GMSMapView mapWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height) camera:camera];
+    [self.view insertSubview:_mapView atIndex:0];
+
+
     
     GMSCoordinateBounds *bounds =
     [[GMSCoordinateBounds alloc] initWithCoordinate:vancouver coordinate:calgary];
     
     [_mapview moveCamera:[GMSCameraUpdate fitBounds:bounds]];
-//    These last two lines are expected to give the same result as the above line
-//    camera = [mapView_ cameraForBounds:bounds insets:UIEdgeInsetsZero];
-//    mapView_.camera = camera;
+
+    
+    [self focusMapToLocation:vancouver];
+
     
     self.searchDisplayController.searchBar.placeholder = @"Cari Alamat";
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
+}
+
+- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
+{
+    CGPoint point = [mapView.projection pointForCoordinate:marker.position];
+    point.y = point.y - 100;
+    GMSCameraUpdate *camera =
+    [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
+    [mapView animateWithCameraUpdate:camera];
+    
+    mapView.selectedMarker = marker;
+    return YES;
+}
+
+-(void)getCurrentPlace
+{
+    [_placesClient currentPlaceWithCallback:^(GMSPlaceLikelihoodList *likelihoodList, NSError *error) {
+        if (error != nil) {
+            NSLog(@"Current Place error %@", [error localizedDescription]);
+            return;
+        }
+        [self focusMapToLocation:((GMSPlaceLikelihood*)likelihoodList.likelihoods[0]).place.coordinate];
+    }];
 }
 
 - (void)focusMapToLocation:(CLLocationCoordinate2D)location
@@ -231,6 +248,40 @@
     
     // Return YES to cause the search result table view to be reloaded.
     return YES;
+}
+
+- (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
+{
+    _isDragging = YES;
+}
+
+- (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
+{
+    _isDragging = NO;
+}
+
+- (void)mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
+{
+    if (_isDragging) {
+        
+        return;
+    }
+    
+    NSLog(@"Long press detected");
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    
+    MKPinAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"DroppedPin"];
+    
+    annotationView.draggable = YES;
+    annotationView.canShowCallout = YES;
+    annotationView.animatesDrop = YES;
+    
+    return annotationView;
 }
 
 #pragma mark -

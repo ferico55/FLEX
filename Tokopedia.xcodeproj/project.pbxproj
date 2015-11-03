@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		455BC6441BE8B940004E18A2 /* TKPAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 455BC6431BE8B940004E18A2 /* TKPAnnotation.m */; settings = {ASSET_TAGS = (); }; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		45CA59501BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA594F1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m */; settings = {ASSET_TAGS = (); }; };
 		45CA59601BE6FF6B00F229A7 /* GoogleDistanceMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59561BE6FF6B00F229A7 /* GoogleDistanceMatrix.m */; settings = {ASSET_TAGS = (); }; };
@@ -1940,6 +1941,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		455BC6421BE8B940004E18A2 /* TKPAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPAnnotation.h; sourceTree = "<group>"; };
+		455BC6431BE8B940004E18A2 /* TKPAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPAnnotation.m; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		45CA594E1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPGoogleDistanceMatrixProductStore.h; sourceTree = "<group>"; };
 		45CA594F1BE6FEC900F229A7 /* TKPGoogleDistanceMatrixProductStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPGoogleDistanceMatrixProductStore.m; sourceTree = "<group>"; };
@@ -4935,6 +4938,8 @@
 				45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */,
 				45CEB2861BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */,
 				45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */,
+				455BC6421BE8B940004E18A2 /* TKPAnnotation.h */,
+				455BC6431BE8B940004E18A2 /* TKPAnnotation.m */,
 			);
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
@@ -12063,6 +12068,7 @@
 				7A33EC271BE0DD1F000CCD72 /* ProductReviewViewController.m in Sources */,
 				7A33EA6D1BE0DD1F000CCD72 /* TransactionSystemBank.m in Sources */,
 				7A33EBBA1BE0DD1F000CCD72 /* InboxResolutionCenterObjectMapping.m in Sources */,
+				455BC6441BE8B940004E18A2 /* TKPAnnotation.m in Sources */,
 				45CA59671BE7000000F229A7 /* GoogleDistanceMatrixRows.m in Sources */,
 				7A33EBA51BE0DD1F000CCD72 /* TKPDTabHomeViewController.m in Sources */,
 				7A33ECE21BE0DD1F000CCD72 /* ShopInfoAddressCell.m in Sources */,
