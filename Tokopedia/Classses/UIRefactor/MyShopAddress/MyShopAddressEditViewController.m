@@ -255,7 +255,7 @@
     NSString *city = _selectedCity[DATA_ID_KEY]?:list.location_city_id;
     NSString *prov = _selectedProvince[DATA_ID_KEY]?:list.location_province_id;
     NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
-//    NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
+    NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
     
     if (!addressname || [addressname isEqualToString:@""]) {
         isValid = NO;
@@ -281,14 +281,15 @@
         isValid = NO;
         [messages addObject:@"Kecamatan harus diisi."];
     }
+    else if (![email isEmail]) {
+        isValid = NO;
+        [messages addObject:@"Format email harus benar."];
+    }
 //    else if (!email) {
 //        isValid = NO;
 //        [messages addObject:@"Email harus diisi."];
 //    }
-//    else if (![email isEmail]) {
-//        isValid = NO;
-//        [messages addObject:@"Format email harus benar."];
-//    }
+    
     
     NSString *regex = @"[0-9]*";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
