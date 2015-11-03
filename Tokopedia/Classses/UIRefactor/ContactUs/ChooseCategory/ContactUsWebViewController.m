@@ -13,9 +13,13 @@
 @interface ContactUsWebViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *webViewHeightConstraint;
+
 @property (weak, nonatomic) IBOutlet UILabel *contactUsTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *contactUsButton;
+
 @property (strong, nonatomic) IBOutlet UIView *footerView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *contactUsBarButton;
 
 @end
 
@@ -24,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"FAQ";
+    self.title = @"Hubungi Kami";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                    style:UIBarButtonItemStylePlain
@@ -39,18 +43,10 @@
     
     [self reloadWebView];
     
-    [self.webView.scrollView addSubview:_footerView];
-    
     self.contactUsButton.layer.cornerRadius = 3;
     
-    CGFloat webViewContentHeight = 700;
-    
-    CGRect frame = self.footerView.frame;
-    frame.origin.y = webViewContentHeight;
-    self.footerView.frame = frame;
-    
-    CGFloat newHeight = webViewContentHeight + frame.size.height;
-    self.webView.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, newHeight);
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"GothamBook" size:13.0], NSFontAttributeName, nil];
+    [self.contactUsBarButton setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,13 +63,15 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-//    CGFloat webViewContentHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
+    CGFloat webViewContentHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
+    self.webViewHeightConstraint.constant = webViewContentHeight;
+    [self.view layoutIfNeeded];
     self.footerView.hidden = NO;
 }
 
 - (void)reloadWebView {
-    NSURL *url = [NSURL URLWithString:@"https://m-alpha.tokopedia.com/contact-us-faq.pl?flag_app=1"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURL *redirectURL = [NSURL URLWithString:@"https://m.tokopedia.com/contact-us-faq.pl?flag_app=1"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:redirectURL];
     [self.webView loadRequest:request];
 }
 
