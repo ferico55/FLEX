@@ -9,11 +9,10 @@
 #import "FilterNewOrderViewController.h"
 #import "DueDateViewController.h"
 
-@interface FilterNewOrderViewController () <DueDateDelegate> {
-    NSString *_dueDate;
-}
+@interface FilterNewOrderViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *invoiceTextField;
+@property (weak, nonatomic) IBOutlet UILabel *dueDateLabel;
 
 @end
 
@@ -21,8 +20,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if (!_dueDate || [_dueDate isEqualToString:@""]) _dueDate = @"0";
+    self.invoiceTextField.text = _filter;
+
+    NSString *dueDate = @"Pilih";
+    if ([_dueDate isEqualToString:@"4"]) {
+        dueDate = @"Hari Ini";
+    } else if ([_dueDate isEqualToString:@"3"]) {
+        dueDate = @"Besok";
+    } else if ([_dueDate isEqualToString:@"2"]) {
+        dueDate = @"2 Hari";
+    } else if ([_dueDate isEqualToString:@"1"]) {
+        dueDate = @"3 Hari";
+    }
     
-    _dueDate = @"Pilih";
+    self.dueDateLabel.text = dueDate;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,28 +55,29 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"SelectDueDate"]) {
+
+        NSString *dueDate = @"Pilih";
+        if ([_dueDate isEqualToString:@"4"]) {
+            dueDate = @"Hari Ini";
+        } else if ([_dueDate isEqualToString:@"3"]) {
+            dueDate = @"Besok";
+        } else if ([_dueDate isEqualToString:@"2"]) {
+            dueDate = @"2 Hari";
+        } else if ([_dueDate isEqualToString:@"1"]) {
+            dueDate = @"3 Hari";
+        }
+
         DueDateViewController *controller = segue.destinationViewController;
         controller.delegate = self;
-        controller.dueDate = _dueDate;
+        controller.dueDate = dueDate;
     }
 }
 
 - (IBAction)tap:(id)sender {
-    
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
         if (barButton.tag == 2) {
-            NSString *deadline = @"0";
-            if ([_dueDate isEqualToString:@"Hari Ini"]) {
-                deadline = @"4";
-            } else if ([_dueDate isEqualToString:@"Besok"]) {
-                deadline = @"3";
-            } else if ([_dueDate isEqualToString:@"2 Hari"]) {
-                deadline = @"2";
-            } else if ([_dueDate isEqualToString:@"3 Hari"]) {
-                deadline = @"1";
-            }
-            [self.delegate didFinishFilterInvoice:_invoiceTextField.text?:@"" dueDate:deadline];
+            [self.delegate didFinishFilterInvoice:_invoiceTextField.text?:@"" dueDate:_dueDate];
         }
     }
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -74,12 +87,22 @@
 
 - (void)didSelectDueDate:(NSString *)dueDate
 {
-    _dueDate = dueDate;
-    
+    if ([dueDate isEqualToString:@"Hari Ini"]) {
+        _dueDate = @"4";
+    } else if ([dueDate isEqualToString:@"Besok"]) {
+        _dueDate = @"3";
+    } else if ([dueDate isEqualToString:@"2 Hari"]) {
+        _dueDate = @"2";
+    } else if ([dueDate isEqualToString:@"3 Hari"]) {
+        _dueDate = @"1";
+    } else {
+        _dueDate = @"0";
+    }
+  
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-    cell.detailTextLabel.text = _dueDate;
+    cell.detailTextLabel.text = dueDate;
     
-    if ([_dueDate isEqualToString:@"Pilih"]) {
+    if ([dueDate isEqualToString:@"Pilih"]) {
         cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1];
     } else {
         cell.detailTextLabel.textColor = [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1];

@@ -83,6 +83,7 @@
 #import "TAGDataLayer.h"
 
 #import "Localytics.h"
+#import "UIActivityViewController+Extensions.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -626,23 +627,11 @@ UIAlertViewDelegate
                                        _formattedProductTitle,
                                        _product.result.shop_info.shop_name];
                     NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-                    UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                      applicationActivities:nil];
-                    act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                    [act setCompletionHandler:^(NSString *activityType, BOOL completed) {
-                        if (!completed) return;
-                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-                        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-                    }];
+                    UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                                      url:url
+                                                                                                   anchor:btn];
                     
-                    [self presentViewController:act animated:YES completion:^{
-                        // color needs to be changed because of 'share to whatsapp' bug:
-                        // same color with navigation bar background (white)
-                        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-                        [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-                        [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-                    }];
+                    [self presentViewController:controller animated:YES completion:nil];
                 }
                 break;
             }
@@ -2488,24 +2477,11 @@ UIAlertViewDelegate
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]                                                                                     applicationActivities:nil];
+        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                          url:url
+                                                                                       anchor:sender];
         
-        activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-
-        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-            if (!completed) return;
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-            [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-        }];
-        
-        [self presentViewController:activityController animated:YES completion:^{
-            // color needs to be changed because of 'share to whatsapp' bug:
-            // same color with navigation bar background (white)
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-            [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-            [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-        }];
+        [self presentViewController:controller animated:YES completion:nil];
         
     }
 }

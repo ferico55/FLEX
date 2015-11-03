@@ -18,7 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
                                                                style:UIBarButtonItemStyleDone
@@ -45,6 +44,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell.textLabel.text isEqualToString:_dueDate]) {
+        _selectedIndexPath = indexPath;
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -55,15 +55,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    _dueDate = cell.textLabel.text;
     
     _selectedIndexPath = indexPath;
     
-    cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView reloadData];
 }
 
 - (void)tap:(id)sender

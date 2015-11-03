@@ -112,7 +112,7 @@
                                              selector:@selector(setTabShopActive)
                                                  name:@"setTabShopActive"
                                                object:nil];
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -133,31 +133,31 @@
 
 - (void)viewDidLayoutSubviews
 {
-	[super viewDidLayoutSubviews];
-	_selectedViewController.view.frame = _container.bounds;
-
-// Did not remove this because of the todo
-//	UIEdgeInsets inset = [self contentInsetForContainerController];
-//	
-//	UIView* tabbar;
-//	CGRect frame;
-//	tabbar = _tabbar;
-//	frame = tabbar.frame;
-//	frame.origin.y = inset.top;
-//	
-//	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-//		UINavigationController* n = (UINavigationController*)_selectedViewController;
-//		
-//		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
-//			CGRect rect = n.navigationBar.frame;
-//			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
-//		}
-//	}
-	
-	UIEdgeInsets inset = [self contentInsetForChildController];
-	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
-		[_delegate tabBarController:self childControllerContentInset:inset];
-	}
+    [super viewDidLayoutSubviews];
+    _selectedViewController.view.frame = _container.bounds;
+    
+    // Did not remove this because of the todo
+    //	UIEdgeInsets inset = [self contentInsetForContainerController];
+    //
+    //	UIView* tabbar;
+    //	CGRect frame;
+    //	tabbar = _tabbar;
+    //	frame = tabbar.frame;
+    //	frame.origin.y = inset.top;
+    //
+    //	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+    //		UINavigationController* n = (UINavigationController*)_selectedViewController;
+    //
+    //		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
+    //			CGRect rect = n.navigationBar.frame;
+    //			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
+    //		}
+    //	}
+    
+    UIEdgeInsets inset = [self contentInsetForChildController];
+    if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
+        [_delegate tabBarController:self childControllerContentInset:inset];
+    }
 }
 
 #pragma mark -
@@ -250,41 +250,41 @@
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
 {
-	if (selectedIndex == _selectedIndex) return;
-	
-	if (_viewControllers != nil) {
-		UIViewController* deselect = _selectedViewController;
+    if (selectedIndex == _selectedIndex) return;
+    
+    if (_viewControllers != nil) {
+        UIViewController* deselect = _selectedViewController;
         if (selectedIndex < 0) {
             selectedIndex = 0;
         }
-		UIViewController* select = _viewControllers[selectedIndex];
-
-//      Did not remove this because of the todo
-//		UIEdgeInsets inset = [self contentInsetForContainerController];
-//		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
-//			
-//			UINavigationController* n = (UINavigationController*)select;
-//			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-//				selectframe.origin.y = inset.top;
-//				selectframe = CGRectZero;
-//			} else {
-//                selectframe = CGRectZero;
-//			}
-//		} else {
-//            selectframe = CGRectZero;
-//		}
-		
-		int navigate = 0;
-
-		if (_selectedIndex < selectedIndex) {
-			navigate = +1;
-		} else {
-			navigate = -1;
-		}
-		
-		_selectedIndex = selectedIndex;
-		_selectedViewController = _viewControllers[selectedIndex];
-
+        UIViewController* select = _viewControllers[selectedIndex];
+        
+        //      Did not remove this because of the todo
+        //		UIEdgeInsets inset = [self contentInsetForContainerController];
+        //		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
+        //
+        //			UINavigationController* n = (UINavigationController*)select;
+        //			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
+        //				selectframe.origin.y = inset.top;
+        //				selectframe = CGRectZero;
+        //			} else {
+        //                selectframe = CGRectZero;
+        //			}
+        //		} else {
+        //            selectframe = CGRectZero;
+        //		}
+        
+        int navigate = 0;
+        
+        if (_selectedIndex < selectedIndex) {
+            navigate = +1;
+        } else {
+            navigate = -1;
+        }
+        
+        _selectedIndex = selectedIndex;
+        _selectedViewController = _viewControllers[selectedIndex];
+        
         if ([_selectedViewController isKindOfClass:[SearchResultShopViewController class]]) {
             self.navigationItem.rightBarButtonItem = nil;
         } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
@@ -557,7 +557,7 @@
         [_segmentcontrol removeAllSegments];
         [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
         [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:1 animated:NO];
-
+        
         _hascatalog = NO;
         
         _tabbar = _segmentcontrol;
@@ -572,7 +572,7 @@
     } else if (count == 3) {	//not default to 3
         _segmentcontrol.hidden = NO;
         _tabbar = _segmentcontrol;
-
+        
         _hascatalog = YES;
         
         [_segmentcontrol removeAllSegments];

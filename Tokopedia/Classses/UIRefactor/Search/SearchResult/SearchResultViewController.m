@@ -49,6 +49,7 @@
 #import "PromoRequest.h"
 
 #import "Localytics.h"
+#import "UIActivityViewController+Extensions.h"
 
 #pragma mark - Search Result View Controller
 
@@ -156,6 +157,12 @@ PromoCollectionViewDelegate
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     
     _userManager = [UserAuthentificationManager new];
     _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
@@ -543,23 +550,11 @@ PromoCollectionViewDelegate
                          [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString]];
             }
             NSURL *url = [NSURL URLWithString: _searchObject.result.share_url?:@"www.tokopedia.com"];
-            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                             applicationActivities:nil];
-            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-            [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-                if (!completed) return;
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-                [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-                [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-            }];
+            UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                              url:url
+                                                                                           anchor:button];
             
-            [self presentViewController:activityController animated:YES completion:^{
-                // color needs to be changed because of 'share to whatsapp' bug:
-                // same color with navigation bar background (white)
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-                [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:25.0f/255.0f green:125.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
-                [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName, nil]];
-            }];
+            [self presentViewController:controller animated:YES completion:nil];
             break;
         }
         case 13:
@@ -669,6 +664,18 @@ PromoCollectionViewDelegate
 - (id)getObjectManager:(int)tag {
     if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
         _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+#ifdef DEBUG
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+        NSString *baseUrl;
+        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+            baseUrl = @"https://ace-staging.tokopedia.com/";
+        } else {
+            baseUrl = @"https://ajax.tokopedia.com/";
+        }
+        _objectmanager = [RKObjectManager sharedClient:baseUrl];
+#endif
+
     } else {
         _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
     }
