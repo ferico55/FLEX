@@ -22,6 +22,7 @@
 		45CA59731BE70F7F00F229A7 /* GoogleDistanceMatrixRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59721BE70F7F00F229A7 /* GoogleDistanceMatrixRow.m */; settings = {ASSET_TAGS = (); }; };
 		45CA59761BE723B000F229A7 /* GooglePlaceDetailResults.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59751BE723B000F229A7 /* GooglePlaceDetailResults.m */; settings = {ASSET_TAGS = (); }; };
 		45CA59791BE73D1400F229A7 /* GoogleDistanceMatrixElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA59781BE73D1400F229A7 /* GoogleDistanceMatrixElements.m */; settings = {ASSET_TAGS = (); }; };
+		45CA597B1BE77B5D00F229A7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45CA597A1BE77B5D00F229A7 /* MapKit.framework */; };
 		45CEB2831BE1DE24003A5238 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		45CEB2841BE1DE24003A5238 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		45CEB2881BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */; settings = {ASSET_TAGS = (); }; };
@@ -1966,6 +1967,7 @@
 		45CA59751BE723B000F229A7 /* GooglePlaceDetailResults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlaceDetailResults.m; sourceTree = "<group>"; };
 		45CA59771BE73D1400F229A7 /* GoogleDistanceMatrixElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDistanceMatrixElements.h; sourceTree = "<group>"; };
 		45CA59781BE73D1400F229A7 /* GoogleDistanceMatrixElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDistanceMatrixElements.m; sourceTree = "<group>"; };
+		45CA597A1BE77B5D00F229A7 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		45CEB2801BE1DE24003A5238 /* PlacePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePickerViewController.h; sourceTree = "<group>"; };
 		45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePickerViewController.m; sourceTree = "<group>"; };
 		45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlacePickerViewController.xib; sourceTree = "<group>"; };
@@ -4863,6 +4865,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45CA597B1BE77B5D00F229A7 /* MapKit.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -10059,6 +10062,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				45CA597A1BE77B5D00F229A7 /* MapKit.framework */,
 				7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */,
 				7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */,
 				7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */,

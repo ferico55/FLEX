@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlacePickerViewController">
             <connections>
+                <outlet property="mapMKView" destination="8r5-3e-L9E" id="1Z7-03-Nju"/>
                 <outlet property="mapview" destination="Ebd-kK-MKe" id="cCl-aM-elx"/>
                 <outlet property="searchDisplayController" destination="7eI-Di-NVA" id="K8b-ch-Gid"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -24,9 +25,15 @@
                         <outlet property="delegate" destination="-1" id="7gc-cz-3go"/>
                     </connections>
                 </searchBar>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8r5-3e-L9E">
+                    <rect key="frame" x="0.0" y="42" width="600" height="558"/>
+                </mapView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ebd-kK-MKe" customClass="GMSMapView">
                     <rect key="frame" x="0.0" y="44" width="600" height="556"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="eW9-jH-L7l"/>
+                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

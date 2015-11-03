@@ -7,14 +7,17 @@
 //
 
 #import <GoogleMaps/GoogleMaps.h>
+#import <MapKit/MapKit.h>
 #import "PlacePickerViewController.h"
 #import "TKPGooglePlaceDetailProductStore.h"
 #import "GooglePlacesDetail.h"
 
 @import GoogleMaps;
 
-@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate>
+
+@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, MKMapViewDelegate>
 @property (weak, nonatomic) IBOutlet GMSMapView *mapview;
+@property (weak, nonatomic) IBOutlet MKMapView *mapMKView;
 
 @end
 
@@ -28,6 +31,7 @@
     BOOL shouldBeginEditing;
     
     GMSMapView *_mapView;
+    GMSMarker *_marker;
 }
 
 - (instancetype)init {
@@ -48,7 +52,20 @@
     }
     return self;
 }
+//#define METERS_PER_MILE 1609.344
 
+//- (void)viewWillAppear:(BOOL)animated {
+//    // 1
+//    CLLocationCoordinate2D zoomLocation;
+//    zoomLocation.latitude = 39.281516;
+//    zoomLocation.longitude= -76.580806;
+//    
+//    // 2
+//    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+//    
+//    // 3
+//    [_mapMKView setRegion:viewRegion animated:YES];
+//}
 
 
 - (void)viewDidLoad {
@@ -70,25 +87,52 @@
         }
     }];
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-6.193161
-                                                            longitude:106.7892532
+    // Create a GMSCameraPosition that tells the map to display the
+    // coordinate -33.86,151.20 at zoom level 6.
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
+                                                            longitude:151.20
                                                                  zoom:6];
-    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+//    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     _mapView.myLocationEnabled = YES;
-    _mapView.delegate = self;
-    self.mapview = _mapView;
+//    self.view = _mapView;
+    _mapView = [GMSMapView mapWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height) camera:camera];
+    [self.view insertSubview:_mapView atIndex:0];
+
+    CLLocationCoordinate2D vancouver = CLLocationCoordinate2DMake(-6.1823102, 106.8135506);
+    CLLocationCoordinate2D calgary = CLLocationCoordinate2DMake(-6.211544, 106.845172);
     
-    // Creates a marker in the center of the map.
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(-6.193161, 106.7892532);
-//    marker.title = @"";
-//    marker.snippet = @"Australia";
-    marker.map = _mapView;
+    GMSMarker *vancouverMarker = [[GMSMarker alloc] init];
+    vancouverMarker.position = vancouver;
+    vancouverMarker.title = @"Vancouver";
+    vancouverMarker.map = _mapview;
+    
+    GMSMarker *calgaryMarker = [[GMSMarker alloc] init];
+    calgaryMarker.position = calgary;
+    calgaryMarker.title = @"Calgary";
+    calgaryMarker.map = _mapview;
+    
+    GMSCoordinateBounds *bounds =
+    [[GMSCoordinateBounds alloc] initWithCoordinate:vancouver coordinate:calgary];
+    
+    [_mapview moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+//    These last two lines are expected to give the same result as the above line
+//    camera = [mapView_ cameraForBounds:bounds insets:UIEdgeInsetsZero];
+//    mapView_.camera = camera;
     
     self.searchDisplayController.searchBar.placeholder = @"Cari Alamat";
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
+}
+
+- (void)focusMapToLocation:(CLLocationCoordinate2D)location
+{
+    _marker.position = location;
+    CLLocationCoordinate2D myLocation = _marker.position;
+    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:myLocation coordinate:myLocation];
+    bounds = [bounds includingCoordinate:_marker.position];
+    
+    [_mapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:15.0f]];
 }
 
 #pragma mark -
@@ -124,7 +168,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    [self doCalculateDistanceOrigin:@"Binus University - Syahdan Campus, Jalan Kh. Syahdan, Palmerah, Special Capital Region of Jakarta" withDestination:[self placeAtIndexPath:indexPath].attributedFullText.string];
-    [self doRequestPlaceID:[self placeAtIndexPath:indexPath].placeID];
+    [self doGeneratePlaceDetailPlaceID:[self placeAtIndexPath:indexPath].placeID];
 //    [self doGeneratePlaceDetailAddress:[self placeAtIndexPath:indexPath].attributedFullText.string];
 }
 
@@ -227,12 +271,21 @@ shouldInteractWithURL:(NSURL *)url
 }
 
 #pragma mark - Place Detail
--(void)doRequestPlaceID:(NSString*)placeID
+-(void)doGeneratePlaceDetailPlaceID:(NSString*)placeID
 {
     [_placesClient lookUpPlaceID:placeID callback:^(GMSPlace * _Nullable result, NSError * _Nullable error) {
-        if (!error && result) {
-            NSString *destination = [NSString stringWithFormat:@"%f,%f",result.coordinate.latitude, result.coordinate.longitude];
-            [self doCalculateDistanceOrigin:@"-6.193161,106.7892532" withDestination:destination];
+        if (error != nil) {
+            NSLog(@"Place Details error %@", [error localizedDescription]);
+            return;
+        }
+        
+        if (result != nil) {
+            CLLocationCoordinate2D c2D = CLLocationCoordinate2DMake(result.coordinate.latitude, result.coordinate.longitude);
+            [self focusMapToLocation:c2D];
+//            NSString *destination = [NSString stringWithFormat:@"%f,%f",result.coordinate.latitude, result.coordinate.longitude];
+//            [self doCalculateDistanceOrigin:@"-6.193161,106.7892532" withDestination:destination];
+        } else {
+            NSLog(@"No place details for %@", placeID);
         }
     }];
 }
