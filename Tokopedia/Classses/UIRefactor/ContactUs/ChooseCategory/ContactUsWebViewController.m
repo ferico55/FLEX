@@ -7,19 +7,10 @@
 //
 
 #import "ContactUsWebViewController.h"
-#import "ContactUsWireframe.h"
-#import "TPContactUsDependencies.h"
 
 @interface ContactUsWebViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *webViewHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UILabel *contactUsTitleLabel;
-@property (weak, nonatomic) IBOutlet UIButton *contactUsButton;
-
-@property (strong, nonatomic) IBOutlet UIView *footerView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *contactUsBarButton;
 
 @end
 
@@ -36,37 +27,32 @@
                                                                   action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
-    UIBarButtonItem *reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                  target:self
-                                                                                  action:@selector(reloadWebView)];
-    self.navigationItem.rightBarButtonItem = reloadButton;
-    
     [self reloadWebView];
-    
-    self.contactUsButton.layer.cornerRadius = 3;
-    
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"GothamBook" size:13.0], NSFontAttributeName, nil];
-    [self.contactUsBarButton setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-- (IBAction)didTabContactUsButton:(id)sender {
-    TPContactUsDependencies *dependencies = [TPContactUsDependencies new];
-    [dependencies pushContactUsViewControllerFromNavigation:self.navigationController];
-}
-
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    self.footerView.hidden = YES;
+    UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [loadingView startAnimating];
+    UIBarButtonItem *loadingButton = [[UIBarButtonItem alloc] initWithCustomView:loadingView];
+    self.navigationItem.rightBarButtonItem = loadingButton;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    CGFloat webViewContentHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
-    self.webViewHeightConstraint.constant = webViewContentHeight;
-    [self.view layoutIfNeeded];
-    self.footerView.hidden = NO;
+    UIBarButtonItem *reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                  target:self
+                                                                                  action:@selector(reloadWebView)];
+    self.navigationItem.rightBarButtonItem = reloadButton;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    UIBarButtonItem *reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                  target:self
+                                                                                  action:@selector(reloadWebView)];
+    self.navigationItem.rightBarButtonItem = reloadButton;
 }
 
 - (void)reloadWebView {

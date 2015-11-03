@@ -4,19 +4,9 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactUsWebViewController">
             <connections>
-                <outlet property="contactUsBarButton" destination="4Ne-D5-OBY" id="KqS-zN-YQs"/>
-                <outlet property="contactUsButton" destination="27j-P2-I0Q" id="RNO-tk-icH"/>
-                <outlet property="contactUsTitleLabel" destination="01v-MN-lMN" id="NdD-8G-Phr"/>
-                <outlet property="footerView" destination="YMd-QO-Tdt" id="HQO-dz-Xbs"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="webView" destination="IRe-Fv-OGg" id="tzL-fA-N53"/>
             </connections>
@@ -27,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IRe-Fv-OGg">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <animations/>
                     <color key="backgroundColor" red="0.92549019607843142" green="0.92549019607843142" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -36,35 +26,16 @@
                         <outlet property="delegate" destination="-1" id="HSq-ih-IPp"/>
                     </connections>
                 </webView>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H6e-zM-Q2k">
-                    <rect key="frame" x="0.0" y="436" width="320" height="44"/>
-                    <animations/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="MOq-9a-d3y"/>
-                    </constraints>
-                    <items>
-                        <barButtonItem systemItem="flexibleSpace" id="XPu-x7-ghR"/>
-                        <barButtonItem title="Klik disini untuk hubungi kami" style="plain" id="4Ne-D5-OBY">
-                            <connections>
-                                <action selector="didTabContactUsButton:" destination="-1" id="9s7-cG-gBG"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem systemItem="flexibleSpace" id="Wbd-OC-SFN"/>
-                    </items>
-                </toolbar>
             </subviews>
             <animations/>
             <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="IRe-Fv-OGg" secondAttribute="trailing" id="2Lx-rd-YMS"/>
-                <constraint firstItem="H6e-zM-Q2k" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4xt-jQ-qay"/>
                 <constraint firstItem="IRe-Fv-OGg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="B0M-TO-VAd"/>
-                <constraint firstAttribute="bottom" secondItem="H6e-zM-Q2k" secondAttribute="bottom" id="Kxh-ac-XK4"/>
                 <constraint firstAttribute="trailing" secondItem="IRe-Fv-OGg" secondAttribute="trailing" id="LEx-F2-p1V"/>
-                <constraint firstAttribute="trailing" secondItem="H6e-zM-Q2k" secondAttribute="trailing" id="M1p-kb-eyV"/>
+                <constraint firstAttribute="bottom" secondItem="IRe-Fv-OGg" secondAttribute="bottom" id="QUi-PF-cfV"/>
                 <constraint firstAttribute="bottom" secondItem="IRe-Fv-OGg" secondAttribute="bottom" id="RyH-Ui-m0z"/>
                 <constraint firstItem="IRe-Fv-OGg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="T7z-Z6-6gM"/>
-                <constraint firstItem="H6e-zM-Q2k" firstAttribute="top" secondItem="IRe-Fv-OGg" secondAttribute="bottom" id="Xke-ev-f9k"/>
                 <constraint firstItem="IRe-Fv-OGg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iC2-ld-hOY"/>
                 <constraint firstItem="IRe-Fv-OGg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xGq-l0-8ck"/>
             </constraints>
@@ -77,48 +48,6 @@
                     <exclude reference="iC2-ld-hOY"/>
                 </mask>
             </variation>
-        </view>
-        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YMd-QO-Tdt">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="125"/>
-            <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apakah artikel ini belum membantu?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01v-MN-lMN">
-                    <rect key="frame" x="20" y="21" width="280" height="32"/>
-                    <animations/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="32" id="6t8-Rl-sK6"/>
-                        <constraint firstAttribute="width" constant="280" id="oUF-R6-ovG"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27j-P2-I0Q">
-                    <rect key="frame" x="20" y="59" width="280" height="40"/>
-                    <animations/>
-                    <color key="backgroundColor" red="0.49803921568627452" green="0.68627450980392157" blue="0.10588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="8tB-t0-rin"/>
-                        <constraint firstAttribute="width" constant="280" id="NfT-fz-yOw"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" title="Hubungi Kami"/>
-                    <connections>
-                        <action selector="didTabContactUsButton:" destination="-1" eventType="touchUpInside" id="HlP-uG-AXF"/>
-                    </connections>
-                </button>
-            </subviews>
-            <animations/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="01v-MN-lMN" firstAttribute="top" secondItem="YMd-QO-Tdt" secondAttribute="top" constant="21" id="5br-mj-YuD"/>
-                <constraint firstItem="27j-P2-I0Q" firstAttribute="top" secondItem="01v-MN-lMN" secondAttribute="bottom" constant="6" id="839-fi-VrV"/>
-                <constraint firstAttribute="height" constant="125" id="8PJ-Jn-skB"/>
-                <constraint firstItem="01v-MN-lMN" firstAttribute="centerX" secondItem="YMd-QO-Tdt" secondAttribute="centerX" id="a7w-1D-lBU"/>
-                <constraint firstItem="27j-P2-I0Q" firstAttribute="centerX" secondItem="YMd-QO-Tdt" secondAttribute="centerX" id="uEH-uz-reC"/>
-            </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="516" y="688.5"/>
         </view>
     </objects>
 </document>
