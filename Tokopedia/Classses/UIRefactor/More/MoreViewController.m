@@ -33,6 +33,7 @@
 #import "ShopFavoritedViewController.h"
 
 
+#import "InboxTicketSplitViewController.h"
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
@@ -715,26 +716,32 @@
             [_navigate navigateToInboxPriceAlertFromViewController:self];
             
         } else if (indexPath.row == 4) {
-            TKPDTabViewController *controller = [TKPDTabViewController new];
-            controller.hidesBottomBarWhenPushed = YES;
-            
-            InboxTicketViewController *allInbox = [InboxTicketViewController new];
-            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-            allInbox.delegate = controller;
-            
-            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-            unreadInbox.delegate = controller;
-            
-            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
-            closedInbox.delegate = controller;
-            
-            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-            controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-            
-            [self.navigationController pushViewController:controller animated:YES];
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
+                
+                [self.navigationController pushViewController:controller animated:YES];
+            } else {
+                TKPDTabViewController *controller = [TKPDTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                
+                InboxTicketViewController *allInbox = [InboxTicketViewController new];
+                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+                allInbox.delegate = controller;
+                
+                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+                unreadInbox.delegate = controller;
+                
+                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+                closedInbox.delegate = controller;
+                
+                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+                
+                [self.navigationController pushViewController:controller animated:YES];
+            }
         } else if (indexPath.row == 5) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
