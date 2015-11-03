@@ -82,7 +82,7 @@
 }
 
 - (void)configureAppIndexing {
-    //TODO: enable
+    //TODO: enable .
 //    [[GSDAppIndexing sharedInstance] registerApp:1001394201];
 }
 
