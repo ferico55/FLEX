@@ -95,7 +95,7 @@
     UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
     [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
     
-    [self loadBanners];
+//    [self loadBanners];
     
     //add timer so it will refreshed periodically
 //    NSTimer* timer = [NSTimer timerWithTimeInterval:300.0f target:self selector:@selector(loadBanners) userInfo:nil repeats:YES];
@@ -301,7 +301,7 @@
 //            }
             
             BOOL bannerExists = _banner.result.banner.count > 0;
-            BOOL tickerExists = [_banner.result.ticker.img_uri isEqualToString:@""];
+            BOOL tickerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
             CGFloat bannerHeight;
 
             if(bannerExists && !tickerExists) {
@@ -316,6 +316,10 @@
             } else {
                 //height of Banner + Ticker
                 bannerHeight = 290;
+            }
+            
+            if(_banner.result.banner.count > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
             }
             _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, bannerHeight);
         }
