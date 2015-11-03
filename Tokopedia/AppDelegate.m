@@ -82,7 +82,8 @@
 }
 
 - (void)configureAppIndexing {
-    [[GSDAppIndexing sharedInstance] registerApp:1001394201];
+    //TODO: enable
+//    [[GSDAppIndexing sharedInstance] registerApp:1001394201];
 }
 
 - (void)configureGoogleAnalytics {
