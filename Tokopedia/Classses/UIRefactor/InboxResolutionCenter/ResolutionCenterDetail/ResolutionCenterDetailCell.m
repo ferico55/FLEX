@@ -27,6 +27,7 @@
 }
 
 - (void)awakeFromNib {
+
 }
 
 - (IBAction)tap:(id)sender {
@@ -48,7 +49,25 @@
     if (sender.view.tag == 15) {
         [_delegate goToShopOrProfileIndexPath:_indexPath];
     } else {
-        [_delegate goToImageViewerIndex:sender.view.tag-10 atIndexPath:_indexPath];
+        
+        if (((UIImageView*)self.attachmentImages[sender.view.tag-10]).image == nil) {
+            return;
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(goToImageViewerIndex:atIndexPath:)]) {
+            [_delegate goToImageViewerIndex:sender.view.tag-10 atIndexPath:_indexPath];
+        }
+        if ([self.delegate respondsToSelector:@selector(goToImageViewerImages:atIndexImage:atIndexPath:)]) {
+            
+            NSMutableArray *images = [NSMutableArray new];
+            for (UIImageView *imageView in self.attachmentImages) {
+                if (imageView.image != nil) {
+                    [images addObject:imageView];
+                }
+            }
+            
+            [_delegate goToImageViewerImages:[images copy] atIndexImage:sender.view.tag-10 atIndexPath:_indexPath];
+        }
     }
 }
 

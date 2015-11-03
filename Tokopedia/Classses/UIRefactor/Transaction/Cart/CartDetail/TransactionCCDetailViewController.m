@@ -300,7 +300,7 @@
     [vtDirect getToken:^(VTToken *token, NSException *exception) {
         if (exception == nil) {
             _token = token;
-            if (token.redirect_url != nil) {
+            if (token.redirect_url != nil && [token.status_code isEqualToString:@"200"]) {
                 [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
                 TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
                 vc.gateway = _cartSummary.gateway?:@(TYPE_GATEWAY_CC);
@@ -321,6 +321,12 @@
                 StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[_token.status_message] delegate:self];
                 [alert show];
             }
+        }
+        else
+        {
+            [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"999"] delegate:self];
+            [alert show];
         }
     }];
 }
