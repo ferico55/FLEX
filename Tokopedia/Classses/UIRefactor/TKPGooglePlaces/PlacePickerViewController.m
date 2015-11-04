@@ -7,7 +7,6 @@
 //
 
 #import <GoogleMaps/GoogleMaps.h>
-#import <MapKit/MapKit.h>
 #import "PlacePickerViewController.h"
 #import "TKPGooglePlaceDetailProductStore.h"
 #import "GooglePlacesDetail.h"
@@ -37,6 +36,9 @@
     
     GMSMarker *_marker;
     
+    CLLocationManager *_locationManager;
+    CLGeocoder *_geocoder;
+    
 }
 
 - (instancetype)init {
@@ -61,6 +63,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _locationManager = [[CLLocationManager alloc] init];
+    _geocoder = [[CLGeocoder alloc] init];
     
     _mapview.myLocationEnabled = YES;
     _mapview.settings.myLocationButton = YES;
@@ -106,6 +111,81 @@
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
     
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    
+    CLLocation *currentLocation = newLocation;
+    
+    if (currentLocation != nil)
+        NSLog(@"longitude = %.8f\nlatitude = %.8f", currentLocation.coordinate.longitude,currentLocation.coordinate.latitude);
+    
+    // stop updating location in order to save battery power
+    [_locationManager stopUpdatingLocation];
+    
+    
+    [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
+         if (error == nil && [placemarks count] > 0)
+         {
+             CLPlacemark *placemark = [placemarks lastObject];
+             
+             // strAdd -> take bydefault value nil
+             NSString *strAdd = nil;
+             
+             if ([placemark.subThoroughfare length] != 0)
+                 strAdd = placemark.subThoroughfare;
+             
+             if ([placemark.thoroughfare length] != 0)
+             {
+                 // strAdd -> store value of current location
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark thoroughfare]];
+                 else
+                 {
+                     // strAdd -> store only this value,which is not null
+                     strAdd = placemark.thoroughfare;
+                 }
+             }
+             
+             if ([placemark.postalCode length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark postalCode]];
+                 else
+                     strAdd = placemark.postalCode;
+             }
+             
+             if ([placemark.locality length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
+                 else
+                     strAdd = placemark.locality;
+             }
+             
+             if ([placemark.administrativeArea length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
+                 else
+                     strAdd = placemark.administrativeArea;
+             }
+             
+             if ([placemark.country length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
+                 else
+                     strAdd = placemark.country;
+             }
+             
+             _marker.title = strAdd;
+         }
+     }];
 }
 
 -(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
