@@ -51,6 +51,9 @@
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -196,14 +199,17 @@ PromoCollectionViewDelegate
     [_params setDictionary:_data];
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+        TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
         if(self.isFromAutoComplete) {
-            self.screenName = @"AutoComplete Search Result - Product Tab";
+            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Auto Complete Search Result - Product Tab"}];
         } else {
-            self.screenName = @"Search Result - Product Tab";
+            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Result - Product Tab"}];
         }
         
-    }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        self.screenName = @"Search Result - Catalog Tab";
+    }
+    else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+        TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Result - Catalog Tab"}];
     }
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {

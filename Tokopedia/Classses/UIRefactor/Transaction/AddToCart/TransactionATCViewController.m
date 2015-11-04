@@ -29,6 +29,9 @@
 
 #import "Localytics.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 #define TAG_REQUEST_FORM 10
 #define TAG_REQUEST_ATC 11
 #define TAG_REQUEST_CALCULATE 12
@@ -215,8 +218,10 @@
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
-    self.screenName = @"ATC Form Page";
     
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"ATC Form Page"}];
+
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self

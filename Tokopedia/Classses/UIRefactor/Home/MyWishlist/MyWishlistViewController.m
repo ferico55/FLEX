@@ -21,6 +21,8 @@
 #import "WishListObjectList.h"
 
 #import "Localytics.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -131,7 +133,9 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - Wishlist";
+
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Home - Wish List"}];
 }
 
 - (void)registerNib {

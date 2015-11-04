@@ -41,6 +41,9 @@
 #import "NoResultView.h"
 #import "URLCacheController.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 #define CTagGetTotalLike 1
 #define CTagLike 2
 #define CTagDislike 3
@@ -234,15 +237,16 @@ UIAlertViewDelegate>
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Shop - Review List";
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Review List"}];
+
     if (!_isRefreshView) {
         [self configureRestKit];
-        
         if (_isNoData && _page < 1) {
             [self loadData];
         }
-    }
-    
+    }    
 }
 
 - (void)viewDidAppear:(BOOL)animated

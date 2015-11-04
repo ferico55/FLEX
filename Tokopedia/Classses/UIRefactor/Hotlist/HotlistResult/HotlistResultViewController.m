@@ -65,7 +65,8 @@
 #define CProductThumbView @"ProductThumbCell"
 #define CProductThumbIdentifier @"ProductThumbCellIdentifier"
 
-
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -335,10 +336,12 @@ HotlistBannerDelegate
         [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     }
     
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+
     if(self.isFromAutoComplete) {
-        self.screenName = @"AutoComplete - Browse HotList Detail";
+        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Auto Complete - Browse HotList Detail"}];
     } else {
-        self.screenName = @"Browse HotList Detail";
+        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Browse Hot List Detail"}];
     }
     
     self.hidesBottomBarWhenPushed = YES;

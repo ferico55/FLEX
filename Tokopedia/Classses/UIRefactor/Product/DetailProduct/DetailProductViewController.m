@@ -85,6 +85,9 @@
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -447,7 +450,10 @@ UIAlertViewDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Product Info";
+
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Product Info"}];
+
     _promoteNetworkManager.delegate = self;
     
     self.hidesBottomBarWhenPushed = YES;
@@ -501,8 +507,6 @@ UIAlertViewDelegate
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    
 }
 
 

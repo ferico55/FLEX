@@ -27,6 +27,9 @@
 
 #import "NoResultView.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 @interface ShopNotesPageViewController ()
 <
     UITableViewDataSource,
@@ -185,15 +188,16 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Shop - Note List";
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Note List"}];
+    
     if (!_isrefreshview) {
         [self configureRestKit];
-        
         if (_isNoData && _page < 1) {
             [self loadData];
         }
     }
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {

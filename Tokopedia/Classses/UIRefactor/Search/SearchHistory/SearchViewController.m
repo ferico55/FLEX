@@ -24,6 +24,8 @@
 #import "SearchAutoCompleteHeaderView.h"
 
 #import "Localytics.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 NSString *const searchPath = @"search/%@";
 
@@ -136,9 +138,12 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
     [self initNotificationManager];
     
-    self.screenName = @"Search Page";
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Page"}];
+    
     self.hidesBottomBarWhenPushed = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];

@@ -16,6 +16,8 @@
 #import "NoResult.h"
 #import "NoResultView.h"
 #import "TokopediaNetworkManager.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate> {
     __weak RKObjectManager *_objectManager;
@@ -172,11 +174,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Withdraw Page";
-    
     
     if(_noResultView == nil)
         _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
+
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Withdraw Page"}];
 }
 
 

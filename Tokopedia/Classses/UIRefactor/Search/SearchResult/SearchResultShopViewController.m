@@ -30,6 +30,8 @@
 
 #import "URLCacheController.h"
 #import "ShopContainerViewController.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
@@ -161,9 +163,10 @@
             [self loadData];
         }
     }
-
-    self.screenName = @"Search Result - Shop Tab";
     
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Result - Shop Tab"}];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }
 

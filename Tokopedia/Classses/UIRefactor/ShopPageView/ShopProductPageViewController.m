@@ -48,7 +48,11 @@
 #import "NoResult.h"
 
 #import "PromoRequest.h"
+
 #import "UIActivityViewController+Extensions.h"
+
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -324,7 +328,9 @@ TokopediaNetworkManagerDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Shop - Product List";
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Product List"}];
 }
 
 - (void)didReceiveMemoryWarning {

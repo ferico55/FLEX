@@ -32,6 +32,9 @@
 
 #import "LoadingView.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 @interface ProductListMyShopViewController ()
 <
     UITableViewDataSource,
@@ -187,8 +190,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Shop - Manage Product";
     
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Manage Product"}];    
 }
 
 

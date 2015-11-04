@@ -34,6 +34,9 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define TAG_ALERT_REORDER 12
@@ -166,13 +169,23 @@
     [super viewWillAppear:animated];
     
     self.title = _viewControllerTitle?:@" ";
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    
     if ([_action isEqualToString:@"get_tx_order_status"]) {
-        self.screenName = @"Order Status";
+        
+        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Order Status"}];
+
     } else if ([_action isEqualToString:@"get_tx_order_deliver"]) {
-        self.screenName = @"Received Confirmation";
+    
+        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Received Confirmation"}];
+
     } else {
-        self.screenName = @"Transaction List";
+
+        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Transaction List"}];
+
     }
+    
     _networkManager.delegate = self;
 }
 

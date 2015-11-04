@@ -31,6 +31,7 @@
 #import "URLCacheController.h"
 #import "NoResultView.h"
 #import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
@@ -125,7 +126,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Inbox Talk";
+
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Inbox Talk"}];
 }
 
 - (void)didReceiveMemoryWarning {

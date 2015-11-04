@@ -23,6 +23,7 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface InboxMessageViewController ()
 <
@@ -201,7 +202,10 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Inbox Message";
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Inbox Message"}];
+
     if (!_isrefreshview) {
         if (_isnodata && _page < 1) {
             [_networkManager doRequest];

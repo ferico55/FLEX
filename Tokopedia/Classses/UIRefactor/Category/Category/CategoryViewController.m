@@ -21,7 +21,8 @@
 #import "TKPHomeBannerStore.h"
 #import "TKPStoreManager.h"
 
-
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface CategoryViewController ()
 <
@@ -38,9 +39,7 @@
     Banner *_banner;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic) IBOutlet UIView *cellView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
 
@@ -84,11 +83,6 @@
                                                  name:@"reloadNotification"
                                                object:nil];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(didReceiveDeeplinkUrl:)
-//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
-
-
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
     
@@ -106,7 +100,7 @@
     [super viewWillAppear:animated];
 
     self.tabBarController.title = @"Kategori";
-    self.screenName = @"Top Category";
+
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -116,6 +110,8 @@
     [self initNotificationManager];
     [self loadBanners];
 
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Top Category"}];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

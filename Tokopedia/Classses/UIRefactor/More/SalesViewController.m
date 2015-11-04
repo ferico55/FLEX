@@ -14,6 +14,8 @@
 #import "NotificationManager.h"
 
 #import "Localytics.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface SalesViewController ()
 <
@@ -52,9 +54,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Transaction - Sales Page";
-    self.hidesBottomBarWhenPushed = YES;
     
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Transaction - Sales Page"}];
+
+    self.hidesBottomBarWhenPushed = YES;    
 }
 
 - (void)viewDidAppear:(BOOL)animated

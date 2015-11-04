@@ -15,6 +15,10 @@
 #import "ProfileBiodataCell.h"
 
 #import "detail.h"
+
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 #define CStringPenilaianUser @"DATA PENILAIAN USER"
 
 @interface UserProfileBiodataViewController () <UserPageHeaderDelegate, ProfileBiodataShopCellDelegate, UIScrollViewDelegate, UITableViewDelegate, CMPopTipViewDelegate>
@@ -81,7 +85,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Profile - Profile Information";
+ 
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Profile - Profile Information"}];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

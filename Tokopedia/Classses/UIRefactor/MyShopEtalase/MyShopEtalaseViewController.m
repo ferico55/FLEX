@@ -16,6 +16,8 @@
 #import "GeneralList1GestureCell.h"
 #import "MGSwipeButton.h"
 #import "URLCacheController.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface MyShopEtalaseViewController ()
 <
@@ -122,7 +124,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Shop - Etalase List";
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Etalase List"}];
+
     [self configureRestKit];
     if (_isnodata && _page<=1) {
         [self request];
@@ -139,7 +144,6 @@
                                                                      action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = barButtonItem;
     
-    self.screenName  =@"";
     [self cancel];
 }
 

@@ -19,6 +19,8 @@
 #import "NotificationManager.h"
 
 #import "Localytics.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface TransactionCartRootViewController ()
 <
@@ -110,7 +112,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Cart Page";
+
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Cart Page"}];
+    
     if (_index == 0) {
         
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];

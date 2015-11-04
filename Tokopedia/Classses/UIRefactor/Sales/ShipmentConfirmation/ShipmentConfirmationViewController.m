@@ -18,11 +18,12 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "CancelShipmentViewController.h"
 #import "NavigateViewController.h"
-
 #import "ActionOrder.h"
 #import "StickyAlertView.h"
 #import "RequestShipmentCourier.h"
 #import "ShipmentCourier.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface ShipmentConfirmationViewController ()
 <
@@ -122,7 +123,8 @@
 {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Shipping Confirmation";
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shipping Confirmation"}];
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

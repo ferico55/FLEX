@@ -31,6 +31,9 @@
 
 #import "Localytics.h"
 
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
+
 static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
 
 @interface LoginViewController ()
@@ -159,8 +162,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Login Page";
     
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Login Page"}];
+
     _loginButton.layer.cornerRadius = 3;
     
     _emailTextField.isTopRoundCorner = YES;
@@ -656,6 +661,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
             }
             
+            TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+            [dataLayer pushValue:@"" forKey:@""];
+            
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];
@@ -667,6 +675,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                                                                    value:nil] build]];    // Event value
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {

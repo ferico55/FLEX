@@ -25,6 +25,7 @@
 #import "NoResultView.h"
 
 #import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 @interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate, ReportViewControllerDelegate>
 
@@ -219,7 +220,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Inbox Review";
+
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Inbox Review"}];
+
     if (!_isRefreshing) {
         [self configureRestkit];
         

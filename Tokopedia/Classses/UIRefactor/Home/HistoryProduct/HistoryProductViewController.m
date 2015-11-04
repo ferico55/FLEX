@@ -19,6 +19,8 @@
 #import "NavigateViewController.h"
 #import "HistoryProduct.h"
 #import "ProductCell.h"
+#import "TAGDataLayer.h"
+#import "TAGManager.h"
 
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -114,7 +116,9 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - History Product";
+    
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Home - History Product"}];
 }
 
 #pragma mark - Collection Delegate
