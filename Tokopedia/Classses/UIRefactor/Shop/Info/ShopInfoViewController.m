@@ -328,7 +328,8 @@
         }
         else
         {
-            return ((ShopInfoAddressCell*)cell).borderView.frame.origin.y + ((ShopInfoAddressCell*)cell).borderView.frame.size.height;
+            return ((ShopInfoAddressCell*)cell).labelfax.frame.origin.y + ((ShopInfoAddressCell*)cell).labelfax.frame.size.height;
+//            return 300;
         }
     }
     else if (indexPath.row == _shop.result.address.count+1)

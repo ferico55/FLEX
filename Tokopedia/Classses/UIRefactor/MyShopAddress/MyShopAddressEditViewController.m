@@ -281,10 +281,14 @@
         isValid = NO;
         [messages addObject:@"Kecamatan harus diisi."];
     }
-    else if (![email isEmail]) {
+    else if (email && ![email isEqualToString:@"0"] && ![email isEmail]) {
         isValid = NO;
         [messages addObject:@"Format email harus benar."];
     }
+//    else if (![email isEmail]) {
+//        isValid = NO;
+//        [messages addObject:@"Format email harus benar."];
+//    }
 //    else if (!email) {
 //        isValid = NO;
 //        [messages addObject:@"Email harus diisi."];
@@ -584,8 +588,8 @@
         _textfieldpostcode.text = postalcode;
         NSString *email = [list.location_email isEqualToString:@"0"]?@"":list.location_email;
         _textfieldemail.text = email;
-        _textfieldfax.text = list.location_fax;
-        _textfieldphonenumber.text = list.location_phone?:@"";
+        _textfieldfax.text = [list.location_fax isEqualToString:@"0"]?@"":list.location_fax;
+        _textfieldphonenumber.text = [list.location_phone isEqualToString:@"0"]?@"":list.location_phone;
         [_buttonprovince setTitle:list.location_province_name?:@"Pilih" forState:UIControlStateNormal];
         [_buttoncity setTitle:list.location_city_name?:@"Pilih" forState:UIControlStateNormal];
         [_buttondistrict setTitle:list.location_district_name?:@"Pilih" forState:UIControlStateNormal];
