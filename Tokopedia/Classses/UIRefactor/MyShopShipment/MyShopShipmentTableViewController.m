@@ -1546,7 +1546,7 @@ GeneralTableViewControllerDelegate
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if ([package.name isEqualToString:@"Next Day Package"]) {
                         _RPXPackageNextDay = package;
-                    } else if ([package.name isEqualToString:@"Economy Package"]) {
+                    } else if ([package.name isEqualToString:@"Regular Package"]) {
                         _RPXPackageEconomy = package;
                     }
                 }

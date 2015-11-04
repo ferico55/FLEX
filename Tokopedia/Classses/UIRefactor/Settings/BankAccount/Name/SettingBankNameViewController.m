@@ -220,4 +220,11 @@
         [_table reloadData];
     }
 }
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
+
 @end

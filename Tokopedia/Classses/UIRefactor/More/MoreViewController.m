@@ -32,7 +32,6 @@
 
 #import "ShopFavoritedViewController.h"
 
-
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
@@ -62,8 +61,8 @@
 
 #import <MessageUI/MessageUI.h>
 
-#import "ContactUsWireframe.h"
-#import "TPContactUsDependencies.h"
+#import "ContactUsWebViewController.h"
+
 #import "UIActivityViewController+Extensions.h"
 
 #define CTagProfileInfo 12
@@ -752,8 +751,9 @@
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
             
-            TPContactUsDependencies *dependencies = [TPContactUsDependencies new];
-            [dependencies pushContactUsViewControllerFromNavigation:self.navigationController];
+            ContactUsWebViewController *controller = [ContactUsWebViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:controller animated:YES];
             
         } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
