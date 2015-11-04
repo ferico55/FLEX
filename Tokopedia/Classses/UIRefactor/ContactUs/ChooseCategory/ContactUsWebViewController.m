@@ -56,7 +56,7 @@
 }
 
 - (void)reloadWebView {
-    NSURL *redirectURL = [NSURL URLWithString:@"https://m-alpha.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios"];
+    NSURL *redirectURL = [NSURL URLWithString:@"https://m.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios"];
     NSURLRequest *request = [NSURLRequest requestWithURL:redirectURL];
     [self.webView loadRequest:request];
 }

@@ -511,16 +511,9 @@
     }
 }
 
--(void)goToImageViewerIndex:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath
-{
-    ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-    
-    NSMutableArray *imageURLStrings = [NSMutableArray new];
-    for (ResolutionAttachment *atachment in conversation.attachment) {
-        [imageURLStrings addObject:atachment.real_file_url];
-    }
-    
-    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:[imageURLStrings copy] indexImage:index];
+-(void)goToImageViewerImages:(NSArray *)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath
+{ 
+    [_navigate navigateToShowImageFromViewController:self withImageDictionaries:images imageDescriptions:@[] indexImage:index];
 }
 
 -(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID
@@ -933,7 +926,7 @@
         for (int i = 0; i<attachmentCount; i++)
         {
             ResolutionAttachment *attachment = conversation.attachment[i];
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:attachment.file_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:attachment.real_file_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             UIImageView *thumb = cell.attachmentImages[i];
             thumb.image = nil;

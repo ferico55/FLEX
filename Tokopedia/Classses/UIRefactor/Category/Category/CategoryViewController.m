@@ -95,11 +95,11 @@
     UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
     [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
     
-    [self loadBanners];
+//    [self loadBanners];
     
     //add timer so it will refreshed periodically
-    NSTimer* timer = [NSTimer timerWithTimeInterval:300.0f target:self selector:@selector(loadBanners) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+//    NSTimer* timer = [NSTimer timerWithTimeInterval:300.0f target:self selector:@selector(loadBanners) userInfo:nil repeats:YES];
+//    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,12 +114,15 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [self initNotificationManager];
-    
+    [self loadBanners];
 
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    
+    TKPHomeBannerStore *bannersStore = [[[[self class] TKP_rootController] storeManager] homeBannerStore];
+    [bannersStore stopBannerRequest];
     
 }
 
@@ -287,16 +290,38 @@
     [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
         if (wself != nil) {
             _banner = banner;
-            if(_banner.result.banner.count > 0) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
-            } else  {
-                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-175);
+//            if(_banner.result.banner.count > 0) {
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
+//            } else  {
+//                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-175);
+//            }
+//            
+//            if([_banner.result.ticker.img_uri isEqualToString:@""]) {
+//                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-96);
+//            }
+            
+            BOOL bannerExists = _banner.result.banner.count > 0;
+            BOOL tickerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
+            CGFloat bannerHeight;
+
+            if(bannerExists && !tickerExists) {
+                //height of Banner
+                bannerHeight = 175;
+            } else if(!bannerExists && tickerExists) {
+                //height of Ticker
+                bannerHeight = 115;
+            } else if(!bannerExists && !tickerExists){
+                //height of Nothing
+                bannerHeight = 0;
+            } else {
+                //height of Banner + Ticker
+                bannerHeight = 290;
             }
             
-            if([_banner.result.ticker.img_uri isEqualToString:@""]) {
-                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-96);
+            if(_banner.result.banner.count > 0) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
             }
-
+            _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, bannerHeight);
         }
     }];
 }
