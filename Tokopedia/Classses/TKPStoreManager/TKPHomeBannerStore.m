@@ -50,4 +50,8 @@ NSInteger static const TKPSuccessStatusCode = 200;
     [self.storeManager.networkQueue addOperation:operation];
 }
 
+- (void)stopBannerRequest {
+    [self.storeManager.networkQueue cancelAllOperations];
+}
+
 @end

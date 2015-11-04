@@ -799,7 +799,7 @@ PromoCollectionViewDelegate
             [_collectionView setContentOffset:CGPointZero animated:YES];
             
             [_collectionView reloadData];
-            [_collectionView layoutIfNeeded];
+//            [_collectionView layoutIfNeeded];
         }
         
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
@@ -956,7 +956,7 @@ PromoCollectionViewDelegate
         [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     }
     [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
+//    [_collectionView layoutIfNeeded];
 }
 
 #pragma mark - Promo collection delegate

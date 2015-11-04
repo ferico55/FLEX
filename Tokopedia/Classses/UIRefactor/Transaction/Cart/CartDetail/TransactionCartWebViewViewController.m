@@ -276,10 +276,12 @@
     [_act stopAnimating];
     NSString *errorMessage ;
 
+    NSLog(@"%@", error.localizedDescription);
+    
     if (error.code==-1009) {
-        errorMessage = @"Tidak ada koneksi internet";
+        errorMessage = [NSString stringWithFormat:@"Tidak ada koneksi internet/n%@",error.localizedDescription];
     } else {
-        errorMessage = @"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi.";
+        errorMessage = [NSString stringWithFormat:@"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi./n%@",error.localizedDescription];
     }
     
     UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:nil message:errorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
