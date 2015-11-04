@@ -72,6 +72,7 @@
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [imageView setImage:image];
             [imageView setContentMode:UIViewContentModeScaleAspectFill];
+            [imageView setClipsToBounds:YES];
             [imageView setAutoresizingMask:( UIViewAutoresizingFlexibleBottomMargin
                                            | UIViewAutoresizingFlexibleHeight
                                            | UIViewAutoresizingFlexibleLeftMargin
