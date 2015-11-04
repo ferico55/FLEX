@@ -27,6 +27,10 @@
 		45CEB2831BE1DE24003A5238 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2811BE1DE24003A5238 /* PlacePickerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		45CEB2841BE1DE24003A5238 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45CEB2821BE1DE24003A5238 /* PlacePickerViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		45CEB2881BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */; settings = {ASSET_TAGS = (); }; };
+		45DC26D71BE9AD4F00FD5B0D /* locateButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DC26D31BE9AD4F00FD5B0D /* locateButton.png */; settings = {ASSET_TAGS = (); }; };
+		45DC26D81BE9AD4F00FD5B0D /* locateButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DC26D41BE9AD4F00FD5B0D /* locateButton@2x.png */; settings = {ASSET_TAGS = (); }; };
+		45DC26D91BE9AD4F00FD5B0D /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DC26D51BE9AD4F00FD5B0D /* location.png */; settings = {ASSET_TAGS = (); }; };
+		45DC26DA1BE9AD4F00FD5B0D /* location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DC26D61BE9AD4F00FD5B0D /* location@2x.png */; settings = {ASSET_TAGS = (); }; };
 		45EEF18B1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EEF18A1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F31BE0DD1F000CCD72 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE71BE0DD1B000CCD72 /* URLCacheAlert.m */; settings = {ASSET_TAGS = (); }; };
 		7A33E8F41BE0DD1F000CCD72 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A33DCE91BE0DD1B000CCD72 /* URLCacheConnection.m */; settings = {ASSET_TAGS = (); }; };
@@ -1977,6 +1981,10 @@
 		45CEB2851BE1DED2003A5238 /* TKPAPIKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKPAPIKey.h; sourceTree = "<group>"; };
 		45CEB2861BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.h"; sourceTree = "<group>"; };
 		45CEB2871BE2216E003A5238 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.m"; sourceTree = "<group>"; };
+		45DC26D31BE9AD4F00FD5B0D /* locateButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = locateButton.png; sourceTree = "<group>"; };
+		45DC26D41BE9AD4F00FD5B0D /* locateButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "locateButton@2x.png"; sourceTree = "<group>"; };
+		45DC26D51BE9AD4F00FD5B0D /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location.png; sourceTree = "<group>"; };
+		45DC26D61BE9AD4F00FD5B0D /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
 		45EEF1891BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPGooglePlaceDetailProductStore.h; sourceTree = "<group>"; };
 		45EEF18A1BE36C050050EC83 /* TKPGooglePlaceDetailProductStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPGooglePlaceDetailProductStore.m; sourceTree = "<group>"; };
 		7A33DCE61BE0DD1B000CCD72 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -9148,6 +9156,10 @@
 		7A33E6311BE0DD1D000CCD72 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				45DC26D31BE9AD4F00FD5B0D /* locateButton.png */,
+				45DC26D41BE9AD4F00FD5B0D /* locateButton@2x.png */,
+				45DC26D51BE9AD4F00FD5B0D /* location.png */,
+				45DC26D61BE9AD4F00FD5B0D /* location@2x.png */,
 				7A3F13CE1BE1D6F500B2876F /* icon_hotlist_active.png */,
 				7A3F13CF1BE1D6F500B2876F /* icon_hotlist_active@2x.png */,
 				7A3F13D01BE1D6F500B2876F /* icon_hotlist_active@3x.png */,
@@ -10557,6 +10569,7 @@
 				7A33EF051BE0DD1F000CCD72 /* icon_quote.png in Resources */,
 				7A33EAD21BE0DD1F000CCD72 /* AlertDatePickerView.xib in Resources */,
 				7A33ED5C1BE0DD1F000CCD72 /* TxOrderConfirmedBankCell.xib in Resources */,
+				45DC26DA1BE9AD4F00FD5B0D /* location@2x.png in Resources */,
 				7A33EF801BE0DD1F000CCD72 /* icon_upload_image.png in Resources */,
 				7A33ED9F1BE0DD1F000CCD72 /* Lato-Bold.ttf in Resources */,
 				7A33EB611BE0DD1F000CCD72 /* DepositListBankViewController.xib in Resources */,
@@ -10703,6 +10716,7 @@
 				7A33EF5F1BE0DD1F000CCD72 /* icon_speed_grey_large@3x.png in Resources */,
 				7A33EF141BE0DD1F000CCD72 /* icon_sad50@2x.png in Resources */,
 				7A33EE6F1BE0DD1F000CCD72 /* icon_info.png in Resources */,
+				45DC26D71BE9AD4F00FD5B0D /* locateButton.png in Resources */,
 				7A33F0201BE0DD1F000CCD72 /* klikbca_guide_2.png in Resources */,
 				7A33EF701BE0DD1F000CCD72 /* icon_toped_alert.png in Resources */,
 				7A33EFC31BE0DD1F000CCD72 /* person1.png in Resources */,
@@ -10960,7 +10974,9 @@
 				7A33EF2D1BE0DD1F000CCD72 /* icon_shop_grey.png in Resources */,
 				7A33EFC61BE0DD1F000CCD72 /* thumb_product.png in Resources */,
 				7A33EC261BE0DD1F000CCD72 /* ProductReviewDetailViewController.xib in Resources */,
+				45DC26D91BE9AD4F00FD5B0D /* location.png in Resources */,
 				7A33EDBE1BE0DD1F000CCD72 /* icon_19.png in Resources */,
+				45DC26D81BE9AD4F00FD5B0D /* locateButton@2x.png in Resources */,
 				7A33EE561BE0DD1F000CCD72 /* icon_dislike_active.png in Resources */,
 				7A33ED581BE0DD1F000CCD72 /* TxOrderConfirmationViewController.xib in Resources */,
 				7A33EEBD1BE0DD1F000CCD72 /* icon_netral25.png in Resources */,
@@ -12347,8 +12363,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -12378,7 +12394,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "18ec2976-89a4-47a3-b1cd-19380de9b035";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -12391,8 +12407,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -12422,7 +12438,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "18ec2976-89a4-47a3-b1cd-19380de9b035";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;

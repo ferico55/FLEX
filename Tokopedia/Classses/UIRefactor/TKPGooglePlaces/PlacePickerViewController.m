@@ -16,7 +16,7 @@
 @import GoogleMaps;
 
 
-@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, MKMapViewDelegate>
+@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet GMSMapView *mapview;
 @property (weak, nonatomic) IBOutlet MKMapView *mapMKView;
@@ -35,8 +35,8 @@
     BOOL shouldBeginEditing;
     BOOL _isDragging;
     
-    GMSMapView *_mapView;
     GMSMarker *_marker;
+    
 }
 
 - (instancetype)init {
@@ -50,10 +50,10 @@
 //        _placePicker = [[GMSPlacePicker alloc] initWithConfig:config];
         
         _placesClient = [[GMSPlacesClient alloc] init];
+        _placesClient = [GMSPlacesClient sharedClient];
         _autoCompleteResults = [NSMutableArray new];
         shouldBeginEditing = YES;
-        _mapMKView.delegate = self;
-        
+
 
     }
     return self;
@@ -61,6 +61,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _mapview.myLocationEnabled = YES;
+    _mapview.settings.myLocationButton = YES;
     
     [_placePicker pickPlaceWithCallback:^(GMSPlace *place, NSError *error) {
         if (error != nil) {
@@ -81,58 +84,34 @@
     // Create a GMSCameraPosition that tells the map to display the
     // coordinate -33.86,151.20 at zoom level 6.
 //    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    _mapView.myLocationEnabled = YES;
+    _mapview.myLocationEnabled = YES;
+    CLLocationManager *locationManager = [CLLocationManager new];
+    [locationManager requestWhenInUseAuthorization];
 //    self.view = _mapView;
-    
-    CLLocationCoordinate2D vancouver = CLLocationCoordinate2DMake(-6.1823102, 106.8135506);
-    CLLocationCoordinate2D calgary = CLLocationCoordinate2DMake(-6.211544, 106.845172);
     
     _marker = [[GMSMarker alloc] init];
     [_marker setDraggable:YES];
-    _marker.position = vancouver;
+    _marker.position = locationManager.location.coordinate;
     _marker.map = _mapview;
     
-    GMSCameraPosition *camera =
-    [[GMSCameraPosition alloc] initWithTarget:_marker.position
-                                         zoom:6
-                                      bearing:0
-                                 viewingAngle:0];
-    [_mapView animateToCameraPosition:camera];
-    
-    _mapView = [GMSMapView mapWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height) camera:camera];
-    [self.view insertSubview:_mapView atIndex:0];
+    //[self.view insertSubview:_mapview atIndex:0];
 
+    CLLocationCoordinate2D target = _marker.position;
+    _mapview.camera = [GMSCameraPosition cameraWithTarget:target zoom:14];
+    
+    //[self focusMapToLocation:calgary];
 
-    
-    GMSCoordinateBounds *bounds =
-    [[GMSCoordinateBounds alloc] initWithCoordinate:vancouver coordinate:calgary];
-    
-    [_mapview moveCamera:[GMSCameraUpdate fitBounds:bounds]];
-
-    
-    [self focusMapToLocation:vancouver];
-
-    
     self.searchDisplayController.searchBar.placeholder = @"Cari Alamat";
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
-}
-
-- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
-{
-    CGPoint point = [mapView.projection pointForCoordinate:marker.position];
-    point.y = point.y - 100;
-    GMSCameraUpdate *camera =
-    [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
-    [mapView animateWithCameraUpdate:camera];
     
-    mapView.selectedMarker = marker;
-    return YES;
 }
 
--(void)getCurrentPlace
+-(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
 {
+    _placesClient = [GMSPlacesClient sharedClient];
+
     [_placesClient currentPlaceWithCallback:^(GMSPlaceLikelihoodList *likelihoodList, NSError *error) {
         if (error != nil) {
             NSLog(@"Current Place error %@", [error localizedDescription]);
@@ -140,16 +119,61 @@
         }
         [self focusMapToLocation:((GMSPlaceLikelihood*)likelihoodList.likelihoods[0]).place.coordinate];
     }];
+    
+    return YES;
 }
+
+- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
+{
+    CGPoint point = [mapView.projection pointForCoordinate:marker.position];
+    point.y = point.y - 50;
+    GMSCameraUpdate *camera =
+    [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
+    [mapView animateWithCameraUpdate:camera];
+    
+    mapView.selectedMarker = marker;
+    return YES;
+}
+- (IBAction)tapCurrentPosition:(id)sender {
+
+}
+
 
 - (void)focusMapToLocation:(CLLocationCoordinate2D)location
 {
     _marker.position = location;
-    CLLocationCoordinate2D myLocation = _marker.position;
-    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:myLocation coordinate:myLocation];
-    bounds = [bounds includingCoordinate:_marker.position];
+//    CLLocationCoordinate2D myLocation = _marker.position;
+//    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:myLocation coordinate:myLocation];
+//    bounds = [bounds includingCoordinate:_marker.position];
+//    [_mapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:15.0f]];
     
-    [_mapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:15.0f]];
+//    CGPoint point = [_mapView.projection pointForCoordinate:_marker.position];
+//    point.y = point.y - 100;
+//    GMSCameraUpdate *camera =
+//    [GMSCameraUpdate setTarget:[_mapView.projection coordinateForPoint:point]];
+//    [_mapView animateWithCameraUpdate:camera];
+//    _mapView.selectedMarker = _marker;
+    
+//    _mapView.camera = [GMSCameraPosition cameraWithTarget:location zoom:6];
+//    GMSCameraUpdate *cam = [GMSCameraUpdate setTarget:location];
+//    [_mapView animateWithCameraUpdate:cam];
+    
+//    CLLocationCoordinate2D current = location;
+//    GMSCameraUpdate *currentCam = [GMSCameraUpdate setTarget:current];
+//    [_mapView animateWithCameraUpdate:currentCam];
+    
+    CGPoint point = [_mapview.projection pointForCoordinate:_marker.position];
+    point.y = point.y - 50;
+    GMSCameraUpdate *camera =
+    [GMSCameraUpdate setTarget:[_mapview.projection coordinateForPoint:point]];
+    [_mapview animateWithCameraUpdate:camera];
+    
+    GMSCameraPosition *sydney = [GMSCameraPosition cameraWithLatitude:location.latitude
+                                                            longitude:location.longitude
+                                                                 zoom:14];
+    [_mapview setCamera:sydney];
+    
+    _mapview.selectedMarker = _marker;
 }
 
 #pragma mark -
@@ -185,6 +209,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    [self doCalculateDistanceOrigin:@"Binus University - Syahdan Campus, Jalan Kh. Syahdan, Palmerah, Special Capital Region of Jakarta" withDestination:[self placeAtIndexPath:indexPath].attributedFullText.string];
+    [self.searchDisplayController setActive:NO];
     [self doGeneratePlaceDetailPlaceID:[self placeAtIndexPath:indexPath].placeID];
 //    [self doGeneratePlaceDetailAddress:[self placeAtIndexPath:indexPath].attributedFullText.string];
 }
