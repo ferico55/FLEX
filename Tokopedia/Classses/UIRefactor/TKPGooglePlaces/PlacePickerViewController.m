@@ -190,15 +190,7 @@
 
 -(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
 {
-    _placesClient = [GMSPlacesClient sharedClient];
-
-    [_placesClient currentPlaceWithCallback:^(GMSPlaceLikelihoodList *likelihoodList, NSError *error) {
-        if (error != nil) {
-            NSLog(@"Current Place error %@", [error localizedDescription]);
-            return;
-        }
-        [self focusMapToLocation:((GMSPlaceLikelihood*)likelihoodList.likelihoods[0]).place.coordinate];
-    }];
+    [self focusMapToLocation:_locationManager.location.coordinate];
     
     return YES;
 }
