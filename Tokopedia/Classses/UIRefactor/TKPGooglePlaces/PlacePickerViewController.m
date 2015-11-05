@@ -70,36 +70,20 @@
     
     _mapview.myLocationEnabled = YES;
     _mapview.settings.myLocationButton = YES;
-    
-    [_placePicker pickPlaceWithCallback:^(GMSPlace *place, NSError *error) {
-        if (error != nil) {
-            NSLog(@"Pick Place error %@", [error localizedDescription]);
-            return;
-        }
-        
-        if (place != nil) {
-            NSLog(@"Place name %@", place.name);
-            NSLog(@"Place address %@", place.formattedAddress);
-            NSLog(@"Place attributions %@", place.attributions.string);
-            
-        } else {
-            NSLog(@"No place selected");
-        }
-    }];
-    
-    // Create a GMSCameraPosition that tells the map to display the
-    // coordinate -33.86,151.20 at zoom level 6.
-//    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+
     _mapview.myLocationEnabled = YES;
     _locationManager.delegate = self;
     if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] )
         [_locationManager requestWhenInUseAuthorization];
     [_locationManager startUpdatingLocation];
-//    self.view = _mapView;
+    
+    if (_firstCoordinate.longitude == 0) {
+        _firstCoordinate = _locationManager.location.coordinate;
+    }
     
     _marker = [[GMSMarker alloc] init];
     [_marker setDraggable:YES];
-    _marker.position = _locationManager.location.coordinate;
+    _marker.position = _firstCoordinate;
     _marker.map = _mapview;
     _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
     
@@ -118,13 +102,24 @@
     _mapview.selectedMarker = _marker;
 }
 
+-(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
+{
+
+}
+
 //- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
-//    InfoWindow *view =  [[[NSBundle mainBundle] loadNibNamed:@"InfoWindow" owner:self options:nil] objectAtIndex:0];
-//    view.name.text = @"Place Name";
-//    view.description.text = @"Place description";
-//    view.phone.text = @"123 456 789";
-//    view.placeImage.image = [UIImage imageNamed:@"customPlaceImage"];
-//    view.placeImage.transform = CGAffineTransformMakeRotation(-.08);
+////    InfoWindow *view =  [[[NSBundle mainBundle] loadNibNamed:@"InfoWindow" owner:self options:nil] objectAtIndex:0];
+////    view.name.text = @"Place Name";
+////    view.description.text = @"Place description";
+////    view.phone.text = @"123 456 789";
+////    view.placeImage.image = [UIImage imageNamed:@"customPlaceImage"];
+////    view.placeImage.transform = CGAffineTransformMakeRotation(-.08);
+////    return view;
+//    
+//    UIView *view = [[UIView alloc] init];
+//    view.frame = CGRectMake(0, -100, 280, 40);
+//    view.backgroundColor = [UIColor colorWithRed:0.5 green:0.8 blue:0.4 alpha:1.0];
+//    
 //    return view;
 //}
 
@@ -241,10 +236,10 @@
     [GMSCameraUpdate setTarget:[_mapview.projection coordinateForPoint:point]];
     [_mapview animateWithCameraUpdate:camera];
     
-    GMSCameraPosition *sydney = [GMSCameraPosition cameraWithLatitude:location.latitude
+    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:location.latitude
                                                             longitude:location.longitude
                                                                  zoom:14];
-    [_mapview setCamera:sydney];
+    [_mapview setCamera:cameraPosition];
     
     _mapview.selectedMarker = _marker;
     [self updateMarkerLocationAddress];
@@ -325,12 +320,7 @@
     GMSVisibleRegion visibleRegion = self.mapview.projection.visibleRegion;
     GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:visibleRegion.farLeft
                                                                        coordinate:visibleRegion.nearRight];
-    
-//    CLLocationCoordinate2D northEast = CLLocationCoordinate2DMake(_locationManager.location.coordinate.latitude + 0.15, _locationManager.location.coordinate.longitude + 0.15);
-//    CLLocationCoordinate2D southWest = CLLocationCoordinate2DMake(_locationManager.location.coordinate.latitude - 0.15, _locationManager.location.coordinate.longitude - 0.15);
-//    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:northEast
-//                                                     coordinate:southWest];
-    
+
     GMSAutocompleteFilter *filter = [[GMSAutocompleteFilter alloc] init];
     filter.type = kGMSPlacesAutocompleteTypeFilterNoFilter;
     
@@ -350,27 +340,6 @@
                                 [self.searchDisplayController.searchResultsTableView reloadData];
 
                             }];
-    
-    
-//    GMSAutocompleteFilter *filter = [[GMSAutocompleteFilter alloc] init];
-//    filter.type = kGMSPlacesAutocompleteTypeFilterGeocode;
-//    
-//    [_placesClient autocompleteQuery:searchString
-//                              bounds:nil
-//                              filter:filter
-//                            callback:^(NSArray *results, NSError *error) {
-//                                if (error != nil) {
-//                                    NSLog(@"Autocomplete error %@", [error localizedDescription]);
-//                                    return;
-//                                }
-//                                [_autoCompleteResults removeAllObjects];
-//                                [_autoCompleteResults addObjectsFromArray:results];
-//                                for (GMSAutocompletePrediction* result in results) {
-//                                    NSLog(@"Result '%@' with placeID %@", result.attributedFullText.string, result.placeID);
-//                                }
-//                                [self.searchDisplayController.searchResultsTableView reloadData];
-//                                
-//                            }];
 }
 
 
@@ -428,17 +397,6 @@
     return boolToReturn;
 }
 
-
-
-#pragma mark - UITextViewDelegate
-
-- (BOOL)textView:(UITextView *)textView
-shouldInteractWithURL:(NSURL *)url
-         inRange:(NSRange)characterRange {
-    // Make links clickable.
-    return YES;
-}
-
 #pragma mark - Place Detail
 -(void)doGeneratePlaceDetailPlaceID:(NSString*)placeID
 {
@@ -451,8 +409,6 @@ shouldInteractWithURL:(NSURL *)url
         if (result != nil) {
             CLLocationCoordinate2D c2D = CLLocationCoordinate2DMake(result.coordinate.latitude, result.coordinate.longitude);
             [self focusMapToLocation:c2D];
-//            NSString *destination = [NSString stringWithFormat:@"%f,%f",result.coordinate.latitude, result.coordinate.longitude];
-//            [self doCalculateDistanceOrigin:@"-6.193161,106.7892532" withDestination:destination];
         } else {
             NSLog(@"No place details for %@", placeID);
         }

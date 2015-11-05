@@ -10,4 +10,6 @@
 
 @interface PlacePickerViewController : UIViewController
 
+@property (nonatomic) CLLocationCoordinate2D firstCoordinate;
+
 @end
