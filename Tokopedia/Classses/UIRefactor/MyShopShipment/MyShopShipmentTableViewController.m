@@ -989,26 +989,17 @@ GeneralTableViewControllerDelegate
         if(((long)_shipment.jne.jne_fee) == 0) {
             [errorMessage addObject:@"Biaya Tambahan JNE harus diisi."];
         }
-        else if(((long)_shipment.jne.jne_fee) > 5000) {
-            [errorMessage addObject:@"Maksimum Biaya JNE adalah Rp 5.000,-"];
-        }
     }
     
     if(_showTikiExtraFee) {
         if(((long)_shipment.tiki.tiki_fee) == 0) {
             [errorMessage addObject:@"Biaya Tambahan Tiki harus diisi."];
         }
-        else if(((long)_shipment.tiki.tiki_fee) > 5000) {
-            [errorMessage addObject:@"Maksimum Biaya Tiki adalah Rp 5.000,-"];
-        }
     }
     
     if(_showPosExtraFee) {
         if(((long)_shipment.pos.pos_fee) == 0) {
             [errorMessage addObject:@"Biaya Tambahan Pos Indonesia harus diisi."];
-        }
-        else if(((long)_shipment.pos.pos_fee) > 5000) {
-            [errorMessage addObject:@"Maksimum Biaya Pos Indonesia adalah Rp 5.000,-"];
         }
     }
     
@@ -1020,8 +1011,7 @@ GeneralTableViewControllerDelegate
                 
                 return;
             }
-        }
-        
+        }        
         
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *_auth = [_userManager getUserLoginData];
