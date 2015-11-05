@@ -15,7 +15,7 @@
 @import GoogleMaps;
 
 
-@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate>
+@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet GMSMapView *mapview;
 @property (weak, nonatomic) IBOutlet MKMapView *mapMKView;
@@ -37,7 +37,7 @@
     GMSMarker *_marker;
     
     CLLocationManager *_locationManager;
-    CLGeocoder *_geocoder;
+    GMSGeocoder *_geocoder;
     
 }
 
@@ -65,7 +65,7 @@
     [super viewDidLoad];
     
     _locationManager = [[CLLocationManager alloc] init];
-    _geocoder = [[CLGeocoder alloc] init];
+    _geocoder = [GMSGeocoder geocoder];
     
     _mapview.myLocationEnabled = YES;
     _mapview.settings.myLocationButton = YES;
@@ -90,14 +90,15 @@
     // coordinate -33.86,151.20 at zoom level 6.
 //    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     _mapview.myLocationEnabled = YES;
-    CLLocationManager *locationManager = [CLLocationManager new];
-    [locationManager requestWhenInUseAuthorization];
+    _locationManager.delegate = self;
+    [_locationManager requestWhenInUseAuthorization];
 //    self.view = _mapView;
     
     _marker = [[GMSMarker alloc] init];
     [_marker setDraggable:YES];
-    _marker.position = locationManager.location.coordinate;
+    _marker.position = _locationManager.location.coordinate;
     _marker.map = _mapview;
+    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
     
     //[self.view insertSubview:_mapview atIndex:0];
 
@@ -110,35 +111,27 @@
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
-    
+    [self updateMarkerLocationAddress];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+//- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
+//    InfoWindow *view =  [[[NSBundle mainBundle] loadNibNamed:@"InfoWindow" owner:self options:nil] objectAtIndex:0];
+//    view.name.text = @"Place Name";
+//    view.description.text = @"Place description";
+//    view.phone.text = @"123 456 789";
+//    view.placeImage.image = [UIImage imageNamed:@"customPlaceImage"];
+//    view.placeImage.transform = CGAffineTransformMakeRotation(-.08);
+//    return view;
+//}
+
+-(void)updateMarkerLocationAddress
 {
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    
-    CLLocation *currentLocation = newLocation;
-    
-    if (currentLocation != nil)
-        NSLog(@"longitude = %.8f\nlatitude = %.8f", currentLocation.coordinate.longitude,currentLocation.coordinate.latitude);
-    
-    // stop updating location in order to save battery power
-    [_locationManager stopUpdatingLocation];
-    
-    
-    [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error)
-     {
-         NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
-         if (error == nil && [placemarks count] > 0)
-         {
-             CLPlacemark *placemark = [placemarks lastObject];
-             
+    [_geocoder reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
              // strAdd -> take bydefault value nil
              NSString *strAdd = nil;
-             
-             if ([placemark.subThoroughfare length] != 0)
-                 strAdd = placemark.subThoroughfare;
-             
+
+        GMSAddress *placemark = [response results][0];
+
              if ([placemark.thoroughfare length] != 0)
              {
                  // strAdd -> store value of current location
@@ -150,6 +143,42 @@
                      strAdd = placemark.thoroughfare;
                  }
              }
+        
+        if ([placemark.locality length] != 0)
+        {
+            if ([strAdd length] != 0)
+                strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
+            else
+                strAdd = placemark.locality;
+        }
+
+             if ([placemark.subLocality length] != 0)
+             {
+
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark subLocality]];
+                 else
+                 {
+                     // strAdd -> store only this value,which is not null
+                     strAdd = placemark.subLocality;
+                 }
+             }
+
+             if ([placemark.administrativeArea length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
+                 else
+                     strAdd = placemark.administrativeArea;
+             }
+
+             if ([placemark.country length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
+                 else
+                     strAdd = placemark.country;
+             }
              
              if ([placemark.postalCode length] != 0)
              {
@@ -159,33 +188,94 @@
                      strAdd = placemark.postalCode;
              }
              
-             if ([placemark.locality length] != 0)
-             {
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
-                 else
-                     strAdd = placemark.locality;
-             }
-             
-             if ([placemark.administrativeArea length] != 0)
-             {
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
-                 else
-                     strAdd = placemark.administrativeArea;
-             }
-             
-             if ([placemark.country length] != 0)
-             {
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
-                 else
-                     strAdd = placemark.country;
-             }
-             
              _marker.title = strAdd;
-         }
-     }];
+    }];
+//    [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+//     {
+//         NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
+//         if (error == nil && [placemarks count] > 0)
+//         {
+//             CLPlacemark *placemark = [placemarks lastObject];
+//             
+//             // strAdd -> take bydefault value nil
+//             NSString *strAdd = nil;
+//             
+//                 
+//             
+//             if ([placemark.thoroughfare length] != 0)
+//             {
+//                 // strAdd -> store value of current location
+//                 if ([strAdd length] != 0)
+//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark thoroughfare]];
+//                 else
+//                 {
+//                     // strAdd -> store only this value,which is not null
+//                     strAdd = placemark.thoroughfare;
+//                 }
+//             }
+//             
+//             if ([placemark.subThoroughfare length] != 0)
+//             {
+//
+//                 if ([strAdd length] != 0)
+//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark subThoroughfare]];
+//                 else
+//                 {
+//                     // strAdd -> store only this value,which is not null
+//                     strAdd = placemark.subThoroughfare;
+//                 }
+//             }
+//             
+//             if ([placemark.locality length] != 0)
+//             {
+//                 if ([strAdd length] != 0)
+//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
+//                 else
+//                     strAdd = placemark.locality;
+//             }
+//             
+//             if ([placemark.administrativeArea length] != 0)
+//             {
+//                 if ([strAdd length] != 0)
+//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
+//                 else
+//                     strAdd = placemark.administrativeArea;
+//             }
+//             
+//             if ([placemark.country length] != 0)
+//             {
+//                 if ([strAdd length] != 0)
+//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
+//                 else
+//                     strAdd = placemark.country;
+//             }
+//             
+//             if ([placemark.postalCode length] != 0)
+//             {
+//                 if ([strAdd length] != 0)
+//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark postalCode]];
+//                 else
+//                     strAdd = placemark.postalCode;
+//             }
+//             
+//             _marker.title = strAdd;
+//         }
+//     }];
+}
+
+// Delegate method
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    CLLocation *currentLocation = newLocation;
+    
+    if (currentLocation != nil)
+        NSLog(@"longitude = %.8f\nlatitude = %.8f", currentLocation.coordinate.longitude,currentLocation.coordinate.latitude);
+    
+    // stop updating location in order to save battery power
+    [_locationManager stopUpdatingLocation];
+    
+    
+    [self focusMapToLocation:currentLocation.coordinate];
 }
 
 -(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
@@ -214,26 +304,6 @@
 - (void)focusMapToLocation:(CLLocationCoordinate2D)location
 {
     _marker.position = location;
-//    CLLocationCoordinate2D myLocation = _marker.position;
-//    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:myLocation coordinate:myLocation];
-//    bounds = [bounds includingCoordinate:_marker.position];
-//    [_mapView animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:15.0f]];
-    
-//    CGPoint point = [_mapView.projection pointForCoordinate:_marker.position];
-//    point.y = point.y - 100;
-//    GMSCameraUpdate *camera =
-//    [GMSCameraUpdate setTarget:[_mapView.projection coordinateForPoint:point]];
-//    [_mapView animateWithCameraUpdate:camera];
-//    _mapView.selectedMarker = _marker;
-    
-//    _mapView.camera = [GMSCameraPosition cameraWithTarget:location zoom:6];
-//    GMSCameraUpdate *cam = [GMSCameraUpdate setTarget:location];
-//    [_mapView animateWithCameraUpdate:cam];
-    
-//    CLLocationCoordinate2D current = location;
-//    GMSCameraUpdate *currentCam = [GMSCameraUpdate setTarget:current];
-//    [_mapView animateWithCameraUpdate:currentCam];
-    
     CGPoint point = [_mapview.projection pointForCoordinate:_marker.position];
     point.y = point.y - 50;
     GMSCameraUpdate *camera =
@@ -246,6 +316,7 @@
     [_mapview setCamera:sydney];
     
     _mapview.selectedMarker = _marker;
+    [self updateMarkerLocationAddress];
 }
 
 #pragma mark -
@@ -355,6 +426,7 @@
 - (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
 {
     _isDragging = NO;
+    [self updateMarkerLocationAddress];
 }
 
 - (void)mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
