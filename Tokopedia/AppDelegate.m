@@ -44,7 +44,7 @@
         [self configureGTMInApplication:application withOptions:launchOptions];
         [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
-        //[self configureAppIndexing];
+        [self configureAppIndexing];
         [self configureGoogleAnalytics];
         
         [self configurePushNotificationsInApplication:application];
@@ -82,7 +82,9 @@
 }
 
 - (void)configureAppIndexing {
-    [[GSDAppIndexing sharedInstance] registerApp:1001394201];
+    if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+        [[GSDAppIndexing sharedInstance] registerApp:1001394201];
+    }
 }
 
 - (void)configureGoogleAnalytics {
