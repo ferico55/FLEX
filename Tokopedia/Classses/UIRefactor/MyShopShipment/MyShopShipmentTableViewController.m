@@ -1454,7 +1454,12 @@ GeneralTableViewControllerDelegate
 {
     ShippingInfo *shippingInfo = [result.dictionary objectForKey:@""];
     BOOL status = [shippingInfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
+    
+    if (shippingInfo.message_error) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:shippingInfo.message_error delegate:self];
+        [alert show];
+    }
+    else if (status) {
         
         UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
         if(createShopViewController == nil)
