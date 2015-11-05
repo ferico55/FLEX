@@ -55,7 +55,8 @@
         _placesClient = [GMSPlacesClient sharedClient];
         _autoCompleteResults = [NSMutableArray new];
         shouldBeginEditing = YES;
-
+        
+        self.title = @"Pilih Lokasi";
 
     }
     return self;
@@ -320,11 +321,21 @@
 #pragma mark UISearchDisplayDelegate
 
 - (void)handleSearchForSearchString:(NSString *)searchString {
+    
+    GMSVisibleRegion visibleRegion = self.mapview.projection.visibleRegion;
+    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:visibleRegion.farLeft
+                                                                       coordinate:visibleRegion.nearRight];
+    
+//    CLLocationCoordinate2D northEast = CLLocationCoordinate2DMake(_locationManager.location.coordinate.latitude + 0.15, _locationManager.location.coordinate.longitude + 0.15);
+//    CLLocationCoordinate2D southWest = CLLocationCoordinate2DMake(_locationManager.location.coordinate.latitude - 0.15, _locationManager.location.coordinate.longitude - 0.15);
+//    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:northEast
+//                                                     coordinate:southWest];
+    
     GMSAutocompleteFilter *filter = [[GMSAutocompleteFilter alloc] init];
-    filter.type = kGMSPlacesAutocompleteTypeFilterGeocode;
+    filter.type = kGMSPlacesAutocompleteTypeFilterNoFilter;
     
     [_placesClient autocompleteQuery:searchString
-                              bounds:nil
+                              bounds:bounds
                               filter:filter
                             callback:^(NSArray *results, NSError *error) {
                                 if (error != nil) {
@@ -337,9 +348,31 @@
                                     NSLog(@"Result '%@' with placeID %@", result.attributedFullText.string, result.placeID);
                                 }
                                 [self.searchDisplayController.searchResultsTableView reloadData];
-                                
+
                             }];
+    
+    
+//    GMSAutocompleteFilter *filter = [[GMSAutocompleteFilter alloc] init];
+//    filter.type = kGMSPlacesAutocompleteTypeFilterGeocode;
+//    
+//    [_placesClient autocompleteQuery:searchString
+//                              bounds:nil
+//                              filter:filter
+//                            callback:^(NSArray *results, NSError *error) {
+//                                if (error != nil) {
+//                                    NSLog(@"Autocomplete error %@", [error localizedDescription]);
+//                                    return;
+//                                }
+//                                [_autoCompleteResults removeAllObjects];
+//                                [_autoCompleteResults addObjectsFromArray:results];
+//                                for (GMSAutocompletePrediction* result in results) {
+//                                    NSLog(@"Result '%@' with placeID %@", result.attributedFullText.string, result.placeID);
+//                                }
+//                                [self.searchDisplayController.searchResultsTableView reloadData];
+//                                
+//                            }];
 }
+
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     [self handleSearchForSearchString:searchString];
@@ -367,20 +400,6 @@
     }
     
     NSLog(@"Long press detected");
-}
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
-{
-    if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
-    
-    MKPinAnnotationView *annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"DroppedPin"];
-    
-    annotationView.draggable = YES;
-    annotationView.canShowCallout = YES;
-    annotationView.animatesDrop = YES;
-    
-    return annotationView;
 }
 
 #pragma mark -
