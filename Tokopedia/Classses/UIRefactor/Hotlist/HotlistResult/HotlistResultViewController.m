@@ -584,7 +584,8 @@ HotlistBannerDelegate
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
     NSString *baseUrl;
-    if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+//    if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+    if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
         baseUrl = @"https://ace-staging.tokopedia.com/";
     } else {
         baseUrl = @"https://ajax.tokopedia.com/";

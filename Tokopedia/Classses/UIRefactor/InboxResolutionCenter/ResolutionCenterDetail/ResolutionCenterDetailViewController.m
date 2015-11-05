@@ -523,7 +523,7 @@
 
 -(NSString *)trouble
 {
-    NSString *trouble;
+    NSString *trouble = @"";
     if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(1)]) {
         trouble = ARRAY_PROBLEM_COMPLAIN[0];
     }
@@ -541,7 +541,7 @@
 
 -(NSString*)solution
 {
-    NSString *solution;
+    NSString *solution = @"";
     if ([_resolutionDetail.resolution_last.last_solution isEqual:@(1)]) {
         solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0];
     }
@@ -1070,7 +1070,7 @@
 -(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
 {
     NSInteger lastSolutionType = [conversation.solution integerValue];
-    NSString *solutionString;
+    NSString *solutionString = @"";
     if (lastSolutionType == SOLUTION_REFUND) {
         solutionString = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",conversation.refund_amt_idr];
     }
@@ -1085,6 +1085,9 @@
     }
     else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
         solutionString = [NSString stringWithFormat:@"Kirimkan sisanya"];
+    }
+    else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
+        solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
     }
     
     NSInteger troubleType = [conversation.trouble_type integerValue];
