@@ -91,7 +91,9 @@
 //    _mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     _mapview.myLocationEnabled = YES;
     _locationManager.delegate = self;
-    [_locationManager requestWhenInUseAuthorization];
+    if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] )
+        [_locationManager requestWhenInUseAuthorization];
+    [_locationManager startUpdatingLocation];
 //    self.view = _mapView;
     
     _marker = [[GMSMarker alloc] init];
@@ -112,6 +114,7 @@
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
     [self updateMarkerLocationAddress];
+    _mapview.selectedMarker = _marker;
 }
 
 //- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
@@ -128,139 +131,72 @@
 {
     [_geocoder reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
              // strAdd -> take bydefault value nil
-             NSString *strAdd = nil;
+        NSString *strAdd = @"";
+        NSString *strSnippet = @"";
 
         GMSAddress *placemark = [response results][0];
 
-             if ([placemark.thoroughfare length] != 0)
+         if ([placemark.thoroughfare length] != 0)
+         {
+             // strAdd -> store value of current location
+             if ([strSnippet length] != 0)
+                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark thoroughfare]];
+             else
              {
-                 // strAdd -> store value of current location
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark thoroughfare]];
-                 else
-                 {
-                     // strAdd -> store only this value,which is not null
-                     strAdd = placemark.thoroughfare;
-                 }
+                 // strAdd -> store only this value,which is not null
+                 strSnippet = placemark.thoroughfare;
              }
+         }
         
         if ([placemark.locality length] != 0)
         {
-            if ([strAdd length] != 0)
-                strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
+            if ([strSnippet length] != 0)
+                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark locality]];
             else
-                strAdd = placemark.locality;
+                strSnippet = placemark.locality;
         }
 
-             if ([placemark.subLocality length] != 0)
-             {
+         if ([placemark.subLocality length] != 0)
+         {
 
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark subLocality]];
-                 else
-                 {
-                     // strAdd -> store only this value,which is not null
-                     strAdd = placemark.subLocality;
-                 }
+             if ([strSnippet length] != 0)
+                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark subLocality]];
+             else
+             {
+                 // strAdd -> store only this value,which is not null
+                 strSnippet = placemark.subLocality;
              }
+         }
 
-             if ([placemark.administrativeArea length] != 0)
-             {
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
-                 else
-                     strAdd = placemark.administrativeArea;
-             }
+         if ([placemark.administrativeArea length] != 0)
+         {
+             if ([strSnippet length] != 0)
+                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark administrativeArea]];
+             else
+                 strSnippet = placemark.administrativeArea;
+         }
 
-             if ([placemark.country length] != 0)
-             {
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
-                 else
-                     strAdd = placemark.country;
-             }
-             
-             if ([placemark.postalCode length] != 0)
-             {
-                 if ([strAdd length] != 0)
-                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark postalCode]];
-                 else
-                     strAdd = placemark.postalCode;
-             }
-             
-             _marker.title = strAdd;
+         if ([placemark.country length] != 0)
+         {
+             if ([strSnippet length] != 0)
+                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark country]];
+             else
+                 strSnippet = placemark.country;
+         }
+         
+         if ([placemark.postalCode length] != 0)
+         {
+             if ([strSnippet length] != 0)
+                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark postalCode]];
+             else
+                 strSnippet = placemark.postalCode;
+         }
+        
+        _marker.snippet = strSnippet;
+        
+        [_mapview setSelectedMarker:_marker];
     }];
-//    [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
-//     {
-//         NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
-//         if (error == nil && [placemarks count] > 0)
-//         {
-//             CLPlacemark *placemark = [placemarks lastObject];
-//             
-//             // strAdd -> take bydefault value nil
-//             NSString *strAdd = nil;
-//             
-//                 
-//             
-//             if ([placemark.thoroughfare length] != 0)
-//             {
-//                 // strAdd -> store value of current location
-//                 if ([strAdd length] != 0)
-//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark thoroughfare]];
-//                 else
-//                 {
-//                     // strAdd -> store only this value,which is not null
-//                     strAdd = placemark.thoroughfare;
-//                 }
-//             }
-//             
-//             if ([placemark.subThoroughfare length] != 0)
-//             {
-//
-//                 if ([strAdd length] != 0)
-//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark subThoroughfare]];
-//                 else
-//                 {
-//                     // strAdd -> store only this value,which is not null
-//                     strAdd = placemark.subThoroughfare;
-//                 }
-//             }
-//             
-//             if ([placemark.locality length] != 0)
-//             {
-//                 if ([strAdd length] != 0)
-//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
-//                 else
-//                     strAdd = placemark.locality;
-//             }
-//             
-//             if ([placemark.administrativeArea length] != 0)
-//             {
-//                 if ([strAdd length] != 0)
-//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
-//                 else
-//                     strAdd = placemark.administrativeArea;
-//             }
-//             
-//             if ([placemark.country length] != 0)
-//             {
-//                 if ([strAdd length] != 0)
-//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
-//                 else
-//                     strAdd = placemark.country;
-//             }
-//             
-//             if ([placemark.postalCode length] != 0)
-//             {
-//                 if ([strAdd length] != 0)
-//                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark postalCode]];
-//                 else
-//                     strAdd = placemark.postalCode;
-//             }
-//             
-//             _marker.title = strAdd;
-//         }
-//     }];
+
 }
 
 // Delegate method
@@ -287,13 +223,7 @@
 
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
-    CGPoint point = [mapView.projection pointForCoordinate:marker.position];
-    point.y = point.y - 50;
-    GMSCameraUpdate *camera =
-    [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
-    [mapView animateWithCameraUpdate:camera];
-    
-    mapView.selectedMarker = marker;
+    [self focusMapToLocation:marker.position];
     return YES;
 }
 - (IBAction)tapCurrentPosition:(id)sender {

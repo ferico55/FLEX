@@ -53,6 +53,13 @@
         [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
         
         [self preparePersistData];
+        
+        //change app language for google mapp address become indonesia
+        NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+        if (![[languages firstObject] isEqualToString:@"id"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:@[@"id"] forKey:@"AppleLanguages"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     });
     
     //opening URL in background state
