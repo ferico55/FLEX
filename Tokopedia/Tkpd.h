@@ -223,6 +223,9 @@ typedef enum {
 // GTM Value
 #define GTMKeyInboxMessageBase @"inboxmessage_base_url"
 #define GTMKeyInboxMessagePost @"inboxmessage_post_url"
+#define GTMKeyActionInboxMessageBase @"inboxmessage_action_base_url"
+#define GTMKeyActionInboxMessagePost @"inboxmessage_action_post_url"
+
 #define GTMKeyInboxMessageFull @"inboxmessage_full_url"
 
 #define GTMKeyInboxTalkBase @"inboxtalk_base_url"
