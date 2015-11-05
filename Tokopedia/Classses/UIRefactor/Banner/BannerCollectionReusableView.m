@@ -59,6 +59,15 @@
     
     [self setTicker:_banners.result.ticker.img_uri];
     
+    //remove old images if available
+    NSArray *viewsToRemove = [_scrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        if([v isKindOfClass:[UIImageView class]]) {
+             [v removeFromSuperview];
+        }
+
+    }
+    
     numberOfBanners = _banners.result.banner.count;
     _scrollView.hidden = NO;
     
