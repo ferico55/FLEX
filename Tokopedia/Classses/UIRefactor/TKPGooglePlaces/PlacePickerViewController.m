@@ -28,6 +28,8 @@
     
     NSMutableArray *_autoCompleteResults;
     
+    NSMutableArray *_placeHistories;
+    
     BOOL shouldBeginEditing;
     BOOL _isDragging;
     __block BOOL _shouldStartSearch;
@@ -89,8 +91,11 @@
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
-    [self updateMarkerLocationAddress];
+    [self updateAddressSaveHistory:NO];
     _mapview.selectedMarker = _marker;
+    
+    _placeHistories = [NSMutableArray new];
+    [self loadHistory];
 }
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
@@ -114,76 +119,83 @@
 //    return view;
 //}
 
--(void)updateMarkerLocationAddress
+-(void)updateAddressSaveHistory:(BOOL)shouldSaveHistory
 {
     [_geocoder reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
              // strAdd -> take bydefault value nil
-        NSString *strAdd = @"";
-        NSString *strSnippet = @"";
-
         GMSAddress *placemark = [response results][0];
-
-         if ([placemark.thoroughfare length] != 0)
-         {
-             // strAdd -> store value of current location
-             if ([strSnippet length] != 0)
-                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark thoroughfare]];
-             else
-             {
-                 // strAdd -> store only this value,which is not null
-                 strSnippet = placemark.thoroughfare;
-             }
-         }
         
-        if ([placemark.locality length] != 0)
-        {
-            if ([strSnippet length] != 0)
-                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark locality]];
-            else
-                strSnippet = placemark.locality;
-        }
-
-         if ([placemark.subLocality length] != 0)
-         {
-
-             if ([strSnippet length] != 0)
-                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark subLocality]];
-             else
-             {
-                 // strAdd -> store only this value,which is not null
-                 strSnippet = placemark.subLocality;
-             }
-         }
-
-         if ([placemark.administrativeArea length] != 0)
-         {
-             if ([strSnippet length] != 0)
-                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark administrativeArea]];
-             else
-                 strSnippet = placemark.administrativeArea;
-         }
-
-         if ([placemark.country length] != 0)
-         {
-             if ([strSnippet length] != 0)
-                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark country]];
-             else
-                 strSnippet = placemark.country;
-         }
-         
-         if ([placemark.postalCode length] != 0)
-         {
-             if ([strSnippet length] != 0)
-                 strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[placemark postalCode]];
-             else
-                 strSnippet = placemark.postalCode;
-         }
-        
-        _marker.snippet = strSnippet;
+        _marker.snippet = [self addressString:placemark];
         
         [_mapview setSelectedMarker:_marker];
+        
+        if (shouldSaveHistory) {
+            [self saveHistory:placemark];
+        }
     }];
+}
 
+-(NSString *)addressString:(GMSAddress*)address
+{
+    NSString *strSnippet = @"";
+
+    if ([address.thoroughfare length] != 0)
+    {
+        // strAdd -> store value of current location
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
+        else
+        {
+            // strAdd -> store only this value,which is not null
+            strSnippet = address.thoroughfare;
+        }
+    }
+    
+    if ([address.locality length] != 0)
+    {
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address locality]];
+        else
+            strSnippet = address.locality;
+    }
+    
+    if ([address.subLocality length] != 0)
+    {
+        
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address subLocality]];
+        else
+        {
+            // strAdd -> store only this value,which is not null
+            strSnippet = address.subLocality;
+        }
+    }
+    
+    if ([address.administrativeArea length] != 0)
+    {
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address administrativeArea]];
+        else
+            strSnippet = address.administrativeArea;
+    }
+    
+    if ([address.country length] != 0)
+    {
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address country]];
+        else
+            strSnippet = address.country;
+    }
+    
+    if ([address.postalCode length] != 0)
+    {
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address postalCode]];
+        else
+            strSnippet = address.postalCode;
+    }
+    
+    return strSnippet;
 }
 
 // Delegate method
@@ -198,11 +210,11 @@
     [_locationManager stopUpdatingLocation];
     
     
-    [self focusMapToLocation:currentLocation.coordinate];
+    [self focusMapToLocation:currentLocation.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO];
 }
 
 
-- (void)focusMapToLocation:(CLLocationCoordinate2D)location
+- (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory
 {
     _marker.position = location;
     CGPoint point = [_mapview.projection pointForCoordinate:_marker.position];
@@ -216,8 +228,8 @@
                                                                  zoom:14];
     [_mapview setCamera:cameraPosition];
     
-    _mapview.selectedMarker = _marker;
-    [self updateMarkerLocationAddress];
+    if (shouldUpdateAddress)
+        [self updateAddressSaveHistory:saveHistory];
 }
 
 #pragma mark -
@@ -229,11 +241,18 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_autoCompleteResults count];
+    if (section == 0)
+        return [_autoCompleteResults count];
+    else
+        return [_placeHistories count];
 }
 
 - (GMSAutocompletePrediction *)placeAtIndexPath:(NSIndexPath *)indexPath {
     return [_autoCompleteResults objectAtIndex:indexPath.row];
+}
+
+- (GMSAddress *)placeHistoryAtIndexPath:(NSIndexPath *)indexPath {
+    return [_placeHistories objectAtIndex:indexPath.row];
 }
 
 #pragma mark - TableView Delegate
@@ -245,7 +264,11 @@
     }
     
     cell.textLabel.font = FONT_GOTHAM_BOOK_13;
-    [cell.textLabel setCustomAttributedText:[self placeAtIndexPath:indexPath].attributedFullText.string];
+    if (indexPath.section == 0)
+        [cell.textLabel setCustomAttributedText:[self placeAtIndexPath:indexPath].attributedFullText.string];
+    else
+        [cell.textLabel setCustomAttributedText:[self addressString:[self placeHistoryAtIndexPath:indexPath]]];
+
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     
@@ -344,7 +367,7 @@
 - (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
 {
     _isDragging = NO;
-    [self updateMarkerLocationAddress];
+    [self updateAddressSaveHistory:NO];
 }
 
 - (void)mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
@@ -357,14 +380,14 @@
 
 -(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
 {
-    [self focusMapToLocation:_locationManager.location.coordinate];
+    [self focusMapToLocation:_locationManager.location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO];
     
     return YES;
 }
 
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
-    [self focusMapToLocation:marker.position];
+    [self focusMapToLocation:marker.position shouldUpdateAddress:NO shouldSaveHistory:NO];
     return YES;
 }
 
@@ -380,6 +403,25 @@
     return YES;
 }
 
+#pragma mark - History Search
+-(void)saveHistory:(GMSAddress*)history {
+    NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    destPath = [destPath stringByAppendingPathComponent:@"RecentPlaces"];
+    
+    if(![_placeHistories containsObject:history]) {
+        [_placeHistories insertObject:history atIndex:0];
+        [_placeHistories writeToFile:destPath atomically:YES];
+    }
+    
+}
+
+-(void)loadHistory {
+    NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    destPath = [destPath stringByAppendingPathComponent:@"RecentPlaces"];
+    
+    [_placeHistories addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
+}
+
 #pragma mark - Place Detail
 -(void)doGeneratePlaceDetailPlaceID:(NSString*)placeID
 {
@@ -391,7 +433,7 @@
         
         if (result != nil) {
             CLLocationCoordinate2D c2D = CLLocationCoordinate2DMake(result.coordinate.latitude, result.coordinate.longitude);
-            [self focusMapToLocation:c2D];
+            [self focusMapToLocation:c2D shouldUpdateAddress:YES shouldSaveHistory:YES];
         } else {
             NSLog(@"No place details for %@", placeID);
         }
