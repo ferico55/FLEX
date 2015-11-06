@@ -18,9 +18,6 @@
 @interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet GMSMapView *mapview;
-@property (weak, nonatomic) IBOutlet MKMapView *mapMKView;
-
-@property (nonatomic, weak) id<MKAnnotation> droppedAnnotation;
 
 @end
 
@@ -33,6 +30,7 @@
     
     BOOL shouldBeginEditing;
     BOOL _isDragging;
+    __block BOOL _shouldStartSearch;
     
     GMSMarker *_marker;
     
@@ -43,19 +41,11 @@
 
 - (instancetype)init {
     if ((self = [super init])) {
-//        CLLocationCoordinate2D southWestJakarta = CLLocationCoordinate2DMake(-6.2614927, 106.81059979999998);
-//        CLLocationCoordinate2D northEastJakarta = CLLocationCoordinate2DMake(-6.211544, 106.845172);
-//        GMSCoordinateBounds *JakartaBounds =
-//        [[GMSCoordinateBounds alloc] initWithCoordinate:southWestJakarta coordinate:northEastJakarta];
-//        GMSPlacePickerConfig *config =
-//        [[GMSPlacePickerConfig alloc] initWithViewport:JakartaBounds];
-//        _placePicker = [[GMSPlacePicker alloc] initWithConfig:config];
-        
         _placesClient = [[GMSPlacesClient alloc] init];
         _placesClient = [GMSPlacesClient sharedClient];
         _autoCompleteResults = [NSMutableArray new];
         shouldBeginEditing = YES;
-        
+        _shouldStartSearch = YES;
         self.title = @"Pilih Lokasi";
 
     }
@@ -211,22 +201,6 @@
     [self focusMapToLocation:currentLocation.coordinate];
 }
 
--(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
-{
-    [self focusMapToLocation:_locationManager.location.coordinate];
-    
-    return YES;
-}
-
-- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
-{
-    [self focusMapToLocation:marker.position];
-    return YES;
-}
-- (IBAction)tapCurrentPosition:(id)sender {
-
-}
-
 
 - (void)focusMapToLocation:(CLLocationCoordinate2D)location
 {
@@ -262,6 +236,7 @@
     return [_autoCompleteResults objectAtIndex:indexPath.row];
 }
 
+#pragma mark - TableView Delegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellIdentifier = @"SPGooglePlacesAutocompleteCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -296,10 +271,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    [self doCalculateDistanceOrigin:@"Binus University - Syahdan Campus, Jalan Kh. Syahdan, Palmerah, Special Capital Region of Jakarta" withDestination:[self placeAtIndexPath:indexPath].attributedFullText.string];
     [self.searchDisplayController setActive:NO];
     [self doGeneratePlaceDetailPlaceID:[self placeAtIndexPath:indexPath].placeID];
-//    [self doGeneratePlaceDetailAddress:[self placeAtIndexPath:indexPath].attributedFullText.string];
 }
 
 -(CGFloat)streetRowHeight:(GMSAutocompletePrediction*)place
@@ -324,6 +297,10 @@
 
 - (void)handleSearchForSearchString:(NSString *)searchString {
     
+    if (_shouldStartSearch == NO) {
+        return;
+    }
+    
     GMSVisibleRegion visibleRegion = self.mapview.projection.visibleRegion;
     GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] initWithCoordinate:visibleRegion.farLeft
                                                                        coordinate:visibleRegion.nearRight];
@@ -335,6 +312,7 @@
                               bounds:bounds
                               filter:filter
                             callback:^(NSArray *results, NSError *error) {
+                                _shouldStartSearch = YES;
                                 if (error != nil) {
                                     NSLog(@"Autocomplete error %@", [error localizedDescription]);
                                     return;
@@ -345,7 +323,6 @@
                                     NSLog(@"Result '%@' with placeID %@", result.attributedFullText.string, result.placeID);
                                 }
                                 [self.searchDisplayController.searchResultsTableView reloadData];
-
                             }];
 }
 
@@ -357,6 +334,8 @@
     return YES;
 }
 
+
+#pragma mark - GMSMapView Delegate
 - (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
 {
     _isDragging = YES;
@@ -374,8 +353,19 @@
         
         return;
     }
+}
+
+-(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
+{
+    [self focusMapToLocation:_locationManager.location.coordinate];
     
-    NSLog(@"Long press detected");
+    return YES;
+}
+
+- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
+{
+    [self focusMapToLocation:marker.position];
+    return YES;
 }
 
 #pragma mark -
