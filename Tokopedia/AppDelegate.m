@@ -36,6 +36,12 @@
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
     
+#ifdef DEBUG
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    
+    [secureStorage setKeychainWithValue:@"dummyemulator" withKey:kTKPD_DEVICETOKENKEY];
+#endif
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];

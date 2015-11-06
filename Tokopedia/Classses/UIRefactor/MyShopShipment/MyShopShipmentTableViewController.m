@@ -114,6 +114,9 @@ GeneralTableViewControllerDelegate
 
 @property (weak, nonatomic) IBOutlet UILabel *shipmentRPXNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shipmentRPXLogoImageView;
+@property (weak, nonatomic) IBOutlet UILabel *shipmentRPXIDropLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *shipmentRPXLogoIndomaretView;
+@property (weak, nonatomic) IBOutlet UISwitch *shipmentRPXIDropSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *shipmentRPXNextDaySwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *shipmentRPXEconomySwitch;
 @property (weak, nonatomic) IBOutlet UILabel *shipmentRPXNotAvailableLabel;
@@ -541,8 +544,14 @@ GeneralTableViewControllerDelegate
             height = 50;
         }
         
-        // return cell if information about package is existing
+        // return cell if information about i-drop exists
         else if (row == 1) {
+            //TODO change height after ws is ready
+            return 0;
+        }
+        
+        // return cell if information about package is existing
+        else if (row == 2) {
             if (_RPXPackageNextDay) {
                 height = 44;
             } else {
@@ -551,7 +560,7 @@ GeneralTableViewControllerDelegate
         }
         
         // return cell if information about package is existing
-        else if (row == 2) {
+        else if (row == 3) {
             if (_RPXPackageEconomy) {
                 height = 44;
             } else {
@@ -559,11 +568,11 @@ GeneralTableViewControllerDelegate
             }
         }
         
-        else if (row == 3) {
+        else if (row == 4) {
             height = 44;
         }
         
-        else if (row == 4) {
+        else if (row == 5) {
             height = 70;
         }
         
@@ -571,7 +580,7 @@ GeneralTableViewControllerDelegate
         if (row == 0) {
             height = 50;
         }
-        else if (row == 5) {
+        else if (row == 6) {
             height = 44;
         } else {
             height = 0;
@@ -885,7 +894,7 @@ GeneralTableViewControllerDelegate
             break;
             
         case 3:
-            numberOfRows = 6;
+            numberOfRows = 7;
             break;
             
         case 4:
@@ -978,6 +987,10 @@ GeneralTableViewControllerDelegate
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
         
+    } else if (indexPath.section == 3 && indexPath.row == 1) {
+        AlertInfoView *alert = [AlertInfoView newview];
+        alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
+        [alert show];
     }
 }
 
@@ -1119,6 +1132,15 @@ GeneralTableViewControllerDelegate
     
     
     // actions for RPX
+    else if ([sender isEqual:_shipmentRPXIDropSwitch]) {
+        if (sender.isOn) {
+            [_shipmentRPXNextDaySwitch setOn:NO animated:YES];
+            [_shipmentRPXEconomySwitch setOn:YES animated:YES];
+            //_RPXIDrop.active = @"1";
+        } else {
+            //_RPXIDrop.active = @"0";
+        }
+    }
     else if ([sender isEqual:_shipmentRPXNextDaySwitch]) {
         if (sender.isOn) {
             _RPXPackageNextDay.active = @"1";
@@ -1689,7 +1711,11 @@ GeneralTableViewControllerDelegate
                                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                               _shipmentRPXLogoImageView.image = image;
                                                           } failure:nil];
-                
+                /*TODO 
+                 wait for the WS to be done (ask Alaw)
+                 add condition for I-Drop switch
+                 add Indomaret logo image
+                */
                 if (_RPXPackageEconomy) {
                     _shipmentRPXEconomySwitch.on = [_RPXPackageEconomy.active boolValue];
                 }
