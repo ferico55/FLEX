@@ -375,7 +375,7 @@
     cell.labelprov.text = ([address.location_province_name isEqual: @"0"]) ? @"-" : address.location_province_name;
     cell.labelpostal.text = ([address.location_postal_code isEqual: @"0"]) ? @"-" : address.location_postal_code;
     cell.labelemail.text = ([address.location_email isEqual: @"0"]) ? @"-" : address.location_email;
-    cell.labelfax.text = ([address.location_fax isEqual: @"0"]) ? @"-" : address.location_fax;
+    cell.labelfax.text = ([address.location_fax isEqual: @"0"]) ? @"" : address.location_fax;
     cell.labelphone.text = ([address.location_phone isEqual: @"0"]) ? @"-" : address.location_phone;
     
     
