@@ -95,6 +95,7 @@
     //[self focusMapToLocation:calgary];
 
     self.searchDisplayController.searchBar.placeholder = @"Cari Alamat";
+    self.searchDisplayController.searchBar.tintColor = [UIColor whiteColor];
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
@@ -248,6 +249,11 @@
 #pragma mark -
 #pragma mark UITableViewDataSource
 
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_autoCompleteResults count];
 }
@@ -263,11 +269,24 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    cell.textLabel.text = [self placeAtIndexPath:indexPath].attributedFullText.string;
+    cell.textLabel.font = FONT_GOTHAM_BOOK_13;
+    [cell.textLabel setCustomAttributedText:[self placeAtIndexPath:indexPath].attributedFullText.string];
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     
     return cell;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return @"Sugestions";
+    }
+    if (section == 1) {
+        return @"Recent Searches";
+    }
+    
+    return nil;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -289,7 +308,7 @@
     
     //Calculate the expected size based on the font and linebreak mode of your label
     CGSize maximumLabelSize = CGSizeMake(250,9999);
-    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+    CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_14
                                   constrainedToSize:maximumLabelSize
                                       lineBreakMode:NSLineBreakByTruncatingTail];
     
@@ -298,18 +317,6 @@
     }
     
     return 44+expectedLabelSize.height;
-}
-
-- (void)dismissSearchControllerWhileStayingActive {
-    // Animate out the table view.
-    NSTimeInterval animationDuration = 0.3;
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:animationDuration];
-    self.searchDisplayController.searchResultsTableView.alpha = 0.0;
-    [UIView commitAnimations];
-    
-    [self.searchDisplayController.searchBar setShowsCancelButton:NO animated:YES];
-    [self.searchDisplayController.searchBar resignFirstResponder];
 }
 
 #pragma mark -
@@ -375,26 +382,12 @@
 #pragma mark UISearchBar Delegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if (![searchBar isFirstResponder]) {
-        // User tapped the 'clear' button.
-        shouldBeginEditing = NO;
-    }
+    self.searchDisplayController.searchResultsTableView.contentInset = UIEdgeInsetsZero;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    if (shouldBeginEditing) {
-        // Animate in the table view.
-        NSTimeInterval animationDuration = 0.3;
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:animationDuration];
-        self.searchDisplayController.searchResultsTableView.alpha = 1.0;
-        [UIView commitAnimations];
-        
-        [self.searchDisplayController.searchBar setShowsCancelButton:YES animated:YES];
-    }
-    BOOL boolToReturn = shouldBeginEditing;
-    shouldBeginEditing = YES;
-    return boolToReturn;
+
+    return YES;
 }
 
 #pragma mark - Place Detail
