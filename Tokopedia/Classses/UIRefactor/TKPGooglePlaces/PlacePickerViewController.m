@@ -91,7 +91,7 @@
     [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
-    [self updateAddressSaveHistory:NO addressSugestion:@""];
+    [self updateAddressSaveHistory:NO addressSugestion:nil];
     _mapview.selectedMarker = _marker;
     
     _placeHistories = [NSMutableArray new];
@@ -119,7 +119,7 @@
 //    return view;
 //}
 
--(void)updateAddressSaveHistory:(BOOL)shouldSaveHistory addressSugestion:(NSString *)addressSugestion
+-(void)updateAddressSaveHistory:(BOOL)shouldSaveHistory addressSugestion:(GMSAutocompletePrediction *)addressSugestion
 {
     [_geocoder reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
              // strAdd -> take bydefault value nil
@@ -217,11 +217,11 @@
     [_locationManager stopUpdatingLocation];
     
     
-    [self focusMapToLocation:currentLocation.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:@""];
+    [self focusMapToLocation:currentLocation.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
 }
 
 
-- (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory addressSugestion:(NSString*)addressSugestion
+- (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory addressSugestion:(GMSAutocompletePrediction*)addressSugestion
 {
     _marker.position = location;
     CGPoint point = [_mapview.projection pointForCoordinate:_marker.position];
@@ -245,6 +245,9 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if (_placeHistories.count == 0) {
+        return 1;
+    }
     return 2;
 }
 
@@ -256,17 +259,26 @@
 }
 
 - (GMSAutocompletePrediction *)placeAtIndexPath:(NSIndexPath *)indexPath {
-    return [_autoCompleteResults objectAtIndex:indexPath.row];
+    if (_autoCompleteResults.count>0) {
+        return [_autoCompleteResults objectAtIndex:indexPath.row];
+    }
+    return nil;
 }
 
-- (GMSAddress *)placeHistoryAtIndexPath:(NSIndexPath *)indexPath {
-    if (_placeHistories.count > 0)
-        return [_placeHistories objectAtIndex:indexPath.row][@"address"];
-    
-    return [GMSAddress new];
+- (NSNumber *)placeLongitudeHistoryAtIndexPath:(NSIndexPath *)indexPath {
+    if (_placeHistories.count > indexPath.row)
+        return [_placeHistories objectAtIndex:indexPath.row][@"longitude"];
+    return @(0);
 }
+
+- (NSNumber *)placeLatitudeHistoryAtIndexPath:(NSIndexPath *)indexPath {
+    if (_placeHistories.count > indexPath.row)
+        return [_placeHistories objectAtIndex:indexPath.row][@"latitude"];
+    return @(0);
+}
+
 - (NSString *)placeSugestionHistoryAtIndexPath:(NSIndexPath *)indexPath {
-    if (_placeHistories.count > 0)
+    if (_placeHistories.count > indexPath.row)
         return [_placeHistories objectAtIndex:indexPath.row][@"addressSugestion"];
     return @"";
 }
@@ -312,11 +324,18 @@
 {
     [self.searchDisplayController setActive:NO];
     
-    if (indexPath.row == 0) {
-        [self doGeneratePlaceDetailPlaceID:[self placeAtIndexPath:indexPath].placeID addressSugestion:[self placeAtIndexPath:indexPath].attributedFullText.string];
+    if (indexPath.section == 0) {
+        [self doGeneratePlaceDetailPlaceID:[self placeAtIndexPath:indexPath].placeID addressSugestion:[self placeAtIndexPath:indexPath]];
     }
     else
-        [self focusMapToLocation:[self placeHistoryAtIndexPath:indexPath].coordinate shouldUpdateAddress:NO shouldSaveHistory:YES addressSugestion:[self placeAtIndexPath:indexPath].attributedFullText.string];
+    {
+        CLLocationCoordinate2D annotationCoordinate = CLLocationCoordinate2DMake([[self placeLatitudeHistoryAtIndexPath:indexPath] doubleValue], [[self placeLongitudeHistoryAtIndexPath:indexPath] doubleValue]);
+
+        [self focusMapToLocation:annotationCoordinate
+             shouldUpdateAddress:NO
+               shouldSaveHistory:NO
+                addressSugestion:[self placeAtIndexPath:indexPath]];
+    }
 }
 
 -(CGFloat)streetRowHeight:(GMSAutocompletePrediction*)place
@@ -383,7 +402,7 @@
 - (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
 {
     _isDragging = NO;
-    [self updateAddressSaveHistory:NO addressSugestion:@""];
+    [self updateAddressSaveHistory:NO addressSugestion:nil];
 }
 
 - (void)mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
@@ -396,14 +415,14 @@
 
 -(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
 {
-    [self focusMapToLocation:_locationManager.location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:@""];
+    [self focusMapToLocation:_locationManager.location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
     
     return YES;
 }
 
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
-    [self focusMapToLocation:marker.position shouldUpdateAddress:NO shouldSaveHistory:NO addressSugestion:@""];
+    [self focusMapToLocation:marker.position shouldUpdateAddress:NO shouldSaveHistory:NO addressSugestion:[GMSAutocompletePrediction new]];
     return YES;
 }
 
@@ -428,12 +447,19 @@
 }
 
 #pragma mark - History Search
--(void)saveHistory:(GMSAddress*)address addressSugestion:(NSString*)addressSugestion {
+-(void)saveHistory:(GMSAddress*)address addressSugestion:(GMSAutocompletePrediction*)addressSugestion {
     
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:@"history_places.plist"];
     
-    NSDictionary *history = @{@"address": address, @"addressSugestion":addressSugestion};
+    NSNumber *latitude = [NSNumber numberWithDouble:address.coordinate.latitude];
+    NSNumber *longitude = [NSNumber numberWithDouble:address.coordinate.longitude];
+
+    
+    NSDictionary *history = @{@"addressSugestion":addressSugestion.attributedFullText.string,
+                              @"placeID":addressSugestion.placeID,
+                              @"longitude": latitude,
+                              @"latitude": longitude};
     
     if(![_placeHistories containsObject:history]) {
         [_placeHistories insertObject:history atIndex:0];
@@ -450,7 +476,7 @@
 }
 
 #pragma mark - Place Detail
--(void)doGeneratePlaceDetailPlaceID:(NSString*)placeID addressSugestion:(NSString *)addressSugestion
+-(void)doGeneratePlaceDetailPlaceID:(NSString*)placeID addressSugestion:(GMSAutocompletePrediction *)addressSugestion
 {
     [_placesClient lookUpPlaceID:placeID callback:^(GMSPlace * _Nullable result, NSError * _Nullable error) {
         if (error != nil) {
