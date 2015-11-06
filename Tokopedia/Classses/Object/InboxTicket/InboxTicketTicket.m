@@ -10,4 +10,8 @@
 
 @implementation InboxTicketTicket
 
+- (NSString *)ticket_category {
+    return [_ticket_category kv_decodeHTMLCharacterEntities];
+}
+
 @end

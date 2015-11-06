@@ -27,6 +27,8 @@
 
 #import "TokopediaNetworkManager.h"
 
+#import "RequestResolutionCenter.h"
+
 #define TAG_ALERT_CANCEL_COMPLAIN 10
 #define TAG_CHANGE_SOLUTION 11
 #define DATA_SELECTED_SHIPMENT_KEY @"data_selected_shipment"
@@ -56,6 +58,7 @@
     ResolutionInputReceiptViewControllerDelegate,
     InboxResolutionCenterOpenViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
+    RequestResolutionCenterDelegate,
     UISplitViewControllerDelegate
 >
 {
@@ -93,6 +96,10 @@
     TokopediaNetworkManager *_networkManager;
     
     NSString *_actionRequest;
+    
+    RequestResolutionCenter *_requestResolutionCenter;
+    
+    GeneratedHost *_generatedHost;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -504,16 +511,9 @@
     }
 }
 
--(void)goToImageViewerIndex:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath
-{
-    ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-    
-    NSMutableArray *imageURLStrings = [NSMutableArray new];
-    for (ResolutionAttachment *atachment in conversation.attachment) {
-        [imageURLStrings addObject:atachment.real_file_url];
-    }
-    
-    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:[imageURLStrings copy] indexImage:index];
+-(void)goToImageViewerImages:(NSArray *)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath
+{ 
+    [_navigate navigateToShowImageFromViewController:self withImageDictionaries:images imageDescriptions:@[] indexImage:index];
 }
 
 -(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID
@@ -523,7 +523,7 @@
 
 -(NSString *)trouble
 {
-    NSString *trouble;
+    NSString *trouble = @"";
     if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(1)]) {
         trouble = ARRAY_PROBLEM_COMPLAIN[0];
     }
@@ -541,7 +541,7 @@
 
 -(NSString*)solution
 {
-    NSString *solution;
+    NSString *solution = @"";
     if ([_resolutionDetail.resolution_last.last_solution isEqual:@(1)]) {
         solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0];
     }
@@ -577,7 +577,6 @@
 #pragma mark - Resolution Center Input View Controller Delegate
 -(void)appealSolution:(NSString *)solutionType refundAmount:(NSString *)refundAmout remark:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID
 {
-    [self configureRestKitReplay];
     [self requestReplayConversation:message
                               photo:photo?:@""
                            serverID:serverID?:@""
@@ -591,7 +590,6 @@
 
 -(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID
 {
-    [self configureRestKitReplay];
     [self requestReplayConversation:message?:@""
                               photo:photo?:@""
                            serverID:serverID?:@""
@@ -605,7 +603,6 @@
 
 -(void)message:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID
 {
-    [self configureRestKitReplay];
     [self requestReplayConversation:message?:@""
                               photo:photo?:@""
                            serverID:serverID?:@""
@@ -615,6 +612,10 @@
                        refundAmount:@""
                            received:([_resolutionDetail.resolution_last.last_flag_received isEqual:@(1)])
                              action:ACTION_REPLY_CONVERSATION];
+}
+-(void)setGenerateHost:(GeneratedHost *)generateHost
+{
+    _generatedHost = generateHost;
 }
 
 -(void)reportResolution
@@ -925,7 +926,7 @@
         for (int i = 0; i<attachmentCount; i++)
         {
             ResolutionAttachment *attachment = conversation.attachment[i];
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:attachment.file_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:attachment.real_file_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             UIImageView *thumb = cell.attachmentImages[i];
             thumb.image = nil;
@@ -1069,7 +1070,7 @@
 -(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
 {
     NSInteger lastSolutionType = [conversation.solution integerValue];
-    NSString *solutionString;
+    NSString *solutionString = @"";
     if (lastSolutionType == SOLUTION_REFUND) {
         solutionString = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",conversation.refund_amt_idr];
     }
@@ -1084,6 +1085,9 @@
     }
     else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
         solutionString = [NSString stringWithFormat:@"Kirimkan sisanya"];
+    }
+    else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
+        solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
     }
     
     NSInteger troubleType = [conversation.trouble_type integerValue];
@@ -1738,143 +1742,31 @@
 }
 
 #pragma mark - Replay Conversation
--(void)cancelRequestReplay
-{
-    [_requestReplay cancel];
-    _requestReplay = nil;
-    [_objectManagerReplay.operationQueue cancelAllOperations];
-    _objectManagerReplay = nil;
-}
-
--(void)configureRestKitReplay
-{
-    _objectManagerReplay = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ResolutionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_RESOLUTION_CENTER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerReplay addResponseDescriptor:responseDescriptor];
-}
-
 -(void)requestReplayConversation:(NSString*)message photo:(NSString*)photo serverID:(NSString*)serverID editSolutionFlag:(BOOL)editSolutionFlag solutionType:(NSString*)solution troubleType:(NSString*)trouble refundAmount:(NSString*)refunAmount received:(BOOL)received action:(NSString*)action
 {
-    if (_requestReplay.isExecuting) return;
-    
-    NSTimer *timer;
-    
     NSString *editSolutionFlagString = [NSString stringWithFormat:@"%zd",editSolutionFlag];
     NSString *flagReceivedString = [NSString stringWithFormat:@"%zd",received];
     NSString *solutionString = (!received || [solution isEqualToString:@""])?@"1":solution;
     
-    NSDictionary* param = @{API_ACTION_KEY : action,
-                            API_RESOLUTION_ID_KEY : _resolutionID?:@"",
-                            API_REPLAY_MESSAGE_KEY : message,
-                            API_REMARK_KEY : message,
-                            API_PHOTOS_KEY : photo,
-                            API_SERVER_ID_KEY : serverID,
-                            API_EDIT_SOLUTION_FLAG_KEY:editSolutionFlagString,
-                            API_SOLUTION_KEY : solutionString,
-                            API_REFUND_AMOUNT_KEY : refunAmount,
-                            API_FLAG_RECIEVED_KEY :flagReceivedString,
-                            API_TROUBLE_TYPE_KEY : trouble,
-                            };
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-//    
-//    _requestReplay = [_objectManagerReplay appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-//#else
-    _requestReplay = [_objectManagerReplay appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-//#endif
-    
-    [_requestReplay setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessReplay:mappingResult withOperation:operation isChangeSolution:editSolutionFlag];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureReplayWithErrorMessage:@[error.localizedDescription]];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestReplay];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(requestTimeoutReplay) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [self requestResolutionCenter].generatedHost = _generatedHost;
+    [[self requestResolutionCenter] setParamReplayValidationFromID:_resolutionID?:@"" message:message photos:photo serverID:serverID editSolutionFlag:editSolutionFlagString solution:solutionString refundAmount:refunAmount flagReceived:flagReceivedString troubleType:trouble action:action];
+    [[self requestResolutionCenter] doRequestReplay];
 }
 
--(void)requestSuccessReplay:(RKMappingResult*)mappingResult withOperation:(RKObjectRequestOperation *)operation isChangeSolution:(BOOL)isChangeSolution
+-(RequestResolutionCenter*)requestResolutionCenter
 {
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    ResolutionAction *resolution = stat;
-    BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self refreshRequest];
-        if (resolution.result.is_success == 1) {
-            NSArray *successMessage = isChangeSolution?@[@"Anda telah berhasil mengubah solusi"]:@[@"Sukses mengirim pesan diskusi"];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:successMessage delegate:self];
-            [alert show];
-        }
-        else
-        {
-            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-        }
+    if (!_requestResolutionCenter) {
+        _requestResolutionCenter = [RequestResolutionCenter new];
+        _requestResolutionCenter.delegate = self;
     }
-    else
-    {
-        [self requestFailureReplayWithErrorMessage:@[resolution.status]];
-    }
-    
-    [self requestProcessReplay];
+    return _requestResolutionCenter;
 }
 
--(void)requestFailureReplayWithErrorMessage:(NSArray*)error
+-(void)didSuccessReplay
 {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:error delegate:self];
-    [alert show];
-    
-    [_tableView reloadData];
+    [self refreshRequest];
 }
 
--(void)requestProcessReplay
-{
-    
-}
-
--(void)requestTimeoutReplay
-{
-    [self cancelRequestReplay];
-}
 - (IBAction)gesture:(id)sender {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10) {

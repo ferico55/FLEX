@@ -26,6 +26,7 @@
 #import "TableViewScrollAndSwipe.h"
 
 #import "RequestNotifyLBLM.h"
+#import "NotificationManager.h"
 
 #pragma mark - HotlistView
 
@@ -37,7 +38,8 @@ UITableViewDelegate,
 UIGestureRecognizerDelegate,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
-UICollectionViewDelegateFlowLayout
+UICollectionViewDelegateFlowLayout,
+NotificationDelegate
 >
 {
     NSMutableArray *_product;
@@ -65,6 +67,7 @@ UICollectionViewDelegateFlowLayout
     BOOL _isFailRequest;
     
     RequestNotifyLBLM *_requestLBLM;
+    NotificationManager *_notifManager;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
@@ -84,15 +87,37 @@ UICollectionViewDelegateFlowLayout
         _isrefreshview = NO;
         _isnodata = YES;
         _isNeedToRemoveAllObject = NO;
+        
+        UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+        [self.navigationItem setTitleView:logo];
     }
     return self;
 }
+
 
 
 #pragma mark - View Lifecylce
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+//        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
+//        [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
+//        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+//        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+//        
+//        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+//        self.navigationItem.leftBarButtonItem = backBarButton;
+//    } else {
+        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+        self.navigationItem.backBarButtonItem = backBarButton;
+//    }
+
     
     [self.navigationController.navigationBar setTranslucent:NO];
     self.screenName = @"Home - HotList";
@@ -102,6 +127,7 @@ UICollectionViewDelegateFlowLayout
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
     _cacheConnection = [URLCacheConnection new];
     _cacheController = [URLCacheController new];
+    
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -178,6 +204,9 @@ UICollectionViewDelegateFlowLayout
         [_networkManager doRequest];
         _collectionView.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
+    
+    [self initNotificationManager];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
     [self doRequestNotify];
 }
@@ -259,7 +288,8 @@ UICollectionViewDelegateFlowLayout
                             kTKPDHOME_APIURLKEY         : hotlist.url,
                             kTKPDHOME_APITITLEKEY       : hotlist.title,
                             };
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     } else if ([hotlist.url rangeOfString:@"/p/"].length) {
         
@@ -327,7 +357,7 @@ UICollectionViewDelegateFlowLayout
         
         viewController.hidesBottomBarWhenPushed = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:@{@"hide_segment" : @"1"}];
-        [self.delegate pushViewController:viewController];
+        [self.navigationController pushViewController:viewController animated:YES];
         
         
 //        [self.delegate pushViewController:controller];
@@ -340,7 +370,8 @@ UICollectionViewDelegateFlowLayout
         controller.catalogName = hotlist.title;
         controller.catalogImage = hotlist.image_url_600;
         controller.catalogPrice = hotlist.price_start;
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     }
 }
@@ -561,7 +592,8 @@ UICollectionViewDelegateFlowLayout
                             kTKPDHOME_APIURLKEY         : hotlist.url,
                             kTKPDHOME_APITITLEKEY       : hotlist.title,
                             };
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     } else if ([hotlist.url rangeOfString:@"/p/"].length) {
         
@@ -600,7 +632,7 @@ UICollectionViewDelegateFlowLayout
         controller.title = hotlist.title;
         controller.hidesBottomBarWhenPushed = YES;
         
-        [self.delegate pushViewController:controller];
+        [self.navigationController pushViewController:controller animated:YES];
         
     } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
         
@@ -610,7 +642,8 @@ UICollectionViewDelegateFlowLayout
         controller.catalogName = hotlist.title;
         controller.catalogImage = hotlist.image_url_600;
         controller.catalogPrice = hotlist.price_start;
-        [self.delegate pushViewController:controller];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
         
     }
 }
@@ -630,6 +663,35 @@ UICollectionViewDelegateFlowLayout
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
     }
     
+}
+
+#pragma mark - Notification Manager
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:self];
+    _notifManager.delegate = self;
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+- (void)tapNotificationBar {
+    [_notifManager tapNotificationBar];
+}
+
+- (void)tapWindowBar {
+    [_notifManager tapWindowBar];
+}
+
+
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
+
+- (void)pushViewController:(id)viewController {
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 @end

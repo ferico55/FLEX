@@ -13,6 +13,8 @@
 #import "SalesTransactionListViewController.h"
 #import "NotificationManager.h"
 
+#import "Localytics.h"
+
 @interface SalesViewController ()
 <
     NotificationManagerDelegate,
@@ -42,9 +44,9 @@
 @implementation SalesViewController
 
 - (void)viewDidLoad {
-
     [super viewDidLoad];
     [self setValues];
+    [Localytics triggerInAppMessage:@"Penjualan Screen"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -52,6 +54,7 @@
     [super viewWillAppear:animated];
     self.screenName = @"Transaction - Sales Page";
     self.hidesBottomBarWhenPushed = YES;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated

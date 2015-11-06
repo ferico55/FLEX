@@ -804,7 +804,7 @@
 - (RKObjectManager *)getObjectManagerTotalLike
 {
     // initialize RestKit
-    RKObjectManager *tempObjectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
+    RKObjectManager *tempObjectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[LikeDislike class]];

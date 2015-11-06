@@ -38,6 +38,10 @@
     html = [html stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
     html = [html stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
+    html = [html stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+    html = [html stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
+    html = [html stringByReplacingOccurrencesOfString:@"&#39;" withString:@"'"];
+    html = [html stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""];
     
     myScanner = [NSScanner scannerWithString:html];
     
@@ -128,6 +132,7 @@
 
 -(BOOL)isAllNonNumber
 {
+    
     NSCharacterSet* numbers = [NSCharacterSet decimalDigitCharacterSet];
     NSRange rnumbers = [self rangeOfCharacterFromSet: numbers];
     
@@ -142,6 +147,17 @@
     //    NSRange rnumbers = [self rangeOfCharacterFromSet: numbers];
     NSCharacterSet * set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ "]invertedSet];
     return [self rangeOfCharacterFromSet:set].location != NSNotFound;
+}
+
+-(NSString *)priceFromStringIDR
+{
+    NSString *price = self;
+    price = [price stringByReplacingOccurrencesOfString:@"." withString:@""];
+    price = [price stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    price = [price stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    price = [price stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+    return price;
 }
 
 @end

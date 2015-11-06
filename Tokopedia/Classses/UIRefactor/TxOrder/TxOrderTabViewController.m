@@ -169,6 +169,7 @@
 -(UIViewController*)viewControllerAtIndex:(NSInteger)index
 {
     id childViewController;
+    _index = index;
     switch (index) {
         case 0:
         {

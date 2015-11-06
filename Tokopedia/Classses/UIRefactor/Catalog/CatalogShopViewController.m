@@ -23,6 +23,7 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "Paging.h"
+#import "UIActivityViewController+Extensions.h"
 
 @interface CatalogShopViewController ()
 <
@@ -256,9 +257,10 @@
             if (_catalog) {
                 NSString *title = _catalog.result.catalog_info.catalog_name;
                 NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-                UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
-                controller.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                                  url:url
+                                                                                               anchor:button];
+                
                 [self presentViewController:controller animated:YES completion:nil];
             }
         }
@@ -507,8 +509,6 @@
     }
     
     _catalogId = _catalog.result.catalog_info.catalog_id;
-    _location = @"";
-    _condition = @"";
     _orderBy = orderBy;
     _page = 1;
     
@@ -529,7 +529,6 @@
     _catalogId = catalog.result.catalog_info.catalog_id;
     _location = location;
     _condition = condition;
-    _orderBy = @"";
     _page = 1;
     
     [_networkManager doRequest];
@@ -616,4 +615,4 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-@end
+    @end

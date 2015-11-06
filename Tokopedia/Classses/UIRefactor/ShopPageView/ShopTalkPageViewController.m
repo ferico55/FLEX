@@ -330,6 +330,7 @@ UIAlertViewDelegate>
     
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPTALKKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
+                            @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
                             @"page" : @(_page),
                             @"per_page" : @(5)
                             };

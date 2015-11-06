@@ -8,7 +8,7 @@
 
 #import "UserAuthentificationManager.h"
 #import "TKPDSecureStorage.h"
-
+#import "NSString+MD5.h"
 #import "activation.h"
 
 @implementation UserAuthentificationManager {
@@ -91,15 +91,73 @@
     return category;
 }
 
-- (NSString *)addParameterAndConvertToString:(id)params
+- (NSDictionary *)autoAddParameter:(id)params
 {
-    NSDictionary *mutable = [params mutableCopy];
-    [mutable setValue:[self getUserId] forKey:@"user_id"];
-    [mutable setValue:[self getMyDeviceToken] forKey:@"device_id"];
-    [mutable setValue:@"2" forKey:@"os_type"];
+    NSDictionary *parameters = [params mutableCopy];
+    if (![[self getUserId] isEqualToString:@"0"]) {
+        [parameters setValue:[self getUserId] forKey:@"user_id"];
+    }
+    [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
+    [parameters setValue:@"2" forKey:@"os_type"];
+    
+    NSString *hash;
+    if (![[self getUserId] isEqualToString:@"0"]) {
+        hash = [NSString stringWithFormat:@"%@~%@", [self getUserId], [self getMyDeviceToken]];
+    } else {
+        hash = [NSString stringWithFormat:@"~%@", [self getMyDeviceToken]];
+    }
+    hash = [hash encryptWithMD5];
+    [parameters setValue:hash forKey:@"hash"];
+    
+    double timestamp = [[NSDate new] timeIntervalSince1970];
+    NSString *device_time = [NSString stringWithFormat:@"%f", timestamp];
+    [parameters setValue:device_time forKey:@"device_time"];
+    
+    return parameters;
+    
+    //    double timestamp = [[NSDate new] timeIntervalSince1970];
+    //    NSString *device_time = [NSString stringWithFormat:@"%f", timestamp];
+    //    [parameters setValue:device_time forKey:@"device_time"];
+    //
+    //    NSError *error;
+    //    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+    //                                                       options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
+    //                                                         error:&error];
+    //    NSString *jsonString;
+    //    if (! jsonData) {
+    //        NSLog(@"Got an error: %@", error);
+    //    } else {
+    //        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    //    }
+    //
+    //    return jsonString;
+}
+
+- (NSString *)addParameterAndConvertToString:(id)params {
+    NSDictionary *parameters = [params mutableCopy];
+    if (![[self getUserId] isEqualToString:@"0"]) {
+        [parameters setValue:[self getUserId] forKey:@"user_id"];
+    }
+    [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
+    [parameters setValue:@"2" forKey:@"os_type"];
+    
+    NSString *hash;
+    if (![[self getUserId] isEqualToString:@"0"]) {
+        hash = [NSString stringWithFormat:@"%@~%@", [self getUserId], [self getMyDeviceToken]];
+    } else {
+        hash = [NSString stringWithFormat:@"~%@", [self getMyDeviceToken]];
+    }
+    hash = [hash encryptWithMD5];
+    [parameters setValue:hash forKey:@"hash"];
+    
+    double timestamp = [[NSDate new] timeIntervalSince1970];
+    NSString *device_time = [NSString stringWithFormat:@"%f", timestamp];
+    [parameters setValue:device_time forKey:@"device_time"];
+    
+    
     
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mutable
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
                                                        options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
                                                          error:&error];
     NSString *jsonString;
@@ -111,6 +169,7 @@
     
     return jsonString;
 }
+
 
 - (BOOL)isMyShopWithShopId:(id)shopId {
     NSInteger shopID = 0;

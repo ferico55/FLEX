@@ -365,14 +365,14 @@
     }
     
     Address *address = _shop.result.address[indexPath.row];
-    cell.labelname.text = (address.location_address == 0) ? @"-" : [NSString convertHTML:address.location_address];
-    cell.labelDistric.text = (address.location_district_name == 0) ? @"-" : address.location_district_name;
-    cell.labelcity.text = (address.location_city_name ==0) ? @"-" : address.location_city_name;
-    cell.labelprov.text = (address.location_province_name ==0) ? @"-" : address.location_province_name;
-    cell.labelpostal.text = (address.location_postal_code ==0) ? @"-" : address.location_postal_code;
-    cell.labelemail.text = (address.location_email ==0) ? @"-" : address.location_email;
-    cell.labelfax.text = (address.location_fax ==0) ? @"-" : address.location_fax;
-    cell.labelphone.text = (address.location_phone ==0) ? @"-" : address.location_phone;
+    cell.labelname.text = ([address.location_address isEqual: @"0"]) ? @"-" : [NSString convertHTML:address.location_address];
+    cell.labelDistric.text = ([address.location_district_name isEqual: @"0"]) ? @"-" : address.location_district_name;
+    cell.labelcity.text = ([address.location_city_name isEqual: @"0"]) ? @"-" : address.location_city_name;
+    cell.labelprov.text = ([address.location_province_name isEqual: @"0"]) ? @"-" : address.location_province_name;
+    cell.labelpostal.text = ([address.location_postal_code isEqual: @"0"]) ? @"-" : address.location_postal_code;
+    cell.labelemail.text = ([address.location_email isEqual: @"0"]) ? @"-" : address.location_email;
+    cell.labelfax.text = ([address.location_fax isEqual: @"0"]) ? @"-" : address.location_fax;
+    cell.labelphone.text = ([address.location_phone isEqual: @"0"]) ? @"-" : address.location_phone;
     
     
     return cell;

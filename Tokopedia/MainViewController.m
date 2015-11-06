@@ -34,11 +34,18 @@
 #import "AlertBaseUrl.h"
 
 #import "InboxRootViewController.h"
+#import "CategoryViewController.h"
 
 #import "RequestNotifyLBLM.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+
+#import "Localytics.h"
+
+#import "TKPAppFlow.h"
+#import "TKPStoreManager.h"
+
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -47,7 +54,8 @@
     UITabBarControllerDelegate,
     UIAlertViewDelegate,
     LoginViewDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    TKPAppFlow
 >
 {
     UITabBarController *_tabBarController;
@@ -66,6 +74,7 @@
     NSTimer *_containerTimer;
     
     RequestNotifyLBLM *_requestLBLM;
+    TKPStoreManager *_storeManager;
 }
 
 @end
@@ -108,7 +117,11 @@ typedef enum TagRequest {
                selector:@selector(applicationLogin:)
                    name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
                  object:nil];
-    [center addObserver:self selector:@selector(forceLogout) name:TkpdNotificationForcedLogout object:nil];
+    
+    [center addObserver:self
+               selector:@selector(forceLogout)
+                   name:TkpdNotificationForcedLogout
+                 object:nil];
     
     [center addObserver:self
                selector:@selector(applicationlogout:)
@@ -117,7 +130,8 @@ typedef enum TagRequest {
     
     [center addObserver:self
                selector:@selector(redirectNotification:)
-                   name:@"redirectNotification" object:nil];
+                   name:@"redirectNotification"
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(updateTabBarMore:)
@@ -125,7 +139,13 @@ typedef enum TagRequest {
 
     [center addObserver:self
                selector:@selector(didReceiveShowRatingNotification:)
-                   name:kTKPD_SHOW_RATING_ALERT object:nil];
+                   name:kTKPD_SHOW_RATING_ALERT
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(redirectToHomeViewController)
+                   name:kTKPD_REDIRECT_TO_HOME
+                 object:nil];
 
     //refresh timer for GTM Container
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
@@ -203,15 +223,18 @@ typedef enum TagRequest {
     /** create new view controller **/
     if (!isauth) {
         // before login
-        HotlistViewController *v = [HotlistViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-        [viewcontrollers addObject:v];
+//        HotlistViewController *v = [HotlistViewController new];
+//        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
+//        [viewcontrollers addObject:v];
+        CategoryViewController *controller = [[CategoryViewController alloc] init];
+        controller.data = @{@"auth" : _auth?:@{}};
+        [viewcontrollers addObject:controller];
     }
     else{
         // after login
-        HotlistViewController *v = [HotlistViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-        [viewcontrollers addObject:v];
+        CategoryViewController *controller = [[CategoryViewController alloc] init];
+        controller.data = @{@"auth" : _auth?:@{}};
+        [viewcontrollers addObject:controller];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
         [viewcontrollers addObject:v1];
         HistoryProductViewController *v2 = [HistoryProductViewController new];
@@ -220,16 +243,19 @@ typedef enum TagRequest {
         [viewcontrollers addObject:v3];
     }
     
-    _swipevc = [HomeTabViewController new];
+    _swipevc = [[HomeTabViewController alloc] init];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
+    [swipevcNav.navigationBar setTranslucent:NO];
     
     /** TAB BAR INDEX 2 **/
-    CategoryViewController *categoryvc = [CategoryViewController new];
+    HotlistViewController *categoryvc = [HotlistViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
+
     [categoryNavBar.navigationBar setTranslucent:NO];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    categoryvc.delegate = self;
     
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];
@@ -600,6 +626,8 @@ typedef enum TagRequest {
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
+    [Localytics setValue:@"No" forProfileAttribute:@"Is Login"];
+    
 }
 
 - (void)removeCacheUser {
@@ -857,5 +885,20 @@ typedef enum TagRequest {
         [defaults synchronize];
     }
 }
+
+- (void)redirectToHomeViewController {
+    _tabBarController.selectedIndex = 0;
+}
+
+// MARK: TKPAppFlow methods
+
+- (TKPStoreManager *)storeManager {
+    if (_storeManager == nil) {
+        _storeManager = [[TKPStoreManager alloc] init];
+    }
+    return _storeManager;
+}
+
+
 
 @end

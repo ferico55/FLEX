@@ -16,6 +16,7 @@
 @required
 - (NSDictionary*)getParameter:(int)tag;
 - (NSString*)getPath:(int)tag;
+- (int)getRequestMethod:(int)tag;
 - (id)getObjectManager:(int)tag;
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag;
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag;
@@ -53,6 +54,7 @@
 @property (weak, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
 @property (nonatomic) int tagRequest;
 @property (nonatomic) BOOL isParameterNotEncrypted;
+@property (nonatomic) BOOL isUsingHmac;
 @property (nonatomic) NSTimeInterval timeInterval;
 @property (nonatomic) NSInteger maxTries;
 

@@ -48,6 +48,10 @@
 #import "HotlistBannerRequest.h"
 #import "HotlistBannerResult.h"
 
+#import "Localytics.h"
+
+#import "UIActivityViewController+Extensions.h"
+
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
 #define CTagFooterCollectionView @"FooterCollectionReusableView"
@@ -336,14 +340,10 @@ HotlistBannerDelegate
     } else {
         self.screenName = @"Browse HotList Detail";
     }
-
-//    [self configureRestKit];
-//    if (_isnodata) {
-//        [self request];
-//    }
-    
     
     self.hidesBottomBarWhenPushed = YES;
+    
+    [Localytics triggerInAppMessage:@"Hot List Result Screen"];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -471,10 +471,11 @@ HotlistBannerDelegate
                     }
                     
                     if (title && url) {
-                        UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                          applicationActivities:nil];
-                        act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                        [self presentViewController:act animated:YES completion:nil];
+                        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                                          url:url
+                                                                                                       anchor:button];
+                        
+                        [self presentViewController:controller animated:YES completion:nil];
                     }
                     
                     break;
@@ -579,6 +580,18 @@ HotlistBannerDelegate
 
 - (void)configureRestKit {
     _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+#ifdef DEBUG
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+    NSString *baseUrl;
+//    if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+    if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
+        baseUrl = @"https://ace-staging.tokopedia.com/";
+    } else {
+        baseUrl = @"https://ajax.tokopedia.com/";
+    }
+    _objectmanager = [RKObjectManager sharedClient:baseUrl];
+#endif
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -1183,7 +1196,8 @@ HotlistBannerDelegate
         kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
         PromoImpressionKey          : product.ad_key,
         PromoSemKey                 : product.ad_sem_key,
-        PromoReferralKey            : product.ad_r
+        PromoReferralKey            : product.ad_r,
+        PromoRequestSource          : @(PromoRequestSourceHotlist)
     };
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData

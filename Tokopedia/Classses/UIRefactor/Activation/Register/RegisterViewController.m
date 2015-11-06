@@ -26,6 +26,8 @@
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
+#import "Localytics.h"
+
 static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
 
 #pragma mark - Register View Controller
@@ -496,6 +498,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [self.view layoutSubviews];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
+            
+            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
 
             TKPDAlert *alert = [TKPDAlert newview];
             alert.text = @"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke akun Anda. Apabila tidak menemukan email tersebut, periksa terlebih dahulu kotak spam Anda. Selamat berbelanja!";
@@ -897,6 +901,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+            
+            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
 
@@ -915,9 +921,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 controller.fullName = fullName;
                 controller.email = _signIn.authentication.userEmail;
             }
-
-            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration
-                                              withValues:@{AFEventParamRegistrationMethod : @"Facebook Registration"}];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             navigationController.navigationBar.translucent = NO;

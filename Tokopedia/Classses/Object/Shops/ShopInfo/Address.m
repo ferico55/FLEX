@@ -12,7 +12,7 @@
 
 - (NSString *)location_phone {
     if ([_location_phone isEqualToString:@"0"]) {
-        return nil;
+        return @"0";
     } else {
         return _location_phone;
     }

@@ -10,4 +10,8 @@
 
 @implementation PromoProductImage
 
+- (NSString*)product_name {
+    return [_product_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

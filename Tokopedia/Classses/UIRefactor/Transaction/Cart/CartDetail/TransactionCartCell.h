@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CartModelView.h"
+#import "ProductModelView.h"
 
 #define TRANSACTION_CART_CELL_IDENTIFIER @"TransactionCartCellIdentifier"
 
@@ -34,6 +36,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *errorProductLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *border;
+
+@property (nonatomic) NSInteger indexPage;
+
 +(id)newcell;
+- (void)setViewModel:(ProductModelView*)viewModel;
+- (void)setCartViewModel:(CartModelView*)viewModel;
 
 @end

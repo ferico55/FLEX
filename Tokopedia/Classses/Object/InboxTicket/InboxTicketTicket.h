@@ -33,5 +33,7 @@
 @property (strong, nonatomic) NSString *ticket_id;
 @property (strong, nonatomic) NSString *ticket_update_by_name;
 @property (strong, nonatomic) NSString *ticket_total_message;
+@property (strong, nonatomic) NSArray *ticket_attachment;
+@property (strong, nonatomic) NSString *ticket_invoice_ref_num;
 
 @end

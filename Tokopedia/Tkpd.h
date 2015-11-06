@@ -21,6 +21,7 @@
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLHttpsString @"https://ws.tokopedia.com"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 
@@ -118,7 +119,7 @@ typedef enum {
 
 #define kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY @"setetalase"
 #define kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY @"setuserinfo"
-//#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
+#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
 //#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
 
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"
@@ -222,6 +223,9 @@ typedef enum {
 // GTM Value
 #define GTMKeyInboxMessageBase @"inboxmessage_base_url"
 #define GTMKeyInboxMessagePost @"inboxmessage_post_url"
+#define GTMKeyActionInboxMessageBase @"inboxmessage_action_base_url"
+#define GTMKeyActionInboxMessagePost @"inboxmessage_action_post_url"
+
 #define GTMKeyInboxMessageFull @"inboxmessage_full_url"
 
 #define GTMKeyInboxTalkBase @"inboxtalk_base_url"
@@ -289,5 +293,7 @@ typedef enum {
 #define IS_IPHONE_5 (IS_IPHONE && SCREEN_MAX_LENGTH == 568.0)
 #define IS_IPHONE_6 (IS_IPHONE && SCREEN_MAX_LENGTH == 667.0)
 #define IS_IPHONE_6P (IS_IPHONE && SCREEN_MAX_LENGTH == 736.0)
+
+#define kTKPD_REDIRECT_TO_HOME  @"tokopedia.kTKPD_REDIRECT_TO_HOME"
 
 #endif

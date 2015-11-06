@@ -48,6 +48,7 @@
 #import "NoResult.h"
 
 #import "PromoRequest.h"
+#import "UIActivityViewController+Extensions.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -158,6 +159,8 @@ TokopediaNetworkManagerDelegate
     CGSize _keyboardSize;
 
     BOOL _isFailRequest;
+    
+    PromoRequest *_promoRequest;
 }
 
 #pragma mark - Initialization
@@ -335,6 +338,16 @@ TokopediaNetworkManagerDelegate
     return CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    CGSize size = CGSizeZero;
+
+    if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
+        size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    return size;
+}
+
+
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
@@ -383,7 +396,7 @@ TokopediaNetworkManagerDelegate
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
-        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
@@ -613,10 +626,11 @@ TokopediaNetworkManagerDelegate
                            _shop.result.info.shop_name,
                            _shop.result.info.shop_location];
         NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
-        activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-        [self presentViewController:activityController animated:YES completion:nil];
+        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                          url:url
+                                                                                       anchor:sender];
+        
+        [self presentViewController:controller animated:YES completion:nil];
     }
 }
 
@@ -774,6 +788,7 @@ TokopediaNetworkManagerDelegate
     
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY    :   kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
                             kTKPDDETAIL_APISHOPIDKEY    :   @(shopID),
+                            @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
                             kTKPDDETAIL_APIPAGEKEY      :   @(_page),
                             kTKPDDETAIL_APILIMITKEY     :   @(_limit),
                             kTKPDDETAIL_APIORERBYKEY    :   @(sort),
@@ -918,11 +933,14 @@ TokopediaNetworkManagerDelegate
 
 - (void)addImpressionClick {
     if ([_data objectForKey:PromoImpressionKey]) {
-        __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+        _promoRequest = [[PromoRequest alloc] init];
         NSString *adKey = [_data objectForKey:PromoImpressionKey];
         NSString *adSemKey = [_data objectForKey:PromoSemKey];
         NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
-        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+        [_promoRequest addImpressionKey:adKey
+                                 semKey:adSemKey
+                            referralKey:adReferralKey
+                                 source:PromoRequestSourceFavoriteShop];
     }
 }
 

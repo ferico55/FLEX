@@ -29,6 +29,8 @@
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
+#import "Localytics.h"
+
 static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
 
 @interface LoginViewController ()
@@ -574,6 +576,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
                                                               userInfo:nil];
+            
+            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+            
         } else if ([_login.result.status isEqualToString:@"1"]) {
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -677,6 +682,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
                                                               userInfo:nil];
+            
+            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
         }
         else
         {

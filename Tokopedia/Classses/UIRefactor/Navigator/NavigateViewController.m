@@ -20,6 +20,10 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "DetailProductViewController.h"
 #import "ProductGalleryViewController.h"
+#import "HotlistResultViewController.h"
+#import "CatalogViewController.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
 
 #import "InboxRootViewController.h"
 #import "InboxMessageViewController.h"
@@ -45,12 +49,17 @@
 
 #import "PromoRequest.h"
 
-@interface NavigateViewController()<SplitReputationVcProtocol>
+#import "GalleryViewController.h"
+
+@interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
 @end
 
 @implementation NavigateViewController {
     UISplitViewController *splitViewController;
+    NSArray *_images;
+    NSUInteger *_indexImage;
+    NSArray *_imageDescriptions;
 }
 -(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
 {
@@ -85,27 +94,17 @@
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
--(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index
+-(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray *)images imageDescriptions:(NSArray *)imageDesc indexImage:(NSInteger)index
 {
     
-    NSMutableArray *productImages = [NSMutableArray new];
-
-    for (NSString *image in imageURLStrings) {
-        ProductImages* images = [ProductImages new];
-        images.image_src = image;
-        images.image_description = @"";
-        [productImages addObject:images];
-    }
-
-    NSDictionary *data = @{
-                           @"image_index" : @(index),
-                           @"images" : productImages
-                           };
+    _images = images;
+    _imageDescriptions = imageDesc;
+    _indexImage = index;
     
-    ProductGalleryViewController *vc = [ProductGalleryViewController new];
-    vc.data = data;
-    
-    [viewController.navigationController presentViewController:vc animated:YES completion:nil];
+    GalleryViewController *gallery = [GalleryViewController new];
+    gallery.canDownload = YES;
+    [gallery initWithPhotoSource:self withStartingIndex:(int)index];
+    [viewController.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID {
@@ -132,6 +131,14 @@
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withLoadedData:(NSDictionary*)loadedData {
     DetailProductViewController *productController = [DetailProductViewController new];
     productController.loadedData = loadedData;
+    productController.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
+- (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.data = data;
     productController.hidesBottomBarWhenPushed = YES;
     
     [viewController.navigationController pushViewController:productController animated:YES];
@@ -308,8 +315,121 @@
 }
 
 
+- (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName {
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+
+    container.data = @{
+                       @"shop_domain" : shopName
+                       };
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
+- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key{
+    CatalogViewController *catalogViewController = [CatalogViewController new];
+    catalogViewController.catalogID = catalogID;
+    catalogViewController.catalogName = key;
+    catalogViewController.catalogImage = @"";
+    catalogViewController.catalogPrice = @"";
+    
+    catalogViewController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:catalogViewController animated:YES];
+}
+
+- (void)navigateToSearchFromViewController:(UIViewController *)viewController withData:(NSDictionary *)data {
+    if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
+        SearchResultViewController *vc = [SearchResultViewController new];
+        vc.delegate = viewController;
+        vc.data =@{
+                   @"search" : [data objectForKey:@"q"]?:@"",
+                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
+                   @"location" : [data objectForKey:@"floc"]?:@"",
+                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                   @"order_by" :[data objectForKey:@"ob"]?:@"",
+                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                   @"sc_identifier" : [data objectForKey:@"sc_identifier"]?:@"",
+                   };
+        NSString *title = @"";
+        if ([data objectForKey:@"q"]) {
+            title = [[data objectForKey:@"q"] capitalizedString];
+        } else if ([data objectForKey:@"department_1"]) {
+            title = [[data objectForKey:@"department_1"] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+            title = [title capitalizedString];
+        }
+        vc.title = title;
+        vc.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:vc animated:YES];
+    } else {
+        SearchResultShopViewController *vc = [SearchResultShopViewController new];
+        vc.data =@{
+                   @"search" : [data objectForKey:@"q"]?:@"",
+                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
+                   @"location" : [data objectForKey:@"floc"]?:@"",
+                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
+                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
+                   @"order_by" :[data objectForKey:@"ob"]?:@"",
+                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
+                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
+                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
+                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
+                   };
+        vc.title = [data objectForKey:@"q"];
+        vc.hidesBottomBarWhenPushed = YES;
+        [viewController.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
+    HotlistResultViewController *controller = [HotlistResultViewController new];
+    controller.data = data;
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+
 #pragma mark - SplitViewReputation Delegate
 - (void)deallocVC {
     splitViewController = nil;
 }
+
+#pragma mark - Photo Gallery Delegate
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
+{
+    if(_images == nil)
+        return 0;
+    
+    return (int)_images.count;
+}
+
+
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
+{
+    if (_imageDescriptions.count==0) {
+        return @"";
+    }
+    
+    if(((int) index) < 0)
+        return _imageDescriptions[0];
+    else if(((int)index) > _imageDescriptions.count-1)
+        return _imageDescriptions[_imageDescriptions.count - 1];
+    
+    return _imageDescriptions[index];
+}
+
+- (UIImage *)photoGallery:(NSUInteger)index {
+    if(((int) index) < 0)
+        return ((UIImageView*)_images[0]).image;
+    else if(((int)index) > _images.count-1)
+        return ((UIImageView*)_images[_images.count-1]).image;
+    return ((UIImageView*)_images[index]).image;
+}
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
+    return nil;
+}
+
 @end

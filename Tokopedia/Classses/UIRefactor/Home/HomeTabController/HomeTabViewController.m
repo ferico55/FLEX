@@ -25,7 +25,6 @@
 #import "InboxReviewViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
-//#import "WishListViewController.h"
 
 #import "MyWishlistViewController.h"
 
@@ -33,20 +32,28 @@
 
 #import "InboxRootViewController.h"
 #import "NavigateViewController.h"
+#import "CategoryViewController.h"
 
-@interface HomeTabViewController () <UIScrollViewDelegate,
-                                    NotificationManagerDelegate,
-                                    RedirectHandlerDelegate,
-                                    TKPDTabHomeDelegate> {
+#import "Localytics.h"
+
+@interface HomeTabViewController ()
+<
+    UIScrollViewDelegate,
+    NotificationManagerDelegate,
+    RedirectHandlerDelegate,
+    TKPDTabHomeDelegate
+>
+{
     NotificationManager *_notifManager;
     NSInteger _page;
     BOOL _isAbleToSwipe;
     UserAuthentificationManager *_userManager;
     RedirectHandler *_redirectHandler;
     NavigateViewController *_navigate;
-    
+    NSURL *_deeplinkUrl;
 }
 
+@property (strong, nonatomic) CategoryViewController *categoryController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
@@ -61,6 +68,13 @@
 @implementation HomeTabViewController
 
 #pragma mark - Init
+
+- (instancetype)init {
+    self = [super init];
+    [self initNotificationCenter];
+    return self;
+}
+
 - (void)initNotificationCenter {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSwipeHomePage:)
@@ -70,6 +84,11 @@
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveDeeplinkUrl:)
+                                                 name:@"didReceiveDeeplinkUrl" object:nil];
+
+    
 }
 
 #pragma mark - Lifecycle
@@ -77,17 +96,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _hotlistController = [HotlistViewController new];
-    _hotlistController.delegate = self;
+	__weak typeof(self) weakSelf = self;
+    _categoryController = [CategoryViewController new];
+    _categoryController.delegate = weakSelf;
+    
+    
     
     _productFeedController = [ProductFeedViewController new];
-    _productFeedController.delegate = self;
+    _productFeedController.delegate = weakSelf;
     
     _historyController = [HistoryProductViewController new];
-    _historyController.delegate = self;
+    _historyController.delegate = weakSelf;
     
     _shopViewController = [FavoritedShopViewController new];
-    _shopViewController.delegate = self;
+    _shopViewController.delegate = weakSelf;
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     
@@ -98,9 +120,6 @@
     _redirectHandler.delegate = self;
     
     _navigate = [NavigateViewController new];
-    
-    
-    [self initNotificationCenter];
 
     
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -119,10 +138,10 @@
     [_scrollView setPagingEnabled:YES];
     _scrollView.delegate = self;
 
-    [self addChildViewController:_hotlistController];
-    [self.scrollView addSubview:_hotlistController.view];
+    [self addChildViewController:_categoryController];
+    [self.scrollView addSubview:_categoryController.view];
     
-    [_hotlistController didMoveToParentViewController:self];
+    [_categoryController didMoveToParentViewController:self];
     [self setArrow];
     [self setHeaderBar];
 }
@@ -130,7 +149,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-//    [_scrollView setFrame:self.view.frame];
     self.navigationController.title = @"Beranda";
     
     [self goToPage:_page];
@@ -151,6 +169,8 @@
         [_scrollView setContentSize:CGSizeMake(300, 300)];
         [_scrollView setPagingEnabled:NO];
     }
+    
+    [Localytics triggerInAppMessage:@"Home - Hot List"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -210,13 +230,13 @@
 
 - (void)goToPage:(NSInteger)page {
     if(page == 0) {
-        CGRect frame = _hotlistController.view.frame;
+        CGRect frame = _categoryController.view.frame;
         frame.origin.x = 0;
-        _hotlistController.view.frame = frame;
+        _categoryController.view.frame = frame;
         
-        [self addChildViewController:_hotlistController];
-        [self.scrollView addSubview:_hotlistController.view];
-        [_hotlistController didMoveToParentViewController:self];
+        [self addChildViewController:_categoryController];
+        [self.scrollView addSubview:_categoryController.view];
+        [_categoryController didMoveToParentViewController:self];
     }
     if(page == 1) {
         CGRect frame = _productFeedController.view.frame;
@@ -387,5 +407,6 @@
     
     [_redirectHandler proxyRequest:code];
 }
+
 
 @end

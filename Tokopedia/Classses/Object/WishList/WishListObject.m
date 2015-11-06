@@ -9,5 +9,5 @@
 #import "WishListObject.h"
 
 @implementation WishListObject
-@synthesize message_error, status, server_process_time, result;
+@synthesize message_error, status, server_process_time, data, result;
 @end

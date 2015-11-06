@@ -14,7 +14,8 @@ typedef enum {
     SOLUTION_RETUR          = 2,
     SOLUTION_RETUR_REFUND   = 3,
     SOLUTION_SELLER_WIN     = 4,
-    SOLUTION_SEND_REMAINING = 5
+    SOLUTION_SEND_REMAINING = 5,
+    SOLUTION_CHECK_COURIER  = 6
 }TYPE_LAST_SOLUTION;
 
 typedef enum {
@@ -70,8 +71,8 @@ typedef enum {
 #define ACTION_ACCEPT_SOLUTION @"accept_resolution"
 #define ACTION_ACCEPT_ADMIN_SOLUTION @"accept_admin_resolution"
 #define ACTION_FINISH_RESOLUTION @"finish_resolution_retur"
-#define ACTION_REPLY_CONVERSATION @"reply_conversation"
-#define ACTION_APPEAL @"reject_admin_solution"
+#define ACTION_REPLY_CONVERSATION @"reply_conversation_validation"
+#define ACTION_APPEAL @"reject_admin_resolution_validation"
 #define ACTION_REPORT_RESOLUTION @"report_resolution"
 
 #define API_RESOLUTION_DETAIL_KEY @"resolution_detail"

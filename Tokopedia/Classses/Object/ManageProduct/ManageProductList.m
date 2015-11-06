@@ -10,6 +10,19 @@
 
 @implementation ManageProductList
 
+//- (instancetype)init {
+//    self = [super init];
+//    if (self) {
+////        TKPString *string = [TKPString new];
+//    }
+//    return self;
+//}
+
+//-(TKPString *)product_name
+//{
+//    return [_product_name init];
+//}
+
 - (NSString *)product_name
 {
     return [_product_name kv_decodeHTMLCharacterEntities];

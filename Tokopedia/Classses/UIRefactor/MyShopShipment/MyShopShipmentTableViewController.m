@@ -262,6 +262,8 @@ GeneralTableViewControllerDelegate
     
     [self configureRestKit];
     [self request];
+    
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -987,26 +989,17 @@ GeneralTableViewControllerDelegate
         if(((long)_shipment.jne.jne_fee) == 0) {
             [errorMessage addObject:@"Biaya Tambahan JNE harus diisi."];
         }
-        else if(((long)_shipment.jne.jne_fee) > 5000) {
-            [errorMessage addObject:@"Maksimum Biaya JNE adalah Rp 5.000,-"];
-        }
     }
     
     if(_showTikiExtraFee) {
         if(((long)_shipment.tiki.tiki_fee) == 0) {
             [errorMessage addObject:@"Biaya Tambahan Tiki harus diisi."];
         }
-        else if(((long)_shipment.tiki.tiki_fee) > 5000) {
-            [errorMessage addObject:@"Maksimum Biaya Tiki adalah Rp 5.000,-"];
-        }
     }
     
     if(_showPosExtraFee) {
         if(((long)_shipment.pos.pos_fee) == 0) {
             [errorMessage addObject:@"Biaya Tambahan Pos Indonesia harus diisi."];
-        }
-        else if(((long)_shipment.pos.pos_fee) > 5000) {
-            [errorMessage addObject:@"Maksimum Biaya Pos Indonesia adalah Rp 5.000,-"];
         }
     }
     
@@ -1018,8 +1011,7 @@ GeneralTableViewControllerDelegate
                 
                 return;
             }
-        }
-        
+        }        
         
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *_auth = [_userManager getUserLoginData];
@@ -1251,6 +1243,12 @@ GeneralTableViewControllerDelegate
     }
 }
 
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
+
 #pragma mark - General table delegate
 
 - (void)didSelectObject:(id)object
@@ -1456,7 +1454,12 @@ GeneralTableViewControllerDelegate
 {
     ShippingInfo *shippingInfo = [result.dictionary objectForKey:@""];
     BOOL status = [shippingInfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
+    
+    if (shippingInfo.message_error) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:shippingInfo.message_error delegate:self];
+        [alert show];
+    }
+    else if (status) {
         
         UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
         if(createShopViewController == nil)
@@ -1538,7 +1541,7 @@ GeneralTableViewControllerDelegate
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if ([package.name isEqualToString:@"Next Day Package"]) {
                         _RPXPackageNextDay = package;
-                    } else if ([package.name isEqualToString:@"Economy Package"]) {
+                    } else if ([package.name isEqualToString:@"Regular Package"]) {
                         _RPXPackageEconomy = package;
                     }
                 }

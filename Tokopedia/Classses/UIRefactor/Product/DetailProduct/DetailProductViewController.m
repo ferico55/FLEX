@@ -82,6 +82,9 @@
 #import "EtalaseList.h"
 #import "TAGDataLayer.h"
 
+#import "Localytics.h"
+#import "UIActivityViewController+Extensions.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -192,6 +195,8 @@ UIAlertViewDelegate
     NSString *_detailProductBaseUrl;
     NSString *_detailProductPostUrl;
     NSString *_detailProductFullUrl;
+
+    PromoRequest *_promoRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -450,7 +455,7 @@ UIAlertViewDelegate
     inset.bottom += 20;
     _table.contentInset = inset;
     
-
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     _favButton.layer.cornerRadius = 3;
     _favButton.layer.borderWidth = 1;
@@ -622,10 +627,11 @@ UIAlertViewDelegate
                                        _formattedProductTitle,
                                        _product.result.shop_info.shop_name];
                     NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-                    UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                      applicationActivities:nil];
-                    act.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                    [self presentViewController:act animated:YES completion:nil];
+                    UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                                      url:url
+                                                                                                   anchor:btn];
+                    
+                    [self presentViewController:controller animated:YES completion:nil];
                 }
                 break;
             }
@@ -1183,7 +1189,9 @@ UIAlertViewDelegate
     else if(tag == CTagTokopediaNetworkManager)
         return @{
                  kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"
+                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0",
+                 @"product_key" : [_data objectForKey:@"product_key"]?:@"",
+                 @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
                  };
     else if(tag == CTagOtherProduct)
         return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"};
@@ -2002,12 +2010,18 @@ UIAlertViewDelegate
                 [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
            }
             
-//            [viewContentWarehouse removeConstraints:_constraint];
             constraintHeightWarehouse.constant = 50;
-            _constraintHeightShare.constant = 0;
-//            [viewContentWarehouse addConstraint:constraintHeightWarehouse];
+            UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+            if(![userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]){
+                _constraintHeightShare.constant = 50;
+                _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 570);
+            }
+            else
+            {
+               _constraintHeightShare.constant = 0;
+                _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
+            }
             [viewContentWarehouse setHidden:NO];
-            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height);
             _table.tableHeaderView = _header;
         }
         else
@@ -2031,7 +2045,7 @@ UIAlertViewDelegate
 //    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
 //    [viewContentWarehouse addConstraints:_constraint];
     viewContentWarehouse.hidden = YES;
-    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height
+    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520
                             );
     _table.tableHeaderView = _header;
 
@@ -2110,6 +2124,7 @@ UIAlertViewDelegate
                 [btnShare removeConstraints:btnShare.constraints];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
                 [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+                
             } else {
                 if(!_product.isDummyProduct) {
                     [_buyButton setHidden:NO];
@@ -2209,6 +2224,7 @@ UIAlertViewDelegate
                 _favButton.hidden = YES;
             } else {
                 _favButton.hidden = NO;
+                
             }
             
             // UIView below table view (View More Product button)
@@ -2461,10 +2477,12 @@ UIAlertViewDelegate
                            _formattedProductTitle,
                            _product.result.shop_info.shop_name];
         NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[title, url]
-                                                                                         applicationActivities:nil];
-        activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-        [self presentViewController:activityController animated:YES completion:nil];
+        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                          url:url
+                                                                                       anchor:sender];
+        
+        [self presentViewController:controller animated:YES completion:nil];
+        
     }
 }
 
@@ -2910,6 +2928,30 @@ UIAlertViewDelegate
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
+
+        NSString *productId = _product.result.product.product_id?:@"";
+        NSString *productName = _product.result.product.product_name?:@"";
+        
+        NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
+        Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
+        NSString *productCategory = lastCategory.department_name?:@"";
+
+        NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
+
+        NSDictionary *attributes = @{
+                                     @"Product Id" : productId,
+                                     @"Product Name" : productName,
+                                     @"Product Price" : productPrice,
+                                     @"Product Category" : productCategory
+                                     };
+        
+        [Localytics tagEvent:@"Event : Add To Wishlist" attributes:attributes];
+        
+        [Localytics incrementValueBy:1
+                 forProfileAttribute:@"Profile : Has Wishlist"
+                           withScope:LLProfileScopeApplication];
+        
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -3140,12 +3182,16 @@ UIAlertViewDelegate
 }
 
 - (void)addImpressionClick {
-    __strong PromoRequest *promoRequest = [[PromoRequest alloc] init];
+    _promoRequest = [[PromoRequest alloc] init];
     NSString *adKey = [_data objectForKey:PromoImpressionKey];
     NSString *adSemKey = [_data objectForKey:PromoSemKey];
     NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
+    PromoRequestSourceType source = [[_data objectForKey:PromoRequestSource] integerValue];
     if (adKey) {
-        [promoRequest addImpressionKey:adKey semKey:adSemKey referralKey:adReferralKey];
+        [_promoRequest addImpressionKey:adKey
+                                 semKey:adSemKey
+                            referralKey:adReferralKey
+                                 source:source];
     }
 }
 @end

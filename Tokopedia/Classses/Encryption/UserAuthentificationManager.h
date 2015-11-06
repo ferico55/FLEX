@@ -27,8 +27,9 @@
 - (NSString*)getMyDeviceIdToken;
 - (BOOL)isMyShopWithShopId:(NSString*)shopId;
 - (BOOL)isMyUser:(NSString*)userId;
-- (NSString*)addParameterAndConvertToString:(id)params;
+- (NSString *)addParameterAndConvertToString:(id)params;
+- (NSDictionary *)autoAddParameter:(id)params ;
 
 - (void)setUserImage:(NSString *)userImage;
 
-@end    
+@end

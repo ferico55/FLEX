@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UploadImageImage : NSObject
+@interface UploadImageImage : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *pic_code;
 @property (nonatomic, strong) NSString *pic_src;

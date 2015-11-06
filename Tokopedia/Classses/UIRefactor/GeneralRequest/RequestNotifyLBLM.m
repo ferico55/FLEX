@@ -47,6 +47,7 @@
         _networkManager = [TokopediaNetworkManager new];
         _networkManager.delegate = self;
         _networkManager.isParameterNotEncrypted = YES;
+        _networkManager.isUsingHmac = YES;
     }
     return _networkManager;
 }
