@@ -1898,6 +1898,8 @@
 		85FF8C661BE9A58B0015B16F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 85FF85231BE9A58A0015B16F /* README.md */; };
 		85FF8C681BE9A58B0015B16F /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 85FF85261BE9A58A0015B16F /* vt-iOSlib-1.0.1.tar.gz */; };
 		85FF8C691BE9A58B0015B16F /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 85FF85271BE9A58A0015B16F /* vt-iOSlib-1.0.1.zip */; };
+		BBCACD351BF0425000AD1835 /* NoResultReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCACD331BF0425000AD1835 /* NoResultReusableView.m */; settings = {ASSET_TAGS = (); }; };
+		BBCACD361BF0425000AD1835 /* NoResultReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCACD341BF0425000AD1835 /* NoResultReusableView.xib */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4781,6 +4783,9 @@
 		85FF85271BE9A58A0015B16F /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BBCACD321BF0425000AD1835 /* NoResultReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoResultReusableView.h; sourceTree = "<group>"; };
+		BBCACD331BF0425000AD1835 /* NoResultReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoResultReusableView.m; sourceTree = "<group>"; };
+		BBCACD341BF0425000AD1835 /* NoResultReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoResultReusableView.xib; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
@@ -8052,6 +8057,9 @@
 				85FF803B1BE9A5880015B16F /* RetryCollectionReusableView.h */,
 				85FF803C1BE9A5880015B16F /* RetryCollectionReusableView.m */,
 				85FF803D1BE9A5880015B16F /* RetryCollectionReusableView.xib */,
+				BBCACD321BF0425000AD1835 /* NoResultReusableView.h */,
+				BBCACD331BF0425000AD1835 /* NoResultReusableView.m */,
+				BBCACD341BF0425000AD1835 /* NoResultReusableView.xib */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -10598,6 +10606,7 @@
 				85FF8C381BE9A58B0015B16F /* tabnav_bg.png in Resources */,
 				85FF89FF1BE9A58B0015B16F /* icon_3.png in Resources */,
 				85FF8AD61BE9A58B0015B16F /* icon_medal_gold.png in Resources */,
+				BBCACD361BF0425000AD1835 /* NoResultReusableView.xib in Resources */,
 				85FF8B151BE9A58B0015B16F /* icon_neutral_smile_small@2x.png in Resources */,
 				85FF89F91BE9A58B0015B16F /* icon_2.png in Resources */,
 				85FF8A0F1BE9A58B0015B16F /* tab_btm_shadow.png in Resources */,
@@ -11455,6 +11464,7 @@
 				85FF86E01BE9A58A0015B16F /* TxOrderStatusList.m in Sources */,
 				85FF86A71BE9A58A0015B16F /* TransactionCartGateway.m in Sources */,
 				85FF874E1BE9A58A0015B16F /* CategoryMenuViewCell.m in Sources */,
+				BBCACD351BF0425000AD1835 /* NoResultReusableView.m in Sources */,
 				85FF89971BE9A58B0015B16F /* TxOrderConfirmedButtonCell.m in Sources */,
 				85FF85731BE9A58A0015B16F /* CatalogReview.m in Sources */,
 				85FF86BB1BE9A58A0015B16F /* TransactionSummary.m in Sources */,

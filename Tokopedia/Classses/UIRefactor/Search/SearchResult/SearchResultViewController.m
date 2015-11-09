@@ -50,6 +50,7 @@
 
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
+#import "NoResultReusableView.h"
 
 #pragma mark - Search Result View Controller
 
@@ -85,7 +86,8 @@ GeneralSingleProductDelegate,
 TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 PromoRequestDelegate,
-PromoCollectionViewDelegate
+PromoCollectionViewDelegate,
+NoResultDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -130,7 +132,7 @@ PromoCollectionViewDelegate
     
     UserAuthentificationManager *_userManager;
     TAGContainer *_gtmContainer;
-    NoResultView *_noResultView;
+    NoResultReusableView *_noResultView;
     
     NSString *_searchBaseUrl;
     NSString *_searchPostUrl;
@@ -149,6 +151,11 @@ PromoCollectionViewDelegate
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]init];
+    _noResultView generateAllElements: title:<#(NSString *)#> desc:<#(NSString *)#> btnTitle:<#(NSString *)#>
+}
+
 #pragma mark - Life Cycle
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -165,7 +172,6 @@ PromoCollectionViewDelegate
     self.navigationItem.backBarButtonItem = backButton;
     
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
     _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
@@ -175,6 +181,7 @@ PromoCollectionViewDelegate
     _params = [NSMutableDictionary new];
     _start = 0;
     
+    [self initNoResultView];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE]];
@@ -811,9 +818,9 @@ PromoCollectionViewDelegate
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
             }
         } else {
+            //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             [_collectionView addSubview:_noResultView];
-            
         }
         
         if(_start > 0) [self requestPromo];
@@ -934,6 +941,10 @@ PromoCollectionViewDelegate
     return RKRequestMethodGET;
 }
 
+- (void) buttonDidTapped:(id)sender{
+    NSLog(@"cuy\n");
+}
+
 #pragma mark - Other Method
 - (void)configureGTM {
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
@@ -946,6 +957,7 @@ PromoCollectionViewDelegate
     _searchPostUrl = [_gtmContainer stringForKey:GTMKeySearchPost];
     _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
 }
+
 
 #pragma mark - Promo request delegate
 

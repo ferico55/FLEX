@@ -14,6 +14,7 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "NoResultView.h"
+#import "NoResultReusableView.h"
 
 #import "NavigateViewController.h"
 #import "ProductCell.h"
@@ -76,7 +77,7 @@ PromoRequestDelegate
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResult;
 }
 
 #pragma mark - Initialization
@@ -101,7 +102,7 @@ PromoRequestDelegate
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
+    _noResult = [[NoResultReusableView alloc] init];
     _isNoData = (_product.count > 0);
     _page = 1;
     
