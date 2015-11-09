@@ -15,7 +15,7 @@
 @import GoogleMaps;
 
 
-@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate>
+@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate, UISearchControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet GMSMapView *mapview;
 
@@ -96,6 +96,7 @@
     
     _placeHistories = [NSMutableArray new];
     [self loadHistory];
+//    [self constraint];
 }
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
@@ -245,9 +246,6 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (_placeHistories.count == 0) {
-        return 1;
-    }
     return 2;
 }
 
@@ -305,10 +303,10 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if (section == 0 && _autoCompleteResults.count > 0) {
         return @"Sugestions";
     }
-    if (section == 1) {
+    if (section == 1 && _placeHistories.count > 0) {
         return @"Recent Searches";
     }
     
@@ -322,14 +320,20 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSString *searchbarText = self.searchDisplayController.searchBar.text;
     [self.searchDisplayController setActive:NO];
+    self.searchDisplayController.searchBar.text = searchbarText;
+    if ([searchbarText isEqualToString:@""]) {
+        [_autoCompleteResults removeAllObjects];
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
     
     if (indexPath.section == 0) {
         [self doGeneratePlaceDetailPlaceID:[self placeAtIndexPath:indexPath].placeID addressSugestion:[self placeAtIndexPath:indexPath]];
     }
     else
     {
-        CLLocationCoordinate2D annotationCoordinate = CLLocationCoordinate2DMake([[self placeLatitudeHistoryAtIndexPath:indexPath] doubleValue], [[self placeLongitudeHistoryAtIndexPath:indexPath] doubleValue]);
+        CLLocationCoordinate2D annotationCoordinate = CLLocationCoordinate2DMake([[self placeLatitudeHistoryAtIndexPath:indexPath] doubleValue],[[self placeLongitudeHistoryAtIndexPath:indexPath] doubleValue]);
 
         [self focusMapToLocation:annotationCoordinate
              shouldUpdateAddress:NO
@@ -428,14 +432,25 @@
 
 #pragma mark -
 #pragma mark UISearchBar Delegate
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    self.searchDisplayController.searchResultsTableView.contentInset = UIEdgeInsetsZero;
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+    controller.searchResultsTableView.contentInset = UIEdgeInsetsMake(0.0f, 0.f, 30.f, 0.f);
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+}
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    if ([searchBar.text  isEqualToString:@""]) {
+        [_autoCompleteResults removeAllObjects];
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
     
-    return YES;
+    if (_placeHistories.count > 0) {
+        [self.searchDisplayController setActive:YES animated:YES];
+        self.searchDisplayController.searchResultsTableView.hidden = NO;
+        [self.searchDisplayController.searchResultsTableView.superview bringSubviewToFront:self.searchDisplayController.searchResultsTableView];
+    }
 }
 
 
@@ -444,6 +459,43 @@
     
     // Return YES to cause the search result table view to be reloaded.
     return YES;
+}
+
+-(void)constraint
+{
+    UITableView *tableView = self.searchDisplayController.searchResultsTableView;
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
+                                                                attribute:NSLayoutAttributeTop
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:tableView.superview
+                                                                attribute:NSLayoutAttributeTop
+                                                               multiplier:1.0
+                                                                 constant:0.0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
+                                                          attribute:NSLayoutAttributeLeading
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:tableView.superview
+                                                          attribute:NSLayoutAttributeLeading
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:tableView.superview
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
+                                                          attribute:NSLayoutAttributeTrailing
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:tableView.superview
+                                                          attribute:NSLayoutAttributeTrailing
+                                                         multiplier:1.0
+                                                           constant:0.0]];
 }
 
 #pragma mark - History Search
@@ -458,8 +510,8 @@
     
     NSDictionary *history = @{@"addressSugestion":addressSugestion.attributedFullText.string,
                               @"placeID":addressSugestion.placeID,
-                              @"longitude": latitude,
-                              @"latitude": longitude};
+                              @"longitude": longitude,
+                              @"latitude": latitude};
     
     if(![_placeHistories containsObject:history]) {
         [_placeHistories insertObject:history atIndex:0];
