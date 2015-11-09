@@ -46,9 +46,6 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 
-#import "PlacePickerViewController.h"
-
-
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -234,7 +231,7 @@ typedef enum TagRequest {
     }
     else{
         // after login
-        CategoryViewController *controller = [[CategoryViewController alloc] init];
+        HotlistViewController *controller = [[HotlistViewController alloc] init];
         controller.data = @{@"auth" : _auth?:@{}};
         [viewcontrollers addObject:controller];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
@@ -250,7 +247,7 @@ typedef enum TagRequest {
     [swipevcNav.navigationBar setTranslucent:NO];
     
     /** TAB BAR INDEX 2 **/
-    PlacePickerViewController *categoryvc = [PlacePickerViewController new];
+    HotlistViewController *categoryvc = [HotlistViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
 
     [categoryNavBar.navigationBar setTranslucent:NO];
