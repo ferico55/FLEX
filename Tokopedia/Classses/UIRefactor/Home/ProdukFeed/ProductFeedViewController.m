@@ -145,7 +145,7 @@ PromoRequestDelegate
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Home - Product Feed"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Home - Product Feed"}];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];

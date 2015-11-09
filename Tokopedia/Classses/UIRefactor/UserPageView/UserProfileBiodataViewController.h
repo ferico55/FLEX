@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UserProfileBiodataViewController : GAITrackedViewController
+@interface UserProfileBiodataViewController : UIViewController
 {
     IBOutlet NSLayoutConstraint *constraintHeightTableView;
 }

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class InboxMessageDetailViewController;
 
-@interface InboxMessageViewController : GAITrackedViewController
+@interface InboxMessageViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 

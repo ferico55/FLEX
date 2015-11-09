@@ -194,6 +194,9 @@ HotlistBannerDelegate
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+
+    self.screenName = @"Hotlist Result";
+    
     // set title navigation
     if ([_data objectForKey:kTKPDHOME_DATATITLEKEY]) {
         self.title = [_data objectForKey:kTKPDHOME_DATATITLEKEY];
@@ -339,9 +342,9 @@ HotlistBannerDelegate
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
 
     if(self.isFromAutoComplete) {
-        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Auto Complete - Browse HotList Detail"}];
+        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Auto Complete - Browse HotList Detail"}];
     } else {
-        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Browse Hot List Detail"}];
+        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Browse Hot List Detail"}];
     }
     
     self.hidesBottomBarWhenPushed = YES;

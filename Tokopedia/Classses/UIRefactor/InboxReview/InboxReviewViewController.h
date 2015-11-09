@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class DetailReviewViewController;
 
-@interface InboxReviewViewController : GAITrackedViewController
+@interface InboxReviewViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 

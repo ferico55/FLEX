@@ -165,7 +165,7 @@
     }
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Result - Shop Tab"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Search Result - Shop Tab"}];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }

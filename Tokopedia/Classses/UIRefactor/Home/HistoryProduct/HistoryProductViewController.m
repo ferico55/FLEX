@@ -118,7 +118,7 @@ typedef enum TagRequest {
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Home - History Product"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Home - History Product"}];
 }
 
 #pragma mark - Collection Delegate

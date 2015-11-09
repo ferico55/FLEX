@@ -465,7 +465,7 @@
      if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
          
          TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-         [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you page - Saldo Tokopedia"}];
+         [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you page - Saldo Tokopedia"}];
          
          NSArray *detailPaymentIfUsingSaldo = @[
                                                 @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
@@ -492,15 +492,15 @@
         
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
         
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - Transfer Bank"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - Transfer Bank"}];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_KLIK_BCA)]) {
             
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - Klik BCA"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - Klik BCA"}];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INDOMARET)]) {
         
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - Indomaret"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - Indomaret"}];
 
         }
         
@@ -571,23 +571,23 @@
 
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]) {
 
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - Mandiri eCash"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - Mandiri eCash"}];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)]) {
 
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - Mandiri ClickPay"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - Mandiri ClickPay"}];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)]) {
 
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - KlikBca"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - KlikBca"}];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]) {
         
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - Credit Card"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - Credit Card"}];
 
         } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]) {
 
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Thank you Page - Installment"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Thank you Page - Installment"}];
 
         }
         

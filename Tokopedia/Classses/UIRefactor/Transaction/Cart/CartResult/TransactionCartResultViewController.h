@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TransactionCartResultViewController : GAITrackedViewController
+@interface TransactionCartResultViewController : UIViewController
 
 @property (nonatomic, strong)NSDictionary *data;
 

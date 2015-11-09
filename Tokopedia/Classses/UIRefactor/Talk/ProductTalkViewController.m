@@ -173,7 +173,7 @@
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Product - Talk List"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Product - Talk List"}];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

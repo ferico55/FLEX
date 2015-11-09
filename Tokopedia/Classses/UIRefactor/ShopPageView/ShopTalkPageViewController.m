@@ -195,7 +195,7 @@ UIAlertViewDelegate>
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Talk List"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shop - Talk List"}];
 
     _userManager = [UserAuthentificationManager new];    
 }

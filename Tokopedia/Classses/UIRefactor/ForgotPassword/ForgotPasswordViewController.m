@@ -58,7 +58,7 @@
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Forgot Password Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Forgot Password Page"}];
 }
 
 #pragma mark - Tokopedia Network Delegate

@@ -175,7 +175,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     self.title = kTKPDREGISTER_NEW_TITLE;
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Register Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Register Page"}];
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;

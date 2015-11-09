@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TKPDTabHomeViewController.h"
 
-@interface ProductFeedViewController : GAITrackedViewController
+@interface ProductFeedViewController : UIViewController
 
 @property NSInteger index;
 @property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;

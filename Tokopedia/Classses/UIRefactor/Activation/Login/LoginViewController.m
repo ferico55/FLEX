@@ -164,7 +164,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Login Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Login Page"}];
 
     _loginButton.layer.cornerRadius = 3;
     
@@ -665,14 +665,14 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [dataLayer pushValue:@"" forKey:@""];
             
             //add user login to GA
-            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker setAllowIDFACollection:YES];
-            [tracker set:@"&uid" value:_login.result.user_id];
-            // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
-            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
-                                                                  action:@"User Sign In"  // Event action (required)
-                                                                   label:nil              // Event label
-                                                                   value:nil] build]];    // Event value
+//            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+//            [tracker setAllowIDFACollection:YES];
+//            [tracker set:@"&uid" value:_login.result.user_id];
+//            // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
+//            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
+//                                                                  action:@"User Sign In"  // Event action (required)
+//                                                                   label:nil              // Event label
+//                                                                   value:nil] build]];    // Event value
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
             

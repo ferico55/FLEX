@@ -330,7 +330,7 @@ TokopediaNetworkManagerDelegate
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Product List"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shop - Product List"}];
 }
 
 - (void)didReceiveMemoryWarning {

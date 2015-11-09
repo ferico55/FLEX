@@ -107,7 +107,7 @@
     self.title = @"Status Pengiriman";
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shipping Status"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shipping Status"}];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                       style:UIBarButtonItemStyleBordered

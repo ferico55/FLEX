@@ -114,7 +114,7 @@
     [super viewWillAppear:animated];
 
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Cart Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Cart Page"}];
     
     if (_index == 0) {
         

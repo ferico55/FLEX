@@ -222,7 +222,7 @@
     [super viewWillAppear:animated];
 
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Inbox Review"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Inbox Review"}];
 
     if (!_isRefreshing) {
         [self configureRestkit];

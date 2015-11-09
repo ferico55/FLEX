@@ -115,7 +115,7 @@
     self.title = @"Daftar Transaksi";
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Transaction List"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Transaction List"}];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

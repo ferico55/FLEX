@@ -190,7 +190,7 @@
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shop - Note List"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shop - Note List"}];
     
     if (!_isrefreshview) {
         [self configureRestKit];

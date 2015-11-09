@@ -452,7 +452,8 @@ UIAlertViewDelegate
     [super viewWillAppear:animated];
 
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Product Info"}];
+//    [dataLayer push:@{@"event": @"Open Screen", @"Screen Name": @"Product Info"}];
+    [dataLayer push:@{@"event" : @"openScreen"}];
 
     _promoteNetworkManager.delegate = self;
     

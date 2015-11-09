@@ -135,7 +135,7 @@ typedef enum TagRequest {
     [super viewWillAppear:animated];
 
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Home - Wish List"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Home - Wish List"}];
 }
 
 - (void)registerNib {

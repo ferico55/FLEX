@@ -124,7 +124,7 @@
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Shipping Confirmation"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shipping Confirmation"}];
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

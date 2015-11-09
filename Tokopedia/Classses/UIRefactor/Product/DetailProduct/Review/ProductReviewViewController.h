@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #pragma mark - Product Review View Controller
-@interface ProductReviewViewController : GAITrackedViewController
+@interface ProductReviewViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *data;
 

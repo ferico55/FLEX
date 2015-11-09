@@ -747,10 +747,10 @@
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"Add Product - Fail"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+//    id tracker = [[GAI sharedInstance] defaultTracker];
+//    [tracker setAllowIDFACollection:YES];
+//    [tracker set:kGAIScreenName value:@"Add Product - Fail"];
+//    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
     if (tag == TAG_REQUEST_VALIDATION) {
         [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
@@ -1181,10 +1181,10 @@
             [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         }
         if (setting.result.is_success == 1 || setting.result.product_id!=0) {
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker setAllowIDFACollection:YES];
-            [tracker set:kGAIScreenName value:@"Add Product - Success"];
-            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+//            id tracker = [[GAI sharedInstance] defaultTracker];
+//            [tracker setAllowIDFACollection:YES];
+//            [tracker set:kGAIScreenName value:@"Add Product - Success"];
+//            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
             NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
             NSString *defaultSuccessMessage = (type == TYPE_ADD_EDIT_PRODUCT_ADD)?SUCCESSMESSAGE_ADD_PRODUCT:SUCCESSMESSAGE_EDIT_PRODUCT;SUCCESSMESSAGE_ADD_PRODUCT;

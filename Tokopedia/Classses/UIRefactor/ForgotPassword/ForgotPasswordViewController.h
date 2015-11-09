@@ -8,6 +8,6 @@
 
 #import "GAITrackedViewController.h"
 
-@interface ForgotPasswordViewController : GAITrackedViewController
+@interface ForgotPasswordViewController : UIViewController
 
 @end

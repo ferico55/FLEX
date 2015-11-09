@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShipmentStatusViewController : GAITrackedViewController
+@interface ShipmentStatusViewController : UIViewController
 
 @end

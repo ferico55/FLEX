@@ -220,7 +220,7 @@
     self.title = @"Beli";
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"ATC Form Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"ATC Form Page"}];
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

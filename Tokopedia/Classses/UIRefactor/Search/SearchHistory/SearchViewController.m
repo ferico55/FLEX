@@ -142,7 +142,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self initNotificationManager];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Search Page"}];
     
     self.hidesBottomBarWhenPushed = NO;
     

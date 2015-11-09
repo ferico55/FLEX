@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MyShopEtalaseViewController : GAITrackedViewController
+@interface MyShopEtalaseViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *data;
 

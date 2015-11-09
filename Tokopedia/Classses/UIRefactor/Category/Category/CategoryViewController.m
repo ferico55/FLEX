@@ -111,7 +111,7 @@
     [self loadBanners];
 
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Top Category"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Top Category"}];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

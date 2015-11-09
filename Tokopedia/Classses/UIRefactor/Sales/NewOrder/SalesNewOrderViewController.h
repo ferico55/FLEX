@@ -15,7 +15,7 @@
 
 @end
 
-@interface SalesNewOrderViewController : GAITrackedViewController
+@interface SalesNewOrderViewController : UIViewController
 
 @property (weak, nonatomic) id<NewOrderDelegate> delegate;
 

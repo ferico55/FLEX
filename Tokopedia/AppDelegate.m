@@ -17,6 +17,7 @@
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
+#import <Google/Analytics.h>
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
 
@@ -44,7 +45,7 @@
         [self configureGTMInApplication:application withOptions:launchOptions];
         [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
-        //[self configureAppIndexing];
+        [self configureAppIndexing];
         [self configureGoogleAnalytics];
         
         [self configurePushNotificationsInApplication:application];
@@ -88,7 +89,7 @@
 - (void)configureGoogleAnalytics {
     //Google Analytics init
     [GAI sharedInstance].trackUncaughtExceptions = YES;
-    //        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
     [GAI sharedInstance].dispatchInterval = 60;
     [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
     [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];

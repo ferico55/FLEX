@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TransactionATCViewController : GAITrackedViewController
+@interface TransactionATCViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong,nonatomic) NSArray *wholeSales;

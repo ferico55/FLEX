@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TxOrderStatusViewController : GAITrackedViewController
+@interface TxOrderStatusViewController : UIViewController
 
 @property (nonatomic, strong) NSString *action;
 @property (nonatomic, strong) NSString *viewControllerTitle;

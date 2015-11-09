@@ -163,7 +163,7 @@ PromoRequestDelegate
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Home - Favorite Shop"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Home - Favorite Shop"}];
     
     [self refreshView:nil];
 }

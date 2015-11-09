@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : GAITrackedViewController
+@interface SearchViewController : UIViewController
 
 @property (strong, nonatomic, setter = setData:) NSDictionary *data;
 

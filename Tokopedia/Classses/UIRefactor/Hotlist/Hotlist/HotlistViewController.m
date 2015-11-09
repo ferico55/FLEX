@@ -113,7 +113,8 @@ NotificationDelegate
     [self.navigationController.navigationBar setTranslucent:NO];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Home - Hot List"}];
+    [dataLayer push:@{@"event" : @"openScreen"}];
+    //    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Home - Hot List"}];
 
     _product = [NSMutableArray new];
     _page = 1;

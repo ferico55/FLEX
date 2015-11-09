@@ -56,7 +56,7 @@
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Transaction - Sales Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Transaction - Sales Page"}];
 
     self.hidesBottomBarWhenPushed = YES;    
 }

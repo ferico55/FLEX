@@ -111,7 +111,7 @@
     [self reloadNotification];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Payment Confirmation"}];    
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Payment Confirmation"}];    
 }
 
 -(void)viewWillDisappear:(BOOL)animated

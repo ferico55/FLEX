@@ -174,15 +174,15 @@
     
     if ([_action isEqualToString:@"get_tx_order_status"]) {
         
-        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Order Status"}];
+        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Order Status"}];
 
     } else if ([_action isEqualToString:@"get_tx_order_deliver"]) {
     
-        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Received Confirmation"}];
+        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Received Confirmation"}];
 
     } else {
 
-        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Transaction List"}];
+        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Transaction List"}];
 
     }
     

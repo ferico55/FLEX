@@ -201,15 +201,15 @@ PromoCollectionViewDelegate
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
         if(self.isFromAutoComplete) {
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Auto Complete Search Result - Product Tab"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Auto Complete Search Result - Product Tab"}];
         } else {
-            [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Result - Product Tab"}];
+            [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Search Result - Product Tab"}];
         }
         
     }
     else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-        [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Search Result - Catalog Tab"}];
+        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Search Result - Catalog Tab"}];
     }
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {

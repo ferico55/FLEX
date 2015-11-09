@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class ShopPageHeader;
 
-@interface ShopNotesPageViewController : GAITrackedViewController
+@interface ShopNotesPageViewController : UIViewController
 
 @property (assign, nonatomic) NSInteger indexNumber;
 @property (nonatomic, strong) NSDictionary *data;

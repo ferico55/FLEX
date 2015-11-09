@@ -204,7 +204,7 @@ typedef enum TagRequest {
     [super viewWillAppear:animated];
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Inbox Message"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Inbox Message"}];
 
     if (!_isrefreshview) {
         if (_isnodata && _page < 1) {

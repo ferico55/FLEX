@@ -117,7 +117,7 @@
     self.title = @"Pusat Resolusi";
     
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Inbox Resolution"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Inbox Resolution"}];
     
     self.hidesBottomBarWhenPushed = YES;
 }

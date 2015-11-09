@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchResultShopViewController : GAITrackedViewController
+@interface SearchResultShopViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 

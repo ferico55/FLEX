@@ -12,7 +12,7 @@
 
 @class GPPSignInButton;
 
-@interface RegisterViewController : GAITrackedViewController <GPPSignInDelegate>
+@interface RegisterViewController : UIViewController <GPPSignInDelegate>
 
 @property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 

@@ -10,7 +10,7 @@
 #import "TKPDTabHomeViewController.h"
 #import "BannerCollectionReusableView.h"
 
-@interface CategoryViewController : GAITrackedViewController
+@interface CategoryViewController : UIViewController
 
 @property(strong,nonatomic) NSDictionary* data;
 @property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;

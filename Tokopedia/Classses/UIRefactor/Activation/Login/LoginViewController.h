@@ -20,7 +20,7 @@
 
 @end
 
-@interface LoginViewController : GAITrackedViewController <UITextFieldDelegate, GPPSignInDelegate>
+@interface LoginViewController : UIViewController <UITextFieldDelegate, GPPSignInDelegate>
 
 @property (strong,nonatomic) NSDictionary *data;
 @property BOOL isPresentedViewController;

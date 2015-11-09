@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #pragma mark - Detail Product View Controller
-@interface DetailProductViewController : GAITrackedViewController
+@interface DetailProductViewController : UIViewController
 {
     IBOutlet UIView *viewTableContentHeader, *viewContentWishList, *viewContentUlasanAndDiskusi, *viewContentWarehouse;
     IBOutlet UIButton *btnWishList, *btnShare, *btnReputasi, *btnKecepatan, *btnPriceAlert;

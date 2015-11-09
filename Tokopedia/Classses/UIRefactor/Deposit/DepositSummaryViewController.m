@@ -179,7 +179,7 @@
         _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
 
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event": @"openScreen", @"screenName": @"Withdraw Page"}];
+    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Withdraw Page"}];
 }
 
 
