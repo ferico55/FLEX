@@ -15,6 +15,7 @@
 #import "AddressViewController.h"
 #import "TKPDTextView.h"
 #import "TokopediaNetworkManager.h"
+#import "PlacePickerViewController.h"
 
 #pragma mark - Setting Address Edit View Controller
 @interface SettingAddressEditViewController ()
@@ -25,7 +26,8 @@
     UIScrollViewDelegate,
     UITextFieldDelegate,
     UITextViewDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    PlacePickerDelegate
 >
 {
     NSInteger _type;
@@ -62,6 +64,7 @@
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBottomMapName;
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldreceivername;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
@@ -148,6 +151,8 @@
     [_textfieldpass addTarget:self
                        action:@selector(textFieldShouldEndEditing:)
              forControlEvents:UIControlEventEditingChanged];
+    
+    _constraintBottomMapName.constant = 20;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -312,7 +317,18 @@
         }
     }
 }
+- (IBAction)tapMap:(id)sender {
+    PlacePickerViewController *placePicker = [PlacePickerViewController new];
+    placePicker.delegate = self;
+    [self.navigationController pushViewController:placePicker animated:YES];
+}
 
+-(void)PickAddress:(GMSAddress *)address longitude:(double)longitude latitude:(double)latitude
+{
+    _textviewaddress.text = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    [_textviewaddress becomeFirstResponder];
+    _textfieldpostcode.text = address.postalCode;
+}
 
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
@@ -414,14 +430,14 @@
                     AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
 
                     AddressFormList *address = [AddressFormList new];
-                    address.receiver_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name?:@"";
-                    address.address_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name?:@"";
-                    address.address_street = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
-                    address.postal_code = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code?:@"";
+                    address.receiver_name = _textfieldreceivername.text?:@"";
+                    address.address_name = _textfieldaddressname.text?:@"";
+                    address.address_street = _textviewaddress.text?:@"";
+                    address.postal_code = _textfieldpostcode.text?:@"";
                     address.city_name = _selectedCity[DATA_NAME_KEY]?:list.city_name?:@"";
                     address.province_name = _selectedProvince[DATA_NAME_KEY]?:list.province_name?:@"";
                     address.district_name = _selectedDistrict[DATA_NAME_KEY]?:list.district_name?:@"";
-                    address.receiver_phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone?:@"";
+                    address.receiver_phone = _textfieldphonenumber.text?:@"";
                     [self.delegate successEditAddress:address];
                 }
                 
@@ -517,15 +533,15 @@
     
     NSMutableArray *messages = [NSMutableArray new];
     
-    NSString *receivername = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name;
-    NSString *addressname = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name;
-    NSString *address = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_name;
-    NSString *postcode = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code;
+    NSString *receivername = _textfieldreceivername.text;
+    NSString *addressname = _textfieldaddressname.text;
+    NSString *address = _textviewaddress.text;
+    NSString *postcode = _textfieldpostcode.text;
     NSString *district = _selectedDistrict[DATA_NAME_KEY]?:list.district_name;
     NSString *city = _selectedCity[DATA_NAME_KEY]?:list.city_name;
     NSString *prov = _selectedProvince[DATA_NAME_KEY]?:list.province_name;
-    NSString *phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone;
-    NSString *pass = [_datainput objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
+    NSString *phone = _textfieldphonenumber.text;
+    NSString *pass = _textfieldpass.text;
     
     if (!receivername || [receivername isEqualToString:@""]) {
         isValid = NO;

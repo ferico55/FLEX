@@ -6,7 +6,6 @@
 //  Copyright © 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import <GoogleMaps/GoogleMaps.h>
 #import "PlacePickerViewController.h"
 #import "TKPGooglePlaceDetailProductStore.h"
 #import "GooglePlacesDetail.h"
@@ -38,7 +37,7 @@
     
     CLLocationManager *_locationManager;
     GMSGeocoder *_geocoder;
-    
+    GMSAddress *_address;
 }
 
 - (instancetype)init {
@@ -101,7 +100,7 @@
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
-
+    [_delegate PickAddress:_address longitude:marker.position.longitude latitude:marker.position.latitude];
 }
 
 //- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
@@ -125,7 +124,7 @@
     [_geocoder reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
              // strAdd -> take bydefault value nil
         GMSAddress *placemark = [response results][0];
-        
+        _address = placemark;
         _marker.snippet = [self addressString:placemark];
         
         [_mapview setSelectedMarker:_marker];
@@ -508,10 +507,17 @@
     NSNumber *longitude = [NSNumber numberWithDouble:address.coordinate.longitude];
 
     
-    NSDictionary *history = @{@"addressSugestion":addressSugestion.attributedFullText.string,
-                              @"placeID":addressSugestion.placeID,
-                              @"longitude": longitude,
-                              @"latitude": latitude};
+    NSDictionary *history = @{@"addressSugestion"   :addressSugestion.attributedFullText.string,
+                              @"address"            :(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"",
+                              @"postal_code"        :address.postalCode?:@"",
+                              @"locality"           :address.locality?:@"",
+                              @"subLocality"        :address.subLocality?:@"",
+                              @"administrativeArea" :address.administrativeArea?:@"",
+                              @"country"            :address.country?:@"",
+                              @"place_id"           :addressSugestion.placeID?:@"",
+                              @"longitude"          :longitude?:@"",
+                              @"latitude"           :latitude?:@""
+                              };
     
     if(![_placeHistories containsObject:history]) {
         [_placeHistories insertObject:history atIndex:0];
