@@ -545,12 +545,10 @@ PromoRequestDelegate
     if(tag == CTagFavoriteButton)
     {
         NSString *tempShopID = [NSString stringWithFormat:@"%@", strTempShopID];
-        strTempShopID = nil;
         return @{
-                 kTKPDHOME_APIACTIONKEY:@"fav_shop",
-                 @"shop_id":tempShopID,
-                 @"ad_key":_selectedPromoShop.ad_key,
-                 };
+            @"shop_id":tempShopID,
+            @"ad_key":_selectedPromoShop.ad_key,
+        };
     }
     else
         return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
@@ -561,7 +559,7 @@ PromoRequestDelegate
 - (NSString*)getPath:(int)tag
 {
     if(tag == CTagFavoriteButton)
-        return @"action/favorite-shop.pl";
+        return @"/v4/action/favorite-shop/fav_shop.pl";
     else
         return @"/v4/home/get_favorite_shop.pl";
 }
@@ -582,17 +580,11 @@ PromoRequestDelegate
         [dataMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
                                                           @"is_success":@"is_success"}];
         
-        //relation
-        RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                     toKeyPath:@"data"
-                                                                                   withMapping:dataMapping];
-        [statusMapping addPropertyMapping:dataRel];
-        
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor
                                                           responseDescriptorWithMapping:statusMapping
                                                           method:RKRequestMethodPOST
-                                                          pathPattern:@"action/favorite-shop.pl"
+                                                          pathPattern:[self getPath:CTagFavoriteButton]
                                                           keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         
         [_objectmanager addResponseDescriptor:responseDescriptorStatus];

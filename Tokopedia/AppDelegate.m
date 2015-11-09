@@ -16,6 +16,7 @@
 #import "AppsFlyerTracker.h"
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
+#import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
 #import <GoogleMaps/GoogleMaps.h>
@@ -44,6 +45,7 @@
         [self configureGTMInApplication:application withOptions:launchOptions];
         [self configureLocalyticsInApplication:application withOptions:launchOptions];
         [self configureAppsflyer];
+        //[self configureAppIndexing];
         [self configureGoogleAnalytics];
         
         [self configurePushNotificationsInApplication:application];
@@ -88,6 +90,10 @@
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;
+}
+
+- (void)configureAppIndexing {
+    [[GSDAppIndexing sharedInstance] registerApp:1001394201];
 }
 
 - (void)configureGoogleAnalytics {

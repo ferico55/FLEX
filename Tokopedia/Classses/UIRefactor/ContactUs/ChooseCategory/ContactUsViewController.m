@@ -401,8 +401,21 @@
 #pragma mark - Web view 
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (navigationType == UIWebViewNavigationTypeLinkClicked ) {
-        [[UIApplication sharedApplication] openURL:[request URL]];
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        NSURL *URL = [request URL];
+        if ([[URL absoluteString] rangeOfString:@"../../"].location != NSNotFound) {
+            NSString *stringURL = [[request URL] absoluteString];
+            stringURL = [stringURL stringByReplacingOccurrencesOfString:@"../../" withString:@""];
+            stringURL = [NSString stringWithFormat:@"https://www.tokopedia.com/%@", stringURL];
+            URL = [NSURL URLWithString:stringURL];
+        }
+        else if ([[URL absoluteString] rangeOfString:@"applewebdata"].location != NSNotFound) {
+            NSString *stringURL = [[request URL] absoluteString];
+            stringURL = [stringURL substringFromIndex:52];
+            stringURL = [NSString stringWithFormat:@"https://www.tokopedia.com/%@", stringURL];
+            URL = [NSURL URLWithString:stringURL];
+        }
+        [[UIApplication sharedApplication] openURL:URL];
         return NO;
     }
     return YES;

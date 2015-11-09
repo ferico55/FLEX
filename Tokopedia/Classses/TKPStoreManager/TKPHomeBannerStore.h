@@ -15,6 +15,7 @@
 - (instancetype)initWithStoreManager:(TKPStoreManager *)storeManager;
 
 - (void)fetchBannerWithCompletion:(void (^) (Banner *banner, NSError *error))completion;
+- (void)stopBannerRequest;
 
 @property (weak, nonatomic) TKPStoreManager *storeManager;
 

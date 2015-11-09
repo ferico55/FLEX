@@ -192,7 +192,7 @@ typedef enum {
 #define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsMake(0.0f, 35.0f, 0.0f, 0.0f)
 #define kTKPD_SETUSERSTICKYMESSAGEKEY @"stickymessage"
 
-#define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(181/255.0) blue:(73/255.0) alpha:1]
+#define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
 #define kTKPDNAVIGATION_NAVIGATIONITEMCOLOR [UIColor whiteColor]
 
 #define HelpshiftKey @"a61b53892e353d1828be5154db0ac6c2"
@@ -223,6 +223,9 @@ typedef enum {
 // GTM Value
 #define GTMKeyInboxMessageBase @"inboxmessage_base_url"
 #define GTMKeyInboxMessagePost @"inboxmessage_post_url"
+#define GTMKeyActionInboxMessageBase @"inboxmessage_action_base_url"
+#define GTMKeyActionInboxMessagePost @"inboxmessage_action_post_url"
+
 #define GTMKeyInboxMessageFull @"inboxmessage_full_url"
 
 #define GTMKeyInboxTalkBase @"inboxtalk_base_url"

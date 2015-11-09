@@ -19,6 +19,8 @@
 #import "CreateShopViewController.h"
 #import "ProductAddEditViewController.h"
 #import "TransactionCartRootViewController.h"
+#import "ContactUsWireframe.h"
+#import "TPContactUsDependencies.h"
 
 #import "string_product.h"
 
@@ -143,6 +145,9 @@
     }
     else if ([[url absoluteString] rangeOfString:@"product-add.pl"].location != NSNotFound) {
         [self redirectToAddProduct];
+    }
+    else if ([[url absoluteString] rangeOfString:@"contact-us-faq.pl"].location != NSNotFound) {
+        [self redirectToContactUs];
     }
     else if(explodedPathUrl.count == 2) {
         //shop
@@ -331,6 +336,11 @@
     self.activeController.hidesBottomBarWhenPushed = YES;
     [self.navigator navigateToShopFromViewController:self.activeController withShopName:explodedPathUrl[1]];
     self.activeController.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)redirectToContactUs {
+    TPContactUsDependencies *dependencies = [TPContactUsDependencies new];
+    [dependencies pushContactUsViewControllerFromNavigation:self.activeController.navigationController];
 }
 
 #pragma mark - Static method
