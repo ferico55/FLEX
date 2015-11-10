@@ -103,7 +103,17 @@
     _mapview.selectedMarker = _marker;
     
     _placeHistories = [NSMutableArray new];
+    
+    UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapDone)];
+    [doneBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = doneBarButtonItem;
+    
     [self loadHistory];
+}
+
+-(void)tapDone
+{
+    [self mapView:_mapview didTapInfoWindowOfMarker:_marker];
 }
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
