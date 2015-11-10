@@ -306,6 +306,7 @@
         cell = _ownerCell;
     }
     
+    [cell layoutIfNeeded];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -318,15 +319,18 @@
         cell = _topCell;
     }
     else if (indexPath.row <=_shop.result.address.count) {
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+        cell = [self addressCellIndexPath:newIndexPath];
+        [cell layoutIfNeeded];
+
         if (_isHideAddress) {
             return 0;
         }
         else
         {
-            return 190;
+            return ((ShopInfoAddressCell*)cell).labelfax.frame.origin.y + ((ShopInfoAddressCell*)cell).labelfax.frame.size.height;
+//            return 300;
         }
-        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
-        cell = [self addressCellIndexPath:newIndexPath];
     }
     else if (indexPath.row == _shop.result.address.count+1)
     {
@@ -371,7 +375,7 @@
     cell.labelprov.text = ([address.location_province_name isEqual: @"0"]) ? @"-" : address.location_province_name;
     cell.labelpostal.text = ([address.location_postal_code isEqual: @"0"]) ? @"-" : address.location_postal_code;
     cell.labelemail.text = ([address.location_email isEqual: @"0"]) ? @"-" : address.location_email;
-    cell.labelfax.text = ([address.location_fax isEqual: @"0"]) ? @"-" : address.location_fax;
+    cell.labelfax.text = ([address.location_fax isEqual: @"0"]) ? @"" : address.location_fax;
     cell.labelphone.text = ([address.location_phone isEqual: @"0"]) ? @"-" : address.location_phone;
     
     
@@ -487,6 +491,7 @@
     [_labelshoptagline sizeToFit];
     
     _labelshopdescription.text = _shop.result.info.shop_description;
+    [_labelshopdescription sizeToFit];
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
     [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
 //    _speedrate.starscount = _shop.result.stats.shop_service_rate;

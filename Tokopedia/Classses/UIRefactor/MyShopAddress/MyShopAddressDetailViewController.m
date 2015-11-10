@@ -232,8 +232,8 @@
     NSString *email = [address.location_email isEqualToString:@"0"]?@"-":address.location_email;
     _labelemail.text = email;
     
-    _labelphonenumber.text = address.location_phone?:@"-";
-    _faxLabel.text = address.location_fax?:@"-";
+    _labelphonenumber.text = [address.location_phone isEqualToString:@"0"]?@"-":address.location_phone;
+    _faxLabel.text = [address.location_fax isEqualToString:@"0"]?@"-":address.location_fax;
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
