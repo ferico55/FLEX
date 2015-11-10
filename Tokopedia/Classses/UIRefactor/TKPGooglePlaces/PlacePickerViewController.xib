@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlacePickerViewController">
             <connections>
                 <outlet property="mapview" destination="Ebd-kK-MKe" id="3Y1-oa-tTa"/>
+                <outlet property="searchBar" destination="uZa-XG-HnW" id="u5S-Y4-3bF"/>
                 <outlet property="searchDisplayController" destination="7eI-Di-NVA" id="K8b-ch-Gid"/>
+                <outlet property="tableView" destination="cxK-4f-4I9" id="fZi-w8-9TV"/>
+                <outlet property="transparentView" destination="xgf-jU-Oz7" id="L4r-mk-yIh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,7 +23,7 @@
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="uZa-XG-HnW">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                     <animations/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="7gc-cz-3go"/>
                     </connections>
@@ -33,27 +36,50 @@
                         <outlet property="delegate" destination="-1" id="eW9-jH-L7l"/>
                     </connections>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgf-jU-Oz7">
+                    <rect key="frame" x="0.0" y="44" width="600" height="556"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.26224512411347517" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="KYv-fq-Pz0" appends="YES" id="fbx-sT-Z06"/>
+                    </connections>
+                </view>
+                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cxK-4f-4I9">
+                    <rect key="frame" x="0.0" y="44" width="600" height="556"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="6pb-pN-B2e"/>
+                        <outlet property="delegate" destination="-1" id="MFX-wF-Nhs"/>
+                    </connections>
+                </tableView>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="uZa-XG-HnW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2zJ-Sf-oD4"/>
+                <constraint firstAttribute="bottom" secondItem="xgf-jU-Oz7" secondAttribute="bottom" id="3bI-HE-oqY"/>
+                <constraint firstItem="xgf-jU-Oz7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LEf-mT-ArI"/>
+                <constraint firstAttribute="bottom" secondItem="cxK-4f-4I9" secondAttribute="bottom" id="LYZ-QM-mLD"/>
+                <constraint firstItem="cxK-4f-4I9" firstAttribute="top" secondItem="uZa-XG-HnW" secondAttribute="bottom" id="OSA-q3-dta"/>
                 <constraint firstItem="Ebd-kK-MKe" firstAttribute="top" secondItem="uZa-XG-HnW" secondAttribute="bottom" id="Ph6-WB-5ol"/>
                 <constraint firstAttribute="bottom" secondItem="Ebd-kK-MKe" secondAttribute="bottom" id="Pui-XP-ODt"/>
                 <constraint firstItem="uZa-XG-HnW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="V9m-b5-9q0"/>
                 <constraint firstItem="Ebd-kK-MKe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Y4R-Px-1Vp"/>
+                <constraint firstAttribute="trailing" secondItem="cxK-4f-4I9" secondAttribute="trailing" id="aq4-pl-Lmi"/>
+                <constraint firstItem="cxK-4f-4I9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fZP-R3-LjP"/>
                 <constraint firstAttribute="trailing" secondItem="uZa-XG-HnW" secondAttribute="trailing" id="fcR-LA-h7l"/>
+                <constraint firstItem="xgf-jU-Oz7" firstAttribute="top" secondItem="uZa-XG-HnW" secondAttribute="bottom" id="gJ5-RS-WRq"/>
                 <constraint firstAttribute="trailing" secondItem="Ebd-kK-MKe" secondAttribute="trailing" id="n2L-FN-MyC"/>
+                <constraint firstAttribute="trailing" secondItem="xgf-jU-Oz7" secondAttribute="trailing" id="tM0-gs-kbq"/>
             </constraints>
         </view>
-        <searchDisplayController id="7eI-Di-NVA">
+        <searchDisplayController id="7eI-Di-NVA"/>
+        <tapGestureRecognizer id="KYv-fq-Pz0">
             <connections>
-                <outlet property="delegate" destination="-1" id="6ab-Pz-d7P"/>
-                <outlet property="searchBar" destination="uZa-XG-HnW" id="8R2-r4-Ray"/>
-                <outlet property="searchContentsController" destination="-1" id="cY2-w6-qMa"/>
-                <outlet property="searchResultsDataSource" destination="-1" id="4tc-Mf-8Ue"/>
-                <outlet property="searchResultsDelegate" destination="-1" id="SBw-W3-YHL"/>
+                <action selector="cancelSearch:" destination="-1" id="pUz-Lf-vRC"/>
             </connections>
-        </searchDisplayController>
+        </tapGestureRecognizer>
     </objects>
 </document>

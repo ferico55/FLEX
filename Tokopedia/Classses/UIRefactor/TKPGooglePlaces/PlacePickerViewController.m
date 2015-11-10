@@ -14,9 +14,12 @@
 @import GoogleMaps;
 
 
-@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate, UISearchControllerDelegate>
+@interface PlacePickerViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate, UISearchControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet GMSMapView *mapview;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet GMSMapView *transparentView;
 
 @end
 
@@ -52,6 +55,10 @@
     }
     return self;
 }
+- (IBAction)cancelSearch:(id)sender {
+    
+    [self setSearchbarActive:NO animated:YES];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -85,17 +92,18 @@
     
     //[self focusMapToLocation:calgary];
 
-    self.searchDisplayController.searchBar.placeholder = @"Cari Alamat";
-    self.searchDisplayController.searchBar.tintColor = [UIColor whiteColor];
-    [self.searchDisplayController.searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
+    _searchBar.placeholder = @"Cari Alamat";
+    _searchBar.tintColor = [UIColor whiteColor];
+    [_searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
                                                 forBarPosition:0
                                                     barMetrics:UIBarMetricsDefault];
+    _searchBar.delegate = self;
+    
     [self updateAddressSaveHistory:NO addressSugestion:nil];
     _mapview.selectedMarker = _marker;
     
     _placeHistories = [NSMutableArray new];
     [self loadHistory];
-//    [self constraint];
 }
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
@@ -115,6 +123,52 @@
     UIGraphicsEndImageContext();
     
     return image;
+}
+
+
+- (void)setSearchbarActive:(BOOL)isActive animated:(BOOL)animated{
+    [_searchBar setShowsCancelButton:isActive animated:animated];
+    [self.navigationController setNavigationBarHidden:isActive animated:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:isActive withAnimation:UIStatusBarAnimationSlide];
+    _transparentView.hidden = !isActive;
+    
+    if (isActive) {
+        
+        if (animated) {
+            [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+                [self activeSearhBar:isActive];
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+        else
+        {
+            [self activeSearhBar:isActive];
+        }
+
+    }
+    else
+    {
+        if (animated) {
+            [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+                [self activeSearhBar:isActive];
+                [_searchBar resignFirstResponder];
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+        else
+        {
+            [_searchBar resignFirstResponder];
+            [self activeSearhBar:isActive];
+        }
+    }
+}
+
+-(void)activeSearhBar:(BOOL)isActive
+{
+    _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
+    _tableView.hidden = !(isActive && _placeHistories.count > 0);
 }
 
 //- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
@@ -333,12 +387,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *searchbarText = self.searchDisplayController.searchBar.text;
-    [self.searchDisplayController setActive:NO];
-    self.searchDisplayController.searchBar.text = searchbarText;
+    NSString *searchbarText = _searchBar.text;
+    [self setSearchbarActive:NO animated:YES];
+    _searchBar.text = searchbarText;
     if ([searchbarText isEqualToString:@""]) {
         [_autoCompleteResults removeAllObjects];
-        [self.searchDisplayController.searchResultsTableView reloadData];
+        [_tableView reloadData];
     }
     
     if (indexPath.section == 0) {
@@ -404,7 +458,8 @@
                                 for (GMSAutocompletePrediction* result in results) {
                                     NSLog(@"Result '%@' with placeID %@", result.attributedFullText.string, result.placeID);
                                 }
-                                [self.searchDisplayController.searchResultsTableView reloadData];
+                                _tableView.hidden = NO;
+                                [_tableView reloadData];
                             }];
 }
 
@@ -449,23 +504,31 @@
     controller.searchResultsTableView.contentInset = UIEdgeInsetsMake(0.0f, 0.f, 30.f, 0.f);
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (![searchText isEqualToString:@""]) {
+        [self handleSearchForSearchString:searchText];
+    }
+    else
+    {
+        [_autoCompleteResults removeAllObjects];
+        [_tableView reloadData];
+    }
 }
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     if ([searchBar.text  isEqualToString:@""]) {
         [_autoCompleteResults removeAllObjects];
-        [self.searchDisplayController.searchResultsTableView reloadData];
+        [_tableView reloadData];
     }
     
-    if (_placeHistories.count > 0) {
-        [self.searchDisplayController setActive:YES animated:YES];
-        self.searchDisplayController.searchResultsTableView.hidden = NO;
-        [self.searchDisplayController.searchResultsTableView.superview bringSubviewToFront:self.searchDisplayController.searchResultsTableView];
-    }
+    [self setSearchbarActive:YES animated:YES];
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [self setSearchbarActive:NO animated:YES];
+}
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     [self handleSearchForSearchString:searchString];
@@ -476,7 +539,7 @@
 
 -(void)constraint
 {
-    UITableView *tableView = self.searchDisplayController.searchResultsTableView;
+    UITableView *tableView = _tableView;
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
                                                                 attribute:NSLayoutAttributeTop
