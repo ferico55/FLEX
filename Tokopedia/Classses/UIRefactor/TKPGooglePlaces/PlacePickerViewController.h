@@ -11,7 +11,7 @@
 
 @protocol PlacePickerDelegate <NSObject>
 
--(void)PickAddress:(GMSAddress*)address longitude:(double)longitude latitude:(double)latitude;
+-(void)PickAddress:(GMSAddress*)address longitude:(double)longitude latitude:(double)latitude map:(UIImage *)map;
 
 @end
 

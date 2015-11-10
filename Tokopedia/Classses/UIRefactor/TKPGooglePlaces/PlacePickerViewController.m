@@ -100,7 +100,21 @@
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
-    [_delegate PickAddress:_address longitude:marker.position.longitude latitude:marker.position.latitude];
+    UIImage *map = [self captureScreen];
+    _mapview.selectedMarker = nil;
+    [_delegate PickAddress:_address longitude:marker.position.longitude latitude:marker.position.latitude map:map];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (UIImage *)captureScreen {
+    UIGraphicsBeginImageContextWithOptions(_mapview.frame.size, YES, 0.0f);
+    [_mapview.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 //- (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {

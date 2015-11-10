@@ -48,10 +48,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingAddressEditViewController">
             <connections>
+                <outlet property="buttonMapLocation" destination="X4Q-Nr-mBl" id="lzH-Vu-spo"/>
                 <outlet property="buttoncity" destination="e30-DI-rj1" id="HZO-vo-v4B"/>
                 <outlet property="buttondistrict" destination="TgV-oj-AiH" id="2Hf-J6-ue7"/>
                 <outlet property="buttonprovince" destination="MsL-zG-Jr6" id="nNj-Sb-Eck"/>
                 <outlet property="constraintBottomMapName" destination="bWs-7G-TYO" id="Rte-xV-zsW"/>
+                <outlet property="mapImageView" destination="KJx-9P-Ix9" id="UCA-tR-wvY"/>
+                <outlet property="opsionalLabel" destination="TNB-3o-bsd" id="xbs-eK-poZ"/>
                 <outlet property="table" destination="enW-Bl-Ec8" id="O4H-WK-aj1"/>
                 <outlet property="textfieldaddressname" destination="bzh-Yx-Bav" id="PeY-6y-MbO"/>
                 <outlet property="textfieldpass" destination="TuB-lg-ddb" id="J69-he-qmD"/>
@@ -1197,10 +1200,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="287" height="69.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KJx-9P-Ix9">
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_track_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="KJx-9P-Ix9">
                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                         <animations/>
-                        <color key="backgroundColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="70" id="JUE-yQ-6J8"/>
                             <constraint firstAttribute="height" constant="70" id="eSm-x9-PLE"/>
@@ -1248,5 +1251,6 @@
     </objects>
     <resources>
         <image name="ic_arrow_right.png" width="1024" height="1024"/>
+        <image name="icon_track_grey.png" width="14" height="14"/>
     </resources>
 </document>

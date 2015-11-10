@@ -79,6 +79,9 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIImageView *mapImageView;
+@property (weak, nonatomic) IBOutlet UIButton *buttonMapLocation;
+@property (weak, nonatomic) IBOutlet UILabel *opsionalLabel;
 
 -(void)cancelActionAddAddress;
 -(void)requestActionAddAddress:(id)object;
@@ -323,11 +326,23 @@
     [self.navigationController pushViewController:placePicker animated:YES];
 }
 
--(void)PickAddress:(GMSAddress *)address longitude:(double)longitude latitude:(double)latitude
+-(void)PickAddress:(GMSAddress *)address longitude:(double)longitude latitude:(double)latitude map:(UIImage*)map
 {
-    _textviewaddress.text = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    [_textviewaddress becomeFirstResponder];
+    NSString *addressStreet = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    
+    if ([_textviewaddress.text isEqualToString:@""]){
+        _textviewaddress.text = addressStreet;
+        _textviewaddress.placeholderLabel.hidden = YES;
+    }
+    if ([_textfieldpostcode.text isEqualToString:@""])
+        _textfieldpostcode.text = addressStreet;
+    
     _textfieldpostcode.text = address.postalCode;
+    [_buttonMapLocation setTitle:addressStreet forState:UIControlStateNormal];
+    _mapImageView.image = map;
+    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _opsionalLabel.hidden = YES;
+    _constraintBottomMapName.constant = 0;
 }
 
 - (IBAction)gesture:(id)sender {

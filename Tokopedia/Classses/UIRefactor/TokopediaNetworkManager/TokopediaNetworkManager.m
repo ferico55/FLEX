@@ -55,25 +55,25 @@
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     
-//    if(self.isUsingHmac) {
-//        TkpdHMAC *hmac = [TkpdHMAC new];
-//        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:[_delegate getRequestMethod:nil]] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
-//        
-//        [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
-//        [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
-//        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
-//        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:[hmac getDate]];
-//        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
-//        [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
-//        
-//        [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
-//        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
-//        
-//        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
-//                                                                              method:[_delegate getRequestMethod:self.tagRequest]
-//                                                                                path:[_delegate getPath:self.tagRequest]
-//                                                                          parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
-//    } else {
+    if(self.isUsingHmac) {
+        TkpdHMAC *hmac = [TkpdHMAC new];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:[_delegate getRequestMethod:nil]] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
+        
+        [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:[hmac getDate]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
+        
+        [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
+        
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
+                                                                              method:[_delegate getRequestMethod:self.tagRequest]
+                                                                                path:[_delegate getPath:self.tagRequest]
+                                                                          parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
+    } else {
         NSDictionary *parameters;
         if (self.isParameterNotEncrypted) {
             parameters = [_delegate getParameter:self.tagRequest];
@@ -85,7 +85,7 @@
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:parameters];
         
-//    }Ø
+    }
     
     
     
