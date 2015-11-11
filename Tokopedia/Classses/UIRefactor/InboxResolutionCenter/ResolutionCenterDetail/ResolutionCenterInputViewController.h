@@ -12,7 +12,7 @@
 
 @protocol ResolutionCenterInputViewControllerDelegate <NSObject>
 @optional
--(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID;
+-(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID isGotTheOrder:(BOOL)isGotTheOrder;
 -(void)message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID;
 -(void)setGenerateHost:(GeneratedHost*)generateHost;
 -(void)reportResolution;
@@ -24,7 +24,7 @@
 
 @property (nonatomic, weak) IBOutlet id<ResolutionCenterInputViewControllerDelegate> delegate;
 
-
 @property (nonatomic) ResolutionDetailConversation *resolution;
+@property NSString *lastSolution;
 
 @end
