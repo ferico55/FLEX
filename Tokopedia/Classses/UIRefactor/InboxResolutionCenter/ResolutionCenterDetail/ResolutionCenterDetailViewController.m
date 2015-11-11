@@ -329,7 +329,9 @@
     if (button == _inputConversation) {
         ResolutionCenterInputViewController *vc = [ResolutionCenterInputViewController new];
         vc.resolution = _resolutionDetail;
+        vc.lastSolution = [self solutionString:[_listResolutionConversation lastObject]];
         vc.delegate = self;
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -516,9 +518,9 @@
     [_navigate navigateToShowImageFromViewController:self withImageDictionaries:images imageDescriptions:@[] indexImage:index];
 }
 
--(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID
+-(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID isGotTheOrder:(BOOL)isGotTheOrder
 {
-    [self solutionType:solutionType troubleType:troubleType refundAmount:refundAmout message:note photo:photo serverID:serverID];
+    [self solutionType:solutionType troubleType:troubleType refundAmount:refundAmout message:note photo:photo serverID:serverID isGotTheOrder:isGotTheOrder];
 }
 
 -(NSString *)trouble
@@ -588,7 +590,7 @@
                              action:ACTION_APPEAL];
 }
 
--(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID
+-(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID isGotTheOrder:(BOOL)isGotTheOrder
 {
     [self requestReplayConversation:message?:@""
                               photo:photo?:@""
@@ -597,7 +599,7 @@
                        solutionType:solutionType?:@""
                         troubleType:troubleType?:@""
                        refundAmount:refundAmout?:@""
-                           received:([_resolutionDetail.resolution_last.last_flag_received isEqual:@(1)])
+                           received:isGotTheOrder
                              action:ACTION_REPLY_CONVERSATION];
 }
 
@@ -1067,7 +1069,7 @@
     return markString;
 }
 
--(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
+-(NSString *)solutionString:(ResolutionConversation*)conversation
 {
     NSInteger lastSolutionType = [conversation.solution integerValue];
     NSString *solutionString = @"";
@@ -1089,6 +1091,13 @@
     else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
         solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
     }
+    
+    return solutionString;
+}
+
+-(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
+{
+    NSString *solutionString = [self solutionString:conversation];
     
     NSInteger troubleType = [conversation.trouble_type integerValue];
     NSString *troubleString;
