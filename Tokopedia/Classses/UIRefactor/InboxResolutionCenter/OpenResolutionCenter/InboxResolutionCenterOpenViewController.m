@@ -394,7 +394,7 @@
         }
         else if([self.title isEqualToString:TITLE_CHANGE_SOLUTION])
         {
-            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:_serverID];
+            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:_serverID isGotTheOrder:_isGotTheOrder];
             NSArray *viewControllers = self.navigationController.viewControllers;
             UIViewController *destinationVC;
             for (UIViewController *vc in viewControllers) {
