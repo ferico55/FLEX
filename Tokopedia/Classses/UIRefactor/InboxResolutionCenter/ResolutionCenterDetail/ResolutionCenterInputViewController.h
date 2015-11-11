@@ -24,7 +24,7 @@
 
 @property (nonatomic, weak) IBOutlet id<ResolutionCenterInputViewControllerDelegate> delegate;
 
-
 @property (nonatomic) ResolutionDetailConversation *resolution;
+@property NSString *lastSolution;
 
 @end

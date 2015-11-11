@@ -149,6 +149,8 @@
     frame = _imageScrollView.frame;
     frame.size.width = [UIScreen mainScreen].bounds.size.width;
     _imageScrollView.frame = frame;
+    
+    [_lastSolutionLabel setCustomAttributedText:_lastSolution];
 }
 -(void)viewWillAppear:(BOOL)animated
 {

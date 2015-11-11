@@ -329,7 +329,9 @@
     if (button == _inputConversation) {
         ResolutionCenterInputViewController *vc = [ResolutionCenterInputViewController new];
         vc.resolution = _resolutionDetail;
+        vc.lastSolution = [self solutionString:[_listResolutionConversation lastObject]];
         vc.delegate = self;
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -1067,7 +1069,7 @@
     return markString;
 }
 
--(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
+-(NSString *)solutionString:(ResolutionConversation*)conversation
 {
     NSInteger lastSolutionType = [conversation.solution integerValue];
     NSString *solutionString = @"";
@@ -1089,6 +1091,13 @@
     else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
         solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
     }
+    
+    return solutionString;
+}
+
+-(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
+{
+    NSString *solutionString = [self solutionString:conversation];
     
     NSInteger troubleType = [conversation.trouble_type integerValue];
     NSString *troubleString;
