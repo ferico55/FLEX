@@ -505,6 +505,8 @@
     else
     {
         if (indexPath.section == 0)
+            cell = [self cellGotTheOrderSection0];
+        else if (indexPath.section == 1)
             cell = _cellRefundAmount;
         else
             cell = _cellNote;
