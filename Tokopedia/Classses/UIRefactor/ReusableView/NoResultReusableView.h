@@ -20,6 +20,7 @@
 -(void)setNoResultDesc:(NSString *)desc;
 -(void)setNoResultButtonTitle:(NSString *)btnTitle;
 -(void)generateAllElements:(NSString *)fileName title:(NSString *)title desc:(NSString *)desc btnTitle:(NSString *)btnTitle;
+-(void)hideButton:(bool)hide;
 @end
 
 

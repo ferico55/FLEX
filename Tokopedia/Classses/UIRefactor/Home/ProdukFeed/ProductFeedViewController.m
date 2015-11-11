@@ -13,7 +13,6 @@
 #import "ProductFeed.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-#import "NoResultView.h"
 #import "NoResultReusableView.h"
 
 #import "NavigateViewController.h"
@@ -46,7 +45,8 @@ UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
-PromoRequestDelegate
+PromoRequestDelegate,
+NoResultDelegate
 >
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -61,7 +61,7 @@ PromoRequestDelegate
 @property ScrollDirection scrollDirection;
 
 @property (strong, nonatomic) PromoRequest *promoRequest;
-
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
 
 
@@ -77,7 +77,7 @@ PromoRequestDelegate
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
-    NoResultReusableView *_noResult;
+    NoResultReusableView *_noResultView;
 }
 
 #pragma mark - Initialization
@@ -91,6 +91,15 @@ PromoRequestDelegate
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Disini kamu bisa lihat produk-produk dari toko yang kamu favoritkan"
+                                  desc:@"Segera favoritkan toko yang kamu sukai! Jangan sampai ketinggalan!"
+                              btnTitle:@"Toko Favorit"];
+}
+
 - (void) viewDidLoad {
     [super viewDidLoad];
     
@@ -102,7 +111,7 @@ PromoRequestDelegate
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
-    _noResult = [[NoResultReusableView alloc] init];
+    [self initNoResultView];
     _isNoData = (_product.count > 0);
     _page = 1;
     
@@ -125,6 +134,9 @@ PromoRequestDelegate
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addFavoriteShop:) name:@"addFavoriteShop" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeFavoriteShop:) name:@"removeFavoriteShop" object:nil];
+    
     //todo with network
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -137,6 +149,7 @@ PromoRequestDelegate
     [self requestPromo];
     
     [self registerNib];
+    self.contentView = self.view;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -331,7 +344,8 @@ PromoRequestDelegate
                                                  kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
                                                  API_PRODUCT_NAME_KEY,
-                                                 @"shop_lucky"
+                                                 @"shop_lucky",
+                                                 @"shop_url"
                                                  ]];
     //relation
     RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
@@ -361,7 +375,7 @@ PromoRequestDelegate
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
-    [_noResult removeFromSuperview];
+    [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
     if (feed.data.list.count > 0) {
@@ -391,7 +405,8 @@ PromoRequestDelegate
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResult];
+        //[_collectionView addSubview:_noResultView];
+        [self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -438,6 +453,19 @@ PromoRequestDelegate
     
 }
 
+- (void)addFavoriteShop:(NSNotification*)notification{
+    if([self.view isEqual:_noResultView]){
+        [_networkManager doRequest];
+    }
+    self.view = _contentView;
+}
+
+- (void)removeFavoriteShop:(NSNotification*)notification{
+    _page = 1;
+    [_product removeAllObjects];
+    [_networkManager doRequest];
+}
+
 #pragma mark - Other Method
 - (IBAction)pressRetryButton:(id)sender {
     [_networkManager doRequest];
@@ -482,6 +510,12 @@ PromoRequestDelegate
     }
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
+}
+
+#pragma mark - No Request delegate
+- (void)buttonDidTapped:(id)sender{
+    NSDictionary *userInfo = @{@"page" : @5};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
 }
 
 #pragma mark - Promo collection delegate

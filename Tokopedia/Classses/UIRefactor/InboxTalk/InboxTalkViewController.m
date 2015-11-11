@@ -29,9 +29,10 @@
 #import "TokopediaNetworkManager.h"
 
 #import "URLCacheController.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 #import "TAGDataLayer.h"
-
+#define normalWidth 320
+#define normalHeight 568
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
@@ -62,7 +63,7 @@
     NSString *_inboxTalkFullUrl;
     
     NSIndexPath *_selectedIndexPath;
-    NoResultView *_noResultView;
+    NoResultReusableView *_noResultView;
     TAGContainer *_gtmContainer;
     UserAuthentificationManager *_userManager;
     
@@ -90,6 +91,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadTalk:) name:@"updateUnreadTalk" object:nil];
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    [_noResultView generateAllElements:nil
+                                 title:@""
+                                  desc:@""
+                              btnTitle:nil];
+}
+
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -102,7 +111,7 @@
     _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    [self initNoResultView];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -384,6 +393,7 @@
     
     [_talkList addObjectsFromArray: inboxTalk.result.list];
     
+    
     if (_talkList.count > 0) {
         _nextPageURL =  inboxTalk.result.paging.uri_next;
         if (![_nextPageURL isEqualToString:@"0"]) {
@@ -391,15 +401,25 @@
         }
         self.table.tableFooterView = nil;
     } else {
-        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
-        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-        self.table.tableFooterView = noResultView;
+        NSString *text;
+    
+        if (self.inboxTalkType == InboxTalkTypeAll) {
+            text = @"Anda belum mengikuti diskusi produk";
+        } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
+            text = @"Anda belum mengikuti diskusi produk";
+        } else {
+            text = @"Belum ada diskusi produk pada produk Anda";
+        }
+        [_noResultView setNoResultTitle:text];
+        
+        [_table addSubview:_noResultView];
     }
     
     [self.table reloadData];
 
     
     [_refreshControl endRefreshing];
+    
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {

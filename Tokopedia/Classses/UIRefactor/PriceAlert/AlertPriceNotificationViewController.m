@@ -13,7 +13,7 @@
 #import "DetailPriceAlertViewController.h"
 #import "GeneralAction.h"
 #import "LoadingView.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 #import "PriceAlertCell.h"
 #import "Paging.h"
 #import "PriceAlert.h"
@@ -26,16 +26,17 @@
 #define CCellIdentifier @"cell"
 #define CTagGetPriceAlert 10
 #define CTagDeletePriceAlert 11
-
-@interface AlertPriceNotificationViewController ()<TokopediaNetworkManagerDelegate, DepartmentListDelegate, LoadingViewDelegate, UIAlertViewDelegate>
-
+#define normalWidth 320
+#define normalHeight 568
+@interface AlertPriceNotificationViewController ()<TokopediaNetworkManagerDelegate, DepartmentListDelegate, LoadingViewDelegate, UIAlertViewDelegate, NoResultDelegate>
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
 
 @implementation AlertPriceNotificationViewController {
     NSIndexPath *tempUnreadIndexPath;
     LoadingView *loadingView;
     UIRefreshControl *refreshControl;
-    NoResultView *noResultView;
+    NoResultReusableView *_noResultView;
     
     TokopediaNetworkManager *tokopediaNetworkManager;
     RKObjectManager *rkObjectManager;
@@ -48,6 +49,18 @@
     int page, latestPage;
     BOOL isFirst;
 }
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Disini kamu bisa melihat notifikasi harga untuk produk yang kamu ikuti"
+                                  desc:@"Segera ikuti perkembangan harga barang yang kamu sukai!"
+                              btnTitle:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedPriceNotif:) name:@"didAddedPriceNotif" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedPriceNotif:) name:@"didRemovedPriceNotif" object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = CStringNotificationHarga;
@@ -72,6 +85,8 @@
     [tblPriceAlert addSubview:refreshControl];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUpdatePriceAlert:) name:@"TkpdUpdatePriceAlert" object:nil];
+    
+    [self initNoResultView];
     
     tblPriceAlert.tableFooterView = [self getActivityIndicator];
     [[self getNetworkManager:CTagGetPriceAlert] doRequest];
@@ -504,14 +519,7 @@
         
         
         if(arrList==nil || arrList.count==0) {
-            if(noResultView == nil) {
-                noResultView = [NoResultView new];
-                [tblPriceAlert addSubview:noResultView.view];
-            }
-        }
-        else if(noResultView != nil) {
-            [noResultView.view removeFromSuperview];
-            noResultView = nil;
+            self.view = _noResultView;
         }
         
         
@@ -630,4 +638,16 @@
         objTagConfirmDelete = nil;
     }
 }
+
+#pragma mark - Notification Method
+- (void)didAddedPriceNotif:(NSNotification*)notification {
+    self.view = _contentView;
+}
+
+- (void)didRemovedPriceNotif:(NSNotification*)notification {
+    
+}
+
 @end
+
+

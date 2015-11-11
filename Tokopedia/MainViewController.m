@@ -146,6 +146,10 @@ typedef enum TagRequest {
                selector:@selector(redirectToHomeViewController)
                    name:kTKPD_REDIRECT_TO_HOME
                  object:nil];
+    [center addObserver:self
+               selector:@selector(navigateToPageInTabBar:)
+                   name:@"navigateToPageInTabBar"
+                 object:nil];
 
     //refresh timer for GTM Container
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
@@ -888,6 +892,12 @@ typedef enum TagRequest {
 
 - (void)redirectToHomeViewController {
     _tabBarController.selectedIndex = 0;
+}
+
+- (void) navigateToPageInTabBar:(NSNotification*) notification{
+    NSString *pageId = [notification object];
+    int pagenum = [pageId intValue];
+    _tabBarController.selectedIndex = pagenum;
 }
 
 // MARK: TKPAppFlow methods

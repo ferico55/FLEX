@@ -32,7 +32,11 @@
 }
 
 -(void)generateAllElements:(NSString *)fileName title:(NSString *)title desc:(NSString *)desc btnTitle:(NSString *)btnTitle{
+    if(fileName != nil){
     [self setNoResultImage:fileName];
+    }else{
+        [self setNoResultImage:NO_RESULT_ICON];
+    }
     [self setNoResultTitle:title];
     [self setNoResultDesc:desc];
     if(btnTitle != nil){
@@ -49,14 +53,20 @@
 }
 
 -(void)setNoResultTitle:(NSString *)title{
+    CGFloat titleSize = NO_RESULT_TITLE_SIZE;
+    [_titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:titleSize]];
     [_titleLabel setText:title];
 }
 
 -(void)setNoResultDesc:(NSString *)desc{
+    CGFloat descSize = NO_RESULT_DESC_SIZE;
+    [_descLabel setFont:[UIFont fontWithName:@"GothamBook" size:descSize]];
     [_descLabel setText:desc];
 }
 
 -(void)setNoResultButtonTitle:(NSString *)btnTitle{
+    CGFloat btnSize = NO_RESULT_BUTTON_TITLE_SIZE;
+    _button.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:btnSize];
     [_button setTitle:btnTitle forState:UIControlStateNormal];
 }
 

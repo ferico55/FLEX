@@ -27,6 +27,8 @@
 #import "LoadingView.h"
 #import "ShopReputation.h"
 #import "SmileyAndMedal.h"
+#import "ShopReputation.h"
+#import "NoResultReusableView.h"
 
 #import "TagManagerHandler.h"
 
@@ -39,6 +41,8 @@
 
 #define TAG_REQUEST_LIST 10
 #define TAG_REQUEST_CANCEL_COMPLAIN 11
+#define normalWidth 320
+#define normalHeight 568
 
 @interface InboxResolutionCenterComplainViewController ()<
     UITabBarControllerDelegate,
@@ -50,7 +54,9 @@
     InboxResolutionCenterComplainCellDelegate,
     LoadingViewDelegate,
     CMPopTipViewDelegate,
-    TokopediaNetworkManagerDelegate>
+    TokopediaNetworkManagerDelegate,
+    NoResultDelegate
+>
 {
     NavigateViewController *_navigate;
     NSMutableArray *_list;
@@ -91,10 +97,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 @end
 
-@implementation InboxResolutionCenterComplainViewController
+@implementation InboxResolutionCenterComplainViewController{
+    NoResultReusableView *_noResultView;
+}
 
 -(instancetype)init{
     _list = [NSMutableArray new];
@@ -107,6 +116,15 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManagerCancelComplain = [TokopediaNetworkManager new];
     return self;
+}
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Tidak Ada Komplain"
+                                  desc:@""
+                              btnTitle:nil];
 }
 
 - (void)viewDidLoad {
@@ -138,7 +156,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didChangePreferredContentSize:)
                                                  name:UIContentSizeCategoryDidChangeNotification object:nil];
-
+    [self initNoResultView];
     _tableView.estimatedRowHeight = 70.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
@@ -715,8 +733,8 @@
             }
             else
             {
-                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
-                _tableView.tableFooterView = noResultView;
+                
+                _tableView.tableFooterView = _noResultView;
             }
             
             [_tableView reloadData];

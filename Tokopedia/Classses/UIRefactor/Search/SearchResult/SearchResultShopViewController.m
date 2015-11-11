@@ -26,7 +26,7 @@
 #import "NSDictionaryCategory.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 
 #import "URLCacheController.h"
 #import "ShopContainerViewController.h"
@@ -52,6 +52,7 @@
 {
     NSInteger _page;
     NSInteger _limit;
+    NoResultReusableView *_noResultView;
     
     NSMutableArray *_urlarray;
     NSMutableDictionary *_params;
@@ -91,6 +92,15 @@
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]init];
+    [_noResultView generateAllElements:nil
+                                 title:@"Oops... hasil pencarian Anda tidak\ndapat ditemukan."
+                                  desc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain."
+                              btnTitle:nil];
+}
+
+
 #pragma mark - Life Cycle
 - (void)viewDidLoad
 {
@@ -114,6 +124,8 @@
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
+    
+    [self initNoResultView];
     
     /** set table footer view (loading act) **/
     if (_product.count > 0) {
@@ -413,7 +425,8 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    _table.tableFooterView = [NoResultView new].view;
+                    //_table.tableFooterView = [NoResultView new].view;
+                    [_table addSubview:_noResultView];
                 }
                 
                 if (_product.count >0) {

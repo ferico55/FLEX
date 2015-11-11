@@ -153,7 +153,10 @@ NoResultDelegate
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]init];
-    _noResultView generateAllElements: title:<#(NSString *)#> desc:<#(NSString *)#> btnTitle:<#(NSString *)#>
+    [_noResultView generateAllElements:nil
+                                 title:@"Oops... hasil pencarian Anda tidak\ndapat ditemukan."
+                                  desc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain."
+                               btnTitle:nil];
 }
 
 #pragma mark - Life Cycle

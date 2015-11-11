@@ -1196,6 +1196,7 @@
         {
             if (buttonIndex==0) {
                 [self.navigationController popViewControllerAnimated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
             }
             else
             {
@@ -1206,6 +1207,7 @@
                 [self.tabBarController setSelectedIndex:3];
                 [selfNav popToRootViewControllerAnimated:YES];
                 [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
+                
                 
                 //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
                 //[self.navigationController pushViewController:cartViewController animated:YES];
