@@ -507,12 +507,12 @@
                 [_listTemp removeAllObjects];
             }
             
-            [_list addObjectsFromArray:address.result.list];
-            [_listTemp addObjectsFromArray:address.result.list];
+            [_list addObjectsFromArray:address.data.list];
+            [_listTemp addObjectsFromArray:address.data.list];
             
             if (_list.count >0) {
                 _isnodata = NO;
-                _urinext =  address.result.paging.uri_next;
+                _urinext =  address.data.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
                 NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                 
@@ -952,6 +952,7 @@
     {
         tokopediaNetworkManagerRequest = [TokopediaNetworkManager new];
         tokopediaNetworkManagerRequest.delegate = self;
+        tokopediaNetworkManagerRequest.isUsingHmac = YES;
     }
     tokopediaNetworkManagerRequest.tagRequest = tag;
     
@@ -1197,19 +1198,24 @@
     return nil;
 }
 
-- (NSString*)getPath:(int)tag
-{
+- (NSString *)getPath:(int)tag {
     if(tag == CTagRequest)
-        return kTKPDPROFILE_SETTINGAPIPATH;
+    {
+        return @"v4/people/get_address.pl";
+    }
     
-    return nil;
+    return @"";
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
 }
 
 - (id)getObjectManager:(int)tag
 {
     if(tag == CTagRequest)
     {
-        _objectmanager = [RKObjectManager sharedClient];
+        _objectmanager = [RKObjectManager sharedClientHttps];
         
         // setup object mappings
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddressForm class]];
@@ -1235,13 +1241,15 @@
                                                      kTKPDPROFILESETTING_APICITYNAMEKEY,
                                                      kTKPDPROFILESETTING_APICITYIDKEY,
                                                      kTKPDPROFILESETTING_APIPROVINCEIDKEY,
-                                                     kTKPDPROFILESETTING_APIDISTRICTIDKEY
+                                                     kTKPDPROFILESETTING_APIDISTRICTIDKEY,
+                                                     @"longitude",
+                                                     @"latitude"
                                                      ]];
         
         RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
         [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY}];
         
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:resultMapping]];
         
         RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
         [resultMapping addPropertyMapping:listRel];
@@ -1250,7 +1258,7 @@
         [resultMapping addPropertyMapping:pageRel];
         
         // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         
         [_objectmanager addResponseDescriptor:responseDescriptor];
         return _objectmanager;

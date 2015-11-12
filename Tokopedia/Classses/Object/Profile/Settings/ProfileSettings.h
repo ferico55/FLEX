@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) ProfileSettingsResult *result;
+@property (nonatomic, strong) ProfileSettingsResult *data;
 
 @end

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet GMSMapView *transparentView;
 
+
 @end
 
 @implementation PlacePickerViewController
@@ -41,6 +42,8 @@
     CLLocationManager *_locationManager;
     GMSGeocoder *_geocoder;
     GMSAddress *_address;
+    
+    UIImage *_captureScreen;
 }
 
 - (instancetype)init {
@@ -50,7 +53,6 @@
         _autoCompleteResults = [NSMutableArray new];
         shouldBeginEditing = YES;
         _shouldStartSearch = YES;
-        self.title = @"Pilih Lokasi";
 
     }
     return self;
@@ -80,7 +82,6 @@
     }
     
     _marker = [[GMSMarker alloc] init];
-    [_marker setDraggable:YES];
     _marker.position = _firstCoordinate;
     _marker.map = _mapview;
     _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
@@ -104,9 +105,20 @@
     
     _placeHistories = [NSMutableArray new];
     
-    UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapDone)];
-    [doneBarButtonItem setTintColor:[UIColor whiteColor]];
-    self.navigationItem.rightBarButtonItem = doneBarButtonItem;
+    if (_type == TypeEditPlace) {
+        UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapDone)];
+        [doneBarButtonItem setTintColor:[UIColor whiteColor]];
+        self.navigationItem.rightBarButtonItem = doneBarButtonItem;
+        self.title = @"Pilih Lokasi";
+        [_marker setDraggable:YES];
+
+    }
+    else
+    {
+        self.title = @"Lokasi";
+        _searchBar.hidden = YES;
+        
+    }
     
     [self loadHistory];
 }
@@ -118,21 +130,27 @@
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
-    UIImage *map = [self captureScreen];
+    UIImage *map = _captureScreen?:[PlacePickerViewController captureScreen:mapView];
     _mapview.selectedMarker = nil;
     [_delegate PickAddress:_address longitude:marker.position.longitude latitude:marker.position.latitude map:map];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (UIImage *)captureScreen {
-    UIGraphicsBeginImageContextWithOptions(_mapview.frame.size, YES, 0.0f);
-    [_mapview.layer renderInContext:UIGraphicsGetCurrentContext()];
++ (UIImage *)captureScreen:(GMSMapView *)mapView {
+    
+    UIGraphicsBeginImageContextWithOptions(mapView.frame.size, YES, 0.0f);
+    [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return image;
+}
+
+-(void)setCaptureMap
+{
+    [PlacePickerViewController captureScreen:_mapview];
 }
 
 
@@ -295,27 +313,36 @@
     [_locationManager stopUpdatingLocation];
     
     
-    [self focusMapToLocation:currentLocation.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
+    //[self focusMapToLocation:currentLocation.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
 }
 
 
 - (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory addressSugestion:(GMSAutocompletePrediction*)addressSugestion
 {
     _marker.position = location;
-    CGPoint point = [_mapview.projection pointForCoordinate:_marker.position];
-    point.y = point.y - 50;
-    GMSCameraUpdate *camera =
-    [GMSCameraUpdate setTarget:[_mapview.projection coordinateForPoint:point]];
-    [_mapview animateWithCameraUpdate:camera];
-    
-    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:location.latitude
-                                                            longitude:location.longitude
-                                                                 zoom:14];
-    [_mapview setCamera:cameraPosition];
     _mapview.selectedMarker = _marker;
+
+    [PlacePickerViewController focusMap:_mapview toMarker:_marker];
+    
+    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
     
     if (shouldUpdateAddress)
         [self updateAddressSaveHistory:saveHistory addressSugestion:addressSugestion];
+}
+
++(void)focusMap:(GMSMapView*)mapView toMarker:(GMSMarker*)marker
+{
+    CGPoint point = [mapView.projection pointForCoordinate:marker.position];
+    point.y = point.y - 50;
+    GMSCameraUpdate *camera =
+    [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
+    [mapView animateWithCameraUpdate:camera];
+    
+    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:marker.position.latitude
+                                                                    longitude:marker.position.longitude
+                                                                         zoom:14];
+    [mapView setCamera:cameraPosition];
+    
 }
 
 #pragma mark -
@@ -334,7 +361,7 @@
 }
 
 - (GMSAutocompletePrediction *)placeAtIndexPath:(NSIndexPath *)indexPath {
-    if (_autoCompleteResults.count>0) {
+    if (_autoCompleteResults.count>0 && _autoCompleteResults.count>indexPath.row) {
         return [_autoCompleteResults objectAtIndex:indexPath.row];
     }
     return nil;

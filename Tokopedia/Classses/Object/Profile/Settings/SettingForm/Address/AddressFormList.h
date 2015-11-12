@@ -29,5 +29,7 @@
 @property (nonatomic, strong) NSString *address_district;
 @property (nonatomic, strong) NSString *address_city;
 @property (nonatomic, strong) NSString *address_province;
+@property (nonatomic, strong) NSString *longitude;
+@property (nonatomic, strong) NSString *latitude;
 
 @end
