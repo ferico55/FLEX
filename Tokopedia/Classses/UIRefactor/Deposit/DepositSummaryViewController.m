@@ -13,9 +13,10 @@
 #import "DepositFormViewController.h"
 #import "AlertDatePickerView.h"
 #import "LoadingView.h"
-#import "NoResult.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 #import "TokopediaNetworkManager.h"
+#define normalWidth 320
+#define normalHeight 568
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate> {
     __weak RKObjectManager *_objectManager;
@@ -48,8 +49,6 @@
     
     BOOL _isRefreshView;
     BOOL _isNoData;
-    NoResult *_noResult;
-    NoResultView *_noResultView;
     
     UIBarButtonItem *_barbuttonleft;
     UIBarButtonItem *_barbuttonright;
@@ -71,6 +70,7 @@
 @property (strong, nonatomic) IBOutlet UIView *infoReviewSaldo;
 @property (strong, nonatomic) IBOutlet UIView *filterDateArea;
 @property (strong, nonatomic) IBOutlet UILabel *reviewSaldo;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 - (void)cancelCurrentAction;
 - (void)loadData;
@@ -80,7 +80,9 @@
 
 @end
 
-@implementation DepositSummaryViewController
+@implementation DepositSummaryViewController{
+    NoResultReusableView *_noResultView;
+}
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -115,6 +117,13 @@
     self.navigationItem.rightBarButtonItem = _barbuttonright;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    [_noResultView generateAllElements:nil
+                                 title:@"Belum ada transaksi"
+                                  desc:@""
+                              btnTitle:nil];
+}
 
 - (void)initNotificationCenter {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -136,7 +145,6 @@
     
     _operationQueue = [NSOperationQueue new];
     _depositSummary = [NSMutableArray new];
-    _noResult = [NoResult new];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -165,6 +173,9 @@
     [_startDateButton setTitle:[dateFormat stringFromDate:_oneMonthBeforeNow] forState:UIControlStateNormal];
     [_endDateButton setTitle:[dateFormat stringFromDate:_now] forState:UIControlStateNormal];
     
+    self.contentView  = self.view;
+    [self initNoResultView];
+    
     [self initNotificationCenter];
     [self initBarButton];
     [self loadData];
@@ -174,9 +185,6 @@
     [super viewWillAppear:animated];
     self.screenName = @"Withdraw Page";
     
-    
-    if(_noResultView == nil)
-        _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
 }
 
 
@@ -378,7 +386,7 @@
                 _isNoData = YES;
                 
                 if(depositsummary.result.error_date) {
-                    [_noResultView setNoResultText:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
+                    [_noResultView setNoResultTitle:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
                 }
                 _table.tableFooterView = _noResultView;
                 

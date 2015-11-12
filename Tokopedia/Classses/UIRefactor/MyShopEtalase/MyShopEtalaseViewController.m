@@ -16,13 +16,17 @@
 #import "GeneralList1GestureCell.h"
 #import "MGSwipeButton.h"
 #import "URLCacheController.h"
+#import "NoResultReusableView.h"
+#define normalWidth 320
+#define normalHeight 568
 
 @interface MyShopEtalaseViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     MyShopEtalaseDetailViewControllerDelegate,
-    MGSwipeTableCellDelegate
+    MGSwipeTableCellDelegate,
+    NoResultDelegate
 >
 {
     NSInteger _page;
@@ -37,7 +41,7 @@
     NSOperationQueue *_operationQueue;
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
-    
+    NoResultReusableView *_noResultView;
     NSMutableDictionary *_datainput;
     
     NSMutableArray *_list;
@@ -55,7 +59,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 -(void)cancel;
 -(void)configureRestKit;
 -(void)request;
@@ -67,6 +71,15 @@
 @end
 
 @implementation MyShopEtalaseViewController
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Belum ada etalase"
+                                  desc:@"Segera tambahkan etalase pada toko Anda"
+                              btnTitle:@"Tambah Etalase"];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -110,10 +123,16 @@
                                                                                   action:@selector(tap:)];
     addBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = addBarButton;
+    [self initNoResultView];
+    self.contentView = self.view;
     
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didEditEtalase:) name:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
+    [center addObserver:self selector:@selector(didAddEtalase:) name:@"didAddEtalase" object:nil];
+    [center addObserver:self selector:@selector(didRemoveEtalase:) name:@"didRemoveEtalase" object:nil];
+
+    
     
     [self configureRestKit];
     [self request];
@@ -394,6 +413,14 @@
     
     id stat = [result objectForKey:@""];
     _etalase = stat;
+    /*
+    if(_etalase.result.list.count >0){
+        _etalase = stat;
+        self.view = _contentView;
+    }else{
+        self.view = _noResultView;
+    }
+     */
     NSString *statusstring = _etalase.status;
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
@@ -436,6 +463,9 @@
                 if (_list.count >0) {
                     _isnodata = NO;
                     [_table reloadData];
+                }else{
+                    _isnodata = YES;
+                    [_table addSubview:_noResultView];
                 }
                 
                 _urinext =  _etalase.result.paging.uri_next;
@@ -709,4 +739,55 @@
     [_datainput setObject:[userinfo objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
     [self refreshView:nil];
 }
+
+- (void)didAddEtalase:(NSNotification*)notification {
+    _page = 1;
+    _isrefreshview = YES;
+    [_noResultView removeFromSuperview];
+    [self configureRestKit];
+    [self request];
+    [_table reloadData];
+}
+
+- (void)didRemoveEtalase:(NSNotification*)notification {
+    /*
+    NSString *etalaseId = [notification object];
+    
+    for (int i = 0; i < _etalase.result.list.count ; i++) {
+        EtalaseList* etal = _etalase.result.list[i];
+        if ([etal.etalase_id isEqualToString:etalaseId]) {
+            [_etalase.result.list removeObjectAtIndex:i];
+            i--;
+        }
+    }
+    if(_etalase.result.list.count > 0){
+        [_table reloadData];
+    }else{
+        [_table addSubview:_noResultView];
+    }
+    [_table reloadData];
+     */
+    _page = 1;
+    _isrefreshview = YES;
+    [_noResultView removeFromSuperview];
+    [self configureRestKit];
+    [self request];
+    [_table reloadData];
+}
+
+
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    MyShopEtalaseEditViewController *vc = [MyShopEtalaseEditViewController new];
+    vc.data = @{
+                kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
+                };
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.navigationBar.translucent = NO;
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
 @end
