@@ -228,8 +228,15 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    [self setToCache:operation];
-    [_delegate successRequestAddress:self withResultObj:_address];
+    if (_address.message_error.count == 0) {
+        [self setToCache:operation];
+        [_delegate successRequestAddress:self withResultObj:_address];
+    }
+    else
+    {
+        StickyAlertView *alert =[[StickyAlertView alloc]initWithErrorMessages:_address.message_error delegate:self];
+        [alert show];
+    }
 }
 
 -(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag

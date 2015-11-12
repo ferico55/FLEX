@@ -121,6 +121,8 @@
     }
     
     [self loadHistory];
+    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
+
 }
 
 -(void)tapDone
@@ -150,7 +152,7 @@
 
 -(void)setCaptureMap
 {
-    [PlacePickerViewController captureScreen:_mapview];
+    _captureScreen = [PlacePickerViewController captureScreen:_mapview];
 }
 
 
@@ -440,7 +442,7 @@
         CLLocationCoordinate2D annotationCoordinate = CLLocationCoordinate2DMake([[self placeLatitudeHistoryAtIndexPath:indexPath] doubleValue],[[self placeLongitudeHistoryAtIndexPath:indexPath] doubleValue]);
 
         [self focusMapToLocation:annotationCoordinate
-             shouldUpdateAddress:NO
+             shouldUpdateAddress:YES
                shouldSaveHistory:NO
                 addressSugestion:[self placeAtIndexPath:indexPath]];
     }
@@ -531,7 +533,7 @@
 
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
-    [self focusMapToLocation:marker.position shouldUpdateAddress:NO shouldSaveHistory:NO addressSugestion:[GMSAutocompletePrediction new]];
+    [self focusMapToLocation:marker.position shouldUpdateAddress:NO shouldSaveHistory:NO addressSugestion:nil];
     return YES;
 }
 
