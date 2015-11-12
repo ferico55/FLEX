@@ -5292,6 +5292,7 @@
                         <outlet property="shipmentPosNotAvailabelLabel" destination="ppo-5f-DHO" id="lbK-7A-j1J"/>
                         <outlet property="shipmentPosNoteCell" destination="Yot-XG-Vif" id="va6-XJ-7ja"/>
                         <outlet property="shipmentRPXEconomySwitch" destination="2T7-fH-U7b" id="TlK-rk-bNF"/>
+                        <outlet property="shipmentRPXIDropCell" destination="oHe-jw-B5i" id="ODj-zf-BrP"/>
                         <outlet property="shipmentRPXIDropLabel" destination="oIa-LQ-GyH" id="kXc-Me-Lwh"/>
                         <outlet property="shipmentRPXIDropSwitch" destination="HJL-0Q-faH" id="voX-Ve-Hhf"/>
                         <outlet property="shipmentRPXLogoImageView" destination="q6l-yd-eyC" id="tUo-ux-9XZ"/>
