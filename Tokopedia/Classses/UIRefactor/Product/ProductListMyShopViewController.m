@@ -31,7 +31,10 @@
 #import "NavigateViewController.h"
 
 #import "LoadingView.h"
+#import "NoResultReusableView.h"
 
+#define normalWidth 320
+#define normalHeight 568
 @interface ProductListMyShopViewController ()
 <
     UITableViewDataSource,
@@ -44,7 +47,8 @@
     MyShopEtalaseFilterViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
     RequestMoveToDelegate,
-    LoadingViewDelegate
+    LoadingViewDelegate,
+    NoResultDelegate
 >
 {
     NSInteger _page;
@@ -64,6 +68,7 @@
     
     NSMutableArray *_list;
     ManageProduct*_product;
+    NoResultReusableView *_noResultView;
     
     BOOL _isaddressexpanded;
     
@@ -112,7 +117,14 @@
     }
     return self;
 }
-
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Toko Anda belum mempunyai produk"
+                                  desc:@"Segera tambahkan produk ke toko Anda!"
+                              btnTitle:@"Tambah Produk"];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -175,6 +187,8 @@
                selector:@selector(moveProductToEtalase:)
                    name:MOVE_PRODUCT_TO_ETALASE_NOTIFICATION
                  object:nil];
+    
+    [self initNoResultView];
 
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
@@ -609,9 +623,22 @@
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
                 _table.tableFooterView = [UIView new];
             } else {
-                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
-                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-                _table.tableFooterView = noResultView;
+                if(_dataFilter.count >0){
+                    if([_dataFilter objectForKey:@"keyword"] != nil){
+                        [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Produk dengan kata kunci \"%@\" tidak ditemukan", [_dataFilter objectForKey:@"keyword"]]];
+                        [_noResultView setNoResultDesc:@"Coba ubah kata kunci yang Anda gunakan"];
+                        [_noResultView hideButton:YES];
+                    }else{
+                        [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan"];
+                        [_noResultView setNoResultDesc:@"Coba ubah filter yang sedang digunakan"];
+                        [_noResultView hideButton:YES];
+                    }
+                }else{
+                    [_noResultView setNoResultTitle:@"Toko Anda belum mempunyai produk"];
+                    [_noResultView setNoResultDesc:@"Segera tambahkan produk ke toko Anda"];
+                    [_noResultView hideButton:NO];
+                }
+                _table.tableFooterView = _noResultView;
             }
             [_table reloadData];
         }
@@ -728,6 +755,12 @@
                     NSArray *array = setting.message_status?:@[@"Anda telah berhasil menghapus produk"];
                     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
                     [stickyAlertView show];
+                    
+                    if(_product.result.list.count > 0){
+                        [_table reloadData];
+                    }else{
+                        [_table addSubview:_noResultView];
+                    }
                 }
             }
         }
@@ -1021,6 +1054,20 @@
 {
     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
     [alert show];
+}
+
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    ProductAddEditViewController *vc = [ProductAddEditViewController new];
+    vc.data = @{
+                kTKPD_AUTHKEY                   : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                DATA_TYPE_ADD_EDIT_PRODUCT_KEY  : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+                };
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.navigationBar.translucent = NO;
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 @end

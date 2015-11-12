@@ -36,7 +36,7 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="yks-X0-wVh">
-                    <rect key="frame" x="40" y="230" width="240" height="26"/>
+                    <rect key="frame" x="40" y="226" width="240" height="26"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                     <state key="normal" title="Button"/>
                     <connections>
@@ -44,7 +44,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oH-c2-qNI">
-                    <rect key="frame" x="60" y="200" width="200" height="11"/>
+                    <rect key="frame" x="60" y="196" width="200" height="11"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="11" id="Elo-dh-EM9"/>
                         <constraint firstAttribute="width" constant="200" id="yhX-dw-2Wq"/>
@@ -66,7 +66,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="0oH-c2-qNI" firstAttribute="top" secondItem="ZCj-cx-8cZ" secondAttribute="bottom" constant="17" id="5gT-eu-Bwa"/>
+                <constraint firstItem="0oH-c2-qNI" firstAttribute="top" secondItem="ZCj-cx-8cZ" secondAttribute="bottom" constant="13" id="5gT-eu-Bwa" userLabel="Desc Label.top = Title Label.bottom + 13"/>
                 <constraint firstItem="ZCj-cx-8cZ" firstAttribute="top" secondItem="jTB-Zo-tFB" secondAttribute="bottom" constant="20" id="A3R-0y-08n"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="CXn-hl-DoD"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="0oH-c2-qNI" secondAttribute="centerX" id="JFF-cC-VJ4"/>
