@@ -410,7 +410,7 @@
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0 && _autoCompleteResults.count > 0) {
-        return @"Sugestions";
+        return @"Suggestions";
     }
     if (section == 1 && _placeHistories.count > 0) {
         return @"Recent Searches";

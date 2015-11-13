@@ -627,7 +627,7 @@
             </connections>
             <point key="canvasLocation" x="255" y="462"/>
         </view>
-        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="7lv-oE-fgz">
+        <tableViewCell tag="16" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="7lv-oE-fgz">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7lv-oE-fgz" id="L8V-WV-faZ">
@@ -799,7 +799,7 @@
             <animations/>
             <point key="canvasLocation" x="-146" y="66"/>
         </tableViewCell>
-        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="MnA-aZ-ahf">
+        <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="MnA-aZ-ahf">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MnA-aZ-ahf" id="Iqd-AO-7Ri">
@@ -973,7 +973,7 @@
             <animations/>
             <point key="canvasLocation" x="-140" y="1025"/>
         </tableViewCell>
-        <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="6We-Nh-f8B">
+        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="6We-Nh-f8B">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6We-Nh-f8B" id="C7p-4O-F9R">
@@ -1029,7 +1029,7 @@
             <animations/>
             <point key="canvasLocation" x="-140" y="648"/>
         </tableViewCell>
-        <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="02H-Nx-4p0">
+        <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="02H-Nx-4p0">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="02H-Nx-4p0" id="hbv-EC-kXS">
@@ -1083,9 +1083,9 @@
                 </constraints>
             </tableViewCellContentView>
             <animations/>
-            <point key="canvasLocation" x="-140" y="479"/>
+            <point key="canvasLocation" x="-140" y="429"/>
         </tableViewCell>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="130" id="Nkd-N9-hJV">
+        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="130" id="Nkd-N9-hJV">
             <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nkd-N9-hJV" id="19Y-Yw-GUQ">
@@ -1193,7 +1193,7 @@
             </variation>
             <point key="canvasLocation" x="452" y="-416"/>
         </view>
-        <tableViewCell clipsSubviews="YES" tag="16" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="pra-CU-cPU">
+        <tableViewCell clipsSubviews="YES" tag="11" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="pra-CU-cPU">
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pra-CU-cPU" id="az9-Pp-dXA">
@@ -1201,7 +1201,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="KJx-9P-Ix9">
-                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                        <rect key="frame" x="10" y="0.0" width="70" height="70"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1210,7 +1210,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Opsional)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TNB-3o-bsd">
-                        <rect key="frame" x="78" y="38" width="108" height="18.5"/>
+                        <rect key="frame" x="88" y="38" width="108" height="18.5"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18.5" id="M2t-zG-gTW"/>
@@ -1224,7 +1224,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="287" height="70"/>
                         <animations/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                        <inset key="contentEdgeInsets" minX="78" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <inset key="contentEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <state key="normal" title="Tentukan Peta Lokasi">
                             <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
@@ -1237,7 +1237,7 @@
                 <constraints>
                     <constraint firstItem="TNB-3o-bsd" firstAttribute="leading" secondItem="KJx-9P-Ix9" secondAttribute="trailing" constant="8" id="F9v-pC-e5U"/>
                     <constraint firstAttribute="bottom" secondItem="TNB-3o-bsd" secondAttribute="bottom" constant="13" id="QRY-oP-ahd"/>
-                    <constraint firstItem="KJx-9P-Ix9" firstAttribute="leading" secondItem="az9-Pp-dXA" secondAttribute="leading" id="SKQ-Go-brk"/>
+                    <constraint firstItem="KJx-9P-Ix9" firstAttribute="leading" secondItem="az9-Pp-dXA" secondAttribute="leading" constant="10" id="SKQ-Go-brk"/>
                     <constraint firstAttribute="bottom" secondItem="X4Q-Nr-mBl" secondAttribute="bottom" id="bWs-7G-TYO"/>
                     <constraint firstItem="KJx-9P-Ix9" firstAttribute="top" secondItem="az9-Pp-dXA" secondAttribute="top" id="eJT-fF-MT0"/>
                     <constraint firstAttribute="trailing" secondItem="X4Q-Nr-mBl" secondAttribute="trailing" id="kpj-dG-IWW"/>

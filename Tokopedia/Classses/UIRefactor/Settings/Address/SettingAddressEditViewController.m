@@ -333,11 +333,11 @@
 {
     NSString *addressStreet = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
     
-    if ([_textviewaddress.text isEqualToString:@""]){
+    //if ([_textviewaddress.text isEqualToString:@""]){
         _textviewaddress.text = addressStreet;
         _textviewaddress.placeholderLabel.hidden = YES;
-    }
-    if ([_textfieldpostcode.text isEqualToString:@""])
+    //}
+    //if ([_textfieldpostcode.text isEqualToString:@""])
         _textfieldpostcode.text = addressStreet;
     
     _textfieldpostcode.text = address.postalCode;
