@@ -44,6 +44,7 @@
     GMSAddress *_address;
     
     UIImage *_captureScreen;
+    NSString *_selectedSugestion;
 }
 
 - (instancetype)init {
@@ -132,6 +133,7 @@
 
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
+    _selectedSugestion = @"";
     [self focusMapToLocation:coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
 }
 
@@ -139,7 +141,7 @@
 {
     UIImage *map = _captureScreen?:[PlacePickerViewController captureScreen:mapView];
     _mapview.selectedMarker = nil;
-    [_delegate PickAddress:_address longitude:marker.position.longitude latitude:marker.position.latitude map:map];
+    [_delegate PickAddress:_address suggestion:_selectedSugestion?:@"" longitude:marker.position.longitude latitude:marker.position.latitude map:map];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -402,12 +404,32 @@
     
     cell.textLabel.font = FONT_GOTHAM_BOOK_13;
     if (indexPath.section == 0)
+    {
         [cell.textLabel setCustomAttributedText:[self placeAtIndexPath:indexPath].attributedFullText.string];
+        cell.textLabel.numberOfLines = 0;
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        
+        UIFont *regularFont = FONT_GOTHAM_BOOK_13;
+        UIFont *boldFont = FONT_GOTHAM_MEDIUM_13;
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
+        
+        NSMutableAttributedString *bolded = [[self placeAtIndexPath:indexPath].attributedFullText mutableCopy];
+        [bolded enumerateAttribute:kGMSAutocompleteMatchAttribute
+                           inRange:NSMakeRange(0, bolded.length)
+                           options:0
+                        usingBlock:^(id value, NSRange range, BOOL *stop) {
+                            UIFont *font = (value == nil) ? regularFont : boldFont;
+                            [bolded addAttribute:NSFontAttributeName value:font range:range];
+                        }];
+        [bolded addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, [bolded length])];
+
+        
+        cell.textLabel.attributedText = bolded;
+    }
     else
         [cell.textLabel setCustomAttributedText:[self placeSugestionHistoryAtIndexPath:indexPath]];
 
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     
     return cell;
 }
@@ -441,6 +463,7 @@
     
     if (indexPath.section == 0) {
         [self doGeneratePlaceDetailPlaceID:[self placeAtIndexPath:indexPath].placeID addressSugestion:[self placeAtIndexPath:indexPath]];
+        _selectedSugestion = [self placeAtIndexPath:indexPath].attributedFullText.string;
     }
     else
     {
@@ -450,6 +473,7 @@
              shouldUpdateAddress:YES
                shouldSaveHistory:NO
                 addressSugestion:[self placeAtIndexPath:indexPath]];
+        _selectedSugestion = [self placeSugestionHistoryAtIndexPath:indexPath];
     }
 }
 
@@ -505,6 +529,8 @@
                                 _tableView.hidden = NO;
                                 [_tableView reloadData];
                             }];
+    
+
 }
 
 
@@ -512,6 +538,7 @@
 #pragma mark - GMSMapView Delegate
 - (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
 {
+    _selectedSugestion = @"";
     _isDragging = YES;
 }
 

@@ -329,10 +329,20 @@
     [self.navigationController pushViewController:placePicker animated:YES];
 }
 
--(void)PickAddress:(GMSAddress *)address longitude:(double)longitude latitude:(double)latitude map:(UIImage*)map
+-(void)PickAddress:(GMSAddress *)address suggestion:(NSString*)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage*)map
 {
-    NSString *addressStreet = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
     
+    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
     //if ([_textviewaddress.text isEqualToString:@""]){
         _textviewaddress.text = addressStreet;
         _textviewaddress.placeholderLabel.hidden = YES;
