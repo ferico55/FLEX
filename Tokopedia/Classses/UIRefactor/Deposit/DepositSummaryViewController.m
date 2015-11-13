@@ -15,8 +15,6 @@
 #import "LoadingView.h"
 #import "NoResultReusableView.h"
 #import "TokopediaNetworkManager.h"
-#define normalWidth 320
-#define normalHeight 568
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate> {
     __weak RKObjectManager *_objectManager;
@@ -118,7 +116,7 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [_noResultView generateAllElements:nil
                                  title:@"Belum ada transaksi"
                                   desc:@""

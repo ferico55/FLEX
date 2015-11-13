@@ -77,7 +77,7 @@ typedef enum TagRequest {
     return self;
 }
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Disini kamu bisa lihat produk-produk yang telah kamu lihat"

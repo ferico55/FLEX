@@ -31,13 +31,14 @@
 #import "URLCacheController.h"
 #import "ShopContainerViewController.h"
 
-@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, NoResultDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 -(void)cancel;
 -(void)loadData;
@@ -78,6 +79,7 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    NSString *_suggestion;
 }
 
 #pragma mark - Initialization
@@ -93,11 +95,12 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc]init];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Oops... hasil pencarian Anda tidak\ndapat ditemukan."
                                   desc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain."
-                              btnTitle:nil];
+                              btnTitle:@""];
 }
 
 
@@ -159,6 +162,8 @@
     _cachecontroller.URLCacheInterval = 0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
+    self.contentView = self.view;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];    
@@ -175,6 +180,32 @@
     }
 
     self.screenName = @"Search Result - Shop Tab";
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"shop", [_data objectForKey:@"search"], @"0"]];
+    
+    NSData *returnedData = [NSData dataWithContentsOfURL:url];
+    
+    if(NSClassFromString(@"NSJSONSerialization"))
+    {
+        NSError *error = nil;
+        id object = [NSJSONSerialization
+                     JSONObjectWithData:returnedData
+                     options:0
+                     error:&error];
+        
+        if(error) { /* JSON was malformed, act appropriately here */ }
+        
+        if([object isKindOfClass:[NSDictionary class]])
+        {
+            NSDictionary *results = object;
+            _suggestion = results[@"suggest"];
+        }else{
+            
+        }
+    }else{
+        //iOS 4--
+    }
+
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }
@@ -426,12 +457,24 @@
                 if (_product.count == 0) {
                     [_act stopAnimating];
                     //_table.tableFooterView = [NoResultView new].view;
-                    [_table addSubview:_noResultView];
-                }
-                
-                if (_product.count >0) {
-                    _table.tableFooterView = nil;
+                    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
+                        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
+                        [_noResultView hideButton:YES];
+                    }else if([_data count] > 3){
+                        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+                        [_noResultView hideButton:YES];
+                    }else{
+                        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
+                        [_noResultView setNoResultButtonTitle:_suggestion];
+                        [_noResultView hideButton:NO];
+                    }
+
+                    //[_table addSubview:_noResultView];
+                    self.view = _noResultView;
+                }else{
+                    self.view = self.contentView;
                     _urinext =  _searchitem.result.paging.uri_next;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
                     
                     NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
                     if(tempInt == _page)
@@ -595,7 +638,13 @@
     [_act startAnimating];
 }
 
+#pragma mark - No Result Delegate
 
+- (void) buttonDidTapped:(id)sender{
+    [_params setObject:_suggestion forKey:@"search"];
+    self.view = self.contentView;
+    [[self getNetworkManager] doRequest];
+}
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton

@@ -26,8 +26,7 @@
 #define CCellIdentifier @"cell"
 #define CTagGetPriceAlert 10
 #define CTagDeletePriceAlert 11
-#define normalWidth 320
-#define normalHeight 568
+
 @interface AlertPriceNotificationViewController ()<TokopediaNetworkManagerDelegate, DepartmentListDelegate, LoadingViewDelegate, UIAlertViewDelegate, NoResultDelegate>{
     IBOutlet UITableView *_table;
 }
@@ -54,7 +53,7 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Disini kamu bisa melihat notifikasi harga untuk produk yang kamu ikuti"

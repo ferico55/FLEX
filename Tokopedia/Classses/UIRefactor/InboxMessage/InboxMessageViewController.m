@@ -25,8 +25,6 @@
 #import "NoResultReusableView.h"
 #import "TAGDataLayer.h"
 
-#define normalWidth 320
-#define normalHeight 568
 
 @interface InboxMessageViewController ()
 <
@@ -144,7 +142,7 @@ typedef enum TagRequest {
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [_noResultView generateAllElements:nil
                                  title:@""
                                   desc:@""
@@ -1070,6 +1068,7 @@ typedef enum TagRequest {
             _isnodata = NO;
             _urinext =  message.result.paging.uri_next;
             _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+            [_noResultView removeFromSuperview];
         } else {
             _isnodata = YES;
             //_table.tableFooterView = _noResultView;
@@ -1088,7 +1087,8 @@ typedef enum TagRequest {
                 text = @"Belum ada pesan pada kategori \"sampah\"";
             }
             [_noResultView setNoResultTitle:text];
-            [_table addSubview:_noResultView];
+            _table.tableHeaderView = _searchView;
+            _table.tableFooterView = _noResultView;
         }
         
         if(_refreshControl.isRefreshing) {

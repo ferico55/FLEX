@@ -31,8 +31,7 @@
 #import "URLCacheController.h"
 #import "NoResultReusableView.h"
 #import "TAGDataLayer.h"
-#define normalWidth 320
-#define normalHeight 568
+
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
@@ -92,7 +91,7 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [_noResultView generateAllElements:nil
                                  title:@""
                                   desc:@""
@@ -400,15 +399,20 @@
             _page = [[_networkManager splitUriToPage:_nextPageURL] integerValue];
         }
         self.table.tableFooterView = nil;
+        [_noResultView removeFromSuperview];
     } else {
         NSString *text;
-    
-        if (self.inboxTalkType == InboxTalkTypeAll) {
-            text = @"Anda belum mengikuti diskusi produk";
-        } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
-            text = @"Anda belum mengikuti diskusi produk";
-        } else {
-            text = @"Belum ada diskusi produk pada produk Anda";
+        
+        if([_readStatus isEqualToString:@"all"]){
+            if (self.inboxTalkType == InboxTalkTypeAll) {
+                text = @"Anda belum mengikuti diskusi produk";
+            } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
+                text = @"Anda belum mengikuti diskusi produk";
+            } else {
+                text = @"Belum ada diskusi produk pada produk Anda";
+            }
+        }else{
+            text = @"Anda sudah membaca semua update diskusi produk";
         }
         [_noResultView setNoResultTitle:text];
         
@@ -416,7 +420,7 @@
     }
     
     [self.table reloadData];
-
+    
     
     [_refreshControl endRefreshing];
     

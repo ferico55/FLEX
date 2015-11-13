@@ -33,8 +33,6 @@
 #import "LoadingView.h"
 #import "NoResultReusableView.h"
 
-#define normalWidth 320
-#define normalHeight 568
 @interface ProductListMyShopViewController ()
 <
     UITableViewDataSource,
@@ -118,7 +116,7 @@
     return self;
 }
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Toko Anda belum mempunyai produk"

@@ -17,8 +17,6 @@
 #import "MGSwipeButton.h"
 #import "URLCacheController.h"
 #import "NoResultReusableView.h"
-#define normalWidth 320
-#define normalHeight 568
 
 @interface MyShopEtalaseViewController ()
 <
@@ -73,7 +71,7 @@
 @implementation MyShopEtalaseViewController
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Belum ada etalase"

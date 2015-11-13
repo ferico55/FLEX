@@ -41,8 +41,6 @@
 
 #define TAG_REQUEST_LIST 10
 #define TAG_REQUEST_CANCEL_COMPLAIN 11
-#define normalWidth 320
-#define normalHeight 568
 
 @interface InboxResolutionCenterComplainViewController ()<
     UITabBarControllerDelegate,
@@ -119,7 +117,7 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, normalWidth, normalHeight)];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Tidak Ada Komplain"

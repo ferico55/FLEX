@@ -108,6 +108,7 @@ NoResultDelegate
 
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 @end
 
@@ -137,6 +138,7 @@ NoResultDelegate
     NSString *_searchBaseUrl;
     NSString *_searchPostUrl;
     NSString *_searchFullUrl;
+    NSString *_suggestion;
     
     BOOL _isFailRequest;
 }
@@ -152,11 +154,13 @@ NoResultDelegate
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc]init];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [_noResultView generateAllElements:nil
-                                 title:@"Oops... hasil pencarian Anda tidak\ndapat ditemukan."
+                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
                                   desc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain."
-                               btnTitle:nil];
+                               btnTitle:@""];
+    [_noResultView hideButton:YES];
+    _noResultView.delegate = self;
 }
 
 #pragma mark - Life Cycle
@@ -250,6 +254,8 @@ NoResultDelegate
                                forState:UIControlStateNormal];
     }
     
+    self.contentView = self.view;
+    
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
@@ -285,6 +291,34 @@ NoResultDelegate
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    _suggestion = @"";
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"product", [_data objectForKey:@"search"], @"0"]];
+    
+    NSData *returnedData = [NSData dataWithContentsOfURL:url];
+    
+    if(NSClassFromString(@"NSJSONSerialization"))
+    {
+        NSError *error = nil;
+        id object = [NSJSONSerialization
+                     JSONObjectWithData:returnedData
+                     options:0
+                     error:&error];
+        
+        if(error) { /* JSON was malformed, act appropriately here */ }
+        
+        if([object isKindOfClass:[NSDictionary class]])
+        {
+            NSDictionary *results = object;
+            _suggestion = results[@"suggest"];
+        }else{
+            
+        }
+    }else{
+        //iOS 4--
+    }
+    
+    
     [_collectionView reloadData];
 }
 
@@ -820,10 +854,25 @@ NoResultDelegate
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
             }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
+            self.view = self.contentView;
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
-            [_collectionView addSubview:_noResultView];
+            if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
+                [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
+                [_noResultView hideButton:YES];
+            }else if([_data count] > 3){
+                [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+                [_noResultView hideButton:YES];
+            }else{
+                [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
+                [_noResultView setNoResultButtonTitle:_suggestion];
+                [_noResultView hideButton:NO];
+            }
+            //[_collectionView addSubview:_noResultView];
+            self.view = _noResultView;
         }
         
         if(_start > 0) [self requestPromo];
@@ -944,8 +993,12 @@ NoResultDelegate
     return RKRequestMethodGET;
 }
 
+#pragma mark - No Result Delegate
+
 - (void) buttonDidTapped:(id)sender{
-    NSLog(@"cuy\n");
+    [_params setObject:_suggestion forKey:@"search"];
+    self.view = self.contentView;
+    [_networkManager doRequest];
 }
 
 #pragma mark - Other Method
