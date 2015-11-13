@@ -45,6 +45,7 @@
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4Cells;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -84,6 +85,7 @@
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
+    _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -305,6 +307,8 @@
     }
     return 0;
 }
+
+
 - (IBAction)tapMapDetail:(id)sender {
     AddressFormList *list = _address;
     PlacePickerViewController *vc = [PlacePickerViewController new];

@@ -57,6 +57,7 @@
                 <outlet property="labelprovince" destination="r1Y-RP-fCb" id="myN-lL-GuS"/>
                 <outlet property="labelreceivername" destination="XbT-b4-SB0" id="AeG-cz-xAz"/>
                 <outlet property="mapview" destination="dGI-zU-X7j" id="lxC-s2-a16"/>
+                <outlet property="tableView" destination="P60-yr-Zpl" id="T2o-Yf-1Xx"/>
                 <outlet property="view" destination="xfa-3D-kB9" id="ryG-pO-gk9"/>
                 <outlet property="viewdefault" destination="oy1-tG-QnB" id="Pnk-MD-tMX"/>
                 <outlet property="viewsetasdefault" destination="pI2-YN-qaQ" id="KQl-8f-dSw"/>
