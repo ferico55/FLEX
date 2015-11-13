@@ -23,6 +23,8 @@
 >
 {
     UIImage *_captureMap;
+    AddressFormList *_address;
+    GMSMarker *_marker;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *labelreceivername;
@@ -81,7 +83,7 @@
     
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,17 +98,16 @@
 
 -(void)mapPosition
 {
-    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    AddressFormList *list = _address;
 
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
-    marker.map = _mapview;
-    marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
+    _marker.position = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
+    _marker.map = _mapview;
+    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
     
-    _mapview.selectedMarker = marker;
+    _mapview.selectedMarker = _marker;
     _mapview.mapType = kGMSTypeNormal;
     
-    [PlacePickerViewController focusMap:_mapview toMarker:marker];
+    [PlacePickerViewController focusMap:_mapview toMarker:_marker];
     
     [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
 }
@@ -126,13 +127,13 @@
             case 11:
             {   //Edit
                 SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-                vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY],
+                vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : _address,
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                             kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_EDIT),
                             kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
                             };
                 vc.delegate = self;
-                AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+                AddressFormList *address = _address;
                 if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
                     vc.imageMap = _captureMap?:[PlacePickerViewController captureScreen:_mapview];
                     vc.longitude = address.longitude;
@@ -186,6 +187,7 @@
     _data = data;
     if (data) {
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+        _address = list;
         self.title = list.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
         _labelreceivername.text = list.receiver_name?:@"";
         _labeladdressname.text = list.address_name?:@"";
@@ -202,6 +204,7 @@
         _viewsetasdefault.hidden = isdefault;
         
         if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
+            _marker = [[GMSMarker alloc] init];
             [self mapPosition];
         }
     }
@@ -264,7 +267,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    AddressFormList *address = _address;
 
     switch (indexPath.section) {
         case 0:
@@ -303,7 +306,7 @@
     return 0;
 }
 - (IBAction)tapMapDetail:(id)sender {
-    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    AddressFormList *list = _address;
     PlacePickerViewController *vc = [PlacePickerViewController new];
     vc.firstCoordinate = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
     [self.navigationController pushViewController:vc animated:YES];
@@ -323,6 +326,11 @@
     self.labelcity.text = address.city_name;
     self.labeldistrict.text = address.district_name;
     self.labelphonenumber.text = address.receiver_phone;
+    
+    if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
+        [self mapPosition];
+    }
+    _address = address;
 }
 
 #pragma mark - Alert delegate

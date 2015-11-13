@@ -448,17 +448,18 @@
                                                                   userInfo:userinfo];
                 
                 if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
-                    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-
-                    AddressFormList *address = [AddressFormList new];
+                    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
                     address.receiver_name = _textfieldreceivername.text?:@"";
                     address.address_name = _textfieldaddressname.text?:@"";
                     address.address_street = _textviewaddress.text?:@"";
                     address.postal_code = _textfieldpostcode.text?:@"";
-                    address.city_name = _selectedCity[DATA_NAME_KEY]?:list.city_name?:@"";
-                    address.province_name = _selectedProvince[DATA_NAME_KEY]?:list.province_name?:@"";
-                    address.district_name = _selectedDistrict[DATA_NAME_KEY]?:list.district_name?:@"";
+                    address.city_name = _selectedCity[DATA_NAME_KEY]?:address.city_name?:@"";
+                    address.province_name = _selectedProvince[DATA_NAME_KEY]?:address.province_name?:@"";
+                    address.district_name = _selectedDistrict[DATA_NAME_KEY]?:address.district_name?:@"";
                     address.receiver_phone = _textfieldphonenumber.text?:@"";
+                    address.longitude = _longitude;
+                    address.latitude = _latitude;
+                    
                     [self.delegate successEditAddress:address];
                 }
                 
