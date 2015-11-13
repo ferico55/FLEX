@@ -40,6 +40,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -1095,8 +1096,19 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nOg-76-Rxd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
                         <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="poN-dq-ahR">
+                                <rect key="frame" x="15" y="4" width="110" height="24"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="ZhT-pu-l14"/>
+                                    <constraint firstAttribute="width" constant="110" id="oGh-FN-iN4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qBI-JP-wnk" customClass="TKPDTextView">
-                                <rect key="frame" x="10" y="6" width="300" height="117"/>
+                                <rect key="frame" x="10" y="27" width="300" height="96"/>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
@@ -1109,10 +1121,12 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="qBI-JP-wnk" firstAttribute="top" secondItem="nOg-76-Rxd" secondAttribute="top" constant="6" id="IuX-Ee-AJk"/>
+                            <constraint firstItem="qBI-JP-wnk" firstAttribute="top" secondItem="nOg-76-Rxd" secondAttribute="top" constant="27" id="IuX-Ee-AJk"/>
                             <constraint firstAttribute="bottom" secondItem="qBI-JP-wnk" secondAttribute="bottom" constant="6.5" id="Lv9-5O-eoL"/>
+                            <constraint firstItem="poN-dq-ahR" firstAttribute="leading" secondItem="nOg-76-Rxd" secondAttribute="leading" constant="15" id="P1E-ZY-jbj"/>
                             <constraint firstItem="qBI-JP-wnk" firstAttribute="leading" secondItem="nOg-76-Rxd" secondAttribute="leading" constant="10" id="mwb-cP-HjH"/>
                             <constraint firstAttribute="trailing" secondItem="qBI-JP-wnk" secondAttribute="trailing" constant="10" id="p4a-gE-W4d"/>
+                            <constraint firstItem="poN-dq-ahR" firstAttribute="top" secondItem="nOg-76-Rxd" secondAttribute="top" constant="4" id="zb5-un-nnp"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -1131,7 +1145,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="enW-Bl-Ec8">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="enW-Bl-Ec8">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

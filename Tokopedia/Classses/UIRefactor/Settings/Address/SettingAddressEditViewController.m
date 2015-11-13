@@ -694,14 +694,6 @@
     }
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
-    [_textviewaddress resignFirstResponder];
-
-}
-
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];

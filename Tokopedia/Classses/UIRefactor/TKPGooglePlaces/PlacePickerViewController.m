@@ -130,6 +130,11 @@
     [self mapView:_mapview didTapInfoWindowOfMarker:_marker];
 }
 
+-(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
+{
+    [self focusMapToLocation:coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
+}
+
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
     UIImage *map = _captureScreen?:[PlacePickerViewController captureScreen:mapView];
