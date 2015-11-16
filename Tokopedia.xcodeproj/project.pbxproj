@@ -1900,6 +1900,7 @@
 		85FF8C691BE9A58B0015B16F /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 85FF85271BE9A58A0015B16F /* vt-iOSlib-1.0.1.zip */; };
 		927245C81BF96E4100F2478F /* InboxTicketSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927245C61BF96E4100F2478F /* InboxTicketSplitViewController.m */; settings = {ASSET_TAGS = (); }; };
 		927245C91BF96E4100F2478F /* InboxTicketSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927245C71BF96E4100F2478F /* InboxTicketSplitViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		927245D11BF9C0C400F2478F /* NavigationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 927245D01BF9C0C400F2478F /* NavigationHelper.m */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4785,6 +4786,8 @@
 		927245C61BF96E4100F2478F /* InboxTicketSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTicketSplitViewController.m; sourceTree = "<group>"; };
 		927245C71BF96E4100F2478F /* InboxTicketSplitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTicketSplitViewController.xib; sourceTree = "<group>"; };
 		927245CA1BF97C3800F2478F /* InboxTicketSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTicketSplitViewController.h; sourceTree = "<group>"; };
+		927245CF1BF9C0C400F2478F /* NavigationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NavigationHelper.h; path = Cocoa/Utils/NavigationHelper.h; sourceTree = "<group>"; };
+		927245D01BF9C0C400F2478F /* NavigationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NavigationHelper.m; path = Cocoa/Utils/NavigationHelper.m; sourceTree = "<group>"; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
@@ -4929,6 +4932,7 @@
 		85FF791E1BE9A5850015B16F /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				927245CB1BF9B7D300F2478F /* Utils */,
 				85FF791F1BE9A5850015B16F /* ALAsset+Date.h */,
 				85FF79201BE9A5850015B16F /* ALAsset+Date.m */,
 				85FF79211BE9A5850015B16F /* CMPopTipView.h */,
@@ -9928,6 +9932,16 @@
 			path = Veritrans;
 			sourceTree = "<group>";
 		};
+		927245CB1BF9B7D300F2478F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				927245CF1BF9C0C400F2478F /* NavigationHelper.h */,
+				927245D01BF9C0C400F2478F /* NavigationHelper.m */,
+			);
+			name = Utils;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -11869,6 +11883,7 @@
 				85FF865C1BE9A58A0015B16F /* SearchData.m in Sources */,
 				85FF86C11BE9A58A0015B16F /* TransactionVoucherData.m in Sources */,
 				85FF866D1BE9A58A0015B16F /* EtalaseResult.m in Sources */,
+				927245D11BF9C0C400F2478F /* NavigationHelper.m in Sources */,
 				85FF860B1BE9A58A0015B16F /* PriceAlertResult.m in Sources */,
 				85FF88691BE9A58B0015B16F /* ProductEditWholesaleCell.m in Sources */,
 				85FF897F1BE9A58B0015B16F /* TxOrderTransactionDetailViewController.m in Sources */,

@@ -45,6 +45,8 @@
 #import "string_more.h"
 #import "string_inbox_talk.h"
 
+#import "NavigationHelper.h"
+
 @interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate, GeneralTalkCommentCellDelegate, UISplitViewControllerDelegate, SmileyDelegate, CMPopTipViewDelegate>
 {
     BOOL _isnodata;
@@ -237,13 +239,11 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
-    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
 
         // add gesture to product image
     UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_talkProductImage addGestureRecognizer:productGesture];
-    [_talkProductImage setUserInteractionEnabled:enableDeepNavigation];
+    [_talkProductImage setUserInteractionEnabled: [NavigationHelper shouldDoDeepNavigation]];
 
 
     _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
@@ -272,7 +272,7 @@
     
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userArea addGestureRecognizer:tapUserGes];
-    [_userArea setUserInteractionEnabled:enableDeepNavigation];
+    [_userArea setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
     
     
     [self configureRestKit];
@@ -922,8 +922,7 @@
 #pragma mark - View Action
 
 - (void)tapProduct {
-    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
-    if (!enableDeepNavigation) {
+    if (![NavigationHelper shouldDoDeepNavigation]) {
         return;
     }
     
