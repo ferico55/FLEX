@@ -18,6 +18,7 @@
 #import "detail.h"
 #import "NavigateViewController.h"
 #import "TagManagerHandler.h"
+#import "NavigationHelper.h"
 
 @interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UISplitViewControllerDelegate>
 
@@ -265,7 +266,7 @@
         UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
 
         [cell.avatarImageView addGestureRecognizer:tapUser];
-        [cell.avatarImageView setUserInteractionEnabled:YES];
+        [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
         cell.avatarImageView.tag = [message.user_id integerValue];
         cell.viewLabelUser.text = message.user_name;
         
