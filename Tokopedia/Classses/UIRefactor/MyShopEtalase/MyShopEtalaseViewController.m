@@ -75,7 +75,7 @@
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
                                  title:@"Belum ada etalase"
-                                  desc:@"Segera tambahkan etalase pada toko Anda"
+                                  desc:@"Segera tambahkan etalase pada toko kamu"
                               btnTitle:@"Tambah Etalase"];
 }
 
