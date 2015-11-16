@@ -54,14 +54,32 @@
 
 -(void)setNoResultTitle:(NSString *)title{
     CGFloat titleSize = NO_RESULT_TITLE_SIZE;
-    [_titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:titleSize]];
-    [_titleLabel setText:title];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 7.0;
+    style.alignment = NSTextAlignmentCenter;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:titleSize],
+                                 NSParagraphStyleAttributeName  : style,
+                                 };
+    
+    _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+    
 }
 
 -(void)setNoResultDesc:(NSString *)desc{
     CGFloat descSize = NO_RESULT_DESC_SIZE;
-    [_descLabel setFont:[UIFont fontWithName:@"GothamBook" size:descSize]];
-    [_descLabel setText:desc];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentCenter;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:descSize],
+                                 NSParagraphStyleAttributeName  : style,
+                                 };
+    
+    _descLabel.attributedText = [[NSAttributedString alloc] initWithString:desc attributes:attributes];
+    
 }
 
 -(void)setNoResultButtonTitle:(NSString *)btnTitle{

@@ -293,29 +293,36 @@ NoResultDelegate
     [super viewWillAppear:animated];
     _suggestion = @"";
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"product", [_data objectForKey:@"search"], @"0"]];
+    NSString *keyword =[[_data objectForKey:@"search"] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"product", keyword, @"0"]];
     
     NSData *returnedData = [NSData dataWithContentsOfURL:url];
     
-    if(NSClassFromString(@"NSJSONSerialization"))
-    {
-        NSError *error = nil;
-        id object = [NSJSONSerialization
-                     JSONObjectWithData:returnedData
-                     options:0
-                     error:&error];
-        
-        if(error) { /* JSON was malformed, act appropriately here */ }
-        
-        if([object isKindOfClass:[NSDictionary class]])
+    if(returnedData != nil){
+        if(NSClassFromString(@"NSJSONSerialization"))
         {
-            NSDictionary *results = object;
-            _suggestion = results[@"suggest"];
-        }else{
+            NSError *error = nil;
+            id object = [NSJSONSerialization
+                         JSONObjectWithData:returnedData
+                         options:0
+                         error:&error];
             
+            if(error) { /* JSON was malformed, act appropriately here */ }
+            
+            if([object isKindOfClass:[NSDictionary class]])
+            {
+                NSDictionary *results = object;
+                _suggestion = results[@"suggest"];
+                _suggestion = [_suggestion capitalizedString];
+                
+            }else{
+                
+            }
+        }else{
+            //iOS 4--
         }
-    }else{
-        //iOS 4--
     }
     
     
@@ -528,6 +535,34 @@ NoResultDelegate
 }
 
 #pragma mark - Methods
+
+-(void)generateSuggestion{
+    NSString *keyword =[[_data objectForKey:@"search"] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"product", keyword, @"0"]];
+    NSData *returnedData = [NSData dataWithContentsOfURL:url];
+    
+    if(returnedData != nil){
+        if(NSClassFromString(@"NSJSONSerialization"))
+        {
+            NSError *error = nil;
+            id object = [NSJSONSerialization
+                         JSONObjectWithData:returnedData
+                         options:0
+                         error:&error];
+            if(error) { /* JSON was malformed, act appropriately here */ }
+            if([object isKindOfClass:[NSDictionary class]]){
+                NSDictionary *results = object;
+                _suggestion = results[@"suggest"];
+                _suggestion = [_suggestion capitalizedString];
+            }else{
+                _suggestion = @"";
+            }
+        }else{
+            _suggestion = @"";
+        }
+    }
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
     _isrefreshview = YES;
@@ -714,9 +749,9 @@ NoResultDelegate
         NSString *baseUrl;
 //        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
         if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
-            baseUrl = @"https://ace-staging.tokopedia.com/";
-        } else {
             baseUrl = @"https://ajax.tokopedia.com/";
+        } else {
+            baseUrl = @"https://ajax-staging.tokopedia.com/";
         }
         _objectmanager = [RKObjectManager sharedClient:baseUrl];
 #endif
@@ -860,6 +895,7 @@ NoResultDelegate
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
+            [self generateSuggestion];
             if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
                 [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
                 [_noResultView hideButton:YES];

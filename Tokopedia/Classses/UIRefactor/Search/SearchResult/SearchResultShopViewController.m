@@ -98,7 +98,7 @@
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
-                                 title:@"Oops... hasil pencarian Anda tidak\ndapat ditemukan."
+                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
                                   desc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain."
                               btnTitle:@""];
 }
@@ -172,41 +172,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    _suggestion = @"";
     
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self loadData];
         }
     }
-
     self.screenName = @"Search Result - Shop Tab";
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"shop", [_data objectForKey:@"search"], @"0"]];
-    
-    NSData *returnedData = [NSData dataWithContentsOfURL:url];
-    
-    if(NSClassFromString(@"NSJSONSerialization"))
-    {
-        NSError *error = nil;
-        id object = [NSJSONSerialization
-                     JSONObjectWithData:returnedData
-                     options:0
-                     error:&error];
-        
-        if(error) { /* JSON was malformed, act appropriately here */ }
-        
-        if([object isKindOfClass:[NSDictionary class]])
-        {
-            NSDictionary *results = object;
-            _suggestion = results[@"suggest"];
-        }else{
-            
-        }
-    }else{
-        //iOS 4--
-    }
-
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }
 
@@ -456,7 +429,7 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    //_table.tableFooterView = [NoResultView new].view;
+                    [self generateSuggestion];
                     if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
                         [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
                         [_noResultView hideButton:YES];
@@ -569,6 +542,31 @@
 }
 
 #pragma mark - Methods
+-(void) generateSuggestion{
+    NSString *keyword =[[_data objectForKey:@"search"] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"shop", keyword, @"0"]];
+    NSData *returnedData = [NSData dataWithContentsOfURL:url];
+    if(returnedData != nil){
+        if(NSClassFromString(@"NSJSONSerialization"))
+        {
+            NSError *error = nil;
+            id object = [NSJSONSerialization
+                         JSONObjectWithData:returnedData
+                         options:0
+                         error:&error];
+            if(error) { /* JSON was malformed, act appropriately here */ }
+            if([object isKindOfClass:[NSDictionary class]]){
+                NSDictionary *results = object;
+                _suggestion = results[@"suggest"];
+                _suggestion = [_suggestion capitalizedString];
+            }else{
+                _suggestion = @"";
+            }
+        }else{
+            _suggestion = @"";
+        }
+    }
+}
 - (TokopediaNetworkManager *)getNetworkManager
 {
     if(tokopediaNetworkManager == nil)

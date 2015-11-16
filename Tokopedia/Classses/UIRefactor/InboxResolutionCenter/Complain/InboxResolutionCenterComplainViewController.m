@@ -731,7 +731,21 @@
             }
             else
             {
-                
+                if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Semua Status"]){
+                        [_noResultView setNoResultTitle:@""];
+                }else if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Belum dibaca"]){
+                    if(_isMyComplain){
+                        
+                    }else{
+                        
+                    }
+                }else if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Sudah dibaca"]){
+                    if(_isMyComplain){
+                        
+                    }else{
+                        
+                    }
+                }
                 _tableView.tableFooterView = _noResultView;
             }
             

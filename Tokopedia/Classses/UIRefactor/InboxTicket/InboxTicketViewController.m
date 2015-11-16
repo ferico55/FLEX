@@ -315,15 +315,36 @@ NoResultDelegate
         }
         self.tableView.tableFooterView = nil;
     } else {
-        if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
-            [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan dalam proses"];
-            [_noResultView setNoResultDesc:@""];
-            [_noResultView hideButton:YES];
+        if([_filter isEqualToString:@"unread"]){
+            if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
+                [_noResultView setNoResultTitle:@"Kamu sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
+                [_noResultView setNoResultTitle:@"Kamu sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else{
+                [_noResultView setNoResultTitle:@"Kamu sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+                [_noResultView setNoResultButtonTitle:@"Halaman Bantuan"];
+            }
         }else{
-            [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan"];
-            [_noResultView setNoResultDesc:@"Butuh informasi dan bantuan yang lebih lengkap? Anda bisa cari di Halaman Bantuan kami."];
-            [_noResultView hideButton:NO];
-            [_noResultView setNoResultButtonTitle:@"Halaman Bantuan"];
+            if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
+                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan yang sudah ditutup"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
+                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan dalam proses"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else{
+                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan"];
+                [_noResultView setNoResultDesc:@"Butuh informasi dan bantuan yang lebih lengkap? Anda bisa cari di Halaman Bantuan kami."];
+                [_noResultView hideButton:NO];
+                [_noResultView setNoResultButtonTitle:@"Halaman Bantuan"];
+            }
         }
         self.view = _noResultView;
     }

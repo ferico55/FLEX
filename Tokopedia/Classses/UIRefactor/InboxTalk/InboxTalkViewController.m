@@ -93,7 +93,7 @@
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [_noResultView generateAllElements:nil
-                                 title:@""
+                                 title:@"Kamu belum mengikuti diskusi produk"
                                   desc:@""
                               btnTitle:nil];
 }
@@ -106,6 +106,7 @@
     
     _page = 1;
     isFirstShow = YES;
+    _readStatus = @"all";
     
     _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
@@ -385,6 +386,7 @@
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     InboxTalk *inboxTalk = [mappingResult.dictionary objectForKey:@""];
+    [_refreshControl setHidden:YES];
     
     if (_page == 1) {
         [_talkList removeAllObjects];
@@ -402,19 +404,39 @@
         [_noResultView removeFromSuperview];
     } else {
         NSString *text;
+        NSString *desc;
         
         if([_readStatus isEqualToString:@"all"]){
             if (self.inboxTalkType == InboxTalkTypeAll) {
-                text = @"Anda belum mengikuti diskusi produk";
+                text = @"Kamu belum mengikuti diskusi produk";
+                desc = @"Segera ikuti diskusi produk agar kamu tidak ketinggalan info terbaru dari produk yang kamu inginkan!";
             } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
-                text = @"Anda belum mengikuti diskusi produk";
-            } else {
-                text = @"Belum ada diskusi produk pada produk Anda";
+                text = @"Kamu belum mengikuti diskusi produk";
+                desc = @"Segera ikuti diskusi produk agar kamu tidak ketinggalan info terbaru dari produk yang kamu inginkan!";
+            } else if (self.inboxTalkType == InboxTalkTypeMyProduct) {
+                text = @"Belum ada diskusi produk pada produk kamu";
+                desc = @"Ayo segera promosikan produk kamu";
+            }else{
+                text = @"Belum ada diskusi produk";
+                desc = @"";
             }
         }else{
-            text = @"Anda sudah membaca semua update diskusi produk";
+            if (self.inboxTalkType == InboxTalkTypeAll) {
+                text = @"Kamu sudah membaca semua diskusi produk yang telah kamu ikuti!";
+                desc = @"";
+            } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
+                text = @"Kamu sudah membaca semua diskusi produk yang telah kamu ikuti!";
+                desc = @"";
+            } else if (self.inboxTalkType == InboxTalkTypeMyProduct) {
+                text = @"Kamu sudah membaca semua diskusi produk kamu";
+                desc = @"";
+            }else{
+                text = @"Belum ada diskusi produk";
+                desc = @"";
+            }
         }
         [_noResultView setNoResultTitle:text];
+        [_noResultView setNoResultDesc:desc];
         
         [_table addSubview:_noResultView];
     }

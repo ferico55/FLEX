@@ -45,7 +45,7 @@
 
 #import "RetryCollectionReusableView.h"
 
-#import "NoResult.h"
+#import "NoResultReusableView.h"
 
 #import "PromoRequest.h"
 #import "UIActivityViewController+Extensions.h"
@@ -74,7 +74,8 @@ MyShopEtalaseFilterViewControllerDelegate,
 GeneralProductCellDelegate,
 GeneralSingleProductDelegate,
 GeneralPhotoProductDelegate,
-TokopediaNetworkManagerDelegate
+TokopediaNetworkManagerDelegate,
+NoResultDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -149,7 +150,7 @@ TokopediaNetworkManagerDelegate
     NSMutableArray *_product;
     NSArray *_tmpProduct;
     Shop *_shop;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
     NSString *_nextPageUri;
     NSString *_tmpNextPageUri;
     
@@ -175,6 +176,14 @@ TokopediaNetworkManagerDelegate
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Toko ini belum mempunyai produk"
+                                  desc:@""
+                              btnTitle:nil];
+}
 
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -250,7 +259,7 @@ TokopediaNetworkManagerDelegate
     UIView *header = [[UIView alloc] initWithFrame:_header.frame];
     [header setBackgroundColor:[UIColor whiteColor]];
     [header addSubview:_header];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 200)];
+    [self initNoResultView];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
@@ -887,7 +896,7 @@ TokopediaNetworkManagerDelegate
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     SearchItem *feed = [result objectForKey:@""];
 //    [_collectionView setContentInset:UIEdgeInsetsZero];
-    [_noResult removeFromSuperview];
+    [_noResultView removeFromSuperview];
     
     if(_page == 1) {
         _product = [feed.result.list mutableCopy];
@@ -898,6 +907,7 @@ TokopediaNetworkManagerDelegate
     
     if (_product.count >0) {
         _isNoData = NO;
+        [_noResultView removeFromSuperview];
         _nextPageUri =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
@@ -909,8 +919,7 @@ TokopediaNetworkManagerDelegate
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResult];
-        [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, _noResult.frame.size.height, 0)];
+        [_collectionView addSubview:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
