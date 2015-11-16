@@ -334,7 +334,9 @@
     if (button == _inputConversation) {
         ResolutionCenterInputViewController *vc = [ResolutionCenterInputViewController new];
         vc.resolution = _resolutionDetail;
+        vc.lastSolution = [self solutionString:[_listResolutionConversation lastObject]];
         vc.delegate = self;
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -516,26 +518,19 @@
     }
 }
 
--(void)goToImageViewerIndex:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath
-{
-    ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-    
-    NSMutableArray *imageURLStrings = [NSMutableArray new];
-    for (ResolutionAttachment *atachment in conversation.attachment) {
-        [imageURLStrings addObject:atachment.real_file_url];
-    }
-    
-    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:[imageURLStrings copy] indexImage:index];
+-(void)goToImageViewerImages:(NSArray *)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath
+{ 
+    [_navigate navigateToShowImageFromViewController:self withImageDictionaries:images imageDescriptions:@[] indexImage:index];
 }
 
--(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID
+-(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID isGotTheOrder:(BOOL)isGotTheOrder
 {
-    [self solutionType:solutionType troubleType:troubleType refundAmount:refundAmout message:note photo:photo serverID:serverID];
+    [self solutionType:solutionType troubleType:troubleType refundAmount:refundAmout message:note photo:photo serverID:serverID isGotTheOrder:isGotTheOrder];
 }
 
 -(NSString *)trouble
 {
-    NSString *trouble;
+    NSString *trouble = @"";
     if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(1)]) {
         trouble = ARRAY_PROBLEM_COMPLAIN[0];
     }
@@ -553,7 +548,7 @@
 
 -(NSString*)solution
 {
-    NSString *solution;
+    NSString *solution = @"";
     if ([_resolutionDetail.resolution_last.last_solution isEqual:@(1)]) {
         solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0];
     }
@@ -600,7 +595,7 @@
                              action:ACTION_APPEAL];
 }
 
--(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString*)serverID
+-(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID isGotTheOrder:(BOOL)isGotTheOrder
 {
     [self requestReplayConversation:message?:@""
                               photo:photo?:@""
@@ -609,7 +604,7 @@
                        solutionType:solutionType?:@""
                         troubleType:troubleType?:@""
                        refundAmount:refundAmout?:@""
-                           received:([_resolutionDetail.resolution_last.last_flag_received isEqual:@(1)])
+                           received:isGotTheOrder
                              action:ACTION_REPLY_CONVERSATION];
 }
 
@@ -938,7 +933,7 @@
         for (int i = 0; i<attachmentCount; i++)
         {
             ResolutionAttachment *attachment = conversation.attachment[i];
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:attachment.file_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:attachment.real_file_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             UIImageView *thumb = cell.attachmentImages[i];
             thumb.image = nil;
@@ -1079,10 +1074,10 @@
     return markString;
 }
 
--(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
+-(NSString *)solutionString:(ResolutionConversation*)conversation
 {
     NSInteger lastSolutionType = [conversation.solution integerValue];
-    NSString *solutionString;
+    NSString *solutionString = @"";
     if (lastSolutionType == SOLUTION_REFUND) {
         solutionString = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",conversation.refund_amt_idr];
     }
@@ -1098,6 +1093,16 @@
     else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
         solutionString = [NSString stringWithFormat:@"Kirimkan sisanya"];
     }
+    else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
+        solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
+    }
+    
+    return solutionString;
+}
+
+-(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
+{
+    NSString *solutionString = [self solutionString:conversation];
     
     NSInteger troubleType = [conversation.trouble_type integerValue];
     NSString *troubleString;

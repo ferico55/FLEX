@@ -16,6 +16,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveBanners:) name:@"TKPDidReceiveBanners" object:nil];
     [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(scrollTimerBased) userInfo:nil repeats:YES];
     _scrollView.hidden = YES;
+    _tickerImage.hidden = YES;
 }
 
 
@@ -23,6 +24,10 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat pageWidth = _scrollView.bounds.size.width;
     _pageControl.currentPage = floor((_scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    
+    if (scrollView.contentOffset.y > 0  ||  scrollView.contentOffset.y < 0 ) {
+        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, 0);
+    }
 }
 
 - (IBAction)changePage:(id)sender {
@@ -54,6 +59,15 @@
     
     [self setTicker:_banners.result.ticker.img_uri];
     
+    //remove old images if available
+    NSArray *viewsToRemove = [_scrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        if([v isKindOfClass:[UIImageView class]]) {
+             [v removeFromSuperview];
+        }
+
+    }
+    
     numberOfBanners = _banners.result.banner.count;
     _scrollView.hidden = NO;
     
@@ -72,6 +86,7 @@
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             [imageView setImage:image];
             [imageView setContentMode:UIViewContentModeScaleAspectFill];
+            [imageView setClipsToBounds:YES];
             [imageView setAutoresizingMask:( UIViewAutoresizingFlexibleBottomMargin
                                            | UIViewAutoresizingFlexibleHeight
                                            | UIViewAutoresizingFlexibleLeftMargin
@@ -109,6 +124,7 @@
     [_scrollView setCanCancelContentTouches:NO];
     [_scrollView setShowsHorizontalScrollIndicator:NO];
     [_scrollView setClipsToBounds:YES];
+    [_scrollView setShowsVerticalScrollIndicator:NO];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapBanner)];
     [_scrollView addGestureRecognizer:tapGesture];
@@ -135,6 +151,7 @@
     [_tickerImage setImageWithURLRequest:requestImage placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
+        [_tickerImage setHidden:NO];
         [_tickerImage setImage:image];
         [_tickerImage setContentMode:UIViewContentModeScaleAspectFill];
         [_tickerImage setAutoresizingMask:( UIViewAutoresizingFlexibleBottomMargin
@@ -144,13 +161,16 @@
                                         | UIViewAutoresizingFlexibleTopMargin
                                         | UIViewAutoresizingFlexibleWidth )];
         
+        
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 //            NSDictionary *mainColor = [self mainColoursInImage:image detail:1];
 //            UIColor *bgColor = [mainColor objectForKey:@"colours"][0];
 //            [_tickerImage setBackgroundColor:bgColor];
 //        });
 #pragma clang diagnostic pop
-    } failure:nil];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [_tickerImage setHidden:YES];
+    }];
 }
 
 - (void)tapBanner {
@@ -175,6 +195,7 @@
         [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];
     }
 }
+
 
 
 @end

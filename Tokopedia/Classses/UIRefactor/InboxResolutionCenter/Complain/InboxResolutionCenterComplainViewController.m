@@ -321,7 +321,7 @@
     }];
     
     NSInteger lastSolutionType = [resolution.resolution_last.last_solution integerValue];
-    NSString *lastSolution;
+    NSString *lastSolution = @"";
     
     if (lastSolutionType == SOLUTION_REFUND) {
         lastSolution = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",resolution.resolution_last.last_refund_amt_idr];
@@ -338,8 +338,9 @@
     else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
         lastSolution = [NSString stringWithFormat:@"Kirimkan sisanya"];
     }
-    else
-        lastSolution = @"";
+    else if (lastSolutionType == SOLUTION_CHECK_COURIER){
+        lastSolution = @"Minta bantuan penjual cek ke kurir	";
+    }
     
     cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_update_time;
     cell.invoiceNumberLabel.text = resolution.resolution_order.order_invoice_ref_num;

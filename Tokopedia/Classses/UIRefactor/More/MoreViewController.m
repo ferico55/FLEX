@@ -63,8 +63,8 @@
 
 #import <MessageUI/MessageUI.h>
 
-#import "ContactUsWireframe.h"
-#import "TPContactUsDependencies.h"
+#import "ContactUsWebViewController.h"
+
 #import "UIActivityViewController+Extensions.h"
 
 #define CTagProfileInfo 12
@@ -758,20 +758,18 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-            
-            TPContactUsDependencies *dependencies = [TPContactUsDependencies new];
-            [dependencies pushContactUsViewControllerFromNavigation:self.navigationController];
-            
-        } else if(indexPath.row == 1) {
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];
-            [tracker set:kGAIScreenName value:@"FAQ Center"];
+            [tracker set:kGAIScreenName value:@"New Contact Us"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-            WebViewController *webViewController = [WebViewController new];
-            webViewController.strURL = kTKPDMORE_HELP_URL;
-            webViewController.strTitle = kTKPDMORE_HELP_TITLE;
-            [self.navigationController pushViewController:webViewController animated:YES];
+            ContactUsWebViewController *controller = [ContactUsWebViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        } else if(indexPath.row == 1) {
+            [self pushIOSFeedback];
+            
         } else if(indexPath.row == 2) {
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];
@@ -809,6 +807,38 @@
     }
     
     self.hidesBottomBarWhenPushed = NO;
+}
+
+-(void)pushIOSFeedback
+{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:kGAIScreenName value:@"iOS Feedback"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
+    //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+    //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+    //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    
+    if([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController * emailController = [[MFMailComposeViewController alloc] init];
+        emailController.mailComposeDelegate = self;
+        
+        
+        NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+        
+        [emailController setSubject:@"Feedback"];
+        [emailController setMessageBody:messageBody isHTML:YES];
+        [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
+        [emailController.navigationBar setTintColor:[UIColor whiteColor]];
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [self presentViewController:emailController animated:YES completion:nil];
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email apabila ingin mengirimkan kritik dan saran aplikasi."]
+                                                                       delegate:self];
+        [alert show];
+    }
 }
 
 #pragma mark - Reskit

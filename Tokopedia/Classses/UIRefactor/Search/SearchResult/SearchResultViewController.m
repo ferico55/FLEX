@@ -668,7 +668,8 @@ PromoCollectionViewDelegate
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
         NSString *baseUrl;
-        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+//        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
+        if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
             baseUrl = @"https://ace-staging.tokopedia.com/";
         } else {
             baseUrl = @"https://ajax.tokopedia.com/";
@@ -799,7 +800,7 @@ PromoCollectionViewDelegate
             [_collectionView setContentOffset:CGPointZero animated:YES];
             
             [_collectionView reloadData];
-            [_collectionView layoutIfNeeded];
+//            [_collectionView layoutIfNeeded];
         }
         
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
@@ -956,7 +957,7 @@ PromoCollectionViewDelegate
         [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     }
     [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
+//    [_collectionView layoutIfNeeded];
 }
 
 #pragma mark - Promo collection delegate

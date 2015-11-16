@@ -17,6 +17,7 @@
 #import "inbox.h"
 #import "detail.h"
 #import "NavigateViewController.h"
+#import "TagManagerHandler.h"
 
 @interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UISplitViewControllerDelegate>
 
@@ -53,11 +54,17 @@
     NSInteger _requestsendcount;
     NSTimer *_timer;
     
+    NSString *_messageBaseUrl;
+    NSString *_messagePostUrl;
+    NSString *_messageActionBaseUrl;
+    NSString *_messageActionPostUrl;
+    
     __weak RKObjectManager *_objectmanager;
     __weak RKObjectManager *_objectmanageraction;
     __weak RKManagedObjectRequestOperation *_request;
     __weak RKManagedObjectRequestOperation *_requestsend;
     NSOperationQueue *_operationQueue;
+    TAGContainer *_gtmContainer;
 }
 
 
@@ -114,6 +121,15 @@
     _table.tableHeaderView = _header;
     [_act startAnimating];
     
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    TagManagerHandler *gtmHandler = [TagManagerHandler new];
+    [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
+    
+    _messageBaseUrl = [[self gtmContainer] stringForKey:GTMKeyInboxMessageBase];
+    _messagePostUrl = [[self gtmContainer] stringForKey:GTMKeyInboxMessagePost];
+    _messageActionBaseUrl = [[self gtmContainer] stringForKey:GTMKeyActionInboxMessageBase];
+    _messageActionPostUrl = [[self gtmContainer] stringForKey:GTMKeyActionInboxMessagePost];
+    
     if (_messages.count > 0) {
         _isnodata = NO;
     }
@@ -127,7 +143,15 @@
         [self configureRestKit];
         [self loadData];
     }
+    
 
+}
+
+-(TAGContainer *)gtmContainer {
+    if (!_gtmContainer) {
+        _gtmContainer = [TagManagerHandler getContainer];
+    }
+    return _gtmContainer;
 }
 
 - (void)viewWillAppear:(BOOL)animated  {
@@ -310,7 +334,11 @@
 #pragma mark - Request and Mapping
 - (void) configureRestKit {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    if([_messageBaseUrl isEqualToString:kTkpdBaseURLString] || [_messageBaseUrl isEqualToString:@""]) {
+        _objectmanager = [RKObjectManager sharedClient];
+    } else {
+        _objectmanager = [RKObjectManager sharedClient:_messageBaseUrl];
+    }
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageDetail class]];
@@ -362,7 +390,7 @@
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                             pathPattern:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -389,7 +417,7 @@
                             };
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:[param encrypt]];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl parameters:[param encrypt]];
     
     
     
@@ -710,7 +738,11 @@
 
 #pragma mark - action
 -(void) configureActionRestkit {
-    _objectmanageraction =  [RKObjectManager sharedClient];
+    if([_messageActionBaseUrl isEqualToString:kTkpdBaseURLString] || [_messageActionBaseUrl isEqualToString:@""]) {
+        _objectmanageraction = [RKObjectManager sharedClient];
+    } else {
+        _objectmanageraction = [RKObjectManager sharedClient:_messageBaseUrl];
+    }
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageAction class]];
@@ -729,7 +761,7 @@
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL
+                                                                                             pathPattern:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -762,7 +794,7 @@
                             };
     
     _requestsendcount ++;
-    _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:[param encrypt]];
+    _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl parameters:[param encrypt]];
     
     NSDictionary *userinfo;
     userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _growingtextview.text};
