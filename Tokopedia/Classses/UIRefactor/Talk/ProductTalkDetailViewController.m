@@ -238,11 +238,12 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
+    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
 
         // add gesture to product image
     UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_talkProductImage addGestureRecognizer:productGesture];
-    [_talkProductImage setUserInteractionEnabled:YES];
+    [_talkProductImage setUserInteractionEnabled:enableDeepNavigation];
 
 
     _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
@@ -271,7 +272,7 @@
     
     UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userArea addGestureRecognizer:tapUserGes];
-    [_userArea setUserInteractionEnabled:YES];
+    [_userArea setUserInteractionEnabled:enableDeepNavigation];
     
     
     [self configureRestKit];
@@ -921,6 +922,11 @@
 #pragma mark - View Action
 
 - (void)tapProduct {
+    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
+    if (!enableDeepNavigation) {
+        return;
+    }
+    
     if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
 //        DetailProductViewController *vc = [DetailProductViewController new];
 //        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
