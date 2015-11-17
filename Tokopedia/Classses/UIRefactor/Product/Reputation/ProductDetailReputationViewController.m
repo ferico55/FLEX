@@ -37,6 +37,7 @@
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 #import "NavigateViewController.h"
+#import "NavigationHelper.h"
 
 #define CStringLimitText @"Panjang pesan harus lebih besar dari 5 karakter"
 #define CStringSuccessSentComment @"Anda berhasil memberikan komentar"
@@ -343,7 +344,7 @@
     productReputationCell.getViewSeparatorKualitas.frame = CGRectMake(0, productReputationCell.getViewContent.frame.origin.y+productReputationCell.getViewContentAction.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, 1);
     [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorKualitas];
     [productReputationCell.getLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToShopView:)]];
-    productReputationCell.getLabelUser.userInteractionEnabled = YES;
+    productReputationCell.getLabelUser.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
     
     tableReputation.tableHeaderView = productReputationCell.contentView;
     tableReputation.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
