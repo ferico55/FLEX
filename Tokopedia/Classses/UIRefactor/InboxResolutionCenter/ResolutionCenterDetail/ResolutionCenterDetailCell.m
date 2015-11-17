@@ -8,6 +8,7 @@
 
 #import "ResolutionCenterDetailCell.h"
 #import "InboxTicketDetailAttachment.h"
+#import "NavigationHelper.h"
 
 @implementation ResolutionCenterDetailCell
 
@@ -47,7 +48,8 @@
 
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
     if (sender.view.tag == 15) {
-        [_delegate goToShopOrProfileIndexPath:_indexPath];
+        if ([NavigationHelper shouldDoDeepNavigation])
+            [_delegate goToShopOrProfileIndexPath:_indexPath];
     } else {
         
         if (((UIImageView*)self.attachmentImages[sender.view.tag-10]).image == nil) {

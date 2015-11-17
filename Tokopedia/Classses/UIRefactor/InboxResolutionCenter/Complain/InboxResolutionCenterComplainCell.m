@@ -8,6 +8,7 @@
 
 #import "InboxResolutionCenterComplainCell.h"
 #import "string_inbox_resolution_center.h"
+#import "NavigationHelper.h"
 
 
 @implementation InboxResolutionCenterComplainCell
@@ -71,13 +72,13 @@
 }
 - (IBAction)gesture:(id)sender {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-    if (gesture.view.tag == 10)
+    if (gesture.view.tag == 10 && [NavigationHelper shouldDoDeepNavigation])
         [_delegate goToInvoiceAtIndexPath:_indexPath];
-    else if(gesture.view.tag == 11)
+    else if(gesture.view.tag == 11 && [NavigationHelper shouldDoDeepNavigation])
         [_delegate goToShopOrProfileAtIndexPath:_indexPath];
     else if (gesture.view.tag == 12)
         [_delegate goToResolutionDetailAtIndexPath:_indexPath];
-    else if (gesture.view.tag == 13)
+    else if (gesture.view.tag == 13 && [NavigationHelper shouldDoDeepNavigation])
         [_delegate showImageAtIndexPath:_indexPath];
 }
 
