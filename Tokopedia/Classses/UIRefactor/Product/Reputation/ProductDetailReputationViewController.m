@@ -246,7 +246,7 @@
         else
             [productReputationCell setLabelProductName:strTempProductName];
         [[productReputationCell getLabelProductName] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToDetailProduct:)]];
-        [productReputationCell getLabelProductName].userInteractionEnabled = YES;
+        [productReputationCell getLabelProductName].userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
         [productReputationCell.getViewSeparatorProduct removeFromSuperview];
         isResizeSeparatorProduct = YES;
         [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorProduct];
@@ -255,7 +255,7 @@
         NSString *strProductStatus = (_detailReputaitonReview != nil)?_detailReputaitonReview.product_status:_reviewList.review_product_status;
         //check product deleted
         if([strProductStatus isEqualToString:@"1"]) {
-            productReputationCell.getLabelProductName.userInteractionEnabled = YES;
+            productReputationCell.getLabelProductName.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
             [productReputationCell.getLabelProductName setTextColor:[UIColor colorWithRed:66/255.0f green:66/255.0f blue:66/255.0f alpha:1.0f]];
         }
         else {
@@ -515,7 +515,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.del = self;
         cell.delegate = self;
-        cell.getViewLabelUser.userInteractionEnabled = YES;
+        cell.getViewLabelUser.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
         [cell.getViewLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapCellLabelUser:)]];
     }
     
