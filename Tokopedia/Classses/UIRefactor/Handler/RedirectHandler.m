@@ -54,6 +54,10 @@
         [self redirectToReview];
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
+    } else if (state == STATE_NEW_RESOLUTION||
+               state == STATE_EDIT_RESOLUTION||
+               state == STATE_REPLY_RESOLUTION) {
+        [self redirectToResolution];
     }
 }
 
@@ -70,6 +74,11 @@
 - (void)redirectToReview {
     _navigationController = (UINavigationController*)_delegate;
     [[self navigate]navigateToInboxReviewFromViewController:_navigationController];
+}
+
+-(void)redirectToResolution{
+    _navigationController = (UINavigationController*)_delegate;
+    [[self navigate]navigateToInboxResolutionFromViewController:_navigationController];
 }
 
 - (void)redirectToNewOrder {
