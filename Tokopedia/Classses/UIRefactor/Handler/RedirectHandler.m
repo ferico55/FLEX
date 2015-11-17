@@ -55,8 +55,7 @@
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
     } else if (state == STATE_NEW_RESOLUTION||
-               state == STATE_EDIT_RESOLUTION||
-               state == STATE_REPLY_RESOLUTION) {
+               state == STATE_EDIT_RESOLUTION) {
         [self redirectToResolution];
     }
 }

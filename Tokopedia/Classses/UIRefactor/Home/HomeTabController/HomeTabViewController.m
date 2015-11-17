@@ -361,8 +361,7 @@
                code == STATE_REPLY_REVIEW) {
         [self goToInboxReview];
     } else if (code == STATE_NEW_RESOLUTION||
-              code == STATE_EDIT_RESOLUTION||
-              code == STATE_REPLY_RESOLUTION) {
+              code == STATE_EDIT_RESOLUTION) {
         [self goToResolutionCenter];
     }
 }
