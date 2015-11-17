@@ -517,8 +517,8 @@
         NoResultReusableView *noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
         noResultView.delegate = self;
         [noResultView generateAllElements:nil
-                                     title:@"Keranjang belanja kamu kosong"
-                                      desc:@"Silakan pilih produk yang kamu inginkan, lalu tekan tombol \"Beli\""
+                                     title:@"Keranjang belanja Anda kosong"
+                                      desc:@"Silakan pilih produk yang Anda inginkan, lalu tekan tombol \"Beli\""
                                   btnTitle:@"Ayo mulai belanja!"];
         [self.view addSubview:noResultView];
         //self.view = noResultView;

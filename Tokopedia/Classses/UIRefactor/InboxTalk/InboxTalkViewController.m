@@ -93,7 +93,7 @@
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [_noResultView generateAllElements:nil
-                                 title:@"Kamu belum mengikuti diskusi produk"
+                                 title:@"Anda belum mengikuti diskusi produk"
                                   desc:@""
                               btnTitle:nil];
 }
@@ -405,33 +405,34 @@
     } else {
         NSString *text;
         NSString *desc;
+        [_refreshControl setHidden:YES];
         
         if([_readStatus isEqualToString:@"all"]){
             if (self.inboxTalkType == InboxTalkTypeAll) {
-                text = @"Kamu belum mengikuti diskusi produk";
-                desc = @"Segera ikuti diskusi produk agar kamu tidak ketinggalan info terbaru dari produk yang kamu inginkan!";
+                text = @"Segera ikuti diskusi produk terbaru yang Anda inginkan!";
+                desc = @"";
             } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
-                text = @"Kamu belum mengikuti diskusi produk";
-                desc = @"Segera ikuti diskusi produk agar kamu tidak ketinggalan info terbaru dari produk yang kamu inginkan!";
+                text = @"Segera ikuti diskusi produk terbaru yang Anda inginkan!";
+                desc = @"";
             } else if (self.inboxTalkType == InboxTalkTypeMyProduct) {
-                text = @"Belum ada diskusi produk pada produk kamu";
-                desc = @"Ayo segera promosikan produk kamu";
+                text = @"Belum ada diskusi produk";
+                desc = @"";
             }else{
                 text = @"Belum ada diskusi produk";
                 desc = @"";
             }
         }else{
             if (self.inboxTalkType == InboxTalkTypeAll) {
-                text = @"Kamu sudah membaca semua diskusi produk yang telah kamu ikuti!";
+                text = @"Anda sudah membaca semua diskusi produk";
                 desc = @"";
             } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
-                text = @"Kamu sudah membaca semua diskusi produk yang telah kamu ikuti!";
+                text = @"Anda sudah membaca semua diskusi produk";
                 desc = @"";
             } else if (self.inboxTalkType == InboxTalkTypeMyProduct) {
-                text = @"Kamu sudah membaca semua diskusi produk kamu";
+                text = @"Anda sudah membaca semua diskusi produk";
                 desc = @"";
             }else{
-                text = @"Belum ada diskusi produk";
+                text = @"Anda sudah membaca semua diskusi produk";
                 desc = @"";
             }
         }
@@ -445,6 +446,9 @@
     
     
     [_refreshControl endRefreshing];
+    [_refreshControl setHidden:YES];
+    [_refreshControl setEnabled:NO];
+    [_refreshControl layoutIfNeeded];
     
 }
 

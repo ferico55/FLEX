@@ -308,24 +308,26 @@ NoResultDelegate
     [_tickets addObjectsFromArray: inboxTicket.result.list];
     
     if (_tickets.count > 0) {
-        self.view = _contentView;
+        //self.view = _contentView;
+        
         _uriNext =  inboxTicket.result.paging.uri_next;
         if (![_uriNext isEqualToString:@"0"]) {
             _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
         }
         self.tableView.tableFooterView = nil;
     } else {
+        
         if([_filter isEqualToString:@"unread"]){
             if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
-                [_noResultView setNoResultTitle:@"Kamu sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan!"];
                 [_noResultView setNoResultDesc:@""];
                 [_noResultView hideButton:YES];
             }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
-                [_noResultView setNoResultTitle:@"Kamu sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan!"];
                 [_noResultView setNoResultDesc:@""];
                 [_noResultView hideButton:YES];
             }else{
-                [_noResultView setNoResultTitle:@"Kamu sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan!"];
                 [_noResultView setNoResultDesc:@""];
                 [_noResultView hideButton:YES];
                 [_noResultView setNoResultButtonTitle:@"Halaman Bantuan"];
@@ -346,7 +348,10 @@ NoResultDelegate
                 [_noResultView setNoResultButtonTitle:@"Halaman Bantuan"];
             }
         }
-        self.view = _noResultView;
+        [_noResultView removeFromSuperview];
+        [_noResultView layoutIfNeeded];
+        self.tableView.tableFooterView = _noResultView;
+        //self.view = _noResultView;
     }
     
     [self.tableView reloadData];

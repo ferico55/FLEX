@@ -463,14 +463,14 @@
         if(arrList.count == 0) {
             if([currentFilter isEqualToString:@"all"]){
                 if([strNav isEqualToString:@"inbox-reputation-my-product"]){
-                    [_noResultView setNoResultTitle:@"Belum ada ulasan pada produk kamu"];
+                    [_noResultView setNoResultTitle:@"Belum ada ulasan pada produk Anda"];
                 }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
-                    [_noResultView setNoResultTitle:@"Kamu belum memberikan ulasan pada produk apapun"];
+                    [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
                 }else{
                     [_noResultView setNoResultTitle:@"Belum ada ulasan"];
                 }
             }else{
-                [_noResultView setNoResultTitle:@"Ulasan tidak ditemukan, coba ganti filter yang kamu gunakan"];
+                [_noResultView setNoResultTitle:@"Ulasan tidak ditemukan, coba ganti filter yang Anda gunakan"];
             }
             tableContent.tableFooterView = _noResultView;
         }

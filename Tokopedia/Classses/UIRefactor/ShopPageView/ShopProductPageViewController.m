@@ -180,7 +180,7 @@ NoResultDelegate
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 200)];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
-                                 title:@"Toko ini belum mempunyai produk"
+                                 title:@"Toko ini belum mempunyai produk."
                                   desc:@""
                               btnTitle:nil];
 }
@@ -919,7 +919,15 @@ NoResultDelegate
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
+        if([_detailfilter objectForKey:@"query"] == nil || [[_detailfilter objectForKey:@"query"] isEqualToString:@""]){
+            [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
+        }else{
+            [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
+        }
         [_collectionView addSubview:_noResultView];
+        [_refreshControl endRefreshing];
+        [_refreshControl setHidden:YES];
+        [_refreshControl setEnabled:NO];
     }
     
     if(_refreshControl.isRefreshing) {

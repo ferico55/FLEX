@@ -56,8 +56,8 @@
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
-                                 title:@"Disini kamu bisa melihat notifikasi harga untuk produk yang kamu ikuti"
-                                  desc:@"Segera ikuti perkembangan harga barang yang kamu sukai!"
+                                 title:@"Segera ikuti perkembangan harga produk yang Anda sukai!"
+                                  desc:@"Ini adalah daftar notifikasi harga untuk produk yang Anda ikuti"
                               btnTitle:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedPriceNotif:) name:@"didAddedPriceNotif" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedPriceNotif:) name:@"didRemovedPriceNotif" object:nil];

@@ -80,8 +80,8 @@ typedef enum TagRequest {
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
-                                 title:@"Ini adalah daftar produk-produk yang telah kamu lihat"
-                                  desc:@"Segera lihat barang-barang di Tokopedia! Jangan sampai ketinggalan!"
+                                 title:@"Segera lihat barang-barang di Tokopedia! Jangan sampai ketinggalan!"
+                                  desc:@"Ini adalah daftar produk-produk yang telah Anda lihat"
                               btnTitle:@"Lihat Hot List"];
 }
 - (void) viewDidLoad

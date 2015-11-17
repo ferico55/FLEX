@@ -17,6 +17,7 @@
 #import "MGSwipeButton.h"
 #import "URLCacheController.h"
 #import "NoResultReusableView.h"
+#import "CreateShopViewController.h"
 
 @interface MyShopEtalaseViewController ()
 <
@@ -73,10 +74,20 @@
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
-    [_noResultView generateAllElements:nil
-                                 title:@"Belum ada etalase"
-                                  desc:@"Segera tambahkan etalase pada toko kamu"
-                              btnTitle:@"Tambah Etalase"];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *shopID = [NSString stringWithFormat:@"%@", auth.getShopId];
+    if(shopID == nil || [shopID isEqualToString:@""]){
+        //ga punya toko
+        [_noResultView generateAllElements:nil
+                                     title:@"Anda belum memiliki etalase, segera buka toko!"
+                                      desc:@""
+                                  btnTitle:@"Buka Toko"];
+    }else{
+        [_noResultView generateAllElements:nil
+                                     title:@"Segera tambahkan etalase pada toko Anda"
+                                      desc:@""
+                                  btnTitle:@"Tambah Etalase"];
+    }
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -776,16 +787,26 @@
 
 #pragma mark - NoResult Delegate
 - (void)buttonDidTapped:(id)sender{
-    MyShopEtalaseEditViewController *vc = [MyShopEtalaseEditViewController new];
-    vc.data = @{
-                kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
-                };
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.navigationBar.translucent = NO;
-    
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *shopID = [NSString stringWithFormat:@"%@", auth.getShopId];
+    if(shopID == nil || [shopID isEqualToString:@""]){
+        CreateShopViewController *vc = [CreateShopViewController new];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        nav.navigationBar.translucent = NO;
+        
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
+    }else{
+        MyShopEtalaseEditViewController *vc = [MyShopEtalaseEditViewController new];
+        vc.data = @{
+                    kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                    kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
+                    };
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        nav.navigationBar.translucent = NO;
+        
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
+    }
 }
 
 @end

@@ -1080,11 +1080,11 @@ typedef enum TagRequest {
             }else if([currentCategory isEqualToString:@"inbox-message"]){
                 text = @"Belum ada pesan";
             }else if([currentCategory isEqualToString:@"inbox-message-sent"]){
-                text = @"Belum ada pesan pada kategori \"terkirim\"";
+                text = @"Belum ada pesan terkirim";
             }else if([currentCategory isEqualToString:@"inbox-message-archive"]){
-                text = @"Belum ada pesan pada kategori \"arsip\"";
+                text = @"Belum ada pesan diarsipkan";
             }else if([currentCategory isEqualToString:@"inbox-message-trash"]){
-                text = @"Belum ada pesan pada kategori \"sampah\"";
+                text = @"Belum ada pesan dihapus";
             }
             [_noResultView setNoResultTitle:text];
             _table.tableHeaderView = _searchView;
