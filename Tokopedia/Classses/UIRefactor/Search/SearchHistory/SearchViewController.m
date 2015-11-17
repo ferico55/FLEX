@@ -24,8 +24,6 @@
 #import "SearchAutoCompleteHeaderView.h"
 
 #import "Localytics.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 NSString *const searchPath = @"search/%@";
 
@@ -141,8 +139,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
     [self initNotificationManager];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Search Page"}];
+    [TPAnalytics trackScreenName:@"Search Page"];
+    self.screenName = @"Search Page";
     
     self.hidesBottomBarWhenPushed = NO;
     

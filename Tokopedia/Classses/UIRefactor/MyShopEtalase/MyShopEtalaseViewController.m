@@ -16,8 +16,6 @@
 #import "GeneralList1GestureCell.h"
 #import "MGSwipeButton.h"
 #import "URLCacheController.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface MyShopEtalaseViewController ()
 <
@@ -125,8 +123,8 @@
 {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shop - Etalase List"}];
+    self.screenName = @"Shop - Etalase List";
+    [TPAnalytics trackScreenName:@"Shop - Etalase List"];
 
     [self configureRestKit];
     if (_isnodata && _page<=1) {

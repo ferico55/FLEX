@@ -12,8 +12,6 @@
 #import "TxOrderStatusViewController.h"
 #import "NotificationManager.h"
 #import "Localytics.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface PurchaseViewController ()<NotificationManagerDelegate>
 {
@@ -55,8 +53,8 @@
 {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Transaction - Buy Page"}];
+    [TPAnalytics trackScreenName:@"Purchase Page"];
+    self.screenName = @"Purchase Page";
     
     self.hidesBottomBarWhenPushed = YES;
     

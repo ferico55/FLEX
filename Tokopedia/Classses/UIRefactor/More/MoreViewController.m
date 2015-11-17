@@ -57,8 +57,6 @@
 #import "NavigateViewController.h"
 #import "LoyaltyPoint.h"
 
-#import "TAGDataLayer.h"
-
 #import <MessageUI/MessageUI.h>
 
 #import "ContactUsWebViewController.h"
@@ -209,17 +207,13 @@
     [self updateSaldoTokopedia:nil];
     
     //manual GA Track
-//    id tracker = [[GAI sharedInstance] defaultTracker];
-//    [tracker setAllowIDFACollection:YES];
-//    [tracker set:kGAIScreenName value:@"More Navigation Page"];
-//    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:kGAIScreenName value:@"More Navigation Page"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
-    
-    //    } else {
-    //        _depositLabel.hidden = NO;
-    //        _loadingSaldo.hidden = YES;
-    //        [_loadingSaldo stopAnimating];
-    //    }
+    // Universal Analytics
+    [TPAnalytics trackScreenName:@"More Navigation Page"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -756,30 +750,42 @@
             [self.navigationController pushViewController:controller animated:YES];
             
         } else if(indexPath.row == 1) {
-//            id tracker = [[GAI sharedInstance] defaultTracker];
-//            [tracker setAllowIDFACollection:YES];
-//            [tracker set:kGAIScreenName value:@"FAQ Center"];
-//            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            // UA
+            [TPAnalytics trackScreenName:@"FAQ Center"];
+            
+            // GA
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"FAQ Center"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_HELP_URL;
             webViewController.strTitle = kTKPDMORE_HELP_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 2) {
-//            id tracker = [[GAI sharedInstance] defaultTracker];
-//            [tracker setAllowIDFACollection:YES];
-//            [tracker set:kGAIScreenName value:@"Privacy Policy"];
-//            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            // UA
+            [TPAnalytics trackScreenName:@"Privacy Policy"];
             
+            // GA
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"Privacy Policy"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 3) {
-//            id tracker = [[GAI sharedInstance] defaultTracker];
-//            [tracker setAllowIDFACollection:YES];
-//            [tracker set:kGAIScreenName value:@"Share App"];
-//            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+            // UA
+            [TPAnalytics trackScreenName:@"Share App"];
+            
+            // GA
+            id tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:kGAIScreenName value:@"Share App"];
+            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
             NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
@@ -977,14 +983,10 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
-    
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
-
 }
 
 #pragma mark - Email delegate

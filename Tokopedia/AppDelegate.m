@@ -36,7 +36,7 @@
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
-    
+        
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];
@@ -47,11 +47,10 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
-        
         [self configurePushNotificationsInApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-
+        
         [self preparePersistData];
     });
     

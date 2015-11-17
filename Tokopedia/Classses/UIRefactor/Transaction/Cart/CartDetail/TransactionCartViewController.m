@@ -346,12 +346,19 @@
     [super viewWillAppear:animated];
     
     if (_indexPage == 0) {
+        
+        [TPAnalytics trackScreenName:@"Shopping Cart"];
+        self.screenName = @"Shopping Cart";
+        
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
         _tableView.tableHeaderView = nil;
-    }
-    else
-    {
+        
+    } else {
+        
+        [TPAnalytics trackScreenName:@"Shopping Cart Summary"];
+        self.screenName = @"Shopping Cart Summary";
+        
         if (!_popFromShipment) {
             _tableView.contentOffset = CGPointZero;
         }
@@ -730,7 +737,6 @@
                     break;
                 default:
                     if([self isValidInput]) {
-                        [self sendingProductDataToGA];
                         _requestCart.param = [self paramCheckout];
                         [_requestCart doRequestCheckout];
                     }
@@ -793,7 +799,6 @@
                 default:
                     break;
             }
-            [self sendingProductDataToGA];
         }
     }
 }
@@ -1318,6 +1323,8 @@
     if (!_isLoadingRequest) {
         TransactionCartList *list = _list[section];
         
+        [TPAnalytics trackRemoveProductsFromCart:_list];
+        
         NSString *message = [NSString stringWithFormat:FORMAT_CANCEL_CART,list.cart_shop.shop_name, list.cart_total_amount_idr];
         UIAlertView *cancelCartAlert = [[UIAlertView alloc]initWithTitle:TITLE_ALERT_CANCEL_CART message:message delegate:self cancelButtonTitle:TITLE_BUTTON_CANCEL_DEFAULT otherButtonTitles:TITLE_BUTTON_OK_DEFAULT, nil];
         cancelCartAlert.tag = 11;
@@ -1347,6 +1354,9 @@
     TransactionCartList *list = _list[indexPathCancelProduct.section];
     NSArray *products = list.cart_products;
     ProductDetail *product = products[indexPathCancelProduct.row];
+    
+    [TPAnalytics trackRemoveProductFromCart:product];
+    
     switch (buttonIndex) {
         case 0:
         {
@@ -2983,6 +2993,9 @@
     id stat = [result objectForKey:@""];
     TransactionSummary *cart = stat;
     
+    TransactionSummaryDetail *summary = cart.result.transaction;
+    [TPAnalytics trackCheckout:summary.carts step:1 option:summary.gateway_name];
+    
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
                                DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
@@ -3006,6 +3019,9 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
     TransactionBuy *cart = stat;
+    
+    TransactionSummaryDetail *summary = cart.result.transaction;
+    [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
     
     _cartBuy = cart.result;
     switch ([_cartSummary.gateway integerValue]) {
@@ -3151,38 +3167,6 @@
         _objectManager = [TransactionObjectManager new];
     }
     return _objectManager;
-}
-
-
-#pragma mark - Sending data to GA 
-- (void)sendingProductDataToGA {
-//    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-//    [tracker setAllowIDFACollection:YES];
-//    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:@"Ecommerce"
-//                                                                           action:@"Checkout"
-//                                                                            label:nil
-//                                                                            value:nil];
-    
-//    // Add the step number and additional info about the checkout to the action.
-//    GAIEcommerceProductAction *action = [[GAIEcommerceProductAction alloc] init];
-//    [action setAction:kGAIPACheckout];
-//    [action setCheckoutStep:(_indexPage == 0)?@1:@2];
-//    [action setCheckoutOption:[_dataInput objectForKey:@"gateway"]];
-//    
-//    for(TransactionCartList *list in _cart.list) {
-//        for(ProductDetail *detailProduct in list.cart_products) {
-//            GAIEcommerceProduct *product = [[GAIEcommerceProduct alloc] init];
-//            [product setId:detailProduct.product_id?:@""];
-//            [product setName:detailProduct.product_name?:@""];
-//            [product setCategory:[NSString stringWithFormat:@"%zd", detailProduct.product_department_id]];
-//            [product setPrice:@([detailProduct.product_price integerValue])];
-//            [product setQuantity:@([detailProduct.product_quantity integerValue])];
-//            
-//            [builder addProduct:product];
-//            [builder setProductAction:action];
-//        }
-//    }
-//    [tracker send:[builder build]];
 }
 
 @end

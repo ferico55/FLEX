@@ -92,12 +92,12 @@
     [_requestTimer invalidate];
     _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+//        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [self requestSuccess:mappingResult  withOperation:operation];
         [_requestTimer invalidate];
         _requestTimer = nil;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+//        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [self requestFail:error];
     }];
     

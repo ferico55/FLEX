@@ -51,9 +51,6 @@
 
 #import "UIActivityViewController+Extensions.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -328,9 +325,8 @@ TokopediaNetworkManagerDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shop - Product List"}];
+    [TPAnalytics trackScreenName:@"Shop - Product List"];
+    self.screenName = @"Shop - Product List";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -414,6 +410,8 @@ TokopediaNetworkManagerDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     List *product = [_product objectAtIndex:indexPath.row];
+    
+    [TPAnalytics trackProductClick:product];
     
     NSString *shopName = product.shop_name;
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
@@ -901,6 +899,8 @@ TokopediaNetworkManagerDelegate
     } else {
         [_product addObjectsFromArray: feed.result.list];
     }
+    
+    [TPAnalytics trackProductImpressions:feed.result.list];
     
     if (_product.count >0) {
         _isNoData = NO;

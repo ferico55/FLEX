@@ -31,9 +31,6 @@
 
 #import "TalkCell.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 #define CTagDeleteAlert 12
 #define CTagDeleteMessage 13
 
@@ -172,8 +169,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Product - Talk List"}];
+    // UA
+    [TPAnalytics trackScreenName:@"Product - Talk List"];
+    
+    // GA
+    self.screenName = @"Product - Talk List";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

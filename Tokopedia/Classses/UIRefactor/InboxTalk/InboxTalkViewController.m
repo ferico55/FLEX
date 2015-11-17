@@ -15,7 +15,6 @@
 #import "InboxTalk.h"
 #import "NoResultView.h"
 #import "DetailProductViewController.h"
-#import "TAGDataLayer.h"
 #import "TalkCell.h"
 
 #import "inbox.h"
@@ -30,8 +29,6 @@
 
 #import "URLCacheController.h"
 #import "NoResultView.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
@@ -126,9 +123,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Inbox Talk"}];
+    self.screenName = @"Inbox Talk";
+    [TPAnalytics trackScreenName:@"Inbox Talk"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -250,8 +246,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

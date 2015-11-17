@@ -27,8 +27,8 @@
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
 #import "Localytics.h"
+
 #import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
 
@@ -174,8 +174,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     self.title = kTKPDREGISTER_NEW_TITLE;
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Register Page"}];
+    [TPAnalytics trackScreenName:@"Register Page"];
+    self.screenName = @"Register Page";
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;

@@ -19,8 +19,6 @@
 #import "NotificationManager.h"
 
 #import "Localytics.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface TransactionCartRootViewController ()
 <
@@ -101,21 +99,13 @@
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    [self initNotification];
-    
-//    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]]
-//                              direction:UIPageViewControllerNavigationDirectionForward
-//                               animated:YES
-//                             completion:nil];
+    [self initNotification];    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Cart Page"}];
-    
     if (_index == 0) {
         
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];

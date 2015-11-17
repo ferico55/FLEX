@@ -23,9 +23,6 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "NavigateViewController.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 @interface SalesTransactionListViewController ()
 <
     UITableViewDataSource,
@@ -114,8 +111,8 @@
     
     self.title = @"Daftar Transaksi";
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Transaction List"}];
+    [TPAnalytics trackScreenName:@"Sales - Transaction List"];
+    self.screenName = @"Sales - Transaction List";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

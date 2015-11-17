@@ -30,9 +30,6 @@
 
 #import "ActionOrder.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 @interface SalesNewOrderViewController ()
 <
     UITableViewDataSource,
@@ -130,9 +127,9 @@
     
     self.title = @"Pesanan Baru";
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"New Order"}];
-
+    [TPAnalytics trackScreenName:@"Sales - New Order"];
+    self.screenName = @"Sales - New Order";
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self

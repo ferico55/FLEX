@@ -10,7 +10,7 @@
 
 @class ResolutionCenterDetailViewController;
 
-@interface InboxResolutionCenterTabViewController : UIViewController
+@interface InboxResolutionCenterTabViewController : GAITrackedViewController
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceButtons;
 @property (strong, nonatomic)UIViewController *splitVC;

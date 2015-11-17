@@ -8,7 +8,6 @@
 
 #import "PromoRequest.h"
 #import "TokopediaNetworkManager.h"
-#import "TAGDataLayer.h"
 #import "string_promo.h"
 
 typedef NS_ENUM(NSInteger, PromoRequestType) {
@@ -24,8 +23,6 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 };
 
 @interface PromoRequest () <TokopediaNetworkManagerDelegate> {
-    UserAuthentificationManager *_userManager;
-    
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager *_objectManager;
     
@@ -269,6 +266,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     if (tag == PromoNetworkManagerGet) {
         if ([self.delegate respondsToSelector:@selector(didReceivePromo:)]) {
             if (response.result.list.count > 0) {
+                [TPAnalytics trackPromoImpression:response.result.list];
                 [self.delegate didReceivePromo:response.result.list];
             } else {
                 [self.delegate didReceivePromo:nil];
@@ -339,11 +337,8 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 
 #pragma mark - GTM
 
-- (void)configureGTM {
-    _userManager = [UserAuthentificationManager new];
-    
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+- (void)configureGTM {    
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

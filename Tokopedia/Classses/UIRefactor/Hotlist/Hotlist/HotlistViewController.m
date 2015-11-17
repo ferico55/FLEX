@@ -28,9 +28,6 @@
 #import "RequestNotifyLBLM.h"
 #import "NotificationManager.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 #pragma mark - HotlistView
 
 @interface HotlistViewController ()
@@ -112,10 +109,6 @@ NotificationDelegate
     
     [self.navigationController.navigationBar setTranslucent:NO];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"event" : @"openScreen"}];
-    //    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Home - Hot List"}];
-
     _product = [NSMutableArray new];
     _page = 1;
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
@@ -189,6 +182,9 @@ NotificationDelegate
 {
     [super viewWillAppear:animated];
     
+    self.screenName = @"Hot List Page";
+    [TPAnalytics trackScreenName:@"Hot List Page"];
+
     [_cacheController getFileModificationDate];
     _timeinterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);
     

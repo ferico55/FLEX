@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, InboxTalkType) {
 
 @class ProductTalkDetailViewController;
 
-@interface InboxTalkViewController : UIViewController
+@interface InboxTalkViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (weak, nonatomic) id<TKPDTabViewDelegate> delegate;

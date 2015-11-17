@@ -26,9 +26,6 @@
 #import "UserAuthentificationManager.h"
 #import "TalkCell.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 UIScrollViewDelegate,
@@ -194,10 +191,10 @@ UIAlertViewDelegate>
 {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shop - Talk List"}];
+    _userManager = [UserAuthentificationManager new];
 
-    _userManager = [UserAuthentificationManager new];    
+    [TPAnalytics trackScreenName:@"Shop - Talk List"];
+    self.screenName = @"Shop - Talk List";
 }
 
 - (void)viewDidAppear:(BOOL)animated

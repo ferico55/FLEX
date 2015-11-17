@@ -11,8 +11,6 @@
 #import "StickyAlertView.h"
 #import "GeneralAction.h"
 #import "string_settings.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
     TokopediaNetworkManager *_networkManager;
@@ -57,8 +55,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Forgot Password Page"}];
+    self.screenName = @"Forgot Password Page";
+    [TPAnalytics trackScreenName:@"Forgot Password Page"];
 }
 
 #pragma mark - Tokopedia Network Delegate

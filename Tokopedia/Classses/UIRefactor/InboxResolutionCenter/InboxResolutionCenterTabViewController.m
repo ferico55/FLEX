@@ -9,8 +9,6 @@
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolutionCenterComplainViewController.h"
 #import "string_inbox_resolution_center.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface InboxResolutionCenterTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate>
 {
@@ -114,10 +112,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     self.title = @"Pusat Resolusi";
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Inbox Resolution"}];
+    self.screenName = @"Inbox Resolution";
+    [TPAnalytics trackScreenName:@"Inbox Resolution"];
     
     self.hidesBottomBarWhenPushed = YES;
 }

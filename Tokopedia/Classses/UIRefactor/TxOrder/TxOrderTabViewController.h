@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Notification.h"
 
-@interface TxOrderTabViewController : UIViewController
+@interface TxOrderTabViewController : GAITrackedViewController
 
 @end

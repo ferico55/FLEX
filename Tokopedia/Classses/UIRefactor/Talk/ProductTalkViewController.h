@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProductTalkViewController : UIViewController
+@interface ProductTalkViewController : GAITrackedViewController
 
 @property (nonatomic, strong) NSDictionary *data;
 

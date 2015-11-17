@@ -24,9 +24,6 @@
 #import "ReportViewController.h"
 #import "NoResultView.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 @interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate, ReportViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *reviewFooter;
@@ -221,8 +218,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Inbox Review"}];
+    self.screenName = @"Inbox Review";
+    [TPAnalytics trackScreenName:@"Inbox Review"];
 
     if (!_isRefreshing) {
         [self configureRestkit];
@@ -966,8 +963,7 @@
 
 //GTM
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

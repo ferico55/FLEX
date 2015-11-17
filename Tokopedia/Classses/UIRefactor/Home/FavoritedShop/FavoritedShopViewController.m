@@ -19,8 +19,6 @@
 #import "PromoRequest.h"
 #import "PromoInfoAlertView.h"
 #import "WebViewController.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 #define CTagFavoriteButton 11
 #define CTagRequest 234
@@ -162,9 +160,9 @@ PromoRequestDelegate
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Home - Favorite Shop"}];
-    
+    self.screenName = @"Home - Favorited Shop";
+    [TPAnalytics trackScreenName:@"Home - Favorited Shop"];
+
     [self refreshView:nil];
 }
 

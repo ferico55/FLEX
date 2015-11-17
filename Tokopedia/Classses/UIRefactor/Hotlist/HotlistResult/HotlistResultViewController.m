@@ -65,9 +65,6 @@
 #define CProductThumbView @"ProductThumbCell"
 #define CProductThumbIdentifier @"ProductThumbCellIdentifier"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -195,7 +192,7 @@ HotlistBannerDelegate
 {
     [super viewDidLoad];
 
-    self.screenName = @"Hotlist Result";
+//    self.screenName = @"Hotlist Result";
     
     // set title navigation
     if ([_data objectForKey:kTKPDHOME_DATATITLEKEY]) {
@@ -338,13 +335,13 @@ HotlistBannerDelegate
         [flowLayout setFooterReferenceSize:CGSizeMake(self.view.frame.size.width, 50)];
         [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     }
-    
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
 
     if(self.isFromAutoComplete) {
-        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Auto Complete - Browse HotList Detail"}];
+        self.screenName = @"Hot List Detail (From Auto Complete Search)";
+        [TPAnalytics trackScreenName:@"Hot List Detail (From Auto Complete Search)"];
     } else {
-        [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Browse Hot List Detail"}];
+        self.screenName = @"Hot List Detail";
+        [TPAnalytics trackScreenName:@"Hot List Detail"];
     }
     
     self.hidesBottomBarWhenPushed = YES;
@@ -765,6 +762,8 @@ HotlistBannerDelegate
 
                 [_product addObject:_searchObject.result.products];
                 
+                [TPAnalytics trackProductImpressions:_searchObject.result.products];
+                
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
@@ -1159,6 +1158,7 @@ HotlistBannerDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	List *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    [TPAnalytics trackProductClick:list];
     NavigateViewController *navigator = [NavigateViewController new];
     [navigator navigateToProductFromViewController:self withName:list.product_name withPrice:list.product_price withId:list.product_id withImageurl:list.product_image withShopName:list.shop_name];
 }

@@ -80,13 +80,9 @@
 #import "RequestMoveTo.h"
 #import "WebViewController.h"
 #import "EtalaseList.h"
-#import "TAGDataLayer.h"
 
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
-
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -451,10 +447,9 @@ UIAlertViewDelegate
 {
     [super viewWillAppear:animated];
 
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-//    [dataLayer push:@{@"event": @"Open Screen", @"Screen Name": @"Product Info"}];
-    [dataLayer push:@{@"event" : @"openScreen"}];
-
+    self.screenName = @"Product Information";
+    [TPAnalytics trackScreenName:@"Product Information"];
+    
     _promoteNetworkManager.delegate = self;
     
     self.hidesBottomBarWhenPushed = YES;
@@ -648,6 +643,7 @@ UIAlertViewDelegate
                     transactionVC.wholeSales = _product.result.wholesale_price;
                     transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
+        
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -2186,6 +2182,8 @@ UIAlertViewDelegate
             [self setFooterViewData];
             [self setOtherProducts];
             [self addImpressionClick];
+
+            [TPAnalytics trackProductView:_product.result.product];
             
             _isnodata = NO;
             [_table reloadData];
@@ -3176,8 +3174,7 @@ UIAlertViewDelegate
 
 #pragma mark - Other Method
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+//    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

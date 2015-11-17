@@ -18,9 +18,6 @@
 #import "TxOrderPaymentViewController.h"
 #import "NotificationManager.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 @interface TxOrderTabViewController ()
 <
     UIPageViewControllerDataSource,
@@ -110,8 +107,8 @@
 
     [self reloadNotification];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Payment Confirmation"}];    
+    [TPAnalytics trackScreenName:@"Purchase - Payment Confirmation"];
+    self.screenName = @"Purchase - Payment Confirmation";
 }
 
 -(void)viewWillDisappear:(BOOL)animated

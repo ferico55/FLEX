@@ -18,7 +18,7 @@
 
 #pragma mark - Search Result View Controller
 
-@interface SearchResultViewController : UIViewController
+@interface SearchResultViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (nonatomic) BOOL isFromAutoComplete;

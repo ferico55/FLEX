@@ -18,9 +18,6 @@
 #import "UserPageHeader.h"
 #import "ShopContainerViewController.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 #pragma mark - Profile Favorite Shop View Controller
 @interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate, UIScrollViewDelegate, UserPageHeaderDelegate>
 {
@@ -137,8 +134,8 @@
 {
     [super viewWillAppear:animated];
 
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Profile - Favorited Shop"}];
+    [TPAnalytics trackScreenName:@"Profile - Favorited Shop"];
+    self.screenName = @"Profile - Favorited Shop";
     
     if (!_isrefreshview) {
         [self configureRestKit];

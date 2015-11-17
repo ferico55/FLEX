@@ -21,9 +21,6 @@
 #import "TKPHomeBannerStore.h"
 #import "TKPStoreManager.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 @interface CategoryViewController ()
 <
     NotificationManagerDelegate,
@@ -109,9 +106,9 @@
     
     [self initNotificationManager];
     [self loadBanners];
-
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Top Category"}];
+    
+    self.screenName = @"Top Category";
+    [TPAnalytics trackScreenName:@"Top Category"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

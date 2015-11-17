@@ -36,7 +36,7 @@
 		85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDD1BAFCE4A002F1382 /* Fabric.framework */; };
 		85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDF1BAFD257002F1382 /* StoreKit.framework */; };
 		85BC786A1BF04F4400D6F813 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85BC78691BF04F4400D6F813 /* GoogleService-Info.plist */; };
-		85BC786C1BF0500800D6F813 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 85BC786B1BF04FF800D6F813 /* GTM-NCTWRP */; };
+		85BC787B1BF1C80E00D6F813 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 85BC787A1BF1C80E00D6F813 /* TPAnalytics.m */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1960,7 +1960,8 @@
 		85A18BDD1BAFCE4A002F1382 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		85A18BDF1BAFD257002F1382 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		85BC78691BF04F4400D6F813 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		85BC786B1BF04FF800D6F813 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = "<group>"; };
+		85BC78791BF1C80E00D6F813 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
+		85BC787A1BF1C80E00D6F813 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -4872,9 +4873,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		85BC78781BF1C7C000D6F813 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				85BC78791BF1C80E00D6F813 /* TPAnalytics.h */,
+				85BC787A1BF1C80E00D6F813 /* TPAnalytics.m */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		85FF79161BE9A5850015B16F /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				85BC78781BF1C7C000D6F813 /* Analytics */,
 				85FF79171BE9A5850015B16F /* CacheController */,
 				85FF791E1BE9A5850015B16F /* Cocoa */,
 				85FF794F1BE9A5850015B16F /* Encryption */,
@@ -9962,7 +9973,6 @@
 			children = (
 				FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */,
 				FC36DF8E19B0656400AF74C1 /* Tokopedia-Info.plist */,
-				85BC786B1BF04FF800D6F813 /* GTM-NCTWRP */,
 				85BC78691BF04F4400D6F813 /* GoogleService-Info.plist */,
 				FC36DF8F19B0656400AF74C1 /* InfoPlist.strings */,
 				FC36DF9219B0656400AF74C1 /* main.m */,
@@ -10518,7 +10528,6 @@
 				85FF8C1B1BE9A58B0015B16F /* ic_more@2x.png in Resources */,
 				85FF89511BE9A58B0015B16F /* TrackOrderHistoryCell.xib in Resources */,
 				85FF89AA1BE9A58B0015B16F /* ProfileBiodataShopCell.xib in Resources */,
-				85BC786C1BF0500800D6F813 /* GTM-NCTWRP in Resources */,
 				85FF8B371BE9A58B0015B16F /* icon_questionmark_blue@2x.png in Resources */,
 				85FF891D1BE9A58B0015B16F /* ShopInfoAddressView.xib in Resources */,
 				85FF89551BE9A58B0015B16F /* TransactionATCViewController.xib in Resources */,
@@ -11351,6 +11360,7 @@
 				85FF86411BE9A58A0015B16F /* ActionOrderResult.m in Sources */,
 				85FF86241BE9A58A0015B16F /* AddressFormResult.m in Sources */,
 				85FF882A1BE9A58B0015B16F /* MyShopEtalaseFilterViewController.m in Sources */,
+				85BC787B1BF1C80E00D6F813 /* TPAnalytics.m in Sources */,
 				85FF887D1BE9A58B0015B16F /* ProductDetailReputationCell.m in Sources */,
 				85FF85E91BE9A58A0015B16F /* LikeDislikeResult.m in Sources */,
 				85FF87171BE9A58A0015B16F /* AlertPickerView.m in Sources */,
@@ -12190,6 +12200,83 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"AFNetworking\"",
+					"-l\"GGLAnalytics\"",
+					"-l\"GGLCore\"",
+					"-l\"GSDK_Overload\"",
+					"-l\"GTMSessionFetcher_core\"",
+					"-l\"GTMSessionFetcher_full\"",
+					"-l\"GTMStackTrace\"",
+					"-l\"GTM_AddressBook\"",
+					"-l\"GTM_DebugUtils\"",
+					"-l\"GTM_GTMURLBuilder\"",
+					"-l\"GTM_KVO\"",
+					"-l\"GTM_NSData+zlib\"",
+					"-l\"GTM_NSDictionary+URLArguments\"",
+					"-l\"GTM_NSScannerJSON\"",
+					"-l\"GTM_NSStringHTML\"",
+					"-l\"GTM_NSStringXML\"",
+					"-l\"GTM_Regex\"",
+					"-l\"GTM_RoundedRectPath\"",
+					"-l\"GTM_StringEncoding\"",
+					"-l\"GTM_SystemVersion\"",
+					"-l\"GTM_UIFont+LineHeight\"",
+					"-l\"GTM_core\"",
+					"-l\"GTM_iPhone\"",
+					"-l\"GoogleAnalytics\"",
+					"-l\"Localytics\"",
+					"-l\"NJKWebViewProgress\"",
+					"-l\"ProtocolBuffers\"",
+					"-l\"RestKit\"",
+					"-l\"SOCKit\"",
+					"-l\"TTTAttributedLabel\"",
+					"-l\"TagManager\"",
+					"-l\"TransitionKit\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AddressBook\"",
+					"-framework",
+					"\"AssetsLibrary\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreData\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreMotion\"",
+					"-framework",
+					"\"CoreText\"",
+					"-framework",
+					"\"GoogleAppIndexing\"",
+					"-framework",
+					"\"MessageUI\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-weak_framework",
+					"\"AdSupport\"",
+					"-force_load",
+					"$(PODS_ROOT)/GoogleUtilities/Libraries/libGTM_NSData+zlib.a",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -12234,6 +12321,83 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"AFNetworking\"",
+					"-l\"GGLAnalytics\"",
+					"-l\"GGLCore\"",
+					"-l\"GSDK_Overload\"",
+					"-l\"GTMSessionFetcher_core\"",
+					"-l\"GTMSessionFetcher_full\"",
+					"-l\"GTMStackTrace\"",
+					"-l\"GTM_AddressBook\"",
+					"-l\"GTM_DebugUtils\"",
+					"-l\"GTM_GTMURLBuilder\"",
+					"-l\"GTM_KVO\"",
+					"-l\"GTM_NSData+zlib\"",
+					"-l\"GTM_NSDictionary+URLArguments\"",
+					"-l\"GTM_NSScannerJSON\"",
+					"-l\"GTM_NSStringHTML\"",
+					"-l\"GTM_NSStringXML\"",
+					"-l\"GTM_Regex\"",
+					"-l\"GTM_RoundedRectPath\"",
+					"-l\"GTM_StringEncoding\"",
+					"-l\"GTM_SystemVersion\"",
+					"-l\"GTM_UIFont+LineHeight\"",
+					"-l\"GTM_core\"",
+					"-l\"GTM_iPhone\"",
+					"-l\"GoogleAnalytics\"",
+					"-l\"Localytics\"",
+					"-l\"NJKWebViewProgress\"",
+					"-l\"ProtocolBuffers\"",
+					"-l\"RestKit\"",
+					"-l\"SOCKit\"",
+					"-l\"TTTAttributedLabel\"",
+					"-l\"TagManager\"",
+					"-l\"TransitionKit\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AddressBook\"",
+					"-framework",
+					"\"AssetsLibrary\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreData\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreMotion\"",
+					"-framework",
+					"\"CoreText\"",
+					"-framework",
+					"\"GoogleAppIndexing\"",
+					"-framework",
+					"\"MessageUI\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+					"-weak_framework",
+					"\"AdSupport\"",
+					"-force_load",
+					"$(PODS_ROOT)/GoogleUtilities/Libraries/libGTM_NSData+zlib.a",
+					"-all_load",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

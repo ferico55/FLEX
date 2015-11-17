@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TKPDTabHomeViewController.h"
 
-@interface MyWishlistViewController : UIViewController
+@interface MyWishlistViewController : GAITrackedViewController
 {
     IBOutlet UIView *viewNoData;
 }

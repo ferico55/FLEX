@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DepositSummaryViewController : UIViewController
+@interface DepositSummaryViewController : GAITrackedViewController
 {
     IBOutlet NSLayoutConstraint *constraintHeightHeader, *constraintHeightSuperHeader;
 }

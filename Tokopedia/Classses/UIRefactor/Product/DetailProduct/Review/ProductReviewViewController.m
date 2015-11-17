@@ -27,9 +27,6 @@
 #import "URLCacheController.h"
 #import "TKPDSecureStorage.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 #pragma mark - Product Review View Controller
 @interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, GeneralProductReviewCellDelegate>
 {
@@ -168,8 +165,11 @@
 {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Product - Review List"}];
+    // UA
+    [TPAnalytics trackScreenName:@"Product - Review List"];
+
+    // GA
+    self.screenName = @"Product - Review List";
     
     if (!_isrefreshview) {
         [self configureRestKit];

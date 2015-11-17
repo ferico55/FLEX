@@ -29,9 +29,6 @@
 
 #import "Localytics.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 #define TAG_REQUEST_FORM 10
 #define TAG_REQUEST_ATC 11
 #define TAG_REQUEST_CALCULATE 12
@@ -218,10 +215,10 @@
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
-    
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"ATC Form Page"}];
 
+    [TPAnalytics trackScreenName:@"Add to Cart"];
+    self.screenName = @"Add to Cart";
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -1022,6 +1019,9 @@
             [alertView show];
             
             [self pushLocalyticsData];
+            
+            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+            [TPAnalytics trackAddToCart:product];
         }
     }
 }

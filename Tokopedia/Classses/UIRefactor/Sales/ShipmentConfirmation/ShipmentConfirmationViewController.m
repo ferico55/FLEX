@@ -22,8 +22,6 @@
 #import "StickyAlertView.h"
 #import "RequestShipmentCourier.h"
 #import "ShipmentCourier.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface ShipmentConfirmationViewController ()
 <
@@ -123,9 +121,9 @@
 {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shipping Confirmation"}];
-
+    [TPAnalytics trackScreenName:@"Sales - Shipping Confirmation"];
+    self.screenName = @"Sales - Shipping Confirmation";
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self

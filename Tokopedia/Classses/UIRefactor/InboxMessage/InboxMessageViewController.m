@@ -22,8 +22,6 @@
 #import "SmileyAndMedal.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
 
 @interface InboxMessageViewController ()
 <
@@ -203,8 +201,8 @@ typedef enum TagRequest {
 {
     [super viewWillAppear:animated];
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Inbox Message"}];
+    self.screenName = @"Inbox Message";
+    [TPAnalytics trackScreenName:@"Inbox Message"];
 
     if (!_isrefreshview) {
         if (_isnodata && _page < 1) {
@@ -1130,8 +1128,7 @@ typedef enum TagRequest {
 
 
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

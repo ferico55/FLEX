@@ -23,9 +23,6 @@
 #import "ShipmentStatusCell.h"
 #import "StickyAlertView.h"
 
-#import "TAGDataLayer.h"
-#import "TAGManager.h"
-
 @interface ShipmentStatusViewController ()
 <
     UITableViewDataSource,
@@ -106,8 +103,8 @@
     
     self.title = @"Status Pengiriman";
     
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"Event": @"Open Screen", @"Screen Name": @"Shipping Status"}];
+    [TPAnalytics trackScreenName:@"Sales - Shipping Status"];
+    self.screenName = @"Sales - Shipping Status";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                       style:UIBarButtonItemStyleBordered

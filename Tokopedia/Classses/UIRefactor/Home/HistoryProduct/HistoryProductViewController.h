@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TKPDTabHomeViewController.h"
 
-@interface HistoryProductViewController : UIViewController {
+@interface HistoryProductViewController : GAITrackedViewController {
     
 }
 
