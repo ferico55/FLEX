@@ -319,18 +319,17 @@ NoResultDelegate
         
         if([_filter isEqualToString:@"unread"]){
             if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
-                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
                 [_noResultView setNoResultDesc:@""];
                 [_noResultView hideButton:YES];
             }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
-                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
                 [_noResultView setNoResultDesc:@""];
                 [_noResultView hideButton:YES];
             }else{
-                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan!"];
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
                 [_noResultView setNoResultDesc:@""];
                 [_noResultView hideButton:YES];
-                [_noResultView setNoResultButtonTitle:@"Halaman Bantuan"];
             }
         }else{
             if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
@@ -343,9 +342,9 @@ NoResultDelegate
                 [_noResultView hideButton:YES];
             }else{
                 [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan"];
-                [_noResultView setNoResultDesc:@"Butuh informasi dan bantuan yang lebih lengkap? Anda bisa cari di Halaman Bantuan kami."];
+                [_noResultView setNoResultDesc:@"Butuh informasi dan bantuan yang lebih lengkap? Anda bisa cari di halaman bantuan kami"];
                 [_noResultView hideButton:NO];
-                [_noResultView setNoResultButtonTitle:@"Halaman Bantuan"];
+                [_noResultView setNoResultButtonTitle:@"Hubungi Kami"];
             }
         }
         [_noResultView removeFromSuperview];

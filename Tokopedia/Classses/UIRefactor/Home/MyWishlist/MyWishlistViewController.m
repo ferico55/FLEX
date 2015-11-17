@@ -85,7 +85,7 @@ typedef enum TagRequest {
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:nil
-                                 title:@"Segera tambahkan barang yang Anda sukai ke wishlist!\nJangan sampai ketinggalan!"
+                                 title:@"Segera tambahkan barang yang Anda sukai ke wishlist!\nJangan sampai ketinggalan"
                                   desc:@"Disini Anda bisa melihat produk yang telah ditambahkan di wishlist"
                               btnTitle:@"Lihat Hot List"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedProductToWishList:) name:@"didAddedProductToWishList" object:nil];
