@@ -118,7 +118,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     self.navigationItem.titleView = topedImageView;
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                   style:UIBarButtonItemStylePlain
+                                                                   style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backButton;
@@ -162,7 +162,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     self.screenName = @"Login Page";
     [TPAnalytics trackScreenName:@"Login Page"];
-
+    
     _loginButton.layer.cornerRadius = 3;
     
     _emailTextField.isTopRoundCorner = YES;
@@ -657,9 +657,19 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 NSString *strResult = [NSString stringWithFormat:@"{\"no_reputation\":\"%@\",\"positive\":\"%@\",\"negative\":\"%@\",\"neutral\":\"%@\",\"positive_percentage\":\"%@\"}", _login.result.user_reputation.no_reputation, _login.result.user_reputation.positive, _login.result.user_reputation.negative, _login.result.user_reputation.neutral, _login.result.user_reputation.positive_percentage];
                 [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
             }
-                        
-            //add user login to GA
+            
+            // Login UA
             [TPAnalytics trackLoginUserID:_login.result.user_id];
+
+            //add user login to GA
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker setAllowIDFACollection:YES];
+            [tracker set:@"&uid" value:_login.result.user_id];
+            // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
+                                                                  action:@"User Sign In"  // Event action (required)
+                                                                   label:nil              // Event label
+                                                                   value:nil] build]];    // Event value
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
             
