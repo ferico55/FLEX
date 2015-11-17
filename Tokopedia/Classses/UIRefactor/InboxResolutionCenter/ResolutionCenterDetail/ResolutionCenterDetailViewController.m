@@ -14,6 +14,7 @@
 #import "ShopReputation.h"
 
 #import "NavigateViewController.h"
+#import "NavigationHelper.h"
 
 #import "TrackOrderViewController.h"
 
@@ -1782,6 +1783,10 @@
 }
 
 - (IBAction)gesture:(id)sender {
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        return;
+    }
+    
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10) {
         [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_resolutionDetail.resolution_order.order_pdf_url];
