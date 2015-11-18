@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TransactionActionResult : NSObject
+@interface TransactionActionResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger is_success;
 @property (strong, nonatomic) NSString *cc_agent;
