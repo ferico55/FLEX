@@ -53,6 +53,7 @@
     }
     
     
+    
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     
     if(self.isUsingHmac) {
@@ -69,7 +70,13 @@
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
+        id objectRequest = nil;
+        if ([_delegate respondsToSelector:@selector(getObjectRequest:)]) {
+            objectRequest = [_delegate getObjectRequest:self.tagRequest];
+        }
+
+        
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject: objectRequest
                                                                               method:[_delegate getRequestMethod:self.tagRequest]
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
@@ -80,7 +87,7 @@
         } else {
             parameters = [[_delegate getParameter:self.tagRequest] encrypt];
         }
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
                                                                               method:RKRequestMethodPOST
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:parameters];

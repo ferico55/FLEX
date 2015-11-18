@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		451528B11BFC8BD500E5A1D4 /* RequestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 451528B01BFC8BD500E5A1D4 /* RequestObject.m */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		45EF95041BF07C0E0024F064 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EF88C71BF07C0B0024F064 /* URLCacheAlert.m */; };
 		45EF95051BF07C0E0024F064 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EF88C91BF07C0B0024F064 /* URLCacheConnection.m */; };
@@ -1956,6 +1957,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		451528AF1BFC8BD500E5A1D4 /* RequestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestObject.h; sourceTree = "<group>"; };
+		451528B01BFC8BD500E5A1D4 /* RequestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestObject.m; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		45EF88C61BF07C0B0024F064 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		45EF88C71BF07C0B0024F064 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
@@ -5100,6 +5103,8 @@
 				45EF8CC01BF07C0C0024F064 /* untitled folder */,
 				45EF8CC11BF07C0C0024F064 /* UploadImage */,
 				45EF8CE21BF07C0C0024F064 /* WishList */,
+				451528AF1BFC8BD500E5A1D4 /* RequestObject.h */,
+				451528B01BFC8BD500E5A1D4 /* RequestObject.m */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -11565,6 +11570,7 @@
 				45EF98321BF07C0E0024F064 /* PriceAlertViewController.m in Sources */,
 				45EF96981BF07C0E0024F064 /* OrderShop.m in Sources */,
 				45EF97341BF07C0E0024F064 /* CategoryViewCell.m in Sources */,
+				451528B11BFC8BD500E5A1D4 /* RequestObject.m in Sources */,
 				45EF980C1BF07C0E0024F064 /* MyShopAddressViewController.m in Sources */,
 				45EF96F11BF07C0E0024F064 /* AlertDatePickerView.m in Sources */,
 				45EF96AA1BF07C0E0024F064 /* TransactionVoucherResult.m in Sources */,

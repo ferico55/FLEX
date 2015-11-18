@@ -20,6 +20,9 @@
 #import "TokopediaNetworkManager.h"
 
 #import "MGSwipeButton.h"
+
+#import "RequestObject.h"
+
 #define CTagRequest 2
 
 @interface SettingAddressViewController ()
@@ -1182,20 +1185,35 @@
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag
 {
-    if(tag == CTagRequest)
-    {
-        NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
-        NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-        
-        return @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERADDRESSKEY,
-                                kTKPDPROFILE_APIPAGEKEY : @(_page),
-                                kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
-                                kTKPD_USERIDKEY : @(userID),
-                                API_QUERY_KEY : query
-                                };
-    }
+//    if(tag == CTagRequest)
+//    {
+//        NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
+//        NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
+//        
+//        return @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERADDRESSKEY,
+//                                kTKPDPROFILE_APIPAGEKEY : @(_page),
+//                                kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
+//                                kTKPD_USERIDKEY : @(userID),
+//                                API_QUERY_KEY : query
+//                                };
+//    }
     
-    return nil;
+    return @{};
+}
+
+-(id)getObjectRequest:(int)tag
+{
+    NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
+    NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY];
+
+    RequestObject *requestObject = [RequestObject new];
+    requestObject.action = kTKPDPROFILE_APIGETUSERADDRESSKEY;
+    requestObject.page = [NSString stringWithFormat:@"%zd", _page];
+    requestObject.per_page = [NSString stringWithFormat:@"%zd",kTKPDPROFILESETTINGADDRESS_LIMITPAGE];
+    requestObject.user_id = userID;
+    requestObject.query = query;
+    
+    return requestObject;
 }
 
 - (NSString *)getPath:(int)tag {
@@ -1208,7 +1226,7 @@
 }
 
 - (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
+    return RKRequestMethodPOST;
 }
 
 - (id)getObjectManager:(int)tag
@@ -1259,6 +1277,10 @@
         
         // register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        RKObjectMapping *requestMapping = [RKObjectMapping requestMapping];
+        [requestMapping addAttributeMappingsFromArray:@[@"action", @"page", @"per_page", @"user_id", @"query"]];
+        [_objectmanager addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:requestMapping objectClass:[RequestObject class] rootKeyPath:nil method:RKRequestMethodPOST]];
         
         [_objectmanager addResponseDescriptor:responseDescriptor];
         return _objectmanager;
