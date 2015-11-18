@@ -48,13 +48,8 @@ static RKObjectManager *_sharedClientHttps = nil;
 }
 
 + (RKObjectManager *)sharedClientUploadImage:(NSString*)baseURLString {
-    static RKObjectManager *_sharedClient = nil;
-    
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
-        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseURLString]];
-    });
-    return _sharedClient;
+    RKObjectManager *sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseURLString]];
+    return sharedClient;
 }
 
 + (void)refreshBaseUrl {
