@@ -712,9 +712,9 @@
             [self.navigationController pushViewController:nc animated:YES];
             */
         } else if (indexPath.row == 3) {
-            
-            [_navigate navigateToInboxPriceAlertFromViewController:self];
-            
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
         } else if (indexPath.row == 4) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];

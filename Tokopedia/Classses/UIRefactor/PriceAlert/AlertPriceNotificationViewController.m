@@ -146,19 +146,11 @@
     PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
     tempPriceAlert.pricealert_product_name = [NSString convertHTML:tempPriceAlert.pricealert_product_name];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        if (![tempPriceAlert isEqual:_detailViewController.detailPriceAlert]) {
-            NSDictionary *data = @{@"price_alert" : tempPriceAlert, @"image_header" : cell.getProductImage.image};
-            [_detailViewController replaceDataSelected:data];
-        }
-    }
-    else {
-        DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
-        detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
-        detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
-        detailPriceAlertViewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
-    }
+    DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
+    detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
+    detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
+    detailPriceAlertViewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
     
 }
 
