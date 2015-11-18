@@ -1086,18 +1086,22 @@ typedef enum TagRequest {
         
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
         {
-            NSIndexPath *indexpath = _selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
-            InboxMessageList *list = _messages[indexpath.row];
-            
-            NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                                   KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                                   KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                                   MESSAGE_INDEX_PATH : indexpath
-                                   };
-            if (![data isEqualToDictionary:_detailViewController.data]) {
-                [_detailViewController replaceDataSelected:data];
+            if (_messages.count > 0) {
+                NSIndexPath *indexpath = _selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+                InboxMessageList *list = _messages[indexpath.row];
+                
+                NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                                       KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                                       KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                                       MESSAGE_INDEX_PATH : indexpath
+                                       };
+                if (![data isEqualToDictionary:_detailViewController.data]) {
+                    [_detailViewController replaceDataSelected:data];
+                }
+                [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            } else {
+                [_detailViewController replaceDataSelected:nil];
             }
-            [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
 }
