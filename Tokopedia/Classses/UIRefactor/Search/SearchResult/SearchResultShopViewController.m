@@ -30,8 +30,9 @@
 
 #import "URLCacheController.h"
 #import "ShopContainerViewController.h"
+#import "SpellCheckRequest.h"
 
-@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, NoResultDelegate>
+@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, NoResultDelegate,SpellCheckRequestDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -39,6 +40,7 @@
 @property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 
 -(void)cancel;
 -(void)loadData;
@@ -166,7 +168,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
-                                               object:nil];    
+                                               object:nil];
+    
+    _spellCheckRequest = [SpellCheckRequest new];
+    _spellCheckRequest.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -429,20 +434,8 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    [self generateSuggestion];
-                    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-                        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
-                        [_noResultView hideButton:YES];
-                    }else if([_data count] > 3){
-                        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
-                        [_noResultView hideButton:YES];
-                    }else{
-                        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
-                        [_noResultView setNoResultButtonTitle:_suggestion];
-                        [_noResultView hideButton:NO];
-                    }
-
-                    //[_table addSubview:_noResultView];
+                    [_spellCheckRequest getSpellingSuggestion:@"shop" query:[_data objectForKey:@"search"] category:@"0"];
+                    
                     self.view = _noResultView;
                 }else{
                     self.view = self.contentView;
@@ -542,31 +535,6 @@
 }
 
 #pragma mark - Methods
--(void) generateSuggestion{
-    NSString *keyword =[[_data objectForKey:@"search"] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"shop", keyword, @"0"]];
-    NSData *returnedData = [NSData dataWithContentsOfURL:url];
-    if(returnedData != nil){
-        if(NSClassFromString(@"NSJSONSerialization"))
-        {
-            NSError *error = nil;
-            id object = [NSJSONSerialization
-                         JSONObjectWithData:returnedData
-                         options:0
-                         error:&error];
-            if(error) { /* JSON was malformed, act appropriately here */ }
-            if([object isKindOfClass:[NSDictionary class]]){
-                NSDictionary *results = object;
-                _suggestion = results[@"suggest"];
-                _suggestion = [_suggestion capitalizedString];
-            }else{
-                _suggestion = @"";
-            }
-        }else{
-            _suggestion = @"";
-        }
-    }
-}
 - (TokopediaNetworkManager *)getNetworkManager
 {
     if(tokopediaNetworkManager == nil)
@@ -778,6 +746,23 @@
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
+}
+
+#pragma mark - Spell Check Delegate
+
+-(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
+    _suggestion = suggestion;
+    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
+        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
+        [_noResultView hideButton:YES];
+    }else if([_data count] > 3){
+        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+        [_noResultView hideButton:YES];
+    }else{
+        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultButtonTitle:_suggestion];
+        [_noResultView hideButton:NO];
+    }
 }
 
 @end

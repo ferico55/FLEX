@@ -1898,6 +1898,9 @@
 		85FF8C661BE9A58B0015B16F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 85FF85231BE9A58A0015B16F /* README.md */; };
 		85FF8C681BE9A58B0015B16F /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 85FF85261BE9A58A0015B16F /* vt-iOSlib-1.0.1.tar.gz */; };
 		85FF8C691BE9A58B0015B16F /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 85FF85271BE9A58A0015B16F /* vt-iOSlib-1.0.1.zip */; };
+		BB2DB7A81BFB449B00701BC0 /* SpellCheckRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2DB7A31BFB449B00701BC0 /* SpellCheckRequest.m */; settings = {ASSET_TAGS = (); }; };
+		BB2DB7A91BFB449B00701BC0 /* SpellCheckResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2DB7A51BFB449B00701BC0 /* SpellCheckResponse.m */; settings = {ASSET_TAGS = (); }; };
+		BB2DB7AA1BFB449B00701BC0 /* SpellCheckResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2DB7A71BFB449B00701BC0 /* SpellCheckResult.m */; settings = {ASSET_TAGS = (); }; };
 		BBCACD351BF0425000AD1835 /* NoResultReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCACD331BF0425000AD1835 /* NoResultReusableView.m */; settings = {ASSET_TAGS = (); }; };
 		BBCACD361BF0425000AD1835 /* NoResultReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCACD341BF0425000AD1835 /* NoResultReusableView.xib */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
@@ -4783,6 +4786,12 @@
 		85FF85271BE9A58A0015B16F /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BB2DB7A21BFB449B00701BC0 /* SpellCheckRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellCheckRequest.h; sourceTree = "<group>"; };
+		BB2DB7A31BFB449B00701BC0 /* SpellCheckRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpellCheckRequest.m; sourceTree = "<group>"; };
+		BB2DB7A41BFB449B00701BC0 /* SpellCheckResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellCheckResponse.h; sourceTree = "<group>"; };
+		BB2DB7A51BFB449B00701BC0 /* SpellCheckResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpellCheckResponse.m; sourceTree = "<group>"; };
+		BB2DB7A61BFB449B00701BC0 /* SpellCheckResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellCheckResult.h; sourceTree = "<group>"; };
+		BB2DB7A71BFB449B00701BC0 /* SpellCheckResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpellCheckResult.m; sourceTree = "<group>"; };
 		BBCACD321BF0425000AD1835 /* NoResultReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoResultReusableView.h; sourceTree = "<group>"; };
 		BBCACD331BF0425000AD1835 /* NoResultReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoResultReusableView.m; sourceTree = "<group>"; };
 		BBCACD341BF0425000AD1835 /* NoResultReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoResultReusableView.xib; sourceTree = "<group>"; };
@@ -8227,6 +8236,12 @@
 		85FF80A01BE9A5880015B16F /* SearchResult */ = {
 			isa = PBXGroup;
 			children = (
+				BB2DB7A21BFB449B00701BC0 /* SpellCheckRequest.h */,
+				BB2DB7A31BFB449B00701BC0 /* SpellCheckRequest.m */,
+				BB2DB7A41BFB449B00701BC0 /* SpellCheckResponse.h */,
+				BB2DB7A51BFB449B00701BC0 /* SpellCheckResponse.m */,
+				BB2DB7A61BFB449B00701BC0 /* SpellCheckResult.h */,
+				BB2DB7A71BFB449B00701BC0 /* SpellCheckResult.m */,
 				85FF80A11BE9A5880015B16F /* SearchResultCell.h */,
 				85FF80A21BE9A5880015B16F /* SearchResultCell.m */,
 				85FF80A31BE9A5880015B16F /* SearchResultShopCell.h */,
@@ -11223,6 +11238,7 @@
 				85FF88CE1BE9A58B0015B16F /* FilterShipmentStatusViewController.m in Sources */,
 				85FF885D1BE9A58B0015B16F /* ProductReviewDetailViewController.m in Sources */,
 				85FF86821BE9A58A0015B16F /* SettingLocation.m in Sources */,
+				BB2DB7AA1BFB449B00701BC0 /* SpellCheckResult.m in Sources */,
 				85FF86A91BE9A58A0015B16F /* TransactionCartResult.m in Sources */,
 				85FF85B91BE9A58A0015B16F /* ResolutionAction.m in Sources */,
 				85FF87CA1BE9A58B0015B16F /* MyWishlistViewController.m in Sources */,
@@ -11908,6 +11924,7 @@
 				85FF86CC1BE9A58A0015B16F /* TxOrderConfirmedDetail.m in Sources */,
 				85FF85A01BE9A58A0015B16F /* HistoryProduct.m in Sources */,
 				FC36DF9719B0656400AF74C1 /* AppDelegate.m in Sources */,
+				BB2DB7A81BFB449B00701BC0 /* SpellCheckRequest.m in Sources */,
 				85FF87021BE9A58A0015B16F /* RequestAddress.m in Sources */,
 				85FF88871BE9A58B0015B16F /* SplitReputationViewController.m in Sources */,
 				85FF88881BE9A58B0015B16F /* RequestMoveTo.m in Sources */,
@@ -11945,6 +11962,7 @@
 				85FF88FF1BE9A58B0015B16F /* ProfileSettingViewController.m in Sources */,
 				85FF85D31BE9A58A0015B16F /* InboxTalkList.m in Sources */,
 				85FF853A1BE9A58A0015B16F /* RKObjectManagerCategory.m in Sources */,
+				BB2DB7A91BFB449B00701BC0 /* SpellCheckResponse.m in Sources */,
 				85FF85FA1BE9A58A0015B16F /* ProductOwner.m in Sources */,
 				85FF861A1BE9A58A0015B16F /* FavoriteShop.m in Sources */,
 				85FF85751BE9A58A0015B16F /* CatalogSpecs.m in Sources */,

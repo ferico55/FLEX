@@ -51,6 +51,7 @@
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 #import "NoResultReusableView.h"
+#import "SpellCheckRequest.h"
 
 #pragma mark - Search Result View Controller
 
@@ -87,7 +88,8 @@ TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 PromoRequestDelegate,
 PromoCollectionViewDelegate,
-NoResultDelegate
+NoResultDelegate,
+SpellCheckRequestDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -109,7 +111,7 @@ NoResultDelegate
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
-
+@property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 @end
 
 @implementation SearchResultViewController {
@@ -286,6 +288,9 @@ NoResultDelegate
     _networkManager.isParameterNotEncrypted = YES;
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
+    
+    _spellCheckRequest = [SpellCheckRequest new];
+    _spellCheckRequest.delegate = self;
     
 }
 
@@ -535,33 +540,6 @@ NoResultDelegate
 }
 
 #pragma mark - Methods
-
--(void)generateSuggestion{
-    NSString *keyword =[[_data objectForKey:@"search"] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"product", keyword, @"0"]];
-    NSData *returnedData = [NSData dataWithContentsOfURL:url];
-    
-    if(returnedData != nil){
-        if(NSClassFromString(@"NSJSONSerialization"))
-        {
-            NSError *error = nil;
-            id object = [NSJSONSerialization
-                         JSONObjectWithData:returnedData
-                         options:0
-                         error:&error];
-            if(error) { /* JSON was malformed, act appropriately here */ }
-            if([object isKindOfClass:[NSDictionary class]]){
-                NSDictionary *results = object;
-                _suggestion = results[@"suggest"];
-                _suggestion = [_suggestion capitalizedString];
-            }else{
-                _suggestion = @"";
-            }
-        }else{
-            _suggestion = @"";
-        }
-    }
-}
 
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
@@ -895,18 +873,10 @@ NoResultDelegate
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
-            [self generateSuggestion];
-            if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-                [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
-                [_noResultView hideButton:YES];
-            }else if([_data count] > 3){
-                [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
-                [_noResultView hideButton:YES];
-            }else{
-                [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
-                [_noResultView setNoResultButtonTitle:_suggestion];
-                [_noResultView hideButton:NO];
-            }
+            
+            [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+            
+            
             //[_collectionView addSubview:_noResultView];
             self.view = _noResultView;
         }
@@ -1119,6 +1089,23 @@ NoResultDelegate
         self.scrollDirection = ScrollDirectionDown;
     }
     self.lastContentOffset = scrollView.contentOffset.y;
+}
+
+#pragma mark - Spell Check Delegate
+
+-(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
+    _suggestion = suggestion;
+    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
+        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
+        [_noResultView hideButton:YES];
+    }else if([_data count] > 3){
+        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+        [_noResultView hideButton:YES];
+    }else{
+        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultButtonTitle:_suggestion];
+        [_noResultView hideButton:NO];
+    }
 }
 
 @end
