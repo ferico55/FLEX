@@ -1584,78 +1584,78 @@ GeneralTableViewControllerDelegate
         
         
         for (ShippingInfoShipments *shipment in _shipment.shipment) {
-            if ([shipment.shipment_name isEqualToString:@"JNE"]) {
+            if ([shipment.shipment_id isEqualToString:@"1"]) { // JNE
                 _JNE = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"YES"]) {
+                    if ([package.sp_id isEqualToString:@"6"]) { // YES
                         _JNEPackageYes = package;
-                    } else if ([package.name isEqualToString:@"Reguler"]) {
+                    } else if ([package.sp_id isEqualToString:@"1"]) { // Reguler
                         _JNEPackageReguler = package;
-                    } else  if ([package.name isEqualToString:@"OKE"]) {
+                    } else  if ([package.sp_id isEqualToString:@"2"]) { // OKE
                         _JNEPackageOke = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"TIKI"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"2"]) { // TIKI
                 _tiki = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Reguler"]) {
+                    if ([package.sp_id isEqualToString:@"3"]) { // Reguler
                         _tikiPackageReguler = package;
-                    } else if ([package.name isEqualToString:@"Over Night Service"]) {
+                    } else if ([package.sp_id isEqualToString:@"16"]) { // One Night Service
                         _tikiPackageONS = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"RPX"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"3"]) { // RPX
                 _RPX = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Next Day Package"]) {
+                    if ([package.sp_id isEqualToString:@"4"]) { // Next Day Package
                         _RPXPackageNextDay = package;
-                    } else if ([package.name isEqualToString:@"Regular Package"]) {
+                    } else if ([package.sp_id isEqualToString:@"5"]) { // Reguler Package (Live) || Economy Package (Staging)
                         _RPXPackageEconomy = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Wahana"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"6"]) { // Wahana
                 _wahana = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Service Normal"]) {
+                    if ([package.sp_id isEqualToString:@"8"]) { // Service Normal
                         _wahanaPackageNormal = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Pos Indonesia"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"4"]) { // Pos Indonesia
                 _posIndonesia = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Pos Kilat Khusus"]) {
+                    if ([package.sp_id isEqualToString:@"10"]) { // Pos Kilat Khusus
                         _posPackageKhusus = package;
-                    } else if ([package.name isEqualToString:@"Paket Biasa"]) {
+                    } else if ([package.sp_id isEqualToString:@"9"]) { // Paket Biasa
                         _posPackageBiasa = package;
-                    } else if ([package.name isEqualToString:@"Pos Express"]) {
+                    } else if ([package.sp_id isEqualToString:@"11"]) { // Pos Express
                         _posPackageExpress = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Cahaya"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"7"]) { // Cahaya
                 _cahaya = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Service Normal"]) {
+                    if ([package.sp_id isEqualToString:@"12"]) { // Service Normal
                         _cahayaPackageNormal = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Pandu"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"8"]) { // Pandu
                 _pandu = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Reguler"]) {
+                    if ([package.sp_id isEqualToString:@"14"]) { // Reguler
                         _panduPackageRegular = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"First"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"9"]) { // First
                 _first = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Reguler Service"]) {
+                    if ([package.sp_id isEqualToString:@"15"]) { // Reguler Service
                         _firstPackageRegular = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"SiCepat"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"11"]) { // SiCepat
                 _siCepat = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Regular Package"]) {
+                    if ([package.sp_id isEqualToString:@"18"]) { // Regular Package
                         _siCepatPackageRegular = package;
                     }
                 }
