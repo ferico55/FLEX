@@ -99,9 +99,9 @@
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
-    [_noResultView generateAllElements:nil
-                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
-                                  desc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain."
+    [_noResultView generateAllElements:@"no-result.png"
+                                 title:@"Oops..... Hasil pencarian tidak ditemukan"
+                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
                               btnTitle:@""];
 }
 
@@ -753,13 +753,13 @@
 -(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
     _suggestion = suggestion;
     if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain"];
         [_noResultView hideButton:YES];
     }else if([_data count] > 3){
         [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
         [_noResultView hideButton:YES];
     }else{
-        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
         [_noResultView setNoResultButtonTitle:_suggestion];
         [_noResultView hideButton:NO];
     }

@@ -94,9 +94,9 @@ NoResultDelegate
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
-    [_noResultView generateAllElements:nil
-                                 title:@"Segera favoritkan toko yang Anda sukai!\nJangan sampai ketinggalan"
-                                  desc:@"Disini Anda bisa melihat produk dari toko favoritmu"
+    [_noResultView generateAllElements:@"product-feed.png"
+                                 title:@"Lihat produk dari toko favorit Anda disini"
+                                  desc:@"Segera favoritkan toko yang Anda sukai untuk mendapatkan update produk terbaru."
                               btnTitle:@"Toko Favorit"];
 }
 

@@ -157,9 +157,9 @@ SpellCheckRequestDelegate
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-    [_noResultView generateAllElements:nil
+    [_noResultView generateAllElements:@"no-result.png"
                                  title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
-                                  desc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain."
+                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
                                btnTitle:@""];
     [_noResultView hideButton:YES];
     _noResultView.delegate = self;
@@ -297,40 +297,6 @@ SpellCheckRequestDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     _suggestion = @"";
-    
-    NSString *keyword =[[_data objectForKey:@"search"] stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-    
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.tokopedia.com/search/v1/spell/product?st=%@&q=%@&sc=%@", @"product", keyword, @"0"]];
-    
-    NSData *returnedData = [NSData dataWithContentsOfURL:url];
-    
-    if(returnedData != nil){
-        if(NSClassFromString(@"NSJSONSerialization"))
-        {
-            NSError *error = nil;
-            id object = [NSJSONSerialization
-                         JSONObjectWithData:returnedData
-                         options:0
-                         error:&error];
-            
-            if(error) { /* JSON was malformed, act appropriately here */ }
-            
-            if([object isKindOfClass:[NSDictionary class]])
-            {
-                NSDictionary *results = object;
-                _suggestion = results[@"suggest"];
-                _suggestion = [_suggestion capitalizedString];
-                
-            }else{
-                
-            }
-        }else{
-            //iOS 4--
-        }
-    }
-    
-    
     [_collectionView reloadData];
 }
 
@@ -1096,13 +1062,13 @@ SpellCheckRequestDelegate
 -(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
     _suggestion = suggestion;
     if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain"];
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain"];
         [_noResultView hideButton:YES];
     }else if([_data count] > 3){
         [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
         [_noResultView hideButton:YES];
     }else{
-        [_noResultView setNoResultDesc:@"Silakan melakukan pencarian kembali dengan menggunakan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
         [_noResultView setNoResultButtonTitle:_suggestion];
         [_noResultView hideButton:NO];
     }
