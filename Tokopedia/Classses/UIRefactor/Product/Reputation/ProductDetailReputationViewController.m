@@ -221,7 +221,7 @@
     productReputationCell.delegate = self;
     [([self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2]) setPropertyLabelDesc:productReputationCell.getLabelDesc];
     
-    productReputationCell.frame = CGRectMake(productReputationCell.frame.origin.x, productReputationCell.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, productReputationCell.bounds.size.height);
+    productReputationCell.frame = CGRectMake(productReputationCell.frame.origin.x, productReputationCell.frame.origin.y, self.view.bounds.size.width, productReputationCell.bounds.size.height);
     productReputationCell.getViewContent.frame = CGRectMake(CPaddingTopBottom, productReputationCell.getViewContent.frame.origin.y, productReputationCell.bounds.size.width-(CPaddingTopBottom*2), productReputationCell.getViewContent.bounds.size.height);
 
     
