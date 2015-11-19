@@ -82,7 +82,9 @@
 }
 
 - (void)configureAppIndexing {
-    [[GSDAppIndexing sharedInstance] registerApp:1001394201];
+    if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+        [[GSDAppIndexing sharedInstance] registerApp:1001394201];
+    }
 }
 
 - (void)configureGoogleAnalytics {

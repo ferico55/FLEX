@@ -349,6 +349,7 @@
                                                                  CRevieweeRole,
                                                                  COrderID,
                                                                  @"auto_read",
+                                                                 @"reputation_progress",
                                                                  CUnaccessedReputationReview,
                                                                  CShowRevieweeSCore,
                                                                  CRole]];
@@ -661,9 +662,17 @@
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
         
-        alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
-        alertRateView.tag = ((UIButton *) sender).tag;
-        [alertRateView show];
+        if([tempObj.reputation_progress isEqualToString:@"2"]) {
+            // add some stickey message
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon Maaf, Reputasi ini telah di kunci."] delegate:self];
+            [stickyAlertView show];
+        } else {
+            alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
+            alertRateView.tag = ((UIButton *) sender).tag;
+            [alertRateView show];
+        }
+        
+
     }
 }
 
@@ -874,4 +883,7 @@
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
+
+
+
 @end

@@ -942,6 +942,12 @@
 }
 
 - (void)actionReviewRate:(id)sender {
+    if([_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon Maaf, Reputasi ini telah di kunci."] delegate:self];
+        [stickyAlertView show];
+        return;
+    }
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UINavigationController *navMaster = [((SplitReputationViewController *) self.parentViewController.parentViewController.nextResponder.nextResponder) getMasterNavigation];
         if([[navMaster.viewControllers firstObject] isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
