@@ -944,7 +944,7 @@
 
 - (void)actionReviewRate:(id)sender {
     if([_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]) {
-        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon Maaf, Reputasi ini telah di kunci."] delegate:self];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf penilaian ini telah dikunci, Anda telah melewati batas waktu penilaian."] delegate:self];
         [stickyAlertView show];
         return;
     }
