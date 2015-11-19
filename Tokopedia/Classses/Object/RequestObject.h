@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RequestObject : NSObject
+@interface RequestObjectGetAddress : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *action;
 @property (nonatomic, strong) NSString *page;
@@ -19,13 +19,3 @@
 
 @end
 
-@interface RequestObject1 : NSObject
-
-@property (nonatomic, strong) NSString *action;
-@property (nonatomic, strong) NSString *page;
-@property (nonatomic, strong) NSString *per_page;
-@property (nonatomic, strong) NSString *user_id;
-@property (nonatomic, strong) NSString *query;
-
-
-@end

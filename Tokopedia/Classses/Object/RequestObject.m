@@ -8,6 +8,23 @@
 
 #import "RequestObject.h"
 
-@implementation RequestObject
+@implementation RequestObjectGetAddress
+
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"action",
+                        @"page",
+                        @"per_page",
+                        @"user_id",
+                        @"query"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AddressFormList : NSObject
+@interface AddressFormList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *country_name;
 @property (nonatomic, strong) NSString *receiver_name;

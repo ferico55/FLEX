@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AddressFormResult.h"
 
-@interface AddressForm : NSObject
+@interface AddressForm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;

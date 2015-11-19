@@ -1201,12 +1201,12 @@
     return @{};
 }
 
--(id)getObjectRequest:(int)tag
+-(id)getRequestObject:(int)tag
 {
     NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
     NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY];
 
-    RequestObject *requestObject = [RequestObject new];
+    RequestObjectGetAddress *requestObject = [RequestObjectGetAddress new];
     requestObject.action = kTKPDPROFILE_APIGETUSERADDRESSKEY;
     requestObject.page = [NSString stringWithFormat:@"%zd", _page];
     requestObject.per_page = [NSString stringWithFormat:@"%zd",kTKPDPROFILESETTINGADDRESS_LIMITPAGE];
@@ -1234,55 +1234,12 @@
     if(tag == CTagRequest)
     {
         _objectmanager = [RKObjectManager sharedClientHttps];
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[AddressForm mapping] method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectGetAddress mapping] inverseMapping] objectClass:[RequestObjectGetAddress class] rootKeyPath:nil method:RKRequestMethodPOST];
         
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddressForm class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                            kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                            }];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddressFormResult class]];
-        
-        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[AddressFormList class]];
-        [listMapping addAttributeMappingsFromArray:@[kTKPDPROFILESETTING_APICOUNTRYNAMEKEY,
-                                                     kTKPDPROFILESETTING_APIRECEIVERNAMEKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSNAMEKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSIDKEY,
-                                                     kTKPDPROFILESETTING_APIRECEIVERPHONEKEY,
-                                                     kTKPDPROFILESETTING_APIPROVINCENAMEKEY,
-                                                     kTKPDPROFILESETTING_APIPOSTALCODEKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSSTATUSKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSSTREETKEY,
-                                                     kTKPDPROFILESETTING_APIDISTRICNAMEKEY,
-                                                     kTKPDPROFILESETTING_APICITYNAMEKEY,
-                                                     kTKPDPROFILESETTING_APICITYIDKEY,
-                                                     kTKPDPROFILESETTING_APIPROVINCEIDKEY,
-                                                     kTKPDPROFILESETTING_APIDISTRICTIDKEY,
-                                                     @"longitude",
-                                                     @"latitude"
-                                                     ]];
-        
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY}];
-        
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:resultMapping]];
-        
-        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-        [resultMapping addPropertyMapping:listRel];
-        
-        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY toKeyPath:kTKPD_APIPAGINGKEY withMapping:pagingMapping];
-        [resultMapping addPropertyMapping:pageRel];
-        
-        // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        RKObjectMapping *requestMapping = [RKObjectMapping requestMapping];
-        [requestMapping addAttributeMappingsFromArray:@[@"action", @"page", @"per_page", @"user_id", @"query"]];
-        [_objectmanager addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:requestMapping objectClass:[RequestObject class] rootKeyPath:nil method:RKRequestMethodPOST]];
-        
+        [_objectmanager addRequestDescriptor:requestDescriptor];
         [_objectmanager addResponseDescriptor:responseDescriptor];
+        
         return _objectmanager;
     }
     
