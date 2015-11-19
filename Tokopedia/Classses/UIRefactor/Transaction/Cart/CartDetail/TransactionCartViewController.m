@@ -743,7 +743,6 @@
                     }
                 break;
             }
-            [self sendingProductDataToGA];
         }
         if(_indexPage==1)
         {
@@ -801,9 +800,11 @@
                 default:
                     break;
             }
+            [self sendingProductDataToGA];
         }
     }
 }
+
 - (IBAction)tapBankInstallment:(id)sender {
     GeneralTableViewController *controller = [GeneralTableViewController new];
     controller.title = @"Pilih Bank";
