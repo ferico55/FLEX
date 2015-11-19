@@ -52,7 +52,10 @@
         [_delegate actionBeforeRequest:self.tagRequest];
     }
     
-    
+    id requestObject = nil;
+    if (_delegate && [_delegate respondsToSelector:@selector(getRequestObject:)]) {
+        requestObject = [_delegate getRequestObject:self.tagRequest];
+    }
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     
@@ -70,13 +73,8 @@
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         
-        id objectRequest = nil;
-        if ([_delegate respondsToSelector:@selector(getObjectRequest:)]) {
-            objectRequest = [_delegate getObjectRequest:self.tagRequest];
-        }
-
         
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject: objectRequest
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
                                                                               method:[_delegate getRequestMethod:self.tagRequest]
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
@@ -87,7 +85,7 @@
         } else {
             parameters = [[_delegate getParameter:self.tagRequest] encrypt];
         }
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
                                                                               method:RKRequestMethodPOST
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:parameters];

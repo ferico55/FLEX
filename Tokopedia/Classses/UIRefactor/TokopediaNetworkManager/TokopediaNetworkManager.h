@@ -24,6 +24,7 @@
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag;
 
 @optional
+- (id)getRequestObject:(int)tag;
 - (void)actionBeforeRequest:(int)tag;
 - (void)actionRequestAsync:(int)tag;
 - (void)actionAfterFailRequestMaxTries:(int)tag;
