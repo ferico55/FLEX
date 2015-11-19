@@ -136,11 +136,12 @@
                             };
                 vc.delegate = self;
                 AddressFormList *address = _address;
-                if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
-                    vc.imageMap = _captureMap?:[PlacePickerViewController captureScreen:_mapview];
-                    vc.longitude = address.longitude;
-                    vc.latitude = address.latitude;
-                }
+                //TODO:: Uncomment for showing map address
+//                if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
+//                    vc.imageMap = _captureMap?:[PlacePickerViewController captureScreen:_mapview];
+//                    vc.longitude = address.longitude;
+//                    vc.latitude = address.latitude;
+//                }
                 
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -310,13 +311,13 @@
     return 0;
 }
 
-
-- (IBAction)tapMapDetail:(id)sender {
-    AddressFormList *list = _address;
-    PlacePickerViewController *vc = [PlacePickerViewController new];
-    vc.firstCoordinate = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
-    [self.navigationController pushViewController:vc animated:YES];
-}
+//TODO:: Uncomment for showing map address
+//- (IBAction)tapMapDetail:(id)sender {
+//    AddressFormList *list = _address;
+//    PlacePickerViewController *vc = [PlacePickerViewController new];
+//    vc.firstCoordinate = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
 
 #pragma mark - Edit address delegate
 

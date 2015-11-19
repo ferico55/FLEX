@@ -939,18 +939,7 @@
 
 - (id)getObjectManager:(int)tag
 {
-    _objectmanagerActionAddAddress = [RKObjectManager sharedClientHttps];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ProfileSettings mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:nil
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectEditAddress mapping] inverseMapping] objectClass:[RequestObjectEditAddress class] rootKeyPath:nil method:RKRequestMethodPOST];
-    
-    [_objectmanagerActionAddAddress addResponseDescriptor:responseDescriptor];
-    [_objectmanagerActionAddAddress addRequestDescriptor:requestDescriptor];
-    
+    _objectmanagerActionAddAddress = [TKPMappingManager objectManagerEditAddress];
     return _objectmanagerActionAddAddress;
 }
 

@@ -500,7 +500,7 @@
 {
     if (object) {
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
+        id stat = [result  objectForKey:@""];
         AddressForm *address = stat;
         BOOL status = [address.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
@@ -1233,15 +1233,7 @@
 {
     if(tag == CTagRequest)
     {
-        _objectmanager = [RKObjectManager sharedClientHttps];
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[AddressForm mapping] method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectGetAddress mapping] inverseMapping] objectClass:[RequestObjectGetAddress class] rootKeyPath:nil method:RKRequestMethodPOST];
-        
-        if (![_objectmanager.requestDescriptors containsObject:requestDescriptor]) {
-            [_objectmanager addRequestDescriptor:requestDescriptor];
-            [_objectmanager addResponseDescriptor:responseDescriptor];
-        }
-        
+        _objectmanager = [TKPMappingManager objectManagerGetAddress];
         return _objectmanager;
     }
     

@@ -10,6 +10,7 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		451528B11BFC8BD500E5A1D4 /* RequestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 451528B01BFC8BD500E5A1D4 /* RequestObject.m */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		45E07A991BFDC0AB005B3BF1 /* TKPMappingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E07A981BFDC0AB005B3BF1 /* TKPMappingManager.m */; };
 		45EF95041BF07C0E0024F064 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EF88C71BF07C0B0024F064 /* URLCacheAlert.m */; };
 		45EF95051BF07C0E0024F064 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EF88C91BF07C0B0024F064 /* URLCacheConnection.m */; };
 		45EF95061BF07C0E0024F064 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EF88CB1BF07C0B0024F064 /* URLCacheController.m */; };
@@ -1960,6 +1961,8 @@
 		451528AF1BFC8BD500E5A1D4 /* RequestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestObject.h; sourceTree = "<group>"; };
 		451528B01BFC8BD500E5A1D4 /* RequestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestObject.m; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		45E07A971BFDC0AB005B3BF1 /* TKPMappingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPMappingManager.h; sourceTree = "<group>"; };
+		45E07A981BFDC0AB005B3BF1 /* TKPMappingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPMappingManager.m; sourceTree = "<group>"; };
 		45EF88C61BF07C0B0024F064 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		45EF88C71BF07C0B0024F064 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		45EF88C81BF07C0B0024F064 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -6819,6 +6822,8 @@
 		45EF8CE91BF07C0C0024F064 /* TKPStoreManager */ = {
 			isa = PBXGroup;
 			children = (
+				45E07A971BFDC0AB005B3BF1 /* TKPMappingManager.h */,
+				45E07A981BFDC0AB005B3BF1 /* TKPMappingManager.m */,
 				45EF8CEA1BF07C0C0024F064 /* TKPAppFlow.h */,
 				45EF8CEB1BF07C0C0024F064 /* TKPGoogleDistanceMatrixProductStore.h */,
 				45EF8CEC1BF07C0C0024F064 /* TKPGoogleDistanceMatrixProductStore.m */,
@@ -12187,6 +12192,7 @@
 				45EF98DF1BF07C0F0024F064 /* SettingNotificationCell.m in Sources */,
 				45EF95431BF07C0E0024F064 /* DepositFormBankAccountList.m in Sources */,
 				45EF97F81BF07C0E0024F064 /* InboxTalkViewController.m in Sources */,
+				45E07A991BFDC0AB005B3BF1 /* TKPMappingManager.m in Sources */,
 				45EF98A81BF07C0F0024F064 /* BarCodeViewController.m in Sources */,
 				45EF96281BF07C0E0024F064 /* ActionOrder.m in Sources */,
 				45EF99921BF07C0F0024F064 /* TxOrderObjectMapping.m in Sources */,

@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TKPMappingManager : NSObject
+@interface TKPMappingManager: NSObject
+
++(RKObjectManager*)objectManagerGetAddress;
++(RKObjectManager*)objectManagerEditAddress;
 
 @end

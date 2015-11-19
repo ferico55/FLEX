@@ -82,5 +82,4 @@ static RKObjectManager *_sharedClientHttps = nil;
     return httpsUrl;
 }
 
-
 @end
