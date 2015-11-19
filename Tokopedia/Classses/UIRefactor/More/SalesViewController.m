@@ -52,9 +52,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Transaction - Sales Page";
-    self.hidesBottomBarWhenPushed = YES;
     
+    [TPAnalytics trackScreenName:@"Sales Page"];
+    self.screenName = @"Sales Page";
+    
+    self.hidesBottomBarWhenPushed = YES;    
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -122,7 +122,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.screenName = @"Shop - Etalase List";
+    [TPAnalytics trackScreenName:@"Shop - Etalase List"];
+
     [self configureRestKit];
     if (_isnodata && _page<=1) {
         [self request];
@@ -139,7 +142,6 @@
                                                                      action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = barButtonItem;
     
-    self.screenName  =@"";
     [self cancel];
 }
 

@@ -15,6 +15,7 @@
 #import "ProfileBiodataCell.h"
 
 #import "detail.h"
+
 #define CStringPenilaianUser @"DATA PENILAIAN USER"
 
 @interface UserProfileBiodataViewController () <UserPageHeaderDelegate, ProfileBiodataShopCellDelegate, UIScrollViewDelegate, UITableViewDelegate, CMPopTipViewDelegate>
@@ -80,7 +81,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+    [super viewWillAppear:animated]; 
+    [TPAnalytics trackScreenName:@"Profile - Profile Information"];
     self.screenName = @"Profile - Profile Information";
 }
 
