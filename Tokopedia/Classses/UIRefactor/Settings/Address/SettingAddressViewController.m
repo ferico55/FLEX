@@ -1237,8 +1237,10 @@
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[AddressForm mapping] method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectGetAddress mapping] inverseMapping] objectClass:[RequestObjectGetAddress class] rootKeyPath:nil method:RKRequestMethodPOST];
         
-        [_objectmanager addRequestDescriptor:requestDescriptor];
-        [_objectmanager addResponseDescriptor:responseDescriptor];
+        if (![_objectmanager.requestDescriptors containsObject:requestDescriptor]) {
+            [_objectmanager addRequestDescriptor:requestDescriptor];
+            [_objectmanager addResponseDescriptor:responseDescriptor];
+        }
         
         return _objectmanager;
     }

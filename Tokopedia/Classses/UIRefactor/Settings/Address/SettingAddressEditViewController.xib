@@ -74,7 +74,6 @@
                 <outletCollection property="section1Cells" destination="7lv-oE-fgz" id="J0J-OO-v1Q"/>
                 <outletCollection property="section2Cells" destination="V1F-GX-vq4" id="Qke-oa-f95"/>
                 <outletCollection property="section3Cells" destination="rtg-k2-tFe" id="tgf-Y2-0Vs"/>
-                <outletCollection property="section1Cells" destination="pra-CU-cPU" id="FVT-wo-Vja"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

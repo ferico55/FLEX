@@ -56,12 +56,16 @@
     if (_delegate && [_delegate respondsToSelector:@selector(getRequestObject:)]) {
         requestObject = [_delegate getRequestObject:self.tagRequest];
     }
+    RKRequestMethod requestMethod = RKRequestMethodPOST;
+    if (_delegate && [_delegate respondsToSelector:@selector(getRequestMethod:)]) {
+        requestMethod = [_delegate getRequestMethod:self.tagRequest];
+    }
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
-        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:[_delegate getRequestMethod:nil]] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
@@ -75,7 +79,7 @@
         
         
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
-                                                                              method:[_delegate getRequestMethod:self.tagRequest]
+                                                                              method:requestMethod
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
     } else {

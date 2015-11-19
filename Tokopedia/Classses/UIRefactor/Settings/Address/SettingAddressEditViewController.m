@@ -17,6 +17,8 @@
 #import "TokopediaNetworkManager.h"
 #import "PlacePickerViewController.h"
 
+#import "RequestObject.h"
+
 #pragma mark - Setting Address Edit View Controller
 @interface SettingAddressEditViewController ()
 <
@@ -322,12 +324,14 @@
         }
     }
 }
-- (IBAction)tapMap:(id)sender {
-    PlacePickerViewController *placePicker = [PlacePickerViewController new];
-    placePicker.firstCoordinate = CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]);
-    placePicker.delegate = self;
-    [self.navigationController pushViewController:placePicker animated:YES];
-}
+
+//TODO:: Uncomment for showing map address
+//- (IBAction)tapMap:(id)sender {
+//    PlacePickerViewController *placePicker = [PlacePickerViewController new];
+//    placePicker.firstCoordinate = CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]);
+//    placePicker.delegate = self;
+//    [self.navigationController pushViewController:placePicker animated:YES];
+//}
 
 -(void)PickAddress:(GMSAddress *)address suggestion:(NSString*)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage*)map
 {
@@ -555,27 +559,28 @@
             _buttoncity.enabled = NO;
         }
         
-        if (_imageMap) {
-            _mapImageView.image = _imageMap;
-            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
-
-            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                GMSAddress *address = [response results][0];
-                
-                NSString *addressString;
-                if (address.lines.count>0) {
-                    addressString = address.lines[0];
-                }
-                else
-                {
-                    addressString = address.thoroughfare;
-                }
-                [_buttonMapLocation setTitle:addressString forState:UIControlStateNormal];
-                _opsionalLabel.hidden = YES;
-                _constraintBottomMapName.constant = 0;
-
-            }];
-        }
+        //TODO:: Uncomment for showing map address
+//        if (_imageMap) {
+//            _mapImageView.image = _imageMap;
+//            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+//
+//            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+//                GMSAddress *address = [response results][0];
+//                
+//                NSString *addressString;
+//                if (address.lines.count>0) {
+//                    addressString = address.lines[0];
+//                }
+//                else
+//                {
+//                    addressString = address.thoroughfare;
+//                }
+//                [_buttonMapLocation setTitle:addressString forState:UIControlStateNormal];
+//                _opsionalLabel.hidden = YES;
+//                _constraintBottomMapName.constant = 0;
+//
+//            }];
+//        }
     }
 }
 
@@ -880,15 +885,20 @@
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag
 {
+    return @{};
+}
+
+-(id)getRequestObject:(int)tag
+{
     NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
     tempDictUserInfo = nil;
     AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
     
     NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
-    NSInteger addressid = list.address_id?:0;
-    NSNumber *city = _selectedCity[@"ID"]?:list.city_id?:@(0);
-    NSNumber *province = _selectedProvince[@"ID"]?:list.province_id?:@(0);
-    NSNumber *distric = _selectedDistrict[@"ID"]?:list.district_id?:@(0);
+    NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
+    NSString *city = [NSString stringWithFormat:@"%zd",[_selectedCity[@"ID"] integerValue]?:[list.city_id integerValue]?:0];
+    NSString *province = [NSString stringWithFormat:@"%zd",[_selectedProvince[@"ID"] integerValue]?:[list.province_id integerValue]?:0];
+    NSString *district = [NSString stringWithFormat:@"%zd",[_selectedDistrict[@"ID"] integerValue]?:[list.district_id integerValue]?:0];
     
     NSString *recievername = _textfieldreceivername.text?:@"";
     NSString *addressname = _textfieldaddressname.text?:@"";
@@ -900,60 +910,46 @@
     NSString *longitude = (!_longitude || [_longitude isEqualToString:@"0"])?@"":_longitude;
     NSString *latitude = (!_latitude || [_latitude isEqualToString:@"0"])?@"":_latitude;
     
-    NSDictionary *param =@{kTKPDPROFILE_APIACTIONKEY:action,
-                           kTKPDPROFILESETTING_APIADDRESSIDKEY : @(addressid),
-                           kTKPDPROFILESETTING_APICITYKEY : city,
-                           kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
-                           kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
-                           kTKPDPROFILESETTING_APIRECEIVERPHONEKEY : phone,
-                           kTKPDPROFILESETTING_APIPROVINCEKEY : province,
-                           kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
-                           kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
-                           kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password,
-                           kTKPDPROFILESETTING_APIDISTRICTKEY : distric,
-                           @"longitude" : longitude,
-                           @"latitude" : latitude
-                           };
+    RequestObjectEditAddress *editAddress = [RequestObjectEditAddress new];
+    editAddress.action = action;
+    editAddress.address_id = addressid;
+    editAddress.city = city;
+    editAddress.receiver_name = recievername;
+    editAddress.address_name = addressname;
+    editAddress.receiver_phone = phone;
+    editAddress.province = province;
+    editAddress.postal_code = postalcode;
+    editAddress.address_street = addressstreet;
+    editAddress.user_password = password;
+    editAddress.district = district;
+    editAddress.longitude = longitude;
+    editAddress.latitude = latitude;
     
-    return param;
+    return editAddress;
+}
+
+-(int)getRequestMethod:(int)tag
+{
+    return RKRequestMethodPOST;
 }
 
 - (NSString *)getPath:(int)tag {
     return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"v4/action/people/edit_address.pl":@"v4/action/people/add_address.pl";
 }
 
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
 - (id)getObjectManager:(int)tag
 {
     _objectmanagerActionAddAddress = [RKObjectManager sharedClientHttps];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromArray:@[
-                                                   kTKPD_APISTATUSMESSAGEKEY,
-                                                   kTKPD_APIERRORMESSAGEKEY,
-                                                   kTKPD_APISTATUSKEY,
-                                                   kTKPD_APISERVERPROCESSTIMEKEY,
-                                                   ]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                  toKeyPath:@"data"
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ProfileSettings mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:nil
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectEditAddress mapping] inverseMapping] objectClass:[RequestObjectEditAddress class] rootKeyPath:nil method:RKRequestMethodPOST];
+    
     [_objectmanagerActionAddAddress addResponseDescriptor:responseDescriptor];
+    [_objectmanagerActionAddAddress addRequestDescriptor:requestDescriptor];
     
     return _objectmanagerActionAddAddress;
 }

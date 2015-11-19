@@ -205,10 +205,11 @@
         _viewdefault.hidden = !isdefault;
         _viewsetasdefault.hidden = isdefault;
         
-        if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
-            _marker = [[GMSMarker alloc] init];
-            [self mapPosition];
-        }
+        //TODO:: Uncomment for showing map address
+//        if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
+//            _marker = [[GMSMarker alloc] init];
+//            [self mapPosition];
+//        }
     }
 }
 
@@ -280,9 +281,10 @@
             break;
         case 2:
             if (indexPath.row == 1) {
-                if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
+                //TODO:: Uncomment for showing map address
+                //if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
                     return 0;
-                }
+                //}
             }
             if (indexPath.row == 2) {
                 NSString *string = address.address_street;
@@ -331,9 +333,10 @@
     self.labeldistrict.text = address.district_name;
     self.labelphonenumber.text = address.receiver_phone;
     
-    if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
-        [self mapPosition];
-    }
+    //TODO:: Uncomment for showing map address
+//    if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
+//        [self mapPosition];
+//    }
     _address = address;
 }
 

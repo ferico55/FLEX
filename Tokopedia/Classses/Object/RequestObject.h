@@ -16,6 +16,23 @@
 @property (nonatomic, strong) NSString *user_id;
 @property (nonatomic, strong) NSString *query;
 
+@end
+
+@interface RequestObjectEditAddress : NSObject <TKPObjectMapping>
+
+@property (nonatomic, strong) NSString *action;
+@property (nonatomic, strong) NSString *address_id;
+@property (nonatomic, strong) NSString *city;
+@property (nonatomic, strong) NSString *receiver_name;
+@property (nonatomic, strong) NSString *address_name;
+@property (nonatomic, strong) NSString *receiver_phone;
+@property (nonatomic, strong) NSString *province;
+@property (nonatomic, strong) NSString *postal_code;
+@property (nonatomic, strong) NSString *address_street;
+@property (nonatomic, strong) NSString *user_password;
+@property (nonatomic, strong) NSString *district;
+@property (nonatomic, strong) NSString *longitude;
+@property (nonatomic, strong) NSString *latitude;
 
 @end
 
