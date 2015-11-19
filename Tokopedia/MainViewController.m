@@ -535,7 +535,7 @@ typedef enum TagRequest {
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 
-//    [newControllers replaceObjectAtIndex:0 withObject:swipevcNav];
+    [newControllers replaceObjectAtIndex:0 withObject:swipevcNav];
     [newControllers replaceObjectAtIndex:4 withObject:moreNavBar];
 
     [_tabBarController setViewControllers:newControllers animated:YES];
