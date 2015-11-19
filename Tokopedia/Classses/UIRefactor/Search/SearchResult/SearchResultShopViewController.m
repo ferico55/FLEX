@@ -161,8 +161,9 @@
             [self loadData];
         }
     }
-
-    self.screenName = @"Search Result - Shop Tab";
+    
+    [TPAnalytics trackScreenName:@"Shop Search Result"];
+    self.screenName = @"Shop Search Result";
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }

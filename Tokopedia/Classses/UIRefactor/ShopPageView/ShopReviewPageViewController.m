@@ -234,15 +234,16 @@ UIAlertViewDelegate>
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Shop - Review List"];
     self.screenName = @"Shop - Review List";
+    
     if (!_isRefreshView) {
         [self configureRestKit];
-        
         if (_isNoData && _page < 1) {
             [self loadData];
         }
-    }
-    
+    }    
 }
 
 - (void)viewDidAppear:(BOOL)animated

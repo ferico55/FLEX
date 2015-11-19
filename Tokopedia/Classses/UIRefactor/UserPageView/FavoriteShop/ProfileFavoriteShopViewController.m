@@ -14,7 +14,6 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileFavoriteShopCell.h"
 
-
 #import "URLCacheController.h"
 #import "UserPageHeader.h"
 #import "ShopContainerViewController.h"
@@ -134,7 +133,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [TPAnalytics trackScreenName:@"Profile - Favorited Shop"];
     self.screenName = @"Profile - Favorited Shop";
+    
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata && _profile) {

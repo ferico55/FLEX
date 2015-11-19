@@ -215,7 +215,9 @@
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
-    self.screenName = @"ATC Form Page";
+
+    [TPAnalytics trackScreenName:@"Add to Cart"];
+    self.screenName = @"Add to Cart";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -1017,6 +1019,9 @@
             [alertView show];
             
             [self pushLocalyticsData];
+            
+            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+            [TPAnalytics trackAddToCart:product];
         }
     }
 }

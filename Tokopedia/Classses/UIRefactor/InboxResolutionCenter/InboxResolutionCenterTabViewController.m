@@ -7,9 +7,7 @@
 //
 
 #import "InboxResolutionCenterTabViewController.h"
-
 #import "InboxResolutionCenterComplainViewController.h"
-
 #import "string_inbox_resolution_center.h"
 
 @interface InboxResolutionCenterTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate>
@@ -113,8 +111,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     self.title = @"Pusat Resolusi";
+    
     self.screenName = @"Inbox Resolution";
+    [TPAnalytics trackScreenName:@"Inbox Resolution"];
     
     self.hidesBottomBarWhenPushed = YES;
 }

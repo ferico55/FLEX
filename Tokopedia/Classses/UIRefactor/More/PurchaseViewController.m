@@ -52,7 +52,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Transaction - Buy Page";
+    
+    [TPAnalytics trackScreenName:@"Purchase Page"];
+    self.screenName = @"Purchase Page";
+    
     self.hidesBottomBarWhenPushed = YES;
     
     _notificationManager = [NotificationManager new];

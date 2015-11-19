@@ -187,8 +187,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Shop - Manage Product";
     
+    // UA
+    [TPAnalytics trackScreenName:@"Shop - Manage Product"];
+    
+    // GA
+    self.screenName = @"Shop - Manage Product";
 }
 
 

@@ -190,9 +190,11 @@ UIAlertViewDelegate>
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Shop - Talk List";
-    _userManager = [UserAuthentificationManager new];
     
+    _userManager = [UserAuthentificationManager new];
+
+    [TPAnalytics trackScreenName:@"Shop - Talk List"];
+    self.screenName = @"Shop - Talk List";
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -48,6 +48,7 @@
 #import "NoResult.h"
 
 #import "PromoRequest.h"
+
 #import "UIActivityViewController+Extensions.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -324,6 +325,7 @@ TokopediaNetworkManagerDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop - Product List"];
     self.screenName = @"Shop - Product List";
 }
 
@@ -408,6 +410,8 @@ TokopediaNetworkManagerDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     List *product = [_product objectAtIndex:indexPath.row];
+    
+    [TPAnalytics trackProductClick:product];
     
     NSString *shopName = product.shop_name;
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
@@ -895,6 +899,8 @@ TokopediaNetworkManagerDelegate
     } else {
         [_product addObjectsFromArray: feed.result.list];
     }
+    
+    [TPAnalytics trackProductImpressions:feed.result.list];
     
     if (_product.count >0) {
         _isNoData = NO;

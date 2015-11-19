@@ -131,7 +131,8 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - Wishlist";
+    self.screenName = @"Home - Wish List";
+    [TPAnalytics trackScreenName:@"Home - Wish List"];
 }
 
 - (void)registerNib {
@@ -167,47 +168,6 @@ typedef enum TagRequest {
             [_networkManager doRequest];
         }
     }
-    //    NSString *cellid = @"GeneralProductCollectionViewIdentifier";
-    //    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-    //
-    //    WishListObjectList *list = [_product objectAtIndex:indexPath.row];
-    //    cell.productPrice.text = list.product_price;
-    //
-    //    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
-    //    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    //    [paragrahStyle setLineSpacing:5];
-    //    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
-    //    cell.productName.attributedText = attributedString;
-    //    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
-    //    cell.productShop.text = list.shop_name?:@"";
-    //
-    //    if(list.shop_gold_status == 1) {
-    //        cell.goldShopBadge.hidden = NO;
-    //    } else {
-    //        cell.goldShopBadge.hidden = YES;
-    //    }
-    //
-    //    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //    UIImageView *thumb = cell.productImage;
-    //    thumb.image = nil;
-    //
-    //    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-    //        #pragma clang diagnostic push
-    //        #pragma clang diagnostic ignored "-Warc-retain-cycles"
-    //        [thumb setImage:image];
-    //        [thumb setContentMode:UIViewContentModeScaleAspectFill];
-    //    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    //    }];
-    //
-    //    //next page if already last cell
-    //    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
-    //    if (row == indexPath.row) {
-    //        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
-    //            _isFailRequest = NO;
-    //            [_networkManager doRequest];
-    //        }
-    //    }
-    //
     return cell;
 }
 
@@ -230,7 +190,7 @@ typedef enum TagRequest {
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     WishListObjectList *product = [_product objectAtIndex:indexPath.row];
-    //    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+    [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -382,7 +342,10 @@ typedef enum TagRequest {
         [_product addObjectsFromArray: feed.data.list];
     }
     
+    [TPAnalytics trackProductImpressions:feed.data.list];
+    
     [_noResult removeFromSuperview];
+
     if (_product.count >0) {
         _isNoData = NO;
         _nextPageUri =  feed.data.paging.uri_next;

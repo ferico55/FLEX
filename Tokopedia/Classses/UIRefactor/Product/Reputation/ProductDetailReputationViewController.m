@@ -30,7 +30,6 @@
 #import "string_inbox_message.h"
 #import "string_inbox_review.h"
 #import "String_Reputation.h"
-#import "TAGDataLayer.h"
 #import "TotalLikeDislike.h"
 #import "TotalLikeDislikePost.h"
 #import "TokopediaNetworkManager.h"
@@ -1526,9 +1525,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
