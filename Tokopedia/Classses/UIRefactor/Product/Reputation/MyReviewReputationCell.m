@@ -257,6 +257,8 @@
         }
         else if([strScore isEqualToString:CRevieweeScroreGood]) {
             imageFlagReview.image = imageQSmile;
+        } else {
+            imageFlagReview.image = imageQuestionGray;
         }
     }
     
