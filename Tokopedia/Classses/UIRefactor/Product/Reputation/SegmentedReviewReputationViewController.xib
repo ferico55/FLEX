@@ -96,7 +96,7 @@
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rqw-2G-26z">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqn-HI-7Ph">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -150,7 +150,7 @@
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="122" id="4nP-Gn-ci9"/>
+                        <constraint firstAttribute="height" constant="81" id="4nP-Gn-ci9"/>
                         <constraint firstItem="sRh-h0-6oZ" firstAttribute="top" secondItem="5vm-Kr-RE3" secondAttribute="bottom" id="7Gh-0H-8K1"/>
                         <constraint firstItem="9Th-r0-YXD" firstAttribute="leading" secondItem="rqw-2G-26z" secondAttribute="leading" id="8Ex-ZO-QQH"/>
                         <constraint firstAttribute="trailing" secondItem="9Th-r0-YXD" secondAttribute="trailing" id="8ev-zU-Evq"/>
