@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XYPieChart.h"
+#import <QuartzCore/QuartzCore.h>
+
 @class DetailShopResult;
 
-@interface DetailStatisticViewController : UIViewController
+@interface DetailStatisticViewController : UIViewController <XYPieChartDelegate, XYPieChartDataSource>
 {
     IBOutlet UISegmentedControl *segmentedHeader, *segmentedFooter;
     IBOutletCollection(UIImageView) NSArray *arrImageHeader;
@@ -20,8 +23,17 @@
     IBOutlet UIScrollView *scrollContent;
     IBOutlet UIButton *btn1Hari, *btn2Hari, *btn3Hari, *btnPositif, *btnNetral, *btnNegatif;
     IBOutlet UIImageView *imgSpeed;
+    UILabel *_successRateLabel;
+
 }
 
 @property (nonatomic, weak) DetailShopResult *detailShopResult;
+
+
+@property (strong, nonatomic) IBOutlet XYPieChart *reputationChart;
+@property (strong, nonatomic) NSMutableArray *slices;
+@property (strong, nonatomic) NSArray *sliceColors;
+@property (weak, nonatomic) IBOutlet UILabel *totalSuccessLabel;
+
 - (IBAction)actionSegmented:(id)sender;
 @end

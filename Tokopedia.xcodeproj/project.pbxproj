@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		7A0F1AF71BFECD020013A38E /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F1AF61BFECD020013A38E /* XYPieChart.m */; settings = {ASSET_TAGS = (); }; };
+		7A0F1AFA1BFEF4D60013A38E /* ShopTransactionStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F1AF91BFEF4D60013A38E /* ShopTransactionStats.m */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -1936,6 +1938,10 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		7A0105471BEB6D040010F0A7 /* Tokopedia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
+		7A0F1AF51BFECD020013A38E /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
+		7A0F1AF61BFECD020013A38E /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		7A0F1AF81BFEF4D60013A38E /* ShopTransactionStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTransactionStats.h; sourceTree = "<group>"; };
+		7A0F1AF91BFEF4D60013A38E /* ShopTransactionStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTransactionStats.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -4895,6 +4901,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7A0F1AF41BFECD020013A38E /* XYPieChart */ = {
+			isa = PBXGroup;
+			children = (
+				7A0F1AF51BFECD020013A38E /* XYPieChart.h */,
+				7A0F1AF61BFECD020013A38E /* XYPieChart.m */,
+			);
+			path = XYPieChart;
+			sourceTree = "<group>";
+		};
 		85FF79161BE9A5850015B16F /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -6224,6 +6239,8 @@
 				85FF7C0E1BE9A5860015B16F /* ShipmentPackage.m */,
 				85FF7C0F1BE9A5860015B16F /* Shop.h */,
 				85FF7C101BE9A5860015B16F /* Shop.m */,
+				7A0F1AF81BFEF4D60013A38E /* ShopTransactionStats.h */,
+				7A0F1AF91BFEF4D60013A38E /* ShopTransactionStats.m */,
 			);
 			path = ShopInfo;
 			sourceTree = "<group>";
@@ -9833,6 +9850,7 @@
 		85FF84FD1BE9A58A0015B16F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7A0F1AF41BFECD020013A38E /* XYPieChart */,
 				85FF84FE1BE9A58A0015B16F /* Appsflyer */,
 				85FF85011BE9A58A0015B16F /* GoogleAnalytics */,
 				85FF850E1BE9A58A0015B16F /* GoogleTM */,
@@ -11809,6 +11827,7 @@
 				85FF86CF1BE9A58A0015B16F /* TxOrderConfirmedDetailPayment.m in Sources */,
 				85FF86661BE9A58A0015B16F /* ShipmentResult.m in Sources */,
 				85FF862E1BE9A58A0015B16F /* PrivacyForm.m in Sources */,
+				7A0F1AFA1BFEF4D60013A38E /* ShopTransactionStats.m in Sources */,
 				85FF88C41BE9A58B0015B16F /* ShipmentConfirmationViewController.m in Sources */,
 				85FF88791BE9A58B0015B16F /* MyReviewReputationCell.m in Sources */,
 				85FF858C1BE9A58A0015B16F /* Talk.m in Sources */,
@@ -12031,6 +12050,7 @@
 				85FF88581BE9A58B0015B16F /* GalleryViewController.m in Sources */,
 				85FF89371BE9A58B0015B16F /* FilterConditionCell.m in Sources */,
 				85FF86401BE9A58A0015B16F /* ActionOrder.m in Sources */,
+				7A0F1AF71BFECD020013A38E /* XYPieChart.m in Sources */,
 				85FF858F1BE9A58A0015B16F /* TalkCommentResult.m in Sources */,
 				85FF86F21BE9A58A0015B16F /* WishListObjectResult.m in Sources */,
 				85FF870F1BE9A58A0015B16F /* AlertListBankView.m in Sources */,
