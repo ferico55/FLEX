@@ -1,7 +1,24 @@
 PODS:
   - AFNetworking (1.3.4)
+  - Google/Analytics (1.2.1):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/Core (1.2.1):
+    - GoogleInterchangeUtilities (~> 1.0)
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.1)
+  - GoogleAnalytics (3.13.0)
   - GoogleAppIndexing (2.0.1)
-  - GoogleMaps (1.10.5)
+  - GoogleInterchangeUtilities (1.1.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleNetworkingUtilities (1.0.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.0.3)
+  - GoogleTagManager (3.12.1):
+    - GoogleAnalytics (~> 3.13.0)
+  - GoogleUtilities (1.1.0):
+    - GoogleSymbolUtilities (~> 1.0.0)
   - Localytics (3.5.1)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
@@ -28,8 +45,9 @@ PODS:
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
+  - Google/Analytics
   - GoogleAppIndexing
-  - GoogleMaps
+  - GoogleTagManager
   - Localytics (~> 3.5.0)
   - NJKWebViewProgress
   - RestKit (~> 0.20.0)
@@ -37,8 +55,14 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  Google: fd33b5fa40fa3aaee5176de49c873a74e3d11dce
+  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
-  GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
+  GoogleInterchangeUtilities: d7f7174176fbcf9710f696f1acebad4dbd98ac03
+  GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
+  GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
+  GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   Localytics: da06c00606839b53978ca093adbca1d8afdeeb3e
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   RestKit: ddc3c3a2b6cbe4578c4193d8e0dfe93d79333c3b
@@ -46,4 +70,4 @@ SPEC CHECKSUMS:
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0

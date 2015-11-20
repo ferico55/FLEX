@@ -18,7 +18,6 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "CancelShipmentViewController.h"
 #import "NavigateViewController.h"
-
 #import "ActionOrder.h"
 #import "StickyAlertView.h"
 #import "RequestShipmentCourier.h"
@@ -122,8 +121,9 @@
 {
     [super viewWillAppear:animated];
     
-    self.screenName = @"Shipping Confirmation";
-
+    [TPAnalytics trackScreenName:@"Sales - Shipping Confirmation"];
+    self.screenName = @"Sales - Shipping Confirmation";
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self

@@ -9,7 +9,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -17,7 +16,6 @@
             <connections>
                 <outlet property="btnAllReview" destination="mqn-HI-7Ph" id="sUU-7Q-Uva"/>
                 <outlet property="btnBelumDibaca" destination="5vm-Kr-RE3" id="AI5-xP-RzN"/>
-                <outlet property="btnBelumDireview" destination="qXa-3I-AXF" id="vSS-1X-YSC"/>
                 <outlet property="constTopCheckList" destination="wOW-BK-Pni" id="lSK-QX-Eem"/>
                 <outlet property="lblDescChangeReviewStyle" destination="2JF-P5-PQS" id="o5J-8P-czD"/>
                 <outlet property="segmentedControl" destination="vGY-1r-Uj8" id="byE-7x-328"/>
@@ -98,7 +96,7 @@
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rqw-2G-26z">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mqn-HI-7Ph">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -140,18 +138,6 @@
                             <animations/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qXa-3I-AXF">
-                            <rect key="frame" x="0.0" y="82" width="320" height="40"/>
-                            <animations/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <state key="normal" title="Belum Menilai">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="actionBelumDireview:" destination="-1" eventType="touchUpInside" id="cry-nT-bVH"/>
-                            </connections>
-                        </button>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_check_orange.png" translatesAutoresizingMaskIntoConstraints="NO" id="vHj-Sh-PZa">
                             <rect key="frame" x="282" y="5" width="30" height="30"/>
                             <animations/>
@@ -164,16 +150,12 @@
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="qXa-3I-AXF" secondAttribute="trailing" id="13c-N7-1Cp"/>
-                        <constraint firstItem="qXa-3I-AXF" firstAttribute="top" secondItem="sRh-h0-6oZ" secondAttribute="bottom" id="2l4-FG-EpA"/>
-                        <constraint firstItem="qXa-3I-AXF" firstAttribute="leading" secondItem="rqw-2G-26z" secondAttribute="leading" id="3Vj-2q-YGg"/>
-                        <constraint firstAttribute="height" constant="122" id="4nP-Gn-ci9"/>
+                        <constraint firstAttribute="height" constant="81" id="4nP-Gn-ci9"/>
                         <constraint firstItem="sRh-h0-6oZ" firstAttribute="top" secondItem="5vm-Kr-RE3" secondAttribute="bottom" id="7Gh-0H-8K1"/>
                         <constraint firstItem="9Th-r0-YXD" firstAttribute="leading" secondItem="rqw-2G-26z" secondAttribute="leading" id="8Ex-ZO-QQH"/>
                         <constraint firstAttribute="trailing" secondItem="9Th-r0-YXD" secondAttribute="trailing" id="8ev-zU-Evq"/>
                         <constraint firstAttribute="trailing" secondItem="sRh-h0-6oZ" secondAttribute="trailing" id="AqB-yG-pQa"/>
                         <constraint firstItem="sRh-h0-6oZ" firstAttribute="leading" secondItem="rqw-2G-26z" secondAttribute="leading" id="BDn-2A-PUX"/>
-                        <constraint firstItem="5vm-Kr-RE3" firstAttribute="height" secondItem="qXa-3I-AXF" secondAttribute="height" id="D2A-n3-Y5W"/>
                         <constraint firstItem="mqn-HI-7Ph" firstAttribute="leading" secondItem="rqw-2G-26z" secondAttribute="leading" id="XSK-Dd-OdT"/>
                         <constraint firstItem="mqn-HI-7Ph" firstAttribute="top" secondItem="rqw-2G-26z" secondAttribute="top" id="bOx-x0-r6R"/>
                         <constraint firstItem="5vm-Kr-RE3" firstAttribute="leading" secondItem="rqw-2G-26z" secondAttribute="leading" id="byI-1N-jqh"/>

@@ -136,9 +136,12 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
     [self initNotificationManager];
     
+    [TPAnalytics trackScreenName:@"Search Page"];
     self.screenName = @"Search Page";
+    
     self.hidesBottomBarWhenPushed = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];

@@ -25,7 +25,6 @@
 #import "String_Reputation.h"
 #import "ShopBadgeLevel.h"
 #import "ShopContainerViewController.h"
-#import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
@@ -350,6 +349,7 @@
                                                                  CRevieweeRole,
                                                                  COrderID,
                                                                  @"auto_read",
+                                                                 @"reputation_progress",
                                                                  CUnaccessedReputationReview,
                                                                  CShowRevieweeSCore,
                                                                  CRole]];
@@ -662,9 +662,17 @@
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
         
-        alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
-        alertRateView.tag = ((UIButton *) sender).tag;
-        [alertRateView show];
+        if([tempObj.reputation_progress isEqualToString:@"2"]) {
+            // add some stickey message
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf penilaian ini telah dikunci, Anda telah melewati batas waktu penilaian."] delegate:self];
+            [stickyAlertView show];
+        } else {
+            alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
+            alertRateView.tag = ((UIButton *) sender).tag;
+            [alertRateView show];
+        }
+        
+
     }
 }
 
@@ -843,9 +851,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
@@ -877,4 +883,7 @@
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
+
+
+
 @end

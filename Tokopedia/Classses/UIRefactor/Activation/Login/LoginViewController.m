@@ -159,7 +159,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.screenName = @"Login Page";
+    [TPAnalytics trackScreenName:@"Login Page"];
     
     _loginButton.layer.cornerRadius = 3;
     
@@ -656,6 +658,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
             }
             
+            // Login UA
+            [TPAnalytics trackLoginUserID:_login.result.user_id];
+
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];
@@ -667,6 +672,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                                                                    value:nil] build]];    // Event value
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {

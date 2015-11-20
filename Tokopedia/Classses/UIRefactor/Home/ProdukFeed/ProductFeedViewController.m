@@ -140,9 +140,22 @@ PromoRequestDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // UA
+    [TPAnalytics trackScreenName:@"Home - Product Feed"];
+    
+    // GA
     self.screenName = @"Home - Product Feed";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didSwipeHomeTab:)
+                                                 name:@"didSwipeHomeTab"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidLogin:)
+                                                 name:TKPDUserDidLoginNotification
+                                               object:nil];
 }
 
 #pragma mark - Collection Delegate
@@ -214,7 +227,7 @@ PromoRequestDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     ProductFeedList *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    //    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+    [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -372,6 +385,8 @@ PromoRequestDelegate
         }
         
         [_product addObject:feed.data.list];
+        
+        [TPAnalytics trackProductImpressions:feed.data.list];
         
         _isNoData = NO;
         _nextPageUri =  feed.data.paging.uri_next;

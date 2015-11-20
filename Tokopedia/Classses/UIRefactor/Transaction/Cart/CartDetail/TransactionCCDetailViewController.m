@@ -18,7 +18,6 @@
 #import "VTConfig.h"
 #import "VTDirect.h"
 #import "VTCardDetails.h"
-#import "TAGDataLayer.h"
 
 @interface TransactionCCDetailViewController ()
 <
@@ -253,9 +252,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

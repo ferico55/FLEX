@@ -37,8 +37,6 @@
 #import "GeneralPhotoProductCell.h"
 #import "GeneralSingleProductCell.h"
 
-#import "TAGDataLayer.h"
-
 #import "ProductCell.h"
 #import "ProductSingleViewCell.h"
 #import "ProductThumbCell.h"
@@ -197,13 +195,16 @@ PromoCollectionViewDelegate
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         if(self.isFromAutoComplete) {
-            self.screenName = @"AutoComplete Search Result - Product Tab";
+            [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)"];
+            self.screenName = @"Product Search Results (From Auto Complete Search)";
         } else {
-            self.screenName = @"Search Result - Product Tab";
+            [TPAnalytics trackScreenName:@"Product Search Results"];
+            self.screenName = @"Product Search Results";
         }
-        
-    }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        self.screenName = @"Search Result - Catalog Tab";
+    }
+    else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+        [TPAnalytics trackScreenName:@"Catalog Search Results"];
+        self.screenName = @"Catalog Search Results";
     }
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
@@ -409,6 +410,7 @@ PromoCollectionViewDelegate
         
         [self.navigationController pushViewController:vc animated:YES];
     } else {
+        [TPAnalytics trackProductClick:product];
         [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
     }
 }
@@ -787,6 +789,7 @@ PromoCollectionViewDelegate
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
             if(search.result.products.count > 0) {
                 [_product addObject: search.result.products];
+                [TPAnalytics trackProductImpressions:search.result.products];
             }
 
         } else {
@@ -936,8 +939,7 @@ PromoCollectionViewDelegate
 
 #pragma mark - Other Method
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

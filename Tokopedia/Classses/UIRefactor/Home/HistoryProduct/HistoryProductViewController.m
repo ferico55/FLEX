@@ -115,6 +115,7 @@ typedef enum TagRequest {
 {
     [super viewWillAppear:animated];
     self.screenName = @"Home - History Product";
+    [TPAnalytics trackScreenName:@"Home - History Product"];
 }
 
 #pragma mark - Collection Delegate
