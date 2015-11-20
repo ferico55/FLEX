@@ -840,8 +840,11 @@ SpellCheckRequestDelegate
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             
-            [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
-            
+            if([_data objectForKey:@"search"]){
+                [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+            }else{
+                _suggestion = @"";
+            }
             
             //[_collectionView addSubview:_noResultView];
             self.view = _noResultView;
