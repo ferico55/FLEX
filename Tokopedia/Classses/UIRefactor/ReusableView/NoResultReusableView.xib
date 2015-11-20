@@ -5,8 +5,8 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -25,22 +25,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jTB-Zo-tFB">
-                    <rect key="frame" x="110" y="50" width="100" height="100"/>
+                    <rect key="frame" x="120" y="50" width="80" height="80"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="100" id="WHM-4N-FrS"/>
-                        <constraint firstAttribute="width" constant="100" id="eIB-yv-Th6"/>
+                        <constraint firstAttribute="height" constant="80" id="WHM-4N-FrS"/>
+                        <constraint firstAttribute="width" constant="80" id="eIB-yv-Th6"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="yks-X0-wVh">
-                    <rect key="frame" x="40" y="222" width="240" height="26"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <state key="normal" title="Button"/>
-                    <connections>
-                        <action selector="buttonDidTapped:" destination="-1" eventType="touchUpInside" id="834-Sg-ELk"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0oH-c2-qNI">
-                    <rect key="frame" x="30" y="198" width="260" height="14"/>
+                    <rect key="frame" x="30" y="185" width="260" height="14"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="11" id="Elo-dh-EM9"/>
                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="Mjm-gI-ghi"/>
@@ -58,7 +50,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCj-cx-8cZ">
-                    <rect key="frame" x="24" y="176" width="272" height="14"/>
+                    <rect key="frame" x="24" y="163" width="272" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="240" id="ezp-ct-AJs"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="yu4-fw-Nhy"/>
@@ -74,16 +66,30 @@
                     </attributedString>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="yks-X0-wVh">
+                    <rect key="frame" x="20" y="218" width="280" height="40"/>
+                    <color key="backgroundColor" red="0.88235294117647056" green="0.29411764705882354" blue="0.20784313725490197" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="MfT-If-729"/>
+                        <constraint firstAttribute="width" constant="280" id="PK3-8s-GYV"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <color key="tintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="buttonDidTapped:" destination="-1" eventType="touchUpInside" id="834-Sg-ELk"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
-                <constraint firstItem="0oH-c2-qNI" firstAttribute="top" secondItem="ZCj-cx-8cZ" secondAttribute="bottom" constant="13" id="5gT-eu-Bwa" userLabel="Desc Label.top = Title Label.bottom + 13"/>
+                <constraint firstItem="0oH-c2-qNI" firstAttribute="top" secondItem="ZCj-cx-8cZ" secondAttribute="bottom" constant="10" id="5gT-eu-Bwa" userLabel="Desc Label.top = Title Label.bottom + 13"/>
                 <constraint firstItem="ZCj-cx-8cZ" firstAttribute="top" secondItem="jTB-Zo-tFB" secondAttribute="bottom" constant="20" id="A3R-0y-08n"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="CXn-hl-DoD"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="0oH-c2-qNI" secondAttribute="centerX" id="JFF-cC-VJ4"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="W6q-jb-DNZ"/>
                 <constraint firstItem="jTB-Zo-tFB" firstAttribute="centerX" secondItem="ZCj-cx-8cZ" secondAttribute="centerX" id="eSl-9t-7LX"/>
                 <constraint firstItem="0oH-c2-qNI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="fKP-9p-m0Q"/>
-                <constraint firstItem="yks-X0-wVh" firstAttribute="top" secondItem="0oH-c2-qNI" secondAttribute="bottom" constant="19" id="h64-Db-ZGw"/>
+                <constraint firstItem="yks-X0-wVh" firstAttribute="top" secondItem="0oH-c2-qNI" secondAttribute="bottom" constant="20" id="h64-Db-ZGw"/>
                 <constraint firstItem="yks-X0-wVh" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-0.5" id="tHe-GL-V7q"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
