@@ -1079,7 +1079,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Sukses" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydX-h4-NZT">
-                                                    <rect key="frame" x="138" y="37" width="135" height="21"/>
+                                                    <rect key="frame" x="138" y="62" width="135" height="21"/>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="CUE-X8-y7p"/>
@@ -1090,7 +1090,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Sukses" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-Kc-YGN">
-                                                    <rect key="frame" x="138" y="54" width="135" height="21"/>
+                                                    <rect key="frame" x="138" y="79" width="135" height="21"/>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="3wR-qg-xbw"/>
@@ -1105,11 +1105,11 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="hJW-Ny-Xf2" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="8" id="Ez8-ob-3kt"/>
-                                                <constraint firstItem="ydX-h4-NZT" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="37" id="Kc2-QZ-O4F"/>
+                                                <constraint firstItem="ydX-h4-NZT" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="62" id="Kc2-QZ-O4F"/>
                                                 <constraint firstItem="ZPD-Kc-YGN" firstAttribute="leading" secondItem="i9T-PC-lwx" secondAttribute="leading" constant="138" id="dPw-z3-Ifw"/>
                                                 <constraint firstItem="hJW-Ny-Xf2" firstAttribute="leading" secondItem="i9T-PC-lwx" secondAttribute="leading" constant="10" id="ghQ-rY-35X"/>
                                                 <constraint firstItem="ydX-h4-NZT" firstAttribute="leading" secondItem="i9T-PC-lwx" secondAttribute="leading" constant="138" id="nJG-mh-F8s"/>
-                                                <constraint firstItem="ZPD-Kc-YGN" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="54" id="sHi-6K-JhW"/>
+                                                <constraint firstItem="ZPD-Kc-YGN" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="79" id="sHi-6K-JhW"/>
                                             </constraints>
                                         </view>
                                     </subviews>
