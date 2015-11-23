@@ -467,6 +467,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
 
 - (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
     [_selectedImages addObject:userInfo];
+    [_selectedIndexPath addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
     NSDictionary *userInfoDict = @{@"selected_images":[_selectedImages copy], DATA_CAMERA_SOURCE_TYPE:@(UIImagePickerControllerSourceTypeCamera), @"selected_indexpath":_selectedIndexPath};
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     [_delegate didDismissController:self withUserInfo:userInfoDict];
