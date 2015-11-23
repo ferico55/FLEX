@@ -1245,6 +1245,14 @@
     return YES;
 }
 
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    // select all text in product quantity, needs dispatch for it to work reliably
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [textField selectAll:nil];
+    });
+}
+
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     _productQuantityChanged = YES;
