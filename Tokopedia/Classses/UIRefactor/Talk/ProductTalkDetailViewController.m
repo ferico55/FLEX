@@ -676,16 +676,15 @@
     
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
-    // you can also set the maximum height in points with maxHeight
+    // you can also set the maximum height in points with maxHjeight
     // textView.maxHeight = 200.0f;
     _growingtextview.maxHeight = 150.f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+
     //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
-
     
     [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
