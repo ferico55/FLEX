@@ -139,6 +139,10 @@
     return rnumbers.location == NSNotFound;
 }
 
+-(BOOL)isNumber {
+    return [self rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet].invertedSet].location == NSNotFound;
+}
+
 - (BOOL) isNotAllBaseCharacter
 {
     //    NSCharacterSet* symbols = [NSCharacterSet symbolCharacterSet];
