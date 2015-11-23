@@ -145,7 +145,7 @@
     [_textLabel sizeToFit];
     
     CGRect frame = _textLabel.frame;
-    frame.size.width = [_delegate view].frame.size.width - _textLabel.frame.origin.x*2;
+    frame.size.width = [UIScreen mainScreen].bounds.size.width - _textLabel.frame.origin.x*2;
     _textLabel.frame = frame;
     
     self.view.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, _textLabel.frame.size.height + 24);
