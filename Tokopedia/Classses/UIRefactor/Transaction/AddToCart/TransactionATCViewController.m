@@ -1270,10 +1270,10 @@
 replacementString:(NSString*)string
 {
     NSString* newText;
-    
+
     newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
-    return [newText intValue] < 1000;
+    return [newText isNumber] && [newText integerValue] < 1000;
 }
 
 #pragma mark - Text View Delegate
