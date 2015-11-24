@@ -215,7 +215,9 @@
     [super viewWillAppear:animated];
 
     self.title = @"Beli";
-    self.screenName = @"ATC Form Page";
+
+    [TPAnalytics trackScreenName:@"Add to Cart"];
+    self.screenName = @"Add to Cart";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -1017,6 +1019,9 @@
             [alertView show];
             
             [self pushLocalyticsData];
+            
+            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+            [TPAnalytics trackAddToCart:product];
         }
     }
 }
@@ -1196,6 +1201,7 @@
         {
             if (buttonIndex==0) {
                 [self.navigationController popViewControllerAnimated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
             }
             else
             {
@@ -1206,6 +1212,7 @@
                 [self.tabBarController setSelectedIndex:3];
                 [selfNav popToRootViewControllerAnimated:YES];
                 [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
+                
                 
                 //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
                 //[self.navigationController pushViewController:cartViewController animated:YES];

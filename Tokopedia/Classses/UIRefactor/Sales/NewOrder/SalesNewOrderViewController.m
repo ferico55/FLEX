@@ -126,8 +126,10 @@
     [super viewWillAppear:animated];
     
     self.title = @"Pesanan Baru";
-    self.screenName = @"New Order";
-
+    
+    [TPAnalytics trackScreenName:@"Sales - New Order"];
+    self.screenName = @"Sales - New Order";
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self

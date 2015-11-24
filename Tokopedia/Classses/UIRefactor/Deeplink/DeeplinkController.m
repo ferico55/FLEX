@@ -10,7 +10,6 @@
 #import "NavigateViewController.h"
 #import "WebViewController.h"
 #import "RequestUtils.h"
-#import "TAGDataLayer.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
@@ -77,9 +76,7 @@
 - (BOOL)shouldOpenWebViewURL:(NSURL *)url {
     BOOL shouldOpen = NO;
     
-    UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;

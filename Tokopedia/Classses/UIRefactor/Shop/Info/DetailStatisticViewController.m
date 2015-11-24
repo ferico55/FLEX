@@ -21,12 +21,14 @@
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
     
-    [self resizeButtonContent:btnPositif];
-    [self resizeButtonContent:btnNegatif];
-    [self resizeButtonContent:btnNetral];
+    [self resizeButtonContent:_buttonPositive];
+    [self resizeButtonContent:_buttonNegative];
+    [self resizeButtonContent:_buttonNetral];
     [self resizeButtonContent:btn1Hari];
     [self resizeButtonContent:btn2Hari];
     [self resizeButtonContent:btn3Hari];
+    
+    [self animateButtonPositive];
     
     self.title = @"Statistik";
     [self setProgressHeader:0 withAnimate:NO];
@@ -37,6 +39,40 @@
     tempView.selectedSegmentIndex = 1;
     [self actionSegmented:tempView];
     [self initKepuasanToko];
+    
+    
+    //init chart pie
+    _slices = [NSMutableArray arrayWithCapacity:2];
+    [_slices addObject:[NSNumber numberWithFloat:[_detailShopResult.shop_tx_stats.shop_tx_success_rate_1_month floatValue]]];
+    [_slices addObject:[NSNumber numberWithFloat:(100-[_detailShopResult.shop_tx_stats.shop_tx_success_rate_1_month floatValue])]];
+
+    _sliceColors = [NSArray arrayWithObjects: [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1], [UIColor clearColor], nil];
+    
+    [_reputationChart setDataSource:self];
+    [_reputationChart setDelegate:self];
+    [_reputationChart setStartPieAngle:M_PI];
+    [_reputationChart setLabelRadius:160];
+    [_reputationChart setAnimationSpeed:1.0];
+    [_reputationChart setLabelFont:[UIFont fontWithName:@"Gotham Book" size:18.0]];
+//    [_reputationChart setShowPercentage:YES];
+    [_reputationChart reloadData];
+    
+    UIView *centerRadiusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
+    [centerRadiusView setCenter:CGPointMake(_reputationChart.frame.size.width/2, _reputationChart.frame.size.height/2)];
+    [centerRadiusView setBackgroundColor:[UIColor whiteColor]];
+    [centerRadiusView.layer setCornerRadius:centerRadiusView.frame.size.width / 2];
+    
+    _successRateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
+    [_successRateLabel setText:[NSString stringWithFormat:@"%@%%", _detailShopResult.shop_tx_stats.shop_tx_success_rate_1_month]];
+    [_successRateLabel setFont:[UIFont fontWithName:@"Gotham Medium" size:25.0]];
+    [_successRateLabel setTextAlignment:NSTextAlignmentCenter];
+    [_successRateLabel setCenter:CGPointMake(_reputationChart.frame.size.width/2, _reputationChart.frame.size.height/2)];
+    [_totalSuccessLabel setText:[NSString stringWithFormat:@"Dari %@ transaksi", _detailShopResult.shop_tx_stats.shop_tx_success_1_month_fmt]];
+    
+    [_reputationChart addSubview:centerRadiusView];
+    [_reputationChart addSubview:_successRateLabel];
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,27 +80,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 #pragma mark - Init Data
 - (void)initSpeedData {
     lblTransaksiCepat.text = _detailShopResult.respond_speed.speed_level;
     [SmileyAndMedal setIconResponseSpeed:_detailShopResult.respond_speed.badge withImage:imgSpeed largeImage:YES];
     
-    progressFooter1.progress = _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0? 0:([[_detailShopResult.respond_speed.one_day objectForKey:CCount] intValue]/[_detailShopResult.respond_speed.count_total floatValue]);
-    progressFooter2.progress = _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0? 0:([[_detailShopResult.respond_speed.two_days objectForKey:CCount] intValue]/[_detailShopResult.respond_speed.count_total floatValue]);
-    progressFooter3.progress = _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0? 0:([[_detailShopResult.respond_speed.three_days objectForKey:CCount] intValue]/[_detailShopResult.respond_speed.count_total floatValue]);
+    progressFooter1.progress = _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0? 0:([[_detailShopResult.respond_speed.one_day objectForKey:CCount] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
+    progressFooter2.progress = _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0? 0:([[_detailShopResult.respond_speed.two_days objectForKey:CCount] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
+    progressFooter3.progress = _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0? 0:([[_detailShopResult.respond_speed.three_days objectForKey:CCount] floatValue]/[_detailShopResult.respond_speed.count_total floatValue]);
     
-    lblRespon1Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0?0:[[_detailShopResult.respond_speed.one_day objectForKey:CCount] intValue]];
-    lblRespon2Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0?0:[[_detailShopResult.respond_speed.two_days objectForKey:CCount] intValue]];
-    lblRespon3Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0?0:[[_detailShopResult.respond_speed.three_days objectForKey:CCount] intValue]];
+    lblRespon1Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.one_day==nil||_detailShopResult.respond_speed.one_day.count==0?0:[[_detailShopResult.respond_speed.one_day objectForKey:CCount] floatValue]];
+    lblRespon2Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.two_days==nil||_detailShopResult.respond_speed.two_days.count==0?0:[[_detailShopResult.respond_speed.two_days objectForKey:CCount] floatValue]];
+    lblRespon3Hari.text = [NSString stringWithFormat:@"(%d)", _detailShopResult.respond_speed.three_days==nil||_detailShopResult.respond_speed.three_days.count==0?0:[[_detailShopResult.respond_speed.three_days objectForKey:CCount] floatValue]];
     
     
     float width1 = [lblRespon1Hari sizeThatFits:CGSizeMake(self.view.bounds.size.width/5.3f, 9999)].width;
@@ -98,6 +125,8 @@
     CGSize titleSize = tempBtn.titleLabel.bounds.size;
     CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
     
+    [tempBtn.imageView setBackgroundColor:[UIColor whiteColor]];
+    
     tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
     tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
 }
@@ -122,11 +151,11 @@
     
     //Set Progress
     float totalCount = [[tempQuality.count_total stringByReplacingOccurrencesOfString:@"." withString:@""] floatValue];
-    [progress1 setProgress:((int)[[tempQuality.one_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
-    [progress2 setProgress:((int)[[tempQuality.two_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
-    [progress3 setProgress:((int)[[tempQuality.three_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
-    [progress4 setProgress:((int)[[tempQuality.four_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
-    [progress5 setProgress:((int)[[tempQuality.five_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] intValue]/totalCount) animated:isAnimate];
+    [progress1 setProgress:((int)[[tempQuality.one_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] floatValue]/totalCount) animated:isAnimate];
+    [progress2 setProgress:((int)[[tempQuality.two_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] floatValue]/totalCount) animated:isAnimate];
+    [progress3 setProgress:((int)[[tempQuality.three_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] floatValue]/totalCount) animated:isAnimate];
+    [progress4 setProgress:((int)[[tempQuality.four_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] floatValue]/totalCount) animated:isAnimate];
+    [progress5 setProgress:((int)[[tempQuality.five_star_rank stringByReplacingOccurrencesOfString:@"." withString:@""] floatValue]/totalCount) animated:isAnimate];
     
     lblRate1.text = [NSString stringWithFormat:@"(%@)", tempQuality.one_star_rank];
     lblRate2.text = [NSString stringWithFormat:@"(%@)", tempQuality.two_star_rank];
@@ -176,30 +205,70 @@
             break;
         case 12:
         {
+            NSString *successRateValue;
+            NSString *totalSuccessValue;
             if((int)((UISegmentedControl *) sender).selectedSegmentIndex == 0) {
-                viewPlot.hidden = YES;
+                successRateValue = _detailShopResult.shop_tx_stats.shop_tx_success_rate_1_month;
+                totalSuccessValue = _detailShopResult.shop_tx_stats.shop_tx_success_1_month_fmt;
+            } else if((int)((UISegmentedControl *) sender).selectedSegmentIndex == 1) {
+                successRateValue = _detailShopResult.shop_tx_stats.shop_tx_success_rate_3_month;
+                totalSuccessValue = _detailShopResult.shop_tx_stats.shop_tx_success_3_month_fmt;
+            } else {
+                successRateValue = _detailShopResult.shop_tx_stats.shop_tx_success_rate_1_year;
+                totalSuccessValue = _detailShopResult.shop_tx_stats.shop_tx_success_1_year_fmt;
             }
-            else {
-                viewPlot.hidden = NO;
-                if(_detailShopResult.stats.hide_rate!=nil && [_detailShopResult.stats.hide_rate isEqualToString:@"1"]) { //if hide_rate == 1 not using percentage
-                    lblPercentageFooter.text = [NSString stringWithFormat:@"%@", _detailShopResult.stats.shop_total_transaction==nil||[_detailShopResult.stats.shop_total_transaction isEqualToString:@""]? @"0":_detailShopResult.stats.shop_total_transaction];
-                }
-                else
-                    lblPercentageFooter.text = [NSString stringWithFormat:@"%ld", _detailShopResult.stats.shop_total_transaction==nil||[_detailShopResult.stats.shop_total_transaction isEqualToString:@""]? 0:[_detailShopResult.stats.shop_total_transaction integerValue]];
-
-                NSString *strDari = @"Dari ";
-                NSString *strTransaksi = @" Transaksi";
-                lblDescPercentageFooter.text = @"Total Transaksi";
-                
-                NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: lblDescPercentageFooter.font, NSFontAttributeName, lblDescPercentageFooter.textColor, NSForegroundColorAttributeName, nil];
-                UIFont *boldFont = [UIFont fontWithName:@"Gotham Medium" size:lblDescPercentageFooter.font.pointSize];
-                NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:boldFont, NSFontAttributeName, nil];
-                NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:lblDescPercentageFooter.text attributes:attrs];
-                [attributedText setAttributes:subAttrs range:NSMakeRange(strDari.length, lblDescPercentageFooter.text.length-strDari.length-strTransaksi.length)];
-                [lblDescPercentageFooter setAttributedText:attributedText];
-            }
+            CATransition *animation = [CATransition animation];
+            animation.duration = 1.0;
+            animation.type = kCATransitionFade;
+            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            [_successRateLabel.layer addAnimation:animation forKey:@"changeTextTransition"];
+            [_totalSuccessLabel setText:[NSString stringWithFormat:@"Dari %@ transaksi", totalSuccessValue]];
+            
+            [_slices removeAllObjects];
+            [_slices addObject:[NSNumber numberWithFloat:[successRateValue floatValue]]];
+            [_slices addObject:[NSNumber numberWithFloat:(100-[successRateValue floatValue])]];
+            [_successRateLabel setText:[NSString stringWithFormat:@"%@%%", successRateValue]];
+            [_reputationChart reloadData];
         }
             break;
     }
 }
+
+
+#pragma mark - PieChart Delegate
+- (NSUInteger)numberOfSlicesInPieChart:(XYPieChart *)pieChart {
+    return 2;
+}
+
+
+- (CGFloat)pieChart:(XYPieChart *)pieChart valueForSliceAtIndex:(NSUInteger)index {
+    CGFloat f = (CGFloat)[[_slices objectAtIndex:index] integerValue];
+    return f;
+}
+
+- (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index {
+    return [_sliceColors objectAtIndex:index];
+}
+
+- (void)animateButtonPositive {
+    CGAffineTransform tr = CGAffineTransformScale(_buttonPositive.transform, 0.1, 0.1);
+    _buttonPositive.transform = tr;
+    
+    [UIView animateWithDuration:1.5 delay:0
+         usingSpringWithDamping:0.5 initialSpringVelocity:0.0f
+                        options:0 animations:^{
+                            _buttonPositive.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
+                        } completion:^(BOOL finished) {
+                            if(finished) {
+                                [UIView animateWithDuration:2.0 delay:0
+                                     usingSpringWithDamping:0.5 initialSpringVelocity:0.0f
+                                                    options:0 animations:^{
+                                                        _buttonPositive.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
+                                                    } completion:nil];
+                            }
+                        }];
+}
+
+
+
 @end

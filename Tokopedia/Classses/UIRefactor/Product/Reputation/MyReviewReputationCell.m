@@ -203,15 +203,16 @@
     }
     
     
-    //Set color smile
+    // set right smiley
+
     btnReview.userInteractionEnabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
-    if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreBad]) {
+    if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreBad]) {
         [btnReview setImage:imageSad forState:UIControlStateNormal];
     }
-    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreNetral]) {
+    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreNeutral]) {
         [btnReview setImage:imageNetral forState:UIControlStateNormal];
     }
-    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreGood]) {
+    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreGood]) {
         btnReview.userInteractionEnabled = NO;
         [btnReview setImage:imageSmile forState:UIControlStateNormal];
     }
@@ -219,6 +220,7 @@
         [btnReview setImage:imageNeutral forState:UIControlStateNormal];
     }
     
+    // if reputation_progress 2, lock right smiley, pesan error sudah di lock
     
     if(btnReview.isUserInteractionEnabled) {
         [btnReview setBackgroundColor:[UIColor whiteColor]];
@@ -241,19 +243,19 @@
     }
     
     //Set icon smiley
-    if(([object.seller_score isEqualToString:CRevieweeScroreBad] || [object.seller_score isEqualToString:CRevieweeScroreNetral] || [object.seller_score isEqualToString:CRevieweeScroreGood]) && (([object.buyer_score isEqualToString:CRevieweeScroreBad] || [object.buyer_score isEqualToString:CRevieweeScroreNetral] || [object.buyer_score isEqualToString:CRevieweeScroreGood]))) {
-        if([strScore isEqualToString:CRevieweeScroreBad]) {
+    if(([object.seller_score isEqualToString:CReviewScoreBad] || [object.seller_score isEqualToString:CReviewScoreNeutral] || [object.seller_score isEqualToString:CReviewScoreGood]) && (([object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreGood]))) {
+        if([strScore isEqualToString:CReviewScoreBad]) {
             imageFlagReview.image = imageQBad;
         }
-        else if([strScore isEqualToString:CRevieweeScroreNetral]) {
+        else if([strScore isEqualToString:CReviewScoreNeutral]) {
             imageFlagReview.image = imageQNetral;
         }
-        else if([strScore isEqualToString:CRevieweeScroreGood]) {
+        else if([strScore isEqualToString:CReviewScoreGood]) {
             imageFlagReview.image = imageQSmile;
         }
     }
     else {
-        if([strScore isEqualToString:CRevieweeScroreBad] || [strScore isEqualToString:CRevieweeScroreNetral] || [strScore isEqualToString:CRevieweeScroreGood]) {
+        if([strScore isEqualToString:CReviewScoreBad] || [strScore isEqualToString:CReviewScoreNeutral] || [strScore isEqualToString:CReviewScoreGood]) {
             imageFlagReview.image = imageQuestionBlue;
         }
         else {
@@ -261,17 +263,15 @@
         }
     }
     
+    if([object.show_reviewee_score isEqualToString:@"2"] || [object.show_reviewee_score isEqualToString:@"5"]) {
+        imageFlagReview.image = imageQuestionBlue;
+    }
     
-    //check read unread status
-    BOOL removeFlag;
-    if([object.role isEqualToString:@"2"]) {//Seller
-        removeFlag = !(object.buyer_score==nil || [object.buyer_score isEqualToString:@"0"] || [object.buyer_score isEqualToString:@""]);
+    if([object.show_reviewee_score isEqualToString:@"3"] || [object.show_reviewee_score isEqualToString:@"6"]) {
+        imageFlagReview.image = imageQuestionGray;
     }
-    else {
-        removeFlag = !(object.seller_score==nil || [object.seller_score isEqualToString:@"0"] || [object.seller_score isEqualToString:@""]);
-    }
-        
-        
+    
+   
     viewFlagReadUnread.hidden = [object.show_bookmark isEqualToString:@"1"]?NO:YES;
 
         
@@ -301,6 +301,11 @@
         [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (object.user_reputation==nil? @"0":object.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
     
+    
+    
     [UIView setAnimationsEnabled:YES];
 }
+
+
+
 @end

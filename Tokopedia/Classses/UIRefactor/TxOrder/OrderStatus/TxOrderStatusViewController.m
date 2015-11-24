@@ -170,13 +170,18 @@
     [super viewWillAppear:animated];
     
     self.title = _viewControllerTitle?:@" ";
+    
     if ([_action isEqualToString:@"get_tx_order_status"]) {
-        self.screenName = @"Order Status";
+        [TPAnalytics trackScreenName:@"Purchase - Order Status"];
+        self.screenName = @"Purchase - Order Status";
     } else if ([_action isEqualToString:@"get_tx_order_deliver"]) {
-        self.screenName = @"Received Confirmation";
+        [TPAnalytics trackScreenName:@"Purchase - Received Confirmation"];
+        self.screenName = @"Purchase - Received Confirmation";
     } else {
-        self.screenName = @"Transaction List";
+        [TPAnalytics trackScreenName:@"Purchase - Transaction List"];
+        self.screenName = @"Purchase - Transaction List";
     }
+    
     _networkManager.delegate = self;
 }
 

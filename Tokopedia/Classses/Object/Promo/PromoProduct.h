@@ -40,4 +40,6 @@
 
 @property (strong, nonatomic) ProductModelView *viewModel;
 
+- (NSDictionary *)productFieldObjects;
+
 @end

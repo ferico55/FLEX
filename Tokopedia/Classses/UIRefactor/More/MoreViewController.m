@@ -57,8 +57,6 @@
 #import "NavigateViewController.h"
 #import "LoyaltyPoint.h"
 
-#import "TAGDataLayer.h"
-
 #import <MessageUI/MessageUI.h>
 
 #import "ContactUsWebViewController.h"
@@ -134,6 +132,9 @@
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(navigateToContactUs:)
+                                                     name:@"navigateToContactUs" object:nil];
         
 //        [[NSNotificationCenter defaultCenter] addObserver:self
 //                                                 selector:@selector(didReceiveDeeplinkUrl:)
@@ -214,12 +215,8 @@
     [tracker set:kGAIScreenName value:@"More Navigation Page"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
-    
-    //    } else {
-    //        _depositLabel.hidden = NO;
-    //        _loadingSaldo.hidden = YES;
-    //        [_loadingSaldo stopAnimating];
-    //    }
+    // Universal Analytics
+    [TPAnalytics trackScreenName:@"More Navigation Page"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -750,10 +747,6 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker setAllowIDFACollection:YES];
-            [tracker set:kGAIScreenName value:@"New Contact Us"];
-            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
             ContactUsWebViewController *controller = [ContactUsWebViewController new];
             controller.hidesBottomBarWhenPushed = YES;
@@ -763,16 +756,24 @@
             [self pushIOSFeedback];
             
         } else if(indexPath.row == 2) {
+            // UA
+            [TPAnalytics trackScreenName:@"Privacy Policy"];
+            
+            // GA
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Privacy Policy"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-            
+
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [self.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 3) {
+            // UA
+            [TPAnalytics trackScreenName:@"Share App"];
+            
+            // GA
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Share App"];
@@ -944,6 +945,17 @@
     [_notifManager tapWindowBar];
 }
 
+- (void)navigateToContactUs:(NSNotification*)notification{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:kGAIScreenName value:@"New Contact Us"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
+    ContactUsWebViewController *controller = [ContactUsWebViewController new];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 #pragma mark - Notification delegate
 - (void)reloadNotification
 {
@@ -1006,14 +1018,10 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
-    
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
-
 }
 
 #pragma mark - Email delegate

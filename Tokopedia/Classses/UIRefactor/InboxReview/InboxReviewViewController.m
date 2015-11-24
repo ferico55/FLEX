@@ -22,9 +22,7 @@
 #import "URLCacheConnection.h"
 #import "UserAuthentificationManager.h"
 #import "ReportViewController.h"
-#import "NoResultView.h"
-
-#import "TAGDataLayer.h"
+#import "NoResultReusableView.h"
 
 @interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate, ReportViewControllerDelegate>
 
@@ -83,7 +81,7 @@
     UserAuthentificationManager *_userManager;
     ReportViewController *_reportController;
     NSString *_reportedReviewId;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
     TAGContainer *_gtmContainer;
     
     //GTM
@@ -157,6 +155,13 @@
     [_reviewTable addSubview:_refreshControl];
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [_noResultView generateAllElements:nil
+                                 title:@""
+                                  desc:@""
+                              btnTitle:nil];
+}
 
 #pragma mark - ViewController Life
 - (void)viewDidLoad {
@@ -177,8 +182,7 @@
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, screenRect.size.width, 200)];
+    [self initNoResultView];
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;
@@ -219,7 +223,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
     self.screenName = @"Inbox Review";
+    [TPAnalytics trackScreenName:@"Inbox Review"];
+
     if (!_isRefreshing) {
         [self configureRestkit];
         
@@ -623,6 +630,7 @@
         
         [_reviews addObjectsFromArray:reviewObject.result.list];
         
+        
         if(_reviewPage == PAGE_TO_CACHE && _isNeedToInsertCache) {
             [_cacheconnection connection:operation.HTTPRequestOperation.request
                       didReceiveResponse:operation.HTTPRequestOperation.response];
@@ -660,8 +668,20 @@
 
 
         } else {
+         
+            NSString *text;
+            NSString *currentCategory = [_data objectForKey:@"nav"];
+            
+            if([currentCategory isEqualToString:@"inbox-review"]){
+                text = @"Belum ada ulasan";
+            }else if([currentCategory isEqualToString:@"inbox-review-my-product"]){
+                text = @"Belum ada ulasan pada produk Anda";
+            }else if([currentCategory isEqualToString:@"inbox-review-my-review"]){
+                text = @"Belum ada ulasan yang Anda berikan";
+            }
+            [_noResultView setNoResultTitle:text];
             _isNoData = YES;
-            _reviewTable.tableFooterView = _noResult;
+            [_reviewTable addSubview:_noResultView];
         }
 
     }
@@ -962,8 +982,7 @@
 
 //GTM
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

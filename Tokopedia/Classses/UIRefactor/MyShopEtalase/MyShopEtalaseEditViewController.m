@@ -241,6 +241,7 @@
     if (status) {
         [self requestProcessActionAddEtalase:object];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddEtalase" object:nil];
 }
 
 -(void)requestFailureActionAddEtalase:(id)object

@@ -51,4 +51,17 @@
     return _catalogViewModel;
 }
 
+- (NSDictionary *)productFieldObjects {
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *productPrice = [[_product_price componentsSeparatedByCharactersInSet:characterSet]
+                              componentsJoinedByString: @""];
+    NSDictionary *productFieldObjects = @{
+        @"name"     : _product_name,
+        @"id"       : _product_id,
+        @"price"    : productPrice,
+        @"brand"    : _shop_name,
+    };
+    return productFieldObjects;
+}
+
 @end

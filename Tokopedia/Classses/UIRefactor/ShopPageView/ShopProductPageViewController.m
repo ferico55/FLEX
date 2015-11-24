@@ -45,9 +45,10 @@
 
 #import "RetryCollectionReusableView.h"
 
-#import "NoResult.h"
+#import "NoResultReusableView.h"
 
 #import "PromoRequest.h"
+
 #import "UIActivityViewController+Extensions.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -74,7 +75,8 @@ MyShopEtalaseFilterViewControllerDelegate,
 GeneralProductCellDelegate,
 GeneralSingleProductDelegate,
 GeneralPhotoProductDelegate,
-TokopediaNetworkManagerDelegate
+TokopediaNetworkManagerDelegate,
+NoResultDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -149,7 +151,7 @@ TokopediaNetworkManagerDelegate
     NSMutableArray *_product;
     NSArray *_tmpProduct;
     Shop *_shop;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
     NSString *_nextPageUri;
     NSString *_tmpNextPageUri;
     
@@ -175,6 +177,14 @@ TokopediaNetworkManagerDelegate
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Toko ini belum mempunyai produk."
+                                  desc:@""
+                              btnTitle:nil];
+}
 
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -250,7 +260,7 @@ TokopediaNetworkManagerDelegate
     UIView *header = [[UIView alloc] initWithFrame:_header.frame];
     [header setBackgroundColor:[UIColor whiteColor]];
     [header addSubview:_header];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 200)];
+    [self initNoResultView];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
@@ -324,6 +334,7 @@ TokopediaNetworkManagerDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [TPAnalytics trackScreenName:@"Shop - Product List"];
     self.screenName = @"Shop - Product List";
 }
 
@@ -408,6 +419,8 @@ TokopediaNetworkManagerDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     List *product = [_product objectAtIndex:indexPath.row];
+    
+    [TPAnalytics trackProductClick:product];
     
     NSString *shopName = product.shop_name;
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
@@ -887,7 +900,7 @@ TokopediaNetworkManagerDelegate
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     SearchItem *feed = [result objectForKey:@""];
 //    [_collectionView setContentInset:UIEdgeInsetsZero];
-    [_noResult removeFromSuperview];
+    [_noResultView removeFromSuperview];
     
     if(_page == 1) {
         _product = [feed.result.list mutableCopy];
@@ -896,8 +909,11 @@ TokopediaNetworkManagerDelegate
         [_product addObjectsFromArray: feed.result.list];
     }
     
+    [TPAnalytics trackProductImpressions:feed.result.list];
+    
     if (_product.count >0) {
         _isNoData = NO;
+        [_noResultView removeFromSuperview];
         _nextPageUri =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
@@ -909,8 +925,15 @@ TokopediaNetworkManagerDelegate
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResult];
-        [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, _noResult.frame.size.height, 0)];
+        if([_detailfilter objectForKey:@"query"] == nil || [[_detailfilter objectForKey:@"query"] isEqualToString:@""]){
+            [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
+        }else{
+            [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
+        }
+        [_collectionView addSubview:_noResultView];
+        [_refreshControl endRefreshing];
+        [_refreshControl setHidden:YES];
+        [_refreshControl setEnabled:NO];
     }
     
     if(_refreshControl.isRefreshing) {

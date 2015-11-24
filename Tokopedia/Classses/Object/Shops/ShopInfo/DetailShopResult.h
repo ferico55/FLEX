@@ -17,6 +17,7 @@
 #import "ShopStats.h"
 #import "ResponseSpeed.h"
 #import "Rating.h"
+#import "ShopTransactionStats.h"
 #define CResponseSpeed @"respond_speed"
 #define CRatings @"ratings"
 
@@ -31,6 +32,7 @@
 @property (nonatomic, strong) ShopStats *stats;
 @property (nonatomic, strong) ResponseSpeed *respond_speed;
 @property (nonatomic, strong) Rating *ratings;
+@property (nonatomic, strong) ShopTransactionStats *shop_tx_stats;
 @property (nonatomic, strong) NSNumber *is_open;
 
 @end

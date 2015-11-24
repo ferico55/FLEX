@@ -159,7 +159,10 @@ PromoRequestDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - Favorite Shop";
+    
+    self.screenName = @"Home - Favorited Shop";
+    [TPAnalytics trackScreenName:@"Home - Favorited Shop"];
+
     [self refreshView:nil];
 }
 
@@ -345,6 +348,7 @@ PromoRequestDelegate
     strTempShopID = shopid;
     tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
     [tokopediaNetworkManager doRequest];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
 }
 
 -(void) requestfailurefav:(id)error {

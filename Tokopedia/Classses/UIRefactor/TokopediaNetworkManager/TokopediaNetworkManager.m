@@ -52,6 +52,10 @@
         [_delegate actionBeforeRequest:self.tagRequest];
     }
     
+    id requestObject = nil;
+    if (_delegate && [_delegate respondsToSelector:@selector(getRequestObject:)]) {
+        requestObject = [_delegate getRequestObject:self.tagRequest];
+    }
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     
@@ -69,7 +73,8 @@
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
+        
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
                                                                               method:[_delegate getRequestMethod:self.tagRequest]
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
@@ -80,7 +85,7 @@
         } else {
             parameters = [[_delegate getParameter:self.tagRequest] encrypt];
         }
-        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:_delegate
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
                                                                               method:RKRequestMethodPOST
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:parameters];
@@ -92,12 +97,12 @@
     [_requestTimer invalidate];
     _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+//        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [self requestSuccess:mappingResult  withOperation:operation];
         [_requestTimer invalidate];
         _requestTimer = nil;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+//        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
         [self requestFail:error];
     }];
     
