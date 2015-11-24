@@ -38,7 +38,7 @@
 #import "detail.h"
 #import "ShopPageHeader.h"
 #import "TokopediaNetworkManager.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 #import "URLCacheController.h"
 
 #define CTagGetTotalLike 1
@@ -60,7 +60,8 @@ productReputationDelegate,
 ShopPageHeaderDelegate,
 SmileyDelegate,
 UIScrollViewDelegate,
-UIAlertViewDelegate>
+UIAlertViewDelegate,
+NoResultDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -126,7 +127,7 @@ UIAlertViewDelegate>
     Review *_review;
     NSDictionary *_auth;
     Shop *_shop;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
 }
 @synthesize dictLikeDislike, loadingLikeDislike;
 
@@ -142,6 +143,14 @@ UIAlertViewDelegate>
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Toko ini belum mempunyai ulasan"
+                                  desc:@""
+                              btnTitle:nil];
+}
 
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -182,7 +191,7 @@ UIAlertViewDelegate>
     style.lineSpacing = 4.0;
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    [self initNoResultView];
     
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
@@ -969,7 +978,9 @@ UIAlertViewDelegate>
                 [_table reloadData];
                 if (_list.count == 0) {
                     _act.hidden = YES;
-                    _table.tableFooterView = _noResult;
+                    _table.tableFooterView = _noResultView;
+                }else{
+                    [_noResultView removeFromSuperview];
                 }
                 
             }

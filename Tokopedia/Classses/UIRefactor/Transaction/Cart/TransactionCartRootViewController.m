@@ -13,12 +13,15 @@
 #import "TransactionCartResultViewController.h"
 #import "NotificationManager.h"
 #import "RegisterViewController.h"
+#import "NoResultReusableView.h"
 
 #import "TransactionCartFormMandiriClickPayViewController.h"
 
 #import "NotificationManager.h"
 
 #import "Localytics.h"
+#define normalWidth 320
+#define normalHeight 568
 
 @interface TransactionCartRootViewController ()
 <
@@ -26,7 +29,8 @@
     UIPageViewControllerDelegate,
     TransactionCartViewControllerDelegate,
     NotificationManagerDelegate,
-    UIScrollViewDelegate
+    UIScrollViewDelegate,
+    NoResultDelegate
 >
 {
     NSInteger _index;
@@ -51,7 +55,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tabHeightConstraint;
 
 @property (strong, nonatomic) UIPageViewController *pageController;
-
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
 
 @implementation TransactionCartRootViewController
@@ -134,7 +138,7 @@
             [self initNotificationManager];
         }
     }
-    
+    self.contentView = self.view;
     [Localytics triggerInAppMessage:@"Cart Screen"];
 }
 
@@ -425,6 +429,11 @@
     }
 }
 
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+}
+
 #pragma mark - Notification Manager
 
 - (void)initNotificationManager {
@@ -500,16 +509,26 @@
 {
     _pageControlView.hidden = isNodata;
     if (isNodata) {
-        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
+        NoResultReusableView *noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
+        noResultView.delegate = self;
+        [noResultView generateAllElements:@"Keranjang.png"
+                                     title:@"Keranjang belanja Anda kosong"
+                                     desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
+                                  btnTitle:@"Ayo mulai belanja!"];
         [self.view addSubview:noResultView];
+        //self.view = noResultView;
     }
     else
     {
+        
         for (UIView *view in self.view.subviews) {
-            if ([view isKindOfClass:[NoResultView class]]) {
+            if ([view isKindOfClass:[NoResultReusableView class]]) {
                 [view removeFromSuperview];
             }
         }
+         
+        
+        //self.view = self.contentView;
     }
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
         [self initNotificationManager];

@@ -109,6 +109,7 @@
                 if ([_etalase.etalase_total_product isEqualToString:@"0"]) {
                     [_delegate DidTapButton:btn withdata:_data];
                     [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemoveEtalase" object:nil];
                 } else {
                     NSArray *errorMessages = @[@"Anda tidak dapat menghapus etalase.\nSilahkan pindahkan produk ke etalase lain terlebih dahulu."];
 

@@ -29,21 +29,22 @@
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 #import "WebViewInvoiceViewController.h"
+#import "NoResultReusableView.h"
 
-#define CFailedGetData @"Process ambil data gagal"
+#define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"
 #define CActionGetInboxReputation @"get_inbox_reputation"
 #define CTagGetInboxReputation 1
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate>
 @end
 
 @implementation MyReviewReputationViewController
 {
     AlertRateView *alertRateView;
-    NoResultView *noResultView;
+    NoResultReusableView *_noResultView;
     CMPopTipView *cmPopTitpView;
     LoadingView *loadingView;
     NSMutableArray *arrList;
@@ -54,6 +55,7 @@
     BOOL isRefreshing;
     NSString *strUriNext;
     NSIndexPath *indexPathInsertReputation;
+    NSString *currentFilter;
     UIRefreshControl *refreshControl;
     
     //GTM
@@ -74,9 +76,19 @@
     tokopediaNetworkInsertReputation = nil;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Belum ada ulasan"
+                                  desc:@""
+                              btnTitle:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
+    currentFilter = @"all";
     page = 0;
     tableContent.allowsSelection = NO;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
@@ -85,6 +97,7 @@
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [tableContent addSubview:refreshControl];
+    [self initNoResultView];
     
     [self loadMoreData:YES];
     [[self getNetworkManager:CTagGetInboxReputation] doRequest];
@@ -114,13 +127,13 @@
 #pragma mark - Method
 - (void)showAlertAfterGiveRate {
     NSString *strMessage = @"";
-    if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+    if([emoticonState isEqualToString:CReviewScoreBad]) {
         strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
     }
-    else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+    else if([emoticonState isEqualToString:CReviewScoreNeutral]) {
         strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
     }
-    else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+    else if([emoticonState isEqualToString:CReviewScoreGood]) {
         strMessage = [NSString stringWithFormat:@"Saya Puas!"];
     }
     
@@ -448,14 +461,25 @@
         
         //Check any data or not
         if(arrList.count == 0) {
-            if(noResultView == nil) {
-                noResultView = [NoResultView new];
+            if([currentFilter isEqualToString:@"all"]){
+                if([strNav isEqualToString:@"inbox-reputation-my-product"]){
+                    [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
+                    [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
+                }else{
+                    [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                }
+            }else if([currentFilter isEqualToString:@"not-read"]){
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
+            }else if([currentFilter isEqualToString:@"not-review"]){
+                [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
             }
-
-            tableContent.tableFooterView = noResultView.view;
+            tableContent.tableFooterView = _noResultView;
         }
-        else
+        else{
             [self loadMoreData:NO];
+            [_noResultView removeFromSuperview];
+        }
         if(tableContent.delegate == nil) {
             tableContent.delegate = self;
             tableContent.dataSource = self;
@@ -555,6 +579,7 @@
 - (void)actionReview:(id)sender {
     page = 0;
     strUriNext = nil;
+    currentFilter = @"all";
     
     [arrList removeAllObjects];
     [tableContent reloadData];
@@ -565,6 +590,7 @@
 - (void)actionBelumDibaca:(id)sender {
     page = 0;
     strUriNext = nil;
+    currentFilter = @"not-read";
 
     [arrList removeAllObjects];
     [tableContent reloadData];
@@ -575,6 +601,7 @@
 - (void)actionBelumDireview:(id)sender {
     page = 0;
     strUriNext = nil;
+    currentFilter = @"not-review";
     
     [arrList removeAllObjects];
     [tableContent reloadData];
@@ -703,7 +730,7 @@
 }
 
 - (BOOL)anyScore:(NSString *)strScore {
-    return ([strScore isEqualToString:CRevieweeScroreBad] || [strScore isEqualToString:CRevieweeScroreNetral] || [strScore isEqualToString:CRevieweeScroreGood]);
+    return ([strScore isEqualToString:CReviewScoreBad] || [strScore isEqualToString:CReviewScoreNeutral] || [strScore isEqualToString:CReviewScoreGood]);
 }
 
 - (void)actionFlagReview:(id)sender {
@@ -723,10 +750,10 @@
         NSString *score = ([object.role isEqualToString:@"2"]? object.seller_score:object.buyer_score);
         
         if(score!=nil && ![score isEqualToString:@""]) {
-            if([score isEqualToString:CRevieweeScroreNetral]) {
+            if([score isEqualToString:CReviewScoreNeutral]) {
                 strRespond = @"Cukup Puas";
             }
-            else if([score isEqualToString:CRevieweeScroreGood]) {
+            else if([score isEqualToString:CReviewScoreGood]) {
                 strRespond = @"Puas";
             }
         }
@@ -803,29 +830,29 @@
     switch (tag) {
         case CTagMerah:
         {
-            if([strCurrentScore isEqualToString:CRevieweeScroreBad]) {
+            if([strCurrentScore isEqualToString:CReviewScoreBad]) {
                 [self alertWarningReviewSmiley];
                 return;
             }
-            emoticonState = CRevieweeScroreBad;
+            emoticonState = CReviewScoreBad;
         }
             break;
         case CTagKuning:
         {
-            if([strCurrentScore isEqualToString:CRevieweeScroreNetral]) {
+            if([strCurrentScore isEqualToString:CReviewScoreNeutral]) {
                 [self alertWarningReviewSmiley];
                 return;
             }
-            emoticonState = CRevieweeScroreNetral;
+            emoticonState = CReviewScoreNeutral;
         }
             break;
         case CTagHijau:
         {
-            if([strCurrentScore isEqualToString:CRevieweeScroreGood]) {
+            if([strCurrentScore isEqualToString:CReviewScoreGood]) {
                 [self alertWarningReviewSmiley];
                 return;
             }
-            emoticonState = CRevieweeScroreGood;
+            emoticonState = CReviewScoreGood;
         }
             break;
     }

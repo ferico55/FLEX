@@ -10,7 +10,7 @@
 @class DetailPriceAlertViewController;
 
 @interface AlertPriceNotificationViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
-    IBOutlet UITableView *tblPriceAlert;
+    
     IBOutlet UIView *viewCategory;
     IBOutlet UIImageView *imgArrow;
     IBOutlet NSLayoutConstraint *constraintSpaceViewCategoryAndTbl;

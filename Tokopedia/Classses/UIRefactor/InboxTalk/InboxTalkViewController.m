@@ -28,7 +28,8 @@
 #import "TokopediaNetworkManager.h"
 
 #import "URLCacheController.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
+#import "TAGDataLayer.h"
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
@@ -60,7 +61,7 @@
     NSString *_inboxTalkFullUrl;
     
     NSIndexPath *_selectedIndexPath;
-    NoResultView *_noResultView;
+    NoResultReusableView *_noResultView;
     TAGContainer *_gtmContainer;
     UserAuthentificationManager *_userManager;
     
@@ -88,6 +89,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadTalk:) name:@"updateUnreadTalk" object:nil];
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [_noResultView generateAllElements:nil
+                                 title:@"Anda belum mengikuti diskusi produk"
+                                  desc:@""
+                              btnTitle:nil];
+}
+
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -96,11 +105,12 @@
     
     _page = 1;
     isFirstShow = YES;
+    _readStatus = @"all";
     
     _userManager = [UserAuthentificationManager new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    [self initNoResultView];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -375,6 +385,7 @@
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     InboxTalk *inboxTalk = [mappingResult.dictionary objectForKey:@""];
+    [_refreshControl setHidden:YES];
     
     if (_page == 1) {
         [_talkList removeAllObjects];
@@ -382,22 +393,62 @@
     
     [_talkList addObjectsFromArray: inboxTalk.result.list];
     
+    
     if (_talkList.count > 0) {
         _nextPageURL =  inboxTalk.result.paging.uri_next;
         if (![_nextPageURL isEqualToString:@"0"]) {
             _page = [[_networkManager splitUriToPage:_nextPageURL] integerValue];
         }
         self.table.tableFooterView = nil;
+        [_noResultView removeFromSuperview];
     } else {
-        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
-        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-        self.table.tableFooterView = noResultView;
+        NSString *text;
+        NSString *desc;
+        [_refreshControl setHidden:YES];
+        
+        if([_readStatus isEqualToString:@"all"]){
+            if (self.inboxTalkType == InboxTalkTypeAll) {
+                text = @"Segera ikuti diskusi produk terbaru yang Anda inginkan!";
+                desc = @"";
+            } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
+                text = @"Segera ikuti diskusi produk terbaru yang Anda inginkan!";
+                desc = @"";
+            } else if (self.inboxTalkType == InboxTalkTypeMyProduct) {
+                text = @"Belum ada diskusi produk";
+                desc = @"";
+            }else{
+                text = @"Belum ada diskusi produk";
+                desc = @"";
+            }
+        }else{
+            if (self.inboxTalkType == InboxTalkTypeAll) {
+                text = @"Anda sudah membaca semua diskusi produk";
+                desc = @"";
+            } else if (self.inboxTalkType == InboxTalkTypeFollowing) {
+                text = @"Anda sudah membaca semua diskusi produk";
+                desc = @"";
+            } else if (self.inboxTalkType == InboxTalkTypeMyProduct) {
+                text = @"Anda sudah membaca semua diskusi produk";
+                desc = @"";
+            }else{
+                text = @"Anda sudah membaca semua diskusi produk";
+                desc = @"";
+            }
+        }
+        [_noResultView setNoResultTitle:text];
+        [_noResultView setNoResultDesc:desc];
+        
+        [_table addSubview:_noResultView];
     }
     
     [self.table reloadData];
-
+    
     
     [_refreshControl endRefreshing];
+    [_refreshControl setHidden:YES];
+    [_refreshControl setEnabled:NO];
+    [_refreshControl layoutIfNeeded];
+    
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
