@@ -34,6 +34,8 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 
+#import "RequestLDExtension.h"
+
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define TAG_ALERT_REORDER 12
@@ -79,6 +81,8 @@
     RequestCancelResolution *_requestCancelComplain;
     
     UIViewController *_detailViewController;
+    
+    RequestLDExtension *_requestLD;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -834,6 +838,11 @@
             StickyAlertView *alertDelegate = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:_detailViewController];
             [alertDelegate show];
             [alert show];
+        }
+        
+        if (![order.result.ld isEqual:@{}]) {
+            _requestLD = [RequestLDExtension new];
+            [_requestLD doRequestMemberExtendURLString:order.result.ld.url];
         }
     }
     else

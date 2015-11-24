@@ -22,6 +22,9 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"words"
+                                                                            toKeyPath:@"words"
+                                                                          withMapping:[LuckyDealAttributes mapping]]];
     return mapping;
     
 }

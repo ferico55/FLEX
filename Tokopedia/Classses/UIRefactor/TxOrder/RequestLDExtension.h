@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RequestLDExtension : NSObject
+@interface RequestLDExtension : NSObject <TokopediaNetworkManagerDelegate>
+
+-(void)doRequestMemberExtendURLString:(NSString*)urlString;
+
 
 @end

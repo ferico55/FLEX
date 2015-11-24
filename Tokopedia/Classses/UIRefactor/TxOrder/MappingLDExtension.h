@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface MappingLDExtension : NSObject
++(RKObjectManager*)objectManagerMemberExtendBaseURL:(NSString*)baseURL;
 
 @end

@@ -11,7 +11,8 @@
 @implementation LuckyDeal
 
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"url"
+    NSArray *keys = @[@"url",
+                      @"status"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

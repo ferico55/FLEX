@@ -14,6 +14,7 @@
 		459E88C71C045D3F0000ACBF /* LuckyDealData.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88C61C045D3F0000ACBF /* LuckyDealData.m */; };
 		459E88CA1C045D5B0000ACBF /* LuckyDealAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88C91C045D5B0000ACBF /* LuckyDealAttributes.m */; };
 		459E88CD1C0460C00000ACBF /* MappingLDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88CC1C0460C00000ACBF /* MappingLDExtension.m */; };
+		459E88D01C046F160000ACBF /* LuckyDealWord.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88CF1C046F160000ACBF /* LuckyDealWord.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -1950,6 +1951,8 @@
 		459E88C91C045D5B0000ACBF /* LuckyDealAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LuckyDealAttributes.m; sourceTree = "<group>"; };
 		459E88CB1C0460C00000ACBF /* MappingLDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MappingLDExtension.h; sourceTree = "<group>"; };
 		459E88CC1C0460C00000ACBF /* MappingLDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MappingLDExtension.m; sourceTree = "<group>"; };
+		459E88CE1C046F160000ACBF /* LuckyDealWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuckyDealWord.h; sourceTree = "<group>"; };
+		459E88CF1C046F160000ACBF /* LuckyDealWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LuckyDealWord.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6381,6 +6384,8 @@
 				459E88C61C045D3F0000ACBF /* LuckyDealData.m */,
 				459E88C81C045D5B0000ACBF /* LuckyDealAttributes.h */,
 				459E88C91C045D5B0000ACBF /* LuckyDealAttributes.m */,
+				459E88CE1C046F160000ACBF /* LuckyDealWord.h */,
+				459E88CF1C046F160000ACBF /* LuckyDealWord.m */,
 			);
 			path = TransactionAction;
 			sourceTree = "<group>";
@@ -12019,6 +12024,7 @@
 				85FF86011BE9A58A0015B16F /* NotificationInbox.m in Sources */,
 				85FF86171BE9A58A0015B16F /* ProfileEditFormResult.m in Sources */,
 				85FF894B1BE9A58B0015B16F /* ProductTalkViewController.m in Sources */,
+				459E88D01C046F160000ACBF /* LuckyDealWord.m in Sources */,
 				85FF85F71BE9A58A0015B16F /* MyReviewReputation.m in Sources */,
 				85FF862B1BE9A58A0015B16F /* NotificationForm.m in Sources */,
 				85FF88341BE9A58B0015B16F /* MyShopPaymentViewController.m in Sources */,
