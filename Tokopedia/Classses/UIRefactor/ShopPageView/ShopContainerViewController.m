@@ -393,6 +393,24 @@
                                                            CRateSuccess:CRateSuccess
                                                            }];
     
+    RKObjectMapping *shopTransactionTxMapping = [RKObjectMapping mappingForClass:[ShopTransactionStats class]];
+    [shopTransactionTxMapping addAttributeMappingsFromDictionary:@{
+                                                                   @"shop_tx_has_transaction_3_month":@"shop_tx_has_transaction_3_month",
+                                                                   @"shop_tx_success_rate_1_month":@"shop_tx_success_rate_1_month",
+                                                                   @"shop_tx_show_percentage_3_month":@"shop_tx_show_percentage_3_month",
+                                                                   @"shop_tx_has_transaction":@"shop_tx_has_transaction",
+                                                                   @"shop_tx_success_3_month_fmt":@"shop_tx_success_3_month_fmt",
+                                                                   @"shop_tx_show_percentage_1_month":@"shop_tx_show_percentage_1_month",
+                                                                   @"shop_tx_success_1_year_fmt":@"shop_tx_success_1_year_fmt",
+                                                                   @"shop_tx_has_transaction_1_month":@"shop_tx_has_transaction_1_month",
+                                                                   @"shop_tx_success_rate_1_year":@"shop_tx_success_rate_1_year",
+                                                                   @"shop_tx_has_transaction_1_year":@"shop_tx_has_transaction_1_year",
+                                                                   @"shop_tx_success_1_month_fmt":@"shop_tx_success_1_month_fmt",
+                                                                   @"shop_tx_show_percentage_1_year":@"shop_tx_show_percentage_1_year",
+                                                                   @"shop_tx_success_rate_3_month":@"shop_tx_success_rate_3_month"
+
+                                                                   }];
+    
     RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
     [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
     
@@ -478,6 +496,10 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                   toKeyPath:kTKPDDETAILSHOP_APISTATKEY
                                                                                 withMapping:shopstatsMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_tx_stats"
+                                                                                  toKeyPath:@"shop_tx_stats"
+                                                                                withMapping:shopTransactionTxMapping]];
 //    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CRatings toKeyPath:CRatings withMapping:ratingMapping]];
     
