@@ -13,7 +13,7 @@
 
 @interface EtalaseResult : NSObject
 
-@property (strong, nonatomic) NSArray *list;
+@property (strong, nonatomic) NSMutableArray *list;
 @property (nonatomic, strong) Paging *paging;
 
 @end

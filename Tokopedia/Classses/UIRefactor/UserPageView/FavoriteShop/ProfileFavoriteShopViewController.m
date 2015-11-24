@@ -17,9 +17,10 @@
 #import "URLCacheController.h"
 #import "UserPageHeader.h"
 #import "ShopContainerViewController.h"
+#import "NoResultReusableView.h";
 
 #pragma mark - Profile Favorite Shop View Controller
-@interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate, UIScrollViewDelegate, UserPageHeaderDelegate>
+@interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate, UIScrollViewDelegate, UserPageHeaderDelegate, NoResultDelegate>
 {
     NSInteger _page;
     NSString *_urinext;
@@ -43,7 +44,7 @@
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
-    NoResultView *_noResultView;
+    NoResultReusableView *_noResultView;
     NSTimeInterval _timeinterval;
     UserPageHeader *_userHeader;
 }
@@ -77,6 +78,15 @@
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Belum ada toko favorit"
+                                  desc:@""
+                              btnTitle:nil];
+}
+
 #pragma mark - View Life Cycle
 - (void)viewDidLoad
 {
@@ -85,7 +95,7 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
-    _noResultView = [NoResultView new];
+    [self initNoResultView];
     _list = [NSMutableArray new];
     [self initNotification];
     _page = 1;
@@ -419,6 +429,7 @@
                 _isnodata = NO;
                 
                 if([_list count] > 0) {
+                    [_noResultView removeFromSuperview];
                     _urinext =  _favoriteshop.result.paging.uri_next;
                     NSURL *url = [NSURL URLWithString:_urinext];
                     NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
@@ -440,7 +451,7 @@
                     [_table reloadData];
                 } else {
                     _isnodata = YES;
-                    _table.tableFooterView = _noResultView.view;
+                    _table.tableFooterView = _noResultView;
                 }
                 
             }

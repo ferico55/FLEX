@@ -853,6 +853,7 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
     }
 }
 
@@ -864,8 +865,8 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-    }
-    else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:nil];
+    }else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
         navigationController.navigationBar.translucent = NO;

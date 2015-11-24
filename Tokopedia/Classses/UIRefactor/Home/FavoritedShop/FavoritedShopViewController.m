@@ -348,6 +348,7 @@ PromoRequestDelegate
     strTempShopID = shopid;
     tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
     [tokopediaNetworkManager doRequest];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
 }
 
 -(void) requestfailurefav:(id)error {
