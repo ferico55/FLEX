@@ -172,11 +172,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Withdraw Page";
-    
     
     if(_noResultView == nil)
         _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
+
+    self.screenName = @"Withdraw Page";
+    [TPAnalytics trackScreenName:@"Withdraw Page"];
 }
 
 

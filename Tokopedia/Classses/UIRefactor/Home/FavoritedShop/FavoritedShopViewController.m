@@ -159,7 +159,10 @@ PromoRequestDelegate
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - Favorite Shop";
+    
+    self.screenName = @"Home - Favorited Shop";
+    [TPAnalytics trackScreenName:@"Home - Favorited Shop"];
+
     [self refreshView:nil];
 }
 

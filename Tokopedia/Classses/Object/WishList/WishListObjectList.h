@@ -22,4 +22,6 @@
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 
+- (NSDictionary *)productFieldObjects;
+
 @end

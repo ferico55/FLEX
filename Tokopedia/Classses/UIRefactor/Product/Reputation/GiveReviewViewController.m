@@ -11,7 +11,6 @@
 #import "GiveReviewViewController.h"
 #import "string_inbox_message.h"
 #import "TKPDTextView.h"
-#import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
 #import "UserInfo.h"
 #define CStringTidakAdaPerubahan @"Tidak ada perubahan ulasan"
@@ -437,9 +436,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

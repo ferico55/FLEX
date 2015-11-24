@@ -102,7 +102,9 @@
     [super viewWillAppear:animated];
     
     self.title = @"Status Pengiriman";
-    self.screenName = @"Shipping Status";
+    
+    [TPAnalytics trackScreenName:@"Sales - Shipping Status"];
+    self.screenName = @"Sales - Shipping Status";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                       style:UIBarButtonItemStyleBordered

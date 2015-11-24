@@ -102,11 +102,13 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+    self.title = @"Konfirmasi Pembayaran";
+
     [self reloadNotification];
     
-    self.title = @"Konfirmasi Pembayaran";
-    self.screenName = @"Payment Confirmation";
+    [TPAnalytics trackScreenName:@"Purchase - Payment Confirmation"];
+    self.screenName = @"Purchase - Payment Confirmation";
 }
 
 -(void)viewWillDisappear:(BOOL)animated

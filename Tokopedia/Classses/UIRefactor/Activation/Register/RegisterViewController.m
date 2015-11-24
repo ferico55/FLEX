@@ -28,6 +28,8 @@
 
 #import "Localytics.h"
 
+#import "TAGDataLayer.h"
+
 static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
 
 #pragma mark - Register View Controller
@@ -169,8 +171,11 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Register Page";
+    
     self.title = kTKPDREGISTER_NEW_TITLE;
+    
+    [TPAnalytics trackScreenName:@"Register Page"];
+    self.screenName = @"Register Page";
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;

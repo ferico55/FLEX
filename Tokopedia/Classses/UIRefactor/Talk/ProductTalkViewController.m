@@ -168,6 +168,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // UA
+    [TPAnalytics trackScreenName:@"Product - Talk List"];
+    
+    // GA
     self.screenName = @"Product - Talk List";
 }
 

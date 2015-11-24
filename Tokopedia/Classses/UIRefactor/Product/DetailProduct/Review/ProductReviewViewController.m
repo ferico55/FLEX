@@ -164,7 +164,13 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // UA
+    [TPAnalytics trackScreenName:@"Product - Review List"];
+
+    // GA
     self.screenName = @"Product - Review List";
+    
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {

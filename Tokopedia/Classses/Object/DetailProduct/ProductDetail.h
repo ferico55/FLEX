@@ -63,4 +63,6 @@
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 
+@property (nonatomic, strong) NSDictionary *productFieldObjects;
+
 @end

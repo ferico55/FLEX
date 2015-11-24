@@ -185,15 +185,16 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Shop - Note List"];
     self.screenName = @"Shop - Note List";
+    
     if (!_isrefreshview) {
         [self configureRestKit];
-        
         if (_isNoData && _page < 1) {
             [self loadData];
         }
     }
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
