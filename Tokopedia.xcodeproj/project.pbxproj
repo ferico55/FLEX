@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		459E88C11C045AF20000ACBF /* LuckyDeal.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88C01C045AF20000ACBF /* LuckyDeal.m */; };
+		459E88C41C045D170000ACBF /* RequestLDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88C31C045D170000ACBF /* RequestLDExtension.m */; };
+		459E88C71C045D3F0000ACBF /* LuckyDealData.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88C61C045D3F0000ACBF /* LuckyDealData.m */; };
+		459E88CA1C045D5B0000ACBF /* LuckyDealAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88C91C045D5B0000ACBF /* LuckyDealAttributes.m */; };
+		459E88CD1C0460C00000ACBF /* MappingLDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 459E88CC1C0460C00000ACBF /* MappingLDExtension.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -1935,6 +1940,16 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		459E88BF1C045AF20000ACBF /* LuckyDeal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuckyDeal.h; sourceTree = "<group>"; };
+		459E88C01C045AF20000ACBF /* LuckyDeal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LuckyDeal.m; sourceTree = "<group>"; };
+		459E88C21C045D170000ACBF /* RequestLDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestLDExtension.h; sourceTree = "<group>"; };
+		459E88C31C045D170000ACBF /* RequestLDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestLDExtension.m; sourceTree = "<group>"; };
+		459E88C51C045D3F0000ACBF /* LuckyDealData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuckyDealData.h; sourceTree = "<group>"; };
+		459E88C61C045D3F0000ACBF /* LuckyDealData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LuckyDealData.m; sourceTree = "<group>"; };
+		459E88C81C045D5B0000ACBF /* LuckyDealAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuckyDealAttributes.h; sourceTree = "<group>"; };
+		459E88C91C045D5B0000ACBF /* LuckyDealAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LuckyDealAttributes.m; sourceTree = "<group>"; };
+		459E88CB1C0460C00000ACBF /* MappingLDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MappingLDExtension.h; sourceTree = "<group>"; };
+		459E88CC1C0460C00000ACBF /* MappingLDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MappingLDExtension.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6360,6 +6375,12 @@
 				85FF7C551BE9A5860015B16F /* TransactionAction.m */,
 				85FF7C561BE9A5860015B16F /* TransactionActionResult.h */,
 				85FF7C571BE9A5860015B16F /* TransactionActionResult.m */,
+				459E88BF1C045AF20000ACBF /* LuckyDeal.h */,
+				459E88C01C045AF20000ACBF /* LuckyDeal.m */,
+				459E88C51C045D3F0000ACBF /* LuckyDealData.h */,
+				459E88C61C045D3F0000ACBF /* LuckyDealData.m */,
+				459E88C81C045D5B0000ACBF /* LuckyDealAttributes.h */,
+				459E88C91C045D5B0000ACBF /* LuckyDealAttributes.m */,
 			);
 			path = TransactionAction;
 			sourceTree = "<group>";
@@ -8750,6 +8771,10 @@
 				85FF82061BE9A5880015B16F /* TxOrderTabViewController.h */,
 				85FF82071BE9A5880015B16F /* TxOrderTabViewController.m */,
 				85FF82081BE9A5880015B16F /* TxOrderTabViewController.xib */,
+				459E88C21C045D170000ACBF /* RequestLDExtension.h */,
+				459E88C31C045D170000ACBF /* RequestLDExtension.m */,
+				459E88CB1C0460C00000ACBF /* MappingLDExtension.h */,
+				459E88CC1C0460C00000ACBF /* MappingLDExtension.m */,
 			);
 			path = TxOrder;
 			sourceTree = "<group>";
@@ -11286,6 +11311,7 @@
 				85FF87F31BE9A58B0015B16F /* InboxResolutionCenterTabViewController.m in Sources */,
 				85FF855A1BE9A58A0015B16F /* CategoryObj.m in Sources */,
 				85FF891E1BE9A58B0015B16F /* ShopInfoPaymentCell.m in Sources */,
+				459E88CD1C0460C00000ACBF /* MappingLDExtension.m in Sources */,
 				85FF86F71BE9A58A0015B16F /* CreatePasswordViewController.m in Sources */,
 				85FF85E21BE9A58A0015B16F /* RatingResult.m in Sources */,
 				85FF88B61BE9A58B0015B16F /* OrderDetailViewController.m in Sources */,
@@ -11529,6 +11555,7 @@
 				85FF86B21BE9A58A0015B16F /* TxOrderConfirmationList.m in Sources */,
 				85FF86451BE9A58A0015B16F /* OrderDestination.m in Sources */,
 				85FF85701BE9A58A0015B16F /* CatalogLocation.m in Sources */,
+				459E88C41C045D170000ACBF /* RequestLDExtension.m in Sources */,
 				85FF852D1BE9A58A0015B16F /* DBManager.m in Sources */,
 				85FF87EA1BE9A58B0015B16F /* FilterComplainViewController.m in Sources */,
 				85FF85471BE9A58A0015B16F /* TkpdHMAC.m in Sources */,
@@ -11672,6 +11699,7 @@
 				85FF87941BE9A58B0015B16F /* DepositFormViewController.m in Sources */,
 				85FF88461BE9A58B0015B16F /* PriceAlertCell.m in Sources */,
 				85FF853B1BE9A58A0015B16F /* TextMenu.m in Sources */,
+				459E88CA1C045D5B0000ACBF /* LuckyDealAttributes.m in Sources */,
 				85FF86AA1BE9A58A0015B16F /* TransactionCC.m in Sources */,
 				85FF887F1BE9A58B0015B16F /* ProductDetailReputationViewController.m in Sources */,
 				85FF88091BE9A58B0015B16F /* ReviewFormViewController.m in Sources */,
@@ -11985,6 +12013,7 @@
 				85FF85851BE9A58A0015B16F /* ReviewList.m in Sources */,
 				85FF87FB1BE9A58B0015B16F /* ResolutionCenterDetailViewController.m in Sources */,
 				85FF895C1BE9A58B0015B16F /* TransactionCartFormMandiriClickPayViewController.m in Sources */,
+				459E88C11C045AF20000ACBF /* LuckyDeal.m in Sources */,
 				85FF85491BE9A58A0015B16F /* CreatePassword.m in Sources */,
 				85FF873A1BE9A58A0015B16F /* CatalogProductViewController.m in Sources */,
 				85FF86011BE9A58A0015B16F /* NotificationInbox.m in Sources */,
@@ -12013,6 +12042,7 @@
 				85FF85A91BE9A58A0015B16F /* DepartmentTree.m in Sources */,
 				85FF89661BE9A58B0015B16F /* TransactionCCDetailViewController.m in Sources */,
 				85FF85861BE9A58A0015B16F /* ReviewProductOwner.m in Sources */,
+				459E88C71C045D3F0000ACBF /* LuckyDealData.m in Sources */,
 				85FF86DB1BE9A58A0015B16F /* TxOrderPaymentEditOrder.m in Sources */,
 				85FF88891BE9A58B0015B16F /* ProfileContactViewController.m in Sources */,
 				85FF85671BE9A58A0015B16F /* DepositFormBankAccountList.m in Sources */,

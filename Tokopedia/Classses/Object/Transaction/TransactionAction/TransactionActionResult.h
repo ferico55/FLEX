@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LuckyDeal.h"
 
 @interface TransactionActionResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger is_success;
 @property (strong, nonatomic) NSString *cc_agent;
+@property (strong, nonatomic) LuckyDeal *ld;
 
 @end

@@ -12,7 +12,7 @@
 
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"is_success",
-                      @"cc_agent"
+                      @"cc_agent",
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
@@ -20,6 +20,9 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ld"
+                                                                            toKeyPath:@"ld"
+                                                                          withMapping:[LuckyDeal mapping]]];
     return mapping;
     
 }
