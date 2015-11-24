@@ -21,7 +21,7 @@
 #import "ReputationDetail.h"
 #import "ShopPageHeader.h"
 #import "string_inbox_message.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 #import "NSString+HTML.h"
 #import "UserAuthentificationManager.h"
 #import "TalkCell.h"
@@ -31,7 +31,8 @@ UITableViewDelegate,
 UIScrollViewDelegate,
 TalkCellDelegate,
 ShopPageHeaderDelegate,
-UIAlertViewDelegate>
+UIAlertViewDelegate,
+NoResultDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -74,7 +75,7 @@ UIAlertViewDelegate>
     BOOL _isrefreshnav;
     BOOL _isNeedToInsertCache;
     BOOL _isLoadFromCache;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
     
     
@@ -104,7 +105,14 @@ UIAlertViewDelegate>
     
     return self;
 }
-
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Toko ini belum mempunyai diskusi produk"
+                                  desc:@""
+                              btnTitle:nil];
+}
 
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -144,7 +152,7 @@ UIAlertViewDelegate>
     _cachecontroller = [URLCacheController new];
     _list = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    [self initNoResultView];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -436,7 +444,9 @@ UIAlertViewDelegate>
                 [self.table reloadData];
                 if (_list.count == 0) {
                     _act.hidden = YES;
-                    _table.tableFooterView = _noResult;
+                    _table.tableFooterView = _noResultView;
+                }else{
+                    [_noResultView removeFromSuperview];
                 }
             }
         }else{

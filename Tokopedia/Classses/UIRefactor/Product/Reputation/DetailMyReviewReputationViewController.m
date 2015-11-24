@@ -388,13 +388,13 @@
 
         if(UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
             NSString *strMessage = @"";
-            if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+            if([emoticonState isEqualToString:CReviewScoreBad]) {
                 strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
             }
-            else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+            else if([emoticonState isEqualToString:CReviewScoreNeutral]) {
                 strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
             }
-            else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+            else if([emoticonState isEqualToString:CReviewScoreGood]) {
                 strMessage = [NSString stringWithFormat:@"Saya Puas!"];
             }
             

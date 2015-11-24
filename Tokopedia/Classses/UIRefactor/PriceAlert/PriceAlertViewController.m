@@ -56,13 +56,24 @@
     [super viewDidLoad];
     if(_detailPriceAlert!=nil && ![_detailPriceAlert.pricealert_price isEqualToString:@"Rp 0"]) {
         NSString *tempStr = [_detailPriceAlert.pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
-        txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
+        tempStr = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];
+        if([tempStr isEqualToString:@"Semua Harga"]){
+            txtPrice.text = @"";
+        }else{
+            txtPrice.text = tempStr;
+        }
+        
         [self initNavigation:NO];
     }
     else if(_catalogInfo!=nil && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"Rp 0"] && ![_catalogInfo.catalog_pricealert_price isEqualToString:@"0"]) {
         isEditCatalog = YES;
         NSString *tempStr = [_catalogInfo.catalog_pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
-        txtPrice.text = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];;
+        tempStr = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];
+        if([tempStr isEqualToString:@"Semua Harga"]){
+            txtPrice.text = @"";
+        }else{
+            txtPrice.text = tempStr;
+        }
         [self initNavigation:NO];
     }
     else
@@ -277,8 +288,7 @@
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-}
+{}
 
 - (void)actionBeforeRequest:(int)tag
 {}
