@@ -21,7 +21,7 @@
     IBOutlet UIView *viewPlot, *viewContent;
     IBOutlet NSLayoutConstraint *constWidthLblRate1, *constWidthLblRate2, *constWidthLblRate3, *constWidthLblRate4, *constWidthLblRate5, *constWidthFooterLbl1, *constWidthFooterLbl2, *constWidthFooterLbl3;
     IBOutlet UIScrollView *scrollContent;
-    IBOutlet UIButton *btn1Hari, *btn2Hari, *btn3Hari, *btnPositif, *btnNetral, *btnNegatif;
+    IBOutlet UIButton *btn1Hari, *btn2Hari, *btn3Hari, *_buttonPositive, *_buttonNetral, *_buttonNegative;
     IBOutlet UIImageView *imgSpeed;
     UILabel *_successRateLabel;
 

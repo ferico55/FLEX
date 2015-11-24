@@ -21,12 +21,14 @@
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
     
-    [self resizeButtonContent:btnPositif];
-    [self resizeButtonContent:btnNegatif];
-    [self resizeButtonContent:btnNetral];
+    [self resizeButtonContent:_buttonPositive];
+    [self resizeButtonContent:_buttonNegative];
+    [self resizeButtonContent:_buttonNetral];
     [self resizeButtonContent:btn1Hari];
     [self resizeButtonContent:btn2Hari];
     [self resizeButtonContent:btn3Hari];
+    
+    [self animateButtonPositive];
     
     self.title = @"Statistik";
     [self setProgressHeader:0 withAnimate:NO];
@@ -52,7 +54,7 @@
     [_reputationChart setLabelRadius:160];
     [_reputationChart setAnimationSpeed:1.0];
     [_reputationChart setLabelFont:[UIFont fontWithName:@"Gotham Book" size:18.0]];
-    [_reputationChart setShowPercentage:YES];
+//    [_reputationChart setShowPercentage:YES];
     [_reputationChart reloadData];
     
     UIView *centerRadiusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
@@ -61,8 +63,8 @@
     [centerRadiusView.layer setCornerRadius:centerRadiusView.frame.size.width / 2];
     
     _successRateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
-    [_successRateLabel setText:_detailShopResult.shop_tx_stats.shop_tx_success_rate_1_month];
-    [_successRateLabel setFont:[UIFont fontWithName:@"Gotham Medium" size:30.0]];
+    [_successRateLabel setText:[NSString stringWithFormat:@"%@%%", _detailShopResult.shop_tx_stats.shop_tx_success_rate_1_month]];
+    [_successRateLabel setFont:[UIFont fontWithName:@"Gotham Medium" size:25.0]];
     [_successRateLabel setTextAlignment:NSTextAlignmentCenter];
     [_successRateLabel setCenter:CGPointMake(_reputationChart.frame.size.width/2, _reputationChart.frame.size.height/2)];
     [_totalSuccessLabel setText:[NSString stringWithFormat:@"Dari %@ transaksi", _detailShopResult.shop_tx_stats.shop_tx_success_1_month_fmt]];
@@ -122,6 +124,8 @@
     CGSize imageSize = tempBtn.imageView.bounds.size;
     CGSize titleSize = tempBtn.titleLabel.bounds.size;
     CGFloat totalHeight = (imageSize.height + titleSize.height + spacing);
+    
+    [tempBtn.imageView setBackgroundColor:[UIColor whiteColor]];
     
     tempBtn.imageEdgeInsets = UIEdgeInsetsMake(- (totalHeight - imageSize.height), 0.0, 0.0, - titleSize.width);
     tempBtn.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (totalHeight - titleSize.height),0.0);
@@ -223,7 +227,7 @@
             [_slices removeAllObjects];
             [_slices addObject:[NSNumber numberWithFloat:[successRateValue floatValue]]];
             [_slices addObject:[NSNumber numberWithFloat:(100-[successRateValue floatValue])]];
-            [_successRateLabel setText:successRateValue];
+            [_successRateLabel setText:[NSString stringWithFormat:@"%@%%", successRateValue]];
             [_reputationChart reloadData];
         }
             break;
@@ -244,6 +248,25 @@
 
 - (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index {
     return [_sliceColors objectAtIndex:index];
+}
+
+- (void)animateButtonPositive {
+    CGAffineTransform tr = CGAffineTransformScale(_buttonPositive.transform, 0.1, 0.1);
+    _buttonPositive.transform = tr;
+    
+    [UIView animateWithDuration:1.5 delay:0
+         usingSpringWithDamping:0.5 initialSpringVelocity:0.0f
+                        options:0 animations:^{
+                            _buttonPositive.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
+                        } completion:^(BOOL finished) {
+                            if(finished) {
+                                [UIView animateWithDuration:2.0 delay:0
+                                     usingSpringWithDamping:0.5 initialSpringVelocity:0.0f
+                                                    options:0 animations:^{
+                                                        _buttonPositive.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
+                                                    } completion:nil];
+                            }
+                        }];
 }
 
 
