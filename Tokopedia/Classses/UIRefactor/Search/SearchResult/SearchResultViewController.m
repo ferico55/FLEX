@@ -835,19 +835,24 @@ SpellCheckRequestDelegate
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
-            self.view = self.contentView;
+            //self.view = self.contentView;
+            [_noResultView removeFromSuperview];
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             
-            if([_data objectForKey:@"search"]){
+            if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
                 [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
             }else{
                 _suggestion = @"";
             }
             
-            //[_collectionView addSubview:_noResultView];
-            self.view = _noResultView;
+            [_collectionView addSubview:_noResultView];
+            /*
+            if(self.view != _noResultView){
+                self.view = _noResultView;
+            }
+             */
         }
         
         if(_start > 0) [self requestPromo];
@@ -972,7 +977,16 @@ SpellCheckRequestDelegate
 
 - (void) buttonDidTapped:(id)sender{
     [_params setObject:_suggestion forKey:@"search"];
-    self.view = self.contentView;
+    //self.view = self.contentView;
+    [_noResultView removeFromSuperview];
+    
+    NSDictionary *newData = @{
+                            @"auth" : [_data objectForKey:@"auth"],
+                            @"type" : [_data objectForKey:@"type"],
+                            @"search": _suggestion
+                            };
+    _data = newData;
+    
     [_networkManager doRequest];
 }
 
