@@ -54,6 +54,7 @@
     [_reputationChart setLabelRadius:160];
     [_reputationChart setAnimationSpeed:1.0];
     [_reputationChart setLabelFont:[UIFont fontWithName:@"Gotham Book" size:18.0]];
+    [_reputationChart setShowLabel:NO];
 //    [_reputationChart setShowPercentage:YES];
     [_reputationChart reloadData];
     
