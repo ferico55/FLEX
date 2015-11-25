@@ -9,6 +9,8 @@
 #import "PhoneVerificationViewController.h"
 
 @interface PhoneVerificationViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *notifLabel;
+@property (weak, nonatomic) IBOutlet UITextField *otpTextField;
 
 @end
 
@@ -16,13 +18,41 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
+    UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
+    self.navigationItem.titleView = topedImageView;
+    
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    
+    
+    UIBarButtonItem *verifyButton = [[UIBarButtonItem alloc] initWithTitle:@"Verifikasi"
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:(self)
+                                                                    action:@selector(tap:)];
+    cancelButton.tag = 11;
+    verifyButton.tag = 12;
+    cancelButton.tintColor = [UIColor whiteColor];
+    verifyButton.tintColor = [UIColor whiteColor];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    self.navigationItem.rightBarButtonItem = verifyButton;
+    
+    [_notifLabel setHidden:YES];
+    
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+}
+
 
 /*
 #pragma mark - Navigation

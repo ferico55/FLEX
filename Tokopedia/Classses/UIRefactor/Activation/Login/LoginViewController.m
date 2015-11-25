@@ -26,6 +26,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
 #import "AppsFlyerTracker.h"
+#import "PhoneVerificationViewController.h"
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
@@ -203,7 +204,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         switch (btn.tag) {
             case 11:
             {
-                RegisterViewController *controller = [RegisterViewController new];
+                //RegisterViewController *controller = [RegisterViewController new];
+                PhoneVerificationViewController *controller = [PhoneVerificationViewController new];
                 [self.navigationController pushViewController:controller animated:YES];
                 break;
             }
