@@ -143,6 +143,10 @@
                                                  selector:@selector(updateShopInformation)
                                                      name:@"shopCreated"
                                                    object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(navigateToContactUs:)
+                                                     name:@"navigateToContactUs" object:nil];
 }
     return self;
 }
@@ -908,6 +912,17 @@
 
 - (void)tapWindowBar {
     [_notifManager tapWindowBar];
+}
+
+- (void)navigateToContactUs:(NSNotification*)notification{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:kGAIScreenName value:@"New Contact Us"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
+    ContactUsWebViewController *controller = [ContactUsWebViewController new];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Notification delegate

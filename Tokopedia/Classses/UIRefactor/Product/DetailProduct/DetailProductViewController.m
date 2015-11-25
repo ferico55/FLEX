@@ -424,6 +424,7 @@ UIAlertViewDelegate
             [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
 //            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }];
+        
     }
     else {
         _favButton.tag = 17;
@@ -1676,9 +1677,10 @@ UIAlertViewDelegate
         StickyAlertView *stickyAlertView;
         if(_favButton.tag == 17) {//Favorite
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
-        }
-        else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:_product.result.shop_info.shop_url];
+        }else {
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:_product.result.shop_info.shop_url];
         }
         
         [stickyAlertView show];
@@ -2906,6 +2908,7 @@ UIAlertViewDelegate
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagUnWishList;
         [tokopediaNetworkManagerWishList doRequest];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemovedProductFromWishList" object:_product.result.product.product_id];
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -2954,6 +2957,7 @@ UIAlertViewDelegate
         [Localytics incrementValueBy:1
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.result.product.product_id];
         
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];

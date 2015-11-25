@@ -48,15 +48,15 @@
     self = [super initWithFrame:CGRectZero];
     
     if(self) {
-        if([tag isEqualToString:CRevieweeScroreBad]) {
+        if([tag isEqualToString:CReviewScoreBad]) {
             defaultSelectedIndex = CTagMerah;
             selectedIndex = CTagMerah;
         }
-        else if([tag isEqualToString:CRevieweeScroreNetral]) {
+        else if([tag isEqualToString:CReviewScoreNeutral]) {
             defaultSelectedIndex = CTagKuning;
             selectedIndex = CTagKuning;
         }
-        else if([tag isEqualToString:CRevieweeScroreGood]) {
+        else if([tag isEqualToString:CReviewScoreGood]) {
             defaultSelectedIndex = CTagHijau;
             selectedIndex = CTagHijau;
         }
