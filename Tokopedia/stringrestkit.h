@@ -53,6 +53,10 @@
 #define TKPD_TALK_COMMENT_USERID @"comment_user_id"
 #define TKPD_TALK_COMMENT_USER_LABEL @"comment_user_label"
 #define TKPD_TALK_COMMENT_USER_LABEL_ID @"comment_user_label_id"
+#define TKPD_TALK_COMMENT_SHOP_NAME @"comment_shop_name"
+#define TKPD_TALK_COMMENT_SHOP_IMAGE @"comment_shop_image"
+#define TKPD_TALK_COMMENT_IS_OWNER @"comment_is_owner"
+
 #define TKPD_TALK_FOLLOW @"Ikuti"
 #define TKPD_TALK_UNFOLLOW @"Berhenti Ikuti"
 #define TKPD_FOLLOW_TALK_ACTION @"follow_product_talk"

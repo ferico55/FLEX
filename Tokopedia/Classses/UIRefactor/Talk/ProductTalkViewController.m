@@ -112,33 +112,26 @@
     
     _table.tableHeaderView = _header;
     
-    //UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-//    barButtonItem.tag = 10;
-//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    //right button
-
     NSString *shopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     BOOL isLogin = [_userManager isLogin];
     if(isLogin && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
-
-        UIBarButtonItem *rightbar;
+        NSBundle *bundle = [NSBundle mainBundle];
+        UIBarButtonItem *addButton;
         UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
             UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+            addButton = [[UIBarButtonItem alloc] initWithImage:image
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(tap:)];
+        } else {
+            addButton = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(tap:)];
         }
-        else
-            rightbar = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        [rightbar setTag:11];
-        self.navigationItem.rightBarButtonItem = rightbar;
+        [addButton setTag:11];
+        self.navigationItem.rightBarButtonItem = addButton;
     }
-    
     
     if (_list.count>2) {
         _isnodata = NO;
