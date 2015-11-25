@@ -19,6 +19,8 @@
 #import "NavigateViewController.h"
 #import "HistoryProduct.h"
 #import "ProductCell.h"
+#import "ProductDetail.h"
+#import "DetailProductResult.h"
 
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -57,6 +59,7 @@ typedef enum TagRequest {
     BOOL _isNoData;
     BOOL _isFailRequest;
     BOOL _isShowRefreshControl;
+    BOOL _needToRefresh;
     
     UIRefreshControl *_refreshControl;
     
@@ -98,6 +101,7 @@ typedef enum TagRequest {
     _itemPerPage = kTKPDHOMEHOTLIST_LIMITPAGE;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSeeAProduct:) name:@"didSeeAProduct" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     
     //todo with view
@@ -124,12 +128,19 @@ typedef enum TagRequest {
     _networkManager.tagRequest = ProductTag;
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
+    
+    _needToRefresh = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.screenName = @"Home - History Product";
+    if(_needToRefresh){
+        [_networkManager doRequest];
+        [_collectionView reloadData];
+        [_collectionView layoutIfNeeded];
+    }
 }
 
 #pragma mark - Collection Delegate
@@ -334,8 +345,8 @@ typedef enum TagRequest {
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        //[_collectionView addSubview:_noResult];
-        [self setView:_noResultView];
+        [_collectionView addSubview:_noResultView];
+        //[self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -383,6 +394,10 @@ typedef enum TagRequest {
 
 - (void)userDidLogin:(NSNotification*)notification {
     [self refreshView:_refreshControl];
+}
+
+- (void)didSeeAProduct:(NSNotification*)notification {
+    [self refreshView:nil];
 }
 
 #pragma mark - Other Method
