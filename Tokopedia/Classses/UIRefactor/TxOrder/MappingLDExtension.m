@@ -9,22 +9,25 @@
 #import "MappingLDExtension.h"
 #import "LuckyDeal.h"
 
+static RKObjectManager *_objectManager = nil;
+
 @implementation MappingLDExtension
 
 +(RKObjectManager*)objectManagerMemberExtendBaseURL:(NSString*)baseURL
 {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient:baseURL];
+    _objectManager = [RKObjectManager sharedClient:baseURL];
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[LuckyDeal mapping] inverseMapping] objectClass:[LuckyDeal class] rootKeyPath:nil method:RKRequestMethodPOST];
         
-        [objectManager addRequestDescriptor:requestDescriptor];
+        [_objectManager addRequestDescriptor:requestDescriptor];
     });
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LuckyDeal mapping] method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptor];
+    [_objectManager addResponseDescriptor:responseDescriptor];
+    _objectManager.requestSerializationMIMEType = RKMIMETypeJSON;
     
-    return  objectManager;
+    return  _objectManager;
 }
 
 @end

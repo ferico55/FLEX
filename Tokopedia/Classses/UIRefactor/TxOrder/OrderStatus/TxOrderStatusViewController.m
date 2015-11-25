@@ -44,7 +44,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, requestLDExttensionDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -83,6 +83,9 @@
     UIViewController *_detailViewController;
     
     RequestLDExtension *_requestLD;
+    LuckyDealWord *_worlds;
+    
+    BOOL _isNeedPopUpLD;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -158,6 +161,31 @@
                                                object:nil];
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    
+//    LuckyDeal *ld = [LuckyDeal new];
+//    LuckyDealAttributes *att = [LuckyDealAttributes new];
+//    LuckyDealData *data = [LuckyDealData new];
+//    att.token = @"Tokopedia Clover:q62yPVXnFRbDr9jh9wdBFhjU/DA=";
+//    att.extid = 1;
+//    att.code = 12400877;
+//    att.ut = 1448420536;
+//    data.ld_id = 1299609;
+//    data.type = 1;
+//    data.attributes = att;
+//    ld.data = data;
+//    ld.url =@"https://clover-staging.tokopedia.com/badge/member/extend/v1";
+//
+    
+    //TODO:: REMOVE THIS
+    _requestLD = [RequestLDExtension new];
+    _requestLD.delegate = self;
+//    _requestLD.luckyDeal = ld;
+    [_requestLD doRequestMemberExtendURLString:@""];
+    UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertSuccess show];
+    alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+    [self refreshRequest];
+    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -847,6 +875,7 @@
         
         if (![order.result.ld isEqual:@{}]) {
             _requestLD = [RequestLDExtension new];
+            _requestLD.luckyDeal = order.result.ld;
             [_requestLD doRequestMemberExtendURLString:order.result.ld.url];
         }
     }
@@ -1151,6 +1180,7 @@
     else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
         [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
+        [_navigate popUpLuckyDeal:_worlds];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {
@@ -1390,4 +1420,11 @@
     alert.tag = TAG_ALERT_COMPLAIN;
     [alert show];
 }
+
+-(void)showPopUpLuckyDeal:(LuckyDealWord *)words
+{
+    _isNeedPopUpLD = YES;
+    _worlds = words;
+}
+
 @end

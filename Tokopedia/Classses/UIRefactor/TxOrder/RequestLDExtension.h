@@ -7,8 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LuckyDeal.h"
+
+@class LuckyDealWord;
+
+@protocol requestLDExttensionDelegate <NSObject>
+
+@optional
+-(void)showPopUpLuckyDeal:(LuckyDealWord*)words;
+
+@end
 
 @interface RequestLDExtension : NSObject <TokopediaNetworkManagerDelegate>
+
+@property (weak, nonatomic) id<requestLDExttensionDelegate> delegate;
+
+@property LuckyDeal *luckyDeal;
 
 -(void)doRequestMemberExtendURLString:(NSString*)urlString;
 

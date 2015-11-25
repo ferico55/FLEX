@@ -12,9 +12,9 @@
 @interface LuckyDealAttributes : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *token;
-@property (strong, nonatomic) NSString *extid;
-@property (strong, nonatomic) NSString *code;
-@property (strong, nonatomic) NSString *ut;
+@property NSInteger extid;
+@property NSInteger code;
+@property NSInteger ut;
 @property (strong, nonatomic) NSString *success;
 @property (strong, nonatomic) LuckyDealWord *words;
 

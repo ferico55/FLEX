@@ -11,6 +11,10 @@
 #import "SegmentedReviewReputationViewController.h"
 #import "SplitReputationViewController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
+
+#import "AlertLuckyView.h"
+#import "LuckyDealWord.h"
+
 #define CInboxReputation @"inbox-reputation"
 #define CInboxReputationMyProduct @"inbox-reputation-my-product"
 #define CInboxReputationMyReview @"inbox-reputation-my-review"

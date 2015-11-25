@@ -24,8 +24,22 @@
 -(void)doRequestMemberExtendURLString:(NSString*)urlString
 {
     _stringURL = urlString;
-
-    [[self networkManagerMemberExtend] doRequest];
+    //TODO:: REMOVE THIS
+    if (_delegate && [_delegate respondsToSelector:@selector(showPopUpLuckyDeal:)]) {
+        LuckyDeal *ld = [LuckyDeal new];
+        LuckyDealAttributes *att = [LuckyDealAttributes new];
+        LuckyDealData *data = [LuckyDealData new];
+        LuckyDealWord *words = [LuckyDealWord new];
+        words.notify_buyer = @"1";
+        words.content_buyer_1 = @"Masa berlaku Lucky Buyer Anda diperpanjang hingga 5 hari";
+        words.content_buyer_2 = @"Terus belanja di Lucky Merchant dan dapatkan cashback up to 5%";
+        words.link = @"https://www.tokopedia.com/lucky-deal";
+        att.success = @"1";
+        att.words = words;
+        data.attributes = att;
+        [_delegate showPopUpLuckyDeal:words];
+    }
+//    [[self networkManagerMemberExtend] doRequest];
 }
 
 -(TokopediaNetworkManager*)networkManagerMemberExtend;
@@ -33,7 +47,8 @@
     if (!_networkManagerMemberExtend) {
         _networkManagerMemberExtend = [TokopediaNetworkManager new];
         _networkManagerMemberExtend.isUsingHmac = YES;
-        _networkManagerMemberExtend.tagRequest =TagRequestMemberExtend;
+        _networkManagerMemberExtend.tagRequest = TagRequestMemberExtend;
+        _networkManagerMemberExtend.delegate = self;
     }
     
     return _networkManagerMemberExtend;
@@ -41,24 +56,30 @@
 
 -(id)getObjectManager:(int)tag
 {
-    if (TagRequestMemberExtend) {
+    if (tag == TagRequestMemberExtend) {
         NSURL *url = [NSURL URLWithString:_stringURL];
-        NSString *baseURL = [NSString stringWithFormat:@"%@://%@",[url scheme],[url host]];
+        NSString *baseURL = [NSString stringWithFormat:@"%@://%@:%@",[url scheme],[url host],[url port]];
         return [MappingLDExtension objectManagerMemberExtendBaseURL:baseURL];
     }
      return nil;
 }
 
-
+- (id)getRequestObject:(int)tag;
+{
+    if (tag == TagRequestMemberExtend) {
+        return _luckyDeal;
+    }
+    return nil;
+}
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    return nil;
+    return @{};
 }
 
 -(NSString *)getPath:(int)tag
 {
-    if (TagRequestMemberExtend) {
+    if (tag == TagRequestMemberExtend) {
         NSURL *url = [NSURL URLWithString:_stringURL];
         return [url path];
     }
@@ -72,7 +93,7 @@
 
 -(NSString *)getRequestStatus:(id)result withTag:(int)tag
 {
-    if (TagRequestMemberExtend) {
+    if (tag == TagRequestMemberExtend) {
 
         NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
         id stat = [resultDict objectForKey:@""];
@@ -85,13 +106,15 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    if (TagRequestMemberExtend) {
+    if (tag == TagRequestMemberExtend) {
 
         NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
         id stat = [resultDict objectForKey:@""];
         LuckyDeal *ld = stat;
         if ([ld.data.attributes.success integerValue] == 1) {
-            [self showLuckyBuyer:ld.data.attributes.words];
+            if (_delegate && [_delegate respondsToSelector:@selector(showPopUpLuckyDeal:)]) {
+                [_delegate showPopUpLuckyDeal:ld.data.attributes.words];
+            }
         }
     }
 }
@@ -141,14 +164,7 @@
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    [_act stopAnimating];
-    [_refreshControll endRefreshing];
-    
-    if (_page == 1) {
-        _tableView.contentOffset = CGPointZero;
-    }
-    
-    _tableView.tableFooterView = _loadingView.view;
+
 }
 
 @end

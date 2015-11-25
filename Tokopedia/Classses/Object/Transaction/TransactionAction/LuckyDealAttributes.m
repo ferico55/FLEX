@@ -24,7 +24,7 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"words"
                                                                             toKeyPath:@"words"
-                                                                          withMapping:[LuckyDealAttributes mapping]]];
+                                                                          withMapping:[LuckyDealWord mapping]]];
     return mapping;
     
 }

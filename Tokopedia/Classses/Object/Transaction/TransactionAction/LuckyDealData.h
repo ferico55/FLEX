@@ -11,8 +11,8 @@
 
 @interface LuckyDealData : NSObject <TKPObjectMapping>
 
-@property (strong, nonatomic) NSString *type;
-@property (strong, nonatomic) NSString *ld_id;
+@property NSInteger ld_id;
+@property NSInteger type;
 @property (strong, nonatomic) LuckyDealAttributes *attributes;
 
 @end
