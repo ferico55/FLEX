@@ -438,6 +438,7 @@
         [_noResultView setNoResultTitle:text];
         [_noResultView setNoResultDesc:desc];
         
+        _table.tableFooterView = nil;
         [_table addSubview:_noResultView];
     }
     
