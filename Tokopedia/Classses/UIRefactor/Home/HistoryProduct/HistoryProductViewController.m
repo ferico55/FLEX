@@ -19,8 +19,6 @@
 #import "NavigateViewController.h"
 #import "HistoryProduct.h"
 #import "ProductCell.h"
-#import "ProductDetail.h"
-#import "DetailProductResult.h"
 
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -59,7 +57,6 @@ typedef enum TagRequest {
     BOOL _isNoData;
     BOOL _isFailRequest;
     BOOL _isShowRefreshControl;
-    BOOL _needToRefresh;
     
     UIRefreshControl *_refreshControl;
     
@@ -128,19 +125,12 @@ typedef enum TagRequest {
     _networkManager.tagRequest = ProductTag;
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
-    
-    _needToRefresh = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.screenName = @"Home - History Product";
-    if(_needToRefresh){
-        [_networkManager doRequest];
-        [_collectionView reloadData];
-        [_collectionView layoutIfNeeded];
-    }
 }
 
 #pragma mark - Collection Delegate
@@ -221,7 +211,6 @@ typedef enum TagRequest {
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
