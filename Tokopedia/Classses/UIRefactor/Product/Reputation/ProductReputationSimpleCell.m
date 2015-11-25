@@ -8,6 +8,7 @@
 #import "ProductReputationSimpleCell.h"
 
 
+
 @implementation ProductReputationSimpleCell
 
 - (void)awakeFromNib {

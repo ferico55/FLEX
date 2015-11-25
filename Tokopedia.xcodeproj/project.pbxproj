@@ -10,6 +10,7 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		7A485A151C046321000C250F /* ProductReputationSimpleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A485A131C046321000C250F /* ProductReputationSimpleCell.m */; settings = {ASSET_TAGS = (); }; };
 		7A485A161C046321000C250F /* ProductReputationSimpleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A485A141C046321000C250F /* ProductReputationSimpleCell.xib */; settings = {ASSET_TAGS = (); }; };
+		7A485A1A1C0572EA000C250F /* EDStarRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A485A191C0572EA000C250F /* EDStarRating.m */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -1959,6 +1960,8 @@
 		7A485A121C046321000C250F /* ProductReputationSimpleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReputationSimpleCell.h; sourceTree = "<group>"; };
 		7A485A131C046321000C250F /* ProductReputationSimpleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReputationSimpleCell.m; sourceTree = "<group>"; };
 		7A485A141C046321000C250F /* ProductReputationSimpleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReputationSimpleCell.xib; sourceTree = "<group>"; };
+		7A485A181C0572EA000C250F /* EDStarRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EDStarRating.h; sourceTree = "<group>"; };
+		7A485A191C0572EA000C250F /* EDStarRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EDStarRating.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -4934,6 +4937,15 @@
 				C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7A485A171C0572EA000C250F /* StarRate */ = {
+			isa = PBXGroup;
+			children = (
+				7A485A181C0572EA000C250F /* EDStarRating.h */,
+				7A485A191C0572EA000C250F /* EDStarRating.m */,
+			);
+			path = StarRate;
 			sourceTree = "<group>";
 		};
 		7AF516A31C0422B900301FBC /* Classses */ = {
@@ -9930,6 +9942,7 @@
 		7AF522AA1C0422BC00301FBC /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7A485A171C0572EA000C250F /* StarRate */,
 				7AF522AB1C0422BC00301FBC /* Appsflyer */,
 				7AF522AE1C0422BC00301FBC /* GoogleTM */,
 				7AF522B41C0422BC00301FBC /* HPGrowingTextView.h */,
@@ -11657,6 +11670,7 @@
 				7AF526C11C0422BD00301FBC /* ShopHeaderViewController.m in Sources */,
 				7AF523761C0422BC00301FBC /* InboxReviewResult.m in Sources */,
 				7AF5263D1C0422BD00301FBC /* ReputationShopHeader.m in Sources */,
+				7A485A1A1C0572EA000C250F /* EDStarRating.m in Sources */,
 				7AF523681C0422BC00301FBC /* ResolutionDetailConversation.m in Sources */,
 				7AF5261E1C0422BC00301FBC /* GiveReviewViewController.m in Sources */,
 				7AF526D81C0422BD00301FBC /* ShopNotesPageViewController.m in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EDStarRating.h"
 
 @interface ProductReputationSimpleCell : UITableViewCell
 
@@ -18,7 +19,8 @@
 @property(nonatomic, weak) IBOutlet UILabel *reputationMessageLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationBuyerLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationDateLabel;
-@property(nonatomic, weak) IBOutlet UILabel *reputationScoreLabel;
+
+@property(nonatomic, weak) IBOutlet EDStarRating *reputationStarRating;
 
 @property(nonatomic, weak) IBOutlet UIImageView *reputationBuyerImage;
 

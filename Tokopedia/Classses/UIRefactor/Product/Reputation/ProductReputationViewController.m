@@ -263,7 +263,7 @@
                                                            context:nil];
     messageLabel.frame = sizeOfMessage;
     
-    CGFloat height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 10 + messageLabel.frame.size.height + 10;
+    CGFloat height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 20 + messageLabel.frame.size.height + 10;
     return height;
 
 }
@@ -304,7 +304,7 @@
     
     //set vertical origin of user view
     CGRect newFrame = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame;
-    newFrame.origin.y = sizeOfMessage.size.height + 10;
+    newFrame.origin.y = sizeOfMessage.size.height + 20;
     newFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
     ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame = newFrame;
     
@@ -333,13 +333,19 @@
     
     //add border bottom
     CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.frame = CGRectMake(0.0f, 43.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 1.0f);
+    bottomBorder.frame = CGRectMake(0.0f, 43.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 0.5f);
     bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
     [((ProductReputationSimpleCell*)cell).reputationBuyerView.layer addSublayer:bottomBorder];
     
     //add score
-    [((ProductReputationSimpleCell*)cell).reputationScoreLabel setText:reputationDetail.review_rate_product];
-i
+    EDStarRating *starRating = ((ProductReputationSimpleCell*)cell).reputationStarRating;
+    starRating.backgroundImage = nil;
+    starRating.starImage = [UIImage imageNamed:@"icon_star.png"];
+    starRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active.png"];
+    starRating.maxRating = 5.0;
+    starRating.horizontalMargin = 1.0;
+    starRating.rating = [reputationDetail.review_rate_product integerValue];
+    starRating.displayMode = EDStarRatingDisplayAccurate;
     
     return cell;
 }
