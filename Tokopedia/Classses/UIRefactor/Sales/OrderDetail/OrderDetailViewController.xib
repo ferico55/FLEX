@@ -37,6 +37,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -68,6 +69,7 @@
                 <outlet property="dropshipSenderPhoneLabel" destination="gwk-gN-t0r" id="QLx-kN-feZ"/>
                 <outlet property="dropshipView" destination="sS0-GQ-ltG" id="QhF-5M-1eP"/>
                 <outlet property="dropshipViewHeightConstraint" destination="Tj1-q5-p8W" id="ORn-ao-eGG"/>
+                <outlet property="getCodeButton" destination="KAK-Ys-cBe" id="0Ue-ip-irj"/>
                 <outlet property="infoAddFeeButton" destination="bAd-7t-tcO" id="IyS-Kh-0wZ"/>
                 <outlet property="insuranceTextLabel" destination="bhW-ta-Unf" id="tV3-YH-WM9"/>
                 <outlet property="invoiceDateLabel" destination="VbM-p4-974" id="Pdq-2v-AAV"/>
@@ -281,10 +283,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GN4-4l-kqv">
-                    <rect key="frame" x="14" y="315" width="290" height="21"/>
+                    <rect key="frame" x="14" y="315" width="100" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="89n-Hl-u9v"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="BaK-i7-ySM"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="BaK-i7-ySM"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
@@ -523,6 +525,19 @@
                         <action selector="tapInfoAddFee:" destination="-1" eventType="touchUpInside" id="cuf-8d-hni"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KAK-Ys-cBe">
+                    <rect key="frame" x="119" y="314" width="22" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="22" id="sAS-hk-2lL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="tapGetCode:" destination="-1" eventType="touchUpInside" id="Skw-8g-fZS"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -534,7 +549,6 @@
                 <constraint firstItem="Pcn-CJ-43P" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" constant="14" id="8KL-jc-kj6"/>
                 <constraint firstAttribute="trailing" secondItem="fIO-Ky-eEN" secondAttribute="trailing" constant="16" id="8vr-d0-VTH"/>
                 <constraint firstItem="1M2-2i-Dhl" firstAttribute="top" secondItem="oik-3H-xxu" secondAttribute="bottom" constant="1" id="9W4-t2-naU"/>
-                <constraint firstAttribute="trailing" secondItem="GN4-4l-kqv" secondAttribute="trailing" constant="16" id="9gj-4p-VYm"/>
                 <constraint firstItem="8oe-Eq-TBs" firstAttribute="top" secondItem="VmI-AM-ueI" secondAttribute="bottom" constant="9" id="Aok-VI-jPx"/>
                 <constraint firstItem="LFI-Rz-98f" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" constant="14" id="ChC-a4-ux4"/>
                 <constraint firstItem="wQG-Sw-wYK" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" constant="14" id="EWl-h9-v7Z"/>
@@ -546,10 +560,13 @@
                 <constraint firstItem="sS0-GQ-ltG" firstAttribute="top" secondItem="026-QA-05V" secondAttribute="bottom" id="ILW-2l-E4D"/>
                 <constraint firstItem="iMv-5r-Cvt" firstAttribute="top" secondItem="3dZ-CP-M6c" secondAttribute="bottom" constant="5" id="LDk-nW-QGk"/>
                 <constraint firstItem="Pcn-CJ-43P" firstAttribute="top" secondItem="BHc-3B-051" secondAttribute="bottom" constant="9" id="N1R-gD-Lbk"/>
+                <constraint firstItem="KAK-Ys-cBe" firstAttribute="centerY" secondItem="GN4-4l-kqv" secondAttribute="centerY" id="NbI-bt-bzc"/>
                 <constraint firstItem="hgK-hm-NHk" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" id="NkZ-B4-IV6"/>
+                <constraint firstItem="KAK-Ys-cBe" firstAttribute="bottom" secondItem="GN4-4l-kqv" secondAttribute="bottom" id="O5L-Vy-Rp6"/>
                 <constraint firstAttribute="trailing" secondItem="026-QA-05V" secondAttribute="trailing" id="O6X-MT-0Hm"/>
                 <constraint firstAttribute="trailing" secondItem="1M2-2i-Dhl" secondAttribute="trailing" constant="16" id="OQJ-b0-afh"/>
                 <constraint firstItem="pgv-sr-WVI" firstAttribute="top" secondItem="sS0-GQ-ltG" secondAttribute="bottom" constant="33" id="OaB-er-zyW"/>
+                <constraint firstItem="KAK-Ys-cBe" firstAttribute="leading" secondItem="GN4-4l-kqv" secondAttribute="trailing" constant="5" id="OsI-4c-wlQ"/>
                 <constraint firstItem="LFI-Rz-98f" firstAttribute="top" secondItem="1JG-jp-AFS" secondAttribute="bottom" constant="20" id="Oy8-yy-uRD"/>
                 <constraint firstItem="oik-3H-xxu" firstAttribute="top" secondItem="GN4-4l-kqv" secondAttribute="bottom" constant="16" id="REc-hW-CRm"/>
                 <constraint firstItem="sS0-GQ-ltG" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" id="Rf3-ml-l42"/>

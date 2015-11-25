@@ -72,6 +72,8 @@
     NSInteger _numberOfProcessedOrder;
     
     FilterShipmentConfirmationViewController *_filterController;
+    
+    OrderBooking *_orderBooking;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -328,6 +330,7 @@
     controller.transaction = [_orders objectAtIndex:indexPath.row];
     controller.delegate = self;
     controller.shipmentCouriers = _shipmentCouriers;
+    controller.booking = _orderBooking;
     
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -507,9 +510,20 @@
                                                                   API_ADDRESS_PROVINCE      : API_ADDRESS_PROVINCE,
                                                                   }];
     
+    RKObjectMapping *orderBookingMapping = [RKObjectMapping mappingForClass:[OrderBooking class]];
+    [orderBookingMapping addAttributeMappingsFromArray:@[@"shop_id",
+                                                         @"api_url",
+                                                         @"type",
+                                                         @"token",
+                                                          @"ut"]];
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_BOOKING_KEY
+                                                                                  toKeyPath:API_BOOKING_KEY
+                                                                                withMapping:orderBookingMapping]];
     
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_KEY
                                                                                   toKeyPath:API_ORDER_KEY
@@ -658,6 +672,8 @@
         }
         
         _uriNext =  newOrders.result.paging.uri_next;
+        
+        _orderBooking = newOrders.result.booking;
 
         NSURL *url = [NSURL URLWithString:_uriNext];
         NSArray* query = [[url query] componentsSeparatedByString: @"&"];

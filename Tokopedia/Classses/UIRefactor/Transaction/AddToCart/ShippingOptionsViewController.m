@@ -8,8 +8,18 @@
 
 #import "ShippingOptionsViewController.h"
 
-//@property (weak, nonatomic) IBOUTlet UILabel *shipmentNameLabel;
+@interface ShippingOptionsViewController ()
+<
+    UITextViewDelegate
+>
+{
+    
+}
 
+@property (nonatomic, weak) IBOutlet UILabel *shipmentName;
+@property (nonatomic, weak) IBOutlet UIImageView *autoResiLogo;
+
+@end
 
 @implementation ShippingOptionsViewController
 

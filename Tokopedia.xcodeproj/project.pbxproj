@@ -10,6 +10,13 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
 		62DB2AAD1BF1EB68003AE9C7 /* RPX.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DB2AAC1BF1EB68003AE9C7 /* RPX.m */; settings = {ASSET_TAGS = (); }; };
+		62DBC6EF1BFD789A00CF359D /* OrderBookingResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DBC6EE1BFD789A00CF359D /* OrderBookingResponse.m */; settings = {ASSET_TAGS = (); }; };
+		62DBC6F21BFD7A0100CF359D /* OrderBookingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DBC6F11BFD7A0100CF359D /* OrderBookingData.m */; settings = {ASSET_TAGS = (); }; };
+		62DEC5D21BFC7BA7004765FD /* OrderBooking.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DEC5D11BFC7BA7004765FD /* OrderBooking.m */; settings = {ASSET_TAGS = (); }; };
+		62E2DE761BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E2DE741BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		62E2DE771BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62E2DE751BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		62ED20651C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62ED20631C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		62ED20661C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62ED20641C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -1938,6 +1945,18 @@
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		62DB2AAB1BF1EB68003AE9C7 /* RPX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPX.h; sourceTree = "<group>"; };
 		62DB2AAC1BF1EB68003AE9C7 /* RPX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPX.m; sourceTree = "<group>"; };
+		62DBC6ED1BFD789A00CF359D /* OrderBookingResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderBookingResponse.h; sourceTree = "<group>"; };
+		62DBC6EE1BFD789A00CF359D /* OrderBookingResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderBookingResponse.m; sourceTree = "<group>"; };
+		62DBC6F01BFD7A0100CF359D /* OrderBookingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderBookingData.h; sourceTree = "<group>"; };
+		62DBC6F11BFD7A0100CF359D /* OrderBookingData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderBookingData.m; sourceTree = "<group>"; };
+		62DEC5D01BFC7BA7004765FD /* OrderBooking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderBooking.h; sourceTree = "<group>"; };
+		62DEC5D11BFC7BA7004765FD /* OrderBooking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderBooking.m; sourceTree = "<group>"; };
+		62E2DE731BFF1B0600731E31 /* TransactionShipmentATCTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionShipmentATCTableViewController.h; sourceTree = "<group>"; };
+		62E2DE741BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionShipmentATCTableViewController.m; sourceTree = "<group>"; };
+		62E2DE751BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionShipmentATCTableViewController.xib; sourceTree = "<group>"; };
+		62ED20621C02A988002CAA95 /* TransactionShipmentATCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionShipmentATCTableViewCell.h; sourceTree = "<group>"; };
+		62ED20631C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionShipmentATCTableViewCell.m; sourceTree = "<group>"; };
+		62ED20641C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionShipmentATCTableViewCell.xib; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6055,6 +6074,12 @@
 				85FF7BAC1BE9A5860015B16F /* WarehouseResponse.m */,
 				85FF7BAD1BE9A5860015B16F /* WarehouseResult.h */,
 				85FF7BAE1BE9A5860015B16F /* WarehouseResult.m */,
+				62DEC5D01BFC7BA7004765FD /* OrderBooking.h */,
+				62DEC5D11BFC7BA7004765FD /* OrderBooking.m */,
+				62DBC6ED1BFD789A00CF359D /* OrderBookingResponse.h */,
+				62DBC6EE1BFD789A00CF359D /* OrderBookingResponse.m */,
+				62DBC6F01BFD7A0100CF359D /* OrderBookingData.h */,
+				62DBC6F11BFD7A0100CF359D /* OrderBookingData.m */,
 			);
 			path = Sales;
 			sourceTree = "<group>";
@@ -8656,6 +8681,12 @@
 				85FF817F1BE9A5880015B16F /* TransactionATCViewController.h */,
 				85FF81801BE9A5880015B16F /* TransactionATCViewController.m */,
 				85FF81811BE9A5880015B16F /* TransactionATCViewController.xib */,
+				62E2DE731BFF1B0600731E31 /* TransactionShipmentATCTableViewController.h */,
+				62E2DE741BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m */,
+				62E2DE751BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib */,
+				62ED20621C02A988002CAA95 /* TransactionShipmentATCTableViewCell.h */,
+				62ED20631C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m */,
+				62ED20641C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib */,
 			);
 			path = AddToCart;
 			sourceTree = "<group>";
@@ -10228,6 +10259,7 @@
 				85FF8A9B1BE9A58B0015B16F /* icon_grid_dua.png in Resources */,
 				85FF8C031BE9A58B0015B16F /* icon_category.png in Resources */,
 				85FF88511BE9A58B0015B16F /* DetailProductViewController.xib in Resources */,
+				62ED20661C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib in Resources */,
 				85FF89D41BE9A58B0015B16F /* GothamBook.ttf in Resources */,
 				85FF8C4A1BE9A58B0015B16F /* icon_info_white.png in Resources */,
 				85FF88491BE9A58B0015B16F /* PriceAlertViewController.xib in Resources */,
@@ -10592,6 +10624,7 @@
 				85FF8BD91BE9A58B0015B16F /* logo_indomaret.png in Resources */,
 				85FF87B41BE9A58B0015B16F /* GeneralSwitchCell.xib in Resources */,
 				85FF8C651BE9A58B0015B16F /* MGSwipeTableCell.podspec in Resources */,
+				62E2DE771BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib in Resources */,
 				85FF89E51BE9A58B0015B16F /* icon_10@2x.png in Resources */,
 				85FF8BEA1BE9A58B0015B16F /* image-1.png in Resources */,
 				85FF8AEC1BE9A58B0015B16F /* icon_nav_arrow_down.png in Resources */,
@@ -11465,6 +11498,7 @@
 				85FF86BB1BE9A58A0015B16F /* TransactionSummary.m in Sources */,
 				85FF88711BE9A58B0015B16F /* ProductListMyShopViewController.m in Sources */,
 				85FF85F91BE9A58A0015B16F /* MyReviewReputationViewModel.m in Sources */,
+				62DBC6F21BFD7A0100CF359D /* OrderBookingData.m in Sources */,
 				85FF88811BE9A58B0015B16F /* ProductReputationCell.m in Sources */,
 				85FF888B1BE9A58B0015B16F /* PromoCollectionReusableView.m in Sources */,
 				85FF88AE1BE9A58B0015B16F /* ProductQuantityViewController.m in Sources */,
@@ -11484,6 +11518,7 @@
 				85FF86D81BE9A58A0015B16F /* TxOrderPaymentEditBankAccount.m in Sources */,
 				85FF864B1BE9A58A0015B16F /* OrderProduct.m in Sources */,
 				85FF892C1BE9A58B0015B16F /* ShopNotesPageViewController.m in Sources */,
+				62E2DE761BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m in Sources */,
 				85FF85381BE9A58A0015B16F /* NSUserDefaultCategory.m in Sources */,
 				85FF85E81BE9A58A0015B16F /* LikeDislikePostResult.m in Sources */,
 				85FF866C1BE9A58A0015B16F /* EtalaseList.m in Sources */,
@@ -11518,6 +11553,7 @@
 				85FF88381BE9A58B0015B16F /* MyShopShipmentViewController.m in Sources */,
 				85FF87F51BE9A58B0015B16F /* InboxResolutionCenterOpenViewController.m in Sources */,
 				85FF86111BE9A58A0015B16F /* ProductTalkForm.m in Sources */,
+				62DBC6EF1BFD789A00CF359D /* OrderBookingResponse.m in Sources */,
 				85FF86C91BE9A58A0015B16F /* TxOrderConfirmed.m in Sources */,
 				85FF85351BE9A58A0015B16F /* NSString+HTML.m in Sources */,
 				85FF893D1BE9A58B0015B16F /* FilterLocationViewCell.m in Sources */,
@@ -11673,6 +11709,7 @@
 				85FF858A1BE9A58A0015B16F /* ShopStats.m in Sources */,
 				85FF85B41BE9A58A0015B16F /* InboxMessageDetailBetween.m in Sources */,
 				85FF89521BE9A58B0015B16F /* TrackOrderViewController.m in Sources */,
+				62DEC5D21BFC7BA7004765FD /* OrderBooking.m in Sources */,
 				85FF863F1BE9A58A0015B16F /* ResponseSpeed.m in Sources */,
 				85FF87941BE9A58B0015B16F /* DepositFormViewController.m in Sources */,
 				85FF88461BE9A58B0015B16F /* PriceAlertCell.m in Sources */,
@@ -11990,6 +12027,7 @@
 				85FF86BF1BE9A58A0015B16F /* Veritrans.m in Sources */,
 				85FF85851BE9A58A0015B16F /* ReviewList.m in Sources */,
 				85FF87FB1BE9A58B0015B16F /* ResolutionCenterDetailViewController.m in Sources */,
+				62ED20651C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				85FF895C1BE9A58B0015B16F /* TransactionCartFormMandiriClickPayViewController.m in Sources */,
 				85FF85491BE9A58A0015B16F /* CreatePassword.m in Sources */,
 				85FF873A1BE9A58A0015B16F /* CatalogProductViewController.m in Sources */,

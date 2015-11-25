@@ -20,11 +20,17 @@
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 #import "NavigateViewController.h"
-
+#import "TokopediaNetworkManager.h"
 #import "AlertInfoView.h"
+#import "OrderBookingData.h"
+#import "OrderBookingResponse.h"
 
 #define CTagAddress 2
 #define CTagPhone 3
+
+typedef enum TagRequest {
+    OrderDetailTag
+} TagRequest;
 
 @interface OrderDetailViewController ()
 <
@@ -35,7 +41,8 @@ ProductQuantityDelegate,
 ChooseProductDelegate,
 RejectExplanationDelegate,
 SubmitShipmentConfirmationDelegate,
-CancelShipmentConfirmationDelegate
+CancelShipmentConfirmationDelegate,
+TokopediaNetworkManagerDelegate
 >
 {
     NSDictionary *_textAttributes;
@@ -67,6 +74,7 @@ CancelShipmentConfirmationDelegate
 @property (weak, nonatomic) IBOutlet LabelMenu *phoneNumberLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *courierAgentLabel;
+@property (weak, nonatomic) IBOutlet UIButton *getCodeButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *paymentMethodLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalProductLabel;
@@ -88,14 +96,21 @@ CancelShipmentConfirmationDelegate
 @property (weak, nonatomic) IBOutlet UIButton *infoAddFeeButton;
 @property (weak, nonatomic) IBOutlet UILabel *insuranceTextLabel;
 
+@property (strong, nonatomic) UITapGestureRecognizer *singleTapGestureRecognizer;
+
 @end
 
-@implementation OrderDetailViewController
+@implementation OrderDetailViewController {
+    __weak RKObjectManager *_objectManager;
+    TokopediaNetworkManager *_networkManager;
+}
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
@@ -194,9 +209,15 @@ CancelShipmentConfirmationDelegate
     [_countryLabel sizeToFit];
     
     _phoneNumberLabel.text = _transaction.order_destination.receiver_phone;
-    _courierAgentLabel.text = [NSString stringWithFormat:@"%@ - %@",
+    _courierAgentLabel.text = [NSString stringWithFormat:@"%@ (%@)",
                                _transaction.order_shipment.shipment_name,
                                _transaction.order_shipment.shipment_product];
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    _networkManager.tagRequest = OrderDetailTag;
+    _networkManager.isUsingHmac = YES;
+    [_networkManager doRequest];
     
     _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
     
@@ -346,6 +367,8 @@ CancelShipmentConfirmationDelegate
                                                _tableView.contentInset.right,
                                                _tableView.contentInset.bottom + _addressLabel.frame.size.height,
                                                _tableView.contentInset.left);
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -627,6 +650,15 @@ CancelShipmentConfirmationDelegate
     [alertInfo show];
 }
 
+- (IBAction)tapGetCode:(id)sender {
+    _courierAgentLabel.text = [[NSString stringWithFormat:@"%@ (%@)",
+                                         _transaction.order_shipment.shipment_name,
+                                         _transaction.order_shipment.shipment_product] stringByAppendingString:@" - Loading..."];
+    [_getCodeButton setHidden:YES];
+    _getCodeButton.enabled = NO;
+    [_networkManager doRequest];
+}
+
 #pragma mark - Alert delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -862,4 +894,130 @@ CancelShipmentConfirmationDelegate
         [UIPasteboard generalPasteboard].string = _phoneNumberLabel.text;
     }
 }
+
+#pragma mark - Tokopedia Network Delegate
+
+- (NSDictionary *)getParameter:(int)tag {
+    NSDictionary *parameter = [[NSDictionary alloc]
+                               initWithObjectsAndKeys:_booking.shop_id, @"shopid",
+                               _booking.type, @"type",
+                               _booking.token, @"token",
+                               _booking.ut, @"ut",
+                               _transaction.order_detail.detail_order_id, @"orders",
+                               nil];
+    return parameter;
+}
+
+- (NSString *)getPath:(int)tag {
+    NSURL *url = [NSURL URLWithString:_booking.api_url];
+    NSString *urlPathComponents = [NSString stringWithFormat:@"%@/%@",
+                         url.pathComponents[1],
+                         url.pathComponents[2]];
+    
+    return urlPathComponents;
+//    return @"https://kero-staging.tokopedia.com/booking/v1";
+}
+
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    OrderBookingResponse *list = stat;
+    
+    return list.Status;
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
+}
+
+- (id)getObjectManager:(int)tag {
+    // initialize RestKit
+    NSURL *url = [NSURL URLWithString:_booking.api_url];
+    NSString *urlHost = [NSString stringWithFormat:@"%@://%@/",
+                         url.scheme,
+                         url.host];
+    
+    _objectManager = [RKObjectManager sharedClient:urlHost];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[OrderBookingResponse class]];
+    [statusMapping addAttributeMappingsFromArray:@[@"Status"]];
+    
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[OrderBookingData class]];
+    
+    [dataMapping addAttributeMappingsFromDictionary:@{@"id":@"booking_id",
+                                                      @"type":@"type",
+                                                      @"status":@"status",
+                                                      @"order_id":@"order_id",
+                                                      @"tiket_code":@"tiket_code"}];
+    
+    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
+    [statusMapping addPropertyMapping:dataRel];
+    
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:OrderDetailTag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManager addResponseDescriptor:responseDescriptorStatus];
+    
+    return _objectManager;
+}
+
+- (void)actionBeforeRequest:(int)tag {
+    
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    OrderBookingResponse *response = [result objectForKey:@""];
+    
+    NSMutableAttributedString *kurir = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)",
+                                                                                          _transaction.order_shipment.shipment_name,
+                                                                                          _transaction.order_shipment.shipment_product]];
+    NSString *code = ((OrderBookingData*)response.data[0]).tiket_code;
+    
+    NSAttributedString *text;
+    
+    _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGetCode:)];
+    _singleTapGestureRecognizer.numberOfTapsRequired = 1;
+    
+    if([code isEqualToString:@"try again"]) {
+        text = [[NSAttributedString alloc] initWithString:code attributes:@{
+                                                                            NSForegroundColorAttributeName:[UIColor colorWithRed:(62.0/255.0) green:(170.0/255.0) blue:(36.0/255.0) alpha:(255.0/255.0)],
+                                                                            NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0]
+                                                                            }];
+        [_getCodeButton setImage:[UIImage imageNamed:@"icon_pesan_ulang.png"] forState:UIControlStateNormal];
+        [_getCodeButton setHidden:NO];
+        _getCodeButton.enabled = YES;
+        
+        [_courierAgentLabel addGestureRecognizer:_singleTapGestureRecognizer];
+        [_courierAgentLabel setUserInteractionEnabled:YES];
+        _singleTapGestureRecognizer.cancelsTouchesInView = NO;
+        _singleTapGestureRecognizer.enabled = YES;
+    } else {
+        text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+        [_getCodeButton setHidden:YES];
+        _getCodeButton.enabled = NO;
+        
+        [_courierAgentLabel removeGestureRecognizer:_singleTapGestureRecognizer];
+        [_courierAgentLabel setUserInteractionEnabled:NO];
+        _singleTapGestureRecognizer.enabled = NO;
+        [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
+    }
+    
+    NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];
+    
+    [kurir appendAttributedString:dash];
+    [kurir appendAttributedString:text];
+    
+    _courierAgentLabel.attributedText = kurir;
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
+}
+
 @end
