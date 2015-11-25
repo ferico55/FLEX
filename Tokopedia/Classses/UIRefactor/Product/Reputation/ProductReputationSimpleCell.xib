@@ -51,7 +51,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015, Nov 08" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IuD-ZD-AYv">
-                                        <rect key="frame" x="40" y="15" width="122" height="21"/>
+                                        <rect key="frame" x="40" y="15" width="175" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
@@ -80,7 +80,7 @@
                 <animations/>
             </tableViewCellContentView>
             <animations/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="listReputationView" destination="yYy-Aj-QdB" id="eNN-0x-kei"/>
                 <outlet property="reputationBuyerImage" destination="c7y-ur-cul" id="v7H-sd-RY9"/>

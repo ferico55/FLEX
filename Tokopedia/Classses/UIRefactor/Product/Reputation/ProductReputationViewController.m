@@ -300,6 +300,7 @@
                                                            options:NSStringDrawingUsesLineFragmentOrigin
                                                         attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
                                                            context:nil];
+    sizeOfMessage.size.width = [UIScreen mainScreen].bounds.size.width-20;
     messageLabel.frame = sizeOfMessage;
     
     //set vertical origin of user view
@@ -319,7 +320,8 @@
     ((ProductReputationSimpleCell*)cell).listReputationView.frame = reputationViewFrame;
     
     [((ProductReputationSimpleCell*)cell).reputationBuyerLabel setText:reputationDetail.review_user_name];
-    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:@"Oct 2015"];
+//    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:reputationDetail.review_create_time];
+    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:@"2015, Oct 7"];
     
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:reputationDetail.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     ((ProductReputationSimpleCell*)cell).reputationBuyerImage.image = nil;
@@ -332,11 +334,15 @@
     } failure:nil];
     
     //add border bottom
-    CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.frame = CGRectMake(0.0f, 43.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 0.5f);
-    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
-    [((ProductReputationSimpleCell*)cell).reputationBuyerView.layer addSublayer:bottomBorder];
-    
+    if(indexPath.row != arrList.count - 1) {
+        CALayer *bottomBorder = [CALayer layer];
+        bottomBorder.frame = CGRectMake(0.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 0.5f);
+        
+        bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
+        [((ProductReputationSimpleCell*)cell).reputationBuyerView.layer addSublayer:bottomBorder];
+        
+    }
+
     //add score
     EDStarRating *starRating = ((ProductReputationSimpleCell*)cell).reputationStarRating;
     starRating.backgroundImage = nil;
