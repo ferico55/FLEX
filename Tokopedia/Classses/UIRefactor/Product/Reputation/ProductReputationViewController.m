@@ -321,7 +321,7 @@
     
     [((ProductReputationSimpleCell*)cell).reputationBuyerLabel setText:reputationDetail.review_user_name];
 //    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:reputationDetail.review_create_time];
-    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:@"2015, Oct 7"];
+    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:reputationDetail.review_create_time];
     
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:reputationDetail.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     ((ProductReputationSimpleCell*)cell).reputationBuyerImage.image = nil;
