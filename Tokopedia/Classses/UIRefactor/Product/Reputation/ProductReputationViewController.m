@@ -31,10 +31,11 @@
 #import "TotalLikeDislikePost.h"
 #import "TotalLikeDislike.h"
 #import "TokopediaNetworkManager.h"
+#import "ProductReputationSimpleCell.h"
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, productReputationDelegate, CMPopTipViewDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, SmileyDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -97,6 +98,9 @@
     [viewStarThree addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarFour addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarFive addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
+    
+    UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
+    [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -244,15 +248,24 @@
     return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-    DetailReputationReview *detailReputationReview = [arrList objectAtIndex:indexPath.row];
-    [self setPropertyLabelDesc:tempLabel];
-    [self initLabelDesc:tempLabel withText:detailReputationReview.review_message];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    
+    DetailReputationReview *reputationDetail = arrList[indexPath.row];
+    UILabel *messageLabel = ((ProductReputationSimpleCell*)cell).reputationMessageLabel;
+    
+    [messageLabel setText:reputationDetail.review_message];
+    [messageLabel sizeToFit];
+    
+    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                           context:nil];
+    messageLabel.frame = sizeOfMessage;
+    
+    CGFloat height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 10 + messageLabel.frame.size.height + 10;
+    return height;
 
-    CGSize tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width-(CPaddingTopBottom*4), 9999)];//4 padding left and right of label description
-    return tempSizeDesc.height + (CPaddingTopBottom*8) + CHeightDate + CHeightContentRate + CHeightContentAction + CheightImage; //8 is total padding of each row component
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -265,97 +278,68 @@
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    ProductReputationCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
-    if(cell == nil) {
-        NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
-        cell = [tempArr objectAtIndex:0];
-        cell.delegate = self;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.frame = CGRectMake(0, 0, self.view.bounds.size.width, cell.bounds.size.height);
-        [self setPropertyLabelDesc:cell.getLabelDesc];
-    }
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
-    cell.getBtnRateEmoji.tag = cell.getBtnChat.tag = cell.getBtnDisLike.tag = cell.getBtnLike.tag = cell.getBtnMore.tag = cell.getLabelDesc.tag = indexPath.row;
-    DetailReputationReview *detailReputationReview = [arrList objectAtIndex:indexPath.row];
+    //count label height dynamically
+    DetailReputationReview *reputationDetail = arrList[indexPath.row];
+    UILabel *messageLabel = ((ProductReputationSimpleCell*)cell).reputationMessageLabel;
     
-    //Set chat total
-    if(auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]) {
-        [cell.getBtnChat setHidden:NO];
-        if(detailReputationReview.review_response.response_message==nil || [detailReputationReview.review_response.response_message isEqualToString:@"0"]) {
-            [cell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", detailReputationReview.review_response.response_message==nil? @"0":detailReputationReview.review_response.response_message] forState:UIControlStateNormal];
-        }
-        else {
-            [cell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
-        }
-    }
-    else {
-        [cell.getBtnChat setHidden:YES];
-    }
+    [messageLabel setText:reputationDetail.review_message];
+    [messageLabel sizeToFit];
     
+    //set label attribute
+    NSString *labelText = reputationDetail.review_message;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:5];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
+    messageLabel.attributedText = attributedString ;
     
-    //Chek my product or not
-    cell.getBtnMore.hidden = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.review_user_id]);
-
+    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                           context:nil];
+    messageLabel.frame = sizeOfMessage;
     
-    //Set Image
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:detailReputationReview.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [cell.getImageProfile setImageWithURLRequest:request placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_profile_picture" ofType:@"jpeg"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [cell.getImageProfile setImage:image];
-#pragma clang diagnostic pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    //set vertical origin of user view
+    CGRect newFrame = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame;
+    newFrame.origin.y = sizeOfMessage.size.height + 10;
+    newFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
+    ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame = newFrame;
     
+    //set star position
+    CGRect starFrame = ((ProductReputationSimpleCell*)cell).reputationStarView.frame;
+    starFrame.origin.x = [UIScreen mainScreen].bounds.size.width - (starFrame.size.width + 30);
+    ((ProductReputationSimpleCell*)cell).reputationStarView.frame = starFrame;
     
+    //set wrapper viewheight
+    CGRect reputationViewFrame = ((ProductReputationSimpleCell*)cell).listReputationView.frame;
+    reputationViewFrame.size.height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 10 + messageLabel.frame.size.height;
+    ((ProductReputationSimpleCell*)cell).listReputationView.frame = reputationViewFrame;
     
+    [((ProductReputationSimpleCell*)cell).reputationBuyerLabel setText:reputationDetail.review_user_name];
+    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:@"Oct 2015"];
     
-    //Set like dislike total
-    [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-    [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:reputationDetail.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    ((ProductReputationSimpleCell*)cell).reputationBuyerImage.image = nil;
     
-    if([dictLikeDislike objectForKey:detailReputationReview.review_id]) {
-        [cell setHiddenViewLoad:YES];
+    [((ProductReputationSimpleCell*)cell).reputationBuyerImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [((ProductReputationSimpleCell*)cell).reputationBuyerImage setImage:image];
+        ((ProductReputationSimpleCell*)cell).reputationBuyerImage.layer.cornerRadius = ((ProductReputationSimpleCell*)cell).reputationBuyerImage.frame.size.width/2;
+        ((ProductReputationSimpleCell*)cell).reputationBuyerImage.clipsToBounds = YES;
         
-        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:detailReputationReview.review_id];
-        [cell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like forState:UIControlStateNormal];
-        [cell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
-        
-        if(totalLikeDislike.like_status!=nil && [totalLikeDislike.like_status isEqualToString:@"1"]) {
-            [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
-            [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
-        }
-        else if(totalLikeDislike.like_status!=nil && [totalLikeDislike.like_status isEqualToString:@"2"]) {
-            [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
-            [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-        }
-    }
-    else {
-        [cell setHiddenViewLoad:NO];
-        if(! [loadingLikeDislike objectForKey:detailReputationReview.review_id]) {
-            [loadingLikeDislike setObject:detailReputationReview.review_id forKey:detailReputationReview.review_id];
-            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[detailReputationReview, [NSNumber numberWithInt:(int)indexPath.row]]];
-        }
-    }
+    } failure:nil];
     
-    //Set data
-    [cell setPercentage:detailReputationReview.review_user_reputation.positive_percentage];
-
-    if(detailReputationReview.review_user_reputation.no_reputation!=nil && [detailReputationReview.review_user_reputation.no_reputation isEqualToString:@"1"]) {
-        [cell.getBtnRateEmoji setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-    else {
-        [cell.getBtnRateEmoji setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-
+    //add border bottom
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.frame = CGRectMake(0.0f, 43.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 1.0f);
+    bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
+    [((ProductReputationSimpleCell*)cell).reputationBuyerView.layer addSublayer:bottomBorder];
     
-    [cell setLabelUser:detailReputationReview.review_user_name withUserLabel:detailReputationReview.review_user_label];
-    [cell setLabelDate:detailReputationReview.review_create_time];
-    [cell setDescription:detailReputationReview.review_message];
-    [cell setImageKualitas:[detailReputationReview.review_rate_product intValue]];
-    [cell setImageAkurasi:[detailReputationReview.review_rate_accuracy intValue]];
+    //add score
+    [((ProductReputationSimpleCell*)cell).reputationScoreLabel setText:reputationDetail.review_rate_product];
+i
     
     return cell;
 }
