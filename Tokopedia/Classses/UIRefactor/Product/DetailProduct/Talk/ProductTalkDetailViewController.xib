@@ -9,7 +9,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -25,7 +24,6 @@
                 <outlet property="productNameLabel" destination="UoQ-Vj-9Za" id="T1J-bI-rpd"/>
                 <outlet property="sendButton" destination="I0F-UY-vER" id="7tO-er-RDg"/>
                 <outlet property="table" destination="S8B-WM-3ht" id="xZQ-8t-qEz"/>
-                <outlet property="talkCommentButtonLarge" destination="Lxr-Dx-vQX" id="2LV-Wk-H3u"/>
                 <outlet property="talkInputView" destination="0qe-6u-X0z" id="XAk-Pf-HJZ"/>
                 <outlet property="talkProductImage" destination="Q1p-YP-EgQ" id="daw-We-20o"/>
                 <outlet property="talkcreatetimelabel" destination="QNb-hk-ntS" id="OIM-22-oY4"/>
@@ -136,7 +134,7 @@
             <point key="canvasLocation" x="-275" y="214"/>
         </view>
         <view contentMode="scaleToFill" id="Q5y-vh-dqD">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYu-H3-nWH" userLabel="User View">
@@ -215,14 +213,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fs7-ML-uQy" userLabel="Product View">
                     <rect key="frame" x="15" y="80" width="290" height="100"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Olh-a7-2Vc" userLabel="Border">
-                            <rect key="frame" x="0.0" y="99" width="290" height="1"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="1bR-ma-NGV"/>
-                            </constraints>
-                        </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q1p-YP-EgQ">
                             <rect key="frame" x="0.0" y="15" width="70" height="70"/>
                             <animations/>
@@ -259,42 +249,19 @@
                         <constraint firstItem="M7G-5x-Pba" firstAttribute="top" secondItem="UoQ-Vj-9Za" secondAttribute="bottom" constant="4" id="2AO-kG-iWh"/>
                         <constraint firstItem="M7G-5x-Pba" firstAttribute="leading" secondItem="Q1p-YP-EgQ" secondAttribute="trailing" constant="10" id="2b7-xp-KLg"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="KQm-wp-aAW"/>
-                        <constraint firstAttribute="bottom" secondItem="Olh-a7-2Vc" secondAttribute="bottom" id="LfB-eq-qsp"/>
-                        <constraint firstItem="Olh-a7-2Vc" firstAttribute="top" relation="lessThanOrEqual" secondItem="M7G-5x-Pba" secondAttribute="bottom" constant="43" id="M8P-kK-2AX"/>
                         <constraint firstItem="UoQ-Vj-9Za" firstAttribute="top" secondItem="Fs7-ML-uQy" secondAttribute="top" constant="15" id="O78-Tz-lwu"/>
                         <constraint firstItem="Q1p-YP-EgQ" firstAttribute="leading" secondItem="Fs7-ML-uQy" secondAttribute="leading" id="TJk-qf-Dff"/>
                         <constraint firstAttribute="trailing" secondItem="UoQ-Vj-9Za" secondAttribute="trailing" id="fAR-IY-7Xr"/>
-                        <constraint firstItem="Olh-a7-2Vc" firstAttribute="leading" secondItem="Fs7-ML-uQy" secondAttribute="leading" id="igr-jS-JeX"/>
                         <constraint firstItem="UoQ-Vj-9Za" firstAttribute="leading" secondItem="Q1p-YP-EgQ" secondAttribute="trailing" constant="10" id="kY2-gI-O4K"/>
-                        <constraint firstAttribute="trailing" secondItem="Olh-a7-2Vc" secondAttribute="trailing" id="sbU-Fr-ZBl"/>
                         <constraint firstItem="Q1p-YP-EgQ" firstAttribute="top" secondItem="Fs7-ML-uQy" secondAttribute="top" constant="15" id="wcQ-nt-WUJ"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xev-14-hBn" userLabel="Button View">
-                    <rect key="frame" x="0.0" y="180" width="320" height="40"/>
-                    <subviews>
-                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lxr-Dx-vQX">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
-                            <animations/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="3ha-5B-wbY"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                            <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Komentar" image="icon_diskusi_comment_grey.png">
-                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                        </button>
-                    </subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Olh-a7-2Vc" userLabel="Border">
+                    <rect key="frame" x="0.0" y="179" width="320" height="1"/>
                     <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstItem="Lxr-Dx-vQX" firstAttribute="top" secondItem="Xev-14-hBn" secondAttribute="top" id="1eh-JG-sob"/>
-                        <constraint firstItem="Lxr-Dx-vQX" firstAttribute="leading" secondItem="Xev-14-hBn" secondAttribute="leading" id="D7Z-do-3B3"/>
-                        <constraint firstAttribute="height" constant="40" id="VCe-v8-Gq8"/>
-                        <constraint firstAttribute="bottom" secondItem="Lxr-Dx-vQX" secondAttribute="bottom" id="edM-Vp-azi"/>
-                        <constraint firstAttribute="trailing" secondItem="Lxr-Dx-vQX" secondAttribute="trailing" id="zRv-ti-5Wh"/>
+                        <constraint firstAttribute="height" constant="1" id="1bR-ma-NGV"/>
                     </constraints>
                 </view>
             </subviews>
@@ -302,22 +269,21 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="RYu-H3-nWH" firstAttribute="leading" secondItem="Q5y-vh-dqD" secondAttribute="leading" id="7QJ-CH-hnF"/>
-                <constraint firstItem="Xev-14-hBn" firstAttribute="top" secondItem="Fs7-ML-uQy" secondAttribute="bottom" id="7qa-EN-efd"/>
-                <constraint firstAttribute="bottom" secondItem="Xev-14-hBn" secondAttribute="bottom" priority="250" id="8lq-Hc-I8m"/>
                 <constraint firstItem="Fs7-ML-uQy" firstAttribute="top" secondItem="RYu-H3-nWH" secondAttribute="bottom" id="9dM-qH-Z9n"/>
+                <constraint firstItem="Olh-a7-2Vc" firstAttribute="leading" secondItem="Q5y-vh-dqD" secondAttribute="leading" id="MiL-it-gXd"/>
                 <constraint firstItem="Fs7-ML-uQy" firstAttribute="leading" secondItem="Q5y-vh-dqD" secondAttribute="leading" constant="15" id="NOD-jl-3Sf"/>
                 <constraint firstAttribute="trailing" secondItem="Fs7-ML-uQy" secondAttribute="trailing" constant="15" id="Wpd-RN-XyO"/>
                 <constraint firstItem="RYu-H3-nWH" firstAttribute="top" secondItem="Q5y-vh-dqD" secondAttribute="top" id="g65-Ba-g5w"/>
-                <constraint firstItem="Xev-14-hBn" firstAttribute="leading" secondItem="Q5y-vh-dqD" secondAttribute="leading" id="kxW-3N-Sqf"/>
-                <constraint firstAttribute="trailing" secondItem="Xev-14-hBn" secondAttribute="trailing" id="nJM-9P-owK"/>
+                <constraint firstAttribute="trailing" secondItem="Olh-a7-2Vc" secondAttribute="trailing" id="mwm-MZ-4AH"/>
                 <constraint firstAttribute="trailing" secondItem="RYu-H3-nWH" secondAttribute="trailing" id="sZQ-GN-emN"/>
+                <constraint firstAttribute="bottom" secondItem="Fs7-ML-uQy" secondAttribute="bottom" id="xrh-G7-YXd"/>
+                <constraint firstAttribute="bottom" secondItem="Olh-a7-2Vc" secondAttribute="bottom" id="yXs-E8-OTB"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-245" y="370.5"/>
         </view>
     </objects>
     <resources>
-        <image name="icon_diskusi_comment_grey.png" width="14" height="14"/>
         <image name="icon_smile_small.png" width="14" height="14"/>
     </resources>
 </document>
