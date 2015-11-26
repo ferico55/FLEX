@@ -263,7 +263,7 @@
                                                            context:nil];
     messageLabel.frame = sizeOfMessage;
     
-    CGFloat height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 20 + messageLabel.frame.size.height + 10;
+    CGFloat height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 40 + messageLabel.frame.size.height ;
     return height;
 
 }
