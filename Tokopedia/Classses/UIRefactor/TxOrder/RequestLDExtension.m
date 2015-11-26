@@ -58,7 +58,10 @@
 {
     if (tag == TagRequestMemberExtend) {
         NSURL *url = [NSURL URLWithString:_stringURL];
-        NSString *baseURL = [NSString stringWithFormat:@"%@://%@:%@",[url scheme],[url host],[url port]];
+        //TODO:: REMOVE PORT
+//        NSString *baseURL = [NSString stringWithFormat:@"%@://%@:%@",[url scheme],[url host],[url port]];
+        NSString *baseURL = [NSString stringWithFormat:@"%@://%@",[url scheme],[url host]];
+
         return [MappingLDExtension objectManagerMemberExtendBaseURL:baseURL];
     }
      return nil;

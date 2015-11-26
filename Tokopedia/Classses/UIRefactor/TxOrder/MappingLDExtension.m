@@ -27,7 +27,9 @@ static RKObjectManager *_objectManager = nil;
     [_objectManager addResponseDescriptor:responseDescriptor];
     _objectManager.requestSerializationMIMEType = RKMIMETypeJSON;
     
-    return  _objectManager;
+    [_objectManager.responseDescriptors containsObject:responseDescriptor];
+    
+     return  _objectManager;
 }
 
 @end

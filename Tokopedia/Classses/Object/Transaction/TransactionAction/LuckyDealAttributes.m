@@ -14,7 +14,8 @@
     NSArray *keys = @[@"token",
                       @"extid",
                       @"code",
-                      @"ut"
+                      @"ut",
+                      @"success"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

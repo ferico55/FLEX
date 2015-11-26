@@ -873,7 +873,7 @@
             [alert show];
         }
         
-        if (![order.result.ld isEqual:@{}] && order.result.ld) {
+        if (order.result.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = order.result.ld;
             [_requestLD doRequestMemberExtendURLString:order.result.ld.url];
@@ -1180,7 +1180,7 @@
     else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
         [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
-        [_navigate popUpLuckyDeal:_worlds];
+        if(_isNeedPopUpLD)[_navigate popUpLuckyDeal:_worlds];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {
