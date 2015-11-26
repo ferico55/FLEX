@@ -760,7 +760,7 @@
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                               url:url
-                                                                                           anchor:tableView];
+                                                                                           anchor:[tableView cellForRowAtIndexPath:indexPath]];
             
             [self presentViewController:controller animated:YES completion:nil];
         }
