@@ -39,6 +39,15 @@
 
 - (void)awakeFromNib
 {
+    lblMessageRetur.linkAttributes = @{
+                                       (id)kCTForegroundColorAttributeName:[
+                                                                            UIColor colorWithRed:10/255.0f
+                                                                            green:126/255.0f
+                                                                            blue:7/255.0f
+                                                                            alpha:1.0f],
+                                       NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+    lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    
     _categorybuttons = [NSArray sortViewsWithTagInArray:_categorybuttons];
     self.productInformationView.layer.borderWidth = 0.5f;
     self.productInformationView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
@@ -64,27 +73,15 @@
 #pragma mark - Method
 - (void)setLblDescriptionToko:(NSString *)strText
 {
-    lblMessageRetur.linkAttributes = @{
-                                       (id)kCTForegroundColorAttributeName:[
-                                                                            UIColor colorWithRed:10/255.0f
-                                                                            green:126/255.0f
-                                                                            blue:7/255.0f
-                                                                            alpha:1.0f],
-                                       NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
-    lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-    
     float labelHeight = 29;
     
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
-    
     [self setLblRetur:strText];
 }
 
 - (void)hiddenViewRetur
 {
     constraintHeightViewRetur.constant = 0;
-    [imgRetur removeConstraints:imgRetur.constraints];
-    [imgRetur addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[imgRetur(==0)]" options:0 metrics:0 views:NSDictionaryOfVariableBindings(imgRetur)]];
 }
 
 - (void)setLblRetur:(NSString *)str
