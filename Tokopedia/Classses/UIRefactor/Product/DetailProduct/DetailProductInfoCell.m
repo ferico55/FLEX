@@ -64,33 +64,18 @@
 #pragma mark - Method
 - (void)setLblDescriptionToko:(NSString *)strText
 {
-    if(lblMessageRetur == nil) {
-        lblMessageRetur = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-        lblMessageRetur.textAlignment = NSTextAlignmentLeft;
-        lblMessageRetur.font = [UIFont fontWithName:CFont_Gotham_Book size:11.0f];
-        lblMessageRetur.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
-        lblMessageRetur.lineBreakMode = NSLineBreakByWordWrapping;
-        lblMessageRetur.numberOfLines = 0;
-        lblMessageRetur.backgroundColor = [UIColor clearColor];
-        lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-        lblMessageRetur.linkAttributes = @{
-                           (id)kCTForegroundColorAttributeName:[
-                                                                UIColor colorWithRed:10/255.0f
-                                                                green:126/255.0f
-                                                                blue:7/255.0f
-                                                                alpha:1.0f],
-                           NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
-        [viewRetur addSubview:lblMessageRetur];
-    }
+    lblMessageRetur.linkAttributes = @{
+                                       (id)kCTForegroundColorAttributeName:[
+                                                                            UIColor colorWithRed:10/255.0f
+                                                                            green:126/255.0f
+                                                                            blue:7/255.0f
+                                                                            alpha:1.0f],
+                                       NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+    lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
     
+    float labelHeight = 29;
     
-    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText withColor:[UIColor whiteColor] withFont:FONT_GOTHAM_BOOK_14 withAlignment:NSTextAlignmentLeft];
-    
-    lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+15,
-                                   CPaddingTopDescToko,
-                                   ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width) - 15,
-                                   height);
-    constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
+    constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
     
     [self setLblRetur:strText];
 }

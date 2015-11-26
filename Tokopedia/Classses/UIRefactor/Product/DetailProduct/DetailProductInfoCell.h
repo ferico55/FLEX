@@ -24,7 +24,7 @@
 {
     IBOutlet NSLayoutConstraint *constraintHeightViewRetur;
     IBOutlet NSLayoutConstraint *constraintWidthViewRetur;
-    TTTAttributedLabel *lblMessageRetur;
+    IBOutlet TTTAttributedLabel *lblMessageRetur;
     IBOutlet UIView *viewRetur;
     IBOutlet UIImageView *imgRetur;
 }
