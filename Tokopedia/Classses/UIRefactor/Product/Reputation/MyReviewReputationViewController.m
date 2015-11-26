@@ -798,6 +798,9 @@
         detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
         detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
         detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
+        [detailMyReviewReputationViewController onReputationIconTapped:^void() {
+            [self performSelector:@selector(actionFlagReview:) withObject:detailMyReviewReputationViewController];
+        }];
 
         
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
