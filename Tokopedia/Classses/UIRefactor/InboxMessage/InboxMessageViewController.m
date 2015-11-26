@@ -22,6 +22,9 @@
 #import "SmileyAndMedal.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "NoResultReusableView.h"
+#import "TAGDataLayer.h"
+
 
 @interface InboxMessageViewController ()
 <
@@ -108,7 +111,7 @@ typedef enum TagRequest {
     __weak RKManagedObjectRequestOperation *_requestarchive;
     __weak RKManagedObjectRequestOperation *_requesttrash;
     NSOperationQueue *_operationQueue;
-    NoResultView *_noresult;
+    NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
     EncodeDecoderManager *_encodeDecodeManager;
     TokopediaNetworkManager *_networkManager;
@@ -138,6 +141,14 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markAsReadMessage:) name:@"markAsReadMessage" object:nil];
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [_noResultView generateAllElements:nil
+                                 title:@""
+                                  desc:@""
+                              btnTitle:nil];
+}
+
 #pragma mark - UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -161,6 +172,7 @@ typedef enum TagRequest {
     /** set first page become 1 **/
     _page = 1;
     [self initNotification];
+    [self initNoResultView];
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -222,14 +234,6 @@ typedef enum TagRequest {
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Method
-- (NoResultView *)getNoResult {
-    if(_noresult == nil) {
-        _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 200)];
-    }
-    
-    return _noresult;
-}
 
 #pragma mark - IBAction
 - (IBAction)tap:(id)sender {
@@ -1067,9 +1071,27 @@ typedef enum TagRequest {
             _isnodata = NO;
             _urinext =  message.result.paging.uri_next;
             _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+            [_noResultView removeFromSuperview];
         } else {
             _isnodata = YES;
-            _table.tableFooterView = [self getNoResult];
+            //_table.tableFooterView = _noResultView;
+            NSString *text;
+            NSString *currentCategory = [_data objectForKey:@"nav"];
+            
+            if(_keyword != nil && ![_keyword isEqualToString:@""]){
+                text = [NSString stringWithFormat:@"Pesan dengan keyword \"%@\" tidak ditemukan.", _keyword];
+            }else if([currentCategory isEqualToString:@"inbox-message"]){
+                text = @"Belum ada pesan";
+            }else if([currentCategory isEqualToString:@"inbox-message-sent"]){
+                text = @"Belum ada pesan terkirim";
+            }else if([currentCategory isEqualToString:@"inbox-message-archive"]){
+                text = @"Belum ada pesan diarsipkan";
+            }else if([currentCategory isEqualToString:@"inbox-message-trash"]){
+                text = @"Belum ada pesan dihapus";
+            }
+            [_noResultView setNoResultTitle:text];
+            _table.tableHeaderView = _searchView;
+            _table.tableFooterView = _noResultView;
         }
         
         if(_refreshControl.isRefreshing) {
@@ -1132,7 +1154,8 @@ typedef enum TagRequest {
 
 
 - (void)configureGTM {
-    [TPAnalytics trackUserId];
+    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
+    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

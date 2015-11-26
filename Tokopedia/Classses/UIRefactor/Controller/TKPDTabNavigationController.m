@@ -112,6 +112,10 @@
                                              selector:@selector(setTabShopActive)
                                                  name:@"setTabShopActive"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeNavigationTitle:)
+                                                 name:@"changeNavigationTitle"
+                                               object:nil];
     
 }
 
@@ -634,6 +638,10 @@
     } else {
         _segmentcontrol.selectedSegmentIndex = 1;
     }
+}
+- (void)changeNavigationTitle:(NSNotification*)notification {
+    NSString *title = [notification object];
+    self.navigationItem.title = [title capitalizedString];
 }
 
 @end

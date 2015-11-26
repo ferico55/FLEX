@@ -27,6 +27,8 @@
 #import "LoadingView.h"
 #import "ShopReputation.h"
 #import "SmileyAndMedal.h"
+#import "ShopReputation.h"
+#import "NoResultReusableView.h"
 
 #import "TagManagerHandler.h"
 
@@ -50,7 +52,9 @@
     InboxResolutionCenterComplainCellDelegate,
     LoadingViewDelegate,
     CMPopTipViewDelegate,
-    TokopediaNetworkManagerDelegate>
+    TokopediaNetworkManagerDelegate,
+    NoResultDelegate
+>
 {
     NavigateViewController *_navigate;
     NSMutableArray *_list;
@@ -91,10 +95,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 @end
 
-@implementation InboxResolutionCenterComplainViewController
+@implementation InboxResolutionCenterComplainViewController{
+    NoResultReusableView *_noResultView;
+}
 
 -(instancetype)init{
     _list = [NSMutableArray new];
@@ -107,6 +114,15 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManagerCancelComplain = [TokopediaNetworkManager new];
     return self;
+}
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Tidak Ada Komplain"
+                                  desc:@""
+                              btnTitle:nil];
 }
 
 - (void)viewDidLoad {
@@ -138,7 +154,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didChangePreferredContentSize:)
                                                  name:UIContentSizeCategoryDidChangeNotification object:nil];
-
+    [self initNoResultView];
     _tableView.estimatedRowHeight = 70.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
@@ -715,8 +731,14 @@
             }
             else
             {
-                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
-                _tableView.tableFooterView = noResultView;
+                if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Semua Status"]){
+                    [_noResultView setNoResultTitle:@"Tidak ada komplain"];
+                }else if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Belum dibaca"]){
+                    [_noResultView setNoResultTitle:@"Tidak ada komplain"];
+                }else if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Sudah dibaca"]){
+                    [_noResultView setNoResultTitle:@"Tidak ada komplain"];
+                }
+                _tableView.tableFooterView = _noResultView;
             }
             
             [_tableView reloadData];

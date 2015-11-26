@@ -130,23 +130,32 @@
                                                  selector:@selector(updateProfilePicture:)
                                                      name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                    object:nil];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateShopPicture:)
                                                      name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
                                                    object:nil];
-        
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(didReceiveDeeplinkUrl:)
-//                                                     name:@"didReceiveDeeplinkUrl" object:nil];
-        
-    }
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateShopPicture:)
+                                                     name:EDIT_SHOP_AVATAR_NOTIFICATION_NAME
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateShopInformation)
+                                                     name:@"shopCreated"
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(navigateToContactUs:)
+                                                     name:@"navigateToContactUs" object:nil];
+}
     return self;
 }
 
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
@@ -195,7 +204,7 @@
     _loadingSaldo.hidden = NO;
     
     [self updateSaldoTokopedia:nil];
-    [self setShopImage];
+    [self updateShopInformation];
     [self configureGTM];
 }
 
@@ -402,10 +411,14 @@
     [secureStorage setKeychainWithValue:strAvatar withKey:@"shop_avatar"];
     _auth = [[secureStorage keychainDictionary] mutableCopy];
     
-    [self setShopImage];
+    [self updateShopInformation];
 }
 
-- (void)setShopImage {
+- (void)updateShopInformation {
+    
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
     
     UserAuthentificationManager *authManager = [UserAuthentificationManager new];
     NSURL *profilePictureURL = [NSURL URLWithString:[authManager.getUserLoginData objectForKey:@"user_image"]];
@@ -426,6 +439,7 @@
         }
         
         NSString *strAvatar = [[_auth objectForKey:@"shop_avatar"] isMemberOfClass:[NSString class]]? [_auth objectForKey:@"shop_avatar"] : [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_avatar"]];
+        
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:strAvatar]
                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                   timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -435,7 +449,6 @@
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                           //NSLOG(@"thumb: %@", thumb);
                                            [_shopImageView setImage:image];
 #pragma clang diagnostic pop
                                        } failure: nil];
@@ -451,6 +464,7 @@
             _shopIsGoldLabel.text = @"Regular Merchant";
         }
     }
+    [self.tableView reloadData];
 }
 
 
@@ -471,48 +485,6 @@
 
 - (void)updateImageURL {
     [[self getNetworkManager:CTagProfileInfo] doRequest];
-}
-
-- (void)updateKeyChain
-{
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
-    
-    if([_auth objectForKey:@"shop_id"]) {
-        _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
-        
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
-                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        
-        [_shopImageView setImageWithURLRequest:request
-                              placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
-                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                           //NSLOG(@"thumb: %@", thumb);
-                                           [_shopImageView setImage:image];
-#pragma clang diagnostic pop
-                                       } failure: nil];
-        
-        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
-            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
-                                         _shopIsGoldLabel.frame.origin.y,
-                                         22, 22);
-            [_shopCell addSubview:imageView];
-            _shopIsGoldLabel.text = @"        Gold Merchant";
-        } else {
-            _shopIsGoldLabel.text = @"Regular Merchant";
-            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-            shopIsGoldLabelFrame.origin.x = 83;
-            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
-            _shopIsGoldLabel.text = @"";
-        }
-        
-        [self.tableView reloadData];
-    }
 }
 
 #pragma mark - Table view data source
@@ -948,6 +920,17 @@
 
 - (void)tapWindowBar {
     [_notifManager tapWindowBar];
+}
+
+- (void)navigateToContactUs:(NSNotification*)notification{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:kGAIScreenName value:@"New Contact Us"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
+    ContactUsWebViewController *controller = [ContactUsWebViewController new];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Notification delegate

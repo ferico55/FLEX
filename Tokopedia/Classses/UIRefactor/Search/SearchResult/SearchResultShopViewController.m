@@ -26,18 +26,21 @@
 #import "NSDictionaryCategory.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 
 #import "URLCacheController.h"
 #import "ShopContainerViewController.h"
+#import "SpellCheckRequest.h"
 
-@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, NoResultDelegate,SpellCheckRequestDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 
 -(void)cancel;
 -(void)loadData;
@@ -52,6 +55,7 @@
 {
     NSInteger _page;
     NSInteger _limit;
+    NoResultReusableView *_noResultView;
     
     NSMutableArray *_urlarray;
     NSMutableDictionary *_params;
@@ -77,6 +81,7 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    NSString *_suggestion;
 }
 
 #pragma mark - Initialization
@@ -90,6 +95,16 @@
     }
     return self;
 }
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"no-result.png"
+                                 title:@"Oops..... Hasil pencarian tidak ditemukan"
+                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
+                              btnTitle:@""];
+}
+
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad
@@ -114,6 +129,8 @@
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
+    
+    [self initNoResultView];
     
     /** set table footer view (loading act) **/
     if (_product.count > 0) {
@@ -147,14 +164,20 @@
     _cachecontroller.URLCacheInterval = 0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
+    self.contentView = self.view;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
-                                               object:nil];    
+                                               object:nil];
+    
+    _spellCheckRequest = [SpellCheckRequest new];
+    _spellCheckRequest.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    _suggestion = @"";
     
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
@@ -414,12 +437,13 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    _table.tableFooterView = [NoResultView new].view;
-                }
-                
-                if (_product.count >0) {
-                    _table.tableFooterView = nil;
+                    [_spellCheckRequest getSpellingSuggestion:@"shop" query:[_data objectForKey:@"search"] category:@"0"];
+                    
+                    self.view = _noResultView;
+                }else{
+                    self.view = self.contentView;
                     _urinext =  _searchitem.result.paging.uri_next;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
                     
                     NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
                     if(tempInt == _page)
@@ -583,7 +607,13 @@
     [_act startAnimating];
 }
 
+#pragma mark - No Result Delegate
 
+- (void) buttonDidTapped:(id)sender{
+    [_params setObject:_suggestion forKey:@"search"];
+    self.view = self.contentView;
+    [[self getNetworkManager] doRequest];
+}
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton
@@ -719,6 +749,23 @@
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
+}
+
+#pragma mark - Spell Check Delegate
+
+-(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
+    _suggestion = suggestion;
+    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain"];
+        [_noResultView hideButton:YES];
+    }else if([_data count] > 3){
+        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+        [_noResultView hideButton:YES];
+    }else{
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultButtonTitle:_suggestion];
+        [_noResultView hideButton:NO];
+    }
 }
 
 @end

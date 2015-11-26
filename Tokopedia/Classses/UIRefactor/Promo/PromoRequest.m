@@ -266,7 +266,9 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     if (tag == PromoNetworkManagerGet) {
         if ([self.delegate respondsToSelector:@selector(didReceivePromo:)]) {
             if (response.result.list.count > 0) {
-                [TPAnalytics trackPromoImpression:response.result.list];
+                if (_requestType != PromoRequestTypeShopFeed) {
+                    [TPAnalytics trackPromoImpression:response.result.list];
+                }
                 [self.delegate didReceivePromo:response.result.list];
             } else {
                 [self.delegate didReceivePromo:nil];

@@ -16,12 +16,15 @@
 #import "string_inbox_ticket.h"
 #import "TKPDTabViewController.h"
 #import "InboxTicketDetailViewController.h"
+#import "NoResultReusableView.h"
+#import "ContactUsWebViewController.h"
 
 @interface InboxTicketViewController ()
 <
     TokopediaNetworkManagerDelegate,
     TKPDTabViewDelegate,
-    InboxTicketDetailDelegate
+    InboxTicketDetailDelegate,
+NoResultDelegate
 >
 {
     TokopediaNetworkManager *_networkManager;
@@ -34,10 +37,12 @@
     NSInteger _currentTabMenuIndex;
     NSInteger _currentTabSegmentIndex;
 }
-
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
 
-@implementation InboxTicketViewController
+@implementation InboxTicketViewController{
+    NoResultReusableView *_noResultView;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -68,11 +73,23 @@
                                              selector:@selector(reloadDataSource:)
                                                  name:TKPDTabNotification
                                                object:nil];
-    
+    self.contentView = self.view;
+    [self initNoResultView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Anda tidak mempunyai tiket di Layanan Pengguna"
+                                  desc:@""
+                              btnTitle:@"Halaman Bantuan"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddTicket:) name:@"didAddTicket" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveTicket:) name:@"didRemoveTicket" object:nil];
 }
 
 #pragma mark - Table view data source
@@ -301,15 +318,49 @@
     [_tickets addObjectsFromArray: inboxTicket.result.list];
     
     if (_tickets.count > 0) {
+        //self.view = _contentView;
+        
         _uriNext =  inboxTicket.result.paging.uri_next;
         if (![_uriNext isEqualToString:@"0"]) {
             _page = [[_networkManager splitUriToPage:_uriNext] integerValue];
         }
         self.tableView.tableFooterView = nil;
     } else {
-        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
-        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-        self.tableView.tableFooterView = noResultView;
+        
+        if([_filter isEqualToString:@"unread"]){
+            if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else{
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua tiket bantuan"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }
+        }else{
+            if(self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed){
+                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan yang sudah ditutup"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else if(self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess){
+                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan dalam proses"];
+                [_noResultView setNoResultDesc:@""];
+                [_noResultView hideButton:YES];
+            }else{
+                [_noResultView setNoResultTitle:@"Tidak ada tiket bantuan"];
+                [_noResultView setNoResultDesc:@"Butuh informasi dan bantuan yang lebih lengkap? Anda bisa cari di halaman bantuan kami"];
+                [_noResultView hideButton:NO];
+                [_noResultView setNoResultButtonTitle:@"Hubungi Kami"];
+            }
+        }
+        [_noResultView removeFromSuperview];
+        [_noResultView layoutIfNeeded];
+        self.tableView.tableFooterView = _noResultView;
+        //self.view = _noResultView;
     }
     
     [self.tableView reloadData];
@@ -327,6 +378,12 @@
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+}
+
+#pragma mark - No Result Delegate
+
+- (void)buttonDidTapped:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToContactUs" object:nil];
 }
 
 #pragma mark - Inbox detail delegate
@@ -368,6 +425,10 @@
         [_networkManager requestCancel];
         [_networkManager doRequest];
     }
+}
+
+- (void)didAddTicket:(NSNotification*)notification {
+    self.view = _contentView;
 }
 
 @end

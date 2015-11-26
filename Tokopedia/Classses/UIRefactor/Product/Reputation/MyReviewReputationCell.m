@@ -208,13 +208,13 @@
     // set right smiley
 
     btnReview.userInteractionEnabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
-    if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreBad]) {
+    if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreBad]) {
         [btnReview setImage:imageSad forState:UIControlStateNormal];
     }
-    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreNetral]) {
+    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreNeutral]) {
         [btnReview setImage:imageNetral forState:UIControlStateNormal];
     }
-    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CRevieweeScroreGood]) {
+    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreGood]) {
         btnReview.userInteractionEnabled = NO;
         [btnReview setImage:imageSmile forState:UIControlStateNormal];
     }
@@ -244,22 +244,23 @@
         strScore = object.seller_score;
     }
     
-    
-    // if show_reviewee_score 1 or 4, then show smiley and click
-    // if show_reviewee_score 2 or 5, tanda ? biru, satu lagi yg, dia udah kasih, tapi gw belum
-    // if show_reviewee_score 3 or 6, tanda ? abu2, doi blum kasih
-    
-    // set left icon smiley
-    if([object.show_reviewee_score isEqualToString:@"1"] || [object.show_reviewee_score isEqualToString:@"4"]) {
-        if([strScore isEqualToString:CRevieweeScroreBad]) {
+    //Set icon smiley
+    if(([object.seller_score isEqualToString:CReviewScoreBad] || [object.seller_score isEqualToString:CReviewScoreNeutral] || [object.seller_score isEqualToString:CReviewScoreGood]) && (([object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreGood]))) {
+        if([strScore isEqualToString:CReviewScoreBad]) {
             imageFlagReview.image = imageQBad;
         }
-        else if([strScore isEqualToString:CRevieweeScroreNetral]) {
+        else if([strScore isEqualToString:CReviewScoreNeutral]) {
             imageFlagReview.image = imageQNetral;
         }
-        else if([strScore isEqualToString:CRevieweeScroreGood]) {
+        else if([strScore isEqualToString:CReviewScoreGood]) {
             imageFlagReview.image = imageQSmile;
-        } else {
+        }
+    }
+    else {
+        if([strScore isEqualToString:CReviewScoreBad] || [strScore isEqualToString:CReviewScoreNeutral] || [strScore isEqualToString:CReviewScoreGood]) {
+            imageFlagReview.image = imageQuestionBlue;
+        }
+        else {
             imageFlagReview.image = imageQuestionGray;
         }
     }
