@@ -846,6 +846,7 @@
     }
 }
 
+//this function called when user tap RED HEART button, with intention to UNFAVORITE a shop
 - (IBAction)favoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
@@ -853,11 +854,11 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:nil];
     }
 }
 
-
+//this function called when user tap WHITE HEART button, with intention to FAVORITE a shop
 - (IBAction)unfavoriteTap:(id)sender {
     if(_requestFavorite.isExecuting) return;
     
@@ -865,7 +866,7 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
     }else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
