@@ -873,7 +873,7 @@
             [alert show];
         }
         
-        if (![order.result.ld isEqual:@{}]) {
+        if (![order.result.ld isEqual:@{}] && order.result.ld) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = order.result.ld;
             [_requestLD doRequestMemberExtendURLString:order.result.ld.url];
