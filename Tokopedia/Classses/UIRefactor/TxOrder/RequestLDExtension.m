@@ -25,21 +25,21 @@
 {
     _stringURL = urlString;
     //TODO:: REMOVE THIS
-    if (_delegate && [_delegate respondsToSelector:@selector(showPopUpLuckyDeal:)]) {
-        LuckyDeal *ld = [LuckyDeal new];
-        LuckyDealAttributes *att = [LuckyDealAttributes new];
-        LuckyDealData *data = [LuckyDealData new];
-        LuckyDealWord *words = [LuckyDealWord new];
-        words.notify_buyer = @"1";
-        words.content_buyer_1 = @"Masa berlaku Lucky Buyer Anda diperpanjang hingga 5 hari";
-        words.content_buyer_2 = @"Terus belanja di Lucky Merchant dan dapatkan cashback up to 5%";
-        words.link = @"https://www.tokopedia.com/lucky-deal";
-        att.success = @"1";
-        att.words = words;
-        data.attributes = att;
-        [_delegate showPopUpLuckyDeal:words];
-    }
-//    [[self networkManagerMemberExtend] doRequest];
+//    if (_delegate && [_delegate respondsToSelector:@selector(showPopUpLuckyDeal:)]) {
+//        LuckyDeal *ld = [LuckyDeal new];
+//        LuckyDealAttributes *att = [LuckyDealAttributes new];
+//        LuckyDealData *data = [LuckyDealData new];
+//        LuckyDealWord *words = [LuckyDealWord new];
+//        words.notify_buyer = @"1";
+//        words.content_buyer_1 = @"Masa berlaku Lucky Buyer Anda diperpanjang hingga 5 hari";
+//        words.content_buyer_2 = @"Terus belanja di Lucky Merchant dan dapatkan cashback up to 5%";
+//        words.link = @"https://www.tokopedia.com/lucky-deal";
+//        att.success = @"1";
+//        att.words = words;
+//        data.attributes = att;
+//        [_delegate showPopUpLuckyDeal:words];
+//    }
+    [[self networkManagerMemberExtend] doRequest];
 }
 
 -(TokopediaNetworkManager*)networkManagerMemberExtend;

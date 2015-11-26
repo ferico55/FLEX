@@ -177,15 +177,15 @@
 //
     
     //TODO:: REMOVE THIS
-    _requestLD = [RequestLDExtension new];
-    _requestLD.delegate = self;
+//    _requestLD = [RequestLDExtension new];
+//    _requestLD.delegate = self;
 //    _requestLD.luckyDeal = ld;
-    [_requestLD doRequestMemberExtendURLString:@""];
-    UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertSuccess show];
-    alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-    [self refreshRequest];
-    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+//    [_requestLD doRequestMemberExtendURLString:@""];
+//    UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alertSuccess show];
+//    alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+//    [self refreshRequest];
+//    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
