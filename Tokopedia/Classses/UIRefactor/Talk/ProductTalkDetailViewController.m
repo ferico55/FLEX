@@ -518,8 +518,10 @@
     [_talkmessagelabel sizeToFit];
 
     CGFloat currentLabelHeight = _talkmessagelabel.frame.size.height;
-    CGFloat differenceLabelHeight = currentLabelHeight - previouseLabelHeight + 15; // 15 for padding
-    
+    CGFloat paddingBottom = -20;
+    // add 10 for padding bottom
+    if (currentLabelHeight < 70) paddingBottom = 10;
+    CGFloat differenceLabelHeight = currentLabelHeight - previouseLabelHeight + paddingBottom;
     CGRect headerFrame = _header.frame;
     headerFrame.size.height += differenceLabelHeight;
     self.header.frame = headerFrame;
