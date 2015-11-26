@@ -72,6 +72,14 @@
         lblMessageRetur.lineBreakMode = NSLineBreakByWordWrapping;
         lblMessageRetur.numberOfLines = 0;
         lblMessageRetur.backgroundColor = [UIColor clearColor];
+        lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+        lblMessageRetur.linkAttributes = @{
+                           (id)kCTForegroundColorAttributeName:[
+                                                                UIColor colorWithRed:10/255.0f
+                                                                green:126/255.0f
+                                                                blue:7/255.0f
+                                                                alpha:1.0f],
+                           NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
         [viewRetur addSubview:lblMessageRetur];
     }
     
@@ -83,6 +91,8 @@
                                    ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width) - 15,
                                    height);
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
+    
+    [self setLblRetur:strText];
 }
 
 - (void)hiddenViewRetur
