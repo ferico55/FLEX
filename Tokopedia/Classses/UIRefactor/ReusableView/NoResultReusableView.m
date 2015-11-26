@@ -40,9 +40,11 @@
     [self setNoResultTitle:title];
     [self setNoResultDesc:desc];
     if(btnTitle != nil){
+        _button.layer.cornerRadius = 3;
         [self hideButton:NO];
         [self setNoResultButtonTitle:btnTitle];
     }else{
+        
         [self hideButton:YES];
     }
 }
