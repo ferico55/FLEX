@@ -76,17 +76,12 @@
     float labelHeight = 29;
     
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
-    [self setLblRetur:strText];
+    lblMessageRetur.text = strText;
 }
 
 - (void)hiddenViewRetur
 {
     constraintHeightViewRetur.constant = 0;
-}
-
-- (void)setLblRetur:(NSString *)str
-{
-    lblMessageRetur.text = str;
 }
 
 - (TTTAttributedLabel *)getLblRetur
