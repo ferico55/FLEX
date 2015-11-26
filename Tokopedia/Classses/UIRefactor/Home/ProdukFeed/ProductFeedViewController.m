@@ -419,6 +419,8 @@ NoResultDelegate
     } else {
         // no data at all
         _isNoData = YES;
+        [_product removeAllObjects];
+        [_collectionView reloadData];
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         [_collectionView addSubview:_noResultView];
         //[self setView:_noResultView];
@@ -475,6 +477,8 @@ NoResultDelegate
     }
     //self.view = _contentView;
     [_noResultView removeFromSuperview];
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
 }
 
 - (void)removeFavoriteShop:(NSNotification*)notification{
