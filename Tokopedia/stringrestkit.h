@@ -62,7 +62,6 @@
 #define TKPD_FOLLOW_TALK_ACTION @"follow_product_talk"
 #define TKPD_DELETE_TALK_ACTION @"delete_product_talk"
 
-
 /** string for review */
 #define INBOX_REVIEW_API_PATH @"inbox-review.pl"
 #define REVIEW_PRODUCT_IMG @"review_product_image"

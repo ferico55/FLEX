@@ -1057,19 +1057,24 @@
             NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
             [_talkCommentButtonLarge setTitle:totalcomment forState:UIControlStateNormal];
             
-            TalkCommentList *commentlist = _list[_list.count-1];
-            commentlist.is_just_sent = NO;
-            commentlist.comment_id = commentaction.result.comment_id;
-            commentlist.comment_user_id= [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
-            
+            TalkCommentList *comment = _list[_list.count-1];
+            comment.is_just_sent = NO;
+            comment.comment_id = commentaction.result.comment_id;
+            comment.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+
             if([dictCell objectForKey:@"-1"]) {
                 [dictCell removeObjectForKey:@"-1"];
             }
             
-            NSDictionary *userinfo;
-            userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
+            NSDictionary *userInfo = @{
+                TKPD_TALK_TOTAL_COMMENT  : @(_list.count)?:0,
+                kTKPDDETAIL_DATAINDEXKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
+                TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
+            };
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:userinfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
+                                                                object:nil
+                                                              userInfo:userInfo];
             
         }
     }
@@ -1371,9 +1376,19 @@
                     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
                     [stickyAlertView show];
                     
-                    [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%d Komentar", (int)_list.count?:0] forState:UIControlStateNormal];
-                    NSDictionary *userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:userinfo];
+                    NSString *title = [NSString stringWithFormat:@"%d Komentar", (int)_list.count?:0];
+                    [_talkCommentButtonLarge setTitle:title
+                                             forState:UIControlStateNormal];
+                    
+                    NSDictionary *userinfo = @{
+                        TKPD_TALK_TOTAL_COMMENT : @(_list.count)?:0,
+                        kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
+                        TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
+                    };
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
+                                                                        object:nil
+                                                                      userInfo:userinfo];
                 }
             }
         }
