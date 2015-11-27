@@ -876,6 +876,7 @@
         if (order.result.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = order.result.ld;
+            _requestLD.delegate = self;
             [_requestLD doRequestMemberExtendURLString:order.result.ld.url];
         }
     }
