@@ -254,6 +254,7 @@ static NSInteger userViewHeight = 70;
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@""];
     [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [tableContent addSubview:refreshControl];
+    [tableContent setContentInset:UIEdgeInsetsMake(0, 0, 40, 0)];
     tableContent.tableHeaderView = viewHeader;
 }
 
