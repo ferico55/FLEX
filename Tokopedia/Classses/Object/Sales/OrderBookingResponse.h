@@ -12,7 +12,7 @@
 
 @interface OrderBookingResponse : NSObject
 
-@property (nonatomic, strong) NSString *Status;
+@property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSArray *data;
 
 @end
