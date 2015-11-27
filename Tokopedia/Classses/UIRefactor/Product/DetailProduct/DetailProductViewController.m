@@ -60,7 +60,6 @@
 #import "ProductAddEditViewController.h"
 
 #import "DetailProductOtherView.h"
-
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"

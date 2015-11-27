@@ -1918,8 +1918,14 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB7F020A1C08472800C3B161 /* SendOTPResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F02091C08472800C3B161 /* SendOTPResult.m */; settings = {ASSET_TAGS = (); }; };
+		BB7F020D1C08475800C3B161 /* SendOTP.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F020C1C08475800C3B161 /* SendOTP.m */; settings = {ASSET_TAGS = (); }; };
 		BBAA1BA11C055E3F00E8D1F9 /* PhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAA1B9F1C055E3F00E8D1F9 /* PhoneVerificationViewController.m */; settings = {ASSET_TAGS = (); }; };
 		BBAA1BA21C055E3F00E8D1F9 /* PhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBAA1BA01C055E3F00E8D1F9 /* PhoneVerificationViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		BBC7BAFE1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC7BAFC1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m */; settings = {ASSET_TAGS = (); }; };
+		BBC7BAFF1C06E8F8005A28EE /* HelloPhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBC7BAFD1C06E8F8005A28EE /* HelloPhoneVerificationViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		BBC7BB031C08095B005A28EE /* AlertPhoneVerification.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC7BB001C08095B005A28EE /* AlertPhoneVerification.m */; settings = {ASSET_TAGS = (); }; };
+		BBC7BB041C08095B005A28EE /* AlertPhoneVerification.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBC7BB021C08095B005A28EE /* AlertPhoneVerification.xib */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -4822,9 +4828,19 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BB7F02081C08472800C3B161 /* SendOTPResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendOTPResult.h; sourceTree = "<group>"; };
+		BB7F02091C08472800C3B161 /* SendOTPResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendOTPResult.m; sourceTree = "<group>"; };
+		BB7F020B1C08475800C3B161 /* SendOTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendOTP.h; sourceTree = "<group>"; };
+		BB7F020C1C08475800C3B161 /* SendOTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendOTP.m; sourceTree = "<group>"; };
 		BBAA1B9E1C055E3F00E8D1F9 /* PhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerificationViewController.h; sourceTree = "<group>"; };
 		BBAA1B9F1C055E3F00E8D1F9 /* PhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerificationViewController.m; sourceTree = "<group>"; };
 		BBAA1BA01C055E3F00E8D1F9 /* PhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerificationViewController.xib; sourceTree = "<group>"; };
+		BBC7BAFB1C06E8F8005A28EE /* HelloPhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloPhoneVerificationViewController.h; sourceTree = "<group>"; };
+		BBC7BAFC1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloPhoneVerificationViewController.m; sourceTree = "<group>"; };
+		BBC7BAFD1C06E8F8005A28EE /* HelloPhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelloPhoneVerificationViewController.xib; sourceTree = "<group>"; };
+		BBC7BB001C08095B005A28EE /* AlertPhoneVerification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertPhoneVerification.m; sourceTree = "<group>"; };
+		BBC7BB011C08095B005A28EE /* AlertPhoneVerification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertPhoneVerification.h; sourceTree = "<group>"; };
+		BBC7BB021C08095B005A28EE /* AlertPhoneVerification.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertPhoneVerification.xib; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
@@ -5110,6 +5126,7 @@
 		7AF516EE1C0422B900301FBC /* Activation */ = {
 			isa = PBXGroup;
 			children = (
+				BB7F02071C08472800C3B161 /* PhoneVerification */,
 				7AF516EF1C0422B900301FBC /* Create Password */,
 				7AF516F41C0422B900301FBC /* Login */,
 				7AF516F91C0422B900301FBC /* Logout */,
@@ -6924,6 +6941,9 @@
 		7AF51ADE1C0422BA00301FBC /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				BBC7BB001C08095B005A28EE /* AlertPhoneVerification.m */,
+				BBC7BB011C08095B005A28EE /* AlertPhoneVerification.h */,
+				BBC7BB021C08095B005A28EE /* AlertPhoneVerification.xib */,
 				7AF51ADF1C0422BA00301FBC /* AlertBaseUrl.h */,
 				7AF51AE01C0422BA00301FBC /* AlertBaseUrl.m */,
 				7AF51AE11C0422BA00301FBC /* AlertBaseUrl.xib */,
@@ -10006,12 +10026,26 @@
 			path = XYPieChart;
 			sourceTree = "<group>";
 		};
+		BB7F02071C08472800C3B161 /* PhoneVerification */ = {
+			isa = PBXGroup;
+			children = (
+				BB7F020B1C08475800C3B161 /* SendOTP.h */,
+				BB7F020C1C08475800C3B161 /* SendOTP.m */,
+				BB7F02081C08472800C3B161 /* SendOTPResult.h */,
+				BB7F02091C08472800C3B161 /* SendOTPResult.m */,
+			);
+			path = PhoneVerification;
+			sourceTree = "<group>";
+		};
 		BBAA1B9D1C055D7A00E8D1F9 /* PhoneVerification */ = {
 			isa = PBXGroup;
 			children = (
 				BBAA1B9E1C055E3F00E8D1F9 /* PhoneVerificationViewController.h */,
 				BBAA1B9F1C055E3F00E8D1F9 /* PhoneVerificationViewController.m */,
 				BBAA1BA01C055E3F00E8D1F9 /* PhoneVerificationViewController.xib */,
+				BBC7BAFB1C06E8F8005A28EE /* HelloPhoneVerificationViewController.h */,
+				BBC7BAFC1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m */,
+				BBC7BAFD1C06E8F8005A28EE /* HelloPhoneVerificationViewController.xib */,
 			);
 			path = PhoneVerification;
 			sourceTree = "<group>";
@@ -10439,6 +10473,7 @@
 				7AF528F71C0422BD00301FBC /* icon_sad50@2x.png in Resources */,
 				7AF525D21C0422BC00301FBC /* MyShopEtalaseFilterViewController.xib in Resources */,
 				7AF529021C0422BD00301FBC /* icon_search_active@2x.png in Resources */,
+				BBC7BB041C08095B005A28EE /* AlertPhoneVerification.xib in Resources */,
 				7AF529CA1C0422BD00301FBC /* ic_cart@2x.png in Resources */,
 				7AF528301C0422BD00301FBC /* icon_diskusi_grey_medium@2x.png in Resources */,
 				7AF529CF1C0422BD00301FBC /* ic_more.png in Resources */,
@@ -11047,6 +11082,7 @@
 				7AF529CE1C0422BD00301FBC /* ic_home@2x.png in Resources */,
 				7AF528561C0422BD00301FBC /* icon_like.png in Resources */,
 				7AF529BA1C0422BD00301FBC /* icon_category@3x.png in Resources */,
+				BBC7BAFF1C06E8F8005A28EE /* HelloPhoneVerificationViewController.xib in Resources */,
 				7AF524E61C0422BC00301FBC /* CatalogShopCell.xib in Resources */,
 				7AF528F81C0422BD00301FBC /* icon_sad50@3x.png in Resources */,
 				7AF528241C0422BD00301FBC /* icon_contact_us.png in Resources */,
@@ -11483,6 +11519,7 @@
 				7AF526E21C0422BD00301FBC /* SmileyAndMedal.m in Sources */,
 				7AF523741C0422BC00301FBC /* InboxReviewProductOwner.m in Sources */,
 				7AF522FA1C0422BC00301FBC /* AddressResult.m in Sources */,
+				BB7F020D1C08475800C3B161 /* SendOTP.m in Sources */,
 				7AF5253F1C0422BC00301FBC /* DepositListBankViewController.m in Sources */,
 				7AF525C01C0422BC00301FBC /* MoreViewController.m in Sources */,
 				7AF523301C0422BC00301FBC /* Statistic.m in Sources */,
@@ -11777,6 +11814,7 @@
 				7AF523A31C0422BC00301FBC /* SkipReviewResult.m in Sources */,
 				7AF525E11C0422BC00301FBC /* NotificationBarButton.m in Sources */,
 				7AF525D71C0422BC00301FBC /* MyShopNoteViewController.m in Sources */,
+				BB7F020A1C08472800C3B161 /* SendOTPResult.m in Sources */,
 				7AF525DB1C0422BC00301FBC /* MyShopPaymentViewController.m in Sources */,
 				7AF524451C0422BC00301FBC /* TransactionATCFormDetail.m in Sources */,
 				7AF524331C0422BC00301FBC /* ShippingInfoResult.m in Sources */,
@@ -11821,6 +11859,7 @@
 				7AF5243E1C0422BC00301FBC /* ListRekeningBank.m in Sources */,
 				7AF522EF1C0422BC00301FBC /* CreatePasswordResult.m in Sources */,
 				7AF523471C0422BC00301FBC /* HistoryProductResult.m in Sources */,
+				BBC7BAFE1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m in Sources */,
 				7AF5239E1C0422BC00301FBC /* MyReviewReputationViewModel.m in Sources */,
 				7AF523491C0422BC00301FBC /* HotlistBannerInfo.m in Sources */,
 				7AF5262C1C0422BC00301FBC /* SegmentedReviewReputationViewController.m in Sources */,
@@ -12165,6 +12204,7 @@
 				7AF525E21C0422BC00301FBC /* NotificationManager.m in Sources */,
 				7AF5268A1C0422BD00301FBC /* SearchResultViewController.m in Sources */,
 				7AF526FA1C0422BD00301FBC /* TokopediaCacheManager.m in Sources */,
+				BBC7BB031C08095B005A28EE /* AlertPhoneVerification.m in Sources */,
 				7AF527751C0422BD00301FBC /* VTBaseTransactionMethod.m in Sources */,
 				7AF524B41C0422BC00301FBC /* AlertListBankCell.m in Sources */,
 				7AF523241C0422BC00301FBC /* ProductDetail.m in Sources */,

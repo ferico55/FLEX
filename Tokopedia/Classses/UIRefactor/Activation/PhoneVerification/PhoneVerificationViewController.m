@@ -8,13 +8,17 @@
 
 #import "PhoneVerificationViewController.h"
 
-@interface PhoneVerificationViewController ()
+@interface PhoneVerificationViewController ()<TokopediaNetworkManagerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *notifLabel;
 @property (weak, nonatomic) IBOutlet UITextField *otpTextField;
 
 @end
 
-@implementation PhoneVerificationViewController
+@implementation PhoneVerificationViewController{
+    TokopediaNetworkManager *networkManager;
+    UserAuthentificationManager *_userManager;
+    NSDictionary *_auth;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,7 +46,11 @@
     
     [_notifLabel setHidden:YES];
     
-
+    networkManager = [TokopediaNetworkManager new];
+    networkManager.delegate = self;
+    
+    _userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,15 +61,53 @@
     [self.view endEditing:YES];
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(IBAction)tap:(id)sender{
+    if([sender isKindOfClass:[UIBarButtonItem class]]){
+        UIBarButtonItem *button = (UIBarButtonItem *) sender;
+        if(button.tag == 11){
+            //cancel button
+            [self.delegate redirectViewController:_redirectViewController];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }else if(button.tag == 12){
+            //verify button
+        }
+    }
 }
-*/
+
+#pragma mark - Tokopedia Network Manager Delegate
+
+- (NSDictionary*)getParameter:(int)tag{
+    NSString *userId = [_auth objectForKey:@"user_id"];
+    NSDictionary *dict = @{@"phone"     : _phone,
+                           @"user_id"   : userId,
+                           @"code"      : _otpTextField.text
+                           };
+    return dict;
+}
+
+- (NSString*)getPath:(int)tag{
+    return @"/v4/action/msisdn/do_verification_msisdn.pl";
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id status = [resultDict objectForKey:@""];
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
+}
+
+- (id)getObjectManager:(int)tag{
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag;{
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag{
+    
+}
+
+
 
 @end
