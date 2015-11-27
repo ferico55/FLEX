@@ -35,6 +35,8 @@
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
+static NSInteger userViewHeight = 70;
+
 @interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate>
 @end
 
@@ -264,10 +266,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-    
     DetailReputationReview *reputationDetail = arrList[indexPath.row];
-    UILabel *messageLabel = ((ProductReputationSimpleCell*)cell).reputationMessageLabel;
+    UILabel *messageLabel = [[UILabel alloc] init];
     
     [messageLabel setText:reputationDetail.review_message];
     [messageLabel sizeToFit];
@@ -278,7 +278,7 @@
                                                            context:nil];
     messageLabel.frame = sizeOfMessage;
     
-    CGFloat height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 40 + messageLabel.frame.size.height ;
+    CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
     return height;
 
 }
@@ -296,91 +296,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
-    //count label height dynamically
     DetailReputationReview *reputationDetail = arrList[indexPath.row];
     [cell setReputationModelView:reputationDetail.viewModel];
-//    UILabel *messageLabel = ((ProductReputationSimpleCell*)cell).reputationMessageLabel;
-//    
-//    [messageLabel setText:reputationDetail.review_message];
-//    [messageLabel sizeToFit];
-//    
-//    //set label attribute
-//    NSString *labelText = reputationDetail.review_message;
-//    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
-//    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-//    [paragraphStyle setLineSpacing:5];
-//    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
-//    messageLabel.attributedText = attributedString ;
-//    
-//    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-//                                                           options:NSStringDrawingUsesLineFragmentOrigin
-//                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-//                                                           context:nil];
-//    sizeOfMessage.size.width = [UIScreen mainScreen].bounds.size.width-20;
-//    messageLabel.frame = sizeOfMessage;
-//    
-//    //set vertical origin of user view
-//    CGRect newFrame = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame;
-//    newFrame.origin.y = sizeOfMessage.size.height + 20;
-//    newFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
-//    ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame = newFrame;
-//    
-//    //set star position
-//    CGRect starFrame = ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame;
-//    starFrame.origin.x = ((ProductReputationSimpleCell*)cell).reputationDateLabel.frame.origin.x;
-//    ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame = starFrame;
-//    
-//    CGRect starAccuracyFrame = ((ProductReputationSimpleCell*)cell).reputationStarAccuracyView.frame;
-//    starAccuracyFrame.origin.x = ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame.origin.x + ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame.size.width + 20;
-//    ((ProductReputationSimpleCell*)cell).reputationStarAccuracyView.frame = starAccuracyFrame;
-//    
-//    //set wrapper viewheight
-//    CGRect reputationViewFrame = ((ProductReputationSimpleCell*)cell).listReputationView.frame;
-//    reputationViewFrame.size.height = ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 10 + messageLabel.frame.size.height;
-//    ((ProductReputationSimpleCell*)cell).listReputationView.frame = reputationViewFrame;
-//    
-//    [((ProductReputationSimpleCell*)cell).reputationBuyerLabel setText:reputationDetail.review_user_name];
-//    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:reputationDetail.review_create_time];
-//    
-//    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:reputationDetail.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-//    ((ProductReputationSimpleCell*)cell).reputationBuyerImage.image = nil;
-//    
-//    [((ProductReputationSimpleCell*)cell).reputationBuyerImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-//        [((ProductReputationSimpleCell*)cell).reputationBuyerImage setImage:image];
-//        ((ProductReputationSimpleCell*)cell).reputationBuyerImage.layer.cornerRadius = ((ProductReputationSimpleCell*)cell).reputationBuyerImage.frame.size.width/2;
-//        ((ProductReputationSimpleCell*)cell).reputationBuyerImage.clipsToBounds = YES;
-//        
-//    } failure:nil];
-//    
-//    //add border bottom
-//    if(indexPath.row != arrList.count - 1) {
-//        CALayer *bottomBorder = [CALayer layer];
-//        bottomBorder.frame = CGRectMake(0.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 10, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 0.5f);
-//        
-//        bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
-//        [((ProductReputationSimpleCell*)cell).reputationBuyerView.layer addSublayer:bottomBorder];
-//        
-//    }
-//
-//    //add score
-//    EDStarRating *starQualityRating = ((ProductReputationSimpleCell*)cell).reputationStarQualityRating;
-//    starQualityRating.backgroundImage = nil;
-//    starQualityRating.starImage = [UIImage imageNamed:@"icon_star_med.png"];
-//    starQualityRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active_med.png"];
-//    starQualityRating.maxRating = 5.0;
-//    starQualityRating.horizontalMargin = 1.0;
-//    starQualityRating.rating = [reputationDetail.review_rate_product integerValue];
-//    starQualityRating.displayMode = EDStarRatingDisplayAccurate;
-//    
-//    
-//    EDStarRating *starAccuracyRating = ((ProductReputationSimpleCell*)cell).reputationStarAccuracyRating;
-//    starAccuracyRating.backgroundImage = nil;
-//    starAccuracyRating.starImage = [UIImage imageNamed:@"icon_star_med.png"];
-//    starAccuracyRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active_med.png"];
-//    starAccuracyRating.maxRating = 5.0;
-//    starAccuracyRating.horizontalMargin = 1.0;
-//    starAccuracyRating.rating = [reputationDetail.review_rate_accuracy integerValue];
-//    starAccuracyRating.displayMode = EDStarRatingDisplayAccurate;
     
     return cell;
 }
@@ -389,7 +306,6 @@
     reputationReview.product_rating_point = reputationReview.review_rate_product;
     reputationReview.product_accuracy_point = reputationReview.review_rate_accuracy;
     reputationReview.review_full_name = reputationReview.review_user_name;
-    reputationReview.review_message = reputationReview.review_message;
     
 }
 

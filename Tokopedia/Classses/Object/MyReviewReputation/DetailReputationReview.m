@@ -30,6 +30,8 @@
         tempViewModel.product_status = _product_status;
         tempViewModel.review_rate_accuracy = _review_rate_accuracy;
         tempViewModel.review_rate_quality = _review_rate_product;
+        tempViewModel.review_user_name = _review_user_name;
+        tempViewModel.review_user_image = _review_user_image;
 
         _viewModel = tempViewModel;
     }

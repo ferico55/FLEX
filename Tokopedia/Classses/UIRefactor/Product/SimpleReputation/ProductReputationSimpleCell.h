@@ -11,7 +11,10 @@
 
 @class DetailReviewReputationViewModel;
 
-@interface ProductReputationSimpleCell : UITableViewCell
+@interface ProductReputationSimpleCell : UITableViewCell {
+    UIImage *_starActiveImage;
+    UIImage *_starInactiveImage;
+}
 
 @property(nonatomic, weak) IBOutlet UIView *reputationMessageView;
 @property(nonatomic, weak) IBOutlet UIView *reputationBuyerView;

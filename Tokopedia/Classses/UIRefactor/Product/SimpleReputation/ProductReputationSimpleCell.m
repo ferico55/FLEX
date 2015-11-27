@@ -12,7 +12,8 @@
 @implementation ProductReputationSimpleCell
 
 - (void)awakeFromNib {
-    
+    _starInactiveImage = [UIImage imageNamed:@"icon_star_med.png"];
+    _starActiveImage = [UIImage imageNamed:@"icon_star_active_med.png"];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -87,8 +88,8 @@
     //add score
     EDStarRating *starQualityRating = self.reputationStarQualityRating;
     starQualityRating.backgroundImage = nil;
-    starQualityRating.starImage = [UIImage imageNamed:@"icon_star_med.png"];
-    starQualityRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active_med.png"];
+    starQualityRating.starImage = _starInactiveImage;
+    starQualityRating.starHighlightedImage = _starActiveImage;
     starQualityRating.maxRating = 5.0;
     starQualityRating.horizontalMargin = 1.0;
     starQualityRating.rating = [viewModel.review_rate_quality integerValue];
@@ -97,8 +98,8 @@
     
     EDStarRating *starAccuracyRating = self.reputationStarAccuracyRating;
     starAccuracyRating.backgroundImage = nil;
-    starAccuracyRating.starImage = [UIImage imageNamed:@"icon_star_med.png"];
-    starAccuracyRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active_med.png"];
+    starAccuracyRating.starImage = _starInactiveImage;
+    starAccuracyRating.starHighlightedImage = _starActiveImage;
     starAccuracyRating.maxRating = 5.0;
     starAccuracyRating.horizontalMargin = 1.0;
     starAccuracyRating.rating = [viewModel.review_rate_accuracy integerValue];

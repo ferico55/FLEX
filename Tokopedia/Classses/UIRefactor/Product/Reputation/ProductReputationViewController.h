@@ -23,8 +23,6 @@
     
     //Main Outlet
     IBOutlet UITableView *tableContent;
-    
-    
 }
 
 @property (nonatomic, strong) NSString *strShopDomain, *strProductID;
