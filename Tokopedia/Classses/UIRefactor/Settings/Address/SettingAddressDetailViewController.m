@@ -137,11 +137,12 @@
                 vc.delegate = self;
                 AddressFormList *address = _address;
                 //TODO:: Uncomment for showing map address
-//                if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
-//                    vc.imageMap = _captureMap?:[PlacePickerViewController captureScreen:_mapview];
-//                    vc.longitude = address.longitude;
-//                    vc.latitude = address.latitude;
-//                }
+                if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
+                    vc.imageMap = _captureMap?:[PlacePickerViewController captureScreen:_mapview];
+                    vc.longitude = address.longitude;
+                    vc.latitude = address.latitude;
+                }
+                //
                 
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -207,10 +208,11 @@
         _viewsetasdefault.hidden = isdefault;
         
         //TODO:: Uncomment for showing map address
-//        if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
-//            _marker = [[GMSMarker alloc] init];
-//            [self mapPosition];
-//        }
+        if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
+            _marker = [[GMSMarker alloc] init];
+            [self mapPosition];
+        }
+        //
     }
 }
 
@@ -283,9 +285,10 @@
         case 2:
             if (indexPath.row == 1) {
                 //TODO:: Uncomment for showing map address
-                //if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
+                if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
                     return 0;
-                //}
+                }
+                //
             }
             if (indexPath.row == 2) {
                 NSString *string = address.address_street;
@@ -312,12 +315,13 @@
 }
 
 //TODO:: Uncomment for showing map address
-//- (IBAction)tapMapDetail:(id)sender {
-//    AddressFormList *list = _address;
-//    PlacePickerViewController *vc = [PlacePickerViewController new];
-//    vc.firstCoordinate = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
+- (IBAction)tapMapDetail:(id)sender {
+    AddressFormList *list = _address;
+    PlacePickerViewController *vc = [PlacePickerViewController new];
+    vc.firstCoordinate = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
+    [self.navigationController pushViewController:vc animated:YES];
+}
+//
 
 #pragma mark - Edit address delegate
 
@@ -335,9 +339,10 @@
     self.labelphonenumber.text = address.receiver_phone;
     
     //TODO:: Uncomment for showing map address
-//    if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
-//        [self mapPosition];
-//    }
+    if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
+        [self mapPosition];
+    }
+    //
     _address = address;
 }
 

@@ -326,12 +326,13 @@
 }
 
 //TODO:: Uncomment for showing map address
-//- (IBAction)tapMap:(id)sender {
-//    PlacePickerViewController *placePicker = [PlacePickerViewController new];
-//    placePicker.firstCoordinate = CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]);
-//    placePicker.delegate = self;
-//    [self.navigationController pushViewController:placePicker animated:YES];
-//}
+- (IBAction)tapMap:(id)sender {
+    PlacePickerViewController *placePicker = [PlacePickerViewController new];
+    placePicker.firstCoordinate = CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]);
+    placePicker.delegate = self;
+    [self.navigationController pushViewController:placePicker animated:YES];
+}
+//
 
 -(void)PickAddress:(GMSAddress *)address suggestion:(NSString*)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage*)map
 {
@@ -560,27 +561,28 @@
         }
         
         //TODO:: Uncomment for showing map address
-//        if (_imageMap) {
-//            _mapImageView.image = _imageMap;
-//            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
-//
-//            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-//                GMSAddress *address = [response results][0];
-//                
-//                NSString *addressString;
-//                if (address.lines.count>0) {
-//                    addressString = address.lines[0];
-//                }
-//                else
-//                {
-//                    addressString = address.thoroughfare;
-//                }
-//                [_buttonMapLocation setTitle:addressString forState:UIControlStateNormal];
-//                _opsionalLabel.hidden = YES;
-//                _constraintBottomMapName.constant = 0;
-//
-//            }];
-//        }
+        if (_imageMap.images) {
+            _mapImageView.image = _imageMap;
+            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+
+            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+                GMSAddress *address = [response results][0];
+                
+                NSString *addressString;
+                if (address.lines.count>0) {
+                    addressString = address.lines[0];
+                }
+                else
+                {
+                    addressString = address.thoroughfare;
+                }
+                [_buttonMapLocation setTitle:addressString forState:UIControlStateNormal];
+                _opsionalLabel.hidden = YES;
+                _constraintBottomMapName.constant = 0;
+
+            }];
+        }
+        //
     }
 }
 
