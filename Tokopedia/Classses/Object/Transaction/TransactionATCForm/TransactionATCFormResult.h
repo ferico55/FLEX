@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "TransactionATCFormDetail.h"
+#import "RPX.h"
 
 @interface TransactionATCFormResult : NSObject
 
 @property(nonatomic,strong) TransactionATCFormDetail *form;
+@property(nonatomic,strong) RPX *rpx;
+@property(nonatomic,strong) NSArray *auto_resi;
 
 @end

@@ -10,6 +10,7 @@
 #import "OrderTransaction.h"
 #import "ShipmentCourier.h"
 #import "ShipmentCourierPackage.h"
+#import "OrderBooking.h"
 
 @protocol OrderDetailDelegate <NSObject>
 
@@ -33,5 +34,6 @@
 @property (strong, nonatomic) OrderTransaction *transaction;
 @property (weak, nonatomic) id<OrderDetailDelegate> delegate;
 @property (strong, nonatomic) NSArray *shipmentCouriers;
+@property (strong, nonatomic) OrderBooking *booking;
 
 @end
