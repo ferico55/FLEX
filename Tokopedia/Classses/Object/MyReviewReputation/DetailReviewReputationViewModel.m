@@ -11,11 +11,11 @@
 @implementation DetailReviewReputationViewModel
 
 - (NSString*)review_message {
-    return [self.review_message kv_decodeHTMLCharacterEntities];
+    return [_review_message kv_decodeHTMLCharacterEntities];
 }
 
 - (NSString*)product_name {
-    return [self.product_name kv_decodeHTMLCharacterEntities];
+    return [_product_name kv_decodeHTMLCharacterEntities];
 }
 
 @end

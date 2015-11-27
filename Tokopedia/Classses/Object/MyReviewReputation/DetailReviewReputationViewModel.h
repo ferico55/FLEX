@@ -10,25 +10,27 @@
 #import "ReviewResponse.h"
 
 @interface DetailReviewReputationViewModel : NSObject
-@property (nonatomic, weak) NSString    *product_rating_point,
-                                        *product_name,
-                                        *review_create_time,
-                                        *review_is_skipable,
-                                        *product_image,
-                                        *product_service_point,
-                                        *product_accuracy_point,
-                                        *review_message,
-                                        *readStat,
-                                        *read_status,
-                                        *review_status,
-                                        *review_is_allow_edit,
-                                        *review_is_skipped,
-                                        *review_update_time,
-                                        *review_user_name,
-                                        *review_user_image,
-                                        *review_rate_accuracy,
-                                        *review_rate_quality,
-                                        *product_status;
+
+@property (nonatomic, weak) NSString *product_rating_point;
+@property (nonatomic, weak) NSString *product_service_point;
+@property (nonatomic, weak) NSString *review_create_time;
+@property (nonatomic, weak) NSString *product_name;
+@property (nonatomic, weak) NSString *review_is_skipable;
+@property (nonatomic, weak) NSString *product_image;
+@property (nonatomic, weak) NSString *product_accuracy_point;
+@property (nonatomic, weak) NSString *review_message;
+@property (nonatomic, weak) NSString *readStat;
+@property (nonatomic, weak) NSString *read_status;
+@property (nonatomic, weak) NSString *review_status;
+@property (nonatomic, weak) NSString *review_is_allow_edit;
+@property (nonatomic, weak) NSString *review_is_skipped;
+@property (nonatomic, weak) NSString *review_update_time;
+@property (nonatomic, weak) NSString *review_user_name;
+@property (nonatomic, weak) NSString *review_user_image;
+@property (nonatomic, weak) NSString *review_rate_accuracy;
+@property (nonatomic, weak) NSString *review_rate_quality;
+@property (nonatomic, weak) NSString *product_status;
+
 
 @property (nonatomic, weak) ReviewResponse *review_response;
 

@@ -389,6 +389,7 @@
     reputationReview.product_rating_point = reputationReview.review_rate_product;
     reputationReview.product_accuracy_point = reputationReview.review_rate_accuracy;
     reputationReview.review_full_name = reputationReview.review_user_name;
+    reputationReview.review_message = reputationReview.review_message;
     
 }
 
