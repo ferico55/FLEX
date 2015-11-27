@@ -34,7 +34,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R1N-Ha-1Ow" userLabel="Header View">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icon_shop_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="yVe-FB-SG6">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_shop_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="yVe-FB-SG6">
                                     <rect key="frame" x="8" y="8" width="20" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="3A0-bp-yUy"/>
@@ -150,7 +150,7 @@
                             </constraints>
                         </view>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="84Q-3i-GZA" customClass="MessageTextView">
-                            <rect key="frame" x="14" y="86" width="292" height="468"/>
+                            <rect key="frame" x="14" y="86" width="320" height="468"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
@@ -163,20 +163,28 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="MBa-Cz-dCn" firstAttribute="top" secondItem="Sea-Uv-RKj" secondAttribute="bottom" constant="4" id="0eM-z5-Zat"/>
-                        <constraint firstAttribute="trailing" secondItem="MBa-Cz-dCn" secondAttribute="trailing" id="1CQ-6u-pmw"/>
-                        <constraint firstAttribute="trailing" secondItem="84Q-3i-GZA" secondAttribute="trailing" constant="14" id="4vr-Vq-RXH"/>
+                        <constraint firstItem="MBa-Cz-dCn" firstAttribute="trailing" secondItem="Ucg-hh-X3e" secondAttribute="trailing" id="1CQ-6u-pmw"/>
+                        <constraint firstItem="84Q-3i-GZA" firstAttribute="trailing" secondItem="Ucg-hh-X3e" secondAttribute="trailing" constant="14" id="4vr-Vq-RXH">
+                            <variation key="heightClass=regular-widthClass=compact" constant="-14"/>
+                        </constraint>
                         <constraint firstAttribute="trailing" secondItem="Sea-Uv-RKj" secondAttribute="trailing" constant="20" id="592-j7-wSL"/>
                         <constraint firstAttribute="width" constant="320" id="9fb-Cp-6D5">
                             <variation key="heightClass=regular-widthClass=regular" constant="400"/>
                         </constraint>
                         <constraint firstItem="R1N-Ha-1Ow" firstAttribute="top" secondItem="Ucg-hh-X3e" secondAttribute="top" id="D4Q-Vd-Pa6"/>
-                        <constraint firstAttribute="bottom" secondItem="84Q-3i-GZA" secondAttribute="bottom" constant="14" id="IBz-Yq-JTm"/>
+                        <constraint firstItem="84Q-3i-GZA" firstAttribute="bottom" secondItem="Ucg-hh-X3e" secondAttribute="bottom" constant="14" id="IBz-Yq-JTm">
+                            <variation key="heightClass=regular-widthClass=compact" constant="-14"/>
+                        </constraint>
                         <constraint firstItem="R1N-Ha-1Ow" firstAttribute="leading" secondItem="Ucg-hh-X3e" secondAttribute="leading" id="Myj-H0-SlU"/>
                         <constraint firstAttribute="height" constant="480" id="S1A-6J-wMp">
                             <variation key="heightClass=regular-widthClass=regular" constant="600"/>
                         </constraint>
-                        <constraint firstItem="84Q-3i-GZA" firstAttribute="leading" secondItem="Ucg-hh-X3e" secondAttribute="leading" constant="14" id="pK0-XF-71p"/>
-                        <constraint firstItem="84Q-3i-GZA" firstAttribute="top" secondItem="MBa-Cz-dCn" secondAttribute="bottom" constant="8" id="qHy-pe-3m9"/>
+                        <constraint firstItem="84Q-3i-GZA" firstAttribute="leading" secondItem="Ucg-hh-X3e" secondAttribute="leading" constant="14" id="pK0-XF-71p">
+                            <variation key="heightClass=regular-widthClass=compact" constant="14"/>
+                        </constraint>
+                        <constraint firstItem="84Q-3i-GZA" firstAttribute="top" secondItem="MBa-Cz-dCn" secondAttribute="bottom" constant="8" id="qHy-pe-3m9">
+                            <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                        </constraint>
                         <constraint firstItem="Sea-Uv-RKj" firstAttribute="top" secondItem="R1N-Ha-1Ow" secondAttribute="bottom" constant="3" id="thy-Pv-1CJ"/>
                         <constraint firstItem="MBa-Cz-dCn" firstAttribute="leading" secondItem="Ucg-hh-X3e" secondAttribute="leading" id="wE7-nW-duL"/>
                         <constraint firstItem="Sea-Uv-RKj" firstAttribute="leading" secondItem="Ucg-hh-X3e" secondAttribute="leading" constant="20" id="xzP-h7-Yab"/>
