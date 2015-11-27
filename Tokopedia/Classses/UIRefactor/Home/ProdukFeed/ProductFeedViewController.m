@@ -392,7 +392,7 @@ NoResultDelegate
     [_firstFooter removeFromSuperview];
     
     if (feed.data.list.count > 0) {
-        
+        [_noResultView removeFromSuperview];
         if (_page == 1) {
             [_product removeAllObjects];
             [_promo removeAllObjects];
@@ -419,9 +419,11 @@ NoResultDelegate
     } else {
         // no data at all
         _isNoData = YES;
+        [_product removeAllObjects];
+        [_collectionView reloadData];
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        //[_collectionView addSubview:_noResultView];
-        [self setView:_noResultView];
+        [_collectionView addSubview:_noResultView];
+        //[self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -469,16 +471,23 @@ NoResultDelegate
 }
 
 - (void)addFavoriteShop:(NSNotification*)notification{
-    if([self.view isEqual:_noResultView]){
+    //if([self.view isEqual:_noResultView]){
+    if(_product.count == 0){
         [_networkManager doRequest];
     }
-    self.view = _contentView;
+    //self.view = _contentView;
+    [_noResultView removeFromSuperview];
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
 }
 
 - (void)removeFavoriteShop:(NSNotification*)notification{
     _page = 1;
     [_product removeAllObjects];
     [_networkManager doRequest];
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
+    
 }
 
 #pragma mark - Other Method

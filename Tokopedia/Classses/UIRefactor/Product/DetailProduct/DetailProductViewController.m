@@ -1754,6 +1754,8 @@ UIAlertViewDelegate
         }
         [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.result];
 }
 
 
@@ -2064,7 +2066,7 @@ UIAlertViewDelegate
             _product = stats;
             _product.isDummyProduct = NO;
         }
-
+        
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
         _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];

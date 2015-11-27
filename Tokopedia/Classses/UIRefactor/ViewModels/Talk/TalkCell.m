@@ -144,7 +144,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     NSInteger row = indexPath.row;
     NSMutableArray *talkList = [_delegate getTalkList];
     TalkList *list = talkList[row];
-    
+
     NSDictionary *data = @{
                            TKPD_TALK_MESSAGE:list.talk_message?:@0,
                            TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
@@ -160,7 +160,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                            TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
                            TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
                            TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
-                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0
+                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
                            };
     
     NSDictionary *userinfo;

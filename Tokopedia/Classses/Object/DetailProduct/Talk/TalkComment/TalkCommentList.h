@@ -28,5 +28,9 @@
 @property (nonatomic, strong) NSString *comment_user_label_id;
 @property (nonatomic, strong) ReputationDetail *comment_user_reputation;
 @property (nonatomic, strong) ShopReputation *comment_shop_reputation;
+@property (nonatomic, strong) NSString *comment_shop_name;
+@property (nonatomic, strong) NSString *comment_shop_image;
+@property (nonatomic, strong) NSString *comment_is_owner;
+
 @end
 
