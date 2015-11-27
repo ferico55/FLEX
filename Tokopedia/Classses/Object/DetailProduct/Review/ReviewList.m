@@ -17,4 +17,18 @@
 - (NSString*)review_product_name {
     return [_review_product_name kv_decodeHTMLCharacterEntities];
 }
+
+
+- (ProductReputationViewModel *)viewModel {
+    if(_viewModel == nil) {
+        ProductReputationViewModel *viewModel = [[ProductReputationViewModel alloc] init];
+        [viewModel setReviewMessage:self.review_message];
+        [viewModel setReviewUserName:self.review_user_name];
+       
+        _viewModel = viewModel;
+    }
+    return _viewModel;
+}
+
+
 @end

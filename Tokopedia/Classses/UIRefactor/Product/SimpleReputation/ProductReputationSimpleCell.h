@@ -14,13 +14,15 @@
 @property(nonatomic, weak) IBOutlet UIView *reputationMessageView;
 @property(nonatomic, weak) IBOutlet UIView *reputationBuyerView;
 @property(nonatomic, weak) IBOutlet UIView *listReputationView;
-@property(nonatomic, weak) IBOutlet UIView *reputationStarView;
+@property(nonatomic, weak) IBOutlet UIView *reputationStarQualityView;
+@property(nonatomic, weak) IBOutlet UIView *reputationStarAccuracyView;
 
 @property(nonatomic, weak) IBOutlet UILabel *reputationMessageLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationBuyerLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationDateLabel;
 
-@property(nonatomic, weak) IBOutlet EDStarRating *reputationStarRating;
+@property(nonatomic, weak) IBOutlet EDStarRating *reputationStarQualityRating;
+@property(nonatomic, weak) IBOutlet EDStarRating *reputationStarAccuracyRating;
 
 @property(nonatomic, weak) IBOutlet UIImageView *reputationBuyerImage;
 

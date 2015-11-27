@@ -9,6 +9,8 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -34,16 +36,16 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" id="oLf-f4-Td7">
-                                <rect key="frame" x="0.0" y="41" width="300" height="41"/>
+                                <rect key="frame" x="0.0" y="41" width="300" height="67"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="c7y-ur-cul">
-                                        <rect key="frame" x="2" y="2" width="30" height="30"/>
+                                        <rect key="frame" x="2" y="-1" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tonito" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ScT-B2-KV9">
-                                        <rect key="frame" x="40" y="0.0" width="240" height="21"/>
+                                        <rect key="frame" x="40" y="-3" width="240" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
@@ -51,7 +53,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015, Nov 08" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IuD-ZD-AYv">
-                                        <rect key="frame" x="40" y="15" width="175" height="21"/>
+                                        <rect key="frame" x="40" y="12" width="175" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
@@ -59,14 +61,42 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" id="LFv-wp-tPT">
-                                        <rect key="frame" x="164" y="10" width="133" height="37"/>
+                                        <rect key="frame" x="43" y="34" width="78" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" id="odt-z6-PvE" customClass="EDStarRating">
-                                                <rect key="frame" x="33" y="0.0" width="100" height="20"/>
+                                                <rect key="frame" x="2" y="0.0" width="75" height="20"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <animations/>
                                             </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kualitas" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MCW-Kd-L7R">
+                                                <rect key="frame" x="-4" y="21" width="87" height="11"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
+                                                <color key="textColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <animations/>
+                                    </view>
+                                    <view contentMode="scaleToFill" id="fEE-vj-aoS">
+                                        <rect key="frame" x="174" y="34" width="78" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" id="sZh-oP-2Ko" customClass="EDStarRating">
+                                                <rect key="frame" x="2" y="0.0" width="75" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <animations/>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akurasi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="idf-8j-YYZ">
+                                                <rect key="frame" x="-4" y="21" width="87" height="11"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="10"/>
+                                                <color key="textColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <animations/>
                                     </view>
@@ -88,8 +118,10 @@
                 <outlet property="reputationBuyerView" destination="oLf-f4-Td7" id="htq-Jv-21l"/>
                 <outlet property="reputationDateLabel" destination="IuD-ZD-AYv" id="kvZ-c5-FCX"/>
                 <outlet property="reputationMessageLabel" destination="5hs-ji-BLb" id="jNr-ez-B52"/>
-                <outlet property="reputationStarRating" destination="odt-z6-PvE" id="r7f-wI-kJ9"/>
-                <outlet property="reputationStarView" destination="LFv-wp-tPT" id="gMz-ZA-tW7"/>
+                <outlet property="reputationStarAccuracyRating" destination="sZh-oP-2Ko" id="i7P-6t-Ya0"/>
+                <outlet property="reputationStarAccuracyView" destination="fEE-vj-aoS" id="fak-UG-7tm"/>
+                <outlet property="reputationStarQualityRating" destination="odt-z6-PvE" id="YVt-Iy-LWX"/>
+                <outlet property="reputationStarQualityView" destination="LFv-wp-tPT" id="0ZP-E2-09e"/>
             </connections>
             <point key="canvasLocation" x="416" y="325"/>
         </tableViewCell>

@@ -98,6 +98,21 @@
     [viewStarThree addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarFour addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarFive addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
+
+    
+    if (SYSTEM_VERSION_GREATER_THAN(@"8.0") && !UIAccessibilityIsReduceTransparencyEnabled()) {
+        _filterView.backgroundColor = [UIColor clearColor];
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurEffectView.frame = _filterView.bounds;
+        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [_filterView addSubview:blurEffectView];
+    } else {
+        [_filterView setBackgroundColor:[UIColor whiteColor]];
+        [_filterView setAlpha:0.95];
+    }
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
@@ -310,9 +325,13 @@
     ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame = newFrame;
     
     //set star position
-    CGRect starFrame = ((ProductReputationSimpleCell*)cell).reputationStarView.frame;
-    starFrame.origin.x = [UIScreen mainScreen].bounds.size.width - (starFrame.size.width + 30);
-    ((ProductReputationSimpleCell*)cell).reputationStarView.frame = starFrame;
+    CGRect starFrame = ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame;
+    starFrame.origin.x = ((ProductReputationSimpleCell*)cell).reputationDateLabel.frame.origin.x;
+    ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame = starFrame;
+    
+    CGRect starAccuracyFrame = ((ProductReputationSimpleCell*)cell).reputationStarAccuracyView.frame;
+    starAccuracyFrame.origin.x = ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame.origin.x + ((ProductReputationSimpleCell*)cell).reputationStarQualityView.frame.size.width + 20;
+    ((ProductReputationSimpleCell*)cell).reputationStarAccuracyView.frame = starAccuracyFrame;
     
     //set wrapper viewheight
     CGRect reputationViewFrame = ((ProductReputationSimpleCell*)cell).listReputationView.frame;
@@ -320,7 +339,6 @@
     ((ProductReputationSimpleCell*)cell).listReputationView.frame = reputationViewFrame;
     
     [((ProductReputationSimpleCell*)cell).reputationBuyerLabel setText:reputationDetail.review_user_name];
-//    [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:reputationDetail.review_create_time];
     [((ProductReputationSimpleCell*)cell).reputationDateLabel setText:reputationDetail.review_create_time];
     
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:reputationDetail.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -336,7 +354,7 @@
     //add border bottom
     if(indexPath.row != arrList.count - 1) {
         CALayer *bottomBorder = [CALayer layer];
-        bottomBorder.frame = CGRectMake(0.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 0.5f);
+        bottomBorder.frame = CGRectMake(0.0f, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.height + 10, ((ProductReputationSimpleCell*)cell).reputationBuyerView.frame.size.width, 0.5f);
         
         bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
         [((ProductReputationSimpleCell*)cell).reputationBuyerView.layer addSublayer:bottomBorder];
@@ -344,14 +362,24 @@
     }
 
     //add score
-    EDStarRating *starRating = ((ProductReputationSimpleCell*)cell).reputationStarRating;
-    starRating.backgroundImage = nil;
-    starRating.starImage = [UIImage imageNamed:@"icon_star.png"];
-    starRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active.png"];
-    starRating.maxRating = 5.0;
-    starRating.horizontalMargin = 1.0;
-    starRating.rating = [reputationDetail.review_rate_product integerValue];
-    starRating.displayMode = EDStarRatingDisplayAccurate;
+    EDStarRating *starQualityRating = ((ProductReputationSimpleCell*)cell).reputationStarQualityRating;
+    starQualityRating.backgroundImage = nil;
+    starQualityRating.starImage = [UIImage imageNamed:@"icon_star_med.png"];
+    starQualityRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active_med.png"];
+    starQualityRating.maxRating = 5.0;
+    starQualityRating.horizontalMargin = 1.0;
+    starQualityRating.rating = [reputationDetail.review_rate_product integerValue];
+    starQualityRating.displayMode = EDStarRatingDisplayAccurate;
+    
+    
+    EDStarRating *starAccuracyRating = ((ProductReputationSimpleCell*)cell).reputationStarAccuracyRating;
+    starAccuracyRating.backgroundImage = nil;
+    starAccuracyRating.starImage = [UIImage imageNamed:@"icon_star_med.png"];
+    starAccuracyRating.starHighlightedImage = [UIImage imageNamed:@"icon_star_active_med.png"];
+    starAccuracyRating.maxRating = 5.0;
+    starAccuracyRating.horizontalMargin = 1.0;
+    starAccuracyRating.rating = [reputationDetail.review_rate_accuracy integerValue];
+    starAccuracyRating.displayMode = EDStarRatingDisplayAccurate;
     
     return cell;
 }
@@ -363,16 +391,14 @@
     
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return arrList.count;
 }
 
