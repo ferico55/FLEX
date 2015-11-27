@@ -24,6 +24,10 @@
         ProductReputationViewModel *viewModel = [[ProductReputationViewModel alloc] init];
         [viewModel setReviewMessage:self.review_message];
         [viewModel setReviewUserName:self.review_user_name];
+        [viewModel setReviewUserThumbUrl:self.review_user_image];
+        [viewModel setProductQuality:self.review_rate_quality];
+        [viewModel setProductAccuracy:self.review_rate_accuracy];
+        [viewModel setReviewDate:self.review_create_time];
        
         _viewModel = viewModel;
     }

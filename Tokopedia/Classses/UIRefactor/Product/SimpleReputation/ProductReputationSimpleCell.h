@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "EDStarRating.h"
 
+@class DetailReviewReputationViewModel;
+
 @interface ProductReputationSimpleCell : UITableViewCell
 
 @property(nonatomic, weak) IBOutlet UIView *reputationMessageView;
@@ -25,5 +27,7 @@
 @property(nonatomic, weak) IBOutlet EDStarRating *reputationStarAccuracyRating;
 
 @property(nonatomic, weak) IBOutlet UIImageView *reputationBuyerImage;
+
+- (void)setReputationModelView:(DetailReviewReputationViewModel*)viewModel;
 
 @end

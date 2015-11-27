@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSString *reviewUserName;
 @property (strong, nonatomic) NSString *reviewDate;
 @property (strong, nonatomic) NSString *productQuality;
+@property (strong, nonatomic) NSString *productAccuracy;
 @property (strong, nonatomic) NSString *reviewMessage;
 @property (strong, nonatomic) NSString *reviewUserThumbUrl;
 

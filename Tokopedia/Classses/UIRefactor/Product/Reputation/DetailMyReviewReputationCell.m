@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "DetailReviewReputaionViewModel.h"
+#import "DetailReviewReputationViewModel.h"
 #import "DetailMyReviewReputationCell.h"
 #define CStringKomentar @"Komentar"
 #define CStringPembeliBelumBeriUlasan @"Pembeli belum memberikan ulasan"
@@ -110,7 +110,7 @@
 
 }
 
-- (void)setView:(DetailReviewReputaionViewModel *)viewModel {
+- (void)setView:(DetailReviewReputationViewModel *)viewModel {
     lblDate.text = @"";
     [btnProduct setTitle:[NSString convertHTML:viewModel.product_name] forState:UIControlStateNormal];
     

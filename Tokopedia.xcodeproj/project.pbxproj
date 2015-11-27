@@ -232,7 +232,7 @@
 		7AF523981C0422BC00301FBC /* ManageProductResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF5186A1C0422B900301FBC /* ManageProductResult.m */; settings = {ASSET_TAGS = (); }; };
 		7AF523991C0422BC00301FBC /* DetailMyInboxReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF5186D1C0422B900301FBC /* DetailMyInboxReputation.m */; settings = {ASSET_TAGS = (); }; };
 		7AF5239A1C0422BC00301FBC /* DetailReputationReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF5186F1C0422B900301FBC /* DetailReputationReview.m */; settings = {ASSET_TAGS = (); }; };
-		7AF5239B1C0422BC00301FBC /* DetailReviewReputaionViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF518711C0422B900301FBC /* DetailReviewReputaionViewModel.m */; settings = {ASSET_TAGS = (); }; };
+		7AF5239B1C0422BC00301FBC /* DetailReviewReputationViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF518711C0422B900301FBC /* DetailReviewReputationViewModel.m */; settings = {ASSET_TAGS = (); }; };
 		7AF5239C1C0422BC00301FBC /* MyReviewReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF518731C0422B900301FBC /* MyReviewReputation.m */; settings = {ASSET_TAGS = (); }; };
 		7AF5239D1C0422BC00301FBC /* MyReviewReputationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF518751C0422B900301FBC /* MyReviewReputationResult.m */; settings = {ASSET_TAGS = (); }; };
 		7AF5239E1C0422BC00301FBC /* MyReviewReputationViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF518771C0422B900301FBC /* MyReviewReputationViewModel.m */; settings = {ASSET_TAGS = (); }; };
@@ -2397,8 +2397,8 @@
 		7AF5186D1C0422B900301FBC /* DetailMyInboxReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailMyInboxReputation.m; sourceTree = "<group>"; };
 		7AF5186E1C0422B900301FBC /* DetailReputationReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReview.h; sourceTree = "<group>"; };
 		7AF5186F1C0422B900301FBC /* DetailReputationReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReputationReview.m; sourceTree = "<group>"; };
-		7AF518701C0422B900301FBC /* DetailReviewReputaionViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewReputaionViewModel.h; sourceTree = "<group>"; };
-		7AF518711C0422B900301FBC /* DetailReviewReputaionViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReviewReputaionViewModel.m; sourceTree = "<group>"; };
+		7AF518701C0422B900301FBC /* DetailReviewReputationViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewReputationViewModel.h; sourceTree = "<group>"; };
+		7AF518711C0422B900301FBC /* DetailReviewReputationViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReviewReputationViewModel.m; sourceTree = "<group>"; };
 		7AF518721C0422B900301FBC /* MyReviewReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputation.h; sourceTree = "<group>"; };
 		7AF518731C0422B900301FBC /* MyReviewReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputation.m; sourceTree = "<group>"; };
 		7AF518741C0422B900301FBC /* MyReviewReputationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputationResult.h; sourceTree = "<group>"; };
@@ -5772,8 +5772,8 @@
 				7AF5186D1C0422B900301FBC /* DetailMyInboxReputation.m */,
 				7AF5186E1C0422B900301FBC /* DetailReputationReview.h */,
 				7AF5186F1C0422B900301FBC /* DetailReputationReview.m */,
-				7AF518701C0422B900301FBC /* DetailReviewReputaionViewModel.h */,
-				7AF518711C0422B900301FBC /* DetailReviewReputaionViewModel.m */,
+				7AF518701C0422B900301FBC /* DetailReviewReputationViewModel.h */,
+				7AF518711C0422B900301FBC /* DetailReviewReputationViewModel.m */,
 				7AF518721C0422B900301FBC /* MyReviewReputation.h */,
 				7AF518731C0422B900301FBC /* MyReviewReputation.m */,
 				7AF518741C0422B900301FBC /* MyReviewReputationResult.h */,
@@ -11500,7 +11500,7 @@
 				7AF524181C0422BC00301FBC /* NotesResult.m in Sources */,
 				7AF524871C0422BC00301FBC /* TxOrderStatusResult.m in Sources */,
 				7AF526001C0422BC00301FBC /* ProductGalleryViewController.m in Sources */,
-				7AF5239B1C0422BC00301FBC /* DetailReviewReputaionViewModel.m in Sources */,
+				7AF5239B1C0422BC00301FBC /* DetailReviewReputationViewModel.m in Sources */,
 				7AF5247B1C0422BC00301FBC /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				7AF5237D1C0422BC00301FBC /* InboxTicketDetail.m in Sources */,
 				7AF525121C0422BC00301FBC /* ContactUsFormPresenter.m in Sources */,
