@@ -915,7 +915,6 @@ TokopediaNetworkManagerDelegate
                          url.pathComponents[2]];
     
     return urlPathComponents;
-//    return @"https://kero-staging.tokopedia.com/booking/v1";
 }
 
 - (NSString *)getRequestStatus:(id)result withTag:(int)tag {
@@ -923,7 +922,7 @@ TokopediaNetworkManagerDelegate
     id stat = [resultDict objectForKey:@""];
     OrderBookingResponse *list = stat;
     
-    return list.Status;
+    return list.status;
 }
 
 - (int)getRequestMethod:(int)tag {
@@ -941,7 +940,7 @@ TokopediaNetworkManagerDelegate
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[OrderBookingResponse class]];
-    [statusMapping addAttributeMappingsFromArray:@[@"Status"]];
+    [statusMapping addAttributeMappingsFromDictionary:@{@"Status":@"status"}];
     
     RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[OrderBookingData class]];
     
