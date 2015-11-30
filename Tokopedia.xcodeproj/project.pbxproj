@@ -1924,6 +1924,9 @@
 		BB7F02131C0BECB800C3B161 /* VerifyOTPResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F02111C0BECB800C3B161 /* VerifyOTPResult.m */; settings = {ASSET_TAGS = (); }; };
 		BB7F02171C0BF04200C3B161 /* AlertVerifyOTP.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F02151C0BF04200C3B161 /* AlertVerifyOTP.m */; settings = {ASSET_TAGS = (); }; };
 		BB7F02181C0BF04200C3B161 /* AlertVerifyOTP.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7F02161C0BF04200C3B161 /* AlertVerifyOTP.xib */; settings = {ASSET_TAGS = (); }; };
+		BB7F021C1C0C3DF400C3B161 /* toped_verifikasi_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB7F02191C0C3DF400C3B161 /* toped_verifikasi_phone.png */; settings = {ASSET_TAGS = (); }; };
+		BB7F021D1C0C3DF400C3B161 /* toped_verifikasi_phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB7F021A1C0C3DF400C3B161 /* toped_verifikasi_phone@2x.png */; settings = {ASSET_TAGS = (); }; };
+		BB7F021E1C0C3DF400C3B161 /* toped_verifikasi_phone@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB7F021B1C0C3DF400C3B161 /* toped_verifikasi_phone@3x.png */; settings = {ASSET_TAGS = (); }; };
 		BBAA1BA11C055E3F00E8D1F9 /* PhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAA1B9F1C055E3F00E8D1F9 /* PhoneVerificationViewController.m */; settings = {ASSET_TAGS = (); }; };
 		BBAA1BA21C055E3F00E8D1F9 /* PhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBAA1BA01C055E3F00E8D1F9 /* PhoneVerificationViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		BBC7BAFE1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC7BAFC1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m */; settings = {ASSET_TAGS = (); }; };
@@ -4843,6 +4846,9 @@
 		BB7F02141C0BF04200C3B161 /* AlertVerifyOTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertVerifyOTP.h; sourceTree = "<group>"; };
 		BB7F02151C0BF04200C3B161 /* AlertVerifyOTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertVerifyOTP.m; sourceTree = "<group>"; };
 		BB7F02161C0BF04200C3B161 /* AlertVerifyOTP.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertVerifyOTP.xib; sourceTree = "<group>"; };
+		BB7F02191C0C3DF400C3B161 /* toped_verifikasi_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toped_verifikasi_phone.png; sourceTree = "<group>"; };
+		BB7F021A1C0C3DF400C3B161 /* toped_verifikasi_phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toped_verifikasi_phone@2x.png"; sourceTree = "<group>"; };
+		BB7F021B1C0C3DF400C3B161 /* toped_verifikasi_phone@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toped_verifikasi_phone@3x.png"; sourceTree = "<group>"; };
 		BBAA1B9E1C055E3F00E8D1F9 /* PhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerificationViewController.h; sourceTree = "<group>"; };
 		BBAA1B9F1C055E3F00E8D1F9 /* PhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerificationViewController.m; sourceTree = "<group>"; };
 		BBAA1BA01C055E3F00E8D1F9 /* PhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerificationViewController.xib; sourceTree = "<group>"; };
@@ -9149,6 +9155,9 @@
 		7AF520081C0422BB00301FBC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BB7F02191C0C3DF400C3B161 /* toped_verifikasi_phone.png */,
+				BB7F021A1C0C3DF400C3B161 /* toped_verifikasi_phone@2x.png */,
+				BB7F021B1C0C3DF400C3B161 /* toped_verifikasi_phone@3x.png */,
 				7AF520091C0422BB00301FBC /* badges_gold_merchant.png */,
 				7AF5200A1C0422BB00301FBC /* balloon_read_left.png */,
 				7AF5200B1C0422BB00301FBC /* balloon_read_right.png */,
@@ -10585,6 +10594,7 @@
 				7AF528CF1C0422BD00301FBC /* icon_order_check.png in Resources */,
 				7AF529B71C0422BD00301FBC /* icon_cart_active@3x.png in Resources */,
 				7AF529701C0422BD00301FBC /* icon_home.png in Resources */,
+				BB7F021D1C0C3DF400C3B161 /* toped_verifikasi_phone@2x.png in Resources */,
 				7AF529D11C0422BD00301FBC /* ic_search.png in Resources */,
 				7AF528471C0422BD00301FBC /* icon_grid_dua.png in Resources */,
 				7AF5295C1C0422BD00301FBC /* icon_track_grey@2x.png in Resources */,
@@ -10600,6 +10610,7 @@
 				7AF5271C1C0422BD00301FBC /* TransactionCartResultViewController.xib in Resources */,
 				7AF5280D1C0422BD00301FBC /* icon_category_active@3x.png in Resources */,
 				7AF5297F1C0422BD00301FBC /* icon_signin_active@2x.png in Resources */,
+				BB7F021C1C0C3DF400C3B161 /* toped_verifikasi_phone.png in Resources */,
 				7AF528D51C0422BD00301FBC /* icon_problem_about_account.png in Resources */,
 				7AF5296D1C0422BD00301FBC /* icon_cart@2x.png in Resources */,
 				7AF528D31C0422BD00301FBC /* icon_plus_blue.png in Resources */,
@@ -10893,6 +10904,7 @@
 				7AF5293C1C0422BD00301FBC /* icon_speed_fast_large@3x.png in Resources */,
 				7AF528BC1C0422BD00301FBC /* icon_neutral_smile50@2x.png in Resources */,
 				7AF529431C0422BD00301FBC /* icon_speed_neutral.png in Resources */,
+				BB7F021E1C0C3DF400C3B161 /* toped_verifikasi_phone@3x.png in Resources */,
 				7AF525901C0422BC00301FBC /* InboxRootViewController.xib in Resources */,
 				7AF52A0E1C0422BD00301FBC /* klikbca_guide_4.png in Resources */,
 				7AF529301C0422BD00301FBC /* icon_sold@3x.png in Resources */,

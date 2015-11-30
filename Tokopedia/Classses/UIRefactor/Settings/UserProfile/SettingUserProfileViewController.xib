@@ -22,6 +22,8 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -46,6 +48,10 @@
                 <outlet property="textfieldphone" destination="soR-Gu-twI" id="NVT-XH-EB4"/>
                 <outlet property="textviewhobbies" destination="gLh-rL-zsl" id="6Uf-ty-BtP"/>
                 <outlet property="thumb" destination="Bju-bE-bA5" id="ARG-cp-QDd"/>
+                <outlet property="verifiedLabel" destination="c3D-zg-ccp" id="dws-su-hOU"/>
+                <outlet property="verifyButton" destination="Q8O-op-M4N" id="7yl-Y6-GeP"/>
+                <outlet property="verifyView" destination="cWs-dJ-0gH" id="fTd-1d-dOb"/>
+                <outlet property="verifyViewHeight" destination="dae-3D-Beb" id="IBE-m0-8aQ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Gx2-Tz-tVm"/>
             </connections>
         </placeholder>
@@ -79,7 +85,7 @@
             </connections>
         </tapGestureRecognizer>
         <view contentMode="scaleToFill" id="WBK-OB-zGO">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="680"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="709"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-rh-Sq2" userLabel="Header View">
@@ -449,7 +455,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8h4-zL-5g3" userLabel="Hp VIEW">
-                    <rect key="frame" x="0.0" y="486" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="486" width="320" height="64"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No. HP" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="osO-1Q-mB5">
                             <rect key="frame" x="15" y="0.0" width="100" height="44"/>
@@ -474,12 +480,18 @@
                             </connections>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A4d-jB-t9L" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="63" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="jrz-D8-Gir"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Belum Terverifikasi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3D-zg-ccp">
+                            <rect key="frame" x="15" y="35" width="290" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <color key="textColor" red="0.88235294119999996" green="0.29411764709999999" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -490,12 +502,42 @@
                         <constraint firstItem="soR-Gu-twI" firstAttribute="top" secondItem="8h4-zL-5g3" secondAttribute="top" id="hNe-HO-6nA"/>
                         <constraint firstAttribute="trailing" secondItem="A4d-jB-t9L" secondAttribute="trailing" id="jg8-Lk-Vb3"/>
                         <constraint firstItem="soR-Gu-twI" firstAttribute="leading" secondItem="osO-1Q-mB5" secondAttribute="trailing" id="jo5-0W-b7p"/>
-                        <constraint firstAttribute="height" constant="44" id="lNm-6F-krs"/>
+                        <constraint firstAttribute="height" constant="64" id="lNm-6F-krs"/>
                         <constraint firstItem="osO-1Q-mB5" firstAttribute="top" secondItem="8h4-zL-5g3" secondAttribute="top" id="si0-4h-mfa"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWs-dJ-0gH" userLabel="Verify View">
+                    <rect key="frame" x="0.0" y="550" width="320" height="85"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vqx-Eb-dbp">
+                            <rect key="frame" x="8" y="8" width="128" height="30"/>
+                            <state key="normal">
+                                <attributedString key="attributedTitle">
+                                    <fragment content="Verifikasi Sekarang">
+                                        <attributes>
+                                            <color key="NSColor" red="0.19215686274509805" green="0.43529411764705883" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="13" name="HelveticaNeue"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                            </state>
+                            <connections>
+                                <action selector="verifyButtonDidTapped:" destination="-1" eventType="touchUpInside" id="LAp-61-PBq"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pastikan Anda selalu mendaftarkan nomor yang dapat kami hubungi demi kelancaran transaksi Anda" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q8O-op-M4N">
+                            <rect key="frame" x="17" y="27" width="295" height="52"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="85" id="dae-3D-Beb"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UkW-Ca-8wv" userLabel="Password View">
-                    <rect key="frame" x="0.0" y="555" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="635" width="320" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NpS-u8-Urj" userLabel="Border Top">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -566,19 +608,22 @@
                 <constraint firstItem="dQx-rR-UvO" firstAttribute="leading" secondItem="WBK-OB-zGO" secondAttribute="leading" id="Q0b-fy-uhq"/>
                 <constraint firstItem="6tV-rh-Sq2" firstAttribute="leading" secondItem="WBK-OB-zGO" secondAttribute="leading" id="Suq-Nm-If7"/>
                 <constraint firstItem="8h4-zL-5g3" firstAttribute="top" secondItem="lvk-mB-c97" secondAttribute="bottom" id="Tq0-oE-qNd"/>
+                <constraint firstItem="cWs-dJ-0gH" firstAttribute="top" secondItem="8h4-zL-5g3" secondAttribute="bottom" id="Zfe-lw-XeN"/>
                 <constraint firstAttribute="trailing" secondItem="6tV-rh-Sq2" secondAttribute="trailing" id="cFX-sC-E3N"/>
                 <constraint firstAttribute="trailing" secondItem="lvk-mB-c97" secondAttribute="trailing" id="ceV-gO-lw5"/>
                 <constraint firstItem="88M-FS-jxV" firstAttribute="leading" secondItem="WBK-OB-zGO" secondAttribute="leading" id="d47-F4-PUB"/>
                 <constraint firstItem="6tV-rh-Sq2" firstAttribute="top" secondItem="WBK-OB-zGO" secondAttribute="top" id="dE7-1F-p7W"/>
                 <constraint firstItem="2qj-No-YHY" firstAttribute="top" secondItem="cxD-yj-EMl" secondAttribute="bottom" id="de7-WW-ahG"/>
                 <constraint firstItem="j9N-at-Kjz" firstAttribute="leading" secondItem="WBK-OB-zGO" secondAttribute="leading" id="faX-gs-OJ3"/>
+                <constraint firstAttribute="trailing" secondItem="cWs-dJ-0gH" secondAttribute="trailing" id="had-0g-KCz"/>
                 <constraint firstAttribute="trailing" secondItem="dQx-rR-UvO" secondAttribute="trailing" id="hly-68-Kyf"/>
                 <constraint firstItem="cxD-yj-EMl" firstAttribute="top" secondItem="6tV-rh-Sq2" secondAttribute="bottom" id="jVH-Re-1lx"/>
                 <constraint firstItem="88M-FS-jxV" firstAttribute="top" secondItem="T2U-WD-2HR" secondAttribute="bottom" id="jdH-Cj-loQ"/>
                 <constraint firstAttribute="trailing" secondItem="8h4-zL-5g3" secondAttribute="trailing" id="jeJ-EK-QbQ"/>
                 <constraint firstItem="dQx-rR-UvO" firstAttribute="top" secondItem="88M-FS-jxV" secondAttribute="bottom" id="lxy-BV-7Ev"/>
-                <constraint firstItem="UkW-Ca-8wv" firstAttribute="top" secondItem="8h4-zL-5g3" secondAttribute="bottom" constant="25" id="pDE-10-hby"/>
+                <constraint firstItem="UkW-Ca-8wv" firstAttribute="top" secondItem="cWs-dJ-0gH" secondAttribute="bottom" id="neh-h1-9lc"/>
                 <constraint firstItem="j9N-at-Kjz" firstAttribute="top" secondItem="dQx-rR-UvO" secondAttribute="bottom" id="t3T-Rw-ODp"/>
+                <constraint firstItem="cWs-dJ-0gH" firstAttribute="leading" secondItem="WBK-OB-zGO" secondAttribute="leading" id="tLy-4r-Rvx"/>
                 <constraint firstItem="UkW-Ca-8wv" firstAttribute="leading" secondItem="WBK-OB-zGO" secondAttribute="leading" id="uIv-X0-5kk"/>
                 <constraint firstItem="lvk-mB-c97" firstAttribute="leading" secondItem="WBK-OB-zGO" secondAttribute="leading" id="uiq-t4-eMz"/>
                 <constraint firstAttribute="trailing" secondItem="UkW-Ca-8wv" secondAttribute="trailing" id="zSL-Ph-rG4"/>
@@ -588,7 +633,7 @@
             <connections>
                 <outletCollection property="gestureRecognizers" destination="zpu-vr-SDC" appends="YES" id="ZD1-z6-Bgs"/>
             </connections>
-            <point key="canvasLocation" x="244" y="-456"/>
+            <point key="canvasLocation" x="244" y="-441.5"/>
         </view>
     </objects>
     <resources>

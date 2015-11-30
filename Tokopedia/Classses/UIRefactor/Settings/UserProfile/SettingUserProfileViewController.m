@@ -28,6 +28,8 @@
 #import "TKPDPhotoPicker.h"
 
 #import "UIImage+ImageEffects.h"
+#import "HelloPhoneVerificationViewController.h"
+
 #define CTagProfile 2
 
 #pragma mark - Profile Edit View Controller
@@ -77,6 +79,10 @@
     __weak RKManagedObjectRequestOperation *_uploadProfileImageRequest;
     
     NSOperationQueue *_operationQueue;
+    __weak IBOutlet UILabel *verifiedLabel;
+    __weak IBOutlet UILabel *verifyButton;
+    __weak IBOutlet UIView *verifyView;
+    __weak IBOutlet NSLayoutConstraint *verifyViewHeight;
     
     UIBarButtonItem *_barbuttonsave;
 }
@@ -274,6 +280,18 @@
         }
     }
 }
+- (IBAction)verifyButtonDidTapped:(id)sender {
+    HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    navigationController.viewControllers = @[controller];
+    
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+
+}
 
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
@@ -310,6 +328,25 @@
     
     if (status) {
         [self requestprocessProfileForm:object];
+    }
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    if([[_auth objectForKey:@"msisdn_is_verified"] integerValue] == 1){
+        [verifiedLabel setText:@"Terverifikasi"];
+        [verifiedLabel setTextColor:[UIColor colorWithRed:0.061
+                                                         green:0.648
+                                                          blue:0.275
+                                                         alpha:1]];
+        [verifyView setHidden:YES];
+        [verifyViewHeight setConstant:10];
+    }else{
+        [verifiedLabel setText:@"Belum Terverifikasi"];
+        [verifiedLabel setTextColor:[UIColor colorWithRed:0.882
+                                                    green:0.296
+                                                     blue:0.209
+                                                    alpha:1]];
+        [verifyView setHidden:NO];
+        [verifyViewHeight setConstant:85];
     }
 }
 
