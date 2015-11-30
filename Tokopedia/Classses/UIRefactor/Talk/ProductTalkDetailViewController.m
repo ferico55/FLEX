@@ -101,6 +101,7 @@
     UserAuthentificationManager *_userManager;
     NavigateViewController *_navigateController;
     NSString *_reportAction;
+    BOOL _marksOpenedTalksAsRead;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -133,9 +134,18 @@
 @implementation ProductTalkDetailViewController
 
 #pragma mark - Initializations
+-(id) initByMarkingOpenedTalkAsRead:(BOOL) marksOpenedTalkAsRead {
+    self = [super init];
+    _marksOpenedTalksAsRead = marksOpenedTalkAsRead;
+    return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
+    _marksOpenedTalksAsRead = NO;
+    
     if (self) {
         _isnodata = YES;
         self.title = kTKPDTITLE_TALK;
@@ -204,8 +214,7 @@
     if (index<0) {
         index = 0;
     }
-    if([vcs[index] isKindOfClass:[TKPDTabViewController class]]) {
-        
+    if(_marksOpenedTalksAsRead) {
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
         
@@ -1510,12 +1519,11 @@
     _data = data;
     
     if (data) {
-        [self setHeaderData:data];
         _page = 1;
         [_list removeAllObjects];
         [self configureRestKit];
         [self loadData];
-        
+        [self setHeaderData:data];
     }
 }
 
