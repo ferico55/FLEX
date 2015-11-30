@@ -203,6 +203,13 @@
     return [newString isNumber];
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    // select all text, needs dispatch for it to work reliably
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [textField selectAll:nil];
+    });
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
