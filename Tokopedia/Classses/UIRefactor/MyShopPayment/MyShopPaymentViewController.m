@@ -762,7 +762,7 @@
         [secureStorage setKeychainWithValue:[myShopShipmentTableViewController.createShopViewController getNamaToko] withKey:kTKPD_SHOPNAMEKEY];
         [secureStorage setKeychainWithValue:addShop.result.shop_url withKey:kTKPD_SHOPIMAGEKEY];
         [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
-        [myShopShipmentTableViewController.createShopViewController.moreViewController updateKeyChain];
+        [myShopShipmentTableViewController.createShopViewController.moreViewController updateShopInformation];
     }
     
     strFileUploaded = filePath = strPostKey = nil;

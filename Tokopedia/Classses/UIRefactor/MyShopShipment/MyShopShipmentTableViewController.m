@@ -52,6 +52,7 @@ GeneralTableViewControllerDelegate
     ShippingInfoShipments *_RPX;
     ShippingInfoShipmentPackage *_RPXPackageNextDay;
     ShippingInfoShipmentPackage *_RPXPackageEconomy;
+    BOOL _showRPXIDropSwitch;
     
     ShippingInfoShipments *_wahana;
     ShippingInfoShipmentPackage *_wahanaPackageNormal;
@@ -114,6 +115,10 @@ GeneralTableViewControllerDelegate
 
 @property (weak, nonatomic) IBOutlet UILabel *shipmentRPXNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shipmentRPXLogoImageView;
+@property (weak, nonatomic) IBOutlet UITableViewCell *shipmentRPXIDropCell;
+@property (weak, nonatomic) IBOutlet UILabel *shipmentRPXIDropLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *shipmentRPXLogoIndomaretView;
+@property (weak, nonatomic) IBOutlet UISwitch *shipmentRPXIDropSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *shipmentRPXNextDaySwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *shipmentRPXEconomySwitch;
 @property (weak, nonatomic) IBOutlet UILabel *shipmentRPXNotAvailableLabel;
@@ -240,6 +245,8 @@ GeneralTableViewControllerDelegate
     _shipmentJNEExtraFeeLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentJNEExtraFeeLabel.text attributes:attributes];
     
     _shipmentTikiExtraFeeLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentTikiExtraFeeLabel.text attributes:attributes];
+    
+    
     
     _shipmePanduNotAvailableLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmePanduNotAvailableLabel.text attributes:attributes];
     
@@ -541,9 +548,9 @@ GeneralTableViewControllerDelegate
             height = 50;
         }
         
-        // return cell if information about package is existing
+        // return cell if information about i-drop exists
         else if (row == 1) {
-            if (_RPXPackageNextDay) {
+            if(_shipment.rpx.whitelisted_idrop == 1) {
                 height = 44;
             } else {
                 height = 0;
@@ -552,6 +559,15 @@ GeneralTableViewControllerDelegate
         
         // return cell if information about package is existing
         else if (row == 2) {
+            if (_RPXPackageNextDay) {
+                height = 44;
+            } else {
+                height = 0;
+            }
+        }
+        
+        // return cell if information about package is existing
+        else if (row == 3) {
             if (_RPXPackageEconomy) {
                 height = 44;
             } else {
@@ -559,11 +575,11 @@ GeneralTableViewControllerDelegate
             }
         }
         
-        else if (row == 3) {
+        else if (row == 4) {
             height = 44;
         }
         
-        else if (row == 4) {
+        else if (row == 5) {
             height = 70;
         }
         
@@ -571,7 +587,7 @@ GeneralTableViewControllerDelegate
         if (row == 0) {
             height = 50;
         }
-        else if (row == 5) {
+        else if (row == 6) {
             height = 44;
         } else {
             height = 0;
@@ -885,7 +901,7 @@ GeneralTableViewControllerDelegate
             break;
             
         case 3:
-            numberOfRows = 6;
+            numberOfRows = 7;
             break;
             
         case 4:
@@ -931,6 +947,8 @@ GeneralTableViewControllerDelegate
         } else if ([cell isEqual:_shipmentJNEAWBCell]) {
             shouldHighlight = YES;
         } else if ([cell isEqual:_shipmentTikiMoreInfoCell]) {
+            shouldHighlight = YES;
+        } else if ([cell isEqual:_shipmentRPXIDropCell]) {
             shouldHighlight = YES;
         } else if ([cell isEqual:_shipmentRPXMoreInfoCell]) {
             shouldHighlight = YES;
@@ -978,6 +996,16 @@ GeneralTableViewControllerDelegate
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
         
+    } else if (indexPath.section == 3 && indexPath.row == 1) {
+        AlertInfoView *alert = [AlertInfoView newview];
+        alert.text = @"Sistem I-Drop";
+        alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
+        [alert show];
+        
+        CGRect frame = alert.frame;
+        frame.origin.y -= 25;
+        frame.size.height += (alert.detailTextLabel.frame.size.height-50);
+        alert.frame = frame;
     }
 }
 
@@ -1067,8 +1095,10 @@ GeneralTableViewControllerDelegate
     else if ([sender isEqual:_shipmentJNEAWBSwitch]) {
         if (sender.isOn) {
             _shipment.jne.jne_tiket = @"1";
+            [_shipment.auto_resi addObject:_JNE.shipment_id];
         } else {
             _shipment.jne.jne_tiket = @"0";
+            [_shipment.auto_resi removeObject:_JNE.shipment_id];
         }
     }
     else if ([sender isEqual:_shipmentJNEMinimumWeightSwitch]) {
@@ -1119,19 +1149,47 @@ GeneralTableViewControllerDelegate
     
     
     // actions for RPX
+    
+    else if ([sender isEqual:_shipmentRPXIDropSwitch]) {
+        NSNumber *number = [NSNumber numberWithInteger:[_RPX.shipment_id integerValue]];
+        NSMutableArray *tempAutoResi = [_shipment.auto_resi mutableCopy];
+        if (sender.isOn) {
+            _RPXPackageNextDay.active = @"0";
+            [_shipmentRPXNextDaySwitch setOn:NO animated:YES];
+            
+            _RPXPackageEconomy.active = @"1";
+            [_shipmentRPXEconomySwitch setOn:YES animated:YES];
+            
+            [tempAutoResi addObject:number];
+        } else {
+            [tempAutoResi removeObject:number];
+        }
+        _shipment.auto_resi = tempAutoResi;
+    }
     else if ([sender isEqual:_shipmentRPXNextDaySwitch]) {
+        NSNumber *number = [NSNumber numberWithInteger:[_RPX.shipment_id integerValue]];
+        NSMutableArray *tempAutoResi = [_shipment.auto_resi mutableCopy];
         if (sender.isOn) {
             _RPXPackageNextDay.active = @"1";
+            [_shipmentRPXIDropSwitch setOn:NO animated:YES];
+            [tempAutoResi removeObject:number];
         } else {
             _RPXPackageNextDay.active = @"0";
         }
+        _shipment.auto_resi = tempAutoResi;
     }
     else if ([sender isEqual:_shipmentRPXEconomySwitch]) {
+        NSNumber *number = [NSNumber numberWithInteger:[_RPX.shipment_id integerValue]];
+        NSMutableArray *tempAutoResi = [_shipment.auto_resi mutableCopy];
         if (sender.isOn) {
             _RPXPackageEconomy.active = @"1";
+            
         } else {
             _RPXPackageEconomy.active = @"0";
+            [tempAutoResi removeObject:number];
+            [_shipmentRPXIDropSwitch setOn:NO animated:YES];
         }
+        _shipment.auto_resi = tempAutoResi;
     }
     
     
@@ -1296,6 +1354,7 @@ GeneralTableViewControllerDelegate
                                                    kTKPDSHOPSHIPMENT_APIISALLOWKEY,
                                                    kTKPDSHOPSHIPMENT_APIPOSFEEKEY,
                                                    kTKPDSHOPSHIPMENT_APISHOPNAMEKEY,
+                                                   kTKPDSHOPSHIPMENT_APIAUTORESIKEY
                                                    ]];
     
     RKObjectMapping *districtMapping = [RKObjectMapping mappingForClass:[District class]];
@@ -1337,7 +1396,12 @@ GeneralTableViewControllerDelegate
                                                 ]];
     
     RKObjectMapping *tikiMapping = [RKObjectMapping mappingForClass:[Tiki class]];
-    [tikiMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APITIKIFEEKEY,]];
+    [tikiMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APITIKIFEEKEY]];
+    
+    RKObjectMapping *RPXMapping = [RKObjectMapping mappingForClass:[RPX class]];
+    [RPXMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APIRPXWHITELISTEDIDROPKEY:kTKPDSHOPSHIPMENT_APIRPXWHITELISTEDIDROPKEY,
+                                                     kTKPDSHOPSHIPMENT_APIRPXINDOMARETLOGOKEY:kTKPDSHOPSHIPMENT_APIRPXINDOMARETLOGOKEY
+                                                     }];
     
     RKObjectMapping *posWeightMapping = [RKObjectMapping mappingForClass:[PosMinWeight class]];
     [posWeightMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY,
@@ -1391,6 +1455,9 @@ GeneralTableViewControllerDelegate
                                                                                 toKeyPath:kTKPDSHOPSHIPMENT_APIPOSKEY
                                                                               withMapping:POSMapping];
     [resultMapping addPropertyMapping:posRel];
+    
+    RKRelationshipMapping *rpxRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIRPXKEY toKeyPath:kTKPDSHOPSHIPMENT_APIRPXKEY withMapping:RPXMapping];
+    [resultMapping addPropertyMapping:rpxRel];
     
     RKRelationshipMapping *shipmentpackagesRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APISHIPMENTPACKAGEKEY
                                                                                              toKeyPath:kTKPDSHOPSHIPMENT_APISHIPMENTPACKAGEKEY
@@ -1490,6 +1557,7 @@ GeneralTableViewControllerDelegate
             _hasSelectKotaAsal = YES;
         }
         
+        
         _postCodeTextField.text = _shipment.shop_shipping.postal_code;
         
         if(createShopViewController != nil)
@@ -1516,78 +1584,78 @@ GeneralTableViewControllerDelegate
         
         
         for (ShippingInfoShipments *shipment in _shipment.shipment) {
-            if ([shipment.shipment_name isEqualToString:@"JNE"]) {
+            if ([shipment.shipment_id isEqualToString:@"1"]) { // JNE
                 _JNE = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"YES"]) {
+                    if ([package.sp_id isEqualToString:@"6"]) { // YES
                         _JNEPackageYes = package;
-                    } else if ([package.name isEqualToString:@"Reguler"]) {
+                    } else if ([package.sp_id isEqualToString:@"1"]) { // Reguler
                         _JNEPackageReguler = package;
-                    } else  if ([package.name isEqualToString:@"OKE"]) {
+                    } else  if ([package.sp_id isEqualToString:@"2"]) { // OKE
                         _JNEPackageOke = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"TIKI"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"2"]) { // TIKI
                 _tiki = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Reguler"]) {
+                    if ([package.sp_id isEqualToString:@"3"]) { // Reguler
                         _tikiPackageReguler = package;
-                    } else if ([package.name isEqualToString:@"Over Night Service"]) {
+                    } else if ([package.sp_id isEqualToString:@"16"]) { // One Night Service
                         _tikiPackageONS = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"RPX"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"3"]) { // RPX
                 _RPX = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Next Day Package"]) {
+                    if ([package.sp_id isEqualToString:@"4"]) { // Next Day Package
                         _RPXPackageNextDay = package;
-                    } else if ([package.name isEqualToString:@"Regular Package"]) {
+                    } else if ([package.sp_id isEqualToString:@"5"]) { // Reguler Package (Live) || Economy Package (Staging)
                         _RPXPackageEconomy = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Wahana"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"6"]) { // Wahana
                 _wahana = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Service Normal"]) {
+                    if ([package.sp_id isEqualToString:@"8"]) { // Service Normal
                         _wahanaPackageNormal = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Pos Indonesia"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"4"]) { // Pos Indonesia
                 _posIndonesia = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Pos Kilat Khusus"]) {
+                    if ([package.sp_id isEqualToString:@"10"]) { // Pos Kilat Khusus
                         _posPackageKhusus = package;
-                    } else if ([package.name isEqualToString:@"Paket Biasa"]) {
+                    } else if ([package.sp_id isEqualToString:@"9"]) { // Paket Biasa
                         _posPackageBiasa = package;
-                    } else if ([package.name isEqualToString:@"Pos Express"]) {
+                    } else if ([package.sp_id isEqualToString:@"11"]) { // Pos Express
                         _posPackageExpress = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Cahaya"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"7"]) { // Cahaya
                 _cahaya = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Service Normal"]) {
+                    if ([package.sp_id isEqualToString:@"12"]) { // Service Normal
                         _cahayaPackageNormal = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Pandu"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"8"]) { // Pandu
                 _pandu = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Reguler"]) {
+                    if ([package.sp_id isEqualToString:@"14"]) { // Reguler
                         _panduPackageRegular = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"First"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"9"]) { // First
                 _first = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Reguler Service"]) {
+                    if ([package.sp_id isEqualToString:@"15"]) { // Reguler Service
                         _firstPackageRegular = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"SiCepat"]) {
+            } else if ([shipment.shipment_id isEqualToString:@"11"]) { // SiCepat
                 _siCepat = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"Regular Package"]) {
+                    if ([package.sp_id isEqualToString:@"18"]) { // Regular Package
                         _siCepatPackageRegular = package;
                     }
                 }
@@ -1689,6 +1757,24 @@ GeneralTableViewControllerDelegate
                                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                               _shipmentRPXLogoImageView.image = image;
                                                           } failure:nil];
+                /*
+                 TODO
+                 add Indomaret logo image
+                */
+                
+                NSURL *urlIndomaret = [NSURL URLWithString:_shipment.rpx.indomaret_logo];
+                NSURLRequest *requestLogoIndomaret = [NSURLRequest requestWithURL:urlIndomaret];
+                
+                if (_shipment.rpx.whitelisted_idrop) {
+                    [_shipmentRPXLogoIndomaretView setImageWithURLRequest:requestLogoIndomaret
+                                                         placeholderImage:nil
+                                                                  success:^(NSURLRequest *request, NSURLResponse *response, UIImage *image) {
+                        _shipmentRPXLogoIndomaretView.image = image;
+                                                                  } failure:nil];
+                }
+                
+                NSNumber *number = [NSNumber numberWithInteger:[_RPX.shipment_id integerValue]];
+                _shipmentRPXIDropSwitch.on = [_shipment.auto_resi containsObject:number];
                 
                 if (_RPXPackageEconomy) {
                     _shipmentRPXEconomySwitch.on = [_RPXPackageEconomy.active boolValue];
@@ -2273,9 +2359,14 @@ GeneralTableViewControllerDelegate
     if ([_availableShipments containsObject:_RPX.shipment_id]) {
         if ([_RPXPackageNextDay.active boolValue]) {
             [rpx setValue:@"1" forKey:_RPXPackageNextDay.sp_id];
+        } else{
+            [rpx setValue:@"0" forKey:_RPXPackageNextDay.sp_id];
         }
+        
         if ([_RPXPackageEconomy.active boolValue]) {
             [rpx setValue:@"1" forKey:_RPXPackageEconomy.sp_id];
+        } else{
+            [rpx setValue:@"0" forKey:_RPXPackageEconomy.sp_id];
         }
         
         if ([[rpx allValues] count] > 0) {
@@ -2361,6 +2452,8 @@ GeneralTableViewControllerDelegate
                                                        length:[data length]
                                                      encoding:NSUTF8StringEncoding];
     
+    NSString *iDrop = _shipmentRPXIDropSwitch.isOn ? @"1" : @"0";
+
     NSDictionary *parameters = @{
                                  kTKPDDETAIL_APIACTIONKEY                : kTKPDDETAIL_APIEDITSHIPPINGINFOKEY,
                                  kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY    : courier_origin,
@@ -2378,6 +2471,7 @@ GeneralTableViewControllerDelegate
                                  kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY    : pos_min_weight,
                                  kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY : pos_min_weight_value,
                                  kTKPDSHOPSHIPMENT_APISHIPMENTIDS        : shipments_ids,
+                                 kTKPDSHOPSHIPMENT_APIRPXIDROPKEY        : iDrop
                                  };
     
     return parameters;

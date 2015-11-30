@@ -24,6 +24,7 @@
 #import "TransactionCartRootViewController.h"
 #import "SettingAddressEditViewController.h"
 #import "GeneralTableViewController.h"
+#import "TransactionShipmentATCTableViewController.h"
 
 #import "TokopediaNetworkManager.h"
 
@@ -42,6 +43,7 @@
     SettingAddressViewControllerDelegate,
     SettingAddressEditViewControllerDelegate,
     GeneralTableViewControllerDelegate,
+    TransactionShipmentATCTableViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
@@ -87,6 +89,7 @@
     TransactionATCForm *_ATCForm;
     
     NSArray *_shipments;
+    NSArray *_autoResi;
 }
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBuyButton;
@@ -563,10 +566,16 @@
                     [shipmentName addObject:package.shipment_name];
                 }
                 
-                GeneralTableViewController *vc = [GeneralTableViewController new];
+                NSMutableArray *autoResiImage = [NSMutableArray new];
+                for (ShippingInfoShipments *package in _shipments) {
+                    [autoResiImage addObject:package.auto_resi_image];
+                }
+                
+                TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
                 vc.title = @"Kurir Pengiriman";
                 vc.selectedObject = _selectedShipment.shipment_name;
                 vc.objects = shipmentName;
+                vc.objectImages = autoResiImage;
                 vc.senderIndexPath = indexPath;
                 vc.delegate = self;
                 
@@ -876,9 +885,13 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionATCFormResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"auto_resi":@"auto_resi"}];
     
     RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TransactionATCFormDetail class]];
     [formMapping addAttributeMappingsFromDictionary:@{API_AVAILABLE_COUNT_KEY:API_AVAILABLE_COUNT_KEY}];
+    
+    RKObjectMapping *rpxMapping = [RKObjectMapping mappingForClass:[RPX class]];
+    [rpxMapping addAttributeMappingsFromDictionary:@{@"indomaret_logo":@"indomaret_logo"}];
     
     TransactionObjectMapping *mapping = [TransactionObjectMapping new];
     RKObjectMapping *productMapping = [mapping productMapping];
@@ -889,6 +902,8 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY toKeyPath:API_FORM_KEY withMapping:formMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"rpx" toKeyPath:@"rpx" withMapping:rpxMapping]];
     
     [formMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_DETAIL_KEY toKeyPath:API_PRODUCT_DETAIL_KEY withMapping:productMapping]];
     
@@ -930,10 +945,14 @@
             NSArray *shipments = _ATCForm.result.form.shipment;
             _shipments = shipments;
             [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
+
             
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+//            NSMutableArray *autoResiDetails = [NSMutableArray new];
+            
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
+//                NSMutableDictionary *shipmentAutoResiSupported = [NSMutableDictionary new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     //TODO:: REMOVE DUMMY DATA
                     if ([package.sp_id integerValue] == 17) {
@@ -944,13 +963,22 @@
                     }
                 }
                 
+                if ([_ATCForm.result.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
+                    shipment.auto_resi_image = _ATCForm.result.rpx.indomaret_logo;
+                } else {
+                    shipment.auto_resi_image = @"";
+                }
+                
                 if (shipmentPackages.count>0) {
                     shipment.shipment_package = shipmentPackages;
                     [shipmentSupporteds addObject:shipment];
                 }
+                
+//                [autoResiDetails addObject:shipmentAutoResiSupported];
             }
             
             _shipments = shipmentSupporteds;
+//            _autoResi = autoResiDetails;
             _selectedShipment = [shipmentSupporteds firstObject];
             _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
             
@@ -1212,6 +1240,7 @@
         {
             if (buttonIndex==0) {
                 [self.navigationController popViewControllerAnimated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
             }
             else
             {
@@ -1222,6 +1251,7 @@
                 [self.tabBarController setSelectedIndex:3];
                 [selfNav popToRootViewControllerAnimated:YES];
                 [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
+                
                 
                 //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
                 //[self.navigationController pushViewController:cartViewController animated:YES];

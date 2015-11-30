@@ -48,6 +48,8 @@
 
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
+#import "NoResultReusableView.h"
+#import "SpellCheckRequest.h"
 
 #pragma mark - Search Result View Controller
 
@@ -83,7 +85,9 @@ GeneralSingleProductDelegate,
 TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 PromoRequestDelegate,
-PromoCollectionViewDelegate
+PromoCollectionViewDelegate,
+NoResultDelegate,
+SpellCheckRequestDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -104,7 +108,8 @@ PromoCollectionViewDelegate
 
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
-
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 @end
 
 @implementation SearchResultViewController {
@@ -128,11 +133,12 @@ PromoCollectionViewDelegate
     
     UserAuthentificationManager *_userManager;
     TAGContainer *_gtmContainer;
-    NoResultView *_noResultView;
+    NoResultReusableView *_noResultView;
     
     NSString *_searchBaseUrl;
     NSString *_searchPostUrl;
     NSString *_searchFullUrl;
+    NSString *_suggestion;
     
     BOOL _isFailRequest;
 }
@@ -145,6 +151,16 @@ PromoCollectionViewDelegate
         _isnodata = YES;
     }
     return self;
+}
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [_noResultView generateAllElements:@"no-result.png"
+                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
+                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
+                               btnTitle:@""];
+    [_noResultView hideButton:YES];
+    _noResultView.delegate = self;
 }
 
 #pragma mark - Life Cycle
@@ -163,7 +179,6 @@ PromoCollectionViewDelegate
     self.navigationItem.backBarButtonItem = backButton;
     
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
     _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
@@ -173,6 +188,7 @@ PromoCollectionViewDelegate
     _params = [NSMutableDictionary new];
     _start = 0;
     
+    [self initNoResultView];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE]];
@@ -241,6 +257,8 @@ PromoCollectionViewDelegate
                                forState:UIControlStateNormal];
     }
     
+    self.contentView = self.view;
+    
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
@@ -272,10 +290,14 @@ PromoCollectionViewDelegate
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
     
+    _spellCheckRequest = [SpellCheckRequest new];
+    _spellCheckRequest.delegate = self;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    _suggestion = @"";
     [_collectionView reloadData];
 }
 
@@ -486,6 +508,7 @@ PromoCollectionViewDelegate
 }
 
 #pragma mark - Methods
+
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
     _isrefreshview = YES;
@@ -813,10 +836,26 @@ PromoCollectionViewDelegate
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
             }
-        } else {
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-            [_collectionView addSubview:_noResultView];
             
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
+            //self.view = self.contentView;
+            [_noResultView removeFromSuperview];
+        } else {
+            //no data at all
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
+            
+            if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
+                [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+            }else{
+                _suggestion = @"";
+            }
+            
+            [_collectionView addSubview:_noResultView];
+            /*
+            if(self.view != _noResultView){
+                self.view = _noResultView;
+            }
+             */
         }
         
         if(_start > 0) [self requestPromo];
@@ -937,6 +976,23 @@ PromoCollectionViewDelegate
     return RKRequestMethodGET;
 }
 
+#pragma mark - No Result Delegate
+
+- (void) buttonDidTapped:(id)sender{
+    [_params setObject:_suggestion forKey:@"search"];
+    //self.view = self.contentView;
+    [_noResultView removeFromSuperview];
+    
+    NSDictionary *newData = @{
+                            @"auth" : [_data objectForKey:@"auth"],
+                            @"type" : [_data objectForKey:@"type"],
+                            @"search": _suggestion
+                            };
+    _data = newData;
+    
+    [_networkManager doRequest];
+}
+
 #pragma mark - Other Method
 - (void)configureGTM {
     [TPAnalytics trackUserId];
@@ -948,6 +1004,7 @@ PromoCollectionViewDelegate
     _searchPostUrl = [_gtmContainer stringForKey:GTMKeySearchPost];
     _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
 }
+
 
 #pragma mark - Promo request delegate
 
@@ -1017,6 +1074,23 @@ PromoCollectionViewDelegate
         self.scrollDirection = ScrollDirectionDown;
     }
     self.lastContentOffset = scrollView.contentOffset.y;
+}
+
+#pragma mark - Spell Check Delegate
+
+-(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
+    _suggestion = suggestion;
+    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain"];
+        [_noResultView hideButton:YES];
+    }else if([_data count] > 3){
+        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+        [_noResultView hideButton:YES];
+    }else{
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultButtonTitle:_suggestion];
+        [_noResultView hideButton:NO];
+    }
 }
 
 @end
