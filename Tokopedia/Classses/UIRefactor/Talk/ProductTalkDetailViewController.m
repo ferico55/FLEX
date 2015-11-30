@@ -208,12 +208,6 @@
     _auth = [auth mutableCopy];
     [_sendButton setEnabled:NO];
     
-    //validate previous class so it can use several URL path
-    NSArray *vcs = self.navigationController.viewControllers;
-    NSInteger index = [vcs count] - 2;
-    if (index<0) {
-        index = 0;
-    }
     if(_marksOpenedTalksAsRead) {
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
