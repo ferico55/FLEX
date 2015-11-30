@@ -1920,6 +1920,10 @@
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		BB7F020A1C08472800C3B161 /* SendOTPResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F02091C08472800C3B161 /* SendOTPResult.m */; settings = {ASSET_TAGS = (); }; };
 		BB7F020D1C08475800C3B161 /* SendOTP.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F020C1C08475800C3B161 /* SendOTP.m */; settings = {ASSET_TAGS = (); }; };
+		BB7F02121C0BECB800C3B161 /* VerifyOTP.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F020F1C0BECB800C3B161 /* VerifyOTP.m */; settings = {ASSET_TAGS = (); }; };
+		BB7F02131C0BECB800C3B161 /* VerifyOTPResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F02111C0BECB800C3B161 /* VerifyOTPResult.m */; settings = {ASSET_TAGS = (); }; };
+		BB7F02171C0BF04200C3B161 /* AlertVerifyOTP.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7F02151C0BF04200C3B161 /* AlertVerifyOTP.m */; settings = {ASSET_TAGS = (); }; };
+		BB7F02181C0BF04200C3B161 /* AlertVerifyOTP.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7F02161C0BF04200C3B161 /* AlertVerifyOTP.xib */; settings = {ASSET_TAGS = (); }; };
 		BBAA1BA11C055E3F00E8D1F9 /* PhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBAA1B9F1C055E3F00E8D1F9 /* PhoneVerificationViewController.m */; settings = {ASSET_TAGS = (); }; };
 		BBAA1BA21C055E3F00E8D1F9 /* PhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBAA1BA01C055E3F00E8D1F9 /* PhoneVerificationViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		BBC7BAFE1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC7BAFC1C06E8F8005A28EE /* HelloPhoneVerificationViewController.m */; settings = {ASSET_TAGS = (); }; };
@@ -4832,6 +4836,13 @@
 		BB7F02091C08472800C3B161 /* SendOTPResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendOTPResult.m; sourceTree = "<group>"; };
 		BB7F020B1C08475800C3B161 /* SendOTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendOTP.h; sourceTree = "<group>"; };
 		BB7F020C1C08475800C3B161 /* SendOTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendOTP.m; sourceTree = "<group>"; };
+		BB7F020E1C0BECB800C3B161 /* VerifyOTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyOTP.h; sourceTree = "<group>"; };
+		BB7F020F1C0BECB800C3B161 /* VerifyOTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyOTP.m; sourceTree = "<group>"; };
+		BB7F02101C0BECB800C3B161 /* VerifyOTPResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyOTPResult.h; sourceTree = "<group>"; };
+		BB7F02111C0BECB800C3B161 /* VerifyOTPResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyOTPResult.m; sourceTree = "<group>"; };
+		BB7F02141C0BF04200C3B161 /* AlertVerifyOTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertVerifyOTP.h; sourceTree = "<group>"; };
+		BB7F02151C0BF04200C3B161 /* AlertVerifyOTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertVerifyOTP.m; sourceTree = "<group>"; };
+		BB7F02161C0BF04200C3B161 /* AlertVerifyOTP.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertVerifyOTP.xib; sourceTree = "<group>"; };
 		BBAA1B9E1C055E3F00E8D1F9 /* PhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerificationViewController.h; sourceTree = "<group>"; };
 		BBAA1B9F1C055E3F00E8D1F9 /* PhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerificationViewController.m; sourceTree = "<group>"; };
 		BBAA1BA01C055E3F00E8D1F9 /* PhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerificationViewController.xib; sourceTree = "<group>"; };
@@ -6941,6 +6952,9 @@
 		7AF51ADE1C0422BA00301FBC /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				BB7F02141C0BF04200C3B161 /* AlertVerifyOTP.h */,
+				BB7F02151C0BF04200C3B161 /* AlertVerifyOTP.m */,
+				BB7F02161C0BF04200C3B161 /* AlertVerifyOTP.xib */,
 				BBC7BB001C08095B005A28EE /* AlertPhoneVerification.m */,
 				BBC7BB011C08095B005A28EE /* AlertPhoneVerification.h */,
 				BBC7BB021C08095B005A28EE /* AlertPhoneVerification.xib */,
@@ -10029,6 +10043,10 @@
 		BB7F02071C08472800C3B161 /* PhoneVerification */ = {
 			isa = PBXGroup;
 			children = (
+				BB7F020E1C0BECB800C3B161 /* VerifyOTP.h */,
+				BB7F020F1C0BECB800C3B161 /* VerifyOTP.m */,
+				BB7F02101C0BECB800C3B161 /* VerifyOTPResult.h */,
+				BB7F02111C0BECB800C3B161 /* VerifyOTPResult.m */,
 				BB7F020B1C08475800C3B161 /* SendOTP.h */,
 				BB7F020C1C08475800C3B161 /* SendOTP.m */,
 				BB7F02081C08472800C3B161 /* SendOTPResult.h */,
@@ -10661,6 +10679,7 @@
 				7AF529B41C0422BD00301FBC /* icon_urutkan@3x.png in Resources */,
 				7AF525E61C0422BC00301FBC /* AlertPriceNotificationViewController.xib in Resources */,
 				7AF524BB1C0422BC00301FBC /* AlertListViewCell.xib in Resources */,
+				BB7F02181C0BF04200C3B161 /* AlertVerifyOTP.xib in Resources */,
 				7AF529721C0422BD00301FBC /* icon_home_active.png in Resources */,
 				7AF529341C0422BD00301FBC /* icon_speed_bad_large.png in Resources */,
 				7AF529D81C0422BD00301FBC /* icon_home@2x.png in Resources */,
@@ -11421,6 +11440,7 @@
 				7AF527331C0422BD00301FBC /* TxOrderConfirmationDetailViewController.m in Sources */,
 				7AF523511C0422BC00301FBC /* HotlistDetailResult.m in Sources */,
 				7AF526AF1C0422BD00301FBC /* SettingUserProfileViewController.m in Sources */,
+				BB7F02131C0BECB800C3B161 /* VerifyOTPResult.m in Sources */,
 				7AF5249C1C0422BC00301FBC /* TKPStoreManager.m in Sources */,
 				7AF5277A1C0422BD00301FBC /* VTiOSAPI.m in Sources */,
 				7AF525541C0422BC00301FBC /* GeneralProductReviewCell.m in Sources */,
@@ -11703,6 +11723,7 @@
 				7AF523761C0422BC00301FBC /* InboxReviewResult.m in Sources */,
 				7AF5263D1C0422BD00301FBC /* ReputationShopHeader.m in Sources */,
 				7AF523681C0422BC00301FBC /* ResolutionDetailConversation.m in Sources */,
+				BB7F02171C0BF04200C3B161 /* AlertVerifyOTP.m in Sources */,
 				7AF5261E1C0422BC00301FBC /* GiveReviewViewController.m in Sources */,
 				7AF526D81C0422BD00301FBC /* ShopNotesPageViewController.m in Sources */,
 				7AF5234F1C0422BC00301FBC /* Hashtags.m in Sources */,
@@ -12106,6 +12127,7 @@
 				7AF5248C1C0422BC00301FBC /* UploadImage.m in Sources */,
 				7AF522EC1C0422BC00301FBC /* UserAuthentificationManager.m in Sources */,
 				7AF5245F1C0422BC00301FBC /* InstallmentBank.m in Sources */,
+				BB7F02121C0BECB800C3B161 /* VerifyOTP.m in Sources */,
 				7AF52A201C0422BD00301FBC /* XYPieChart.m in Sources */,
 				7AF5230E1C0422BC00301FBC /* DepositSummary.m in Sources */,
 				7AF525801C0422BC00301FBC /* HotlistResultAWSViewController.m in Sources */,

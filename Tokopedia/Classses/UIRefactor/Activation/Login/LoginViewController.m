@@ -681,9 +681,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
-            //if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
+            if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
                 HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-                controller.delegate = self;
+                controller.delegate = self.delegate;
+            
                 controller.redirectViewController = self.redirectViewController;
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -693,7 +694,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 navigationController.viewControllers = @[controller];
                 
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-            /*}else{
+            }else{
                 if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                     [self.delegate redirectViewController:_redirectViewController];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -703,7 +704,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                     [self.tabBarController setSelectedIndex:0];
                     [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
                 }
-            }*/
+            }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil

@@ -248,23 +248,16 @@ TKPDAlertViewDelegate
         SendOTP *otpResult = (SendOTP *)[result objectForKey:@""];
         NSString *resultStr = otpResult.data.is_success;
         
-        //if([resultStr isEqualToString:@"1"]){
+        if([resultStr isEqualToString:@"1"]){
             PhoneVerificationViewController *controller = [PhoneVerificationViewController new];
             controller.delegate = self.delegate;
             controller.redirectViewController = self.redirectViewController;
             controller.phone = _phone;
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        navigationController.viewControllers = @[controller];
-        
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    /*
-    }else{
-     
-        }*/
+            [self.navigationController pushViewController:controller animated:YES];
+        }else{
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Maaf permohonan Anda tidak dapat diproses. Silakan coba kembali."] delegate:self];
+            [alert show];
+        }
     }
 }
 
