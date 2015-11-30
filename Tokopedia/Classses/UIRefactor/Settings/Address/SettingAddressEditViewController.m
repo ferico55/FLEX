@@ -198,6 +198,7 @@
 
 #pragma mark - Textfield delegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if(textField != _textfieldphonenumber && textField != _textfieldpostcode) return YES;
     NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
     return [newString isNumber];
