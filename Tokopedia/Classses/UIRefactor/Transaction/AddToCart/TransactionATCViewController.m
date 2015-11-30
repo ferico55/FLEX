@@ -116,6 +116,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *productQuantityTextField;
 @property (strong, nonatomic) IBOutlet UIView *messageZeroShipmentView;
 @property (weak, nonatomic) IBOutlet UILabel *messageZeroShipmentLabel;
+@property (strong, nonatomic) IBOutlet UITableViewCell *pinLocationCell;
 
 @end
 
@@ -482,6 +483,12 @@
                     return 0;
                 }
                 return 243-50+_addressLabel.frame.size.height;
+            }
+            if ([cell isEqual:_pinLocationCell]) {
+                if ([_selectedShipmentPackage.sp_id integerValue] == 17) {
+                    return 70;
+                }
+                return 0;
             }
             break;
         }
@@ -928,6 +935,10 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    //TODO:: REMOVE DUMMY DATA
+                    if ([package.sp_id integerValue] == 17) {
+                        package.price = @"Rp 15.000";
+                    }
                     if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
                     }
