@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 }
 
-- (void)setFollowingTalk:(BOOL)talkFollowStatus {
+- (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
     _isFollowingTalk = talkFollowStatus;
     if (talkFollowStatus) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
