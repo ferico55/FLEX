@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 @implementation TalkCell
 {
-    BOOL _talkFollowStatus;
+    BOOL _isFollowingTalk;
 }
 
 #pragma mark - Initialization
@@ -128,8 +128,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 }
 
-- (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
-    _talkFollowStatus = talkFollowStatus;
+- (void)setFollowingTalk:(BOOL)talkFollowStatus {
+    _isFollowingTalk = talkFollowStatus;
     if (talkFollowStatus) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
@@ -387,15 +387,15 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             [table endUpdates];
         } else {
             NSArray *successMessages = [[NSMutableArray alloc] init];
-            if(_talkFollowStatus) {
-                successMessages = @[@"Anda berhasil menghapus diskusi ini."];
-            } else {
+            _isFollowingTalk = !_isFollowingTalk;
+            
+            if(_isFollowingTalk) {
                 successMessages = @[@"Anda berhasil mengikuti diskusi ini."];
+            } else {
+                successMessages = @[@"Anda berhasil menghapus diskusi ini."];
             }
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];
-            
-            _talkFollowStatus = !_talkFollowStatus;
         }
     }
 }
