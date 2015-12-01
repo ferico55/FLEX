@@ -16,18 +16,16 @@ static RKObjectManager *_objectManager = nil;
 +(RKObjectManager*)objectManagerMemberExtendBaseURL:(NSString*)baseURL
 {
     _objectManager = [RKObjectManager sharedClient:baseURL];
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
+//    static dispatch_once_t oncePredicate;
+//    dispatch_once(&oncePredicate, ^{
         RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[LuckyDeal mapping] inverseMapping] objectClass:[LuckyDeal class] rootKeyPath:nil method:RKRequestMethodPOST];
         
         [_objectManager addRequestDescriptor:requestDescriptor];
-    });
+//    });
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LuckyDeal mapping] method:RKRequestMethodPOST pathPattern:nil keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     [_objectManager addResponseDescriptor:responseDescriptor];
     _objectManager.requestSerializationMIMEType = RKMIMETypeJSON;
-    
-    [_objectManager.responseDescriptors containsObject:responseDescriptor];
     
      return  _objectManager;
 }

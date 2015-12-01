@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) NSString *token;
 @property NSInteger extid;
+@property NSInteger extId;
 @property NSInteger code;
 @property NSInteger ut;
 @property (strong, nonatomic) NSString *success;
