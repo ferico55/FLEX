@@ -45,6 +45,8 @@
 #import "InboxResolSplitViewController.h"
 #import "TKPDTabViewController.h"
 
+#import "PlacePickerViewController.h"
+
 #import "ProductImages.h"
 
 #import "PromoRequest.h"
@@ -430,6 +432,14 @@
 
 - (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
     return nil;
+}
+
++(void)navigateToMap:(CLLocationCoordinate2D)location FromViewController:(UIViewController *)viewController
+{
+    PlacePickerViewController *placePicker = [PlacePickerViewController new];
+    placePicker.firstCoordinate = location;
+    placePicker.delegate = viewController;
+    [viewController.navigationController pushViewController:placePicker animated:YES];
 }
 
 @end

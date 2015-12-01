@@ -25,9 +25,9 @@
 #import "SettingAddressEditViewController.h"
 #import "GeneralTableViewController.h"
 #import "TransactionShipmentATCTableViewController.h"
-
+#import "PlacePickerViewController.h"
 #import "TokopediaNetworkManager.h"
-
+#import "NavigateViewController.h"
 #import "Localytics.h"
 
 #define TAG_REQUEST_FORM 10
@@ -45,6 +45,7 @@
     GeneralTableViewControllerDelegate,
     TransactionShipmentATCTableViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
+    PlacePickerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
@@ -90,7 +91,12 @@
     
     NSArray *_shipments;
     NSArray *_autoResi;
+    
+    NSString *_longitude;
+    NSString *_latitude;
+    
 }
+@property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBuyButton;
 
@@ -111,6 +117,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *borderFullAddress;
 @property (weak, nonatomic) IBOutlet UIView *borderAddress;
+@property (weak, nonatomic) IBOutlet UIImageView *mapImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *productQuantityLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *productQuantityStepper;
@@ -142,7 +149,7 @@
    
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-    
+
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
@@ -231,6 +238,10 @@
     
     _networkManager.delegate = self;
 }
+- (IBAction)tapPinLocationButton:(id)sender {
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) FromViewController:self];
+}
+
 
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -270,6 +281,7 @@
         }
     }
 }
+
 
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -557,6 +569,11 @@
                                                    DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
                     [self.navigationController pushViewController:addressViewController animated:YES];
                 }
+                break;
+            }
+            case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
+            {
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0)FromViewController:self];
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
@@ -1577,6 +1594,30 @@ replacementString:(NSString*)string
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
     NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
     [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
+}
+
+-(void)PickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage *)map
+{
+    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
+    
+    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+
+    [_pinLocationNameButton setTitle:addressStreet forState:UIControlStateNormal];
+
+    _mapImageView.image = map;
+    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
 }
 
 #pragma mark - Memory Management

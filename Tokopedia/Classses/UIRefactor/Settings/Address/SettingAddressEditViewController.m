@@ -16,7 +16,7 @@
 #import "TKPDTextView.h"
 #import "TokopediaNetworkManager.h"
 #import "PlacePickerViewController.h"
-
+#import "NavigateViewController.h"
 #import "RequestObject.h"
 
 #pragma mark - Setting Address Edit View Controller
@@ -327,10 +327,7 @@
 
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMap:(id)sender {
-    PlacePickerViewController *placePicker = [PlacePickerViewController new];
-    placePicker.firstCoordinate = CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]);
-    placePicker.delegate = self;
-    [self.navigationController pushViewController:placePicker animated:YES];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue])FromViewController:self];
 }
 //
 

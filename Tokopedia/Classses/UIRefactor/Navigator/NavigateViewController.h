@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @interface NavigateViewController : NSObject
 
@@ -26,6 +27,8 @@
 - (void)navigateToProductFromViewController:(UIViewController *)viewController
                                   promoData:(NSDictionary *)data
                                 productData:(NSDictionary *)productData;
+
++(void)navigateToMap:(CLLocationCoordinate2D)location FromViewController:(UIViewController*)viewController;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;

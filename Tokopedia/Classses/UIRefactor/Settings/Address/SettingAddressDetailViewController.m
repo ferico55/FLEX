@@ -13,6 +13,8 @@
 #import "SettingAddressViewController.h"
 #import "PlacePickerViewController.h"
 
+#import "NavigateViewController.h"
+
 #pragma mark - Setting Address Detail View Controller
 @interface SettingAddressDetailViewController ()
 <
@@ -317,9 +319,7 @@
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMapDetail:(id)sender {
     AddressFormList *list = _address;
-    PlacePickerViewController *vc = [PlacePickerViewController new];
-    vc.firstCoordinate = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
-    [self.navigationController pushViewController:vc animated:YES];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) FromViewController:self];
 }
 //
 
