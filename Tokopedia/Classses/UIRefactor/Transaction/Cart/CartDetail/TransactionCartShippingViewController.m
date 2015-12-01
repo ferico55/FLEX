@@ -25,12 +25,13 @@
 #import "SettingAddressViewController.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionCartViewController.h"
+#import "TransactionShipmentATCTableViewController.h"
 
 #import "StickyAlertView.h"
 
 #define TAG_PICKER_ALERT_INSURANCE 10
 
-@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate>
+@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate, TransactionShipmentATCTableViewControllerDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
@@ -339,6 +340,11 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePriceResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"auto_resi":@"auto_resi"}];
+    
+    RKObjectMapping *rpxMapping = [RKObjectMapping mappingForClass:[RPX class]];
+    [rpxMapping addAttributeMappingsFromDictionary:@{@"indomaret_logo":@"indomaret_logo"}];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"rpx" toKeyPath:@"rpx" withMapping:rpxMapping]];
     
     RKObjectMapping *shipmentsMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipments class]];
     [shipmentsMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY,
@@ -458,6 +464,13 @@
                         [shipmentPackages addObject:package];
                     }
                 }
+                
+                if ([calculate.result.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
+                    shipment.auto_resi_image = calculate.result.rpx.indomaret_logo;
+                } else {
+                    shipment.auto_resi_image = @"";
+                }
+
                 
                 if (shipmentPackages.count>0) {
                     shipment.shipment_package = shipmentPackages;
@@ -864,13 +877,19 @@
                     
                     NSMutableArray *shipmentName = [NSMutableArray new];
                     for (ShippingInfoShipments *package in _shipments) {
-                            [shipmentName addObject:package.shipment_name];
+                        [shipmentName addObject:package.shipment_name];
                     }
                     
-                    GeneralTableViewController *vc = [GeneralTableViewController new];
+                    NSMutableArray *autoResiImage = [NSMutableArray new];
+                    for (ShippingInfoShipments *package in _shipments) {
+                        [autoResiImage addObject:package.auto_resi_image];
+                    }
+                    
+                    TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
                     vc.title = @"Kurir Pengiriman";
                     vc.selectedObject = _selectedShipment.shipment_name;
                     vc.objects = shipmentName;
+                    vc.objectImages = autoResiImage;
                     vc.senderIndexPath = indexPath;
                     vc.delegate = self;
                     
