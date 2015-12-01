@@ -31,6 +31,9 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 };
 
 @implementation TalkCell
+{
+    BOOL _talkFollowStatus;
+}
 
 #pragma mark - Initialization
 - (void)awakeFromNib {
@@ -384,13 +387,15 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             [table endUpdates];
         } else {
             NSArray *successMessages = [[NSMutableArray alloc] init];
-            if(tag == RequestDeleteTalk) {
+            if(_talkFollowStatus) {
                 successMessages = @[@"Anda berhasil menghapus diskusi ini."];
             } else {
-                successMessages = @[@"Anda berhasil (batal) mengikuti diskusi ini."];
+                successMessages = @[@"Anda berhasil mengikuti diskusi ini."];
             }
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];
+            
+            _talkFollowStatus = !_talkFollowStatus;
         }
     }
 }
