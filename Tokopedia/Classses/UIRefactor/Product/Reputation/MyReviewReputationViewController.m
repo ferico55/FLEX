@@ -93,6 +93,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
+    _navigate = [NavigateViewController new];
     currentFilter = @"all";
     page = 0;
     tableContent.allowsSelection = NO;

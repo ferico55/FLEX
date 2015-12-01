@@ -12,7 +12,7 @@
 
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"token",
-                      @"extid",
+                      //@"extid",
                       @"extId",
                       @"code",
                       @"ut",
