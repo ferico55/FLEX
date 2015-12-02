@@ -1734,7 +1734,14 @@ UIAlertViewDelegate
         }
         else
         {
-            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+            //wishlist max is 1000, set custom error message. If other error happened, use default error message.
+            if([wishListObject.message_error[0] isEqual:@"Wishlist sudah mencapai batas (1000)."]){
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Maksimum wishlist Anda adalah 1000 produk"] delegate:self];
+            }else{
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+            }
+            
+            
             [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
             [self setRequestingAction:btnWishList isLoading:NO];
@@ -1766,6 +1773,7 @@ UIAlertViewDelegate
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
+    
     if(tag == CTagPromote)
     {
         
@@ -1789,6 +1797,9 @@ UIAlertViewDelegate
     }
     else if(tag == CTagWishList)
     {
+        NSDictionary *result = ((RKMappingResult*) errorResult).dictionary;
+        NSString *errorMessage = [result objectForKey:kTKPD_APIERRORMESSAGEKEY];
+        
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
         [alert show];
         [self setBackgroundWishlist:NO];
