@@ -207,12 +207,7 @@
 #pragma mark - UITableView DataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _messages.count;
-#else
-    return _isnodata ? 0 : _messages.count;
-#endif
-    
+    return _data? _messages.count:0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -862,6 +857,12 @@
         [self configureRestKit];
         [self loadData];
     }
+    else {
+        [_act stopAnimating];
+        [_table reloadData];
+    }
+    
+    _messagingview.hidden = _data == nil;
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
