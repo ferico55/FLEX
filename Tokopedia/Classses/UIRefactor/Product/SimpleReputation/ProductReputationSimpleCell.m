@@ -119,7 +119,7 @@
 - (void)setUser:(NSString*)userName withCreateTime:(NSString*)createTime andWithImage:(NSString*)imageUrl{
     //set star position
     CGRect starFrame = self.reputationStarQualityView.frame;
-    starFrame.origin.x = self.reputationDateLabel.frame.origin.x;
+    starFrame.origin.x = 0;
     self.reputationStarQualityView.frame = starFrame;
     
     CGRect starAccuracyFrame = self.reputationStarAccuracyView.frame;
