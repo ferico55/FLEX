@@ -8,6 +8,7 @@
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -49,7 +50,7 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CxN-bk-yud">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CxN-bk-yud">
                             <rect key="frame" x="25" y="238" width="270" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="cjJ-s2-jQX"/>
@@ -82,8 +83,8 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor telepon kamu belum terverifikasi, segera lakukan verifikasi nomor telepon!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yCO-uI-PhL">
-                            <rect key="frame" x="25" y="158" width="270" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Nomor telepon kamu belum terverifikasi, " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yCO-uI-PhL">
+                            <rect key="frame" x="25" y="156" width="270" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="WV8-nM-Us5"/>
                             </constraints>
@@ -91,18 +92,29 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54J-ZC-ufd">
-                            <rect key="frame" x="116" y="332" width="89" height="25"/>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54J-ZC-ufd">
+                            <rect key="frame" x="116" y="331" width="89" height="29"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                            <state key="normal" title="skip"/>
+                            <state key="normal" title="Skip"/>
                             <connections>
                                 <action selector="skipButtonTapped:" destination="-1" eventType="touchUpInside" id="6Go-XA-50T"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="segera lakukan verifikasi nomor telepon!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iaj-va-W5N">
+                            <rect key="frame" x="25" y="172" width="270" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="9mL-6H-0Ut"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="Yqm-sy-paW" firstAttribute="top" secondItem="Iaj-va-W5N" secondAttribute="bottom" constant="8" symbolic="YES" id="1Nq-JG-xnA"/>
                         <constraint firstItem="yCO-uI-PhL" firstAttribute="top" secondItem="bfI-9g-1iY" secondAttribute="bottom" constant="10" id="5lH-yi-5tI"/>
+                        <constraint firstItem="Iaj-va-W5N" firstAttribute="centerX" secondItem="185-9u-0hL" secondAttribute="centerX" id="DWh-zd-TCq"/>
                         <constraint firstItem="Yqm-sy-paW" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="Fhq-9b-uDW"/>
                         <constraint firstAttribute="trailing" secondItem="Yqm-sy-paW" secondAttribute="trailing" constant="26" id="KTE-KC-ckd"/>
                         <constraint firstItem="yCO-uI-PhL" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="RE7-rI-LwL"/>
@@ -110,11 +122,13 @@
                         <constraint firstItem="inX-NT-Of3" firstAttribute="top" secondItem="CxN-bk-yud" secondAttribute="bottom" constant="30" id="TAS-St-noJ"/>
                         <constraint firstItem="KMf-EW-MXY" firstAttribute="centerX" secondItem="185-9u-0hL" secondAttribute="centerX" id="Y8H-FM-X6d"/>
                         <constraint firstItem="KMf-EW-MXY" firstAttribute="top" secondItem="185-9u-0hL" secondAttribute="top" constant="10" id="aWG-AE-7NH"/>
+                        <constraint firstItem="Iaj-va-W5N" firstAttribute="centerX" secondItem="54J-ZC-ufd" secondAttribute="centerX" id="af1-Ov-YVh"/>
                         <constraint firstItem="inX-NT-Of3" firstAttribute="centerX" secondItem="185-9u-0hL" secondAttribute="centerX" id="h2k-Eg-fUW"/>
                         <constraint firstAttribute="trailing" secondItem="yCO-uI-PhL" secondAttribute="trailing" constant="26" id="mgJ-BP-kxh"/>
                         <constraint firstAttribute="height" constant="354" id="t3Y-ue-bCq"/>
                         <constraint firstAttribute="trailing" secondItem="CxN-bk-yud" secondAttribute="trailing" constant="26" id="tro-a9-CEY"/>
                         <constraint firstAttribute="trailing" secondItem="bfI-9g-1iY" secondAttribute="trailing" constant="26" id="v5M-G7-yaq"/>
+                        <constraint firstItem="Iaj-va-W5N" firstAttribute="leading" secondItem="yCO-uI-PhL" secondAttribute="leading" id="vPg-2e-nOw"/>
                         <constraint firstItem="bfI-9g-1iY" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="wXJ-e7-0Q1"/>
                         <constraint firstItem="CxN-bk-yud" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="wss-2Z-36z"/>
                         <constraint firstItem="CxN-bk-yud" firstAttribute="top" secondItem="Yqm-sy-paW" secondAttribute="bottom" constant="8" id="ypc-gg-WN3"/>

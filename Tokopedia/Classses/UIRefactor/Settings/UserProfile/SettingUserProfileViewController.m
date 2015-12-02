@@ -84,6 +84,7 @@
     __weak IBOutlet UIView *verifyView;
     __weak IBOutlet NSLayoutConstraint *verifyViewHeight;
     __weak IBOutlet UIButton *verifSekarangButton;
+    __weak IBOutlet UILabel *pastikanLabel;
     
     UIBarButtonItem *_barbuttonsave;
 }
@@ -164,6 +165,15 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
     _thumb = [UIImageView circleimageview:_thumb];
+    
+    UIFont *font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = 7;
+    NSDictionary *attrsDictionary = @{NSFontAttributeName:font,
+                                      NSParagraphStyleAttributeName:paragraphStyle};
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:pastikanLabel.text attributes:attrsDictionary];
+    
+    [pastikanLabel setAttributedText:attrString];
     
     [self requestProfileForm];
 }
@@ -286,6 +296,12 @@
     controller.isSkipButtonHidden = YES;
     [self.navigationController pushViewController:controller animated:YES];
 
+}
+- (IBAction)verifyTapped:(id)sender {
+    HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+    
+    controller.isSkipButtonHidden = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)gesture:(id)sender {

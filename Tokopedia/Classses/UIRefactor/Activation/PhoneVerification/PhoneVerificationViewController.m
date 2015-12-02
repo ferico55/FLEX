@@ -163,7 +163,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
          */
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                        message:@"Sepertinya kode yang Anda masukkan salah. Mohon periksa kembali kode yang Anda masukkan dan coba kembali."
+                                                        message:@"Kode yang Anda masukkan salah. Mohon periksa kembali kode yang Anda masukkan dan coba kembali."
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -198,7 +198,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         /*
         CGRect frame = self.view.frame;
         frame.origin.y = -120;
@@ -209,7 +209,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         /*
         CGRect frame = self.view.frame;
         frame.origin.y = -20;
@@ -223,7 +223,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
 - (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
     
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         /*
         CGRect frame = self.view.frame;
         frame.origin.y = -20;
