@@ -11,6 +11,8 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -36,7 +38,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" id="oLf-f4-Td7">
-                                <rect key="frame" x="0.0" y="41" width="300" height="67"/>
+                                <rect key="frame" x="0.0" y="41" width="300" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="c7y-ur-cul">
@@ -100,6 +102,30 @@
                                         </subviews>
                                         <animations/>
                                     </view>
+                                    <view contentMode="scaleToFill" id="WFG-ZG-rqW">
+                                        <rect key="frame" x="0.0" y="78" width="300" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Produk : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aP4-E6-csp">
+                                                <rect key="frame" x="8" y="0.0" width="58" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="11"/>
+                                                <color key="textColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gBt-LS-3Tu">
+                                                <rect key="frame" x="58" y="1" width="240" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="11"/>
+                                                <state key="normal" title="Loading..">
+                                                    <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                        <animations/>
+                                    </view>
                                 </subviews>
                                 <animations/>
                             </view>
@@ -113,6 +139,8 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="listReputationView" destination="yYy-Aj-QdB" id="eNN-0x-kei"/>
+                <outlet property="productNameButton" destination="gBt-LS-3Tu" id="0j0-nl-SIE"/>
+                <outlet property="productView" destination="WFG-ZG-rqW" id="pOt-X2-UCS"/>
                 <outlet property="reputationBuyerImage" destination="c7y-ur-cul" id="v7H-sd-RY9"/>
                 <outlet property="reputationBuyerLabel" destination="ScT-B2-KV9" id="Isi-3R-593"/>
                 <outlet property="reputationBuyerView" destination="oLf-f4-Td7" id="htq-Jv-21l"/>

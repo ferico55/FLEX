@@ -10,6 +10,7 @@
 #import "EDStarRating.h"
 
 @class DetailReviewReputationViewModel;
+@class ReviewList;
 
 @interface ProductReputationSimpleCell : UITableViewCell {
     UIImage *_starActiveImage;
@@ -21,10 +22,12 @@
 @property(nonatomic, weak) IBOutlet UIView *listReputationView;
 @property(nonatomic, weak) IBOutlet UIView *reputationStarQualityView;
 @property(nonatomic, weak) IBOutlet UIView *reputationStarAccuracyView;
+@property(nonatomic, weak) IBOutlet UIView *productView;
 
 @property(nonatomic, weak) IBOutlet UILabel *reputationMessageLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationBuyerLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationDateLabel;
+@property(nonatomic, weak) IBOutlet UIButton *productNameButton;
 
 @property(nonatomic, weak) IBOutlet EDStarRating *reputationStarQualityRating;
 @property(nonatomic, weak) IBOutlet EDStarRating *reputationStarAccuracyRating;
@@ -32,5 +35,6 @@
 @property(nonatomic, weak) IBOutlet UIImageView *reputationBuyerImage;
 
 - (void)setReputationModelView:(DetailReviewReputationViewModel*)viewModel;
+- (void)setShopReputationModelView:(ReviewList*)viewModel;
 
 @end
