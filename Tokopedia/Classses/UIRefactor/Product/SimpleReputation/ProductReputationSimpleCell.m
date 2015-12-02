@@ -8,6 +8,7 @@
 #import "ProductReputationSimpleCell.h"
 #import "DetailReviewReputationViewModel.h"
 #import "ReviewList.h"
+#import "NavigateViewController.h"
 
 
 @implementation ProductReputationSimpleCell
@@ -52,6 +53,10 @@
     
     bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
     [self.reputationBuyerView.layer addSublayer:bottomBorder];
+    
+    _productID = viewModel.review_product_id;
+    _productName = viewModel.review_product_name;
+    _productImage = viewModel.review_product_image;
 }
 
 #pragma mark - internally used method
@@ -135,13 +140,16 @@
         self.reputationBuyerImage.clipsToBounds = YES;
         
     } failure:nil];
-    
-
 
 }
 
 - (void)setReputationProduct:(NSString*)productName withProductID:(NSString*)productID {
     [self.productNameButton setTitle:productName forState:UIControlStateNormal];
+}
+
+- (IBAction)tapProduct:(id)sender {
+    NavigateViewController *navigator = [[NavigateViewController alloc] init];
+    [navigator navigateToProductFromViewController:_delegate withName:_productName withPrice:nil withId:_productID withImageurl:_productImage withShopName:nil];
 }
 
 

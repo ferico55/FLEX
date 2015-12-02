@@ -214,6 +214,10 @@ NoResultDelegate>
     
     _header = _shopPageHeader.view;
     
+    CGRect newFrame = _header.frame;
+    newFrame.size.height += 5;
+    _header.frame = newFrame;
+    
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:21];
     [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
@@ -589,6 +593,7 @@ NoResultDelegate>
     ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
     ReviewList *list = _list[indexPath.row];
+    [cell setDelegate:self];
     [cell setShopReputationModelView:list];
     
     return cell;

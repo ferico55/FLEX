@@ -95,6 +95,8 @@
 }
 
 + (void)trackProductView:(id)product {
+    if(!product) return;
+    
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *productFieldObjects = [product productFieldObjects];
     NSDictionary *data = @{
