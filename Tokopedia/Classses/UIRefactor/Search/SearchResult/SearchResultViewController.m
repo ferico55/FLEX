@@ -842,7 +842,12 @@ SpellCheckRequestDelegate
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             
             if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
-                [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+                if([self isUsingAnyFilter]){
+                    _suggestion = @"";
+                    [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+                }else{
+                    [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+                }
             }else{
                 _suggestion = @"";
             }
@@ -1003,6 +1008,16 @@ SpellCheckRequestDelegate
     _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
 }
 
+- (BOOL) isUsingAnyFilter{
+    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![_params objectForKey:@"price_min"] == 0;
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![_params objectForKey:@"price_max"] == 0;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[_params objectForKey:@"shop_type"] isEqualToString:@""];
+    
+    return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
+}
+
 
 #pragma mark - Promo request delegate
 
@@ -1079,13 +1094,13 @@ SpellCheckRequestDelegate
 -(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
     _suggestion = suggestion;
     if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain"];
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain"];
         [_noResultView hideButton:YES];
     }else if([_data count] > 3){
-        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
         [_noResultView hideButton:YES];
     }else{
-        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
         [_noResultView setNoResultButtonTitle:_suggestion];
         [_noResultView hideButton:NO];
     }

@@ -434,11 +434,16 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    [_spellCheckRequest getSpellingSuggestion:@"shop" query:[_data objectForKey:@"search"] category:@"0"];
                     
-                    self.view = _noResultView;
+                    if([self isUsingAnyFilter]){
+                        _suggestion = @"";
+                    }else{
+                        [_spellCheckRequest getSpellingSuggestion:@"shop" query:[_data objectForKey:@"search"] category:@"0"];
+                    }
+                    
+                    [_table addSubview: _noResultView];
                 }else{
-                    self.view = self.contentView;
+                    [_noResultView removeFromSuperview];
                     _urinext =  _searchitem.result.paging.uri_next;
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
                     
@@ -573,6 +578,15 @@
     
     [_table reloadData];
     [self loadData];
+}
+- (BOOL) isUsingAnyFilter{
+    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![_params objectForKey:@"price_min"] == 0;
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![_params objectForKey:@"price_max"] == 0;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[_params objectForKey:@"shop_type"] isEqualToString:@""];
+    
+    return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
 
 #pragma mark - Sort Delegate
