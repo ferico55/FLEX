@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-        </mutableArray>
         <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -17,8 +15,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhoneVerificationViewController">
             <connections>
-                <outlet property="notifLabel" destination="avd-C0-1Mp" id="eFr-JW-Uaa"/>
+                <outlet property="cancelButton" destination="dZn-mE-B0X" id="nXg-jR-BN3"/>
                 <outlet property="otpTextField" destination="eQj-qE-S9l" id="syR-ix-849"/>
+                <outlet property="verifyButton" destination="1bR-rK-Fff" id="FEV-q4-V2e"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,62 +26,83 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avd-C0-1Mp">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
-                    <color key="backgroundColor" red="0.047232210636138916" green="0.68549585342407227" blue="0.31199190020561218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="qCc-Pj-kUO"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Mohon cek SMS kode verifikasi Anda!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="333-s9-aCb">
-                    <rect key="frame" x="0.0" y="70" width="320" height="12"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Dan segera lakukan verifikasi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pz-Il-FMN">
-                    <rect key="frame" x="0.0" y="92" width="320" height="12"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Kode SMS" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="eQj-qE-S9l">
-                    <rect key="frame" x="45" y="134" width="230" height="30"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="NX0-8u-cqX"/>
-                        <constraint firstAttribute="width" constant="230" id="Rtn-GJ-Kia"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="24"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done"/>
-                </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="*Atau, lakukan verifikasi di pengaturan profil" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TG-y9-cWe">
-                    <rect key="frame" x="0.0" y="194" width="320" height="14"/>
-                    <fontDescription key="fontDescription" type="italicSystem" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <view contentMode="scaleToFill" id="GSJ-Qx-rxX">
+                    <rect key="frame" x="0.0" y="67" width="320" height="366"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dan segera lakukan verifikasi:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8pz-Il-FMN">
+                            <rect key="frame" x="0.0" y="151" width="320" height="12"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Kode SMS" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="24" id="eQj-qE-S9l">
+                            <rect key="frame" x="45" y="197" width="230" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="24"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="BMj-MC-uPI"/>
+                            </connections>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*Atau, lakukan verifikasi di pengaturan profil" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6TG-y9-cWe">
+                            <rect key="frame" x="0.0" y="344" width="320" height="14"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="italicSystem" pointSize="11"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mohon cek SMS kode verifikasi Anda!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="333-s9-aCb">
+                            <rect key="frame" x="0.0" y="131" width="320" height="12"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data.png" id="wre-Sn-d7y">
+                            <rect key="frame" x="110" y="-6" width="100" height="100"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1bR-rK-Fff">
+                            <rect key="frame" x="35" y="257" width="250" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="Verifikasi">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="verifyButtonTapped:" destination="-1" eventType="touchUpInside" id="ss8-5K-KgY"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dZn-mE-B0X">
+                            <rect key="frame" x="137" y="299" width="46" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                            <state key="normal" title="batal"/>
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="HlU-GF-Y1m"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode verifikasi telah sukses dikirim." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xyf-dN-q6J">
+                            <rect key="frame" x="0.0" y="111" width="320" height="12"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="333-s9-aCb" firstAttribute="top" secondItem="avd-C0-1Mp" secondAttribute="bottom" constant="30" id="00F-AG-8hI"/>
-                <constraint firstAttribute="trailing" secondItem="avd-C0-1Mp" secondAttribute="trailing" id="9x5-wK-nX2"/>
-                <constraint firstItem="8pz-Il-FMN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CE9-et-k67"/>
-                <constraint firstItem="333-s9-aCb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Fxe-at-hmA"/>
-                <constraint firstItem="6TG-y9-cWe" firstAttribute="top" secondItem="eQj-qE-S9l" secondAttribute="bottom" constant="30" id="IbL-Vp-ZAf"/>
-                <constraint firstItem="avd-C0-1Mp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="VMI-Mz-agy"/>
-                <constraint firstItem="avd-C0-1Mp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hBC-N4-fsp"/>
-                <constraint firstItem="6TG-y9-cWe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lxj-6J-0CS"/>
-                <constraint firstItem="eQj-qE-S9l" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="oRl-0b-o68"/>
-                <constraint firstAttribute="trailing" secondItem="333-s9-aCb" secondAttribute="trailing" id="q0y-vp-Onf"/>
-                <constraint firstAttribute="trailing" secondItem="6TG-y9-cWe" secondAttribute="trailing" id="qa3-tP-mXK"/>
-                <constraint firstItem="eQj-qE-S9l" firstAttribute="top" secondItem="8pz-Il-FMN" secondAttribute="bottom" constant="30" id="ybR-5v-CGW"/>
-                <constraint firstItem="8pz-Il-FMN" firstAttribute="top" secondItem="333-s9-aCb" secondAttribute="bottom" constant="10" id="ydM-LZ-PMS"/>
-                <constraint firstAttribute="trailing" secondItem="8pz-Il-FMN" secondAttribute="trailing" id="zNV-OQ-TDt"/>
-            </constraints>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <nil key="simulatedTopBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="554" y="272"/>
         </view>
     </objects>
+    <resources>
+        <image name="icon_no_data.png" width="125" height="125"/>
+    </resources>
 </document>

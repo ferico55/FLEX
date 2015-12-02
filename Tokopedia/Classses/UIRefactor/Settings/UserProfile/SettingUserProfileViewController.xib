@@ -24,6 +24,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -48,6 +49,7 @@
                 <outlet property="textfieldphone" destination="soR-Gu-twI" id="NVT-XH-EB4"/>
                 <outlet property="textviewhobbies" destination="gLh-rL-zsl" id="6Uf-ty-BtP"/>
                 <outlet property="thumb" destination="Bju-bE-bA5" id="ARG-cp-QDd"/>
+                <outlet property="verifSekarangButton" destination="vqx-Eb-dbp" id="Rra-31-O2f"/>
                 <outlet property="verifiedLabel" destination="c3D-zg-ccp" id="dws-su-hOU"/>
                 <outlet property="verifyButton" destination="Q8O-op-M4N" id="7yl-Y6-GeP"/>
                 <outlet property="verifyView" destination="cWs-dJ-0gH" id="fTd-1d-dOb"/>
@@ -509,28 +511,22 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWs-dJ-0gH" userLabel="Verify View">
                     <rect key="frame" x="0.0" y="550" width="320" height="85"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vqx-Eb-dbp">
-                            <rect key="frame" x="8" y="8" width="128" height="30"/>
-                            <state key="normal">
-                                <attributedString key="attributedTitle">
-                                    <fragment content="Verifikasi Sekarang">
-                                        <attributes>
-                                            <color key="NSColor" red="0.19215686274509805" green="0.43529411764705883" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="13" name="HelveticaNeue"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                            </state>
-                            <connections>
-                                <action selector="verifyButtonDidTapped:" destination="-1" eventType="touchUpInside" id="LAp-61-PBq"/>
-                            </connections>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pastikan Anda selalu mendaftarkan nomor yang dapat kami hubungi demi kelancaran transaksi Anda" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q8O-op-M4N">
                             <rect key="frame" x="17" y="27" width="295" height="52"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqx-Eb-dbp">
+                            <rect key="frame" x="10" y="8" width="128" height="30"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <state key="normal" title="Verifikasi Sekarang">
+                                <color key="titleColor" red="0.19215686274509805" green="0.43529411764705883" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="verifyButtonDidTapped:" destination="-1" eventType="touchUpInside" id="LAp-61-PBq"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="height" constant="85" id="dae-3D-Beb"/>

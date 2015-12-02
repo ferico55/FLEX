@@ -12,12 +12,16 @@
 #import "AlertVerifyOTP.h"
 #import "TKPDAlert.h"
 #import "HomeTabViewController.h"
+#import "StickyAlertView.h"
 
 @interface PhoneVerificationViewController ()
 <TokopediaNetworkManagerDelegate,
-TKPDAlertViewDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *notifLabel;
-@property (weak, nonatomic) IBOutlet UITextField *otpTextField;
+TKPDAlertViewDelegate,
+UIAlertViewDelegate, UITextFieldDelegate>
+@property (strong, nonatomic) IBOutlet UITextField *otpTextField;
+@property (weak, nonatomic) IBOutlet UIButton *verifyButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewYConstraint;
 
 @end
 
@@ -30,81 +34,30 @@ TKPDAlertViewDelegate>
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
-    UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
-    self.navigationItem.titleView = topedImageView;
-    
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-    
-    
-    UIBarButtonItem *verifyButton = [[UIBarButtonItem alloc] initWithTitle:@"Verifikasi"
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:(self)
-                                                                    action:@selector(tap:)];
-    cancelButton.tag = 11;
-    verifyButton.tag = 12;
-    cancelButton.tintColor = [UIColor whiteColor];
-    verifyButton.tintColor = [UIColor whiteColor];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    self.navigationItem.rightBarButtonItem = verifyButton;
-    
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(notifLabelTapped:)];
-    tapGestureRecognizer.numberOfTapsRequired = 1;
-    [_notifLabel addGestureRecognizer:tapGestureRecognizer];
-    _notifLabel.userInteractionEnabled = YES;
-    [_notifLabel setText:@"Verifikasi Nomor Handphone Anda Berhasil"];
-    [_notifLabel setAlpha:0.0];
-    [self fadeInLabel:_notifLabel];
-
-    
     networkManager = [TokopediaNetworkManager new];
     networkManager.delegate = self;
     
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+    
+    if(_isSkipButtonHidden){
+        [_cancelButton setHidden:YES];
+    }
+    
+    /*
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Verifikasi nomor handphone Anda berhasil."] delegate:self];
+    [alert show];
+     */
+    
+    _verifyButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
+    _cancelButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
+    [_otpTextField setUserInteractionEnabled:YES];
+    _otpTextField.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [self.view endEditing:YES];
-}
-
--(void)fadeInLabel:(UILabel*)label{
-    
-    [UIView animateWithDuration:0.2
-                          delay:0
-                        options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
-                     animations:^(void)
-     {
-         [label setAlpha:1.0];
-     }
-                     completion:^(BOOL finished)
-     {
-         if(finished)
-         {[label setHidden:NO];}
-     }];
-}
-
--(void)fadeOutLabel:(UILabel*)label{
-    
-    [UIView animateWithDuration:0.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
-                     animations:^(void)
-     {
-         [label setAlpha:0.0];
-     }
-                     completion:^(BOOL finished)
-     {
-         if(finished)
-         {[label setHidden:YES];}
-     }];
 }
 
 -(IBAction)tap:(id)sender{
@@ -119,9 +72,27 @@ TKPDAlertViewDelegate>
         }
     }
 }
+- (IBAction)textViewTapped:(id)sender {
+    
+}
 
-- (void)notifLabelTapped:(UITapGestureRecognizer *)tapGesture {
-    [self fadeOutLabel:_notifLabel];
+- (IBAction)verifyButtonTapped:(id)sender {
+    //verify button
+    if([_otpTextField.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                        message:@"Anda belum mengisikan kode verifikasi Anda."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        alert.tag = 100;
+        [alert show];
+    }else{
+        [networkManager doRequest];
+    }
+}
+- (IBAction)cancelButtonTapped:(id)sender {
+    [self.delegate redirectViewController:_redirectViewController];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Tokopedia Network Manager Delegate
@@ -183,37 +154,83 @@ TKPDAlertViewDelegate>
         AlertVerifyOTP *alert = [AlertVerifyOTP new];
         alert.delegate = self;
         [alert show];
-        
     }else{
-        [self notifLabelFailScenario:1];
+        //sesuai requirement dari tim produk, harusnya pakai Sticky Alert, tapi karena sticky alertnya masih manual constraint
+        //jadi ga bisa nempel ke paling atas, untuk sementara pakai uialertview saja dulu
+        /*
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Maaf permohonan Anda tidak dapat diproses. Mohon periksa kembali kode yang Anda masukkan dan coba kembali."] delegate:self];
+        [alert show];
+         */
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                        message:@"Sepertinya kode yang Anda masukkan salah. Mohon periksa kembali kode yang Anda masukkan dan coba kembali."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        alert.tag = 100;
+        [alert show];
     }
 }
-
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag{
-    [self notifLabelFailScenario:0];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                    message:@"Maaf permohonan Anda tidak dapat diproses. Mohon coba kembali beberapa saat lagi."
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    alert.tag = 100;
+    [alert show];
 }
 
-- (void)notifLabelFailScenario:(int)param{
-    if(!_notifLabel.isHidden){
-        [self fadeOutLabel:_notifLabel];
-    }
-    [_notifLabel setBackgroundColor:[UIColor colorWithRed:0.882 green:0.298 blue:0.207 alpha:1]];
-    if(param == 0){
-        [_notifLabel setText:@"Maaf permohonan Anda tidak dapat diproses.\nMohon coba kembali."];
-    }else if(param == 1){
-        [_notifLabel setText:@"Kode Verifikasi yang Anda masukkan salah.\nMohon periksa kembali."];
-    }
-    [self fadeInLabel:_notifLabel];
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    
 }
 
 #pragma mark - Alert View Delegate
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if(alertView.tag != 100){
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 -(void)alertViewCancel:(TKPDAlertView *)alertView
 {
     
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [UIView animateWithDuration:1 animations:^{
+        /*
+        CGRect frame = self.view.frame;
+        frame.origin.y = -120;
+        self.view.frame = frame;
+         */
+        _viewYConstraint.constant = -120;
+    }];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [UIView animateWithDuration:1 animations:^{
+        /*
+        CGRect frame = self.view.frame;
+        frame.origin.y = -20;
+        self.view.frame = frame;
+         */
+        _viewYConstraint.constant = -20;
+    }];
+}
+
+
+- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+    
+    [UIView animateWithDuration:1 animations:^{
+        /*
+        CGRect frame = self.view.frame;
+        frame.origin.y = -20;
+        self.view.frame = frame;
+         */
+        _viewYConstraint.constant = -20;
+    }];
 }
 
 

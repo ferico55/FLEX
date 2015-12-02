@@ -83,6 +83,7 @@
     __weak IBOutlet UILabel *verifyButton;
     __weak IBOutlet UIView *verifyView;
     __weak IBOutlet NSLayoutConstraint *verifyViewHeight;
+    __weak IBOutlet UIButton *verifSekarangButton;
     
     UIBarButtonItem *_barbuttonsave;
 }
@@ -162,7 +163,6 @@
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
-    
     _thumb = [UIImageView circleimageview:_thumb];
     
     [self requestProfileForm];
@@ -283,13 +283,8 @@
 - (IBAction)verifyButtonDidTapped:(id)sender {
     HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    navigationController.viewControllers = @[controller];
-    
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    controller.isSkipButtonHidden = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 
 }
 

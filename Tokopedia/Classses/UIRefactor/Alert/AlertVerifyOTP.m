@@ -50,6 +50,7 @@
     
     self.clipsToBounds = YES;
     self.layer.cornerRadius = 2;
+    _positiveButton.layer.cornerRadius = 2;
     
 
 }

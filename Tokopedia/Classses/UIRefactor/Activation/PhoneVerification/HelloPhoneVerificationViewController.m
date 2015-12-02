@@ -29,6 +29,9 @@ TKPDAlertViewDelegate
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *phoneLabel;
+@property (weak, nonatomic) IBOutlet UIButton *verifyButton;
+@property (weak, nonatomic) IBOutlet UILabel *descLabel;
+@property (weak, nonatomic) IBOutlet UIButton *skipButton;
 @end
 
 @implementation HelloPhoneVerificationViewController{
@@ -40,38 +43,37 @@ TKPDAlertViewDelegate
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    UILabel *titleLabel = [UILabel new];
-    [titleLabel setText:@"Verifikasi No HP"];
-    self.navigationItem.titleView = titleLabel;
-    
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Lewati"
-                                                                     style:UIBarButtonItemStyleBordered
-                                                                    target:self
-                                                                    action:@selector(tap:)];
-    
-    
-    UIBarButtonItem *verifyButton = [[UIBarButtonItem alloc] initWithTitle:@"Verifikasi"
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:(self)
-                                                                    action:@selector(tap:)];
-    cancelButton.tag = 11;
-    verifyButton.tag = 12;
-    cancelButton.tintColor = [UIColor whiteColor];
-    verifyButton.tintColor = [UIColor whiteColor];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    self.navigationItem.rightBarButtonItem = verifyButton;
+    if(self.navigationItem.titleView){
+        UILabel *titleLabel = [UILabel new];
+        [titleLabel setText:@"Verifikasi No HP"];
+        self.navigationItem.titleView = titleLabel;
+    }
 
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     NSString *name = [_auth objectForKey:@"full_name"];
-    [_nameLabel setText:name];
+    [_nameLabel setText:[NSString stringWithFormat:@"Halo, %@",name]];
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_descLabel.text];
+    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragrahStyle setLineSpacing:5];
+    [paragrahStyle setAlignment:NSTextAlignmentCenter];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [_descLabel.text length])];
+    
+    _descLabel.attributedText = attributedString;
     
     networkManager = [TokopediaNetworkManager new];
     networkManager.delegate = self;
     networkManager.tagRequest = RequestPhoneNumber;
     [networkManager doRequest];
     
+    _verifyButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
+    _skipButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
+    
+    self.verifyButton.layer.cornerRadius = 2;
+    if(_isSkipButtonHidden){
+        [_skipButton setHidden:YES];
+    }
 }
 
 -(IBAction)tap:(id)sender{
@@ -87,7 +89,17 @@ TKPDAlertViewDelegate
             alert.delegate = self;
             [alert show];
         }
+    }else if([sender isKindOfClass:[UIButton class]]){
+        UIButton *button = (UIButton *) button;
+        //verify button
+        AlertPhoneVerification *alert = [AlertPhoneVerification new];
+        alert.delegate = self;
+        [alert show];
     }
+}
+- (IBAction)skipButtonTapped:(id)sender {
+    [self.delegate redirectViewController:_redirectViewController];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Alert View Delegate
@@ -240,7 +252,10 @@ TKPDAlertViewDelegate
     if(tag == RequestPhoneNumber){
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         ProfileEdit *profile = [result objectForKey:@""];
-        [_phoneLabel setText:profile.result.data_user.user_phone];;
+        NSString *sPhone =profile.result.data_user.user_phone;
+        NSString *formatted = [NSString stringWithFormat: @"%@ %@ %@", [sPhone substringWithRange:NSMakeRange(0,4)],[sPhone substringWithRange:NSMakeRange(4,4)],
+                               [sPhone substringWithRange:NSMakeRange(8,sPhone.length -4 -4)]];
+        [_phoneLabel setText:formatted];
         _phone = profile.result.data_user.user_phone;
     }else if(tag == RequestOTP){
         
@@ -253,9 +268,15 @@ TKPDAlertViewDelegate
             controller.delegate = self.delegate;
             controller.redirectViewController = self.redirectViewController;
             controller.phone = _phone;
+        controller.isSkipButtonHidden = _isSkipButtonHidden;
             [self.navigationController pushViewController:controller animated:YES];
+    
         }else{
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Maaf permohonan Anda tidak dapat diproses. Silakan coba kembali."] delegate:self];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                            message:@"Anda hanya dapat mengirimkan kode verifikasi 3 kali dalam 1 jam, Anda harus menunggu 1 jam lagi untuk mengirimkan kode verifikasi kembali."
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
             [alert show];
         }
     }
@@ -265,7 +286,12 @@ TKPDAlertViewDelegate
     if(tag == RequestPhoneNumber){
         
     }else if(tag == RequestOTP){
-        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                        message:@"Maaf permohonan Anda tidak dapat diproses. Mohon coba kembali beberapa saat lagi."
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
     }
 }
 

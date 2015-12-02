@@ -17,8 +17,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HelloPhoneVerificationViewController">
             <connections>
+                <outlet property="descLabel" destination="yCO-uI-PhL" id="VTx-PD-wke"/>
                 <outlet property="nameLabel" destination="bfI-9g-1iY" id="lPA-tb-0QM"/>
                 <outlet property="phoneLabel" destination="CxN-bk-yud" id="C4I-Lr-4VI"/>
+                <outlet property="skipButton" destination="54J-ZC-ufd" id="3vS-nF-7gq"/>
+                <outlet property="verifyButton" destination="inX-NT-Of3" id="oRU-NE-ymX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,53 +30,107 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data.png" translatesAutoresizingMaskIntoConstraints="NO" id="KMf-EW-MXY">
-                    <rect key="frame" x="130" y="40" width="60" height="60"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="185-9u-0hL">
+                    <rect key="frame" x="-1" y="63" width="321" height="354"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data.png" translatesAutoresizingMaskIntoConstraints="NO" id="KMf-EW-MXY">
+                            <rect key="frame" x="110" y="10" width="100" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="100" id="4Mk-RE-nLB"/>
+                                <constraint firstAttribute="width" constant="100" id="o3C-YA-ePx"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor kamu yang terdaftar:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yqm-sy-paW">
+                            <rect key="frame" x="25" y="210" width="270" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="roK-Hi-A3O"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CxN-bk-yud">
+                            <rect key="frame" x="25" y="238" width="270" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="cjJ-s2-jQX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="inX-NT-Of3">
+                            <rect key="frame" x="35" y="284" width="251" height="40"/>
+                            <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="CfQ-ed-vUO"/>
+                                <constraint firstAttribute="width" constant="251" id="uTI-gS-6jc"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="Verifikasi Sekarang!">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="uuM-sp-fEi"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bfI-9g-1iY">
+                            <rect key="frame" x="25" y="118" width="270" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="mne-rA-3H2"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor telepon kamu belum terverifikasi, segera lakukan verifikasi nomor telepon!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yCO-uI-PhL">
+                            <rect key="frame" x="25" y="158" width="270" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="WV8-nM-Us5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54J-ZC-ufd">
+                            <rect key="frame" x="116" y="332" width="89" height="25"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="skip"/>
+                            <connections>
+                                <action selector="skipButtonTapped:" destination="-1" eventType="touchUpInside" id="6Go-XA-50T"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="60" id="4Mk-RE-nLB"/>
-                        <constraint firstAttribute="width" constant="60" id="o3C-YA-ePx"/>
+                        <constraint firstItem="yCO-uI-PhL" firstAttribute="top" secondItem="bfI-9g-1iY" secondAttribute="bottom" constant="10" id="5lH-yi-5tI"/>
+                        <constraint firstItem="Yqm-sy-paW" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="Fhq-9b-uDW"/>
+                        <constraint firstAttribute="trailing" secondItem="Yqm-sy-paW" secondAttribute="trailing" constant="26" id="KTE-KC-ckd"/>
+                        <constraint firstItem="yCO-uI-PhL" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="RE7-rI-LwL"/>
+                        <constraint firstItem="bfI-9g-1iY" firstAttribute="top" secondItem="KMf-EW-MXY" secondAttribute="bottom" constant="8" id="S9a-FD-s8g"/>
+                        <constraint firstItem="inX-NT-Of3" firstAttribute="top" secondItem="CxN-bk-yud" secondAttribute="bottom" constant="30" id="TAS-St-noJ"/>
+                        <constraint firstItem="KMf-EW-MXY" firstAttribute="centerX" secondItem="185-9u-0hL" secondAttribute="centerX" id="Y8H-FM-X6d"/>
+                        <constraint firstItem="KMf-EW-MXY" firstAttribute="top" secondItem="185-9u-0hL" secondAttribute="top" constant="10" id="aWG-AE-7NH"/>
+                        <constraint firstItem="inX-NT-Of3" firstAttribute="centerX" secondItem="185-9u-0hL" secondAttribute="centerX" id="h2k-Eg-fUW"/>
+                        <constraint firstAttribute="trailing" secondItem="yCO-uI-PhL" secondAttribute="trailing" constant="26" id="mgJ-BP-kxh"/>
+                        <constraint firstAttribute="height" constant="354" id="t3Y-ue-bCq"/>
+                        <constraint firstAttribute="trailing" secondItem="CxN-bk-yud" secondAttribute="trailing" constant="26" id="tro-a9-CEY"/>
+                        <constraint firstAttribute="trailing" secondItem="bfI-9g-1iY" secondAttribute="trailing" constant="26" id="v5M-G7-yaq"/>
+                        <constraint firstItem="bfI-9g-1iY" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="wXJ-e7-0Q1"/>
+                        <constraint firstItem="CxN-bk-yud" firstAttribute="leading" secondItem="185-9u-0hL" secondAttribute="leading" constant="25" id="wss-2Z-36z"/>
+                        <constraint firstItem="CxN-bk-yud" firstAttribute="top" secondItem="Yqm-sy-paW" secondAttribute="bottom" constant="8" id="ypc-gg-WN3"/>
+                        <constraint firstItem="Yqm-sy-paW" firstAttribute="top" secondItem="yCO-uI-PhL" secondAttribute="bottom" constant="22" id="zrI-h6-2kC"/>
                     </constraints>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WuO-2n-8TW">
-                    <rect key="frame" x="138" y="120" width="45" height="15"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="16"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bfI-9g-1iY">
-                    <rect key="frame" x="109" y="145" width="102" height="16"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Segera verifikasi nomor HP Anda!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yCO-uI-PhL">
-                    <rect key="frame" x="60" y="181" width="201" height="11"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone No. Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CxN-bk-yud">
-                    <rect key="frame" x="87" y="207" width="141" height="16"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="yCO-uI-PhL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="3m9-LU-lz8"/>
-                <constraint firstItem="yCO-uI-PhL" firstAttribute="top" secondItem="bfI-9g-1iY" secondAttribute="bottom" constant="20" id="4wy-2c-HpA"/>
-                <constraint firstItem="WuO-2n-8TW" firstAttribute="top" secondItem="KMf-EW-MXY" secondAttribute="bottom" constant="20" id="9Is-pv-ae8"/>
-                <constraint firstItem="CxN-bk-yud" firstAttribute="top" secondItem="yCO-uI-PhL" secondAttribute="bottom" constant="15" id="DEE-fY-0rn"/>
-                <constraint firstItem="bfI-9g-1iY" firstAttribute="top" secondItem="WuO-2n-8TW" secondAttribute="bottom" constant="10" id="E3i-Ld-FjJ"/>
-                <constraint firstItem="bfI-9g-1iY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="SnF-Al-mOw"/>
-                <constraint firstItem="CxN-bk-yud" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-3" id="Spm-Og-zIF"/>
-                <constraint firstItem="KMf-EW-MXY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="aGS-kG-5Su"/>
-                <constraint firstItem="bfI-9g-1iY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="g31-Eo-usp"/>
-                <constraint firstItem="KMf-EW-MXY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="gPn-FI-whK"/>
-                <constraint firstItem="WuO-2n-8TW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="yQL-Cu-D1Z"/>
+                <constraint firstItem="185-9u-0hL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="-1" id="Wsu-7c-q1m"/>
+                <constraint firstItem="185-9u-0hL" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="bfM-jo-YmJ"/>
+                <constraint firstAttribute="trailing" secondItem="185-9u-0hL" secondAttribute="trailing" id="njj-AI-QON"/>
             </constraints>
+            <nil key="simulatedTopBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="196" y="281"/>
         </view>
     </objects>
     <resources>

@@ -169,8 +169,6 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     _emailTextField.isTopRoundCorner = YES;
     _emailTextField.isBottomRoundCorner = YES;
-    [_emailTextField setText:@"tkpd.qc+46@gmail.com"];
-    [_passwordTextField setText:@"asdf1234"];
     
     _passwordTextField.isTopRoundCorner = YES;
     _passwordTextField.isBottomRoundCorner = YES;
@@ -568,17 +566,34 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-            /*
-            if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
-                [self.delegate redirectViewController:_redirectViewController];
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            } else {
-                UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
-                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
-                [self.tabBarController setSelectedIndex:0];
-                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
+            
+            if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
+                HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+                controller.delegate = self.delegate;
+                controller.redirectViewController = self.redirectViewController;
+                
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] init];
+                navigationController.navigationBarHidden = YES;
+                /*
+                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                 navigationController.navigationBar.translucent = NO;
+                 navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                 */
+                navigationController.viewControllers = @[controller];
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }else{
+                if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
+                    [self.delegate redirectViewController:_redirectViewController];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
+                    [self.tabBarController setSelectedIndex:0];
+                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
+                }
             }
-             */
+            
             
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
@@ -684,15 +699,17 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
                 HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
                 controller.delegate = self.delegate;
-            
                 controller.redirectViewController = self.redirectViewController;
                 
+                
                 UINavigationController *navigationController = [[UINavigationController alloc] init];
+            navigationController.navigationBarHidden = YES;
+                 /*
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
                 navigationController.navigationBar.translucent = NO;
                 navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                  */
                 navigationController.viewControllers = @[controller];
-                
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }else{
                 if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
@@ -705,6 +722,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                     [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
                 }
             }
+            
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
