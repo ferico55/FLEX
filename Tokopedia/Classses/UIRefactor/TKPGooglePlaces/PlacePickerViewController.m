@@ -394,6 +394,12 @@
     return @"";
 }
 
+- (NSString *)placeNameHistoryAtIndexPath:(NSIndexPath *)indexPath {
+    if (_placeHistories.count > indexPath.row)
+        return [_placeHistories objectAtIndex:indexPath.row][@"address"];
+    return @"";
+}
+
 #pragma mark - TableView Delegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellIdentifier = @"SPGooglePlacesAutocompleteCell";
@@ -470,9 +476,10 @@
         CLLocationCoordinate2D annotationCoordinate = CLLocationCoordinate2DMake([[self placeLatitudeHistoryAtIndexPath:indexPath] doubleValue],[[self placeLongitudeHistoryAtIndexPath:indexPath] doubleValue]);
 
         [self focusMapToLocation:annotationCoordinate
-             shouldUpdateAddress:YES
+             shouldUpdateAddress:NO
                shouldSaveHistory:NO
                 addressSugestion:[self placeAtIndexPath:indexPath]];
+        _marker.snippet = [self placeNameHistoryAtIndexPath:indexPath];
         _selectedSugestion = [self placeSugestionHistoryAtIndexPath:indexPath];
     }
 }
