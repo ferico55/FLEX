@@ -36,16 +36,16 @@
 
 + (void)trackScreenName:(NSString *)screeName {
     TPAnalytics *analytics = [[self alloc] init];
-    [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName}];
+    [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName?:@""}];
 }
 
 + (void)trackUserId {
     TPAnalytics *analytics = [[self alloc] init];
-    [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]}];
+    [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]?:@""}];
 }
 
 - (NSString *)getProductListName:(id)product {
-    NSString *list;
+    NSString *list = @"";
     if ([product isKindOfClass:[SearchAWSProduct class]]) {
         list = @"Search Results";
     } else if ([product isKindOfClass:[ProductFeedList class]]) {
@@ -237,11 +237,11 @@
     for(TransactionCartList *list in carts) {
         for(ProductDetail *detailProduct in list.cart_products) {
             [purchasedItems addObject:@{
-                @"name"     : detailProduct.product_name,
-                @"sku"      : detailProduct.product_id,
-                @"price"    : detailProduct.product_price,
+                @"name"     : detailProduct.product_name?:@"",
+                @"sku"      : detailProduct.product_id?:@"",
+                @"price"    : detailProduct.product_price?:@"",
                 @"currency" : @"IDR",
-                @"quantity" : detailProduct.product_quantity
+                @"quantity" : detailProduct.product_quantity?:@""
             }];
             revenue += [list.cart_total_amount integerValue];
             shipping += [list.cart_shipping_rate integerValue];
