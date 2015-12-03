@@ -1013,7 +1013,7 @@ SpellCheckRequestDelegate
     BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
     BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![_params objectForKey:@"price_min"] == 0;
     BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![_params objectForKey:@"price_max"] == 0;
-    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[_params objectForKey:@"shop_type"] isEqualToString:@""];
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![_params objectForKey:@"shop_type"] == 0;
     
     return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
