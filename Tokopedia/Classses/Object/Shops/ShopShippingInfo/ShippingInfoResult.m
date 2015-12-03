@@ -14,5 +14,12 @@
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
+//- (NSArray *)auto_resi {
+//    NSMutableArray *array = [NSMutableArray new];
+//    for (id idd in _auto_resi) {
+//        [array addObject:[NSString stringWithFormat:@"%@", idd]];
+//    }
+//    return array;
+//}
 
 @end

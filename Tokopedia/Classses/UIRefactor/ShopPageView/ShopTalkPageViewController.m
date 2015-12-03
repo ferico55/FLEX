@@ -144,7 +144,9 @@ NoResultDelegate>
     [super viewDidLoad];
     
     [self addBottomInsetWhen14inch];
+    
     _talkNavigationFlag = [_data objectForKey:@"nav"];
+    
     _page = 1;
     
     _operationQueue = [NSOperationQueue new];
@@ -161,7 +163,6 @@ NoResultDelegate>
     _shopPageHeader.data = _data;
     _shopPageHeader.delegate = self;
     _header = _shopPageHeader.view;
-    
     
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:20];
     [btmGreenLine setHidden:NO];
@@ -187,11 +188,8 @@ NoResultDelegate>
     
     [self initNotification];
 
-
     [self configureRestKit];
     [self loadData];
-
-    
 }
 
 
@@ -503,10 +501,16 @@ NoResultDelegate>
 -(void) updateTotalComment:(NSNotification*)notification{
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
+
+    if(index > _list.count) return;
     
     TalkList *list = _list[index];
-    list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
-    [_table reloadData];
+    if ([talkId isEqualToString:list.talk_id]) {
+        NSString *totalComment = [userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT];
+        list.talk_total_comment = [NSString stringWithFormat:@"%@", totalComment];
+        [_table reloadData];
+    }
 }
 
 
