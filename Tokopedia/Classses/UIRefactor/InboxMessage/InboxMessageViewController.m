@@ -904,19 +904,20 @@ typedef enum TagRequest {
         [_datainput setObject:list.message_id forKey:@"message_id"];
 
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self refreshDetailIfCellIsSelected:cell];
             [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE];
             _navthatwillrefresh = @"trash";
-            [self refreshDetailIfCellIsSelected:cell];
             return YES;
         }];
         MGSwipeButton * archive = [MGSwipeButton buttonWithTitle:@"Arsipkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self refreshDetailIfCellIsSelected:cell];
             [self messageaction:KTKPDMESSAGE_ACTIONARCHIVEMESSAGE];
             _navthatwillrefresh = @"archive";
-            [self refreshDetailIfCellIsSelected:cell];
             return YES;
         }];
         
         MGSwipeButton * backtoinbox = [MGSwipeButton buttonWithTitle:@"Inbox" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self refreshDetailIfCellIsSelected:cell];
             if([_messageNavigationFlag isEqualToString:@"inbox-message-archive"]) {
                 [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
                 _navthatwillrefresh = @"inbox-sent";
@@ -924,13 +925,12 @@ typedef enum TagRequest {
                 [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
                 _navthatwillrefresh = @"inbox-archive-sent";
             }
-            [self refreshDetailIfCellIsSelected:cell];
             return YES;
         }];
         
         MGSwipeButton * deleteforever = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-            [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE];
             [self refreshDetailIfCellIsSelected:cell];
+            [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE];
             return YES;
         }];
 
