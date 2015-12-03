@@ -22,6 +22,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *verifyButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewYConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cancelButtonHeight;
 
 @end
 
@@ -42,6 +43,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
     
     if(_isSkipButtonHidden){
         [_cancelButton setHidden:YES];
+        _cancelButtonHeight.constant = 0;
     }
     
     /*
@@ -53,6 +55,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
     _cancelButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
     [_otpTextField setUserInteractionEnabled:YES];
     _otpTextField.delegate = self;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -198,24 +201,24 @@ UIAlertViewDelegate, UITextFieldDelegate>
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         /*
         CGRect frame = self.view.frame;
         frame.origin.y = -120;
         self.view.frame = frame;
          */
-        _viewYConstraint.constant = -120;
+        _viewYConstraint.constant = -100;
     }];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         /*
         CGRect frame = self.view.frame;
         frame.origin.y = -20;
         self.view.frame = frame;
          */
-        _viewYConstraint.constant = -20;
+        _viewYConstraint.constant = 0;
     }];
 }
 
@@ -223,13 +226,13 @@ UIAlertViewDelegate, UITextFieldDelegate>
 - (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
     
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         /*
         CGRect frame = self.view.frame;
         frame.origin.y = -20;
         self.view.frame = frame;
          */
-        _viewYConstraint.constant = -20;
+        _viewYConstraint.constant = 0;
     }];
 }
 

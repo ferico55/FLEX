@@ -263,14 +263,14 @@ TKPDAlertViewDelegate
         SendOTP *otpResult = (SendOTP *)[result objectForKey:@""];
         NSString *resultStr = otpResult.data.is_success;
         
-        if([resultStr isEqualToString:@"1"]){
+        //if([resultStr isEqualToString:@"1"]){
             PhoneVerificationViewController *controller = [PhoneVerificationViewController new];
             controller.delegate = self.delegate;
             controller.redirectViewController = self.redirectViewController;
             controller.phone = _phone;
         controller.isSkipButtonHidden = _isSkipButtonHidden;
             [self.navigationController pushViewController:controller animated:YES];
-    
+            /*
         }else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                             message:@"Anda hanya dapat mengirimkan kode verifikasi 3 kali dalam 1 jam, Anda harus menunggu 1 jam lagi untuk mengirimkan kode verifikasi kembali."
@@ -279,6 +279,7 @@ TKPDAlertViewDelegate
                                                   otherButtonTitles:nil];
             [alert show];
         }
+             */
     }
 }
 
