@@ -455,7 +455,6 @@ typedef enum TagRequest {
         {
             if (![data isEqualToDictionary:_detailViewController.data]) {
                 [_detailViewController replaceDataSelected:data];
-                [_table selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             }
         }
         else
