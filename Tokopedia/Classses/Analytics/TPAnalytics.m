@@ -36,16 +36,16 @@
 
 + (void)trackScreenName:(NSString *)screeName {
     TPAnalytics *analytics = [[self alloc] init];
-    [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName}];
+    [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName?:@""}];
 }
 
 + (void)trackUserId {
     TPAnalytics *analytics = [[self alloc] init];
-    [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]}];
+    [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]?:@""}];
 }
 
 - (NSString *)getProductListName:(id)product {
-    NSString *list;
+    NSString *list = @"";
     if ([product isKindOfClass:[SearchAWSProduct class]]) {
         list = @"Search Results";
     } else if ([product isKindOfClass:[ProductFeedList class]]) {
@@ -59,6 +59,7 @@
 }
 
 + (void)trackProductImpressions:(NSArray *)products {
+    if (!products) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSMutableArray *impressions = [NSMutableArray new];
     for (id product in products) {
@@ -77,6 +78,7 @@
 }
 
 + (void)trackProductClick:(id)product {
+    if (!product) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSString *list = [analytics getProductListName:product];
     NSDictionary *productFieldObjects = [product productFieldObjects];
@@ -95,6 +97,7 @@
 }
 
 + (void)trackProductView:(id)product {
+    if (!product) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *productFieldObjects = [product productFieldObjects];
     NSDictionary *data = @{
@@ -111,6 +114,7 @@
 }
 
 + (void)trackAddToCart:(id)product {
+    if (!product) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *productFieldObjects = [product productFieldObjects];
     NSDictionary *data = @{
@@ -126,6 +130,7 @@
 }
 
 + (void)trackRemoveProductFromCart:(id)product {
+    if (!product) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *productFieldObjects = [product productFieldObjects];
     NSDictionary *data = @{
@@ -141,6 +146,7 @@
 }
 
 + (void)trackRemoveProductsFromCart:(NSArray *)shops {
+    if (!shops) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSMutableArray *products = [NSMutableArray new];
     for(TransactionCartList *list in shops) {
@@ -161,6 +167,7 @@
 }
 
 + (void)trackPromoImpression:(NSArray *)products {
+    if (!products) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSMutableArray *promotions = [NSMutableArray new];
     for (PromoProduct *product in products) {
@@ -177,6 +184,7 @@
 }
 
 + (void)trackPromoClick:(PromoProduct *)product {
+    if (!product) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event" : @"promotionClick",
@@ -192,6 +200,7 @@
 + (void)trackCheckout:(NSArray *)shops
                  step:(NSInteger)step
                option:(NSString *)option {
+    if (!shops || !step || !option) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSMutableArray *products = [NSMutableArray new];
     for(TransactionCartList *list in shops) {
@@ -203,8 +212,8 @@
         @"ecommerce" : @{
             @"checkout" : @{
                 @"actionField" : @{
-                    @"step" : @(step),
-                    @"option" : option
+                    @"step" : @(step)?:0,
+                    @"option" : option?:@""
                 },
                 @"products" : products
             }
@@ -214,14 +223,15 @@
 }
 
 + (void)trackCheckoutOption:(NSString *)option step:(NSInteger)step {
+    if (!option || !step) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event": @"checkoutOption",
         @"ecommerce" : @{
             @"checkout_option" : @{
                 @"actionField" : @{
-                    @"step" : @(step),
-                    @"option" : option
+                    @"step" : @(step)?:0,
+                    @"option" : option?:@""
                 }
             }
         }
@@ -230,6 +240,7 @@
 }
 
 + (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts {
+    if (!purchaseID || !carts) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSMutableArray *purchasedItems = [NSMutableArray array];
     NSInteger revenue = 0;
@@ -237,11 +248,11 @@
     for(TransactionCartList *list in carts) {
         for(ProductDetail *detailProduct in list.cart_products) {
             [purchasedItems addObject:@{
-                @"name"     : detailProduct.product_name,
-                @"sku"      : detailProduct.product_id,
-                @"price"    : detailProduct.product_price,
+                @"name"     : detailProduct.product_name?:@"",
+                @"sku"      : detailProduct.product_id?:@"",
+                @"price"    : detailProduct.product_price?:@"",
                 @"currency" : @"IDR",
-                @"quantity" : detailProduct.product_quantity
+                @"quantity" : detailProduct.product_quantity?:@""
             }];
             revenue += [list.cart_total_amount integerValue];
             shipping += [list.cart_shipping_rate integerValue];
@@ -251,7 +262,7 @@
     NSString *revenueString = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:revenue]];
     NSDictionary *data = @{
         @"event" : @"transaction",
-        @"transactionId" : purchaseID,
+        @"transactionId" : purchaseID?:@"",
         @"transactionTotal" : revenueString,
         @"transactionShipping" : shippingString,
         @"transactionCurrency" : @"IDR",
@@ -276,22 +287,24 @@
 }
 
 + (void)trackLoginUserID:(NSString *)userID {
+    if (!userID) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
        @"event" : @"login",
        @"eventCategory" : @"UX",
        @"eventAction" : @"User Sign In",
        @"eventLabel" : @"User ID",
-       @"eventValue" : userID
+       @"eventValue" : userID?:@""
     };
     [analytics.dataLayer push:data];
 }
 
-+(void)trackExeptionDescription:(NSString *)description {
++ (void)trackExeptionDescription:(NSString *)description {
+    if (!description) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
                            @"event" : @"exception",
-                           @"event.description":description
+                           @"event.description":description?:@""
                            };
     [analytics.dataLayer push:data];
 }
