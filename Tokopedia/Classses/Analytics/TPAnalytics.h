@@ -37,5 +37,6 @@
 + (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts;
 
 + (void)trackLoginUserID:(NSString *)userID;
++ (void)trackExeptionDescription:(NSString *)description;
 
 @end
