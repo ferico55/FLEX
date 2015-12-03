@@ -279,10 +279,13 @@
     NSLog(@"%@", error.localizedDescription);
     
     if (error.code==-1009) {
-        errorMessage = [NSString stringWithFormat:@"Tidak ada koneksi internet/n%@",error.localizedDescription];
+        errorMessage = [NSString stringWithFormat:@"Tidak ada koneksi internet\n%@",error.localizedDescription];
     } else {
-        errorMessage = [NSString stringWithFormat:@"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi./n%@",error.localizedDescription];
+        errorMessage = [NSString stringWithFormat:@"Mohon maaf, terjadi kendala pada server. Mohon coba beberapa saat lagi.\n%@",error.localizedDescription];
     }
+    
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    [TPAnalytics trackExeptionDescription:[NSString stringWithFormat:@"Payment ID: %@, User ID: %@, Gateway ID: %@, Error Description: %@, URL: %@", _paymentID?:@"", [userManager getUserId]?:@"", _gateway?:@"", error.localizedDescription?:@"", webView.request.URL.absoluteString?:@""]];
     
     UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:nil message:errorMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     if (!_isAlertShow) {
