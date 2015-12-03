@@ -20,8 +20,8 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-#define kTkpdBaseURLString @"http://new.ws-wendy.ndvl/ws"
-#define kTkpdBaseURLHttpsString @"http://new.ws-wendy.ndvl/ws"
+#define kTkpdBaseURLString @"http://new.mn-hang.ndvl/ws"
+#define kTkpdBaseURLHttpsString @"http://new.mn-hang.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 
 

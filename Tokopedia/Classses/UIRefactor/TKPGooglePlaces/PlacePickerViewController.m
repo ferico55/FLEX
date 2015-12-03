@@ -68,9 +68,6 @@
     
     _locationManager = [[CLLocationManager alloc] init];
     _geocoder = [GMSGeocoder geocoder];
-    
-    _mapview.myLocationEnabled = YES;
-    _mapview.settings.myLocationButton = YES;
 
     _mapview.myLocationEnabled = YES;
     _locationManager.delegate = self;
@@ -87,13 +84,9 @@
     _marker.map = _mapview;
     _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
     
-    //[self.view insertSubview:_mapview atIndex:0];
-
     CLLocationCoordinate2D target = _marker.position;
     _mapview.camera = [GMSCameraPosition cameraWithTarget:target zoom:14];
     
-    //[self focusMapToLocation:calgary];
-
     _searchBar.placeholder = @"Cari Alamat";
     _searchBar.tintColor = [UIColor whiteColor];
     [_searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]
@@ -124,6 +117,20 @@
     [self loadHistory];
     [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
 
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusDenied) {
+        
+    }
+    else
+    {
+        if (_marker.position.latitude != 0 && _marker.position.longitude != 0)
+            [self focusMapToLocation:_locationManager.location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
+        _mapview.myLocationEnabled = YES;
+        _mapview.settings.myLocationButton = YES;
+    }
 }
 
 -(void)tapDone
@@ -409,12 +416,12 @@
     }
     
     cell.textLabel.font = FONT_GOTHAM_BOOK_13;
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+
     if (indexPath.section == 0)
     {
         [cell.textLabel setCustomAttributedText:[self placeAtIndexPath:indexPath].attributedFullText.string];
-        cell.textLabel.numberOfLines = 0;
-        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-        
         UIFont *regularFont = FONT_GOTHAM_BOOK_13;
         UIFont *boldFont = FONT_GOTHAM_MEDIUM_13;
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -454,7 +461,10 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self streetRowHeight:[self placeAtIndexPath:indexPath]];
+    if (indexPath.section == 0)
+        return [self streetRowHeight:[self placeAtIndexPath:indexPath].attributedFullText.string];
+    else
+        return [self streetRowHeight:[self placeSugestionHistoryAtIndexPath:indexPath]];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -484,9 +494,9 @@
     }
 }
 
--(CGFloat)streetRowHeight:(GMSAutocompletePrediction*)place
+-(CGFloat)streetRowHeight:(NSString*)place
 {
-    NSString *string = place.attributedFullText.string;
+    NSString *string = place;
     
     //Calculate the expected size based on the font and linebreak mode of your label
     CGSize maximumLabelSize = CGSizeMake(250,9999);
