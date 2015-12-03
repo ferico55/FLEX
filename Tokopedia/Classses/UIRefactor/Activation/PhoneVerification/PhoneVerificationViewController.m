@@ -46,11 +46,6 @@ UIAlertViewDelegate, UITextFieldDelegate>
         _cancelButtonHeight.constant = 0;
     }
     
-    /*
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Verifikasi nomor handphone Anda berhasil."] delegate:self];
-    [alert show];
-     */
-    
     _verifyButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
     _cancelButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
     [_otpTextField setUserInteractionEnabled:YES];
@@ -64,16 +59,6 @@ UIAlertViewDelegate, UITextFieldDelegate>
 }
 
 -(IBAction)tap:(id)sender{
-    if([sender isKindOfClass:[UIBarButtonItem class]]){
-        UIBarButtonItem *button = (UIBarButtonItem *) sender;
-        if(button.tag == 11){
-            [self.delegate redirectViewController:_redirectViewController];
-            [self.navigationController popViewControllerAnimated:YES];
-        }else if(button.tag == 12){
-            //verify button
-            [networkManager doRequest];
-        }
-    }
 }
 - (IBAction)textViewTapped:(id)sender {
     
@@ -158,13 +143,6 @@ UIAlertViewDelegate, UITextFieldDelegate>
         alert.delegate = self;
         [alert show];
     }else{
-        //sesuai requirement dari tim produk, harusnya pakai Sticky Alert, tapi karena sticky alertnya masih manual constraint
-        //jadi ga bisa nempel ke paling atas, untuk sementara pakai uialertview saja dulu
-        /*
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Maaf permohonan Anda tidak dapat diproses. Mohon periksa kembali kode yang Anda masukkan dan coba kembali."] delegate:self];
-        [alert show];
-         */
-        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                         message:@"Kode yang Anda masukkan salah. Mohon periksa kembali kode yang Anda masukkan dan coba kembali."
                                                        delegate:self
@@ -202,22 +180,12 @@ UIAlertViewDelegate, UITextFieldDelegate>
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     [UIView animateWithDuration:0.5 animations:^{
-        /*
-        CGRect frame = self.view.frame;
-        frame.origin.y = -120;
-        self.view.frame = frame;
-         */
         _viewYConstraint.constant = -100;
     }];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [UIView animateWithDuration:0.5 animations:^{
-        /*
-        CGRect frame = self.view.frame;
-        frame.origin.y = -20;
-        self.view.frame = frame;
-         */
         _viewYConstraint.constant = 0;
     }];
 }
@@ -225,13 +193,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
 
 - (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
-    
     [UIView animateWithDuration:0.5 animations:^{
-        /*
-        CGRect frame = self.view.frame;
-        frame.origin.y = -20;
-        self.view.frame = frame;
-         */
         _viewYConstraint.constant = 0;
     }];
 }

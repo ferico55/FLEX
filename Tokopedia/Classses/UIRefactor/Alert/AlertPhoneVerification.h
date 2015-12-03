@@ -1,8 +1,8 @@
 //
-//  AlertView.h
+//  AlertPhoneVerification.h
 //  Tokopedia
 //
-//  Created by Feizal Badri Asmoro on 4/14/15.
+//  Created by Johanes Effendi on 11/30/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 

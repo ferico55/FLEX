@@ -691,22 +691,17 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
-            //if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
+            if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
                 HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
                 controller.delegate = self.delegate;
                 controller.redirectViewController = self.redirectViewController;
                 
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBarHidden = YES;
-                 /*
-                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                navigationController.navigationBar.translucent = NO;
-                navigationController.navigationBar.tintColor = [UIColor whiteColor];
-                  */
+                navigationController.navigationBarHidden = YES;
                 navigationController.viewControllers = @[controller];
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-            /*}else{
+            }else{
                 if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                     [self.delegate redirectViewController:_redirectViewController];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -716,7 +711,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                     [self.tabBarController setSelectedIndex:0];
                     [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
                 }
-            }*/
+            }
             
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR

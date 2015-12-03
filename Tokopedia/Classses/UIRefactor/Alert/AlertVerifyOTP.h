@@ -1,5 +1,5 @@
 //
-//  AlertView.h
+//  AlertVerifyOTP.h
 //  Tokopedia
 //
 //  Created by Johanes Effendi on 11/30/15.

@@ -77,19 +77,7 @@ TKPDAlertViewDelegate
 }
 
 -(IBAction)tap:(id)sender{
-    if([sender isKindOfClass:[UIBarButtonItem class]]){
-        UIBarButtonItem *button = (UIBarButtonItem *) sender;
-        if(button.tag == 11){
-            //cancel button
-            [self.delegate redirectViewController:_redirectViewController];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        }else if(button.tag == 12){
-            //verify button
-            AlertPhoneVerification *alert = [AlertPhoneVerification new];
-            alert.delegate = self;
-            [alert show];
-        }
-    }else if([sender isKindOfClass:[UIButton class]]){
+    if([sender isKindOfClass:[UIButton class]]){
         UIButton *button = (UIButton *) button;
         //verify button
         AlertPhoneVerification *alert = [AlertPhoneVerification new];
@@ -270,16 +258,15 @@ TKPDAlertViewDelegate
             controller.phone = _phone;
         controller.isSkipButtonHidden = _isSkipButtonHidden;
             [self.navigationController pushViewController:controller animated:YES];
-            /*
-        }else{
+        /*}else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                             message:@"Anda hanya dapat mengirimkan kode verifikasi 3 kali dalam 1 jam, Anda harus menunggu 1 jam lagi untuk mengirimkan kode verifikasi kembali."
                                                            delegate:self
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
             [alert show];
-        }
-             */
+        }*/
+        
     }
 }
 
