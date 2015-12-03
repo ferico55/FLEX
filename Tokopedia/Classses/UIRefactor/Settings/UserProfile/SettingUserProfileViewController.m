@@ -290,13 +290,7 @@
         }
     }
 }
-- (IBAction)verifyButtonDidTapped:(id)sender {
-    HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-    
-    controller.isSkipButtonHidden = YES;
-    [self.navigationController pushViewController:controller animated:YES];
 
-}
 - (IBAction)verifyTapped:(id)sender {
     HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
     

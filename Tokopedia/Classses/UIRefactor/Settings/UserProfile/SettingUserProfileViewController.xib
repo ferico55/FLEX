@@ -394,7 +394,6 @@
                                 <color key="titleColor" red="0.047232210636138916" green="0.68549585342407227" blue="0.31199190020561218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="verifyButtonDidTapped:" destination="-1" eventType="touchUpInside" id="LAp-61-PBq"/>
                                 <action selector="verifyTapped:" destination="-1" eventType="touchUpInside" id="xlv-f5-WPO"/>
                             </connections>
                         </button>
