@@ -567,7 +567,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
-            if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
+            if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
                 HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
                 controller.delegate = self.delegate;
                 controller.redirectViewController = self.redirectViewController;
@@ -691,7 +691,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
-            if([_login.result.msisdn_show_dialog isEqualToString:@"1"]){
+            if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
                 HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
                 controller.delegate = self.delegate;
                 controller.redirectViewController = self.redirectViewController;
