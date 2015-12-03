@@ -100,8 +100,8 @@
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:@"no-result.png"
-                                 title:@"Oops..... Hasil pencarian tidak ditemukan"
-                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
+                                 title:@"Oops..... Hasil pencarian Anda tidak dapat ditemukan."
+                                  desc:@"Silakan lakukan pencarian dengan kata kunci lain"
                               btnTitle:@""];
 }
 
@@ -437,7 +437,7 @@
                     
                     if([self isUsingAnyFilter]){
                         _suggestion = @"";
-                        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
+                        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
                         [_noResultView hideButton:YES];
                     }else{
                         [_spellCheckRequest getSpellingSuggestion:@"shop" query:[_data objectForKey:@"search"] category:@"0"];
@@ -624,7 +624,9 @@
 
 - (void) buttonDidTapped:(id)sender{
     [_params setObject:_suggestion forKey:@"search"];
-    self.view = self.contentView;
+    //self.view = self.contentView;
+    [_table addSubview:_noResultView];
+    self.title = _suggestion;
     [[self getNetworkManager] doRequest];
 }
 
@@ -769,13 +771,13 @@
 -(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
     _suggestion = suggestion;
     if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain"];
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain"];
         [_noResultView hideButton:YES];
     }else if([_data count] > 3){
         [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
         [_noResultView hideButton:YES];
     }else{
-        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
         [_noResultView setNoResultButtonTitle:_suggestion];
         [_noResultView hideButton:NO];
     }
