@@ -175,6 +175,27 @@
     
     [pastikanLabel setAttributedText:attrString];
     
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    if([[_auth objectForKey:@"msisdn_is_verified"] integerValue] == 1){
+        [verifiedLabel setText:@"Terverifikasi"];
+        [verifiedLabel setTextColor:[UIColor colorWithRed:0.061
+                                                    green:0.648
+                                                     blue:0.275
+                                                    alpha:1]];
+        [verifyView setHidden:YES];
+        [verifyViewHeight setConstant:10];
+    }else{
+        [verifiedLabel setText:@"Belum Terverifikasi"];
+        [verifiedLabel setTextColor:[UIColor colorWithRed:0.882
+                                                    green:0.296
+                                                     blue:0.209
+                                                    alpha:1]];
+        [verifyView setHidden:NO];
+        [verifyViewHeight setConstant:101];
+    }
+
+    
     [self requestProfileForm];
 }
 
@@ -185,6 +206,7 @@
     self.scrollview.contentSize = CGSizeMake(self.view.frame.size.width,
                                              _contentView.frame.size.height);
     self.scrollview.contentOffset = CGPointZero;
+    
 }
 
 #pragma mark - Memory Management
@@ -333,25 +355,6 @@
     
     if (status) {
         [self requestprocessProfileForm:object];
-    }
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    if([[_auth objectForKey:@"msisdn_is_verified"] integerValue] == 1){
-        [verifiedLabel setText:@"Terverifikasi"];
-        [verifiedLabel setTextColor:[UIColor colorWithRed:0.061
-                                                         green:0.648
-                                                          blue:0.275
-                                                         alpha:1]];
-        [verifyView setHidden:YES];
-        [verifyViewHeight setConstant:10];
-    }else{
-        [verifiedLabel setText:@"Belum Terverifikasi"];
-        [verifiedLabel setTextColor:[UIColor colorWithRed:0.882
-                                                    green:0.296
-                                                     blue:0.209
-                                                    alpha:1]];
-        [verifyView setHidden:NO];
-        [verifyViewHeight setConstant:85];
     }
 }
 

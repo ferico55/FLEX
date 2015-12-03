@@ -170,6 +170,8 @@ UIAlertViewDelegate, UITextFieldDelegate>
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if(alertView.tag != 100){
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        [secureStorage setKeychainWithValue:@"1" withKey:@"msisdn_is_verified"];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }

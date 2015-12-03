@@ -50,7 +50,9 @@
                 <outlet property="textviewhobbies" destination="gLh-rL-zsl" id="6Uf-ty-BtP"/>
                 <outlet property="thumb" destination="Bju-bE-bA5" id="ARG-cp-QDd"/>
                 <outlet property="verifSekarangButton" destination="vqx-Eb-dbp" id="Rra-31-O2f"/>
-                <outlet property="verifyView" destination="cWs-dJ-0gH" id="fTd-1d-dOb"/>
+                <outlet property="verifiedLabel" destination="c3D-zg-ccp" id="WYg-Wg-3gq"/>
+                <outlet property="verifyView" destination="cWs-dJ-0gH" id="GKs-Tr-Um1"/>
+                <outlet property="verifyViewHeight" destination="IY6-Le-4ft" id="4X2-UY-oKA"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Gx2-Tz-tVm"/>
             </connections>
         </placeholder>
@@ -402,7 +404,7 @@
                             <attributedString key="attributedText">
                                 <fragment content="Pastikan Anda selalu mendaftarkan nomor yang dapat kami hubungi demi kelancaran transaksi Anda">
                                     <attributes>
-                                        <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <font key="NSFont" size="13" name="HelveticaNeue"/>
                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="2"/>
                                     </attributes>
