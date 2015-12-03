@@ -117,8 +117,6 @@ typedef enum TagRequest {
     EncodeDecoderManager *_encodeDecodeManager;
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
-    
-    NSIndexPath *_selectedIndexPath;
 }
 
 
@@ -444,9 +442,6 @@ typedef enum TagRequest {
             [_messages_selected addObject:indexPath];
         }
     } else {
-
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
         NSInteger index = indexPath.row;
         InboxMessageList *list = _messages[index];
 
@@ -461,7 +456,6 @@ typedef enum TagRequest {
             if (![data isEqualToDictionary:_detailViewController.data]) {
                 [_detailViewController replaceDataSelected:data];
                 [_table selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                _selectedIndexPath = indexPath;
             }
         }
         else
@@ -872,7 +866,7 @@ typedef enum TagRequest {
 }
 
 -(void) refreshDetailIfCellIsSelected:(UITableViewCell*) cell {
-    if (![NavigationHelper shouldDoDeepNavigation] && [_table cellForRowAtIndexPath:_selectedIndexPath] == cell) {
+    if (![NavigationHelper shouldDoDeepNavigation] && [_table cellForRowAtIndexPath:[_table indexPathForSelectedRow]] == cell) {
         [_detailViewController replaceDataSelected:nil];
     }
 }
@@ -1119,7 +1113,7 @@ typedef enum TagRequest {
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
         {
             if (_messages.count > 0) {
-                NSIndexPath *indexpath = _selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
                 InboxMessageList *list = _messages[indexpath.row];
                 
                 NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
