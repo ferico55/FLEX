@@ -17,6 +17,7 @@
             <connections>
                 <outlet property="cancelButton" destination="dZn-mE-B0X" id="i7t-bc-3XJ"/>
                 <outlet property="cancelButtonHeight" destination="a7I-5X-R1T" id="wKr-cq-Zyk"/>
+                <outlet property="notesLabel" destination="6TG-y9-cWe" id="QFO-uT-mrL"/>
                 <outlet property="otpTextField" destination="eQj-qE-S9l" id="NzW-Cc-lXh"/>
                 <outlet property="verifyButton" destination="1bR-rK-Fff" id="gnf-4e-Y0F"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -37,7 +38,7 @@
                                 <constraint firstAttribute="height" constant="12" id="xME-gu-FvE"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Kode SMS" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="eQj-qE-S9l">
@@ -58,7 +59,7 @@
                                 <constraint firstAttribute="height" constant="12" id="cy2-6H-tsX"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data.png" translatesAutoresizingMaskIntoConstraints="NO" id="wre-Sn-d7y">
@@ -99,7 +100,7 @@
                                 <constraint firstAttribute="height" constant="12" id="7kX-Rz-pXl"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="*Atau, lakukan verifikasi di pengaturan profil" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TG-y9-cWe">
@@ -108,7 +109,7 @@
                                 <constraint firstAttribute="height" constant="14" id="ZyS-Gc-kGA"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="italicSystem" pointSize="11"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>

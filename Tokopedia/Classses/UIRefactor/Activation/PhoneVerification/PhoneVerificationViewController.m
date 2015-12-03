@@ -23,6 +23,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewYConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cancelButtonHeight;
+@property (weak, nonatomic) IBOutlet UILabel *notesLabel;
 
 @end
 
@@ -44,6 +45,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
     if(_isSkipButtonHidden){
         [_cancelButton setHidden:YES];
         _cancelButtonHeight.constant = 0;
+        [_notesLabel setHidden:YES];
     }
     
     _verifyButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
