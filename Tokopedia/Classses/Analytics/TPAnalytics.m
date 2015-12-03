@@ -287,4 +287,13 @@
     [analytics.dataLayer push:data];
 }
 
++(void)trackExeptionDescription:(NSString *)description {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event" : @"exception",
+                           @"event.description":description
+                           };
+    [analytics.dataLayer push:data];
+}
+
 @end
