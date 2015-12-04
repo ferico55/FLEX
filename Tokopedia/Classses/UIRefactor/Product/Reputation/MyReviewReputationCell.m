@@ -211,7 +211,7 @@
     } else if([object.reputation_progress isEqualToString:@"1"]) {
         btnReview.userInteractionEnabled = YES;
     } else if([object.reputation_progress isEqualToString:@"2"]) {
-        btnReview.userInteractionEnabled = NO;
+        btnReview.userInteractionEnabled = YES;
     } else {
         btnReview.userInteractionEnabled = NO;
     }
