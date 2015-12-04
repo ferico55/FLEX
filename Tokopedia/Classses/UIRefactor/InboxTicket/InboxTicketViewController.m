@@ -366,9 +366,8 @@ NoResultDelegate
     [self.tableView reloadData];
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        if (_tickets.count) {
-            [self.detailViewController updateTicket:[_tickets objectAtIndex:0]];
-        }
+        InboxTicketList* ticket = _tickets.count? [_tickets objectAtIndex:0]: nil;
+        [self.detailViewController updateTicket:ticket];
     }
     
     [_refreshControl endRefreshing];

@@ -130,7 +130,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = 1;
-    [_networkManager doRequest];
+//    [_networkManager doRequest];
 
     _ratingNetworkManager = [TokopediaNetworkManager new];
     _ratingNetworkManager.delegate = self;
@@ -203,16 +203,25 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (void)updateTicket:(InboxTicketList *)inboxTicket {
     self.inboxTicket = inboxTicket;
-    _ticketDetail = nil;
-    _ticketInformation = nil;
-    _isLoadingMore = NO;
-    [_loadMoreButton setTitle:@"Lihat Semua" forState:UIControlStateNormal];
     
-    [self setTitleView];
-    
-    [self showRefreshControl];
-    
-    [_networkManager doRequest];
+    if (inboxTicket) {
+        _ticketDetail = nil;
+        _ticketInformation = nil;
+        _isLoadingMore = NO;
+        
+        _tableHeaderView.hidden = NO;
+        [_loadMoreButton setTitle:@"Lihat Semua" forState:UIControlStateNormal];
+        
+        [self setTitleView];
+        
+        [self showRefreshControl];
+        
+        [_networkManager doRequest];
+    }
+    else {
+        _tableHeaderView.hidden = YES;
+        self.navigationItem.titleView = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
