@@ -211,10 +211,10 @@ SpellCheckRequestDelegate
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         if(self.isFromAutoComplete) {
-            [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)"];
+            [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
             self.screenName = @"Product Search Results (From Auto Complete Search)";
         } else {
-            [TPAnalytics trackScreenName:@"Product Search Results"];
+            [TPAnalytics trackScreenName:@"Product Search Results" gridType:self.cellType];
             self.screenName = @"Product Search Results";
         }
     }
