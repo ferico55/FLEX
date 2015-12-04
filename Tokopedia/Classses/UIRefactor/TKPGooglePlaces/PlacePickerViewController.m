@@ -154,14 +154,32 @@
 }
 
 + (UIImage *)captureScreen:(GMSMapView *)mapView {
-    
+
+    GMSMarker *marker = mapView.selectedMarker;
+    mapView.selectedMarker = nil;
+
     UIGraphicsBeginImageContextWithOptions(mapView.frame.size, YES, 0.0f);
     [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    return image;
+    mapView.selectedMarker = marker;
+    
+    // not equivalent to image.size (which depends on the imageOrientation)!
+    double refWidth = CGImageGetWidth(image.CGImage);
+    double refHeight = CGImageGetHeight(image.CGImage);
+    
+    double x = (refWidth - 200) / 2.0;
+    double y = (refHeight - 200) / 2.0;
+    
+    CGRect cropRect = CGRectMake(x, y, 200, 200);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+    
+    UIImage *cropped = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:image.imageOrientation];
+    CGImageRelease(imageRef);
+    
+    return cropped;
 }
 
 -(void)setCaptureMap
@@ -340,7 +358,7 @@
 
     [PlacePickerViewController focusMap:_mapview toMarker:_marker];
     
-    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
+    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:2.0f];
     
     if (shouldUpdateAddress)
         [self updateAddressSaveHistory:saveHistory addressSugestion:addressSugestion];

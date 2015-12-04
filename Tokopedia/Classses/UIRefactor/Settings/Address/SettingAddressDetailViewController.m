@@ -187,6 +187,11 @@
     }
 }
 
+- (IBAction)tapMap:(id)sender {
+
+}
+
+
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data
 {
