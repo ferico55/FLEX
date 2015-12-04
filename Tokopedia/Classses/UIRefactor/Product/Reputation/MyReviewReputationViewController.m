@@ -489,21 +489,23 @@
     else if(tag == CTagInsertReputation) {
         NSDateFormatter *formatter = [NSDateFormatter new];
         formatter.dateFormat = @"d MMMM yyyy, HH:mm";
+        DetailMyInboxReputation *selectedReputation = arrList[indexPathInsertReputation.row];
         
-        if([((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).role isEqualToString:@"2"]) {//Seller
-            if(((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score!=nil && ![((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score isEqualToString:@""])
-                ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).score_edit_time_fmt = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
+        
+        if([selectedReputation.role isEqualToString:@"2"]) {//Seller
+            if(selectedReputation.buyer_score!=nil && ![selectedReputation.buyer_score isEqualToString:@""])
+                selectedReputation.score_edit_time_fmt = selectedReputation.viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
             
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score = emoticonState;
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.buyer_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score;
+            selectedReputation.buyer_score = emoticonState;
+            selectedReputation.viewModel.buyer_score = selectedReputation.buyer_score;
         }
         else {
-            if(((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score!=nil && ![((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score isEqualToString:@""])
-                ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).score_edit_time_fmt = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
+            if(selectedReputation.seller_score!=nil && ![selectedReputation.seller_score isEqualToString:@""])
+                selectedReputation.score_edit_time_fmt = selectedReputation.viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
 
             
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score = emoticonState;
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.seller_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score;
+            selectedReputation.seller_score = emoticonState;
+            selectedReputation.viewModel.seller_score = selectedReputation.seller_score;
         }
         
         //Get view controller based on device (ipad / iphone)
@@ -520,7 +522,7 @@
         
         //Update ui detail reputation
         if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-            [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id withState:emoticonState];
+            [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:selectedReputation.reputation_id withState:emoticonState];
             
             if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
                 [self showAlertAfterGiveRate];

@@ -205,7 +205,19 @@
     
     // set right smiley
 
-    btnReview.userInteractionEnabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
+//    btnReview.userInteractionEnabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
+    BOOL isReputationAlreadyUpdated = (![object.score_edit_time_fmt isEqualToString:@"0"]);
+    
+    if([object.reputation_progress isEqualToString:@"0"] && !isReputationAlreadyUpdated) {
+        btnReview.userInteractionEnabled = YES;        
+    } else if([object.reputation_progress isEqualToString:@"1"]) {
+        btnReview.userInteractionEnabled = YES;
+    } else if([object.reputation_progress isEqualToString:@"2"]) {
+        btnReview.userInteractionEnabled = NO;
+    } else {
+        btnReview.userInteractionEnabled = NO;
+    }
+    
     if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreBad]) {
         [btnReview setImage:imageSad forState:UIControlStateNormal];
     }
