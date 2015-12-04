@@ -249,30 +249,38 @@
     //3&6. 2 pihak belum kasih
     imageFlagReview.userInteractionEnabled = YES;
 
-    NSString *strScore = object.buyer_score;
-    if([object.role isEqualToString:@"2"]) {//Seller
-        strScore = object.seller_score;
-    }
+//    NSString *strScore = object.buyer_score;
+//    if([object.role isEqualToString:@"2"]) {//Seller
+//        strScore = object.seller_score;
+//    }
     
     //Set icon smiley
-    if(([object.seller_score isEqualToString:CReviewScoreBad] || [object.seller_score isEqualToString:CReviewScoreNeutral] || [object.seller_score isEqualToString:CReviewScoreGood]) && (([object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreGood]))) {
-        if([strScore isEqualToString:CReviewScoreBad]) {
-            imageFlagReview.image = imageQBad;
-        }
-        else if([strScore isEqualToString:CReviewScoreNeutral]) {
-            imageFlagReview.image = imageQNetral;
-        }
-        else if([strScore isEqualToString:CReviewScoreGood]) {
-            imageFlagReview.image = imageQSmile;
-        }
-    }
-    else {
-        if([strScore isEqualToString:CReviewScoreBad] || [strScore isEqualToString:CReviewScoreNeutral] || [strScore isEqualToString:CReviewScoreGood]) {
-            imageFlagReview.image = imageQuestionBlue;
-        }
-        else {
-            imageFlagReview.image = imageQuestionGray;
-        }
+//    if(([object.seller_score isEqualToString:CReviewScoreBad] || [object.seller_score isEqualToString:CReviewScoreNeutral] || [object.seller_score isEqualToString:CReviewScoreGood]) && (([object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreGood]))) {
+//        if([strScore isEqualToString:CReviewScoreBad]) {
+//            imageFlagReview.image = imageQBad;
+//        }
+//        else if([strScore isEqualToString:CReviewScoreNeutral]) {
+//            imageFlagReview.image = imageQNetral;
+//        }
+//        else if([strScore isEqualToString:CReviewScoreGood]) {
+//            imageFlagReview.image = imageQSmile;
+//        }
+//    }
+//    else {
+//        if([strScore isEqualToString:CReviewScoreBad] || [strScore isEqualToString:CReviewScoreNeutral] || [strScore isEqualToString:CReviewScoreGood]) {
+//            imageFlagReview.image = imageQuestionBlue;
+//        }
+//        else {
+//            imageFlagReview.image = imageQuestionGray;
+//        }
+//    }
+    
+    // 1 = tampilan rating from buyer
+    // 4 = tampilan rating from seller
+    if([object.show_reviewee_score isEqualToString:@"1"]) {
+        [self setOtherSmiley:object.seller_score];
+    } else if ([object.show_reviewee_score isEqualToString:@"4"]) {
+        [self setOtherSmiley:object.buyer_score];
     }
     
     if([object.show_reviewee_score isEqualToString:@"2"] || [object.show_reviewee_score isEqualToString:@"5"]) {
@@ -316,6 +324,19 @@
     
     
     [UIView setAnimationsEnabled:YES];
+}
+
+- (void)setOtherSmiley:(NSString*)score {
+    if([score isEqualToString:@"-1"]) {
+        //bad
+        imageFlagReview.image = imageQBad;
+    } else if([score isEqualToString:@"1"]) {
+        //neutral
+        imageFlagReview.image = imageQNetral;
+    } else if([score isEqualToString:@"2"]) {
+        //good
+        imageFlagReview.image = imageQSmile;
+    }
 }
 
 
