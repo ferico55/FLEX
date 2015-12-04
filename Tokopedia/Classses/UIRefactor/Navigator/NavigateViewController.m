@@ -434,10 +434,11 @@
     return nil;
 }
 
-+(void)navigateToMap:(CLLocationCoordinate2D)location FromViewController:(UIViewController *)viewController
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController
 {
     PlacePickerViewController *placePicker = [PlacePickerViewController new];
     placePicker.firstCoordinate = location;
+    placePicker.type = type;
     placePicker.delegate = viewController;
     [viewController.navigationController pushViewController:placePicker animated:YES];
 }

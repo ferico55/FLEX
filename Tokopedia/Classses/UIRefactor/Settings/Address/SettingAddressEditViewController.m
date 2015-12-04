@@ -327,7 +327,7 @@
 
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMap:(id)sender {
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue])FromViewController:self];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace fromViewController:self];
 }
 //
 
@@ -558,7 +558,7 @@
         }
         
         //TODO:: Uncomment for showing map address
-        if (_imageMap.images) {
+        if ([list.longitude integerValue] != 0) {
             _mapImageView.image = _imageMap;
             _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
 

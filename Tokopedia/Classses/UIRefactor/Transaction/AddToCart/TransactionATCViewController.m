@@ -239,7 +239,7 @@
     _networkManager.delegate = self;
 }
 - (IBAction)tapPinLocationButton:(id)sender {
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) FromViewController:self];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace fromViewController:self];
 }
 
 
@@ -573,7 +573,7 @@
             }
             case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
             {
-                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0)FromViewController:self];
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace fromViewController:self];
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:

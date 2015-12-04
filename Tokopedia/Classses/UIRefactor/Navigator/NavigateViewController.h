@@ -28,7 +28,7 @@
                                   promoData:(NSDictionary *)data
                                 productData:(NSDictionary *)productData;
 
-+(void)navigateToMap:(CLLocationCoordinate2D)location FromViewController:(UIViewController*)viewController;
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;

@@ -139,7 +139,7 @@
                 vc.delegate = self;
                 AddressFormList *address = _address;
                 //TODO:: Uncomment for showing map address
-                if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
+                if ([_address.longitude integerValue] != 0 && [address.latitude integerValue] != 0 ) {
                     vc.imageMap = _captureMap?:[PlacePickerViewController captureScreen:_mapview];
                     vc.longitude = address.longitude;
                     vc.latitude = address.latitude;
@@ -186,11 +186,6 @@
         }
     }
 }
-
-- (IBAction)tapMap:(id)sender {
-
-}
-
 
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data
@@ -324,7 +319,7 @@
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMapDetail:(id)sender {
     AddressFormList *list = _address;
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) FromViewController:self];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) type:TypeShowPlace fromViewController:self];
 }
 //
 

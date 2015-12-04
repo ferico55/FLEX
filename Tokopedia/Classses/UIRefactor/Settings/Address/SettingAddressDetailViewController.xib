@@ -1172,20 +1172,20 @@
                         <rect key="frame" x="0.0" y="0.5" width="320" height="193.5"/>
                         <animations/>
                         <connections>
-                            <action selector="tapMap:" destination="-1" eventType="touchUpInside" id="vcY-2e-wII"/>
+                            <action selector="tapMapDetail:" destination="-1" eventType="touchUpInside" id="v5P-Xe-Hds"/>
                         </connections>
                     </button>
                 </subviews>
                 <animations/>
                 <constraints>
+                    <constraint firstItem="aD1-P7-ae5" firstAttribute="top" secondItem="aqq-BA-tSt" secondAttribute="top" id="8lU-4t-UJk"/>
                     <constraint firstAttribute="bottom" secondItem="dGI-zU-X7j" secondAttribute="bottom" id="EdC-76-B2w"/>
                     <constraint firstAttribute="trailing" secondItem="dGI-zU-X7j" secondAttribute="trailing" id="Lcn-lo-DDt"/>
-                    <constraint firstAttribute="bottom" secondItem="aD1-P7-ae5" secondAttribute="bottom" id="MTU-9T-xxR"/>
+                    <constraint firstAttribute="trailing" secondItem="aD1-P7-ae5" secondAttribute="trailing" id="Xi6-ph-upu"/>
                     <constraint firstItem="dGI-zU-X7j" firstAttribute="leading" secondItem="aqq-BA-tSt" secondAttribute="leading" id="c50-yh-Lwk"/>
                     <constraint firstItem="dGI-zU-X7j" firstAttribute="top" secondItem="aqq-BA-tSt" secondAttribute="top" id="i6d-je-plF"/>
-                    <constraint firstAttribute="trailing" secondItem="aD1-P7-ae5" secondAttribute="trailing" id="so8-cn-O6S"/>
-                    <constraint firstItem="aD1-P7-ae5" firstAttribute="top" secondItem="aqq-BA-tSt" secondAttribute="top" id="tLO-ss-ju5"/>
-                    <constraint firstItem="aD1-P7-ae5" firstAttribute="leading" secondItem="aqq-BA-tSt" secondAttribute="leading" id="uHH-4C-NWA"/>
+                    <constraint firstAttribute="bottom" secondItem="aD1-P7-ae5" secondAttribute="bottom" id="jvI-NQ-dza"/>
+                    <constraint firstItem="aD1-P7-ae5" firstAttribute="leading" secondItem="aqq-BA-tSt" secondAttribute="leading" id="sUo-5w-4jc"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>

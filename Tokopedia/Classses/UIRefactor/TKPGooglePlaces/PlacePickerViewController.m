@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet GMSMapView *transparentView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchbarHeightConstaint;
 
 
 @end
@@ -45,6 +46,7 @@
     
     UIImage *_captureScreen;
     NSString *_selectedSugestion;
+    GMSCameraPosition *lastCameraPosition;
 }
 
 - (instancetype)init {
@@ -66,26 +68,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _locationManager = [[CLLocationManager alloc] init];
     _geocoder = [GMSGeocoder geocoder];
 
     _mapview.myLocationEnabled = YES;
-    _locationManager.delegate = self;
-    if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] )
-        [_locationManager requestWhenInUseAuthorization];
-    [_locationManager startUpdatingLocation];
     
-    if (_firstCoordinate.longitude == 0) {
-        _firstCoordinate = _locationManager.location.coordinate;
+    if (_type == TypeEditPlace) {
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] )
+            [_locationManager requestWhenInUseAuthorization];
+        [_locationManager startUpdatingLocation];
+        
+        if (_firstCoordinate.longitude == 0) {
+            _firstCoordinate = _locationManager.location.coordinate;
+        }
     }
     
     _marker = [[GMSMarker alloc] init];
     _marker.position = _firstCoordinate;
     _marker.map = _mapview;
     _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
+    _marker.appearAnimation = kGMSMarkerAnimationNone;
     
     CLLocationCoordinate2D target = _marker.position;
-    _mapview.camera = [GMSCameraPosition cameraWithTarget:target zoom:14];
+    _mapview.camera = [GMSCameraPosition cameraWithTarget:target zoom:16];
     
     _searchBar.placeholder = @"Cari Alamat";
     _searchBar.tintColor = [UIColor whiteColor];
@@ -105,13 +111,14 @@
         self.navigationItem.rightBarButtonItem = doneBarButtonItem;
         self.title = @"Pilih Lokasi";
         [_marker setDraggable:YES];
-
+        _searchbarHeightConstaint.constant = 40;
     }
     else
     {
+        
         self.title = @"Lokasi";
         _searchBar.hidden = YES;
-        
+        _searchbarHeightConstaint.constant = 0;
     }
     
     [self loadHistory];
@@ -126,7 +133,7 @@
     }
     else
     {
-        if (_marker.position.latitude != 0 && _marker.position.longitude != 0)
+        if (_marker.position.latitude == 0 && _type == TypeEditPlace )
             [self focusMapToLocation:_locationManager.location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
         _mapview.myLocationEnabled = YES;
         _mapview.settings.myLocationButton = YES;
@@ -374,8 +381,37 @@
     
     GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:marker.position.latitude
                                                                     longitude:marker.position.longitude
-                                                                         zoom:14];
+                                                                         zoom:16];
     [mapView setCamera:cameraPosition];
+    
+}
+
+
+- (void)mapView:(GMSMapView *)pMapView didChangeCameraPosition:(GMSCameraPosition *)position {
+    
+    /* move draggable pin */
+    if (_marker && _type == TypeEditPlace) {
+        
+        // stick it on map and start dragging from there..
+        if (lastCameraPosition == nil) lastCameraPosition = position;
+        
+        // Algebra :) substract coordinates with the difference of camera changes
+        double lat = position.target.latitude - lastCameraPosition.target.latitude;
+        double lng = position.target.longitude - lastCameraPosition.target.longitude;
+        lastCameraPosition = position;
+        CLLocationCoordinate2D newCoords = CLLocationCoordinate2DMake(_marker.position.latitude+lat,
+                                                                      _marker.position.longitude+lng);
+        [_marker setPosition:newCoords];
+        [self updateAddressSaveHistory:NO addressSugestion:nil];
+
+        return;
+    }
+    
+}
+
+- (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position {
+    
+    lastCameraPosition = nil; // reset pin moving, no ice skating pins ;)
     
 }
 
@@ -602,6 +638,11 @@
 {
     [self focusMapToLocation:marker.position shouldUpdateAddress:NO shouldSaveHistory:NO addressSugestion:nil];
     return YES;
+}
+
+-(void)mapView:(GMSMapView *)mapView willMove:(BOOL)gesture
+{
+    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
 }
 
 #pragma mark -
