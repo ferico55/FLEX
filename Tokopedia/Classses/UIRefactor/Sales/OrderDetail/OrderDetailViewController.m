@@ -19,11 +19,13 @@
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "ChangeCourierViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "AlertInfoView.h"
 #import "OrderBookingData.h"
 #import "OrderBookingResponse.h"
+#import "AlertShipmentCodeView.h"
 
 #define CTagAddress 2
 #define CTagPhone 3
@@ -216,6 +218,7 @@ TokopediaNetworkManagerDelegate
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = OrderDetailTag;
+    _networkManager.maxTries = 5;
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
     
@@ -281,7 +284,14 @@ TokopediaNetworkManagerDelegate
         
         [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
         
-        [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+        if ([_transaction.order_auto_resi isEqualToString:@"1"] && [_transaction.order_auto_awb isEqualToString:@"0"]) {
+            [_acceptButton setTitle:@"Ganti Kurir" forState:UIControlStateNormal];
+            _acceptButton.tag = 3;
+        } else {
+            [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+            _acceptButton.tag = 2;
+        }
+        
         [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
         
         if (_transaction.order_deadline.deadline_shipping_day_left < 0) {
@@ -572,6 +582,16 @@ TokopediaNetworkManagerDelegate
     } else if (button.tag == 2) {
         
         SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+        controller.delegate = self;
+        controller.shipmentCouriers = _shipmentCouriers;
+        controller.order = _transaction;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        
+    } else if (button.tag == 3) {
+        
+        ChangeCourierViewController *controller = [ChangeCourierViewController new];
         controller.delegate = self;
         controller.shipmentCouriers = _shipmentCouriers;
         controller.order = _transaction;
@@ -980,18 +1000,14 @@ TokopediaNetworkManagerDelegate
     _singleTapGestureRecognizer.numberOfTapsRequired = 1;
     
     if([code isEqualToString:@"try again"]) {
-        text = [[NSAttributedString alloc] initWithString:code attributes:@{
-                                                                            NSForegroundColorAttributeName:[UIColor colorWithRed:(62.0/255.0) green:(170.0/255.0) blue:(36.0/255.0) alpha:(255.0/255.0)],
-                                                                            NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0]
-                                                                            }];
-        [_getCodeButton setImage:[UIImage imageNamed:@"icon_pesan_ulang.png"] forState:UIControlStateNormal];
-        [_getCodeButton setHidden:NO];
-        _getCodeButton.enabled = YES;
-        
-        [_courierAgentLabel addGestureRecognizer:_singleTapGestureRecognizer];
-        [_courierAgentLabel setUserInteractionEnabled:YES];
-        _singleTapGestureRecognizer.cancelsTouchesInView = NO;
-        _singleTapGestureRecognizer.enabled = YES;
+        text = [[NSAttributedString alloc] initWithString:@"Kode sedang diproses..." attributes:@{
+                                                                            NSForegroundColorAttributeName:[UIColor blackColor]}];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [_networkManager doRequest];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+            });
+        });
     } else {
         text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
         [_getCodeButton setHidden:YES];
@@ -1001,6 +1017,12 @@ TokopediaNetworkManagerDelegate
         [_courierAgentLabel setUserInteractionEnabled:NO];
         _singleTapGestureRecognizer.enabled = NO;
         [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
+        
+        [self.view layoutSubviews];
+        
+        AlertShipmentCodeView *alert = [AlertShipmentCodeView newview];
+        [alert setText:code];
+        [alert show];
     }
     
     NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];

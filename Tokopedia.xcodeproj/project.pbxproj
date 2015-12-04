@@ -15,8 +15,15 @@
 		62DEC5D21BFC7BA7004765FD /* OrderBooking.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DEC5D11BFC7BA7004765FD /* OrderBooking.m */; settings = {ASSET_TAGS = (); }; };
 		62E2DE761BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E2DE741BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		62E2DE771BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62E2DE751BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		62E9C7541C0EE07F00CC31AD /* AlertShipmentCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E9C7531C0EE07F00CC31AD /* AlertShipmentCodeView.m */; settings = {ASSET_TAGS = (); }; };
+		62E9C7561C0EE0F400CC31AD /* AlertShipmentCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62E9C7551C0EE0F400CC31AD /* AlertShipmentCodeView.xib */; settings = {ASSET_TAGS = (); }; };
 		62ED20651C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62ED20631C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		62ED20661C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62ED20641C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
+		62F6C8741C102E2200F75FB6 /* icon_idrop_indomaret.png in Resources */ = {isa = PBXBuildFile; fileRef = 62F6C8711C102E2200F75FB6 /* icon_idrop_indomaret.png */; settings = {ASSET_TAGS = (); }; };
+		62F6C8751C102E2200F75FB6 /* icon_idrop_indomaret@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62F6C8721C102E2200F75FB6 /* icon_idrop_indomaret@2x.png */; settings = {ASSET_TAGS = (); }; };
+		62F6C8761C102E2200F75FB6 /* icon_idrop_indomaret@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62F6C8731C102E2200F75FB6 /* icon_idrop_indomaret@3x.png */; settings = {ASSET_TAGS = (); }; };
+		62F6C87F1C103D1600F75FB6 /* ChangeCourierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F6C87D1C103D1600F75FB6 /* ChangeCourierViewController.m */; settings = {ASSET_TAGS = (); }; };
+		62F6C8801C103D1600F75FB6 /* ChangeCourierViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62F6C87E1C103D1600F75FB6 /* ChangeCourierViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -1954,9 +1961,18 @@
 		62E2DE731BFF1B0600731E31 /* TransactionShipmentATCTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionShipmentATCTableViewController.h; sourceTree = "<group>"; };
 		62E2DE741BFF1B0600731E31 /* TransactionShipmentATCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionShipmentATCTableViewController.m; sourceTree = "<group>"; };
 		62E2DE751BFF1B0600731E31 /* TransactionShipmentATCTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionShipmentATCTableViewController.xib; sourceTree = "<group>"; };
+		62E9C7521C0EE07F00CC31AD /* AlertShipmentCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertShipmentCodeView.h; sourceTree = "<group>"; };
+		62E9C7531C0EE07F00CC31AD /* AlertShipmentCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertShipmentCodeView.m; sourceTree = "<group>"; };
+		62E9C7551C0EE0F400CC31AD /* AlertShipmentCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertShipmentCodeView.xib; sourceTree = "<group>"; };
 		62ED20621C02A988002CAA95 /* TransactionShipmentATCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionShipmentATCTableViewCell.h; sourceTree = "<group>"; };
 		62ED20631C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionShipmentATCTableViewCell.m; sourceTree = "<group>"; };
 		62ED20641C02A988002CAA95 /* TransactionShipmentATCTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionShipmentATCTableViewCell.xib; sourceTree = "<group>"; };
+		62F6C8711C102E2200F75FB6 /* icon_idrop_indomaret.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_idrop_indomaret.png; sourceTree = "<group>"; };
+		62F6C8721C102E2200F75FB6 /* icon_idrop_indomaret@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_idrop_indomaret@2x.png"; sourceTree = "<group>"; };
+		62F6C8731C102E2200F75FB6 /* icon_idrop_indomaret@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_idrop_indomaret@3x.png"; sourceTree = "<group>"; };
+		62F6C87C1C103D1600F75FB6 /* ChangeCourierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeCourierViewController.h; sourceTree = "<group>"; };
+		62F6C87D1C103D1600F75FB6 /* ChangeCourierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeCourierViewController.m; sourceTree = "<group>"; };
+		62F6C87E1C103D1600F75FB6 /* ChangeCourierViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeCourierViewController.xib; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6932,6 +6948,9 @@
 				85FF7D731BE9A5870015B16F /* TKPDAlert.xib */,
 				85FF7D741BE9A5870015B16F /* TKPDAlertView.h */,
 				85FF7D751BE9A5870015B16F /* TKPDAlertView.m */,
+				62E9C7521C0EE07F00CC31AD /* AlertShipmentCodeView.h */,
+				62E9C7531C0EE07F00CC31AD /* AlertShipmentCodeView.m */,
+				62E9C7551C0EE0F400CC31AD /* AlertShipmentCodeView.xib */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -8187,6 +8206,9 @@
 				85FF80791BE9A5880015B16F /* SubmitShipmentConfirmationViewController.h */,
 				85FF807A1BE9A5880015B16F /* SubmitShipmentConfirmationViewController.m */,
 				85FF807B1BE9A5880015B16F /* SubmitShipmentConfirmationViewController.xib */,
+				62F6C87C1C103D1600F75FB6 /* ChangeCourierViewController.h */,
+				62F6C87D1C103D1600F75FB6 /* ChangeCourierViewController.m */,
+				62F6C87E1C103D1600F75FB6 /* ChangeCourierViewController.xib */,
 			);
 			path = ShipmentConfirmation;
 			sourceTree = "<group>";
@@ -9067,6 +9089,9 @@
 		85FF82671BE9A5890015B16F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				62F6C8711C102E2200F75FB6 /* icon_idrop_indomaret.png */,
+				62F6C8721C102E2200F75FB6 /* icon_idrop_indomaret@2x.png */,
+				62F6C8731C102E2200F75FB6 /* icon_idrop_indomaret@3x.png */,
 				85FF82681BE9A5890015B16F /* badges_gold_merchant.png */,
 				85FF82691BE9A5890015B16F /* balloon_read_left.png */,
 				85FF826A1BE9A5890015B16F /* balloon_read_right.png */,
@@ -10344,6 +10369,7 @@
 				85FF89FC1BE9A58B0015B16F /* icon_21.png in Resources */,
 				85FF8B311BE9A58B0015B16F /* icon_problem_new_user@3x.png in Resources */,
 				85FF8A471BE9A58B0015B16F /* icon_category@2x.png in Resources */,
+				62E9C7561C0EE0F400CC31AD /* AlertShipmentCodeView.xib in Resources */,
 				85FF8ADA1BE9A58B0015B16F /* icon_medal_gold@2x.png in Resources */,
 				85FF8B1F1BE9A58B0015B16F /* icon_order_cancel.png in Resources */,
 				85FF8B571BE9A58B0015B16F /* icon_share.png in Resources */,
@@ -10771,6 +10797,7 @@
 				85FF88001BE9A58B0015B16F /* ResolutionCenterSystemCell.xib in Resources */,
 				85FF89E71BE9A58B0015B16F /* icon_11@2x.png in Resources */,
 				85FF8BDA1BE9A58B0015B16F /* loyalMerchant.png in Resources */,
+				62F6C8751C102E2200F75FB6 /* icon_idrop_indomaret@2x.png in Resources */,
 				85FF8A821BE9A58B0015B16F /* icon_diskusi_comment_grey@2x.png in Resources */,
 				85FF887A1BE9A58B0015B16F /* MyReviewReputationCell.xib in Resources */,
 				85FF87CD1BE9A58B0015B16F /* ProductFeedViewController.xib in Resources */,
@@ -10804,6 +10831,7 @@
 				85FF8B7B1BE9A58B0015B16F /* icon_smile50@2x.png in Resources */,
 				85FF88EC1BE9A58B0015B16F /* SettingBankNameCell.xib in Resources */,
 				85FF891F1BE9A58B0015B16F /* ShopInfoPaymentCell.xib in Resources */,
+				62F6C8801C103D1600F75FB6 /* ChangeCourierViewController.xib in Resources */,
 				85FF8ABA1BE9A58B0015B16F /* icon_love_active.png in Resources */,
 				85FF89211BE9A58B0015B16F /* ShopInfoShipmentCell.xib in Resources */,
 				85FF8C451BE9A58B0015B16F /* icon_close_white@2x.png in Resources */,
@@ -10895,6 +10923,7 @@
 				85FF8A9C1BE9A58B0015B16F /* icon_grid_dua@2x.png in Resources */,
 				85FF8BD21BE9A58B0015B16F /* icon_signin_active.png in Resources */,
 				85FF8B231BE9A58B0015B16F /* icon_order_check.png in Resources */,
+				62F6C8761C102E2200F75FB6 /* icon_idrop_indomaret@3x.png in Resources */,
 				85FF8BD11BE9A58B0015B16F /* icon_signin@2x.png in Resources */,
 				85FF8AA31BE9A58B0015B16F /* icon_home_active.png in Resources */,
 				85FF8C151BE9A58B0015B16F /* ic_cart@2x.png in Resources */,
@@ -10928,6 +10957,7 @@
 				85FF890E1BE9A58B0015B16F /* ShopEditViewController.xib in Resources */,
 				85FF8B8C1BE9A58B0015B16F /* icon_speed_fast@2x.png in Resources */,
 				85FF8BAB1BE9A58B0015B16F /* icon_toped_loading_grey-02.png in Resources */,
+				62F6C8741C102E2200F75FB6 /* icon_idrop_indomaret.png in Resources */,
 				85FF89C61BE9A58B0015B16F /* TalkProductCell.xib in Resources */,
 				85FF8A861BE9A58B0015B16F /* icon_diskusi_report_grey.png in Resources */,
 				85FF8B821BE9A58B0015B16F /* icon_sold.png in Resources */,
@@ -11446,6 +11476,7 @@
 				85FF887D1BE9A58B0015B16F /* ProductDetailReputationCell.m in Sources */,
 				85FF85E91BE9A58A0015B16F /* LikeDislikeResult.m in Sources */,
 				85FF87171BE9A58A0015B16F /* AlertPickerView.m in Sources */,
+				62E9C7541C0EE07F00CC31AD /* AlertShipmentCodeView.m in Sources */,
 				85FF852A1BE9A58A0015B16F /* URLCacheController.m in Sources */,
 				85FF86581BE9A58A0015B16F /* SearchAutoCompleteDomains.m in Sources */,
 				85FF856E1BE9A58A0015B16F /* CatalogImages.m in Sources */,
@@ -12027,6 +12058,7 @@
 				85FF86BF1BE9A58A0015B16F /* Veritrans.m in Sources */,
 				85FF85851BE9A58A0015B16F /* ReviewList.m in Sources */,
 				85FF87FB1BE9A58B0015B16F /* ResolutionCenterDetailViewController.m in Sources */,
+				62F6C87F1C103D1600F75FB6 /* ChangeCourierViewController.m in Sources */,
 				62ED20651C02A988002CAA95 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				85FF895C1BE9A58B0015B16F /* TransactionCartFormMandiriClickPayViewController.m in Sources */,
 				85FF85491BE9A58A0015B16F /* CreatePassword.m in Sources */,
