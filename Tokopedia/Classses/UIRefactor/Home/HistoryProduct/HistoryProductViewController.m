@@ -98,6 +98,7 @@ typedef enum TagRequest {
     _itemPerPage = kTKPDHOMEHOTLIST_LIMITPAGE;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSeeAProduct:) name:@"didSeeAProduct" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     
     //todo with view
@@ -211,7 +212,6 @@ typedef enum TagRequest {
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
@@ -335,8 +335,8 @@ typedef enum TagRequest {
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        //[_collectionView addSubview:_noResult];
-        [self setView:_noResultView];
+        [_collectionView addSubview:_noResultView];
+        //[self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -384,6 +384,10 @@ typedef enum TagRequest {
 
 - (void)userDidLogin:(NSNotification*)notification {
     [self refreshView:_refreshControl];
+}
+
+- (void)didSeeAProduct:(NSNotification*)notification {
+    [self refreshView:nil];
 }
 
 #pragma mark - Other Method

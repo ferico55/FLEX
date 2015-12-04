@@ -13,6 +13,7 @@
 @interface TPAnalytics : NSObject
 
 + (void)trackScreenName:(NSString *)screeName;
++ (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType;
 
 + (void)trackUserId;
 
@@ -37,5 +38,6 @@
 + (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts;
 
 + (void)trackLoginUserID:(NSString *)userID;
++ (void)trackExeptionDescription:(NSString *)description;
 
 @end

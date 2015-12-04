@@ -436,6 +436,8 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APISHIPMENTIDS @"shipment_ids"
 #define kTKPDSHOPSHIPMENT_APIPAYMENTIDS @"payment_ids"
 
+#define kTKPDSHOPSHIPMENT_APIAUTORESIKEY @"auto_resi"
+
 //JNE
 #define kTKPDSHOPSHIPMENT_APIJNEKEY @"jne"
 #define kTKPDSHOPSHIPMENT_APIJNEFEEKEY @"jne_fee"
@@ -458,8 +460,12 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY @"tiki_fee_value"
 
 //RPX
+#define kTKPDSHOPSHIPMENT_APIRPXKEY @"rpx"
 #define kTKPDSHOPSHIPMENT_APIRPXPACKETKEY @"i_paket"
 #define kTKPDSHOPSHIPMENT_APIRPXTICKETKEY @"rpx_tiket"
+#define kTKPDSHOPSHIPMENT_APIRPXWHITELISTEDIDROPKEY @"whitelisted_idrop"
+#define kTKPDSHOPSHIPMENT_APIRPXIDROPKEY @"i_drop"
+#define kTKPDSHOPSHIPMENT_APIRPXINDOMARETLOGOKEY @"indomaret_logo"
 
 
 #pragma mark -- Shop Edit Info

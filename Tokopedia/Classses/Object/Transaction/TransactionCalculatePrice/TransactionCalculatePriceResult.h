@@ -10,10 +10,13 @@
 
 #import "ShippingInfoShipments.h"
 #import "ProductDetail.h"
+#import "RPX.h"
 
 @interface TransactionCalculatePriceResult : NSObject
 
 @property(nonatomic,strong) ProductDetail *product;
 @property(nonatomic,strong) NSArray *shipment;
+@property(nonatomic,strong) RPX *rpx;
+@property(nonatomic,strong) NSArray *auto_resi;
 
 @end

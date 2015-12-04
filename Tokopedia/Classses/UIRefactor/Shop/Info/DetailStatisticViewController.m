@@ -54,6 +54,7 @@
     [_reputationChart setLabelRadius:160];
     [_reputationChart setAnimationSpeed:1.0];
     [_reputationChart setLabelFont:[UIFont fontWithName:@"Gotham Book" size:18.0]];
+    [_reputationChart setShowLabel:NO];
 //    [_reputationChart setShowPercentage:YES];
     [_reputationChart reloadData];
     
@@ -251,22 +252,13 @@
 }
 
 - (void)animateButtonPositive {
-    CGAffineTransform tr = CGAffineTransformScale(_buttonPositive.transform, 0.1, 0.1);
-    _buttonPositive.transform = tr;
-    
-    [UIView animateWithDuration:1.5 delay:0
-         usingSpringWithDamping:0.5 initialSpringVelocity:0.0f
-                        options:0 animations:^{
-                            _buttonPositive.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.5, 1.5);
-                        } completion:^(BOOL finished) {
-                            if(finished) {
-                                [UIView animateWithDuration:2.0 delay:0
-                                     usingSpringWithDamping:0.5 initialSpringVelocity:0.0f
-                                                    options:0 animations:^{
-                                                        _buttonPositive.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1, 1);
-                                                    } completion:nil];
-                            }
-                        }];
+    CABasicAnimation* anim = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+    [anim setToValue:[NSNumber numberWithFloat:0]];
+    [anim setFromValue:[NSNumber numberWithDouble:30]];
+    [anim setDuration:1];
+    [anim setAutoreverses:NO];
+    [anim setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [_buttonPositive.layer addAnimation:anim forKey:@"SwingingRotation"];
 }
 
 

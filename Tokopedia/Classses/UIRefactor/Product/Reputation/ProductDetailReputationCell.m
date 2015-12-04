@@ -18,6 +18,7 @@
     }
     self.backgroundColor = self.contentView.backgroundColor = [UIColor clearColor];
     tvDesc.backgroundColor = [UIColor clearColor];
+    [tvDesc sizeToFit];
     [viewStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapStar:)]];
     [viewStar setUserInteractionEnabled:YES];
     

@@ -14,6 +14,7 @@
 #define API_PAGING_KEY                  @"paging"
 #define API_ORDER_KEY                   @"order"
 #define API_ACTION_KEY                  @"action"
+#define API_BOOKING_KEY                 @"booking"
 
 #define API_NEW_ORDER_PATH              @"myshop-order.pl"
 #define API_NEW_ORDER_ACTION_PATH       @"action/myshop-order.pl"

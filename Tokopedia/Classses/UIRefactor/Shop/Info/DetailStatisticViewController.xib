@@ -727,21 +727,21 @@
                                                 <constraint firstAttribute="height" constant="21" id="oVq-D5-FQB"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
-                                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2e-0S-037">
                                             <rect key="frame" x="151" y="74" width="75" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
-                                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MT9-zf-YnG">
                                             <rect key="frame" x="226" y="74" width="75" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
-                                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKZ-7e-E5B">
@@ -767,21 +767,21 @@
                                             <rect key="frame" x="75" y="132" width="76" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                            <color key="textColor" red="0.79087534530386738" green="0.72248119503358921" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wz0-Fx-DWl">
                                             <rect key="frame" x="151" y="132" width="75" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                            <color key="textColor" red="0.79087534530386738" green="0.72248119503358921" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7T-Z8-LSb">
                                             <rect key="frame" x="226" y="132" width="75" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                            <color key="textColor" red="0.79087534530386738" green="0.72248119503358921" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jg-Qb-qaX">
@@ -799,21 +799,21 @@
                                             <rect key="frame" x="75" y="190" width="76" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                            <color key="textColor" red="0.9613569426801104" green="0.1004593398804098" blue="0.080186771294239692" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jMr-gf-cVt">
                                             <rect key="frame" x="226" y="190" width="75" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                            <color key="textColor" red="0.9613569426801104" green="0.1004593398804098" blue="0.080186771294239692" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLh-MQ-ZeQ">
                                             <rect key="frame" x="151" y="190" width="75" height="21"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                            <color key="textColor" red="0.9613569426801104" green="0.1004593398804098" blue="0.080186771294239692" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
