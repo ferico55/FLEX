@@ -204,8 +204,6 @@
     
     
     // set right smiley
-
-//    btnReview.userInteractionEnabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
     BOOL isReputationAlreadyUpdated = (![object.score_edit_time_fmt isEqualToString:@"0"]);
     
     if([object.reputation_progress isEqualToString:@"0"] && !isReputationAlreadyUpdated) {
@@ -217,6 +215,7 @@
     } else {
         btnReview.userInteractionEnabled = NO;
     }
+    
     
     if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreBad]) {
         [btnReview setImage:imageSad forState:UIControlStateNormal];
@@ -242,38 +241,13 @@
     }
     
     
+    //set left smiley (other's reputation)
     
     //Check flag has reviewed or not
     //1&4. kedua pihak sudah kasih reputation
     //2&5. salah satu sudah kasih
     //3&6. 2 pihak belum kasih
     imageFlagReview.userInteractionEnabled = YES;
-
-//    NSString *strScore = object.buyer_score;
-//    if([object.role isEqualToString:@"2"]) {//Seller
-//        strScore = object.seller_score;
-//    }
-    
-    //Set icon smiley
-//    if(([object.seller_score isEqualToString:CReviewScoreBad] || [object.seller_score isEqualToString:CReviewScoreNeutral] || [object.seller_score isEqualToString:CReviewScoreGood]) && (([object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreGood]))) {
-//        if([strScore isEqualToString:CReviewScoreBad]) {
-//            imageFlagReview.image = imageQBad;
-//        }
-//        else if([strScore isEqualToString:CReviewScoreNeutral]) {
-//            imageFlagReview.image = imageQNetral;
-//        }
-//        else if([strScore isEqualToString:CReviewScoreGood]) {
-//            imageFlagReview.image = imageQSmile;
-//        }
-//    }
-//    else {
-//        if([strScore isEqualToString:CReviewScoreBad] || [strScore isEqualToString:CReviewScoreNeutral] || [strScore isEqualToString:CReviewScoreGood]) {
-//            imageFlagReview.image = imageQuestionBlue;
-//        }
-//        else {
-//            imageFlagReview.image = imageQuestionGray;
-//        }
-//    }
     
     // 1 = tampilan rating from buyer
     // 4 = tampilan rating from seller
