@@ -265,7 +265,7 @@
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", transaction.order_payment.payment_shipping_due_date];
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
-    if ([transaction.order_auto_resi isEqualToString:@"1"] && [transaction.order_auto_awb isEqualToString:@"0"]) {
+    if ([transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
         [cell.acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
         [cell.acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
         cell.acceptButton.tag = 3;

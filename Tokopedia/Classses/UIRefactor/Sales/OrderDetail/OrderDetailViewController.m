@@ -286,7 +286,7 @@ ChangeCourierDelegate
         
         [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
         
-        if ([_transaction.order_auto_resi isEqualToString:@"1"] && [_transaction.order_auto_awb isEqualToString:@"0"]) {
+        if ([_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
             [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
             [_acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
             _acceptButton.tag = 3;
