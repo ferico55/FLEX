@@ -50,7 +50,7 @@ BarCodeDelegate
     
     [super viewDidLoad];
     
-    self.title = @"Ganti Kurir";
+    self.title = @"Ubah Kurir";
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered

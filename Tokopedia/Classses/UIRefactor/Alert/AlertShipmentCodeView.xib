@@ -14,33 +14,30 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" userLabel="Alert" customClass="AlertShipmentCodeView">
-            <rect key="frame" x="0.0" y="0.0" width="281" height="233"/>
+            <rect key="frame" x="0.0" y="0.0" width="281" height="244"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" image="icon_idrop_indomaret.png" translatesAutoresizingMaskIntoConstraints="NO" id="5Ew-dB-zIR">
-                    <rect key="frame" x="75" y="15" width="130" height="79"/>
+                    <rect key="frame" x="75" y="24" width="130" height="79"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Kode I-Drop Anda adalah:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KpX-pj-cEo" userLabel="TopLabel">
-                    <rect key="frame" x="44" y="102" width="192" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Kode i-Drop Anda adalah:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KpX-pj-cEo" userLabel="TopLabel">
+                    <rect key="frame" x="44" y="111" width="192" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="I5f-2A-aTn"/>
+                        <constraint firstAttribute="height" constant="21" id="0c4-Vy-3bc"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tunjukkan kode ini pada kasir Indomaret untuk melakukan konfirmasi pengiriman." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="apv-zy-ugu" userLabel="BottomLabel">
-                    <rect key="frame" x="28" y="164" width="225" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="EuP-Lb-S0j"/>
-                    </constraints>
+                    <rect key="frame" x="28" y="169" width="225" height="60"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFJ-LT-HGw">
-                    <rect key="frame" x="118" y="134" width="45" height="21"/>
+                    <rect key="frame" x="118" y="140" width="45" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="vHV-9c-jBg"/>
+                        <constraint firstAttribute="height" constant="21" id="ubz-LB-B7H"/>
                     </constraints>
                     <attributedString key="attributedText">
                         <fragment content="Label">
@@ -53,31 +50,47 @@
                     </attributedString>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZHC-62-8I3">
+                    <rect key="frame" x="259" y="2" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="Tox-2e-a09"/>
+                        <constraint firstAttribute="height" constant="20" id="XnJ-O0-7Qh"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="icon_cancel.png"/>
+                    <connections>
+                        <action selector="tapCloseAlert:" destination="iN0-l3-epB" eventType="touchUpInside" id="EN2-jL-Yt9"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="eFJ-LT-HGw" firstAttribute="centerX" secondItem="KpX-pj-cEo" secondAttribute="centerX" id="3XQ-cb-Rfo"/>
-                <constraint firstItem="eFJ-LT-HGw" firstAttribute="centerX" secondItem="apv-zy-ugu" secondAttribute="centerX" id="6Ql-uy-GgM"/>
-                <constraint firstItem="5Ew-dB-zIR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="75" id="9g9-hX-b75"/>
-                <constraint firstItem="apv-zy-ugu" firstAttribute="top" secondItem="eFJ-LT-HGw" secondAttribute="bottom" constant="9" id="Nai-l2-hQ3"/>
-                <constraint firstItem="apv-zy-ugu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="28" id="TzE-p1-Kra"/>
-                <constraint firstItem="KpX-pj-cEo" firstAttribute="top" secondItem="5Ew-dB-zIR" secondAttribute="bottom" constant="8" symbolic="YES" id="UzL-Lw-ww5"/>
-                <constraint firstItem="5Ew-dB-zIR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="bVF-NZ-fxA"/>
-                <constraint firstItem="eFJ-LT-HGw" firstAttribute="top" secondItem="KpX-pj-cEo" secondAttribute="bottom" constant="11" id="cnO-mL-7ju"/>
-                <constraint firstItem="5Ew-dB-zIR" firstAttribute="centerX" secondItem="KpX-pj-cEo" secondAttribute="centerX" id="d7y-qz-ie4"/>
-                <constraint firstItem="KpX-pj-cEo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="44" id="e7o-bZ-muc"/>
-                <constraint firstAttribute="bottom" secondItem="apv-zy-ugu" secondAttribute="bottom" constant="9" id="vax-Ua-5Qw"/>
-                <constraint firstItem="KpX-pj-cEo" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="yvX-hs-ZdU"/>
+                <constraint firstItem="KpX-pj-cEo" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="1GA-fy-5YC"/>
+                <constraint firstItem="5Ew-dB-zIR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="5rV-oc-IKb"/>
+                <constraint firstItem="apv-zy-ugu" firstAttribute="top" secondItem="eFJ-LT-HGw" secondAttribute="bottom" constant="8" symbolic="YES" id="5yb-Cl-esP"/>
+                <constraint firstAttribute="trailing" secondItem="ZHC-62-8I3" secondAttribute="trailing" constant="2" id="6HL-Bw-HVq"/>
+                <constraint firstItem="KpX-pj-cEo" firstAttribute="centerX" secondItem="eFJ-LT-HGw" secondAttribute="centerX" id="Pgv-Ip-r9n"/>
+                <constraint firstAttribute="bottom" secondItem="apv-zy-ugu" secondAttribute="bottom" constant="15" id="U5d-f0-3tf"/>
+                <constraint firstItem="eFJ-LT-HGw" firstAttribute="top" secondItem="KpX-pj-cEo" secondAttribute="bottom" constant="8" symbolic="YES" id="UqT-eR-fn2"/>
+                <constraint firstItem="KpX-pj-cEo" firstAttribute="centerX" secondItem="5Ew-dB-zIR" secondAttribute="centerX" id="Uya-bQ-E43"/>
+                <constraint firstItem="eFJ-LT-HGw" firstAttribute="centerX" secondItem="apv-zy-ugu" secondAttribute="centerX" id="W0Y-Yo-xqF"/>
+                <constraint firstItem="5Ew-dB-zIR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="75" id="WhD-JR-S3V"/>
+                <constraint firstItem="5Ew-dB-zIR" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="aIh-J2-mbV"/>
+                <constraint firstItem="ZHC-62-8I3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="2" id="cbE-Zb-4JG"/>
+                <constraint firstItem="KpX-pj-cEo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="44" id="hcU-Xb-VRO"/>
+                <constraint firstItem="apv-zy-ugu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="28" id="pkw-dM-UYE"/>
+                <constraint firstItem="KpX-pj-cEo" firstAttribute="top" secondItem="5Ew-dB-zIR" secondAttribute="bottom" constant="8" symbolic="YES" id="qKO-Xq-oDz"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="bottomLabel" destination="apv-zy-ugu" id="UHE-ve-Ebn"/>
+                <outlet property="cancelButton" destination="ZHC-62-8I3" id="FhJ-Rd-NIH"/>
                 <outlet property="iDropCodeLabel" destination="eFJ-LT-HGw" id="wXd-uR-cIS"/>
             </connections>
-            <point key="canvasLocation" x="284.5" y="151.5"/>
+            <point key="canvasLocation" x="283.5" y="212"/>
         </view>
     </objects>
     <resources>
+        <image name="icon_cancel.png" width="20" height="20"/>
         <image name="icon_idrop_indomaret.png" width="90" height="90"/>
     </resources>
 </document>

@@ -476,7 +476,7 @@
         {
             cell = _tableViewShipmentCell[indexPath.row];
             if (indexPath.row == 1) {
-                [_addressLabel sizeToFit];
+//                [_addressLabel sizeToFit];
                 AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
                 if ([address.address_name isEqualToString:@"0"])
                 {
@@ -559,7 +559,9 @@
                 
                 NSMutableArray *autoResiImage = [NSMutableArray new];
                 for (ShippingInfoShipments *package in _shipments) {
-                    [autoResiImage addObject:package.auto_resi_image];
+                    if (package.auto_resi_image != nil) {
+                        [autoResiImage addObject:package.auto_resi_image];
+                    }
                 }
                 
                 TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
@@ -939,11 +941,9 @@
 
             
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
-//            NSMutableArray *autoResiDetails = [NSMutableArray new];
             
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
-//                NSMutableDictionary *shipmentAutoResiSupported = [NSMutableDictionary new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
@@ -961,11 +961,10 @@
                     [shipmentSupporteds addObject:shipment];
                 }
                 
-//                [autoResiDetails addObject:shipmentAutoResiSupported];
             }
             
             _shipments = shipmentSupporteds;
-//            _autoResi = autoResiDetails;
+            
             _selectedShipment = [shipmentSupporteds firstObject];
             _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
             
@@ -1120,6 +1119,7 @@
             _shipments = shipments;
             
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+            
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
@@ -1128,10 +1128,17 @@
                     }
                 }
                 
+                if ([_ATCForm.result.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
+                    shipment.auto_resi_image = _ATCForm.result.rpx.indomaret_logo;
+                } else {
+                    shipment.auto_resi_image = @"";
+                }
+                
                 if (shipmentPackages.count>0) {
                     shipment.shipment_package = shipmentPackages;
                     [shipmentSupporteds addObject:shipment];
                 }
+                
             }
             
             _shipments = shipmentSupporteds;

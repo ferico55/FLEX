@@ -998,8 +998,8 @@ GeneralTableViewControllerDelegate
         
     } else if (indexPath.section == 3 && indexPath.row == 1) {
         AlertInfoView *alert = [AlertInfoView newview];
-        alert.text = @"Sistem I-Drop";
-        alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
+        alert.text = @"Sistem i-Drop";
+        alert.detailText = @"i-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
         [alert show];
         
         CGRect frame = alert.frame;

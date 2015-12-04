@@ -106,6 +106,7 @@ ChangeCourierDelegate
 @implementation OrderDetailViewController {
     __weak RKObjectManager *_objectManager;
     TokopediaNetworkManager *_networkManager;
+    AlertShipmentCodeView *_alert;
 }
 
 
@@ -286,7 +287,8 @@ ChangeCourierDelegate
         [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
         
         if ([_transaction.order_auto_resi isEqualToString:@"1"] && [_transaction.order_auto_awb isEqualToString:@"0"]) {
-            [_acceptButton setTitle:@"Ganti Kurir" forState:UIControlStateNormal];
+            [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
+            [_acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
             _acceptButton.tag = 3;
         } else {
             [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
@@ -1021,9 +1023,9 @@ ChangeCourierDelegate
         
         [self.view layoutSubviews];
         
-        AlertShipmentCodeView *alert = [AlertShipmentCodeView newview];
-        [alert setText:code];
-        [alert show];
+        _alert = [AlertShipmentCodeView newview];
+        [_alert setText:code];
+        [_alert show];
     }
     
     NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];

@@ -266,7 +266,8 @@
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
     if ([transaction.order_auto_resi isEqualToString:@"1"] && [transaction.order_auto_awb isEqualToString:@"0"]) {
-        [cell.acceptButton setTitle:@"Ganti Kurir" forState:UIControlStateNormal];
+        [cell.acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
+        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
         cell.acceptButton.tag = 3;
     } else {
         [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];

@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) NSString *text;
 
+- (void)dismissindex:(NSInteger)index silent:(BOOL)silent animated:(BOOL)animated;
+
 @end

@@ -12,7 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *iDropCodeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bottomLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @end
 
 @implementation AlertShipmentCodeView
@@ -39,6 +39,10 @@
     
 }
 
+- (IBAction)tapCloseAlert:(id)sender {
+    [self dismissWithClickedButtonIndex:-1 animated:YES];
+    [self dismissindex:-1 silent:YES animated:YES];
+}
 
 @end
 

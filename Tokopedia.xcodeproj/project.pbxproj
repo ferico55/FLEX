@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		4596234C1BAC0DCA00FCC4D8 /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */; };
+		62D8E5C31C1171A400850561 /* icon_truck.png in Resources */ = {isa = PBXBuildFile; fileRef = 62D8E5C01C1171A400850561 /* icon_truck.png */; settings = {ASSET_TAGS = (); }; };
+		62D8E5C41C1171A400850561 /* icon_truck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62D8E5C11C1171A400850561 /* icon_truck@2x.png */; settings = {ASSET_TAGS = (); }; };
+		62D8E5C51C1171A400850561 /* icon_truck@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62D8E5C21C1171A400850561 /* icon_truck@3x.png */; settings = {ASSET_TAGS = (); }; };
 		62DB2AAD1BF1EB68003AE9C7 /* RPX.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DB2AAC1BF1EB68003AE9C7 /* RPX.m */; settings = {ASSET_TAGS = (); }; };
 		62DBC6EF1BFD789A00CF359D /* OrderBookingResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DBC6EE1BFD789A00CF359D /* OrderBookingResponse.m */; settings = {ASSET_TAGS = (); }; };
 		62DBC6F21BFD7A0100CF359D /* OrderBookingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DBC6F11BFD7A0100CF359D /* OrderBookingData.m */; settings = {ASSET_TAGS = (); }; };
@@ -1950,6 +1953,9 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		4596234B1BAC0DCA00FCC4D8 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
+		62D8E5C01C1171A400850561 /* icon_truck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_truck.png; sourceTree = "<group>"; };
+		62D8E5C11C1171A400850561 /* icon_truck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_truck@2x.png"; sourceTree = "<group>"; };
+		62D8E5C21C1171A400850561 /* icon_truck@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_truck@3x.png"; sourceTree = "<group>"; };
 		62DB2AAB1BF1EB68003AE9C7 /* RPX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPX.h; sourceTree = "<group>"; };
 		62DB2AAC1BF1EB68003AE9C7 /* RPX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPX.m; sourceTree = "<group>"; };
 		62DBC6ED1BFD789A00CF359D /* OrderBookingResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderBookingResponse.h; sourceTree = "<group>"; };
@@ -9089,6 +9095,9 @@
 		85FF82671BE9A5890015B16F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				62D8E5C01C1171A400850561 /* icon_truck.png */,
+				62D8E5C11C1171A400850561 /* icon_truck@2x.png */,
+				62D8E5C21C1171A400850561 /* icon_truck@3x.png */,
 				62F6C8711C102E2200F75FB6 /* icon_idrop_indomaret.png */,
 				62F6C8721C102E2200F75FB6 /* icon_idrop_indomaret@2x.png */,
 				62F6C8731C102E2200F75FB6 /* icon_idrop_indomaret@3x.png */,
@@ -10584,6 +10593,7 @@
 				85FF8BDD1BE9A58B0015B16F /* navigate-down.png in Resources */,
 				85FF884D1BE9A58B0015B16F /* DetailProductInfoCell.xib in Resources */,
 				85FF8C251BE9A58B0015B16F /* icon_home_active@2x.png in Resources */,
+				62D8E5C31C1171A400850561 /* icon_truck.png in Resources */,
 				85FF8A2A1BE9A58B0015B16F /* icon_button_favorite_nonactive.png in Resources */,
 				85FF8A271BE9A58B0015B16F /* icon_button_favorite_active.png in Resources */,
 				85FF8A4E1BE9A58B0015B16F /* icon_14@3x.png in Resources */,
@@ -11131,6 +11141,7 @@
 				85FF8A7A1BE9A58B0015B16F /* icon_contact_us@3x.png in Resources */,
 				85FF8A181BE9A58B0015B16F /* icon_arrow_right_gray.png in Resources */,
 				85FF8B481BE9A58B0015B16F /* icon_sad25@2x.png in Resources */,
+				62D8E5C41C1171A400850561 /* icon_truck@2x.png in Resources */,
 				85FF8B8D1BE9A58B0015B16F /* icon_speed_fast@3x.png in Resources */,
 				85FF8C131BE9A58B0015B16F /* active_tab@2x.png in Resources */,
 				85FF8C4F1BE9A58B0015B16F /* icon_lihat_komplain@2x.png in Resources */,
@@ -11175,6 +11186,7 @@
 				85FF8A751BE9A58B0015B16F /* icon_comment_bubble.png in Resources */,
 				85FF8AB11BE9A58B0015B16F /* icon_location@2x.png in Resources */,
 				85FF88701BE9A58B0015B16F /* ProductListMyShopFilterViewController.xib in Resources */,
+				62D8E5C51C1171A400850561 /* icon_truck@3x.png in Resources */,
 				85FF893B1BE9A58B0015B16F /* FilterLocationViewCell.xib in Resources */,
 				85FF8A9F1BE9A58B0015B16F /* icon_grid_tiga.png in Resources */,
 				85FF893C1BE9A58B0015B16F /* FilterLocationViewController.xib in Resources */,
