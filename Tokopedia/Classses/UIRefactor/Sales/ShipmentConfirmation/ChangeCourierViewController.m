@@ -81,9 +81,7 @@ BarCodeDelegate
     }
     
     for (ShipmentCourierPackage *package in _selectedCourier.shipment_package) {
-        if ([package.sp_id isEqualToString:_order.order_shipment.shipment_package_id]) {
-            _selectedCourierPackage = package;
-        }
+        _selectedCourierPackage = package;
     }
     
     _shouldReloadData = NO;
@@ -250,7 +248,7 @@ BarCodeDelegate
         UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
         cell.detailTextLabel.text = [object description];
         
-        cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+        cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
         cell.detailTextLabel.text = _selectedCourierPackage.name;
         
     } else if (indexPath.row == 1) {

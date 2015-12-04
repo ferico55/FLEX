@@ -44,7 +44,8 @@ ChooseProductDelegate,
 RejectExplanationDelegate,
 SubmitShipmentConfirmationDelegate,
 CancelShipmentConfirmationDelegate,
-TokopediaNetworkManagerDelegate
+TokopediaNetworkManagerDelegate,
+ChangeCourierDelegate
 >
 {
     NSDictionary *_textAttributes;
