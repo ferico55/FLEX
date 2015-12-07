@@ -160,6 +160,8 @@
              forControlEvents:UIControlEventEditingChanged];
     
     _constraintBottomMapName.constant = 20;
+    _buttonMapLocation.titleLabel.numberOfLines = 0;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -573,7 +575,6 @@
                 {
                     addressString = address.thoroughfare;
                 }
-                _buttonMapLocation.titleLabel.numberOfLines = 0;
                 [_buttonMapLocation setTitle:addressString forState:UIControlStateNormal];
                 _opsionalLabel.hidden = YES;
                 _constraintBottomMapName.constant = 0;

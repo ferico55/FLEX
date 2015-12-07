@@ -42,6 +42,59 @@
     border.frame = CGRectMake(self.frame.size.width - borderWidth, 0, borderWidth, self.frame.size.height);
     [self.layer addSublayer:border];
 }
+
+-(UIView*)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius
+{
+    CGRect bounds = self.bounds;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:corners
+                                                         cornerRadii:CGSizeMake(radius, radius)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    self.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = self.backgroundColor.CGColor;
+    frameLayer.fillColor = nil;
+    
+    [self.layer addSublayer:frameLayer];
+    
+    return self;
+}
+
+@end
+
+@implementation UIButton (TkpdCategory)
+
+-(UIButton*)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius
+{
+    CGRect bounds = self.bounds;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:corners
+                                                         cornerRadii:CGSizeMake(radius, radius)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    self.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = self.backgroundColor.CGColor;
+    frameLayer.fillColor = nil;
+    
+    [self.layer addSublayer:frameLayer];
+    
+    return self;
+}
+
 @end
 
 #pragma mark - UIImageView

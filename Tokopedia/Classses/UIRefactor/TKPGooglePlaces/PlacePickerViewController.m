@@ -26,6 +26,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *pinPointImageView;
 @property (strong, nonatomic) IBOutlet UIView *infoWindowView;
 @property (weak, nonatomic) IBOutlet UILabel *addressInfoWindowLabel;
+@property (weak, nonatomic) IBOutlet UIView *whiteLocationView;
+@property (weak, nonatomic) IBOutlet UIView *whiteLocationInfoView;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 
 @end
@@ -134,6 +137,10 @@
     }
     
     [self loadHistory];
+    
+    _whiteLocationView.layer.cornerRadius = 5;
+    _doneButton = [_doneButton roundCorners:(UIRectCornerTopRight|UIRectCornerBottomRight) radius:5];
+    _whiteLocationInfoView.layer.cornerRadius = 5;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
@@ -321,13 +328,13 @@
             strSnippet = address.administrativeArea;
     }
     
-    if ([address.country length] != 0)
-    {
-        if ([strSnippet length] != 0)
-            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address country]];
-        else
-            strSnippet = address.country;
-    }
+//    if ([address.country length] != 0)
+//    {
+//        if ([strSnippet length] != 0)
+//            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address country]];
+//        else
+//            strSnippet = address.country;
+//    }
     
     if ([address.postalCode length] != 0)
     {
