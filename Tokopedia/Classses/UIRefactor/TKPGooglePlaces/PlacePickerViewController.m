@@ -20,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet GMSMapView *transparentView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchbarHeightConstaint;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet UIView *locationView;
 @property (weak, nonatomic) IBOutlet UIImageView *pinPointImageView;
@@ -120,7 +119,6 @@
         self.navigationItem.rightBarButtonItem = doneBarButtonItem;
         self.title = @"Pilih Lokasi";
         [_marker setDraggable:YES];
-        _searchbarHeightConstaint.constant = 40;
         
         _locationView.hidden = NO;
         _pinPointImageView.hidden = NO;
@@ -130,7 +128,6 @@
     {
         self.title = @"Lokasi";
         _searchBar.hidden = YES;
-        _searchbarHeightConstaint.constant = 0;
         _locationView.hidden = YES;
         _pinPointImageView.hidden = YES;
         _marker.opacity = 1.0f;
