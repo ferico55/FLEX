@@ -468,43 +468,6 @@
     return YES;
 }
 
--(void)constraint
-{
-    UITableView *tableView = _tableView;
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                                attribute:NSLayoutAttributeTop
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:tableView.superview
-                                                                attribute:NSLayoutAttributeTop
-                                                               multiplier:1.0
-                                                                 constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                          attribute:NSLayoutAttributeLeading
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:tableView.superview
-                                                          attribute:NSLayoutAttributeLeading
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:tableView.superview
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                          attribute:NSLayoutAttributeTrailing
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:tableView.superview
-                                                          attribute:NSLayoutAttributeTrailing
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-}
-
 #pragma mark - History Search
 -(void)saveHistory:(GMSAddress*)address addressSugestion:(GMSAutocompletePrediction*)addressSugestion {
     
@@ -801,7 +764,6 @@
         
     }];
 }
-
 
 
 @end
