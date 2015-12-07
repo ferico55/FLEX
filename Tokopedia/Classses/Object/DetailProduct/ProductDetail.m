@@ -45,13 +45,17 @@
 }
 
 - (NSDictionary *)productFieldObjects {
-    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *productPrice = [[_product_price componentsSeparatedByCharactersInSet:characterSet]
-                              componentsJoinedByString: @""];
+    NSString *productPrice;
+    if(_product_price) {
+        NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+        productPrice = [[_product_price componentsSeparatedByCharactersInSet:characterSet]
+                                  componentsJoinedByString: @""];
+    }
+
     NSDictionary *productFieldObjects = @{
         @"name"     : _product_name?:@"",
         @"id"       : _product_id?:@"",
-        @"price"    : productPrice,
+        @"price"    : productPrice?:@"",
         @"quantity" : _product_quantity?:@""
     };
     return productFieldObjects;
