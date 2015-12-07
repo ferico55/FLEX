@@ -337,7 +337,7 @@
                                                                                    attributes:attributes];
             ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
             
-            NSString *name = ([list.comment_is_owner boolValue]) ? list.comment_shop_name : list.comment_user_name;
+            NSString *name = ([list.comment_shop_name boolValue]) ? list.comment_shop_name : list.comment_user_name;
             ((GeneralTalkCommentCell*)cell).user_name.text = name;
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             

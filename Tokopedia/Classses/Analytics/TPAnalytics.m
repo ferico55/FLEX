@@ -39,6 +39,17 @@
     [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName?:@""}];
 }
 
++ (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType {
+    if (!screeName || !gridType) return;
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"event" : @"openScreen",
+        @"screenName" : screeName?:@"",
+        @"gridType" : @(gridType)
+    };
+    [analytics.dataLayer push:data];
+}
+
 + (void)trackUserId {
     TPAnalytics *analytics = [[self alloc] init];
     [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]?:@""}];
