@@ -249,18 +249,28 @@ TKPDAlertViewDelegate
         
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         SendOTP *otpResult = (SendOTP *)[result objectForKey:@""];
-        NSString *resultStr = otpResult.data.is_success;
-        
-        if([resultStr isEqualToString:@"1"]){
-            PhoneVerificationViewController *controller = [PhoneVerificationViewController new];
-            controller.delegate = self.delegate;
-            controller.redirectViewController = self.redirectViewController;
-            controller.phone = _phone;
-        controller.isSkipButtonHidden = _isSkipButtonHidden;
-            [self.navigationController pushViewController:controller animated:YES];
+        if(otpResult != nil){
+            NSString *resultStr = otpResult.data.is_success;
+            
+            if([resultStr isEqualToString:@"1"]){
+                PhoneVerificationViewController *controller = [PhoneVerificationViewController new];
+                controller.delegate = self.delegate;
+                controller.redirectViewController = self.redirectViewController;
+                controller.phone = _phone;
+                controller.isSkipButtonHidden = _isSkipButtonHidden;
+                [self.navigationController pushViewController:controller animated:YES];
+                
+            }else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"Anda hanya dapat mengirimkan kode verifikasi 3 kali dalam 1 jam, Anda harus menunggu 1 jam lagi untuk mengirimkan kode verifikasi kembali."
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
         }else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                            message:@"Anda hanya dapat mengirimkan kode verifikasi 3 kali dalam 1 jam, Anda harus menunggu 1 jam lagi untuk mengirimkan kode verifikasi kembali."
+                                                            message:@"Maaf permohonan Anda tidak dapat diproses. Mohon coba kembali beberapa saat lagi."
                                                            delegate:self
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
