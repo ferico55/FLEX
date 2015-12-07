@@ -36,9 +36,7 @@
     GMSPlacePicker *_placePicker;
     GMSPlacesClient *_placesClient;
     
-    NSMutableArray *_autoCompleteResults;
-    
-    NSMutableArray *_placeHistories;
+    NSMutableArray *_autoCompleteResults, *_placeHistories;
     
     BOOL shouldBeginEditing;
     BOOL _isDragging;

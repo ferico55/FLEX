@@ -111,6 +111,7 @@
     
     _mapview.selectedMarker = _marker;
     _mapview.mapType = kGMSTypeNormal;
+    _mapview.settings.scrollGestures = YES;
     
     [PlacePickerViewController focusMap:_mapview toMarker:_marker];
     
