@@ -333,6 +333,14 @@
 }
 //
 
+- (IBAction)gesture:(id)sender {
+    [_activetextfield resignFirstResponder];
+    [_activetextview resignFirstResponder];
+    [_textviewaddress resignFirstResponder];
+    [_datainput setObject:_textviewaddress.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
+}
+
+#pragma mark - Picker Place Delegate
 -(void)PickAddress:(GMSAddress *)address suggestion:(NSString*)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage*)map
 {
     NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
@@ -363,13 +371,6 @@
     
     _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
-}
-
-- (IBAction)gesture:(id)sender {
-    [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
-    [_textviewaddress resignFirstResponder];
-    [_datainput setObject:_textviewaddress.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
 }
 
 #pragma mark - Request Action AddAddress

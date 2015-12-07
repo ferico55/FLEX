@@ -9,7 +9,6 @@
 #import "PlacePickerViewController.h"
 #import "TKPGooglePlaceDetailProductStore.h"
 #import "GooglePlacesDetail.h"
-#import "TKPAnnotation.h"
 
 @import GoogleMaps;
 
@@ -20,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet GMSMapView *transparentView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchbarHeightConstaint;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet UIView *locationView;
 @property (weak, nonatomic) IBOutlet UIImageView *pinPointImageView;
@@ -57,11 +55,13 @@
     GMSCameraPosition *lastCameraPosition;
 }
 
+#pragma mark - Init
 - (instancetype)init {
     if ((self = [super init])) {
         _placesClient = [[GMSPlacesClient alloc] init];
         _placesClient = [GMSPlacesClient sharedClient];
         _autoCompleteResults = [NSMutableArray new];
+        _placeHistories = [NSMutableArray new];
         shouldBeginEditing = YES;
         _shouldStartSearch = YES;
 
@@ -69,7 +69,20 @@
     return self;
 }
 
--(CLLocationManager *)locationManager
+-(GMSMarker *)marker
+{
+    if (!_marker) {
+        _marker = [[GMSMarker alloc] init];
+        _marker.position = _firstCoordinate;
+        _marker.map = _mapview;
+        _marker.appearAnimation = kGMSMarkerAnimationNone;
+        _marker.icon = [UIImage imageNamed:@"icon_pinpoin_toped.png"];
+    }
+    
+    return _marker;
+}
+
+-(CLLocationManager*)locationManager
 {
     if (!_locationManager) {
         _locationManager = [[CLLocationManager alloc] init];
@@ -78,44 +91,16 @@
             [_locationManager requestWhenInUseAuthorization];
         [_locationManager startUpdatingLocation];
     }
+    
     return _locationManager;
 }
 
--(GMSGeocoder*)gecoder
-{
-    if (!_geocoder) {
-        _geocoder = [GMSGeocoder geocoder];
-    }
-    
-    return _geocoder;
-}
-
-- (IBAction)cancelSearch:(id)sender {
-    
-    [self setSearchbarActive:NO animated:YES];
-}
-
+#pragma mark - View Controller
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-
-    _mapview.myLocationEnabled = YES;
-    
-    if (_type == TypeEditPlace) {
-        if (_firstCoordinate.longitude == 0) {
-            _firstCoordinate = [self locationManager].location.coordinate;
-        }
-    }
-    
-    _marker = [[GMSMarker alloc] init];
-    _marker.position = _firstCoordinate;
-    _marker.map = _mapview;
-//    _marker.infoWindowAnchor = CGPointMake(-0.2f, -0.2f);
-    _marker.appearAnimation = kGMSMarkerAnimationNone;
-    _marker.icon = [UIImage imageNamed:@"icon_pinpoin_toped.png"];
-    
-    CLLocationCoordinate2D target = _marker.position;
-    _mapview.camera = [GMSCameraPosition cameraWithTarget:target zoom:16];
+    _geocoder = [GMSGeocoder geocoder];
+    [self adjustBehaviorType:_type];
     
     _searchBar.placeholder = @"Cari Alamat";
     _searchBar.tintColor = [UIColor whiteColor];
@@ -124,38 +109,47 @@
                                                     barMetrics:UIBarMetricsDefault];
     _searchBar.delegate = self;
     
-    [self updateAddressSaveHistory:NO addressSugestion:nil];
-    _mapview.selectedMarker = _marker;
-    
-    _placeHistories = [NSMutableArray new];
-    
-    if (_type == TypeEditPlace) {
-        UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapDone:)];
-        [doneBarButtonItem setTintColor:[UIColor whiteColor]];
-        self.navigationItem.rightBarButtonItem = doneBarButtonItem;
-        self.title = @"Pilih Lokasi";
-        [_marker setDraggable:YES];
-        _searchbarHeightConstaint.constant = 40;
-        
-        _locationView.hidden = NO;
-        _pinPointImageView.hidden = NO;
-        _marker.opacity = 0.0f;
-    }
-    else
-    {
-        self.title = @"Lokasi";
-        _searchBar.hidden = YES;
-        _searchbarHeightConstaint.constant = 0;
-        _locationView.hidden = YES;
-        _pinPointImageView.hidden = YES;
-        _marker.opacity = 1.0f;
-    }
-    
-    [self loadHistory];
+    _mapview.selectedMarker = [self marker];
+    _mapview.camera = [GMSCameraPosition cameraWithTarget:[self marker].position zoom:16];
     
     _whiteLocationView.layer.cornerRadius = 5;
     _doneButton = [_doneButton roundCorners:(UIRectCornerTopRight|UIRectCornerBottomRight) radius:5];
     _whiteLocationInfoView.layer.cornerRadius = 5;
+    
+    [self updateAddressSaveHistory:NO addressSugestion:nil];
+    [self loadHistory];
+}
+
+
+#pragma mark - Action
+-(IBAction)tapDone:(id)sender
+{
+    [self mapView:_mapview didTapInfoWindowOfMarker:[self marker]];
+}
+
+- (IBAction)cancelSearch:(id)sender {
+    
+    [self setSearchbarActive:NO animated:YES];
+}
+
+
+#pragma mark - Location Manager Delegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    // stop updating location in order to save battery power
+    [[self locationManager] stopUpdatingLocation];
+}
+
+
+- (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory addressSugestion:(GMSAutocompletePrediction*)addressSugestion
+{
+    [self marker].position = location;
+    _mapview.selectedMarker = [self marker];
+
+    [PlacePickerViewController focusMap:_mapview toMarker:[self marker]];
+    
+    if (shouldUpdateAddress)
+        [self updateAddressSaveHistory:saveHistory addressSugestion:addressSugestion];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
@@ -165,23 +159,52 @@
     }
     else
     {
-        if (_marker.position.latitude == 0 && _type == TypeEditPlace )
+        if ([self marker].position.latitude == 0 && _type == TypeEditPlace )
             [self focusMapToLocation:[self locationManager].location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
         _mapview.myLocationEnabled = YES;
         _mapview.settings.myLocationButton = YES;
     }
 }
 
--(IBAction)tapDone:(id)sender
-{
-    [self mapView:_mapview didTapInfoWindowOfMarker:_marker];
-}
-
+#pragma mark - GMSMapView Delegate
+//- (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
+//{
+//    _selectedSugestion = @"";
+//    _isDragging = YES;
+//}
+//
+//- (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
+//{
+//    _isDragging = NO;
+//    [self updateAddressSaveHistory:NO addressSugestion:nil];
+//}
+//
+//- (void)mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
+//{
+//    if (_isDragging) {
+//        
+//        return;
+//    }
+//}
+//
 //-(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 //{
 //    _selectedSugestion = @"";
 //    [self focusMapToLocation:coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
 //}
+
+- (void)mapView:(GMSMapView *)MapView didChangeCameraPosition:(GMSCameraPosition *)position {
+    
+    if ([self marker] && _type == TypeEditPlace) {
+        [self marker].position = position.target;
+        return;
+    }
+}
+
+- (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position {
+    
+    [self updateAddressSaveHistory:NO addressSugestion:nil];
+}
 
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
@@ -189,81 +212,6 @@
     [_delegate PickAddress:_address suggestion:_selectedSugestion?:@"" longitude:marker.position.longitude latitude:marker.position.latitude map:map];
     
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-+ (UIImage *)captureScreen:(GMSMapView *)mapView {
-    UIGraphicsBeginImageContextWithOptions(mapView.frame.size, YES, 0.0f);
-    [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    // not equivalent to image.size (which depends on the imageOrientation)!
-    double refWidth = CGImageGetWidth(image.CGImage);
-    double refHeight = CGImageGetHeight(image.CGImage);
-    
-    double x = (refWidth - 220) / 2.0;
-    double y = ((refHeight - 220) / 2.0) - 40;
-    
-    CGRect cropRect = CGRectMake(x, y, 220, 220);
-    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
-    
-    UIImage *cropped = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:image.imageOrientation];
-    CGImageRelease(imageRef);
-
-    
-    return cropped;
-}
-
--(void)setCaptureMap
-{
-    _captureScreen = [PlacePickerViewController captureScreen:_mapview];
-}
-
-
-- (void)setSearchbarActive:(BOOL)isActive animated:(BOOL)animated{
-    [_searchBar setShowsCancelButton:isActive animated:animated];
-    [self.navigationController setNavigationBarHidden:isActive animated:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:isActive withAnimation:UIStatusBarAnimationSlide];
-    _transparentView.hidden = !isActive;
-    
-    if (isActive) {
-        
-        if (animated) {
-            [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-                [self activeSearhBar:isActive];
-            } completion:^(BOOL finished) {
-                
-            }];
-        }
-        else
-        {
-            [self activeSearhBar:isActive];
-        }
-
-    }
-    else
-    {
-        if (animated) {
-            [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
-                [self activeSearhBar:isActive];
-                [_searchBar resignFirstResponder];
-            } completion:^(BOOL finished) {
-                
-            }];
-        }
-        else
-        {
-            [_searchBar resignFirstResponder];
-            [self activeSearhBar:isActive];
-        }
-    }
-}
-
--(void)activeSearhBar:(BOOL)isActive
-{
-    _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
-    _tableView.hidden = !(isActive && _placeHistories.count > 0);
 }
 
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoWindow:(GMSMarker *)marker {
@@ -274,170 +222,7 @@
         return nil;
 }
 
--(void)updateAddressSaveHistory:(BOOL)shouldSaveHistory addressSugestion:(GMSAutocompletePrediction *)addressSugestion
-{
-    [[self gecoder] reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-             // strAdd -> take bydefault value nil
-        GMSAddress *placemark = [response results][0];
-        _address = placemark;
-//        _marker.snippet = [self addressString:placemark];
-        [_addressLabel setCustomAttributedText:[self addressString:placemark]];
-        [_addressInfoWindowLabel setCustomAttributedText:[self addressString:placemark]];
-
-        [_mapview setSelectedMarker:_marker];
-        
-        if (shouldSaveHistory) {
-            [self saveHistory:placemark addressSugestion:addressSugestion];
-        }
-    }];
-}
-
--(NSString *)addressString:(GMSAddress*)address
-{
-    NSString *strSnippet = @"";
-    
-    if (address.lines.count>0) {
-        strSnippet = address.lines[0];
-    }
-    else
-    {
-        if ([address.thoroughfare length] != 0)
-        {
-            // strAdd -> store value of current location
-            if ([strSnippet length] != 0)
-                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
-            else
-            {
-                // strAdd -> store only this value,which is not null
-                strSnippet = address.thoroughfare;
-            }
-        }
-    }
-
-    
-    if ([address.locality length] != 0)
-    {
-        if ([strSnippet length] != 0)
-            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address locality]];
-        else
-            strSnippet = address.locality;
-    }
-    
-    if ([address.subLocality length] != 0)
-    {
-        
-        if ([strSnippet length] != 0)
-            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address subLocality]];
-        else
-        {
-            // strAdd -> store only this value,which is not null
-            strSnippet = address.subLocality;
-        }
-    }
-    
-    if ([address.administrativeArea length] != 0)
-    {
-        if ([strSnippet length] != 0)
-            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address administrativeArea]];
-        else
-            strSnippet = address.administrativeArea;
-    }
-    
-//    if ([address.country length] != 0)
-//    {
-//        if ([strSnippet length] != 0)
-//            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address country]];
-//        else
-//            strSnippet = address.country;
-//    }
-    
-    if ([address.postalCode length] != 0)
-    {
-        if ([strSnippet length] != 0)
-            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address postalCode]];
-        else
-            strSnippet = address.postalCode;
-    }
-    
-    return strSnippet;
-}
-
-// Delegate method
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    CLLocation *currentLocation = newLocation;
-    
-    if (currentLocation != nil)
-        NSLog(@"longitude = %.8f\nlatitude = %.8f", currentLocation.coordinate.longitude,currentLocation.coordinate.latitude);
-    
-    // stop updating location in order to save battery power
-    [[self locationManager] stopUpdatingLocation];
-    
-    
-    //[self focusMapToLocation:currentLocation.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
-}
-
-
-- (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory addressSugestion:(GMSAutocompletePrediction*)addressSugestion
-{
-    _marker.position = location;
-    _mapview.selectedMarker = _marker;
-
-    [PlacePickerViewController focusMap:_mapview toMarker:_marker];
-    
-    if (shouldUpdateAddress)
-        [self updateAddressSaveHistory:saveHistory addressSugestion:addressSugestion];
-}
-
-+(void)focusMap:(GMSMapView*)mapView toMarker:(GMSMarker*)marker
-{
-    CGPoint point = [mapView.projection pointForCoordinate:marker.position];
-    point.y = point.y;
-    GMSCameraUpdate *camera =
-    [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
-    [mapView animateWithCameraUpdate:camera];
-    
-    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:marker.position.latitude
-                                                                    longitude:marker.position.longitude
-                                                                         zoom:16];
-    [mapView setCamera:cameraPosition];
-    
-}
-
-
-- (void)mapView:(GMSMapView *)pMapView didChangeCameraPosition:(GMSCameraPosition *)position {
-    
-    /* move draggable pin */
-    if (_marker && _type == TypeEditPlace) {
-        _marker.position = position.target;
-
-        return;
-    }
-    
-}
-
-- (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position {
-    
-//    [self setCaptureMap];
-    [self updateAddressSaveHistory:NO addressSugestion:nil];
-
-}
-
-#pragma mark -
-#pragma mark UITableViewDataSource
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 2;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0)
-        return [_autoCompleteResults count];
-    else
-        return [_placeHistories count];
-}
-
+#pragma mark - TableView DataSource
 - (GMSAutocompletePrediction *)placeAtIndexPath:(NSIndexPath *)indexPath {
     if (_autoCompleteResults.count>0 && _autoCompleteResults.count>indexPath.row) {
         return [_autoCompleteResults objectAtIndex:indexPath.row];
@@ -467,6 +252,18 @@
     if (_placeHistories.count > indexPath.row)
         return [_placeHistories objectAtIndex:indexPath.row][@"address"];
     return @"";
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0)
+        return [_autoCompleteResults count];
+    else
+        return [_placeHistories count];
 }
 
 #pragma mark - TableView Delegate
@@ -551,7 +348,7 @@
              shouldUpdateAddress:NO
                shouldSaveHistory:NO
                 addressSugestion:[self placeAtIndexPath:indexPath]];
-//        _marker.snippet = [self placeNameHistoryAtIndexPath:indexPath];
+//        [self marker].snippet = [self placeNameHistoryAtIndexPath:indexPath];
         [_addressLabel setCustomAttributedText:[self placeNameHistoryAtIndexPath:indexPath]];
 
         _selectedSugestion = [self placeSugestionHistoryAtIndexPath:indexPath];
@@ -614,29 +411,6 @@
 
 }
 
-
-
-#pragma mark - GMSMapView Delegate
-- (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker
-{
-    _selectedSugestion = @"";
-    _isDragging = YES;
-}
-
-- (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker
-{
-    _isDragging = NO;
-    [self updateAddressSaveHistory:NO addressSugestion:nil];
-}
-
-- (void)mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate
-{
-    if (_isDragging) {
-        
-        return;
-    }
-}
-
 //-(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
 //{
 //    [self focusMapToLocation:_locationManager.location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
@@ -652,7 +426,7 @@
 //
 //-(void)mapView:(GMSMapView *)mapView willMove:(BOOL)gesture
 //{
-////    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
+////    [self marker].infoWindowAnchor = CGPointMake(0.44f, 0.45f);
 //}
 
 #pragma mark -
@@ -694,43 +468,6 @@
     return YES;
 }
 
--(void)constraint
-{
-    UITableView *tableView = _tableView;
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                                attribute:NSLayoutAttributeTop
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:tableView.superview
-                                                                attribute:NSLayoutAttributeTop
-                                                               multiplier:1.0
-                                                                 constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                          attribute:NSLayoutAttributeLeading
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:tableView.superview
-                                                          attribute:NSLayoutAttributeLeading
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:tableView.superview
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
-                                                          attribute:NSLayoutAttributeTrailing
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:tableView.superview
-                                                          attribute:NSLayoutAttributeTrailing
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-}
-
 #pragma mark - History Search
 -(void)saveHistory:(GMSAddress*)address addressSugestion:(GMSAutocompletePrediction*)addressSugestion {
     
@@ -766,7 +503,224 @@
     [_placeHistories addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
 }
 
-#pragma mark - Place Detail
+#pragma mark - Methods
++(void)focusMap:(GMSMapView*)mapView toMarker:(GMSMarker*)marker
+{
+    CGPoint point = [mapView.projection pointForCoordinate:marker.position];
+    point.y = point.y;
+    GMSCameraUpdate *camera =
+    [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
+    [mapView animateWithCameraUpdate:camera];
+    
+    GMSCameraPosition *cameraPosition = [GMSCameraPosition cameraWithLatitude:marker.position.latitude
+                                                                    longitude:marker.position.longitude
+                                                                         zoom:16];
+    [mapView setCamera:cameraPosition];
+    
+}
+
++ (UIImage *)captureScreen:(GMSMapView *)mapView {
+    UIGraphicsBeginImageContextWithOptions(mapView.frame.size, YES, 0.0f);
+    [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // not equivalent to image.size (which depends on the imageOrientation)!
+    double refWidth = CGImageGetWidth(image.CGImage);
+    double refHeight = CGImageGetHeight(image.CGImage);
+    
+    double x = (refWidth - 220) / 2.0;
+    double y = ((refHeight - 220) / 2.0) - 40;
+    
+    CGRect cropRect = CGRectMake(x, y, 220, 220);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
+    
+    UIImage *cropped = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:image.imageOrientation];
+    CGImageRelease(imageRef);
+    
+    
+    return cropped;
+}
+
+-(void)setCaptureMap
+{
+    _captureScreen = [PlacePickerViewController captureScreen:_mapview];
+}
+
+
+- (void)setSearchbarActive:(BOOL)isActive animated:(BOOL)animated{
+    [_searchBar setShowsCancelButton:isActive animated:animated];
+    [self.navigationController setNavigationBarHidden:isActive animated:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:isActive withAnimation:UIStatusBarAnimationSlide];
+    _transparentView.hidden = !isActive;
+    
+    if (isActive) {
+        
+        if (animated) {
+            [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+                [self activeSearhBar:isActive];
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+        else
+        {
+            [self activeSearhBar:isActive];
+        }
+        
+    }
+    else
+    {
+        if (animated) {
+            [UIView animateWithDuration:0.25f delay:0.0f options:UIViewAnimationOptionCurveLinear animations:^{
+                [self activeSearhBar:isActive];
+                [_searchBar resignFirstResponder];
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+        else
+        {
+            [_searchBar resignFirstResponder];
+            [self activeSearhBar:isActive];
+        }
+    }
+}
+
+-(void)activeSearhBar:(BOOL)isActive
+{
+    _searchBar.frame = (CGRect){.origin = {0, 0}, .size = _searchBar.frame.size};
+    _tableView.hidden = !(isActive && _placeHistories.count > 0);
+}
+
+
+-(void)updateAddressSaveHistory:(BOOL)shouldSaveHistory addressSugestion:(GMSAutocompletePrediction *)addressSugestion
+{
+    [_geocoder reverseGeocodeCoordinate:[self marker].position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+        // strAdd -> take bydefault value nil
+        GMSAddress *placemark = [response results][0];
+        _address = placemark;
+        //        [self marker].snippet = [self addressString:placemark];
+        [_addressLabel setCustomAttributedText:[self addressString:placemark]];
+        [_addressInfoWindowLabel setCustomAttributedText:[self addressString:placemark]];
+        
+        [_mapview setSelectedMarker:[self marker]];
+        
+        if (shouldSaveHistory) {
+            [self saveHistory:placemark addressSugestion:addressSugestion];
+        }
+    }];
+}
+
+-(NSString *)addressString:(GMSAddress*)address
+{
+    NSString *strSnippet = @"";
+    
+    if (address.lines.count>0) {
+        strSnippet = address.lines[0];
+    }
+    else
+    {
+        if ([address.thoroughfare length] != 0)
+        {
+            // strAdd -> store value of current location
+            if ([strSnippet length] != 0)
+                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
+            else
+            {
+                // strAdd -> store only this value,which is not null
+                strSnippet = address.thoroughfare;
+            }
+        }
+    }
+    
+    
+    if ([address.locality length] != 0)
+    {
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address locality]];
+        else
+            strSnippet = address.locality;
+    }
+    
+    if ([address.subLocality length] != 0)
+    {
+        
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address subLocality]];
+        else
+        {
+            // strAdd -> store only this value,which is not null
+            strSnippet = address.subLocality;
+        }
+    }
+    
+    if ([address.administrativeArea length] != 0)
+    {
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address administrativeArea]];
+        else
+            strSnippet = address.administrativeArea;
+    }
+    
+    //    if ([address.country length] != 0)
+    //    {
+    //        if ([strSnippet length] != 0)
+    //            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address country]];
+    //        else
+    //            strSnippet = address.country;
+    //    }
+    
+    if ([address.postalCode length] != 0)
+    {
+        if ([strSnippet length] != 0)
+            strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address postalCode]];
+        else
+            strSnippet = address.postalCode;
+    }
+    
+    return strSnippet;
+}
+
+-(void)adjustBehaviorType:(NSInteger)type
+{
+    switch (type) {
+        case TypeEditPlace:
+        {
+            UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapDone:)];
+            [doneBarButtonItem setTintColor:[UIColor whiteColor]];
+            self.navigationItem.rightBarButtonItem = doneBarButtonItem;
+            self.title = @"Pilih Lokasi";
+            [[self marker] setDraggable:YES];
+            
+            _locationView.hidden = NO;
+            _pinPointImageView.hidden = NO;
+            [self marker].opacity = 0.0f;
+            
+            _mapview.myLocationEnabled = YES;
+            if (_firstCoordinate.longitude == 0) {
+                _firstCoordinate = [self locationManager].location.coordinate;
+            }
+        }
+            break;
+        case TypeShowPlace:
+        {
+            self.title = @"Lokasi";
+            _searchBar.hidden = YES;
+            _locationView.hidden = YES;
+            _pinPointImageView.hidden = YES;
+            [self marker].opacity = 1.0f;
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark - Place Detail Request
+//MARK:: need to get place detail from place ID to know Long Lat
 -(void)doGeneratePlaceDetailPlaceID:(NSString*)placeID addressSugestion:(GMSAutocompletePrediction *)addressSugestion
 {
     [_placesClient lookUpPlaceID:placeID callback:^(GMSPlace * _Nullable result, NSError * _Nullable error) {
@@ -784,6 +738,8 @@
     }];
 }
 
+
+//MARK:: get place detail from address name
 -(void)doGeneratePlaceDetailAddress:(NSString*)address
 {
     TKPGooglePlaceDetailProductStore *store = [[[[self class] TKP_rootController] storeManager] placeDetailStore];
@@ -797,6 +753,7 @@
     
 }
 
+//MARK:: Get distance from long lat origin & long lat destination
 -(void)doCalculateDistanceOrigin:(NSString*)origin withDestination:(NSString*)destination
 {
     TKPGooglePlaceDetailProductStore *store = [[[[self class] TKP_rootController] storeManager] placeDetailStore];
@@ -807,5 +764,6 @@
         
     }];
 }
+
 
 @end

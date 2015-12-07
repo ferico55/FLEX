@@ -15,8 +15,6 @@
 		4536F2761C11979400C98565 /* icon_pinpoin_toped@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */; };
 		4536F2771C11979400C98565 /* icon_pinpoin_toped@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */; };
 		4554D2211C15476B005F43DB /* JakartaMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4554D2201C15476B005F43DB /* JakartaMap.png */; };
-		4554D2271C159623005F43DB /* TKPPlacePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4554D2251C159623005F43DB /* TKPPlacePickerViewController.swift */; };
-		4554D2281C159623005F43DB /* TKPPlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4554D2261C159623005F43DB /* TKPPlacePickerViewController.xib */; };
 		45BB999E1C0C0B4300EA2C80 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */; };
 		45BB999F1C0C0B4300EA2C80 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D351C0C0B3E00EA2C80 /* URLCacheAlert.m */; };
 		45BB99A01C0C0B4300EA2C80 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D371C0C0B3E00EA2C80 /* URLCacheConnection.m */; };
@@ -1106,11 +1104,8 @@
 		45BB9DDC1C0C0B4300EA2C80 /* ProductTalkFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95C31C0C0B4000EA2C80 /* ProductTalkFormViewController.m */; };
 		45BB9DDD1C0C0B4300EA2C80 /* ProductTalkFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45BB95C41C0C0B4000EA2C80 /* ProductTalkFormViewController.xib */; };
 		45BB9DDE1C0C0B4300EA2C80 /* ProductTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95C61C0C0B4000EA2C80 /* ProductTalkViewController.m */; };
-		45BB9DDF1C0C0B4300EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95C91C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */; };
 		45BB9DE01C0C0B4300EA2C80 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */; };
 		45BB9DE11C0C0B4300EA2C80 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */; };
-		45BB9DE21C0C0B4300EA2C80 /* TKPAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95CE1C0C0B4000EA2C80 /* TKPAnnotation.m */; };
-		45BB9DE31C0C0B4300EA2C80 /* UISearchBar+Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95D01C0C0B4000EA2C80 /* UISearchBar+Controller.m */; };
 		45BB9DE41C0C0B4300EA2C80 /* MaintenanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95D31C0C0B4000EA2C80 /* MaintenanceViewController.m */; };
 		45BB9DE51C0C0B4300EA2C80 /* MaintenanceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45BB95D41C0C0B4000EA2C80 /* MaintenanceViewController.xib */; };
 		45BB9DE61C0C0B4300EA2C80 /* TokopediaCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95D61C0C0B4000EA2C80 /* TokopediaCacheManager.m */; };
@@ -2006,9 +2001,6 @@
 		4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@2x.png"; sourceTree = "<group>"; };
 		4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@3x.png"; sourceTree = "<group>"; };
 		4554D2201C15476B005F43DB /* JakartaMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JakartaMap.png; sourceTree = "<group>"; };
-		4554D2221C15770E005F43DB /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
-		4554D2251C159623005F43DB /* TKPPlacePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPPlacePickerViewController.swift; sourceTree = "<group>"; };
-		4554D2261C159623005F43DB /* TKPPlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPPlacePickerViewController.xib; sourceTree = "<group>"; };
 		45BB8D311C0C0B3E00EA2C80 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45BB8D341C0C0B3E00EA2C80 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -3976,15 +3968,9 @@
 		45BB95C41C0C0B4000EA2C80 /* ProductTalkFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkFormViewController.xib; sourceTree = "<group>"; };
 		45BB95C51C0C0B4000EA2C80 /* ProductTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkViewController.h; sourceTree = "<group>"; };
 		45BB95C61C0C0B4000EA2C80 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
-		45BB95C81C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.h"; sourceTree = "<group>"; };
-		45BB95C91C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.m"; sourceTree = "<group>"; };
 		45BB95CA1C0C0B4000EA2C80 /* PlacePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePickerViewController.h; sourceTree = "<group>"; };
 		45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePickerViewController.m; sourceTree = "<group>"; };
 		45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlacePickerViewController.xib; sourceTree = "<group>"; };
-		45BB95CD1C0C0B4000EA2C80 /* TKPAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPAnnotation.h; sourceTree = "<group>"; };
-		45BB95CE1C0C0B4000EA2C80 /* TKPAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPAnnotation.m; sourceTree = "<group>"; };
-		45BB95CF1C0C0B4000EA2C80 /* UISearchBar+Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Controller.h"; sourceTree = "<group>"; };
-		45BB95D01C0C0B4000EA2C80 /* UISearchBar+Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Controller.m"; sourceTree = "<group>"; };
 		45BB95D21C0C0B4000EA2C80 /* MaintenanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaintenanceViewController.h; sourceTree = "<group>"; };
 		45BB95D31C0C0B4000EA2C80 /* MaintenanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaintenanceViewController.m; sourceTree = "<group>"; };
 		45BB95D41C0C0B4000EA2C80 /* MaintenanceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MaintenanceViewController.xib; sourceTree = "<group>"; };
@@ -8872,18 +8858,9 @@
 		45BB95C71C0C0B4000EA2C80 /* TKPGooglePlaces */ = {
 			isa = PBXGroup;
 			children = (
-				45BB95C81C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */,
-				45BB95C91C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */,
 				45BB95CA1C0C0B4000EA2C80 /* PlacePickerViewController.h */,
 				45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */,
 				45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */,
-				45BB95CD1C0C0B4000EA2C80 /* TKPAnnotation.h */,
-				45BB95CE1C0C0B4000EA2C80 /* TKPAnnotation.m */,
-				45BB95CF1C0C0B4000EA2C80 /* UISearchBar+Controller.h */,
-				45BB95D01C0C0B4000EA2C80 /* UISearchBar+Controller.m */,
-				4554D2221C15770E005F43DB /* Tokopedia-Bridging-Header.h */,
-				4554D2251C159623005F43DB /* TKPPlacePickerViewController.swift */,
-				4554D2261C159623005F43DB /* TKPPlacePickerViewController.xib */,
 			);
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
@@ -10412,7 +10389,6 @@
 		FC36DF7B19B0656400AF74C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
@@ -11410,7 +11386,6 @@
 				45BB9E891C0C0B4300EA2C80 /* icon_12@2x.png in Resources */,
 				45BB9EC11C0C0B4300EA2C80 /* icon_arrow_white_down.png in Resources */,
 				45BB9F251C0C0B4300EA2C80 /* icon_diskusi_grey_medium@3x.png in Resources */,
-				4554D2281C159623005F43DB /* TKPPlacePickerViewController.xib in Resources */,
 				45BBA05D1C0C0B4300EA2C80 /* icon_view.png in Resources */,
 				45BBA0AB1C0C0B4300EA2C80 /* icon_share@3x.png in Resources */,
 				45BB9ED51C0C0B4300EA2C80 /* icon_button_share@3x.png in Resources */,
@@ -11590,7 +11565,6 @@
 				45BB9AC41C0C0B4300EA2C80 /* ResponseSpeed.m in Sources */,
 				45BB9D1B1C0C0B4300EA2C80 /* PromoInfoAlertView.m in Sources */,
 				45BB9D1E1C0C0B4300EA2C80 /* ReputationCell.m in Sources */,
-				45BB9DDF1C0C0B4300EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */,
 				45BB9AFB1C0C0B4300EA2C80 /* NotesResult.m in Sources */,
 				45BB9A981C0C0B4300EA2C80 /* ChangePhoneNumberResult.m in Sources */,
 				45BB9A071C0C0B4300EA2C80 /* TalkCommentResult.m in Sources */,
@@ -11720,7 +11694,6 @@
 				45BB9DC31C0C0B4300EA2C80 /* ShopProductPageViewController.m in Sources */,
 				45BB9D091C0C0B4300EA2C80 /* MyReviewReputationViewController.m in Sources */,
 				45BB9A3A1C0C0B4300EA2C80 /* InboxMessageDetailResult.m in Sources */,
-				45BB9DE31C0C0B4300EA2C80 /* UISearchBar+Controller.m in Sources */,
 				45BB99FE1C0C0B4300EA2C80 /* ReviewProductOwner.m in Sources */,
 				45BB9A421C0C0B4300EA2C80 /* ResolutionAttachment.m in Sources */,
 				45BB9AEA1C0C0B4300EA2C80 /* SendMessageResult.m in Sources */,
@@ -11943,7 +11916,6 @@
 				45BB9C5C1C0C0B4300EA2C80 /* ProductInfoTableViewController.m in Sources */,
 				45BB9B7D1C0C0B4300EA2C80 /* Analytics.m in Sources */,
 				45BB9A471C0C0B4300EA2C80 /* ResolutionDetailConversation.m in Sources */,
-				4554D2271C159623005F43DB /* TKPPlacePickerViewController.swift in Sources */,
 				45BB9B791C0C0B4300EA2C80 /* UploadImageValidationResult.m in Sources */,
 				45BB9CE71C0C0B4300EA2C80 /* ProductGalleryViewController.m in Sources */,
 				45BB9B031C0C0B4300EA2C80 /* Shop.m in Sources */,
@@ -12359,7 +12331,6 @@
 				45BB9B5F1C0C0B4300EA2C80 /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				45BB9CCB1C0C0B4300EA2C80 /* NotificationViewController.m in Sources */,
 				45BB9B7C1C0C0B4300EA2C80 /* WishListObjectResult.m in Sources */,
-				45BB9DE21C0C0B4300EA2C80 /* TKPAnnotation.m in Sources */,
 				45BB9A001C0C0B4300EA2C80 /* ReviewResult.m in Sources */,
 				45BB9C8F1C0C0B4300EA2C80 /* ResolutionInputReceiptViewController.m in Sources */,
 				45BB9BFF1C0C0B4300EA2C80 /* TKPDTabInboxCustomerServiceNavigationController.m in Sources */,
@@ -12604,7 +12575,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -12618,7 +12588,6 @@
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -12638,8 +12607,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/UIRefactor/TKPGooglePlaces/Tokopedia-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -12652,7 +12619,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
@@ -12666,7 +12632,6 @@
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -12686,7 +12651,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/UIRefactor/TKPGooglePlaces/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
