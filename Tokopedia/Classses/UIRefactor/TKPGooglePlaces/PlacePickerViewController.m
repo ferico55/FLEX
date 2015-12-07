@@ -68,6 +68,28 @@
     }
     return self;
 }
+
+-(CLLocationManager *)locationManager
+{
+    if (!_locationManager) {
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] )
+            [_locationManager requestWhenInUseAuthorization];
+        [_locationManager startUpdatingLocation];
+    }
+    return _locationManager;
+}
+
+-(GMSGeocoder*)gecoder
+{
+    if (!_geocoder) {
+        _geocoder = [GMSGeocoder geocoder];
+    }
+    
+    return _geocoder;
+}
+
 - (IBAction)cancelSearch:(id)sender {
     
     [self setSearchbarActive:NO animated:YES];
@@ -76,19 +98,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _geocoder = [GMSGeocoder geocoder];
 
     _mapview.myLocationEnabled = YES;
     
     if (_type == TypeEditPlace) {
-        _locationManager = [[CLLocationManager alloc] init];
-        _locationManager.delegate = self;
-        if ([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] )
-            [_locationManager requestWhenInUseAuthorization];
-        [_locationManager startUpdatingLocation];
-        
         if (_firstCoordinate.longitude == 0) {
-            _firstCoordinate = _locationManager.location.coordinate;
+            _firstCoordinate = [self locationManager].location.coordinate;
         }
     }
     
@@ -151,7 +166,7 @@
     else
     {
         if (_marker.position.latitude == 0 && _type == TypeEditPlace )
-            [self focusMapToLocation:_locationManager.location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
+            [self focusMapToLocation:[self locationManager].location.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];
         _mapview.myLocationEnabled = YES;
         _mapview.settings.myLocationButton = YES;
     }
@@ -261,7 +276,7 @@
 
 -(void)updateAddressSaveHistory:(BOOL)shouldSaveHistory addressSugestion:(GMSAutocompletePrediction *)addressSugestion
 {
-    [_geocoder reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+    [[self gecoder] reverseGeocodeCoordinate:_marker.position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
              // strAdd -> take bydefault value nil
         GMSAddress *placemark = [response results][0];
         _address = placemark;
@@ -356,7 +371,7 @@
         NSLog(@"longitude = %.8f\nlatitude = %.8f", currentLocation.coordinate.longitude,currentLocation.coordinate.latitude);
     
     // stop updating location in order to save battery power
-    [_locationManager stopUpdatingLocation];
+    [[self locationManager] stopUpdatingLocation];
     
     
     //[self focusMapToLocation:currentLocation.coordinate shouldUpdateAddress:YES shouldSaveHistory:NO addressSugestion:nil];

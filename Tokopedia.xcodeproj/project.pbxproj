@@ -15,6 +15,7 @@
 		4536F2761C11979400C98565 /* icon_pinpoin_toped@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */; };
 		4536F2771C11979400C98565 /* icon_pinpoin_toped@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */; };
 		4554D2211C15476B005F43DB /* JakartaMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4554D2201C15476B005F43DB /* JakartaMap.png */; };
+		4554D2241C15770F005F43DB /* TKPPlacePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4554D2231C15770F005F43DB /* TKPPlacePickerViewController.swift */; };
 		45BB999E1C0C0B4300EA2C80 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */; };
 		45BB999F1C0C0B4300EA2C80 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D351C0C0B3E00EA2C80 /* URLCacheAlert.m */; };
 		45BB99A01C0C0B4300EA2C80 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D371C0C0B3E00EA2C80 /* URLCacheConnection.m */; };
@@ -2004,6 +2005,8 @@
 		4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@2x.png"; sourceTree = "<group>"; };
 		4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@3x.png"; sourceTree = "<group>"; };
 		4554D2201C15476B005F43DB /* JakartaMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JakartaMap.png; sourceTree = "<group>"; };
+		4554D2221C15770E005F43DB /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
+		4554D2231C15770F005F43DB /* TKPPlacePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPPlacePickerViewController.swift; sourceTree = "<group>"; };
 		45BB8D311C0C0B3E00EA2C80 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45BB8D341C0C0B3E00EA2C80 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -8876,6 +8879,8 @@
 				45BB95CE1C0C0B4000EA2C80 /* TKPAnnotation.m */,
 				45BB95CF1C0C0B4000EA2C80 /* UISearchBar+Controller.h */,
 				45BB95D01C0C0B4000EA2C80 /* UISearchBar+Controller.m */,
+				4554D2231C15770F005F43DB /* TKPPlacePickerViewController.swift */,
+				4554D2221C15770E005F43DB /* Tokopedia-Bridging-Header.h */,
 			);
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
@@ -10404,6 +10409,7 @@
 		FC36DF7B19B0656400AF74C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
@@ -11933,6 +11939,7 @@
 				45BB9C5C1C0C0B4300EA2C80 /* ProductInfoTableViewController.m in Sources */,
 				45BB9B7D1C0C0B4300EA2C80 /* Analytics.m in Sources */,
 				45BB9A471C0C0B4300EA2C80 /* ResolutionDetailConversation.m in Sources */,
+				4554D2241C15770F005F43DB /* TKPPlacePickerViewController.swift in Sources */,
 				45BB9B791C0C0B4300EA2C80 /* UploadImageValidationResult.m in Sources */,
 				45BB9CE71C0C0B4300EA2C80 /* ProductGalleryViewController.m in Sources */,
 				45BB9B031C0C0B4300EA2C80 /* Shop.m in Sources */,
@@ -12593,6 +12600,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -12606,6 +12614,7 @@
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -12625,6 +12634,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/UIRefactor/TKPGooglePlaces/Tokopedia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -12637,6 +12648,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
@@ -12650,6 +12662,7 @@
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -12669,6 +12682,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/UIRefactor/TKPGooglePlaces/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
