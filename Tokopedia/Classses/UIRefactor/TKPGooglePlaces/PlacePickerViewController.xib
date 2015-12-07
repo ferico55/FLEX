@@ -4,9 +4,15 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlacePickerViewController">
             <connections>
+                <outlet property="addressLabel" destination="QRc-37-5Br" id="nrH-qn-ReL"/>
                 <outlet property="mapview" destination="Ebd-kK-MKe" id="3Y1-oa-tTa"/>
                 <outlet property="searchBar" destination="uZa-XG-HnW" id="u5S-Y4-3bF"/>
                 <outlet property="searchDisplayController" destination="7eI-Di-NVA" id="K8b-ch-Gid"/>
@@ -28,6 +34,40 @@
                         <outlet property="delegate" destination="-1" id="eW9-jH-L7l"/>
                     </connections>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="nrA-6R-a0A">
+                    <rect key="frame" x="265" y="230" width="70" height="70"/>
+                    <animations/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TgT-2L-RqQ">
+                    <rect key="frame" x="160" y="150" width="280" height="64"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRc-37-5Br">
+                            <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="QRc-37-5Br" firstAttribute="leading" secondItem="TgT-2L-RqQ" secondAttribute="leading" id="LHa-u4-rX6"/>
+                        <constraint firstItem="QRc-37-5Br" firstAttribute="top" secondItem="TgT-2L-RqQ" secondAttribute="top" id="Py5-xD-f47"/>
+                        <constraint firstAttribute="trailing" secondItem="QRc-37-5Br" secondAttribute="trailing" id="SjN-A1-TAS"/>
+                        <constraint firstAttribute="height" constant="64" id="bhR-xI-ZkK"/>
+                        <constraint firstAttribute="bottom" secondItem="QRc-37-5Br" secondAttribute="bottom" id="vta-kE-paR"/>
+                        <constraint firstAttribute="width" constant="280" id="wnG-vW-6f6"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_triangle_down_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="rtJ-vZ-j57">
+                    <rect key="frame" x="290" y="210" width="20" height="10"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="10" id="KdX-3w-Tdc"/>
+                        <constraint firstAttribute="width" constant="20" id="PaX-W0-26p"/>
+                    </constraints>
+                </imageView>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="uZa-XG-HnW">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                     <animations/>
@@ -58,8 +98,11 @@
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="rtJ-vZ-j57" firstAttribute="top" secondItem="TgT-2L-RqQ" secondAttribute="bottom" constant="-4" id="2k1-9x-whM"/>
                 <constraint firstItem="uZa-XG-HnW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2zJ-Sf-oD4"/>
                 <constraint firstAttribute="bottom" secondItem="xgf-jU-Oz7" secondAttribute="bottom" id="3bI-HE-oqY"/>
+                <constraint firstItem="nrA-6R-a0A" firstAttribute="top" secondItem="TgT-2L-RqQ" secondAttribute="bottom" constant="16" id="EcC-SY-Kna"/>
+                <constraint firstItem="nrA-6R-a0A" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-35" id="Hyu-PU-o9s"/>
                 <constraint firstItem="xgf-jU-Oz7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LEf-mT-ArI"/>
                 <constraint firstAttribute="bottom" secondItem="cxK-4f-4I9" secondAttribute="bottom" id="LYZ-QM-mLD"/>
                 <constraint firstItem="cxK-4f-4I9" firstAttribute="top" secondItem="uZa-XG-HnW" secondAttribute="bottom" id="OSA-q3-dta"/>
@@ -67,10 +110,13 @@
                 <constraint firstAttribute="bottom" secondItem="Ebd-kK-MKe" secondAttribute="bottom" id="Pui-XP-ODt"/>
                 <constraint firstItem="uZa-XG-HnW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="V9m-b5-9q0"/>
                 <constraint firstItem="Ebd-kK-MKe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Y4R-Px-1Vp"/>
+                <constraint firstItem="TgT-2L-RqQ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Zs4-h0-bms"/>
                 <constraint firstAttribute="trailing" secondItem="cxK-4f-4I9" secondAttribute="trailing" id="aq4-pl-Lmi"/>
+                <constraint firstItem="nrA-6R-a0A" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eeE-qu-iTR"/>
                 <constraint firstItem="cxK-4f-4I9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fZP-R3-LjP"/>
                 <constraint firstAttribute="trailing" secondItem="uZa-XG-HnW" secondAttribute="trailing" id="fcR-LA-h7l"/>
                 <constraint firstItem="xgf-jU-Oz7" firstAttribute="top" secondItem="uZa-XG-HnW" secondAttribute="bottom" id="gJ5-RS-WRq"/>
+                <constraint firstItem="rtJ-vZ-j57" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="hhx-tR-RaF"/>
                 <constraint firstAttribute="trailing" secondItem="Ebd-kK-MKe" secondAttribute="trailing" id="n2L-FN-MyC"/>
                 <constraint firstAttribute="trailing" secondItem="xgf-jU-Oz7" secondAttribute="trailing" id="tM0-gs-kbq"/>
             </constraints>
@@ -82,4 +128,8 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
+    <resources>
+        <image name="icon_pinpoin_toped.png" width="70" height="70"/>
+        <image name="icon_triangle_down_white.png" width="20" height="10"/>
+    </resources>
 </document>

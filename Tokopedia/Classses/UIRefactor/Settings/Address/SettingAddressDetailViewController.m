@@ -106,7 +106,8 @@
 
     _marker.position = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
     _marker.map = _mapview;
-    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
+    _marker.icon = [UIImage imageNamed:@"icon_pinpoin_toped.png"];
+
     
     _mapview.selectedMarker = _marker;
     _mapview.mapType = kGMSTypeNormal;

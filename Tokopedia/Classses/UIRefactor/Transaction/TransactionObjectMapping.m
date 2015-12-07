@@ -97,6 +97,7 @@
                                                          kTKPDPROFILESETTING_APIRECEIVERPHONEKEY,
                                                          kTKPDPROFILESETTING_APIPROVINCENAMEKEY,
                                                          API_POSTAL_CODE_CART_KEY,
+                                                        @""
                                                          kTKPDPROFILESETTING_APIADDRESSSTATUSKEY,
                                                          kTKPDPROFILESETTING_APIADDRESSSTREETKEY,
                                                          kTKPDPROFILESETTING_APIDISTRICNAMEKEY,

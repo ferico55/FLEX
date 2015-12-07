@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet GMSMapView *transparentView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchbarHeightConstaint;
+@property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 
 
 @end
@@ -87,8 +88,10 @@
     _marker = [[GMSMarker alloc] init];
     _marker.position = _firstCoordinate;
     _marker.map = _mapview;
-    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
+//    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
     _marker.appearAnimation = kGMSMarkerAnimationNone;
+    _marker.icon = [UIImage imageNamed:@"icon_pinpoin_toped.png"];
+    _marker.opacity = 0.0f;
     
     CLLocationCoordinate2D target = _marker.position;
     _mapview.camera = [GMSCameraPosition cameraWithTarget:target zoom:16];
@@ -177,10 +180,10 @@
     double refWidth = CGImageGetWidth(image.CGImage);
     double refHeight = CGImageGetHeight(image.CGImage);
     
-    double x = (refWidth - 200) / 2.0;
-    double y = (refHeight - 200) / 2.0;
+    double x = (refWidth - 220) / 2.0;
+    double y = ((refHeight - 220) / 2.0) - 40;
     
-    CGRect cropRect = CGRectMake(x, y, 200, 200);
+    CGRect cropRect = CGRectMake(x, y, 220, 220);
     CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], cropRect);
     
     UIImage *cropped = [UIImage imageWithCGImage:imageRef scale:0.0 orientation:image.imageOrientation];
@@ -262,8 +265,8 @@
              // strAdd -> take bydefault value nil
         GMSAddress *placemark = [response results][0];
         _address = placemark;
-        _marker.snippet = [self addressString:placemark];
-        
+//        _marker.snippet = [self addressString:placemark];
+        [_addressLabel setCustomAttributedText:[self addressString:placemark]];
         [_mapview setSelectedMarker:_marker];
         
         if (shouldSaveHistory) {
@@ -374,7 +377,7 @@
 +(void)focusMap:(GMSMapView*)mapView toMarker:(GMSMarker*)marker
 {
     CGPoint point = [mapView.projection pointForCoordinate:marker.position];
-    point.y = point.y - 50;
+    point.y = point.y;
     GMSCameraUpdate *camera =
     [GMSCameraUpdate setTarget:[mapView.projection coordinateForPoint:point]];
     [mapView animateWithCameraUpdate:camera];
@@ -392,17 +395,17 @@
     /* move draggable pin */
     if (_marker && _type == TypeEditPlace) {
         
-        // stick it on map and start dragging from there..
-        if (lastCameraPosition == nil) lastCameraPosition = position;
-        
-        // Algebra :) substract coordinates with the difference of camera changes
-        double lat = position.target.latitude - lastCameraPosition.target.latitude;
-        double lng = position.target.longitude - lastCameraPosition.target.longitude;
-        lastCameraPosition = position;
-        CLLocationCoordinate2D newCoords = CLLocationCoordinate2DMake(_marker.position.latitude+lat,
-                                                                      _marker.position.longitude+lng);
-        [_marker setPosition:newCoords];
-        [self updateAddressSaveHistory:NO addressSugestion:nil];
+//        // stick it on map and start dragging from there..
+//        if (lastCameraPosition == nil) lastCameraPosition = position;
+//        
+//        // Algebra :) substract coordinates with the difference of camera changes
+//        double lat = position.target.latitude - lastCameraPosition.target.latitude;
+//        double lng = position.target.longitude - lastCameraPosition.target.longitude;
+//        lastCameraPosition = position;
+//        CLLocationCoordinate2D newCoords = CLLocationCoordinate2DMake(_marker.position.latitude+lat,
+//                                                                      _marker.position.longitude+lng);
+//        [_marker setPosition:newCoords];
+        _marker.position = position.target;
 
         return;
     }
@@ -412,7 +415,8 @@
 - (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position {
     
     lastCameraPosition = nil; // reset pin moving, no ice skating pins ;)
-    
+    [self updateAddressSaveHistory:NO addressSugestion:nil];
+
 }
 
 #pragma mark -
@@ -543,7 +547,9 @@
              shouldUpdateAddress:NO
                shouldSaveHistory:NO
                 addressSugestion:[self placeAtIndexPath:indexPath]];
-        _marker.snippet = [self placeNameHistoryAtIndexPath:indexPath];
+//        _marker.snippet = [self placeNameHistoryAtIndexPath:indexPath];
+        [_addressLabel setCustomAttributedText:[self placeNameHistoryAtIndexPath:indexPath]];
+
         _selectedSugestion = [self placeSugestionHistoryAtIndexPath:indexPath];
     }
 }
@@ -642,7 +648,7 @@
 
 -(void)mapView:(GMSMapView *)mapView willMove:(BOOL)gesture
 {
-    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
+//    _marker.infoWindowAnchor = CGPointMake(0.44f, 0.45f);
 }
 
 #pragma mark -

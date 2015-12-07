@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		4536F26D1C1190B200C98565 /* pin_poin_toped.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F26C1C1190B200C98565 /* pin_poin_toped.png */; };
+		4536F26F1C11922900C98565 /* pin_poin_toped_60.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F26E1C11922900C98565 /* pin_poin_toped_60.png */; };
+		4536F2711C1194E600C98565 /* pin_poin_toped_70.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2701C1194E600C98565 /* pin_poin_toped_70.png */; };
+		4536F2751C11979400C98565 /* icon_pinpoin_toped.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2721C11979400C98565 /* icon_pinpoin_toped.png */; };
+		4536F2761C11979400C98565 /* icon_pinpoin_toped@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */; };
+		4536F2771C11979400C98565 /* icon_pinpoin_toped@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */; };
 		45BB999E1C0C0B4300EA2C80 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */; };
 		45BB999F1C0C0B4300EA2C80 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D351C0C0B3E00EA2C80 /* URLCacheAlert.m */; };
 		45BB99A01C0C0B4300EA2C80 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D371C0C0B3E00EA2C80 /* URLCacheConnection.m */; };
@@ -1990,6 +1996,12 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		4536F26C1C1190B200C98565 /* pin_poin_toped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pin_poin_toped.png; path = ../../../../../Downloads/pin_poin_toped.png; sourceTree = "<group>"; };
+		4536F26E1C11922900C98565 /* pin_poin_toped_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_poin_toped_60.png; sourceTree = "<group>"; };
+		4536F2701C1194E600C98565 /* pin_poin_toped_70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_poin_toped_70.png; sourceTree = "<group>"; };
+		4536F2721C11979400C98565 /* icon_pinpoin_toped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_pinpoin_toped.png; sourceTree = "<group>"; };
+		4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@2x.png"; sourceTree = "<group>"; };
+		4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@3x.png"; sourceTree = "<group>"; };
 		45BB8D311C0C0B3E00EA2C80 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45BB8D341C0C0B3E00EA2C80 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -9307,6 +9319,12 @@
 		45BB96D71C0C0B4100EA2C80 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				4536F2721C11979400C98565 /* icon_pinpoin_toped.png */,
+				4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */,
+				4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */,
+				4536F2701C1194E600C98565 /* pin_poin_toped_70.png */,
+				4536F26E1C11922900C98565 /* pin_poin_toped_60.png */,
+				4536F26C1C1190B200C98565 /* pin_poin_toped.png */,
 				45BB96D81C0C0B4100EA2C80 /* badges_gold_merchant.png */,
 				45BB96D91C0C0B4100EA2C80 /* balloon_read_left.png */,
 				45BB96DA1C0C0B4100EA2C80 /* balloon_read_right.png */,
@@ -10485,6 +10503,7 @@
 				45BB9F611C0C0B4300EA2C80 /* icon_medal.png in Resources */,
 				45BB9FE21C0C0B4300EA2C80 /* icon_retur@3x.png in Resources */,
 				45BB9BB51C0C0B4300EA2C80 /* CameraController.xib in Resources */,
+				4536F2751C11979400C98565 /* icon_pinpoin_toped.png in Resources */,
 				45BB9BC71C0C0B4300EA2C80 /* CatalogProductCell.xib in Resources */,
 				45BB9F121C0C0B4300EA2C80 /* icon_clock@2x.png in Resources */,
 				45BBA0C71C0C0B4300EA2C80 /* ic_more.png in Resources */,
@@ -10682,6 +10701,7 @@
 				45BB9F2C1C0C0B4300EA2C80 /* icon_dislike@3x.png in Resources */,
 				45BB9BDD1C0C0B4300EA2C80 /* CategoryMenuViewCell.xib in Resources */,
 				45BB9FDA1C0C0B4300EA2C80 /* icon_questionmark_grey@2x.png in Resources */,
+				4536F2771C11979400C98565 /* icon_pinpoin_toped@3x.png in Resources */,
 				45BB9F5E1C0C0B4300EA2C80 /* icon_maintenance_grey.png in Resources */,
 				45BBA09F1C0C0B4300EA2C80 /* person1.png in Resources */,
 				45BB9BCB1C0C0B4300EA2C80 /* CatalogSectionHeaderView.xib in Resources */,
@@ -10739,6 +10759,7 @@
 				45BBA09C1C0C0B4300EA2C80 /* no-result.png in Resources */,
 				45BB9E791C0C0B4300EA2C80 /* badges_gold_merchant.png in Resources */,
 				45BB9F041C0C0B4300EA2C80 /* icon_category_white.png in Resources */,
+				4536F2761C11979400C98565 /* icon_pinpoin_toped@2x.png in Resources */,
 				45BB9D871C0C0B4300EA2C80 /* SettingBankEditViewController.xib in Resources */,
 				45BB9E8B1C0C0B4300EA2C80 /* icon_13@2x.png in Resources */,
 				45BB9D3F1C0C0B4300EA2C80 /* ProductQuantityViewController.xib in Resources */,
@@ -11266,6 +11287,7 @@
 				45BBA0791C0C0B4300EA2C80 /* launch_image@3x.png in Resources */,
 				45BB9ED81C0C0B4300EA2C80 /* icon_button_wishlist_active@3x.png in Resources */,
 				45BBA02A1C0C0B4300EA2C80 /* icon_speed_bad_large@3x.png in Resources */,
+				4536F26F1C11922900C98565 /* pin_poin_toped_60.png in Resources */,
 				45BBA08D1C0C0B4300EA2C80 /* icon_sold.png in Resources */,
 				45BBA0881C0C0B4300EA2C80 /* icon_arrow_white@2x.png in Resources */,
 				45BB9D2D1C0C0B4300EA2C80 /* FooterCollectionReusableView.xib in Resources */,
@@ -11320,6 +11342,7 @@
 				45BB9D7B1C0C0B4300EA2C80 /* SettingAddressExpandedCell.xib in Resources */,
 				45BBA0351C0C0B4300EA2C80 /* icon_speed_grey_large@2x.png in Resources */,
 				45BB9D951C0C0B4300EA2C80 /* SettingUserPhoneViewController.xib in Resources */,
+				4536F26D1C1190B200C98565 /* pin_poin_toped.png in Resources */,
 				45BB9CFC1C0C0B4300EA2C80 /* ProductListMyShopCell.xib in Resources */,
 				45BB9FB91C0C0B4300EA2C80 /* icon_no_data_grey.png in Resources */,
 				45BB9F221C0C0B4300EA2C80 /* icon_diskusi_comment_grey@2x.png in Resources */,
@@ -11384,6 +11407,7 @@
 				45BB9D0A1C0C0B4300EA2C80 /* MyReviewReputationViewController.xib in Resources */,
 				45BB9EA71C0C0B4300EA2C80 /* icon_7.png in Resources */,
 				45BB9DAC1C0C0B4300EA2C80 /* DetailStatisticViewController.xib in Resources */,
+				4536F2711C1194E600C98565 /* pin_poin_toped_70.png in Resources */,
 				45BB9BB91C0C0B4300EA2C80 /* CameraAlbumListViewController.xib in Resources */,
 				45BB9F5D1C0C0B4300EA2C80 /* icon_love_white@2x.png in Resources */,
 				45BB9BBD1C0C0B4300EA2C80 /* CameraCollectionViewController.xib in Resources */,
