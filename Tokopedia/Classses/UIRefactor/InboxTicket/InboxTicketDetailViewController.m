@@ -209,7 +209,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         _ticketInformation = nil;
         _isLoadingMore = NO;
         
-        _tableHeaderView.hidden = NO;
+        self.view.hidden = NO;
+        
         [_loadMoreButton setTitle:@"Lihat Semua" forState:UIControlStateNormal];
         
         [self setTitleView];
@@ -219,8 +220,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         [_networkManager doRequest];
     }
     else {
-        _tableHeaderView.hidden = YES;
         self.navigationItem.titleView = nil;
+        self.view.hidden = YES;
     }
 }
 
