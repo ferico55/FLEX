@@ -271,6 +271,7 @@
         cell.acceptButton.tag = 3;
     } else {
         [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_order_check-01.png"] forState:UIControlStateNormal];
         cell.acceptButton.tag = 2;
     }
     

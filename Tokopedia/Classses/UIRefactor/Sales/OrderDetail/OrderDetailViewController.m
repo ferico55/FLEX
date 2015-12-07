@@ -292,6 +292,7 @@ ChangeCourierDelegate
             _acceptButton.tag = 3;
         } else {
             [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+            [_acceptButton setImage:[UIImage imageNamed:@"icon_order_check-01.png"] forState:UIControlStateNormal];
             _acceptButton.tag = 2;
         }
         
