@@ -134,8 +134,6 @@
     }
     
     [self loadHistory];
-//    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
-
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status

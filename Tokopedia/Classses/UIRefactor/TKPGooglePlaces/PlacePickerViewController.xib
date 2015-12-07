@@ -70,6 +70,8 @@
                                 <constraint firstAttribute="width" constant="50" id="Mzs-DJ-6JD"/>
                             </constraints>
                             <state key="normal" image="Icon_check_green_bg.png"/>
+                            <state key="selected" image="Icon_check_green_bg.png"/>
+                            <state key="highlighted" image="Icon_check_green_bg.png"/>
                             <connections>
                                 <action selector="tapDone:" destination="-1" eventType="touchUpInside" id="BI4-re-Fxc"/>
                             </connections>
