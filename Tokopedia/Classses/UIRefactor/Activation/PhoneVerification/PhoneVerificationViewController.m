@@ -67,6 +67,10 @@ UIAlertViewDelegate, UITextFieldDelegate>
 }
 
 - (IBAction)verifyButtonTapped:(id)sender {
+    [self.view endEditing:YES];
+    [UIView animateWithDuration:0.5 animations:^{
+        _viewYConstraint.constant = 0;
+    }];
     //verify button
     if([_otpTextField.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
