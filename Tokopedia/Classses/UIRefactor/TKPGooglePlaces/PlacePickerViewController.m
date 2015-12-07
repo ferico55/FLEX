@@ -9,7 +9,6 @@
 #import "PlacePickerViewController.h"
 #import "TKPGooglePlaceDetailProductStore.h"
 #import "GooglePlacesDetail.h"
-#import "TKPAnnotation.h"
 
 @import GoogleMaps;
 

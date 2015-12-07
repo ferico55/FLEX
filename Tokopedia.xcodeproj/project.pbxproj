@@ -1104,11 +1104,8 @@
 		45BB9DDC1C0C0B4300EA2C80 /* ProductTalkFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95C31C0C0B4000EA2C80 /* ProductTalkFormViewController.m */; };
 		45BB9DDD1C0C0B4300EA2C80 /* ProductTalkFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45BB95C41C0C0B4000EA2C80 /* ProductTalkFormViewController.xib */; };
 		45BB9DDE1C0C0B4300EA2C80 /* ProductTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95C61C0C0B4000EA2C80 /* ProductTalkViewController.m */; };
-		45BB9DDF1C0C0B4300EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95C91C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */; };
 		45BB9DE01C0C0B4300EA2C80 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */; };
 		45BB9DE11C0C0B4300EA2C80 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */; };
-		45BB9DE21C0C0B4300EA2C80 /* TKPAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95CE1C0C0B4000EA2C80 /* TKPAnnotation.m */; };
-		45BB9DE31C0C0B4300EA2C80 /* UISearchBar+Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95D01C0C0B4000EA2C80 /* UISearchBar+Controller.m */; };
 		45BB9DE41C0C0B4300EA2C80 /* MaintenanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95D31C0C0B4000EA2C80 /* MaintenanceViewController.m */; };
 		45BB9DE51C0C0B4300EA2C80 /* MaintenanceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45BB95D41C0C0B4000EA2C80 /* MaintenanceViewController.xib */; };
 		45BB9DE61C0C0B4300EA2C80 /* TokopediaCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB95D61C0C0B4000EA2C80 /* TokopediaCacheManager.m */; };
@@ -3971,15 +3968,9 @@
 		45BB95C41C0C0B4000EA2C80 /* ProductTalkFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkFormViewController.xib; sourceTree = "<group>"; };
 		45BB95C51C0C0B4000EA2C80 /* ProductTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkViewController.h; sourceTree = "<group>"; };
 		45BB95C61C0C0B4000EA2C80 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
-		45BB95C81C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.h"; sourceTree = "<group>"; };
-		45BB95C91C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TKPGooglePlacesAutocompleteUtilities.m"; sourceTree = "<group>"; };
 		45BB95CA1C0C0B4000EA2C80 /* PlacePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePickerViewController.h; sourceTree = "<group>"; };
 		45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePickerViewController.m; sourceTree = "<group>"; };
 		45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlacePickerViewController.xib; sourceTree = "<group>"; };
-		45BB95CD1C0C0B4000EA2C80 /* TKPAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPAnnotation.h; sourceTree = "<group>"; };
-		45BB95CE1C0C0B4000EA2C80 /* TKPAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPAnnotation.m; sourceTree = "<group>"; };
-		45BB95CF1C0C0B4000EA2C80 /* UISearchBar+Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Controller.h"; sourceTree = "<group>"; };
-		45BB95D01C0C0B4000EA2C80 /* UISearchBar+Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Controller.m"; sourceTree = "<group>"; };
 		45BB95D21C0C0B4000EA2C80 /* MaintenanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaintenanceViewController.h; sourceTree = "<group>"; };
 		45BB95D31C0C0B4000EA2C80 /* MaintenanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaintenanceViewController.m; sourceTree = "<group>"; };
 		45BB95D41C0C0B4000EA2C80 /* MaintenanceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MaintenanceViewController.xib; sourceTree = "<group>"; };
@@ -8867,15 +8858,9 @@
 		45BB95C71C0C0B4000EA2C80 /* TKPGooglePlaces */ = {
 			isa = PBXGroup;
 			children = (
-				45BB95C81C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.h */,
-				45BB95C91C0C0B4000EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m */,
 				45BB95CA1C0C0B4000EA2C80 /* PlacePickerViewController.h */,
 				45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */,
 				45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */,
-				45BB95CD1C0C0B4000EA2C80 /* TKPAnnotation.h */,
-				45BB95CE1C0C0B4000EA2C80 /* TKPAnnotation.m */,
-				45BB95CF1C0C0B4000EA2C80 /* UISearchBar+Controller.h */,
-				45BB95D01C0C0B4000EA2C80 /* UISearchBar+Controller.m */,
 			);
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
@@ -11580,7 +11565,6 @@
 				45BB9AC41C0C0B4300EA2C80 /* ResponseSpeed.m in Sources */,
 				45BB9D1B1C0C0B4300EA2C80 /* PromoInfoAlertView.m in Sources */,
 				45BB9D1E1C0C0B4300EA2C80 /* ReputationCell.m in Sources */,
-				45BB9DDF1C0C0B4300EA2C80 /* NSArray+TKPGooglePlacesAutocompleteUtilities.m in Sources */,
 				45BB9AFB1C0C0B4300EA2C80 /* NotesResult.m in Sources */,
 				45BB9A981C0C0B4300EA2C80 /* ChangePhoneNumberResult.m in Sources */,
 				45BB9A071C0C0B4300EA2C80 /* TalkCommentResult.m in Sources */,
@@ -11710,7 +11694,6 @@
 				45BB9DC31C0C0B4300EA2C80 /* ShopProductPageViewController.m in Sources */,
 				45BB9D091C0C0B4300EA2C80 /* MyReviewReputationViewController.m in Sources */,
 				45BB9A3A1C0C0B4300EA2C80 /* InboxMessageDetailResult.m in Sources */,
-				45BB9DE31C0C0B4300EA2C80 /* UISearchBar+Controller.m in Sources */,
 				45BB99FE1C0C0B4300EA2C80 /* ReviewProductOwner.m in Sources */,
 				45BB9A421C0C0B4300EA2C80 /* ResolutionAttachment.m in Sources */,
 				45BB9AEA1C0C0B4300EA2C80 /* SendMessageResult.m in Sources */,
@@ -12348,7 +12331,6 @@
 				45BB9B5F1C0C0B4300EA2C80 /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				45BB9CCB1C0C0B4300EA2C80 /* NotificationViewController.m in Sources */,
 				45BB9B7C1C0C0B4300EA2C80 /* WishListObjectResult.m in Sources */,
-				45BB9DE21C0C0B4300EA2C80 /* TKPAnnotation.m in Sources */,
 				45BB9A001C0C0B4300EA2C80 /* ReviewResult.m in Sources */,
 				45BB9C8F1C0C0B4300EA2C80 /* ResolutionInputReceiptViewController.m in Sources */,
 				45BB9BFF1C0C0B4300EA2C80 /* TKPDTabInboxCustomerServiceNavigationController.m in Sources */,
