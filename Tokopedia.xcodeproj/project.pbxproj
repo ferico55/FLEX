@@ -14,6 +14,7 @@
 		4536F2751C11979400C98565 /* icon_pinpoin_toped.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2721C11979400C98565 /* icon_pinpoin_toped.png */; };
 		4536F2761C11979400C98565 /* icon_pinpoin_toped@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */; };
 		4536F2771C11979400C98565 /* icon_pinpoin_toped@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */; };
+		4554D2211C15476B005F43DB /* JakartaMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4554D2201C15476B005F43DB /* JakartaMap.png */; };
 		45BB999E1C0C0B4300EA2C80 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */; };
 		45BB999F1C0C0B4300EA2C80 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D351C0C0B3E00EA2C80 /* URLCacheAlert.m */; };
 		45BB99A01C0C0B4300EA2C80 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D371C0C0B3E00EA2C80 /* URLCacheConnection.m */; };
@@ -2002,6 +2003,7 @@
 		4536F2721C11979400C98565 /* icon_pinpoin_toped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_pinpoin_toped.png; sourceTree = "<group>"; };
 		4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@2x.png"; sourceTree = "<group>"; };
 		4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pinpoin_toped@3x.png"; sourceTree = "<group>"; };
+		4554D2201C15476B005F43DB /* JakartaMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JakartaMap.png; sourceTree = "<group>"; };
 		45BB8D311C0C0B3E00EA2C80 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45BB8D341C0C0B3E00EA2C80 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -9319,6 +9321,7 @@
 		45BB96D71C0C0B4100EA2C80 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				4554D2201C15476B005F43DB /* JakartaMap.png */,
 				4536F2721C11979400C98565 /* icon_pinpoin_toped.png */,
 				4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */,
 				4536F2741C11979400C98565 /* icon_pinpoin_toped@3x.png */,
@@ -11440,6 +11443,7 @@
 				45BB9BCF1C0C0B4300EA2C80 /* CatalogShopViewController.xib in Resources */,
 				45BBA0C41C0C0B4300EA2C80 /* ic_category@2x.png in Resources */,
 				45BBA0951C0C0B4300EA2C80 /* navigation-button-bg-pt.png in Resources */,
+				4554D2211C15476B005F43DB /* JakartaMap.png in Resources */,
 				45BBA0B01C0C0B4300EA2C80 /* icon_category.png in Resources */,
 				45BB9CC31C0C0B4300EA2C80 /* MyShopPaymentViewController.xib in Resources */,
 				45BB9E8C1C0C0B4300EA2C80 /* icon_14.png in Resources */,
