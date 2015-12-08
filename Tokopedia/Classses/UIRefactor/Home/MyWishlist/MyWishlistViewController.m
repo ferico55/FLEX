@@ -12,13 +12,14 @@
 
 #import "MyWishlistViewController.h"
 #import "TokopediaNetworkManager.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 #import "ProductCell.h"
 
 #import "GeneralProductCollectionViewCell.h"
 #import "NavigateViewController.h"
 #import "WishListObject.h"
 #import "WishListObjectList.h"
+#import "HotListViewController.h"
 
 #import "Localytics.h"
 
@@ -26,7 +27,15 @@ static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
 
-@interface MyWishlistViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
+@interface MyWishlistViewController ()
+<
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,
+UIScrollViewDelegate,
+TokopediaNetworkManagerDelegate,
+NoResultDelegate
+>
 
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -34,6 +43,7 @@ static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 typedef enum TagRequest {
     ProductTag
@@ -56,7 +66,7 @@ typedef enum TagRequest {
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
 }
 
 #pragma mark - Initialization
@@ -69,6 +79,17 @@ typedef enum TagRequest {
         _isFailRequest = NO;
     }
     return self;
+}
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"wishlist.png"
+                                 title:@"Lihat produk yang telah ditambahkan ke Wishlist disini"
+                                  desc:@"Segera tambahkan produk yang Anda sukai, belanja jadi lebih cepat!"
+                              btnTitle:@"Lihat Hot List"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedProductToWishList:) name:@"didAddedProductToWishList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedProductFromWishList:) name:@"didRemovedProductFromWishList" object:nil];
 }
 
 - (void) viewDidLoad
@@ -91,7 +112,7 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:TKPDUserDidLoginNotification object:nil];
     
     //todo with view
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
+    [self initNoResultView];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -131,7 +152,8 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Home - Wishlist";
+    self.screenName = @"Home - Wish List";
+    [TPAnalytics trackScreenName:@"Home - Wish List"];
 }
 
 - (void)registerNib {
@@ -167,47 +189,6 @@ typedef enum TagRequest {
             [_networkManager doRequest];
         }
     }
-    //    NSString *cellid = @"GeneralProductCollectionViewIdentifier";
-    //    GeneralProductCollectionViewCell *cell = (GeneralProductCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-    //
-    //    WishListObjectList *list = [_product objectAtIndex:indexPath.row];
-    //    cell.productPrice.text = list.product_price;
-    //
-    //    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.product_name];
-    //    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    //    [paragrahStyle setLineSpacing:5];
-    //    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
-    //    cell.productName.attributedText = attributedString;
-    //    cell.productName.lineBreakMode = NSLineBreakByTruncatingTail;
-    //    cell.productShop.text = list.shop_name?:@"";
-    //
-    //    if(list.shop_gold_status == 1) {
-    //        cell.goldShopBadge.hidden = NO;
-    //    } else {
-    //        cell.goldShopBadge.hidden = YES;
-    //    }
-    //
-    //    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //    UIImageView *thumb = cell.productImage;
-    //    thumb.image = nil;
-    //
-    //    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-    //        #pragma clang diagnostic push
-    //        #pragma clang diagnostic ignored "-Warc-retain-cycles"
-    //        [thumb setImage:image];
-    //        [thumb setContentMode:UIViewContentModeScaleAspectFill];
-    //    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    //    }];
-    //
-    //    //next page if already last cell
-    //    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
-    //    if (row == indexPath.row) {
-    //        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
-    //            _isFailRequest = NO;
-    //            [_networkManager doRequest];
-    //        }
-    //    }
-    //
     return cell;
 }
 
@@ -230,7 +211,7 @@ typedef enum TagRequest {
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     WishListObjectList *product = [_product objectAtIndex:indexPath.row];
-    //    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+    [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -288,6 +269,10 @@ typedef enum TagRequest {
     [_networkManager doRequest];
 }
 
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+}
 
 #pragma mark - ScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -382,7 +367,7 @@ typedef enum TagRequest {
         [_product addObjectsFromArray: feed.data.list];
     }
     
-    [_noResult removeFromSuperview];
+    [_noResultView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
         _nextPageUri =  feed.data.paging.uri_next;
@@ -392,11 +377,13 @@ typedef enum TagRequest {
             //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
         }
+        [_noResultView removeFromSuperview];
     } else {
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResult];
+        //[self setView:_noResultView];
+        [_collectionView addSubview:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -438,11 +425,35 @@ typedef enum TagRequest {
     
 }
 
+- (void)didAddedProductToWishList:(NSNotification*)notification {
+    self.view = _contentView;
+}
+
+- (void)didRemovedProductFromWishList:(NSNotification*)notification {
+    NSString *productId = [notification object];
+    
+    for (int i = 0; i < _product.count; i++) {
+        WishListObjectList* wish = _product[i];
+        if ([wish.product_id isEqualToString:productId]) {
+            [_product removeObjectAtIndex:i];
+            i--;
+        }
+    }
+    if(_product.count > 0){
+        [_collectionView reloadData];
+        [_noResultView removeFromSuperview];
+    }else{
+        [_collectionView addSubview:_noResultView];
+    }
+    [_collectionView reloadData];
+}
+
 #pragma mark - Other Method
 - (IBAction)pressRetryButton:(id)sender {
     [_networkManager doRequest];
     _isFailRequest = NO;
     [_collectionView reloadData];
+    
 }
 
 

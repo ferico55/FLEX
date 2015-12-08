@@ -37,8 +37,6 @@
 #import "GeneralPhotoProductCell.h"
 #import "GeneralSingleProductCell.h"
 
-#import "TAGDataLayer.h"
-
 #import "ProductCell.h"
 #import "ProductSingleViewCell.h"
 #import "ProductThumbCell.h"
@@ -50,6 +48,8 @@
 
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
+#import "NoResultReusableView.h"
+#import "SpellCheckRequest.h"
 
 #pragma mark - Search Result View Controller
 
@@ -85,7 +85,9 @@ GeneralSingleProductDelegate,
 TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 PromoRequestDelegate,
-PromoCollectionViewDelegate
+PromoCollectionViewDelegate,
+NoResultDelegate,
+SpellCheckRequestDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -106,7 +108,8 @@ PromoCollectionViewDelegate
 
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
-
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 @end
 
 @implementation SearchResultViewController {
@@ -130,11 +133,12 @@ PromoCollectionViewDelegate
     
     UserAuthentificationManager *_userManager;
     TAGContainer *_gtmContainer;
-    NoResultView *_noResultView;
+    NoResultReusableView *_noResultView;
     
     NSString *_searchBaseUrl;
     NSString *_searchPostUrl;
     NSString *_searchFullUrl;
+    NSString *_suggestion;
     
     BOOL _isFailRequest;
 }
@@ -147,6 +151,16 @@ PromoCollectionViewDelegate
         _isnodata = YES;
     }
     return self;
+}
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [_noResultView generateAllElements:@"no-result.png"
+                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
+                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
+                               btnTitle:@""];
+    [_noResultView hideButton:YES];
+    _noResultView.delegate = self;
 }
 
 #pragma mark - Life Cycle
@@ -165,7 +179,6 @@ PromoCollectionViewDelegate
     self.navigationItem.backBarButtonItem = backButton;
     
     _userManager = [UserAuthentificationManager new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
     _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
@@ -175,6 +188,7 @@ PromoCollectionViewDelegate
     _params = [NSMutableDictionary new];
     _start = 0;
     
+    [self initNoResultView];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE]];
@@ -197,13 +211,16 @@ PromoCollectionViewDelegate
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         if(self.isFromAutoComplete) {
-            self.screenName = @"AutoComplete Search Result - Product Tab";
+            [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
+            self.screenName = @"Product Search Results (From Auto Complete Search)";
         } else {
-            self.screenName = @"Search Result - Product Tab";
+            [TPAnalytics trackScreenName:@"Product Search Results" gridType:self.cellType];
+            self.screenName = @"Product Search Results";
         }
-        
-    }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        self.screenName = @"Search Result - Catalog Tab";
+    }
+    else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+        [TPAnalytics trackScreenName:@"Catalog Search Results"];
+        self.screenName = @"Catalog Search Results";
     }
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
@@ -240,6 +257,8 @@ PromoCollectionViewDelegate
                                forState:UIControlStateNormal];
     }
     
+    self.contentView = self.view;
+    
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
@@ -271,10 +290,14 @@ PromoCollectionViewDelegate
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
     
+    _spellCheckRequest = [SpellCheckRequest new];
+    _spellCheckRequest.delegate = self;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    _suggestion = @"";
     [_collectionView reloadData];
 }
 
@@ -409,6 +432,7 @@ PromoCollectionViewDelegate
         
         [self.navigationController pushViewController:vc animated:YES];
     } else {
+        [TPAnalytics trackProductClick:product];
         [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
     }
 }
@@ -484,6 +508,7 @@ PromoCollectionViewDelegate
 }
 
 #pragma mark - Methods
+
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
     _isrefreshview = YES;
@@ -670,9 +695,9 @@ PromoCollectionViewDelegate
         NSString *baseUrl;
 //        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
         if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
-            baseUrl = @"https://ace-staging.tokopedia.com/";
-        } else {
             baseUrl = @"https://ajax.tokopedia.com/";
+        } else {
+            baseUrl = @"https://ajax-staging.tokopedia.com/";
         }
         _objectmanager = [RKObjectManager sharedClient:baseUrl];
 #endif
@@ -787,6 +812,7 @@ PromoCollectionViewDelegate
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
             if(search.result.products.count > 0) {
                 [_product addObject: search.result.products];
+                [TPAnalytics trackProductImpressions:search.result.products];
             }
 
         } else {
@@ -810,10 +836,27 @@ PromoCollectionViewDelegate
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
             }
-        } else {
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-            [_collectionView addSubview:_noResultView];
             
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
+            //self.view = self.contentView;
+            [_noResultView removeFromSuperview];
+        } else {
+            //no data at all
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
+            
+            if([self isUsingAnyFilter]){
+                _suggestion = @"";
+                [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+                [_noResultView hideButton:YES];
+            }else{
+                if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
+                    [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+                }else{
+                    _suggestion = @"";
+                }
+            }
+        
+            [_collectionView addSubview:_noResultView];
         }
         
         if(_start > 0) [self requestPromo];
@@ -934,10 +977,27 @@ PromoCollectionViewDelegate
     return RKRequestMethodGET;
 }
 
+#pragma mark - No Result Delegate
+
+- (void) buttonDidTapped:(id)sender{
+    [_params setObject:_suggestion forKey:@"search"];
+    //self.view = self.contentView;
+    [_noResultView removeFromSuperview];
+    
+    NSDictionary *newData = @{
+                            @"auth" : [_data objectForKey:@"auth"],
+                            @"type" : [_data objectForKey:@"type"],
+                            @"search": _suggestion
+                            };
+    _data = newData;
+    self.title = _suggestion;
+    
+    [_networkManager doRequest];
+}
+
 #pragma mark - Other Method
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
@@ -946,6 +1006,17 @@ PromoCollectionViewDelegate
     _searchPostUrl = [_gtmContainer stringForKey:GTMKeySearchPost];
     _searchFullUrl = [_gtmContainer stringForKey:GTMKeySearchFull];
 }
+
+- (BOOL) isUsingAnyFilter{
+    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_min"]] isEqualToString:@"0"];
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_max"]] isEqualToString:@"0"];;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
+    
+    return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
+}
+
 
 #pragma mark - Promo request delegate
 
@@ -1015,6 +1086,23 @@ PromoCollectionViewDelegate
         self.scrollDirection = ScrollDirectionDown;
     }
     self.lastContentOffset = scrollView.contentOffset.y;
+}
+
+#pragma mark - Spell Check Delegate
+
+-(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
+    _suggestion = suggestion;
+    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain"];
+        [_noResultView hideButton:YES];
+    }else if([_data count] > 3){
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+        [_noResultView hideButton:YES];
+    }else{
+        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
+        [_noResultView setNoResultButtonTitle:_suggestion];
+        [_noResultView hideButton:NO];
+    }
 }
 
 @end

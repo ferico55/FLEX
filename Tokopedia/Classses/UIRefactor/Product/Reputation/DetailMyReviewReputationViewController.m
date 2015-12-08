@@ -32,7 +32,6 @@
 #import "string_inbox_message.h"
 #import "String_Reputation.h"
 #import "SkipReviewResult.h"
-#import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
@@ -389,13 +388,13 @@
 
         if(UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
             NSString *strMessage = @"";
-            if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+            if([emoticonState isEqualToString:CReviewScoreBad]) {
                 strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
             }
-            else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+            else if([emoticonState isEqualToString:CReviewScoreNeutral]) {
                 strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
             }
-            else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+            else if([emoticonState isEqualToString:CReviewScoreGood]) {
                 strMessage = [NSString stringWithFormat:@"Saya Puas!"];
             }
             
@@ -943,6 +942,12 @@
 }
 
 - (void)actionReviewRate:(id)sender {
+    if([_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf penilaian ini telah dikunci, Anda telah melewati batas waktu penilaian."] delegate:self];
+        [stickyAlertView show];
+        return;
+    }
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UINavigationController *navMaster = [((SplitReputationViewController *) self.parentViewController.parentViewController.nextResponder.nextResponder) getMasterNavigation];
         if([[navMaster.viewControllers firstObject] isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
@@ -1001,9 +1006,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

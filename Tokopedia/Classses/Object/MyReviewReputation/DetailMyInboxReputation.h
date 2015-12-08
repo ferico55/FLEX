@@ -66,6 +66,7 @@
 @property (nonatomic, strong) NSString *role;
 @property (nonatomic, strong) NSString *reputation_inbox_id;
 @property (nonatomic, strong) NSString *auto_read;
+@property (nonatomic, strong) NSString *reputation_progress;
 
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 @property (nonatomic, strong) MyReviewReputationViewModel *viewModel;

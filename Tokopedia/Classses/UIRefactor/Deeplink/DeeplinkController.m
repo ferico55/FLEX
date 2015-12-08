@@ -10,7 +10,6 @@
 #import "NavigateViewController.h"
 #import "WebViewController.h"
 #import "RequestUtils.h"
-#import "TAGDataLayer.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
@@ -77,9 +76,7 @@
 - (BOOL)shouldOpenWebViewURL:(NSURL *)url {
     BOOL shouldOpen = NO;
     
-    UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
@@ -151,7 +148,12 @@
     }
     else if(explodedPathUrl.count == 2) {
         //shop
-        [self redirectToShop:explodedPathUrl];
+        if([self isUrlContainPerlPostfix:explodedPathUrl[1]]) {
+            [self activeController:self.activeController showWebViewURL:url];
+        } else {
+            [self redirectToShop:explodedPathUrl];
+        }
+
     }
     else if(explodedPathUrl.count == 3) {
         //product
@@ -159,9 +161,23 @@
             @"product_key"   : explodedPathUrl[2],
             @"shop_domain"   : explodedPathUrl[1]
         };
-        [self.navigator navigateToProductFromViewController:self.activeController
-                                                   withData:data];
+        
+        if([self isUrlContainPerlPostfix:explodedPathUrl[2]]) {
+            [self activeController:self.activeController showWebViewURL:url];
+        } else {
+            [self.navigator navigateToProductFromViewController:self.activeController
+                                                       withData:data];
+        }
+
     }
+}
+
+- (BOOL)isUrlContainPerlPostfix:(NSString*)url {
+    if([url rangeOfString:@".pl"].location != NSNotFound) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - Redirect to Web View
@@ -170,7 +186,7 @@
     NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     WebViewController *webController = [[WebViewController alloc] init];
     webController.strTitle = explodedPathUrl[1];
-    webController.strURL = [NSString stringWithFormat:@"https://%@%@", [url host], [url path]];
+    webController.strURL = [url absoluteString];
     webController.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:webController animated:YES];
 }

@@ -112,33 +112,26 @@
     
     _table.tableHeaderView = _header;
     
-    //UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-//    barButtonItem.tag = 10;
-//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    //right button
-
     NSString *shopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     BOOL isLogin = [_userManager isLogin];
     if(isLogin && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
-
-        UIBarButtonItem *rightbar;
+        NSBundle *bundle = [NSBundle mainBundle];
+        UIBarButtonItem *addButton;
         UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
             UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+            addButton = [[UIBarButtonItem alloc] initWithImage:image
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(tap:)];
+        } else {
+            addButton = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(tap:)];
         }
-        else
-            rightbar = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        [rightbar setTag:11];
-        self.navigationItem.rightBarButtonItem = rightbar;
+        [addButton setTag:11];
+        self.navigationItem.rightBarButtonItem = addButton;
     }
-    
     
     if (_list.count>2) {
         _isnodata = NO;
@@ -168,6 +161,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // UA
+    [TPAnalytics trackScreenName:@"Product - Talk List"];
+    
+    // GA
     self.screenName = @"Product - Talk List";
 }
 
@@ -555,13 +553,18 @@
 #pragma mark - Notification Handler
 - (void)updateTotalComment:(NSNotification*)notification{
     NSDictionary *userinfo = notification.userInfo;
-    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
+    NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
+
     if(index > _list.count) return;
     
     TalkList *list = _list[index];
-    list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
-    list.viewModel = nil;
-    [_table reloadData];
+    if ([talkId isEqualToString:list.talk_id]) {
+        NSString *totalComment = [userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT];
+        list.talk_total_comment = [NSString stringWithFormat:@"%@", totalComment];
+        list.viewModel = nil;
+        [_table reloadData];
+    }
 }
 
 - (void)updateDeletedTalk:(NSNotification*)notification {

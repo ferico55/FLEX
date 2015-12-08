@@ -18,7 +18,6 @@
 #import "VTConfig.h"
 #import "VTDirect.h"
 #import "VTCardDetails.h"
-#import "TAGDataLayer.h"
 
 @interface TransactionCCDetailViewController ()
 <
@@ -253,9 +252,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
@@ -309,6 +306,8 @@
                 vc.cartDetail = _cartSummary;
                 vc.delegate = self;
                 vc.isVeritrans = YES;
+                vc.paymentID = _cartSummary.payment_id;
+
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
                 navigationController.navigationBar.translucent = NO;
@@ -410,6 +409,8 @@
     vc.cartDetail = _cartSummary;
     vc.delegate = self;
     vc.CCParam = param;
+    vc.paymentID = _cartSummary.payment_id;
+
     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;

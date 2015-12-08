@@ -23,6 +23,11 @@
 
 @implementation TKPDAlert
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.button.layer.cornerRadius = 2;
+}
+
 - (void)setText:(NSString *)text
 {
     _text = text?:@"";
@@ -47,6 +52,7 @@
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:attributes];
     
     _textLabel.attributedText = attributedText;
+    [_textLabel sizeToFit];
     
     self.clipsToBounds = YES;
     self.layer.cornerRadius = 2;

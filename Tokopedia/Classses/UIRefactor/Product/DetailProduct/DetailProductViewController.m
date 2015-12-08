@@ -60,7 +60,6 @@
 #import "ProductAddEditViewController.h"
 
 #import "DetailProductOtherView.h"
-
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"
@@ -80,7 +79,6 @@
 #import "RequestMoveTo.h"
 #import "WebViewController.h"
 #import "EtalaseList.h"
-#import "TAGDataLayer.h"
 
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
@@ -425,6 +423,7 @@ UIAlertViewDelegate
             [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
 //            [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }];
+        
     }
     else {
         _favButton.tag = 17;
@@ -447,7 +446,10 @@ UIAlertViewDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.screenName = @"Product Info";
+
+    self.screenName = @"Product Information";
+    [TPAnalytics trackScreenName:@"Product Information"];
+    
     _promoteNetworkManager.delegate = self;
     
     self.hidesBottomBarWhenPushed = YES;
@@ -501,8 +503,6 @@ UIAlertViewDelegate
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    
 }
 
 
@@ -643,6 +643,7 @@ UIAlertViewDelegate
                     transactionVC.wholeSales = _product.result.wholesale_price;
                     transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
+        
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -1675,9 +1676,10 @@ UIAlertViewDelegate
         StickyAlertView *stickyAlertView;
         if(_favButton.tag == 17) {//Favorite
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
-        }
-        else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:_product.result.shop_info.shop_url];
+        }else {
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:_product.result.shop_info.shop_url];
         }
         
         [stickyAlertView show];
@@ -1731,7 +1733,14 @@ UIAlertViewDelegate
         }
         else
         {
-            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+            //wishlist max is 1000, set custom error message. If other error happened, use default error message.
+            if([wishListObject.message_error[0] isEqual:@"Wishlist sudah mencapai batas (1000)."]){
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Maksimum wishlist Anda adalah 1000 produk"] delegate:self];
+            }else{
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+            }
+            
+            
             [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
             [self setRequestingAction:btnWishList isLoading:NO];
@@ -1756,11 +1765,14 @@ UIAlertViewDelegate
         }
         [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.result];
 }
 
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
+    
     if(tag == CTagPromote)
     {
         
@@ -1784,6 +1796,9 @@ UIAlertViewDelegate
     }
     else if(tag == CTagWishList)
     {
+        NSDictionary *result = ((RKMappingResult*) errorResult).dictionary;
+        NSString *errorMessage = [result objectForKey:kTKPD_APIERRORMESSAGEKEY];
+        
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
         [alert show];
         [self setBackgroundWishlist:NO];
@@ -2066,7 +2081,7 @@ UIAlertViewDelegate
             _product = stats;
             _product.isDummyProduct = NO;
         }
-
+        
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
         _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
@@ -2181,6 +2196,8 @@ UIAlertViewDelegate
             [self setFooterViewData];
             [self setOtherProducts];
             [self addImpressionClick];
+
+            [TPAnalytics trackProductView:_product.result.product];
             
             _isnodata = NO;
             [_table reloadData];
@@ -2903,6 +2920,7 @@ UIAlertViewDelegate
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagUnWishList;
         [tokopediaNetworkManagerWishList doRequest];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemovedProductFromWishList" object:_product.result.product.product_id];
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -2951,6 +2969,7 @@ UIAlertViewDelegate
         [Localytics incrementValueBy:1
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.result.product.product_id];
         
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -3171,8 +3190,7 @@ UIAlertViewDelegate
 
 #pragma mark - Other Method
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+//    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

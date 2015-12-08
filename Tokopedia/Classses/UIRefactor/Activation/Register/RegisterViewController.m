@@ -28,6 +28,8 @@
 
 #import "Localytics.h"
 
+#import "TAGDataLayer.h"
+
 static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
 
 #pragma mark - Register View Controller
@@ -169,8 +171,11 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.screenName = @"Register Page";
+    
     self.title = kTKPDREGISTER_NEW_TITLE;
+    
+    [TPAnalytics trackScreenName:@"Register Page"];
+    self.screenName = @"Register Page";
     
     self.texfieldfullname.isTopRoundCorner = YES;
     self.textfielddob.isBottomRoundCorner = YES;
@@ -502,7 +507,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
 
             TKPDAlert *alert = [TKPDAlert newview];
-            alert.text = @"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke akun Anda. Apabila tidak menemukan email tersebut, periksa terlebih dahulu kotak spam Anda. Selamat berbelanja!";
+            NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldemail.text];
+            alert.text = text;
             alert.tag = 13;
             alert.delegate = self;
             [alert show];

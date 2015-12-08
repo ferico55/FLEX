@@ -614,9 +614,7 @@
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:selected];
                 NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-                if (sourceType == UIImagePickerControllerSourceTypeCamera)
-                    [data setObject:[NSIndexPath indexPathForRow:0 inSection:0] forKey:@"selected_indexpath"];
-                else [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
                 [self setImageData:[data copy] tag:index];
                 j++;
             }
