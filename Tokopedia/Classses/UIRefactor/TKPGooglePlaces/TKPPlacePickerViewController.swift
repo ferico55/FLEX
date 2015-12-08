@@ -14,7 +14,7 @@ enum TypePlacePicker : Int{
     case TypeShowPlace
 }
 
-@objc class TKPPlacePickerViewController: UIViewController, UISearchBarDelegate, GMSMapViewDelegate {
+@objc class TKPPlacePickerViewController: UIViewController, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -26,11 +26,11 @@ enum TypePlacePicker : Int{
     @IBOutlet weak var addressInfoLabel: UILabel!
     
     var _firstCoordinate = CLLocationCoordinate2D()
-    var _type : Int = 0
+    internal var _type : Int = 0
     var _autoCompleteResults : [GMSAutocompletePrediction] = []
 //    var _autoCompleteResults : NSMutableArray = []
-//    var _placeHistories : [String] = []
-    var _placeHistories : NSMutableArray = NSMutableArray()
+    var _placeHistories : [String] = []
+//    var _placeHistories : NSMutableArray = NSMutableArray()
     
     var _placePicker : GMSPlacePicker?
     var _placesClient : GMSPlacesClient?
@@ -54,12 +54,20 @@ enum TypePlacePicker : Int{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        _marker.position = _firstCoordinate
+        if #available(iOS 8.0, *) {
+            _locationManager.requestWhenInUseAuthorization()
+        } else {
+            // Fallback on earlier versions
+        }
+        _locationManager.startUpdatingHeading()
+        _locationManager.delegate = self;
+        adustBehaviorType(_type)
+
         _marker.map = mapView;
         _marker.appearAnimation = kGMSMarkerAnimationNone;
         _marker.icon = UIImage(named:"icon_pinpoin_toped.png")
         
-        adustBehaviorType(_type)
+        _marker.position = _firstCoordinate
         
         searchBar.placeholder = "Cari Alamat";
         searchBar.tintColor = UIColor.whiteColor()
@@ -73,8 +81,8 @@ enum TypePlacePicker : Int{
         doneButton = doneButton.roundCorners(UIRectCorner.TopRight.union(UIRectCorner.BottomRight), radius: 5)
         whiteLocationView.layer.cornerRadius = 5;
         
-//        updateAddressSaveHistory(false, addressSugestion: nil)
-//        loadHistory()
+        updateAddressSaveHistory(false, addressSugestion: nil)
+        loadHistory()
     }
     
     func adustBehaviorType(type: Int){
@@ -124,6 +132,7 @@ enum TypePlacePicker : Int{
         var documentsPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
         documentsPath += "history_places.plist"
         let rawStandards: NSArray = NSArray(contentsOfFile: documentsPath)!
+        _placeHistories = [String](arrayLiteral: rawStandards as! [_,])
         _placeHistories.addObjectsFromArray(rawStandards as [AnyObject])
     }
     
