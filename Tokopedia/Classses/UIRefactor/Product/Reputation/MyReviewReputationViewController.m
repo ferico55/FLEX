@@ -363,6 +363,8 @@
                                                                  COrderID,
                                                                  @"auto_read",
                                                                  @"reputation_progress",
+                                                                 @"my_score_image",
+                                                                 @"their_score_image",
                                                                  CUnaccessedReputationReview,
                                                                  CShowRevieweeSCore,
                                                                  CRole]];
@@ -507,6 +509,8 @@
             selectedReputation.seller_score = emoticonState;
             selectedReputation.viewModel.seller_score = selectedReputation.seller_score;
         }
+        
+        selectedReputation.viewModel.just_updated = @"1";
         
         //Get view controller based on device (ipad / iphone)
         UIViewController *tempViewController;
