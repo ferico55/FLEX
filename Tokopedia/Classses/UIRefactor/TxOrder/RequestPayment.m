@@ -63,7 +63,6 @@
     }
 }
 
-
 -(void)doRequestValidation
 {
     [[self networkManagerValidation]doRequest];

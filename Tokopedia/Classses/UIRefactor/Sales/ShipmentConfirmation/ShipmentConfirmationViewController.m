@@ -15,6 +15,7 @@
 #import "OrderDetailViewController.h"
 #import "FilterShipmentConfirmationViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
+#import "ChangeCourierViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 #import "CancelShipmentViewController.h"
 #import "NavigateViewController.h"
@@ -32,6 +33,7 @@
     OrderDetailDelegate,
     FilterShipmentConfirmationDelegate,
     SubmitShipmentConfirmationDelegate,
+    ChangeCourierDelegate,
     CancelShipmentConfirmationDelegate,
     RequestShipmentCourierDelegate
 >
@@ -263,7 +265,16 @@
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", transaction.order_payment.payment_shipping_due_date];
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
-    [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+    if ([transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+        [cell.acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
+        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
+        cell.acceptButton.tag = 3;
+    } else {
+        [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_order_check-01.png"] forState:UIControlStateNormal];
+        cell.acceptButton.tag = 2;
+    }
+    
  
     return cell;
 }
@@ -276,6 +287,7 @@
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
             _tableView.tableFooterView = _footerView;
             [_activityIndicator startAnimating];
+            [self configureRestKit];
             [self request];
         } else {
             _tableView.tableFooterView = nil;
@@ -296,6 +308,24 @@
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+    controller.delegate = self;
+    controller.shipmentCouriers = _shipmentCouriers;
+    controller.order = _selectedOrder;
+    navigationController.viewControllers = @[controller];
+    
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)tableViewCell:(UITableViewCell *)cell changeCourierAtIndexPath:(NSIndexPath *)indexPath {
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    ChangeCourierViewController *controller = [ChangeCourierViewController new];
     controller.delegate = self;
     controller.shipmentCouriers = _shipmentCouriers;
     controller.order = _selectedOrder;

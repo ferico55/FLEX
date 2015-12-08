@@ -15,7 +15,9 @@
 #define CStringSuccessInsertReputation @"Berhasil mengirim reputasi"
 #define CPleaseWait @"Please wait"
 
-
+#define CReviewScoreBad @"-1"
+#define CReviewScoreNeutral @"1"
+#define CReviewScoreGood @"2"
 
 #define CKirimPesanMu @"Kirim pesanmu di sini.."
 #define CInsertReputation @"insert_reputation"
