@@ -337,29 +337,25 @@
                                                                                    attributes:attributes];
             ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
             
-            NSString *name = ([list.comment_shop_name boolValue]) ? list.comment_shop_name : list.comment_user_name;
+            NSString *name = ([list.comment_user_label isEqualToString:@"Penjual"]) ? list.comment_shop_name : list.comment_user_name;
             ((GeneralTalkCommentCell*)cell).user_name.text = name;
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
             ((GeneralTalkCommentCell*)cell).btnReputation.tag = indexPath.row;
             
-            if(list.comment_is_owner!=nil && [list.comment_is_owner isEqualToString:@"1"]) {//Seller
+            if([list.comment_user_label isEqualToString:@"Penjual"]) {//Seller
                 [SmileyAndMedal generateMedalWithLevel:list.comment_shop_reputation.reputation_badge_object.level withSet:list.comment_shop_reputation.reputation_badge_object.set withImage:((GeneralTalkCommentCell*)cell).btnReputation isLarge:NO];
                 [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
-            }
-            else {
-                if(list.comment_user_reputation==nil && list.comment_user_id!=nil && _auth!=nil && [list.comment_user_id isEqualToString:[[_auth objectForKey:kTKPD_USERIDKEY] stringValue]] && [_auth objectForKey:CUserReputation]) {
-                    NSData *data = [[_auth objectForKey:CUserReputation] dataUsingEncoding:NSUTF8StringEncoding];
-                    NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                    
-                    if(tempDict) {
-                        list.comment_user_reputation = [ReputationDetail new];
-                        list.comment_user_reputation.positive_percentage = [tempDict objectForKey:CPositivePercentage];
-                        list.comment_user_reputation.negative = [tempDict objectForKey:CNegative];
-                        list.comment_user_reputation.neutral = [tempDict objectForKey:CNeutral];
-                        list.comment_user_reputation.positive = [tempDict objectForKey:CPositif];
-                        list.comment_user_reputation.no_reputation = [tempDict objectForKey:CNoReputation];
+            } else {
+                if (_auth) {
+                    if (list.comment_user_reputation == nil && list.comment_user_id != nil) {
+                        NSString *userId = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+                        BOOL usersComment = [list.comment_user_id isEqualToString:userId];
+                        if (usersComment) {
+                            UserAuthentificationManager *user = [UserAuthentificationManager new];
+                            list.comment_user_reputation = user.reputation;
+                        }
                     }
                 }
                 
@@ -393,7 +389,7 @@
             }
         
             NSURL *url;
-            if ([list.comment_is_owner boolValue]) {
+            if ([list.comment_user_label isEqualToString:@"Penjual"]) {
                 url = [NSURL URLWithString:list.comment_shop_image];
             } else {
                 url = [NSURL URLWithString:list.comment_user_image];
@@ -909,6 +905,7 @@
                             comment.comment_is_owner = @"1";
                         }
                         comment.comment_is_seller = @"1";
+                        comment.comment_user_label = @"Penjual";
                     }
 
                     NSDate *today = [NSDate date];
@@ -1066,7 +1063,6 @@
             [_table beginUpdates];
             [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
             [_table endUpdates];
-
             
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentaction.message_error
                                                                            delegate:self];

@@ -120,6 +120,8 @@
     [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
+    
     // GTM
     [self configureGTM];
     
