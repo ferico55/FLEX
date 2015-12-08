@@ -56,9 +56,10 @@
     leftNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     leftNav.navigationBar.translucent = NO;
     leftNav.navigationBar.tintColor = [UIColor whiteColor];
-        vc.detailViewController = leftViewController;
+    vc.detailViewController = leftViewController;
     vc1.detailViewController = leftViewController;
     vc2.detailViewController = leftViewController;
+    vc3.detailViewController = leftViewController;
     
     self.view.frame = [UIScreen mainScreen].bounds;
     
