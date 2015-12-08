@@ -20,5 +20,5 @@
 @property (nonatomic, strong) NSString *shipment_package_id;
 @property (nonatomic, strong) NSString *shipment_package_name;
 
-
+@property (nonatomic, strong) NSString *auto_resi_image;
 @end

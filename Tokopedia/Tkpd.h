@@ -12,6 +12,9 @@
 //#define kTkpdBaseURLString @"http://www.ft-feby.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#define kTkpdBaseURLString @"http://www.py-purnaresa.ndvl/ws"
+//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+//#define kTkpdBaseURLString @"http://new.rl-ryandy.ndvl/ws"
+//#define kTkpdBaseURLString @"http://new.fp-farissa.ndvl/ws"
 //#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 
 
@@ -22,7 +25,7 @@
 //#endif
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 #define kTkpdBaseURLHttpsString @"https://ws.tokopedia.com"
-//#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+
 
 
 #define kTKPD_AUTHKEY @"auth"

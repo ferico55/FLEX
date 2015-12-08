@@ -32,7 +32,6 @@
 - (void)tapToFollowTalk:(UITableViewCell *)cell withButton:(UIButton *)button;
 - (void)tapToDeleteTalk:(UITableViewCell *)cell;
 
-
 @end
 
 @interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate, ReportViewControllerDelegate> {

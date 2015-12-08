@@ -32,14 +32,13 @@
 #import "ShopContainerViewController.h"
 #import "SpellCheckRequest.h"
 
-@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, NoResultDelegate,SpellCheckRequestDelegate>
+@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 
 -(void)cancel;
@@ -81,7 +80,6 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
-    NSString *_suggestion;
 }
 
 #pragma mark - Initialization
@@ -100,8 +98,8 @@
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:@"no-result.png"
-                                 title:@"Oops..... Hasil pencarian tidak ditemukan"
-                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
+                                 title:@"Oops..... Hasil pencarian Anda tidak dapat ditemukan."
+                                  desc:@"Silakan lakukan pencarian dengan kata kunci lain"
                               btnTitle:@""];
 }
 
@@ -164,8 +162,6 @@
     _cachecontroller.URLCacheInterval = 0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
-    self.contentView = self.view;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
@@ -177,7 +173,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _suggestion = @"";
     
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
@@ -437,11 +432,17 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    [_spellCheckRequest getSpellingSuggestion:@"shop" query:[_data objectForKey:@"search"] category:@"0"];
                     
-                    self.view = _noResultView;
+                    if([self isUsingAnyFilter]){
+                        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+                        [_noResultView hideButton:YES];
+                    }else{
+                        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain"];
+                        [_noResultView hideButton:YES];
+                    }
+                    [_table addSubview: _noResultView];
                 }else{
-                    self.view = self.contentView;
+                    [_noResultView removeFromSuperview];
                     _urinext =  _searchitem.result.paging.uri_next;
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
                     
@@ -577,6 +578,15 @@
     [_table reloadData];
     [self loadData];
 }
+- (BOOL) isUsingAnyFilter{
+    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![_params objectForKey:@"price_min"] == 0;
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![_params objectForKey:@"price_max"] == 0;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![_params objectForKey:@"shop_type"] == 0;
+    
+    return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
+}
 
 #pragma mark - Sort Delegate
 -(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
@@ -605,14 +615,6 @@
     [self refreshView:nil];
     _table.tableFooterView = _footer;
     [_act startAnimating];
-}
-
-#pragma mark - No Result Delegate
-
-- (void) buttonDidTapped:(id)sender{
-    [_params setObject:_suggestion forKey:@"search"];
-    self.view = self.contentView;
-    [[self getNetworkManager] doRequest];
 }
 
 #pragma mark - LoadingView Delegate
@@ -749,23 +751,6 @@
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
-}
-
-#pragma mark - Spell Check Delegate
-
--(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
-    _suggestion = suggestion;
-    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain"];
-        [_noResultView hideButton:YES];
-    }else if([_data count] > 3){
-        [_noResultView setNoResultDesc:@"Coba ganti filter dengan yang lain"];
-        [_noResultView hideButton:YES];
-    }else{
-        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
-        [_noResultView setNoResultButtonTitle:_suggestion];
-        [_noResultView hideButton:NO];
-    }
 }
 
 @end

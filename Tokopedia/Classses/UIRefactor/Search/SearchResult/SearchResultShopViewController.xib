@@ -29,6 +29,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <color key="sectionIndexBackgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="iUu-NC-srF"/>
                         <outlet property="delegate" destination="-1" id="w0I-mt-BW4"/>
@@ -66,7 +67,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="DEU-dk-S8H" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1IM-kL-pIp"/>
                 <constraint firstItem="DEU-dk-S8H" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Eb6-C9-34h"/>

@@ -377,12 +377,13 @@ typedef enum TagRequest {
             //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
         }
-        self.view = self.contentView;
+        [_noResultView removeFromSuperview];
     } else {
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [self setView:_noResultView];
+        //[self setView:_noResultView];
+        [_collectionView addSubview:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -440,9 +441,9 @@ typedef enum TagRequest {
     }
     if(_product.count > 0){
         [_collectionView reloadData];
-        self.view = _contentView;
+        [_noResultView removeFromSuperview];
     }else{
-        self.view = _noResultView;
+        [_collectionView addSubview:_noResultView];
     }
     [_collectionView reloadData];
 }
