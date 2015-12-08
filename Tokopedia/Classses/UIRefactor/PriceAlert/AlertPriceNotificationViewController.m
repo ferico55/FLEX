@@ -103,6 +103,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     if(tempUnreadIndexPath != nil) {
         ((DetailPriceAlert *) [arrList objectAtIndex:tempUnreadIndexPath.row]).pricealert_total_unread = @"0";
     }

@@ -12,6 +12,7 @@
 @implementation SplitReputationViewController
 @synthesize splitViewController;
 - (void)viewDidLoad {
+    [super viewDidLoad];
     if ([splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {
         [splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAllVisible];
     }
