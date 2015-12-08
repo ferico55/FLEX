@@ -206,9 +206,7 @@
     
     
     // set right smiley interaction
-    BOOL isReputationAlreadyUpdated = ([object.just_updated isEqualToString:@"1"]);
-    
-    if([object.reputation_progress isEqualToString:@"0"] && !isReputationAlreadyUpdated) {
+    if([object.reputation_progress isEqualToString:@"0"]) {
         btnReview.userInteractionEnabled = YES;        
     } else if([object.reputation_progress isEqualToString:@"1"]) {
         btnReview.userInteractionEnabled = YES;
@@ -220,53 +218,10 @@
         btnReview.userInteractionEnabled = NO;
     }
     
-    
-//
-//    if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreBad]) {
-//        [btnReview setImage:imageSad forState:UIControlStateNormal];
-//    }
-//    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreNeutral]) {
-//        [btnReview setImage:imageNetral forState:UIControlStateNormal];
-//    }
-//    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreGood]) {
-//        btnReview.userInteractionEnabled = NO;
-//        [btnReview setImage:imageSmile forState:UIControlStateNormal];
-//    }
-//    else {
-//        [btnReview setImage:imageNeutral forState:UIControlStateNormal];
-//    }
-//    
-//    // if reputation_progress 2, lock right smiley, pesan error sudah di lock
-//    
-
-//
-//    
-//    //set left smiley (other's reputation)
-//    
-//    //Check flag has reviewed or not
-//    //1&4. kedua pihak sudah kasih reputation
-//    //2&5. salah satu sudah kasih
-//    //3&6. 2 pihak belum kasih
-    imageFlagReview.userInteractionEnabled = YES;
-//
-//    // 1 = tampilan rating from buyer
-//    // 4 = tampilan rating from seller
-//    if([object.show_reviewee_score isEqualToString:@"1"]) {
-//        [self setOtherSmiley:object.seller_score];
-//    } else if ([object.show_reviewee_score isEqualToString:@"4"]) {
-//        [self setOtherSmiley:object.buyer_score];
-//    }
-//    
-//    if([object.show_reviewee_score isEqualToString:@"2"] || [object.show_reviewee_score isEqualToString:@"5"]) {
-//        imageFlagReview.image = imageQuestionBlue;
-//    }
-//    
-//    if([object.show_reviewee_score isEqualToString:@"3"] || [object.show_reviewee_score isEqualToString:@"6"]) {
-//        imageFlagReview.image = imageQuestionGray;
-//    }
-    
     //set right smiley image
     [self setSmileyButton:btnReview withImageString:object.their_score_image];
+    
+    //set left smiley image
     [self setSmileyImage:imageFlagReview withImageString:object.my_score_image];
     
     if(btnReview.isUserInteractionEnabled) {
