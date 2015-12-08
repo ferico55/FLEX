@@ -70,7 +70,11 @@
     UITableViewCell *cell = nil;
     
     id object = [_objects objectAtIndex:indexPath.row];
-    id objectImage = [_objectImages objectAtIndex:indexPath.row];
+    id objectImage;
+    if (_objectImages != nil && _objectImages.count > 0) {
+        objectImage = [_objectImages objectAtIndex:indexPath.row];
+    }
+    
     
     if (_objects.count > 0) {
         cell = (TransactionShipmentATCTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"cellID"];

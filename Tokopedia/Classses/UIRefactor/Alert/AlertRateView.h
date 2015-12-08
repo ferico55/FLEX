@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "String_Reputation.h"
 #define CTagMerah 1
 #define CTagKuning 2
 #define CTagHijau 3
+
 
 @protocol AlertRateDelegate
 - (void)closeWindow;

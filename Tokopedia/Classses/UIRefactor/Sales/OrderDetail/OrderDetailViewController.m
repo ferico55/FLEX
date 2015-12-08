@@ -19,11 +19,13 @@
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "ChangeCourierViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "AlertInfoView.h"
 #import "OrderBookingData.h"
 #import "OrderBookingResponse.h"
+#import "AlertShipmentCodeView.h"
 
 #define CTagAddress 2
 #define CTagPhone 3
@@ -42,7 +44,8 @@ ChooseProductDelegate,
 RejectExplanationDelegate,
 SubmitShipmentConfirmationDelegate,
 CancelShipmentConfirmationDelegate,
-TokopediaNetworkManagerDelegate
+TokopediaNetworkManagerDelegate,
+ChangeCourierDelegate
 >
 {
     NSDictionary *_textAttributes;
@@ -103,6 +106,7 @@ TokopediaNetworkManagerDelegate
 @implementation OrderDetailViewController {
     __weak RKObjectManager *_objectManager;
     TokopediaNetworkManager *_networkManager;
+    AlertShipmentCodeView *_alert;
 }
 
 
@@ -213,11 +217,14 @@ TokopediaNetworkManagerDelegate
                                _transaction.order_shipment.shipment_name,
                                _transaction.order_shipment.shipment_product];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = OrderDetailTag;
-    _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    if ([self.delegate isKindOfClass:[ShipmentConfirmationViewController class]] && [self.transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+        _networkManager = [TokopediaNetworkManager new];
+        _networkManager.delegate = self;
+        _networkManager.tagRequest = OrderDetailTag;
+        _networkManager.maxTries = 5;
+        _networkManager.isUsingHmac = YES;
+        [_networkManager doRequest];
+    }
     
     _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
     
@@ -281,7 +288,16 @@ TokopediaNetworkManagerDelegate
         
         [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
         
-        [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+        if ([_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+            [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
+            [_acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
+            _acceptButton.tag = 3;
+        } else {
+            [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+            [_acceptButton setImage:[UIImage imageNamed:@"icon_order_check-01.png"] forState:UIControlStateNormal];
+            _acceptButton.tag = 2;
+        }
+        
         [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
         
         if (_transaction.order_deadline.deadline_shipping_day_left < 0) {
@@ -572,6 +588,16 @@ TokopediaNetworkManagerDelegate
     } else if (button.tag == 2) {
         
         SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+        controller.delegate = self;
+        controller.shipmentCouriers = _shipmentCouriers;
+        controller.order = _transaction;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        
+    } else if (button.tag == 3) {
+        
+        ChangeCourierViewController *controller = [ChangeCourierViewController new];
         controller.delegate = self;
         controller.shipmentCouriers = _shipmentCouriers;
         controller.order = _transaction;
@@ -968,47 +994,52 @@ TokopediaNetworkManagerDelegate
     
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     OrderBookingResponse *response = [result objectForKey:@""];
+    BOOL status = [response.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
-    NSMutableAttributedString *kurir = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)",
-                                                                                          _transaction.order_shipment.shipment_name,
-                                                                                          _transaction.order_shipment.shipment_product]];
-    NSString *code = ((OrderBookingData*)response.data[0]).tiket_code;
-    
-    NSAttributedString *text;
-    
-    _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGetCode:)];
-    _singleTapGestureRecognizer.numberOfTapsRequired = 1;
-    
-    if([code isEqualToString:@"try again"]) {
-        text = [[NSAttributedString alloc] initWithString:code attributes:@{
-                                                                            NSForegroundColorAttributeName:[UIColor colorWithRed:(62.0/255.0) green:(170.0/255.0) blue:(36.0/255.0) alpha:(255.0/255.0)],
-                                                                            NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0]
-                                                                            }];
-        [_getCodeButton setImage:[UIImage imageNamed:@"icon_pesan_ulang.png"] forState:UIControlStateNormal];
-        [_getCodeButton setHidden:NO];
-        _getCodeButton.enabled = YES;
+    if (status) {
+        NSMutableAttributedString *kurir = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)",
+                                                                                              _transaction.order_shipment.shipment_name,
+                                                                                              _transaction.order_shipment.shipment_product]];
+        NSString *code = ((OrderBookingData*)response.data[0]).tiket_code;
         
-        [_courierAgentLabel addGestureRecognizer:_singleTapGestureRecognizer];
-        [_courierAgentLabel setUserInteractionEnabled:YES];
-        _singleTapGestureRecognizer.cancelsTouchesInView = NO;
-        _singleTapGestureRecognizer.enabled = YES;
-    } else {
-        text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
-        [_getCodeButton setHidden:YES];
-        _getCodeButton.enabled = NO;
+        NSAttributedString *text;
         
-        [_courierAgentLabel removeGestureRecognizer:_singleTapGestureRecognizer];
-        [_courierAgentLabel setUserInteractionEnabled:NO];
-        _singleTapGestureRecognizer.enabled = NO;
-        [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
+        _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGetCode:)];
+        _singleTapGestureRecognizer.numberOfTapsRequired = 1;
+        
+        if([code isEqualToString:@"try again"]) {
+            text = [[NSAttributedString alloc] initWithString:@"Kode sedang diproses..." attributes:@{
+                                                                                                      NSForegroundColorAttributeName:[UIColor blackColor]}];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [_networkManager doRequest];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                });
+            });
+        } else {
+            text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+            [_getCodeButton setHidden:YES];
+            _getCodeButton.enabled = NO;
+            
+            [_courierAgentLabel removeGestureRecognizer:_singleTapGestureRecognizer];
+            [_courierAgentLabel setUserInteractionEnabled:NO];
+            _singleTapGestureRecognizer.enabled = NO;
+            [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
+            
+            [self.view layoutSubviews];
+            
+            _alert = [AlertShipmentCodeView newview];
+            [_alert setText:code];
+            [_alert show];
+        }
+        
+        NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];
+        
+        [kurir appendAttributedString:dash];
+        [kurir appendAttributedString:text];
+        
+        _courierAgentLabel.attributedText = kurir;
     }
-    
-    NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];
-    
-    [kurir appendAttributedString:dash];
-    [kurir appendAttributedString:text];
-    
-    _courierAgentLabel.attributedText = kurir;
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
@@ -1016,7 +1047,9 @@ TokopediaNetworkManagerDelegate
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Tidak ada koneksi internet"]
+                                                                   delegate:self];
+    [alert show];
 }
 
 @end
