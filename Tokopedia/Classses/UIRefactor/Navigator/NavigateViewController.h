@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <GoogleMaps/GoogleMaps.h>
 
+@class TKPPlacePickerViewController;
+
 @interface NavigateViewController : NSObject
 
 -(void)navigateToProfileFromViewController:(UIViewController*)viewController withUserID:(NSString *)userID;

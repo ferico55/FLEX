@@ -53,6 +53,8 @@
 
 #import "GalleryViewController.h"
 
+#import "Tokopedia-Swift.h"
+
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
 @end
@@ -436,10 +438,12 @@
 
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController
 {
-    PlacePickerViewController *placePicker = [PlacePickerViewController new];
-    placePicker.firstCoordinate = location;
-    placePicker.type = type;
-    placePicker.delegate = viewController;
+    TKPPlacePickerViewController *placePicker = [TKPPlacePickerViewController new];
+    
+//    PlacePickerViewController *placePicker = [PlacePickerViewController new];
+//    placePicker.firstCoordinate = location;
+//    placePicker.type = type;
+//    placePicker.delegate = viewController;
     [viewController.navigationController pushViewController:placePicker animated:YES];
 }
 
