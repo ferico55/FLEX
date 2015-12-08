@@ -23,7 +23,7 @@
 //#else
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 #define kTkpdBaseURLHttpsString @"https://ws.tokopedia.com"
 
 
