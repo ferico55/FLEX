@@ -390,12 +390,24 @@ NoResultDelegate
 - (void)updateInboxTicket:(InboxTicketList *)inboxTicket {
     if (_currentTabSegmentIndex == 1 && [inboxTicket.ticket_status isEqualToString:@"2"]) {
         [_tickets removeObjectAtIndex:_selectedIndexPath.row];
+        [self.tableView reloadData];
     } else {
         if (_selectedIndexPath.row < _tickets.count) {
             [_tickets replaceObjectAtIndex:_selectedIndexPath.row withObject:inboxTicket];
+            [self reloadTableWhileRetainingSelection];
         }
     }
-    [self.tableView reloadData];
+}
+
+- (void)reloadTableWhileRetainingSelection {
+    [self.tableView reloadRowsAtIndexPaths:@[_selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self selectCurrentTableRow];
+}
+
+- (void)selectCurrentTableRow {
+    dispatch_async(dispatch_get_main_queue(), ^(void) { //select the row after table finished loading
+        [self.tableView selectRowAtIndexPath:_selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    });
 }
 
 #pragma mark - Methods
