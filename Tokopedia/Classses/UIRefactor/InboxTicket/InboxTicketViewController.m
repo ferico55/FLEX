@@ -367,6 +367,12 @@ NoResultDelegate
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         InboxTicketList* ticket = _tickets.count? [_tickets objectAtIndex:0]: nil;
+        if (_tickets.count) {
+            if (!_selectedIndexPath) {
+                _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            }
+            [self selectCurrentTableRow];
+        }
         [self.detailViewController updateTicket:ticket];
     }
     
