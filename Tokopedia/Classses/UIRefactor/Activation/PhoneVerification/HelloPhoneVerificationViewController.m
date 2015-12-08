@@ -164,7 +164,7 @@ TKPDAlertViewDelegate
 }
 
 - (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
+    return RKRequestMethodPOST;
 }
 
 - (id)getObjectManager:(int)tag{
