@@ -53,8 +53,10 @@
         UIButton *button = (UIButton *)sender;
         if (button.tag == 1) {
             [self.delegate tableViewCell:self rejectOrderAtIndexPath:self.indexPath];
-        } else {
+        } else if (button.tag == 2) {
             [self.delegate tableViewCell:self acceptOrderAtIndexPath:self.indexPath];        
+        } else if (button.tag == 3) {
+            [self.delegate tableViewCell:self changeCourierAtIndexPath:self.indexPath];
         }
     } else if ([[sender view] isKindOfClass:[UILabel class]]) {
         [self.delegate tableViewCell:self didSelectPriceAtIndexPath:self.indexPath];
