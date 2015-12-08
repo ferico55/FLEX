@@ -217,12 +217,14 @@ ChangeCourierDelegate
                                _transaction.order_shipment.shipment_name,
                                _transaction.order_shipment.shipment_product];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = OrderDetailTag;
-    _networkManager.maxTries = 5;
-    _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    if ([self.delegate isKindOfClass:[ShipmentConfirmationViewController class]] && [self.transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+        _networkManager = [TokopediaNetworkManager new];
+        _networkManager.delegate = self;
+        _networkManager.tagRequest = OrderDetailTag;
+        _networkManager.maxTries = 5;
+        _networkManager.isUsingHmac = YES;
+        [_networkManager doRequest];
+    }
     
     _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
     
@@ -992,49 +994,52 @@ ChangeCourierDelegate
     
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     OrderBookingResponse *response = [result objectForKey:@""];
+    BOOL status = [response.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
-    NSMutableAttributedString *kurir = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)",
-                                                                                          _transaction.order_shipment.shipment_name,
-                                                                                          _transaction.order_shipment.shipment_product]];
-    NSString *code = ((OrderBookingData*)response.data[0]).tiket_code;
-    
-    NSAttributedString *text;
-    
-    _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGetCode:)];
-    _singleTapGestureRecognizer.numberOfTapsRequired = 1;
-    
-    if([code isEqualToString:@"try again"]) {
-        text = [[NSAttributedString alloc] initWithString:@"Kode sedang diproses..." attributes:@{
-                                                                            NSForegroundColorAttributeName:[UIColor blackColor]}];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [_networkManager doRequest];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
+    if (status) {
+        NSMutableAttributedString *kurir = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)",
+                                                                                              _transaction.order_shipment.shipment_name,
+                                                                                              _transaction.order_shipment.shipment_product]];
+        NSString *code = ((OrderBookingData*)response.data[0]).tiket_code;
+        
+        NSAttributedString *text;
+        
+        _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGetCode:)];
+        _singleTapGestureRecognizer.numberOfTapsRequired = 1;
+        
+        if([code isEqualToString:@"try again"]) {
+            text = [[NSAttributedString alloc] initWithString:@"Kode sedang diproses..." attributes:@{
+                                                                                                      NSForegroundColorAttributeName:[UIColor blackColor]}];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [_networkManager doRequest];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                });
             });
-        });
-    } else {
-        text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
-        [_getCodeButton setHidden:YES];
-        _getCodeButton.enabled = NO;
+        } else {
+            text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+            [_getCodeButton setHidden:YES];
+            _getCodeButton.enabled = NO;
+            
+            [_courierAgentLabel removeGestureRecognizer:_singleTapGestureRecognizer];
+            [_courierAgentLabel setUserInteractionEnabled:NO];
+            _singleTapGestureRecognizer.enabled = NO;
+            [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
+            
+            [self.view layoutSubviews];
+            
+            _alert = [AlertShipmentCodeView newview];
+            [_alert setText:code];
+            [_alert show];
+        }
         
-        [_courierAgentLabel removeGestureRecognizer:_singleTapGestureRecognizer];
-        [_courierAgentLabel setUserInteractionEnabled:NO];
-        _singleTapGestureRecognizer.enabled = NO;
-        [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
+        NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];
         
-        [self.view layoutSubviews];
+        [kurir appendAttributedString:dash];
+        [kurir appendAttributedString:text];
         
-        _alert = [AlertShipmentCodeView newview];
-        [_alert setText:code];
-        [_alert show];
+        _courierAgentLabel.attributedText = kurir;
     }
-    
-    NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];
-    
-    [kurir appendAttributedString:dash];
-    [kurir appendAttributedString:text];
-    
-    _courierAgentLabel.attributedText = kurir;
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
@@ -1042,7 +1047,9 @@ ChangeCourierDelegate
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Tidak ada koneksi internet"]
+                                                                   delegate:self];
+    [alert show];
 }
 
 @end

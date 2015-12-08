@@ -287,6 +287,7 @@
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
             _tableView.tableFooterView = _footerView;
             [_activityIndicator startAnimating];
+            [self configureRestKit];
             [self request];
         } else {
             _tableView.tableFooterView = nil;

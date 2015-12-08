@@ -224,6 +224,7 @@
         if (_nextURI != NULL && ![_nextURI isEqualToString:@"0"] && _nextURI != 0) {
             _tableView.tableFooterView = _footerView;
             [_activityIndicator startAnimating];
+            [self configureRestKit];
             [self requestInvoice:nil];
         } else {
             _tableView.tableFooterView = nil;
