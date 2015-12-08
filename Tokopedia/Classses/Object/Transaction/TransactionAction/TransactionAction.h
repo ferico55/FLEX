@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "TransactionActionResult.h"
 
-@interface TransactionAction : NSObject
+@interface TransactionAction : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) TransactionActionResult *result;
+
+
 
 @end

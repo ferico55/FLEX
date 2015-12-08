@@ -48,6 +48,8 @@
 #import "ProductImages.h"
 
 #import "PromoRequest.h"
+#import "AlertLuckyView.h"
+#import "LuckyDealWord.h"
 
 #import "GalleryViewController.h"
 
@@ -430,6 +432,63 @@
 
 - (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
     return nil;
+}
+
+-(void)popUpLuckyDeal:(LuckyDealWord*)words
+{
+    if ([words.notify_buyer integerValue] == 1) {
+        [self showLuckyBuyer:words];
+    }
+    else
+        [self showLuckyMerchant:words];
+}
+
+-(void)showLuckyMerchant:(LuckyDealWord*)words
+{
+    AlertLuckyView *alertLucky = [AlertLuckyView new];
+    NSString *line1 = words.content_merchant_1?:@"";
+    NSString *line2 = words.content_merchant_2?:@"";
+    NSString *line3 = words.content_merchant_3?:@"";
+    NSString *urlString = words.link?:@"";
+    
+    alertLucky.upperView.backgroundColor = [UIColor colorWithRed:(12.0f/255.0f) green:(170.0f/255.0f) blue:85.0f/255.0f alpha:1];
+    alertLucky.upperColor = alertLucky.upperView.backgroundColor;
+    [alertLucky.FirstLineLabel setCustomAttributedText:line1];
+    [alertLucky.secondLineLabel setCustomAttributedText:line2];
+    [alertLucky.Line3Label setCustomAttributedText:line3];
+    alertLucky.urlString = urlString;
+    
+    if ([urlString isEqualToString:@""]) {
+        alertLucky.infoLabel.hidden = YES;
+        alertLucky.klikDisiniButton.hidden = YES;
+    }
+
+    [alertLucky show];
+    
+}
+
+-(void)showLuckyBuyer:(LuckyDealWord*)words
+{
+    
+    AlertLuckyView *alertLucky = [AlertLuckyView new];
+    NSString *line1 = words.content_buyer_1?:@"";
+    NSString *line2 = words.content_buyer_2?:@"";
+    NSString *line3 = words.content_buyer_3?:@"";
+    NSString *urlString = words.link?:@"";
+    
+    alertLucky.upperView.backgroundColor = [UIColor colorWithRed:(42.0f/255.0f) green:(180.0f/255.0f) blue:193.0f/255.0f alpha:1];
+    alertLucky.upperColor = alertLucky.upperView.backgroundColor;
+    [alertLucky.FirstLineLabel setCustomAttributedText:line1];
+    [alertLucky.secondLineLabel setCustomAttributedText:line2];
+    [alertLucky.Line3Label setCustomAttributedText:line3];
+    alertLucky.urlString = urlString;
+    
+    if ([urlString isEqualToString:@""]) {
+        alertLucky.infoLabel.hidden = YES;
+        alertLucky.klikDisiniButton.hidden = YES;
+    }
+    
+    [alertLucky show];
 }
 
 @end

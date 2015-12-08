@@ -30,6 +30,8 @@
 #import "ViewLabelUser.h"
 #import "WebViewInvoiceViewController.h"
 #import "NoResultReusableView.h"
+#import "RequestLDExtension.h"
+#import "NavigateViewController.h"
 
 #define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"
@@ -38,7 +40,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -62,6 +64,9 @@
     TAGContainer *_gtmContainer;
     NSString *baseUrl, *baseActionUrl;
     NSString *postUrl, *postActionUrl;
+    
+    RequestLDExtension *_requestLD;
+    NavigateViewController *_navigate;
 }
 @synthesize strNav;
 
@@ -88,6 +93,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
+    _navigate = [NavigateViewController new];
     currentFilter = @"all";
     page = 0;
     tableContent.allowsSelection = NO;
@@ -101,6 +107,26 @@
     
     [self loadMoreData:YES];
     [[self getNetworkManager:CTagGetInboxReputation] doRequest];
+    
+//    LuckyDeal *ld = [LuckyDeal new];
+//    LuckyDealAttributes *att = [LuckyDealAttributes new];
+//    LuckyDealData *data = [LuckyDealData new];
+//    att.token = @"Tokopedia Clover:q62yPVXnFRbDr9jh9wdBFhjU/DA=";
+//    att.extid = 1;
+//    att.code = 12400877;
+//    att.ut = 1448420536;
+//    data.ld_id = 1299609;
+//    data.type = 1;
+//    data.attributes = att;
+//    ld.data = data;
+//    ld.url =@"https://clover-staging.tokopedia.com/badge/member/extend/v1";
+//
+//
+////TODO:: REMOVE THIS
+//    _requestLD = [RequestLDExtension new];
+//    _requestLD.delegate = self;
+//    _requestLD.luckyDeal = ld;
+//    [_requestLD doRequestMemberExtendURLString:ld.url];
 }
 
 
@@ -413,6 +439,9 @@
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
         
+        RKRelationshipMapping *LDRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ld" toKeyPath:@"ld" withMapping:[LuckyDeal mapping]];
+        [resultMapping addPropertyMapping:LDRel];
+        
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -489,6 +518,14 @@
     else if(tag == CTagInsertReputation) {
         NSDateFormatter *formatter = [NSDateFormatter new];
         formatter.dateFormat = @"d MMMM yyyy, HH:mm";
+        
+        GeneralAction *action = stat;
+        if (action.result.ld.url && ![action.result.ld.url isEqualToString:@""]) {
+            _requestLD = [RequestLDExtension new];
+            _requestLD.luckyDeal = action.result.ld;
+            _requestLD.delegate = self;
+            [_requestLD doRequestMemberExtendURLString:action.result.ld.url];
+        }
         
         if([((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).role isEqualToString:@"2"]) {//Seller
             if(((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score!=nil && ![((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score isEqualToString:@""])
@@ -912,5 +949,10 @@
 }
 
 
+#pragma mark - Badge Extendsion
+- (void)showPopUpLuckyDeal:(LuckyDealWord *)words
+{
+    [_navigate popUpLuckyDeal:words];
+}
 
 @end

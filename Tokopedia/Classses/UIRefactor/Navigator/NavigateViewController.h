@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class LuckyDealWord;
+
 @interface NavigateViewController : NSObject
 
 -(void)navigateToProfileFromViewController:(UIViewController*)viewController withUserID:(NSString *)userID;
@@ -26,6 +28,7 @@
 - (void)navigateToProductFromViewController:(UIViewController *)viewController
                                   promoData:(NSDictionary *)data
                                 productData:(NSDictionary *)productData;
+-(void)popUpLuckyDeal:(LuckyDealWord*)words;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
