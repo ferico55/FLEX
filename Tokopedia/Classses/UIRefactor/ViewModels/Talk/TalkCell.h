@@ -35,7 +35,7 @@
 @end
 
 @interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate, ReportViewControllerDelegate> {
-    BOOL *_talkFollowStatus;
+    BOOL _talkFollowStatus;
     NSString *_myShopID;
     NSString *_myUserID;
     NavigateViewController *_navigateController;

@@ -560,8 +560,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             }
             
             if(_login.result.user_reputation != nil) {
-                NSString *strResult = [NSString stringWithFormat:@"{\"no_reputation\":\"%@\",\"positive\":\"%@\",\"negative\":\"%@\",\"neutral\":\"%@\",\"positive_percentage\":\"%@\"}", _login.result.user_reputation.no_reputation, _login.result.user_reputation.positive, _login.result.user_reputation.negative, _login.result.user_reputation.neutral, _login.result.user_reputation.positive_percentage];
-                [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
+                ReputationDetail *reputation = _login.result.user_reputation;
+                [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
+                [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
+                [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
+                [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
+                [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
+                [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
             }
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
@@ -670,8 +675,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [secureStorage setKeychainWithValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] withKey:kTKPD_USEREMAIL];
             
             if(_login.result.user_reputation != nil) {
-                NSString *strResult = [NSString stringWithFormat:@"{\"no_reputation\":\"%@\",\"positive\":\"%@\",\"negative\":\"%@\",\"neutral\":\"%@\",\"positive_percentage\":\"%@\"}", _login.result.user_reputation.no_reputation, _login.result.user_reputation.positive, _login.result.user_reputation.negative, _login.result.user_reputation.neutral, _login.result.user_reputation.positive_percentage];
-                [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
+                ReputationDetail *reputation = _login.result.user_reputation;
+                [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
+                [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
+                [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
+                [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
+                [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
+                [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
             }
             
             // Login UA

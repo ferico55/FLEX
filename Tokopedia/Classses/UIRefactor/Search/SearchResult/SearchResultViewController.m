@@ -1028,7 +1028,6 @@ SpellCheckRequestDelegate
         [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     }
     [_collectionView reloadData];
-//    [_collectionView layoutIfNeeded];
 }
 
 #pragma mark - Promo collection delegate
