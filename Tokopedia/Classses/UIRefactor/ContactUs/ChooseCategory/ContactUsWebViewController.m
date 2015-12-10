@@ -11,6 +11,7 @@
 @interface ContactUsWebViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property BOOL linkClicked;
 
 @end
 
@@ -28,6 +29,11 @@
     self.navigationItem.backBarButtonItem = backButton;
     
     [self reloadWebView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.linkClicked = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,6 +59,15 @@
                                                                                   target:self
                                                                                   action:@selector(reloadWebView)];
     self.navigationItem.rightBarButtonItem = reloadButton;
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    BOOL shouldStartLoad = YES;
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        shouldStartLoad = self.linkClicked?NO:YES;
+        self.linkClicked = YES;
+    }
+    return shouldStartLoad;
 }
 
 - (void)reloadWebView {
