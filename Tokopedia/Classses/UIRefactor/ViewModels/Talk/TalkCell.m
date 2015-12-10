@@ -95,13 +95,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     if(![modelView.talkOwnerStatus isEqualToString:@"1"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
 
-        commentButtonTrailingToVerticalBorder.priority = 1000;
+        commentButtonTrailingToVerticalBorder.priority = 750;
         self.divider.hidden = NO;
         [self layoutIfNeeded];
     } else {
         [self.unfollowButton setHidden:YES];
 
-        commentButtonTrailingToVerticalBorder.priority = 1;
+        commentButtonTrailingToVerticalBorder.priority = 600;
         self.divider.hidden = YES;
         [self layoutIfNeeded];
     }

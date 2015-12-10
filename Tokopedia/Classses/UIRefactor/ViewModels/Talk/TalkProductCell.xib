@@ -149,9 +149,9 @@
                                     <constraint firstAttribute="trailing" secondItem="3fr-V2-gS2" secondAttribute="trailing" id="MUz-3t-Ru7"/>
                                     <constraint firstItem="aYV-dm-i5C" firstAttribute="top" secondItem="QfJ-BF-A1J" secondAttribute="top" id="MmJ-MN-iu6"/>
                                     <constraint firstItem="tvY-tu-w5P" firstAttribute="centerX" secondItem="QfJ-BF-A1J" secondAttribute="centerX" id="OY5-tK-nhw"/>
-                                    <constraint firstItem="tvY-tu-w5P" firstAttribute="leading" secondItem="TwU-7J-zW1" secondAttribute="trailing" id="Oe8-B2-1KG"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="trailing" secondItem="tvY-tu-w5P" secondAttribute="leading" priority="750" id="Oe8-B2-1KG"/>
                                     <constraint firstItem="aYV-dm-i5C" firstAttribute="leading" secondItem="tvY-tu-w5P" secondAttribute="trailing" id="ef8-Pw-ZRS"/>
-                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="trailing" secondItem="QfJ-BF-A1J" secondAttribute="trailing" priority="750" id="kiq-Fi-8XT"/>
+                                    <constraint firstItem="TwU-7J-zW1" firstAttribute="trailing" secondItem="QfJ-BF-A1J" secondAttribute="trailing" priority="700" id="kiq-Fi-8XT"/>
                                     <constraint firstItem="3fr-V2-gS2" firstAttribute="top" secondItem="QfJ-BF-A1J" secondAttribute="top" id="lg5-mJ-9cf"/>
                                     <constraint firstAttribute="height" constant="40" id="rVb-Ro-eeQ"/>
                                     <constraint firstItem="TwU-7J-zW1" firstAttribute="top" secondItem="QfJ-BF-A1J" secondAttribute="top" id="zWa-pq-TxG"/>
@@ -262,7 +262,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="buttonsView" destination="QfJ-BF-A1J" id="1kT-Zl-YR5"/>
-                <outlet property="commentButtonTrailingToVerticalBorder" destination="kiq-Fi-8XT" id="ag1-xR-NTe"/>
+                <outlet property="commentButtonTrailingToVerticalBorder" destination="Oe8-B2-1KG" id="sJg-ht-hfa"/>
                 <outlet property="createTimeLabel" destination="Ajz-HT-HpZ" id="IbF-lf-ibj"/>
                 <outlet property="divider" destination="tvY-tu-w5P" id="399-fY-v8D"/>
                 <outlet property="messageLabel" destination="07l-HH-9dU" id="gb3-1h-gcZ"/>
