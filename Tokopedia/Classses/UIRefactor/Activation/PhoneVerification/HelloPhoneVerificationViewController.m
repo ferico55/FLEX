@@ -164,7 +164,12 @@ TKPDAlertViewDelegate
 }
 
 - (int)getRequestMethod:(int)tag {
-    return RKRequestMethodPOST;
+    if(tag == RequestPhoneNumber){
+        return RKRequestMethodPOST;
+    }else{
+        return RKRequestMethodGET;
+
+    }
 }
 
 - (id)getObjectManager:(int)tag{
