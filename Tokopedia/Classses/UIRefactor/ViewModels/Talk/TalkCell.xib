@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -24,11 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="224"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jrh-HM-K0p" id="CUO-bN-bU0">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="223.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="223"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fxd-OL-H92" userLabel="Sub Content View">
-                        <rect key="frame" x="10" y="9" width="300" height="214.5"/>
+                        <rect key="frame" x="10" y="9" width="300" height="214"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MgD-xe-ng1" userLabel="View Top">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="70"/>
@@ -96,10 +96,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LoO-oE-hpb" userLabel="View Middle">
-                                <rect key="frame" x="0.0" y="70" width="300" height="104.5"/>
+                                <rect key="frame" x="0.0" y="70" width="300" height="104"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3yf-dZ-AHO" userLabel="Product Image View">
-                                        <rect key="frame" x="12" y="12" width="81.5" height="81.5"/>
+                                        <rect key="frame" x="12" y="12" width="81" height="81"/>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -115,7 +115,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label " lineBreakMode="characterWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2x-t9-LPv" userLabel="Message Label">
-                                        <rect key="frame" x="103.5" y="46" width="181.5" height="18"/>
+                                        <rect key="frame" x="103" y="46" width="182" height="18"/>
                                         <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="C8y-TE-b52"/>
@@ -124,7 +124,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mAW-TB-q5Y">
-                                        <rect key="frame" x="103" y="22" width="181.5" height="24"/>
+                                        <rect key="frame" x="103" y="22" width="182" height="24"/>
                                         <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="cAn-uf-4yh"/>
@@ -166,15 +166,12 @@
                                 </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DiE-U3-odC" userLabel="View Bottom">
-                                <rect key="frame" x="0.0" y="174.5" width="300" height="40"/>
+                                <rect key="frame" x="0.0" y="174" width="300" height="40"/>
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pfk-cQ-tQf">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="m2V-sH-gSZ"/>
-                                        </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="1 Comment" image="icon_diskusi_comment_grey.png">
@@ -186,11 +183,8 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-JB-SgW">
-                                        <rect key="frame" x="150" y="0.0" width="150" height="40"/>
+                                        <rect key="frame" x="151" y="0.0" width="149" height="40"/>
                                         <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="Q3h-dZ-wRg"/>
-                                        </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Berhenti Ikuti">
@@ -223,11 +217,11 @@
                                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="pfk-cQ-tQf" firstAttribute="top" secondItem="DiE-U3-odC" secondAttribute="top" id="01w-KD-qy5"/>
-                                    <constraint firstItem="bFw-JB-SgW" firstAttribute="leading" secondItem="NPl-mv-Z4g" secondAttribute="trailing" constant="-1" id="3e7-gh-IOo"/>
+                                    <constraint firstItem="bFw-JB-SgW" firstAttribute="leading" secondItem="NPl-mv-Z4g" secondAttribute="trailing" id="3e7-gh-IOo"/>
                                     <constraint firstItem="NPl-mv-Z4g" firstAttribute="top" secondItem="DiE-U3-odC" secondAttribute="top" constant="10" id="5mH-V5-92J"/>
                                     <constraint firstItem="bFw-JB-SgW" firstAttribute="top" secondItem="DiE-U3-odC" secondAttribute="top" id="DRe-Ak-Tvy"/>
                                     <constraint firstItem="Vg9-NH-LtN" firstAttribute="leading" secondItem="DiE-U3-odC" secondAttribute="leading" id="I2x-oe-FVC"/>
-                                    <constraint firstItem="pfk-cQ-tQf" firstAttribute="width" secondItem="bFw-JB-SgW" secondAttribute="width" id="Ldo-RV-aMI"/>
+                                    <constraint firstItem="pfk-cQ-tQf" firstAttribute="trailing" secondItem="DiE-U3-odC" secondAttribute="trailing" priority="700" id="Mh9-PU-JO0"/>
                                     <constraint firstAttribute="trailing" secondItem="bFw-JB-SgW" secondAttribute="trailing" id="Peo-Vq-kn1"/>
                                     <constraint firstAttribute="height" constant="40" id="Rya-0F-uBZ"/>
                                     <constraint firstItem="Vg9-NH-LtN" firstAttribute="top" secondItem="DiE-U3-odC" secondAttribute="top" id="XtE-fj-Gs3"/>
@@ -236,7 +230,7 @@
                                     <constraint firstAttribute="trailing" secondItem="Vg9-NH-LtN" secondAttribute="trailing" id="fcS-hS-sZW"/>
                                     <constraint firstAttribute="bottom" secondItem="pfk-cQ-tQf" secondAttribute="bottom" id="gmr-cQ-mLc"/>
                                     <constraint firstAttribute="bottom" secondItem="bFw-JB-SgW" secondAttribute="bottom" id="l0Z-EL-4BI"/>
-                                    <constraint firstItem="NPl-mv-Z4g" firstAttribute="leading" secondItem="pfk-cQ-tQf" secondAttribute="trailing" id="n0m-w2-22O"/>
+                                    <constraint firstItem="NPl-mv-Z4g" firstAttribute="leading" secondItem="pfk-cQ-tQf" secondAttribute="trailing" priority="750" id="n0m-w2-22O"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnH-U2-BqD" userLabel="More Action Button">
@@ -294,6 +288,7 @@
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="commentButtonTrailingToVerticalBorder" destination="n0m-w2-22O" id="XQX-SX-qzK"/>
                 <outlet property="createTimeLabel" destination="12e-9c-aU9" id="gN7-ie-OAL"/>
                 <outlet property="divider" destination="NPl-mv-Z4g" id="hJl-QO-flJ"/>
                 <outlet property="messageLabel" destination="U2x-t9-LPv" id="e5e-bs-Pkp"/>
