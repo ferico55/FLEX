@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 @implementation TalkCell
 {
     BOOL _isFollowingTalk;
+    IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
 }
 
 #pragma mark - Initialization
@@ -90,27 +91,21 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:modelView.talkMessage attributes:_messageAttribute];
     [self.createTimeLabel setText:modelView.createTime];
     [self.totalCommentButton setTitle:[NSString stringWithFormat:@"%@ Komentar", modelView.totalComment] forState:UIControlStateNormal];
-    
+
     if(![modelView.talkOwnerStatus isEqualToString:@"1"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
-        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
-        CGRect newFrame = self.totalCommentButton.frame;
-        newFrame.origin.x = 0;
-        self.totalCommentButton.frame = newFrame;
 
+        commentButtonTrailingToVerticalBorder.priority = 1000;
         self.divider.hidden = NO;
+        [self layoutIfNeeded];
     } else {
         [self.unfollowButton setHidden:YES];
-        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-        
-        CGRect newFrame = self.totalCommentButton.frame;
-        newFrame.origin.x = [_delegate getTable].frame.size.width/320 * 75;
-        self.totalCommentButton.frame = newFrame;
 
+        commentButtonTrailingToVerticalBorder.priority = 1;
         self.divider.hidden = YES;
+        [self layoutIfNeeded];
     }
-    
+
     [self setTalkFollowStatus:[modelView.followStatus isEqualToString:@"1"] ? YES : NO];
     
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:modelView.userImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
