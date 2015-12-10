@@ -17,6 +17,8 @@
                 <outlet property="locationView" destination="tq3-y5-YOS" id="yIP-k0-UuJ"/>
                 <outlet property="mapView" destination="wrD-rD-Jjn" id="WWd-PZ-b5M"/>
                 <outlet property="searchBar" destination="1f4-A5-wM6" id="vyM-fp-DkZ"/>
+                <outlet property="tableView" destination="JeQ-fs-NTa" id="Oly-HA-Bzv"/>
+                <outlet property="transparentView" destination="72z-zm-lQ5" id="PmZ-ER-6Oj"/>
                 <outlet property="view" destination="EJy-Sg-pJF" id="b4S-zY-aps"/>
                 <outlet property="whiteLocationView" destination="xf5-Ix-U7Q" id="bnd-5P-G5g"/>
             </connections>
@@ -46,7 +48,7 @@
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="gU1-rc-bpl">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="gU1-rc-bpl">
                             <rect key="frame" x="0.0" y="64" width="280" height="13"/>
                             <animations/>
                         </imageView>
@@ -114,6 +116,10 @@
                     <rect key="frame" x="0.0" y="44" width="600" height="556"/>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="4qH-1g-Wi3"/>
+                        <outlet property="delegate" destination="-1" id="p8m-o2-Xk8"/>
+                    </connections>
                 </tableView>
             </subviews>
             <animations/>

@@ -15,20 +15,21 @@ enum TypePlacePicker : Int{
     case TypeShowPlace
 }
 
-@objc class TKPPlacePickerViewController: UIViewController, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate {
+@objc class TKPPlacePickerViewController: UIViewController, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet var transparentView: UIView!
     @IBOutlet weak var mapView: TKPMapView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var whiteLocationView: UIView!
     @IBOutlet weak var locationView: UIView!
     @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet var tableView: UITableView!
     
     var firstCoordinate = CLLocationCoordinate2D()
     internal var type : Int = 0
-    var autoCompleteResults : [GMSAutocompletePrediction] = []
-//    var _autoCompleteResults : NSMutableArray = []
-//    var _placeHistories : [String] = []
+//    var autoCompleteResults : [GMSAutocompletePrediction] = []
+    var autoCompleteResults : NSMutableArray = NSMutableArray()
     var placeHistories : NSMutableArray = NSMutableArray()
     
     var placePicker : GMSPlacePicker?
@@ -43,6 +44,7 @@ enum TypePlacePicker : Int{
     var shouldStartSearch :Bool = false
     
     var captureScreen : UIImage = UIImage(named:"icon_pinpoin_toped.png")!
+    var titleArrayTableView : [[String]] = []
 
     override func loadView() {
         var className:NSString = NSStringFromClass(self.classForCoder)
@@ -77,6 +79,7 @@ enum TypePlacePicker : Int{
         searchBar.delegate = self
 
         loadHistory()
+        titleArrayTableView[0] += ["Suggestions","Recent Search"]
     }
     
     //MARK: View Action
@@ -88,7 +91,7 @@ enum TypePlacePicker : Int{
 //        [self.navigationController popViewControllerAnimated:YES];
     }
     
-    //MARK: Location Manager Delegate
+    //MARK: - Location Manager Delegate
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // stop updating location in order to save battery power
         locationManager.stopUpdatingLocation();
@@ -104,7 +107,7 @@ enum TypePlacePicker : Int{
         }
     }
     
-    //MARK: GMSMapView Delegate
+    //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
         mapView.selectedMarker.position = position.target
     }
@@ -113,7 +116,7 @@ enum TypePlacePicker : Int{
         updateAddressSaveHistory(false, addressSugestion: nil)
     }
 
-    //MARK: Methods
+    //MARK: - Methods
     func adustBehaviorType(type: Int){
         switch type {
         case TypePlacePicker.TypeEditPlace.rawValue :
@@ -246,23 +249,124 @@ enum TypePlacePicker : Int{
             updateAddressSaveHistory(saveHistory, addressSugestion: addressSugestion)
         }
     }
+    
+    func handleSearchForSearchString(searchString:String){
+        let visibleRegion : GMSVisibleRegion = mapView.projection.visibleRegion()
+        let bounds : GMSCoordinateBounds = GMSCoordinateBounds.init(coordinate: visibleRegion.farLeft, coordinate:visibleRegion.nearRight)
+        let filter : GMSAutocompleteFilter = GMSAutocompleteFilter()
+        filter.type = GMSPlacesAutocompleteTypeFilter.NoFilter
+        
+        placesClient?.autocompleteQuery(searchString, bounds: bounds, filter: filter, callback: { (results, error) -> Void in
+            if (error != nil){
+                return
+            }
+            if(results?.count > 0){
+                self.autoCompleteResults.removeAllObjects()
+                self.autoCompleteResults.addObject(results!)
+                self.titleArrayTableView[1].removeAll()
+                for var index = 0; index < self.autoCompleteResults.count; ++index{
+                    let place :GMSAutocompletePrediction = results![index] as! GMSAutocompletePrediction
+                    self.titleArrayTableView[1][index] += place.attributedFullText.string
+                }
+                
+                self.tableView.hidden = false
+                self.tableView.reloadData()
+            }
+        })
+    }
+    // MARK: - Table view data source
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return titleArrayTableView.count
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return titleArrayTableView[section].count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        
+        cell.textLabel!.font = UIFont (name: "GothamBook", size: 13);
+        cell.textLabel!.numberOfLines = 0;
+        cell.textLabel?.setCustomAttributedText(titleArrayTableView[indexPath.section][indexPath.row])
+        cell.textLabel?.sizeToFit()
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return titleArrayTableView[0][section]
+    }
 
-    //MARK: get place detail from address name
-    func doGeneratePlaceDetailAddress(address:NSString){
-        var store:TKPGooglePlaceDetailProductStore = self.self.TKP_rootController.storeManage.placeDetailStore
+    //MARK: - Place Detail Request
+    func doGeneratePlaceDetail(placeID:String, addressSuggestion:(GMSAutocompletePrediction))
+    {
+        placesClient?.lookUpPlaceID(placeID, callback: { (result, error) -> Void in
+            if (error != nil){
+                return;
+            }
+            
+            if (result != nil) {
+                let c2D : CLLocationCoordinate2D = CLLocationCoordinate2DMake((result?.coordinate.latitude)!, (result?.coordinate.longitude)!)
+                self.focusMapToLocation(c2D, isShouldUpdateAddress: true, saveHistory: true, addressSugestion: addressSuggestion)
+            } else {
+                print("No place detail for \(placeID)")
+            }
+        })
+    }
+    
+    //MARK: - SearchBar Delegate
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        if((searchBar.text?.isEmpty) != nil){
+            titleArrayTableView[1].removeAll()
+            tableView.reloadData()
+        }
+        handleSearchForSearchString(searchBar.text!)
+    }
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         
     }
-    -(void)doGeneratePlaceDetailAddress:(NSString*)address
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        if ((searchBar.text?.isEmpty) != nil){
+            titleArrayTableView[1].removeAll()
+            tableView.reloadData()
+        }
+        
+        setSearchBarActive(true, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        setSearchBarActive(false, animated: true)
+    }
+    
+    func setSearchBarActive(isActive:Bool, animated:Bool)
     {
-    TKPGooglePlaceDetailProductStore *store = [[[[self class] TKP_rootController] storeManager] placeDetailStore];
+        searchBar.setShowsCancelButton(isActive, animated: animated)
+        self.navigationController?.setNavigationBarHidden(isActive, animated: animated)
+        UIApplication.sharedApplication().setStatusBarHidden(isActive, withAnimation: UIStatusBarAnimation.Slide)
+        transparentView.hidden = !isActive
+        
+        if (animated){
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                self.activeSearchBar(isActive)
+                if (!isActive){
+                    self.searchBar.resignFirstResponder()
+                }
+            }, completion: nil)
+        } else {
+            activeSearchBar(isActive)
+            if (!isActive){
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
     
-    [store fetchGeocodeAddress:address success:^(NSString *address, GooglePlacesDetail *placeDetail) {
-    NSString *destination = [NSString stringWithFormat:@"%@,%@",placeDetail.result.geometry.location.lat, placeDetail.result.geometry.location.lng];
-    [self doCalculateDistanceOrigin:@"-6.193161,106.7892532" withDestination:destination];
-    } failure:^(NSString *address, NSError *error) {
-    
-    }];
-    
+    func activeSearchBar(isActive: Bool)
+    {
+        searchBar.frame = CGRectMake(0, 0, searchBar.frame.size.width, searchBar.frame.size.height)
+        tableView.hidden = !(isActive && placeHistories.count>0 )
     }
     
     override func didReceiveMemoryWarning() {
