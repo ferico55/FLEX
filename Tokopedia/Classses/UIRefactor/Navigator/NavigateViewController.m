@@ -439,8 +439,9 @@
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController
 {
     TKPPlacePickerViewController *placePicker = [TKPPlacePickerViewController new];
-    placePicker._firstCoordinate = location;
-    placePicker._type = type;
+    placePicker.firstCoordinate = location;
+    placePicker.type = type;
+    
 //    PlacePickerViewController *placePicker = [PlacePickerViewController new];
 //    placePicker.firstCoordinate = location;
 //    placePicker.type = type;

@@ -7,76 +7,32 @@
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPPlacePickerViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
-                <outlet property="addressInfoLabel" destination="VeA-2w-l7m" id="Ijk-Xl-ekG"/>
                 <outlet property="addressLabel" destination="STy-T0-3SC" id="4h6-DZ-tr0"/>
                 <outlet property="doneButton" destination="48X-qA-qCM" id="Fur-XQ-l68"/>
                 <outlet property="locationView" destination="tq3-y5-YOS" id="yIP-k0-UuJ"/>
                 <outlet property="mapView" destination="wrD-rD-Jjn" id="WWd-PZ-b5M"/>
                 <outlet property="searchBar" destination="1f4-A5-wM6" id="vyM-fp-DkZ"/>
                 <outlet property="view" destination="EJy-Sg-pJF" id="b4S-zY-aps"/>
-                <outlet property="whiteLocationInfoView" destination="QBg-gc-Vw1" id="7QN-Lw-tUX"/>
                 <outlet property="whiteLocationView" destination="xf5-Ix-U7Q" id="bnd-5P-G5g"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="a25-oP-e85">
-            <rect key="frame" x="0.0" y="0.0" width="280" height="80"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QBg-gc-Vw1">
-                    <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
-                    <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="HAB-jR-eb8">
-                    <rect key="frame" x="0.0" y="64" width="280" height="13"/>
-                    <animations/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_triangle_down_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="fVO-52-Fqi">
-                    <rect key="frame" x="130" y="64" width="20" height="10"/>
-                    <animations/>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VeA-2w-l7m">
-                    <rect key="frame" x="10" y="0.0" width="260" height="64"/>
-                    <animations/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="64" id="WGc-wz-dst"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-            </subviews>
-            <animations/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="QBg-gc-Vw1" secondAttribute="trailing" id="0im-Nf-khI"/>
-                <constraint firstAttribute="bottom" secondItem="fVO-52-Fqi" secondAttribute="bottom" constant="6" id="7OO-xs-1us"/>
-                <constraint firstItem="QBg-gc-Vw1" firstAttribute="top" secondItem="a25-oP-e85" secondAttribute="top" id="HLJ-h5-NVZ"/>
-                <constraint firstItem="fVO-52-Fqi" firstAttribute="centerX" secondItem="a25-oP-e85" secondAttribute="centerX" id="W41-iM-DVe"/>
-                <constraint firstAttribute="bottom" secondItem="QBg-gc-Vw1" secondAttribute="bottom" constant="16" id="anw-p1-27b"/>
-                <constraint firstItem="QBg-gc-Vw1" firstAttribute="leading" secondItem="a25-oP-e85" secondAttribute="leading" id="dPH-XB-eU3"/>
-                <constraint firstAttribute="trailing" secondItem="VeA-2w-l7m" secondAttribute="trailing" constant="10" id="mJ4-EO-ah8"/>
-                <constraint firstItem="VeA-2w-l7m" firstAttribute="leading" secondItem="a25-oP-e85" secondAttribute="leading" constant="10" id="rbS-wP-5O1"/>
-                <constraint firstItem="VeA-2w-l7m" firstAttribute="top" secondItem="a25-oP-e85" secondAttribute="top" id="wzg-TZ-pw9"/>
-            </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="464" y="730"/>
-        </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="EJy-Sg-pJF">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wrD-rD-Jjn" customClass="GMSMapView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wrD-rD-Jjn" customClass="TKPMapView" customModule="Tokopedia" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="VBW-3j-MoJ"/>
+                    </connections>
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="vxt-Bn-wWg">
                     <rect key="frame" x="265" y="230" width="70" height="70"/>

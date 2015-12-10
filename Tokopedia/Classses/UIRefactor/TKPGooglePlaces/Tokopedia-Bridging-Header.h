@@ -3,3 +3,7 @@
 //
 
 #import "UIKitCategory.h"
+#import "TKPGooglePlaceDetailProductStore.h"
+#import "UIViewController+TKPAdditions.h"
+#import "TKPAdditions.h"
+#import "TKPAppFlow.h"

@@ -138,18 +138,6 @@
     [[self locationManager] stopUpdatingLocation];
 }
 
-
-- (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory addressSugestion:(GMSAutocompletePrediction*)addressSugestion
-{
-    [self marker].position = location;
-    _mapview.selectedMarker = [self marker];
-
-    [PlacePickerViewController focusMap:_mapview toMarker:[self marker]];
-    
-    if (shouldUpdateAddress)
-        [self updateAddressSaveHistory:saveHistory addressSugestion:addressSugestion];
-}
-
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     if (status == kCLAuthorizationStatusDenied) {
@@ -715,6 +703,17 @@
         default:
             break;
     }
+}
+
+- (void)focusMapToLocation:(CLLocationCoordinate2D)location shouldUpdateAddress:(BOOL)shouldUpdateAddress shouldSaveHistory:(BOOL)saveHistory addressSugestion:(GMSAutocompletePrediction*)addressSugestion
+{
+    [self marker].position = location;
+    _mapview.selectedMarker = [self marker];
+    
+    [PlacePickerViewController focusMap:_mapview toMarker:[self marker]];
+    
+    if (shouldUpdateAddress)
+        [self updateAddressSaveHistory:saveHistory addressSugestion:addressSugestion];
 }
 
 #pragma mark - Place Detail Request

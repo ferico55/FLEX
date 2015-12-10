@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Zt0-3F-nO3" customClass="TKPInfoWindowMapView" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BvQ-sC-AyP">
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="JlO-Aa-4HO">
+                    <rect key="frame" x="0.0" y="64" width="280" height="13"/>
+                    <animations/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_triangle_down_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="oA9-ED-XxW">
+                    <rect key="frame" x="130" y="64" width="20" height="10"/>
+                    <animations/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-DJ-CP2">
+                    <rect key="frame" x="10" y="0.0" width="260" height="64"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="q32-4A-JH9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="BvQ-sC-AyP" secondAttribute="trailing" id="80o-Gg-1qU"/>
+                <constraint firstItem="BvQ-sC-AyP" firstAttribute="leading" secondItem="Zt0-3F-nO3" secondAttribute="leading" id="AsC-ad-LSq"/>
+                <constraint firstAttribute="bottom" secondItem="BvQ-sC-AyP" secondAttribute="bottom" constant="16" id="NHB-Pu-ffC"/>
+                <constraint firstAttribute="bottom" secondItem="oA9-ED-XxW" secondAttribute="bottom" constant="6" id="S9t-0N-1R4"/>
+                <constraint firstAttribute="trailing" secondItem="Ddn-DJ-CP2" secondAttribute="trailing" constant="10" id="USV-MQ-F7K"/>
+                <constraint firstItem="Ddn-DJ-CP2" firstAttribute="top" secondItem="Zt0-3F-nO3" secondAttribute="top" id="gJh-7I-ccQ"/>
+                <constraint firstItem="BvQ-sC-AyP" firstAttribute="top" secondItem="Zt0-3F-nO3" secondAttribute="top" id="ksK-Nd-LUF"/>
+                <constraint firstItem="oA9-ED-XxW" firstAttribute="centerX" secondItem="Zt0-3F-nO3" secondAttribute="centerX" id="mQb-1u-5rm"/>
+                <constraint firstItem="Ddn-DJ-CP2" firstAttribute="leading" secondItem="Zt0-3F-nO3" secondAttribute="leading" constant="10" id="nnf-FK-Wml"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="addressLabel" destination="Ddn-DJ-CP2" id="6c8-uQ-H92"/>
+                <outlet property="whiteLocationInfoView" destination="BvQ-sC-AyP" id="zLX-k7-EHa"/>
+            </connections>
+            <point key="canvasLocation" x="464" y="730"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_triangle_down_white.png" width="20" height="10"/>
+        <image name="tab_btm_shadow.png" width="320" height="32"/>
+    </resources>
+</document>

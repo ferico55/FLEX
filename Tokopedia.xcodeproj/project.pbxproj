@@ -17,6 +17,10 @@
 		4554D2211C15476B005F43DB /* JakartaMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4554D2201C15476B005F43DB /* JakartaMap.png */; };
 		4554D22C1C1596C9005F43DB /* TKPPlacePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4554D22A1C1596C9005F43DB /* TKPPlacePickerViewController.swift */; };
 		4554D22D1C1596C9005F43DB /* TKPPlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4554D22B1C1596C9005F43DB /* TKPPlacePickerViewController.xib */; };
+		45AC752A1C1841C0009C80A6 /* TKPMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AC75291C1841C0009C80A6 /* TKPMapView.swift */; };
+		45AC752C1C1841DE009C80A6 /* TKPMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AC752B1C1841DE009C80A6 /* TKPMapView.xib */; };
+		45AC752E1C18461C009C80A6 /* TKPInfoWindowMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AC752D1C18461C009C80A6 /* TKPInfoWindowMapView.swift */; };
+		45AC75301C184634009C80A6 /* TKPInfoWindowMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AC752F1C184634009C80A6 /* TKPInfoWindowMapView.xib */; };
 		45BB999E1C0C0B4300EA2C80 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */; };
 		45BB999F1C0C0B4300EA2C80 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D351C0C0B3E00EA2C80 /* URLCacheAlert.m */; };
 		45BB99A01C0C0B4300EA2C80 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D371C0C0B3E00EA2C80 /* URLCacheConnection.m */; };
@@ -2006,6 +2010,10 @@
 		4554D2291C1596C9005F43DB /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
 		4554D22A1C1596C9005F43DB /* TKPPlacePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPPlacePickerViewController.swift; sourceTree = "<group>"; };
 		4554D22B1C1596C9005F43DB /* TKPPlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPPlacePickerViewController.xib; sourceTree = "<group>"; };
+		45AC75291C1841C0009C80A6 /* TKPMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPMapView.swift; sourceTree = "<group>"; };
+		45AC752B1C1841DE009C80A6 /* TKPMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPMapView.xib; sourceTree = "<group>"; };
+		45AC752D1C18461C009C80A6 /* TKPInfoWindowMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPInfoWindowMapView.swift; sourceTree = "<group>"; };
+		45AC752F1C184634009C80A6 /* TKPInfoWindowMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPInfoWindowMapView.xib; sourceTree = "<group>"; };
 		45BB8D311C0C0B3E00EA2C80 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45BB8D341C0C0B3E00EA2C80 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -8865,6 +8873,10 @@
 			children = (
 				4554D22A1C1596C9005F43DB /* TKPPlacePickerViewController.swift */,
 				4554D22B1C1596C9005F43DB /* TKPPlacePickerViewController.xib */,
+				45AC75291C1841C0009C80A6 /* TKPMapView.swift */,
+				45AC752B1C1841DE009C80A6 /* TKPMapView.xib */,
+				45AC752D1C18461C009C80A6 /* TKPInfoWindowMapView.swift */,
+				45AC752F1C184634009C80A6 /* TKPInfoWindowMapView.xib */,
 				45BB95CA1C0C0B4000EA2C80 /* PlacePickerViewController.h */,
 				45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */,
 				45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */,
@@ -10806,6 +10818,7 @@
 				45BB9EFA1C0C0B4300EA2C80 /* icon_5@3x.png in Resources */,
 				45BB9EE11C0C0B4300EA2C80 /* icon_cancel@2x.png in Resources */,
 				45BB9BD31C0C0B4300EA2C80 /* CatalogViewController.xib in Resources */,
+				45AC752C1C1841DE009C80A6 /* TKPMapView.xib in Resources */,
 				45BBA0251C0C0B4300EA2C80 /* icon_speed_bad.png in Resources */,
 				45BB9FAD1C0C0B4300EA2C80 /* icon_neutral_sad@3x.png in Resources */,
 				45BBA0DD1C0C0B4300EA2C80 /* icon_search.png in Resources */,
@@ -11139,6 +11152,7 @@
 				45BB9EE01C0C0B4300EA2C80 /* icon_cancel.png in Resources */,
 				45BB9FA21C0C0B4300EA2C80 /* icon_neutral25@3x.png in Resources */,
 				45BB9E8E1C0C0B4300EA2C80 /* icon_15.png in Resources */,
+				45AC75301C184634009C80A6 /* TKPInfoWindowMapView.xib in Resources */,
 				45BB9F561C0C0B4300EA2C80 /* icon_login_active.png in Resources */,
 				45BBA06F1C0C0B4300EA2C80 /* icon_search_active@2x.png in Resources */,
 				45BB9F4C1C0C0B4300EA2C80 /* icon_like@3x.png in Resources */,
@@ -11739,6 +11753,7 @@
 				45BB99DD1C0C0B4300EA2C80 /* DepositResult.m in Sources */,
 				45BB9BAD1C0C0B4300EA2C80 /* TKPDAlertView.m in Sources */,
 				45BB9BB11C0C0B4300EA2C80 /* BannerList.m in Sources */,
+				45AC752E1C18461C009C80A6 /* TKPInfoWindowMapView.swift in Sources */,
 				45BB9A431C0C0B4300EA2C80 /* ResolutionButton.m in Sources */,
 				45BB99A51C0C0B4300EA2C80 /* ExpiringCache.m in Sources */,
 				45BB9B151C0C0B4300EA2C80 /* RPX.m in Sources */,
@@ -12407,6 +12422,7 @@
 				45BB9E331C0C0B4300EA2C80 /* TxOrderConfirmedBankCell.m in Sources */,
 				45BB99A81C0C0B4300EA2C80 /* NSArrayCategory.m in Sources */,
 				45BB9C181C0C0B4300EA2C80 /* RateView.m in Sources */,
+				45AC752A1C1841C0009C80A6 /* TKPMapView.swift in Sources */,
 				45BB9AE91C0C0B4300EA2C80 /* SendMessage.m in Sources */,
 				45BB9A861C0C0B4300EA2C80 /* NotificationPurchase.m in Sources */,
 				45BB9BA81C0C0B4300EA2C80 /* StickyAlert.m in Sources */,
