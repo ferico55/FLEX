@@ -85,7 +85,7 @@
 -(RKObjectManager*)objectManager
 {
     NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_upload_host];
-    RKObjectManager *objectManager = [RKObjectManager sharedClientUploadImage:urlString];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:urlString];
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[UploadImageHelper mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:[self getPath:_tag]
