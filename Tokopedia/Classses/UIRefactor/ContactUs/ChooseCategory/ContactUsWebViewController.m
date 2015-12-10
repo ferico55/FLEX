@@ -33,7 +33,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.linkClicked = NO;
+    self.linkClicked = NO; 
 }
 
 - (void)didReceiveMemoryWarning {
