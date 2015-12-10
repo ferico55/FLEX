@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.createTimeLabel setText:modelView.createTime];
     [self.totalCommentButton setTitle:[NSString stringWithFormat:@"%@ Komentar", modelView.totalComment] forState:UIControlStateNormal];
     
-    if(![modelView.talkOwnerStatus isEqualToString:@"1"] && [_userManager isLogin]) {
+    if([modelView.talkOwnerStatus isEqualToString:@"0"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
         [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:NO];
         
