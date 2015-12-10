@@ -287,7 +287,8 @@
                                                  TKPD_TALK_SHOP_ID,
                                                  TKPD_TALK_USER_ID,
                                                  TKPD_TALK_USER_LABEL_ID,
-                                                 TKPD_TALK_USER_LABEL
+                                                 TKPD_TALK_USER_LABEL,
+                                                 TKPD_TALK_OWN
                                                  ]];
     
     RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];

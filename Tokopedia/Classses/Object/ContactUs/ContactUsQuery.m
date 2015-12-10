@@ -48,7 +48,7 @@
 
 - (void)setInvNumber:(NSString *)invNumber {
     _invNumber = invNumber;
-    [self.parameters setObject:_invNumber forKey:@"inv_number"];
+    [self.parameters setObject:_invNumber forKey:@"invoice_number"];
 }
 
 - (void)setFullName:(NSString *)fullName {
