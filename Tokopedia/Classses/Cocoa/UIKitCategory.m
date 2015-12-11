@@ -98,11 +98,10 @@
 -(void)setCustomAttributedText:(NSString *)text
 {
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    [style setAlignment:NSTextAlignmentCenter];
     [style setLineBreakMode:NSLineBreakByWordWrapping];
     [style setLineSpacing:6.0];
     
-    NSDictionary *dict1 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),
+    NSDictionary *dict1 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
                             NSFontAttributeName:self.font,
                             NSParagraphStyleAttributeName:style};
     

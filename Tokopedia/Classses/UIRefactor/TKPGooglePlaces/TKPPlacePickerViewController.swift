@@ -48,7 +48,7 @@ enum TypePlacePicker : Int{
     var isDragging :Bool = true
     var shouldStartSearch :Bool = false
     
-    var captureScreen : UIImage = UIImage(named:"icon_pinpoin_toped.png")!
+    var captureScreen : UIImage = UIImage(named:"JakartaMap.png")!
     var dataTableView : [[String]] = [[],[]]
     var titleSection : [String] = ["Suggestions","Recent Search"]
     
@@ -75,6 +75,27 @@ enum TypePlacePicker : Int{
         }
     }
     
+    func captureMapScreen(mapView:GMSMapView) -> UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(mapView.frame.size, true, 0.0)
+        mapView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        let refWidth:CGFloat = CGFloat(CGImageGetWidth(image.CGImage))
+        let refHeight:CGFloat = CGFloat(CGImageGetHeight(image.CGImage))
+        
+        let x:CGFloat = (refWidth - 220) / 2.0
+        let y:CGFloat = ((refHeight - 220) / 2.0) - 40
+        
+        let cropRect : CGRect = CGRectMake(x, y, 220, 220)
+        let imageRef : CGImageRef = CGImageCreateWithImageInRect(image.CGImage, cropRect)!
+        
+        let cropped : UIImage = UIImage.init(CGImage: imageRef, scale: 0, orientation: image.imageOrientation)
+        
+        return cropped
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +113,7 @@ enum TypePlacePicker : Int{
     
     //MARK: View Action
     @IBAction func tapDone(sender: AnyObject) {
-        let mapImage : UIImage = captureScreen
+        let mapImage : UIImage = captureMapScreen(mapView)
         delegate?.pickAddress(address, suggestion: selectedSugestion, longitude: mapView.marker.position.longitude, latitude: mapView.marker.position.latitude, mapImage: mapImage)
         self.navigationController?.popViewControllerAnimated(true)
     }
