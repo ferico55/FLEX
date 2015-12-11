@@ -38,5 +38,6 @@
 @interface UIButton (TkpdCategory)
 
 - (UIButton*)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius;
+- (void)setCustomAttributedText:(NSString *)text;
 
 @end

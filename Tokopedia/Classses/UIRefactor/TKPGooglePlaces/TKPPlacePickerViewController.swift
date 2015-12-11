@@ -15,6 +15,10 @@ enum TypePlacePicker : Int{
     case TypeShowPlace
 }
 
+@objc protocol TKPPlacePickerDelegate {
+    func pickAddress(address: GMSAddress, suggestion:(String), longitude:Double, latitude:Double, mapImage:UIImage)
+}
+
 @objc class TKPPlacePickerViewController: UIViewController, UISearchBarDelegate, GMSMapViewDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var transparentView: UIView!
@@ -26,14 +30,15 @@ enum TypePlacePicker : Int{
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     
+    var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
     internal var type : Int = 0
-//    var autoCompleteResults : [GMSAutocompletePrediction] = []
-    var autoCompleteResults : NSMutableArray = NSMutableArray()
+    var autoCompleteResults : [GMSAutocompletePrediction] = []
+//    var autoCompleteResults : NSMutableArray = NSMutableArray()
     var placeHistories : NSMutableArray = NSMutableArray()
     
     var placePicker : GMSPlacePicker?
-    var placesClient : GMSPlacesClient?
+    var placesClient : GMSPlacesClient!
 
     var locationManager : CLLocationManager!
     var geocoder = GMSGeocoder()
@@ -44,7 +49,10 @@ enum TypePlacePicker : Int{
     var shouldStartSearch :Bool = false
     
     var captureScreen : UIImage = UIImage(named:"icon_pinpoin_toped.png")!
-    var titleArrayTableView : [[String]] = []
+    var dataTableView : [[String]] = [[],[]]
+    var titleSection : [String] = ["Suggestions","Recent Search"]
+    
+    var selectedSugestion : String!
 
     override func loadView() {
         var className:NSString = NSStringFromClass(self.classForCoder)
@@ -71,6 +79,7 @@ enum TypePlacePicker : Int{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        placesClient = GMSPlacesClient()
         initLocationManager()
         adustBehaviorType(type)
 
@@ -79,16 +88,13 @@ enum TypePlacePicker : Int{
         searchBar.delegate = self
 
         loadHistory()
-        titleArrayTableView[0] += ["Suggestions","Recent Search"]
     }
     
     //MARK: View Action
     @IBAction func tapDone(sender: AnyObject) {
-        
-//        UIImage *map = _captureScreen?:[PlacePickerViewController captureScreen:mapView];
-//        [_delegate PickAddress:_address suggestion:_selectedSugestion?:@"" longitude:marker.position.longitude latitude:marker.position.latitude map:map];
-//        
-//        [self.navigationController popViewControllerAnimated:YES];
+        let mapImage : UIImage = captureScreen
+        delegate?.pickAddress(address, suggestion: selectedSugestion, longitude: mapView.marker.position.longitude, latitude: mapView.marker.position.latitude, mapImage: mapImage)
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     //MARK: - Location Manager Delegate
@@ -102,8 +108,9 @@ enum TypePlacePicker : Int{
             
         }
         else{
-            mapView.marker.position = CLLocationCoordinate2DMake(-33.86, 151.20)//locationManager.location!.coordinate
-            mapView.updateCameraPosition()
+            if(locationManager.location != nil){
+                mapView.updateCameraPosition(locationManager.location!.coordinate)
+            }
         }
     }
     
@@ -125,17 +132,17 @@ enum TypePlacePicker : Int{
             self.navigationItem.rightBarButtonItem = doneBarButton
             self.title = "Pilih Lokasi"
             locationView.hidden = false
-            mapView.isShowMarker = false
+            mapView.updateIsShowMarker(false)
             mapView.myLocationEnabled = true;
-            if (firstCoordinate.longitude == 0) {
-                firstCoordinate =  CLLocationCoordinate2DMake(-33.86, 151.20)//locationManager.location!.coordinate
+            if (firstCoordinate.longitude == 0 && locationManager.location != nil) {
+                firstCoordinate =  locationManager.location!.coordinate
             }
             break;
         case TypePlacePicker.TypeShowPlace.rawValue:
             self.title = "Lokasi"
             searchBar.hidden = true
             searchBar.hidden = true
-            mapView.isShowMarker = true
+            mapView.updateIsShowMarker(true)
             break;
             
         default:
@@ -145,16 +152,21 @@ enum TypePlacePicker : Int{
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {
-        geocoder .reverseGeocodeCoordinate(mapView.selectedMarker.position) { (response, error) -> Void in
-            // strAdd -> take bydefault value nil
-            let placemark :GMSAddress = response.firstResult()
+        geocoder.reverseGeocodeCoordinate(mapView.selectedMarker.position) { (response, error) -> Void in
+            if (error != nil){
+                return
+            }
             
-            self.address = placemark
-            self.mapView.infoWindowView.addressLabel.setCustomAttributedText(self.addressString(placemark))
-            self.addressLabel.setCustomAttributedText(self.addressString(placemark))
-            self.mapView.selectedMarker = self.mapView.selectedMarker
-            if (shouldSaveHistory) {
-                self.saveHistory(placemark, addressSuggestions: addressSugestion!)
+            if (response != nil){
+                let placemark :GMSAddress = response.firstResult()
+                
+                self.address = placemark
+                //            self.mapView.infoWindowView.addressLabel.setCustomAttributedText(self.addressString(placemark))
+                self.addressLabel.setCustomAttributedText(self.addressString(placemark))
+                self.mapView.selectedMarker = self.mapView.selectedMarker
+                if (shouldSaveHistory) {
+                    self.saveHistory(placemark, addressSuggestions: addressSugestion!)
+                }
             }
         }
     }
@@ -168,8 +180,11 @@ enum TypePlacePicker : Int{
             print("File exists")
             do {
                 let histories = try NSArray(contentsOfFile: destinationPath)!
-//                let histories = try NSArray(contentsOfFile: destinationPath)!
-                    placeHistories.addObjectsFromArray(histories as [AnyObject])
+                placeHistories.addObjectsFromArray(histories as [AnyObject])
+                self.dataTableView[1] = []
+                for var index = 0; index < self.placeHistories.count; ++index{
+                    self.dataTableView[1].insert(placeHistories[index]["addressSugestion"] as! String, atIndex: index)
+                }
                 // the above prints "some text"
             } catch let error as NSError {
                 print("Error: \(error)")
@@ -222,31 +237,21 @@ enum TypePlacePicker : Int{
             addressString = address.thoroughfare
         }
         
+        var postalCode : String!
+        if (address.postalCode == nil){ postalCode = ""} else{ postalCode = address.postalCode}
+        
         let history: [String: AnyObject]! = ["addressSugestion"   :addressSuggestions.attributedFullText.string,
             "address"            :addressString,
-            "postal_code"        :address.postalCode,
-            "locality"           :address.locality,
-            "subLocality"        :address.subLocality,
-            "administrativeArea" :address.administrativeArea,
-            "country"            :address.country,
-            "place_id"           :addressSuggestions.placeID,
+            "postal_code"        :postalCode,
+            "place_id"           :addressSuggestions.placeID!,
             "longitude"          :address.coordinate.longitude,
             "latitude"           :address.coordinate.latitude
         ]
-        if(!placeHistories.containsObject(history))
+        let array : Array = dataTableView[1] as Array
+        if(array.contains(history["addressSugestion"] as! String) == false)
         {
             placeHistories.insertObject(history, atIndex: 0)
             placeHistories.writeToFile(documentsPath, atomically: true)
-        }
-    }
-    
-    func focusMapToLocation(location: CLLocationCoordinate2D, isShouldUpdateAddress:Bool, saveHistory: Bool, addressSugestion: GMSAutocompletePrediction)
-    {
-        mapView.marker.position = location
-        mapView.updateCameraPosition()
-        
-        if(isShouldUpdateAddress){
-            updateAddressSaveHistory(saveHistory, addressSugestion: addressSugestion)
         }
     }
     
@@ -261,12 +266,11 @@ enum TypePlacePicker : Int{
                 return
             }
             if(results?.count > 0){
-                self.autoCompleteResults.removeAllObjects()
-                self.autoCompleteResults.addObject(results!)
-                self.titleArrayTableView[1].removeAll()
+                self.autoCompleteResults = results as! Array
+                self.dataTableView[0]=[]
                 for var index = 0; index < self.autoCompleteResults.count; ++index{
                     let place :GMSAutocompletePrediction = results![index] as! GMSAutocompletePrediction
-                    self.titleArrayTableView[1][index] += place.attributedFullText.string
+                    self.dataTableView[0].insert(place.attributedFullText.string, atIndex: index)
                 }
                 
                 self.tableView.hidden = false
@@ -276,27 +280,39 @@ enum TypePlacePicker : Int{
     }
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return titleArrayTableView.count
+        return dataTableView.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return titleArrayTableView[section].count
+        return dataTableView[section].count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        let cell:UITableViewCell = UITableViewCell.init(style: UITableViewCellStyle.Default, reuseIdentifier: "reuseIdentifier")
         
         cell.textLabel!.font = UIFont (name: "GothamBook", size: 13);
         cell.textLabel!.numberOfLines = 0;
-        cell.textLabel?.setCustomAttributedText(titleArrayTableView[indexPath.section][indexPath.row])
+        cell.textLabel?.setCustomAttributedText(dataTableView[indexPath.section][indexPath.row])
         cell.textLabel?.sizeToFit()
         return cell
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return titleArrayTableView[0][section]
+        return titleSection[section]
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        setSearchBarActive(false, animated: true)
+        
+        if (indexPath.section == 0) {
+            doGeneratePlaceDetail(autoCompleteResults[indexPath.row].placeID, addressSuggestion: autoCompleteResults[indexPath.row])
+        } else {
+            let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2DMake(placeHistories[indexPath.row]["latitude"] as! Double, placeHistories[indexPath.row]["longitude"] as! Double)
+            mapView.updateCameraPosition(coordinate)
+        }
+        
+        selectedSugestion = dataTableView[indexPath.section][indexPath.row]
+        loadHistory()
     }
 
     //MARK: - Place Detail Request
@@ -309,7 +325,8 @@ enum TypePlacePicker : Int{
             
             if (result != nil) {
                 let c2D : CLLocationCoordinate2D = CLLocationCoordinate2DMake((result?.coordinate.latitude)!, (result?.coordinate.longitude)!)
-                self.focusMapToLocation(c2D, isShouldUpdateAddress: true, saveHistory: true, addressSugestion: addressSuggestion)
+                self.mapView.updateCameraPosition(c2D)
+                self.updateAddressSaveHistory(true, addressSugestion: addressSuggestion)
             } else {
                 print("No place detail for \(placeID)")
             }
@@ -319,7 +336,7 @@ enum TypePlacePicker : Int{
     //MARK: - SearchBar Delegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         if((searchBar.text?.isEmpty) != nil){
-            titleArrayTableView[1].removeAll()
+            dataTableView[0].removeAll()
             tableView.reloadData()
         }
         handleSearchForSearchString(searchBar.text!)
@@ -329,11 +346,11 @@ enum TypePlacePicker : Int{
     }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        if ((searchBar.text?.isEmpty) != nil){
-            titleArrayTableView[1].removeAll()
+        if (searchBar.text == ""){
+            dataTableView[0] = []
             tableView.reloadData()
         }
-        
+
         setSearchBarActive(true, animated: true)
     }
     
@@ -366,12 +383,7 @@ enum TypePlacePicker : Int{
     func activeSearchBar(isActive: Bool)
     {
         searchBar.frame = CGRectMake(0, 0, searchBar.frame.size.width, searchBar.frame.size.height)
-        tableView.hidden = !(isActive && placeHistories.count>0 )
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        tableView.hidden = !(isActive && (dataTableView[0].count>0 || dataTableView[1].count>0))
     }
     
 }

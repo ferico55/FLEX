@@ -95,6 +95,23 @@
     return self;
 }
 
+-(void)setCustomAttributedText:(NSString *)text
+{
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [style setAlignment:NSTextAlignmentCenter];
+    [style setLineBreakMode:NSLineBreakByWordWrapping];
+    [style setLineSpacing:6.0];
+    
+    NSDictionary *dict1 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),
+                            NSFontAttributeName:self.font,
+                            NSParagraphStyleAttributeName:style};
+    
+    
+    NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] init];
+    [attString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", text] attributes:dict1]];
+    [self setAttributedTitle:attString forState:UIControlStateNormal];
+}
+
 @end
 
 #pragma mark - UIImageView

@@ -16,7 +16,7 @@ typedef enum{
 
 @protocol PlacePickerDelegate <NSObject>
 
--(void)PickAddress:(GMSAddress*)address suggestion:(NSString*)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage *)map;
+-(void)PickAddress:(GMSAddress*)address suggestion:(NSString*)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage;
 
 @end
 

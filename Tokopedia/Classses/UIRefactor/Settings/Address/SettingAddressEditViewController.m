@@ -18,6 +18,7 @@
 #import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
 #import "RequestObject.h"
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Setting Address Edit View Controller
 @interface SettingAddressEditViewController ()
@@ -29,7 +30,8 @@
     UITextFieldDelegate,
     UITextViewDelegate,
     TokopediaNetworkManagerDelegate,
-    PlacePickerDelegate
+    PlacePickerDelegate,
+    TKPPlacePickerDelegate
 >
 {
     NSInteger _type;
@@ -160,7 +162,7 @@
              forControlEvents:UIControlEventEditingChanged];
     
     _constraintBottomMapName.constant = 20;
-    _buttonMapLocation.titleLabel.numberOfLines = 0;
+    _buttonMapLocation.titleLabel.numberOfLines = 2;
 
 }
 
@@ -341,7 +343,7 @@
 }
 
 #pragma mark - Picker Place Delegate
--(void)PickAddress:(GMSAddress *)address suggestion:(NSString*)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage*)map
+-(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
     NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
     if (![suggestion isEqualToString:@""]) {
@@ -363,8 +365,8 @@
         _textfieldpostcode.text = addressStreet;
     
     _textfieldpostcode.text = address.postalCode;
-    [_buttonMapLocation setTitle:addressStreet forState:UIControlStateNormal];
-    _mapImageView.image = map;
+    [_buttonMapLocation setCustomAttributedText:addressStreet];
+    _mapImageView.image = mapImage;
     _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;
     _constraintBottomMapName.constant = 0;

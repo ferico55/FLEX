@@ -195,7 +195,7 @@
 -(void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
     UIImage *map = _captureScreen?:[PlacePickerViewController captureScreen:mapView];
-    [_delegate PickAddress:_address suggestion:_selectedSugestion?:@"" longitude:marker.position.longitude latitude:marker.position.latitude map:map];
+    [_delegate PickAddress:_address suggestion:_selectedSugestion?:@"" longitude:marker.position.longitude latitude:marker.position.latitude mapImage:map];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -441,7 +441,7 @@
     TKPPlacePickerViewController *placePicker = [TKPPlacePickerViewController new];
     placePicker.firstCoordinate = location;
     placePicker.type = type;
-    
+    placePicker.delegate = viewController;
 //    PlacePickerViewController *placePicker = [PlacePickerViewController new];
 //    placePicker.firstCoordinate = location;
 //    placePicker.type = type;
