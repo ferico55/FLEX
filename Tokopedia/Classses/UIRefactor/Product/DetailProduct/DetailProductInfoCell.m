@@ -39,6 +39,15 @@
 
 - (void)awakeFromNib
 {
+    lblMessageRetur.linkAttributes = @{
+                                       (id)kCTForegroundColorAttributeName:[
+                                                                            UIColor colorWithRed:10/255.0f
+                                                                            green:126/255.0f
+                                                                            blue:7/255.0f
+                                                                            alpha:1.0f],
+                                       NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+    lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    
     _categorybuttons = [NSArray sortViewsWithTagInArray:_categorybuttons];
     self.productInformationView.layer.borderWidth = 0.5f;
     self.productInformationView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
@@ -64,47 +73,15 @@
 #pragma mark - Method
 - (void)setLblDescriptionToko:(NSString *)strText
 {
-    if(lblMessageRetur == nil) {
-        lblMessageRetur = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-        lblMessageRetur.textAlignment = NSTextAlignmentLeft;
-        lblMessageRetur.font = [UIFont fontWithName:CFont_Gotham_Book size:11.0f];
-        lblMessageRetur.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
-        lblMessageRetur.lineBreakMode = NSLineBreakByWordWrapping;
-        lblMessageRetur.numberOfLines = 0;
-        lblMessageRetur.backgroundColor = [UIColor clearColor];
-        [viewRetur addSubview:lblMessageRetur];
-    }
+    float labelHeight = 29;
     
-    
-    float height = [((DetailProductViewController *)_delegate) calculateHeightLabelDesc:CGSizeMake(((DetailProductViewController *) _delegate).view.bounds.size.width-CPaddingTopDescToko-CPaddingTopDescToko, 9999) withText:strText withColor:[UIColor whiteColor] withFont:FONT_GOTHAM_BOOK_14 withAlignment:NSTextAlignmentLeft];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        lblMessageRetur.frame = CGRectMake(imgRetur.frame.origin.x+imgRetur.bounds.size.width+5,
-                                       CPaddingTopDescToko,
-                                       ([[UIScreen mainScreen] bounds].size.width-20)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-155,
-                                       height);
-    }
-    else
-    {
-        lblMessageRetur.frame = CGRectMake(70+5,
-                                           CPaddingTopDescToko,
-                                           ([[UIScreen mainScreen] bounds].size.width-30)-(imgRetur.frame.origin.x+imgRetur.bounds.size.width)-15,
-                                           height);
-    }
-    
-    constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+height;
+    constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
+    lblMessageRetur.text = strText;
 }
 
 - (void)hiddenViewRetur
 {
     constraintHeightViewRetur.constant = 0;
-    [imgRetur removeConstraints:imgRetur.constraints];
-    [imgRetur addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[imgRetur(==0)]" options:0 metrics:0 views:NSDictionaryOfVariableBindings(imgRetur)]];
-}
-
-- (void)setLblRetur:(NSString *)str
-{
-    lblMessageRetur.text = str;
 }
 
 - (TTTAttributedLabel *)getLblRetur

@@ -50,7 +50,7 @@
     
     
     //Grab a reference to the LeftViewController and get the first monster in the list.
-    ProductTalkDetailViewController *detailVC = [ProductTalkDetailViewController new];
+    ProductTalkDetailViewController *detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
     detailVC.masterViewController = controller;
     
     UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];

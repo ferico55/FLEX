@@ -238,7 +238,7 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="1bS-bT-KeK" firstAttribute="top" secondItem="65T-Th-yiP" secondAttribute="bottom" id="CDu-gR-ifq"/>
                     <constraint firstItem="bPc-Z7-ZW9" firstAttribute="leading" secondItem="Hgy-bS-eh8" secondAttribute="leading" constant="10" id="Exu-8g-2QT"/>
@@ -256,7 +256,7 @@
                     <constraint firstAttribute="trailing" secondItem="bPc-Z7-ZW9" secondAttribute="trailing" constant="10" id="rV7-WK-6Zz"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="buyerSellerLabel" destination="68e-hd-Cmy" id="bMX-nP-TAm"/>
                 <outlet property="markLabel" destination="RcK-9c-QIG" id="uep-Ir-fJF"/>

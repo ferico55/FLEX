@@ -44,6 +44,8 @@
 #import "string_more.h"
 #import "string_inbox_talk.h"
 
+#import "NavigationHelper.h"
+
 @interface ProductTalkDetailViewController ()
 <
     UITableViewDataSource,
@@ -99,6 +101,7 @@
     UserAuthentificationManager *_userManager;
     NavigateViewController *_navigateController;
     NSString *_reportAction;
+    BOOL _marksOpenedTalksAsRead;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -131,9 +134,18 @@
 @implementation ProductTalkDetailViewController
 
 #pragma mark - Initializations
+-(id) initByMarkingOpenedTalkAsRead:(BOOL) marksOpenedTalkAsRead {
+    self = [super init];
+    _marksOpenedTalksAsRead = marksOpenedTalkAsRead;
+    return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
+    _marksOpenedTalksAsRead = NO;
+    
     if (self) {
         _isnodata = YES;
         self.title = kTKPDTITLE_TALK;
@@ -196,14 +208,7 @@
     _auth = [auth mutableCopy];
     [_sendButton setEnabled:NO];
     
-    //validate previous class so it can use several URL path
-    NSArray *vcs = self.navigationController.viewControllers;
-    NSInteger index = [vcs count] - 2;
-    if (index<0) {
-        index = 0;
-    }
-    if([vcs[index] isKindOfClass:[TKPDTabViewController class]]) {
-        
+    if(_marksOpenedTalksAsRead) {
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
         
@@ -217,12 +222,13 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
 
         // add gesture to product image
     UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_talkProductImage addGestureRecognizer:productGesture];
-    [_talkProductImage setUserInteractionEnabled:YES];
+    [_talkProductImage setUserInteractionEnabled: [NavigationHelper shouldDoDeepNavigation]];
+
+
     _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
     _talkuserimage.layer.masksToBounds = YES;
     
@@ -591,16 +597,24 @@
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     _growingtextview.maxHeight = 150.f;
-    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+
+    //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
-
     
     [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
+
+
+#pragma mark - Life Cycle
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
 
 #pragma mark - Request and Mapping
 -(void) cancel {
@@ -823,6 +837,10 @@
 #pragma mark - View Action
 
 - (void)tapProduct {
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        return;
+    }
+    
     if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
         [_navigateController navigateToProductFromViewController:self withName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME] withPrice:nil withId:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"] withImageurl:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE] withShopName:nil];
     }
@@ -1491,12 +1509,11 @@
     _data = data;
     
     if (data) {
-        [self setHeaderData:data];
         _page = 1;
         [_list removeAllObjects];
         [self configureRestKit];
         [self loadData];
-        
+        [self setHeaderData:data];
     }
 }
 

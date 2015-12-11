@@ -130,7 +130,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = 1;
-    [_networkManager doRequest];
+//    [_networkManager doRequest];
 
     _ratingNetworkManager = [TokopediaNetworkManager new];
     _ratingNetworkManager.delegate = self;
@@ -194,6 +194,35 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                              selector:@selector(refreshView)
                                                  name:TKPDInboxTicketLoadData
                                                object:nil];
+}
+
+- (void)showRefreshControl {
+    [_refreshControl beginRefreshing];
+    [self.tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+}
+
+- (void)updateTicket:(InboxTicketList *)inboxTicket {
+    self.inboxTicket = inboxTicket;
+    
+    if (inboxTicket) {
+        _ticketDetail = nil;
+        _ticketInformation = nil;
+        _isLoadingMore = NO;
+        
+        self.view.hidden = NO;
+        
+        [_loadMoreButton setTitle:@"Lihat Semua" forState:UIControlStateNormal];
+        
+        [self setTitleView];
+        
+        [self showRefreshControl];
+        
+        [_networkManager doRequest];
+    }
+    else {
+        self.navigationItem.titleView = nil;
+        self.view.hidden = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -393,10 +422,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                            API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId
                            };
         } else {
+            if (_inboxTicket != nil)
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_DETAIL,
                            API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id?:_inboxTicketId,
                            };
+            
+            else dictionary = @{};
         }
     } else {
         
@@ -621,7 +653,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         self.tableView.sectionFooterHeight = 0;
     }
     
-    if (!_ticketDetail) {
+    if(_ticketDetail == nil) {
         _ticketDetail = [InboxTicketDetail new];
         _ticketDetail.ticket_detail_user_name = _ticketInformation.ticket_first_message_name;
         _ticketDetail.ticket_detail_user_image = _ticketInformation.ticket_first_message_image;
@@ -920,7 +952,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventValueChanged];
     [_refreshControl setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin)];
-    [[_refreshControl.subviews objectAtIndex:0] setFrame:CGRectMake(0, 20, 0, 20)];
+    [[_refreshControl.subviews objectAtIndex:0] setFrame:CGRectMake(0, 0, 20, 20)];
     [self.tableView addSubview:_refreshControl];
 }
 

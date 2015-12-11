@@ -36,6 +36,7 @@
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 #import "NavigateViewController.h"
+#import "NavigationHelper.h"
 
 #define CStringLimitText @"Panjang pesan harus lebih besar dari 5 karakter"
 #define CStringSuccessSentComment @"Anda berhasil memberikan komentar"
@@ -129,13 +130,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     heightScreenView = self.view.bounds.size.height;
     constHeightViewContent.constant = heightScreenView;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if(! isSuccessSentMessage) {
@@ -219,7 +223,7 @@
     productReputationCell.delegate = self;
     [([self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2]) setPropertyLabelDesc:productReputationCell.getLabelDesc];
     
-    productReputationCell.frame = CGRectMake(productReputationCell.frame.origin.x, productReputationCell.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, productReputationCell.bounds.size.height);
+    productReputationCell.frame = CGRectMake(productReputationCell.frame.origin.x, productReputationCell.frame.origin.y, self.view.bounds.size.width, productReputationCell.bounds.size.height);
     productReputationCell.getViewContent.frame = CGRectMake(CPaddingTopBottom, productReputationCell.getViewContent.frame.origin.y, productReputationCell.bounds.size.width-(CPaddingTopBottom*2), productReputationCell.getViewContent.bounds.size.height);
 
     
@@ -244,7 +248,7 @@
         else
             [productReputationCell setLabelProductName:strTempProductName];
         [[productReputationCell getLabelProductName] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToDetailProduct:)]];
-        [productReputationCell getLabelProductName].userInteractionEnabled = YES;
+        [productReputationCell getLabelProductName].userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
         [productReputationCell.getViewSeparatorProduct removeFromSuperview];
         isResizeSeparatorProduct = YES;
         [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorProduct];
@@ -253,7 +257,7 @@
         NSString *strProductStatus = (_detailReputaitonReview != nil)?_detailReputaitonReview.product_status:_reviewList.review_product_status;
         //check product deleted
         if([strProductStatus isEqualToString:@"1"]) {
-            productReputationCell.getLabelProductName.userInteractionEnabled = YES;
+            productReputationCell.getLabelProductName.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
             [productReputationCell.getLabelProductName setTextColor:[UIColor colorWithRed:66/255.0f green:66/255.0f blue:66/255.0f alpha:1.0f]];
         }
         else {
@@ -342,7 +346,7 @@
     productReputationCell.getViewSeparatorKualitas.frame = CGRectMake(0, productReputationCell.getViewContent.frame.origin.y+productReputationCell.getViewContentAction.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, 1);
     [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorKualitas];
     [productReputationCell.getLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToShopView:)]];
-    productReputationCell.getLabelUser.userInteractionEnabled = YES;
+    productReputationCell.getLabelUser.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
     
     tableReputation.tableHeaderView = productReputationCell.contentView;
     tableReputation.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
@@ -513,7 +517,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.del = self;
         cell.delegate = self;
-        cell.getViewLabelUser.userInteractionEnabled = YES;
+        cell.getViewLabelUser.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
         [cell.getViewLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapCellLabelUser:)]];
     }
     

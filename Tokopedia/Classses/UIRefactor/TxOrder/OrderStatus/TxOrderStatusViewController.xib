@@ -30,11 +30,11 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PJ7-9T-DZ2">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
                 <constraint firstItem="63E-dj-1jg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dQV-to-aCL"/>
                 <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="jxi-Sb-Ttj">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
                 <constraint firstAttribute="bottom" secondItem="63E-dj-1jg" secondAttribute="bottom" id="vOK-zv-qfB"/>
             </constraints>

@@ -29,4 +29,5 @@
 - (void)successInsertReputation:(NSString *)reputationID withState:(NSString *)emoticonState;
 - (void)failedInsertReputation:(NSString *)reputationID;
 - (void)doingActInsertReview:(NSString *)reputationID;
+- (void)onReputationIconTapped:(void(^)()) callback;
 @end

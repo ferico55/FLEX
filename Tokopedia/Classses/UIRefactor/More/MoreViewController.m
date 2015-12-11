@@ -32,6 +32,8 @@
 
 #import "ShopFavoritedViewController.h"
 
+
+#import "InboxTicketSplitViewController.h"
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
@@ -676,30 +678,36 @@
             [self.navigationController pushViewController:nc animated:YES];
             */
         } else if (indexPath.row == 3) {
-            
-            [_navigate navigateToInboxPriceAlertFromViewController:self];
-            
+            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
+            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
         } else if (indexPath.row == 4) {
-            TKPDTabViewController *controller = [TKPDTabViewController new];
-            controller.hidesBottomBarWhenPushed = YES;
-            
-            InboxTicketViewController *allInbox = [InboxTicketViewController new];
-            allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-            allInbox.delegate = controller;
-            
-            InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-            unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-            unreadInbox.delegate = controller;
-            
-            InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-            closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
-            closedInbox.delegate = controller;
-            
-            controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-            controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-            controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-            
-            [self.navigationController pushViewController:controller animated:YES];
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
+                
+                [self.navigationController pushViewController:controller animated:YES];
+            } else {
+                TKPDTabViewController *controller = [TKPDTabViewController new];
+                controller.hidesBottomBarWhenPushed = YES;
+                
+                InboxTicketViewController *allInbox = [InboxTicketViewController new];
+                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+                allInbox.delegate = controller;
+                
+                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+                unreadInbox.delegate = controller;
+                
+                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+                closedInbox.delegate = controller;
+                
+                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+                
+                [self.navigationController pushViewController:controller animated:YES];
+            }
         } else if (indexPath.row == 5) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
@@ -752,7 +760,7 @@
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                               url:url
-                                                                                           anchor:tableView];
+                                                                                           anchor:[tableView cellForRowAtIndexPath:indexPath]];
             
             [self presentViewController:controller animated:YES completion:nil];
         }
