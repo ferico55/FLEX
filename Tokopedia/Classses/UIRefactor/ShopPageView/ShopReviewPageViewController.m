@@ -40,6 +40,7 @@
 #import "TokopediaNetworkManager.h"
 #import "NoResultReusableView.h"
 #import "URLCacheController.h"
+#import "ProductReputationSimpleCell.h"
 
 #define CTagGetTotalLike 1
 #define CTagLike 2
@@ -213,6 +214,10 @@ NoResultDelegate>
     
     _header = _shopPageHeader.view;
     
+    CGRect newFrame = _header.frame;
+    newFrame.size.height += 5;
+    _header.frame = newFrame;
+    
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:21];
     [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
@@ -231,6 +236,9 @@ NoResultDelegate>
     [_fakeStickyTab.layer setShadowColor:[UIColor colorWithWhite:0 alpha:1].CGColor];
     [_fakeStickyTab.layer setShadowRadius:1];
     [_fakeStickyTab.layer setShadowOpacity:0.3];
+    
+    UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
+    [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
     [self initNotification];
     [self configureRestKit];
@@ -559,18 +567,21 @@ NoResultDelegate>
     return _isNoData ? 0 : _list.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    ReviewList *list = _list[indexPath.row];
-    TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-    [self setPropertyLabelDesc:tempLabel];
-    [self initLabelDesc:tempLabel withText:[self convertHTML:list.review_message?:@""]];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ReviewList *reputationDetail = _list[indexPath.row];
+    UILabel *messageLabel = [[UILabel alloc] init];
     
-    CGSize tempSizeDesc = [tempLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width-(CPaddingTopBottom*4), 9999)];//4 padding left and right of label description
-    tempSizeDesc.height += CHeightContentAction;
-    tempSizeDesc.height += CHeightContentRate;
-
-    return tempSizeDesc.height + CHeightDate + (CheightImage*2) + (CPaddingTopBottom*9); //9 is total padding of each row component
+    [messageLabel setText:reputationDetail.review_message];
+    [messageLabel sizeToFit];
+    
+    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                           context:nil];
+    messageLabel.frame = sizeOfMessage;
+    
+    CGFloat height = 150 + messageLabel.frame.size.height ;
+    return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -579,149 +590,12 @@ NoResultDelegate>
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = nil;
-    if (!_isNoData) {
-        
-        NSString *cellid = @"cell";
-        ProductReputationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid];
-        if(cell == nil) {
-            NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductReputationCell" owner:nil options:0];
-            cell = [tempArr objectAtIndex:0];
-            cell.delegate = self;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.frame = CGRectMake(0, 0, tableView.bounds.size.width, cell.bounds.size.height);
-            
-            [cell initProductCell];
-            [self setPropertyLabelDesc:cell.getLabelDesc];
-        }
-        
-        ReviewList *list = _list[indexPath.row];
-        [cell.getLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
-        [cell setLabelUser:list.review_user_name withUserLabel:list.review_user_label];
-        [cell setLabelDate:list.review_create_time?:@""];
-        cell.getBtnRateEmoji.tag = indexPath.row;
-        cell.getBtnLike.tag = indexPath.row;
-        cell.getBtnChat.tag = indexPath.row;
-        cell.getBtnDisLike.tag = indexPath.row;
-        cell.getLabelDesc.tag = indexPath.row;
-        
-        
-        //Check product exist or not
-        if([list.review_product_name isEqualToString:@"0"]) {
-            [cell setLabelProductName:@"-"];
-        }
-        else {
-            [cell setLabelProductName:list.review_product_name];
-        }
-        
-
-        
-        //Check reputation
-        if(list.review_user_reputation.no_reputation!=nil && [list.review_user_reputation.no_reputation isEqualToString:@"1"]) {
-            [cell.getBtnRateEmoji setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            [cell setPercentage:@""];
-        }
-        else {
-            [cell.getBtnRateEmoji setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            [cell setPercentage:list.review_user_reputation.positive_percentage];
-        }
-        
-        //Hidden review rate and comment
-//        if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
-//            [cell setHiddenRating:YES];
-//            [cell setHiddenAction:NO];
-//        } else {
-//            [cell setHiddenRating:NO];
-//            [cell setHiddenAction:YES];
-//        }
-        
-        //Check can lapor or not
-        if(_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:list.review_user_id]) {
-            cell.getBtnMore.hidden = YES;
-        }
-        else {
-            cell.getBtnMore.hidden = NO;
-        }
-        
-        //Set chat total
-        if(list.review_response==nil || list.review_response.response_message==nil || [list.review_response.response_message isEqualToString:@"0"]) {
-            [cell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", (list.review_response==nil||list.review_response.response_message==nil? @"0":list.review_response.response_message)] forState:UIControlStateNormal];
-        }
-        else {
-            [cell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
-        }
-        
-        
-        //Set like dislike total
-        [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-        [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
-        
-        if([dictLikeDislike objectForKey:list.review_id]) {
-            [cell setHiddenViewLoad:YES];
-            
-            TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:list.review_id];
-            [cell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like forState:UIControlStateNormal];
-            [cell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
-            
-            if(totalLikeDislike.like_status!=nil && [totalLikeDislike.like_status isEqualToString:@"1"]) {
-                [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
-                [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-            else if(totalLikeDislike.like_status!=nil && [totalLikeDislike.like_status isEqualToString:@"2"]) {
-                [cell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
-                [cell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-        }
-        else {
-            [cell setHiddenViewLoad:NO];
-            if(! [loadingLikeDislike objectForKey:list.review_id]) {
-                [loadingLikeDislike setObject:list.review_id forKey:list.review_id];
-                [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[list, [NSNumber numberWithInt:(int)indexPath.row]]];
-            }         }
-        
-        
-        
-
-        [cell setDescription:[self convertHTML:list.review_message?:@""]];
-        [cell setImageKualitas:[list.review_rate_quality intValue]];
-        [cell setImageAkurasi:[list.review_rate_accuracy intValue]];
-        
-        
-        //Set profile image
-        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        UIImageView *userImageView = cell.getImageProfile;
-        userImageView.image = nil;
-        [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                #pragma clang diagnostic push
-                #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [userImageView setImage:image];
-                #pragma clang diagnostic pop
-            } failure:nil];
-        
-        //Set product image
-        NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        UIImageView *productImageView = cell.getProductImage;
-        [productImageView setImageWithURLRequest:productImageRequest placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            #pragma clang diagnostic push
-            #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [productImageView setImage:image];
-            #pragma clang diagnostic pop
-        } failure:nil];
-        
-        return cell;
-    } else {
-        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                          reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
-    }
+    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    
+    ReviewList *list = _list[indexPath.row];
+    [cell setDelegate:self];
+    [cell setShopReputationModelView:list];
+    
     return cell;
 }
 

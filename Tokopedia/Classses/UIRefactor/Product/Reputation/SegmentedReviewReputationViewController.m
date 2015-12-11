@@ -55,8 +55,8 @@
     [lblDescChangeReviewStyle setAttributedText:attribute];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if(viewContent.subviews.count == 0) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
