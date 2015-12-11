@@ -38,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UIView *border;
 
 @property (nonatomic) NSInteger indexPage;
+@property (nonatomic) id<UIActionSheetDelegate> actionSheetDelegate;
 
 +(id)newcell;
 - (void)setViewModel:(ProductModelView*)viewModel;

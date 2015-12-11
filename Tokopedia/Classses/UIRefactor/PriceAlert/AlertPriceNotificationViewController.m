@@ -69,18 +69,6 @@
     page = 1;
     isFirst = YES;
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
-        [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
-        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
-        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
-        
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-        
-        self.navigationItem.leftBarButtonItem = barButton;
-    }
-    
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
@@ -103,6 +91,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     if(tempUnreadIndexPath != nil) {
         ((DetailPriceAlert *) [arrList objectAtIndex:tempUnreadIndexPath.row]).pricealert_total_unread = @"0";
     }
@@ -163,19 +153,11 @@
     PriceAlertCell *cell = (PriceAlertCell *)[tableView cellForRowAtIndexPath:indexPath];
     tempPriceAlert.pricealert_product_name = [NSString convertHTML:tempPriceAlert.pricealert_product_name];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        if (![tempPriceAlert isEqual:_detailViewController.detailPriceAlert]) {
-            NSDictionary *data = @{@"price_alert" : tempPriceAlert, @"image_header" : cell.getProductImage.image};
-            [_detailViewController replaceDataSelected:data];
-        }
-    }
-    else {
-        DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
-        detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
-        detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
-        detailPriceAlertViewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
-    }
+    DetailPriceAlertViewController *detailPriceAlertViewController = [DetailPriceAlertViewController new];
+    detailPriceAlertViewController.detailPriceAlert = tempPriceAlert;
+    detailPriceAlertViewController.imageHeader = cell.getProductImage.image;
+    detailPriceAlertViewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:detailPriceAlertViewController animated:YES];
     
 }
 
@@ -240,29 +222,6 @@
         //        [self presentViewController:navController animated:YES completion:nil];
         [self.navigationController pushViewController:departmentViewController animated:YES];
     }
-    
-    //    if(viewCategory.tag == 0) {//Show View Category
-    //        [UIView animateWithDuration:.5 animations:^{
-    //            viewCategory.userInteractionEnabled = NO;
-    //            imgArrow.transform = CGAffineTransformMakeRotation(degreeToRadian(180));
-    //            constraintSpaceViewCategoryAndTbl.constant = -50;
-    //            [self.view layoutIfNeeded];
-    //        } completion:^(BOOL finished){
-    //            viewCategory.tag = 1;
-    //            viewCategory.userInteractionEnabled = YES;
-    //        }];
-    //    }
-    //    else {//Hide View Category
-    //        [UIView animateWithDuration:.5 animations:^{
-    //            viewCategory.userInteractionEnabled = NO;
-    //            imgArrow.transform = CGAffineTransformIdentity;
-    //            constraintSpaceViewCategoryAndTbl.constant = 0;
-    //            [self.view layoutIfNeeded];
-    //        } completion:^(BOOL finished){
-    //            viewCategory.tag = 0;
-    //            viewCategory.userInteractionEnabled = YES;
-    //        }];
-    //    }
 }
 
 - (void)actionCloseCell:(id)sender {
@@ -335,7 +294,7 @@
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityIndicator.frame = CGRectMake(0, 10, 40, 40);
     [activityIndicator startAnimating];
-    
+
     return activityIndicator;
 }
 
@@ -531,14 +490,8 @@
             _table.delegate = self;
             _table.dataSource = self;
         }
-        
+
         [_table reloadData];
-        
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && isFirst) {
-            NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
-            [self tableView:_table didSelectRowAtIndexPath:index];
-            isFirst = NO;
-        }
     }
     else if(tag == CTagDeletePriceAlert) {
         GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];

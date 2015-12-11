@@ -13,6 +13,7 @@
 #import "MyReviewReputationCell.h"
 #import "ReputationDetail.h"
 #import "ViewLabelUser.h"
+#import "NavigationHelper.h"
 //#define CTagPembeli 1
 //#define CTagPenjual 2
 #define CFormatWaitYourReview @"%@ Produk menunggu ulasan anda"
@@ -44,6 +45,7 @@
     [imageFlagReview setUserInteractionEnabled:YES];
     [labelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionLabelUser:)]];
     [imageFlagReview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionFlagReview:)]];
+    [labelUser setUserInteractionEnabled: [NavigationHelper shouldDoDeepNavigation]];
     
     //Set image
     imageQSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile20" ofType:@"png"]];

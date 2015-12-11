@@ -10,6 +10,9 @@
 #import "ReputationDetail.h"
 #import "ReviewResponse.h"
 #import "ReviewProductOwner.h"
+
+#import "ProductReputationViewModel.h"
+
 #define CReviewUserReputation @"review_user_reputation"
 #define CReviewReputationID @"review_reputation_id"
 
@@ -48,5 +51,8 @@
 //User Label
 @property (nonatomic, strong) NSString *review_user_label;
 @property (nonatomic, strong) NSString *review_user_label_id;
+
+@property (nonatomic, strong) ProductReputationViewModel *viewModel;
+
 
 @end

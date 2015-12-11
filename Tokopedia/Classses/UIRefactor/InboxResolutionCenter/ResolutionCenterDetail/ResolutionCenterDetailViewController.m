@@ -14,6 +14,7 @@
 #import "ShopReputation.h"
 
 #import "NavigateViewController.h"
+#import "NavigationHelper.h"
 
 #import "TrackOrderViewController.h"
 
@@ -139,7 +140,7 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone  || _isNeedRequestListDetail) {
         [self configureRestKit];
         [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
     }
@@ -316,6 +317,11 @@
         return rowHeight;
     }
     return UITableViewAutomaticDimension;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor clearColor];
 }
 
 #pragma mark - View Action
@@ -1777,6 +1783,10 @@
 }
 
 - (IBAction)gesture:(id)sender {
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        return;
+    }
+    
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10) {
         [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_resolutionDetail.resolution_order.order_pdf_url];

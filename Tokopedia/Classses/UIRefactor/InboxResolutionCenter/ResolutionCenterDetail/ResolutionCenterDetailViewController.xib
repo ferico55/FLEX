@@ -48,7 +48,7 @@
                         <outlet property="delegate" destination="-1" id="LoW-Dc-y9a"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kuE-5j-1wg">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kuE-5j-1wg">
                     <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N0B-0l-7Aq" userLabel="Horizontal Border">

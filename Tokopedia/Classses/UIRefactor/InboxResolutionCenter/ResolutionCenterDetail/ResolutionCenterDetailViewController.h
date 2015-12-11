@@ -33,6 +33,8 @@
 @property NSIndexPath *indexPath;
 @property NSString *resolutionID;
 
+@property BOOL isNeedRequestListDetail;
+
 -(void)replaceDataSelected:(InboxResolutionCenterList*)resolution indexPath:(NSIndexPath*)indexPath resolutionID:(NSString*)resolutionID;
 
 @end

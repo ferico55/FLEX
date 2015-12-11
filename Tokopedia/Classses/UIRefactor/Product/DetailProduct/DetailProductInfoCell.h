@@ -24,7 +24,7 @@
 {
     IBOutlet NSLayoutConstraint *constraintHeightViewRetur;
     IBOutlet NSLayoutConstraint *constraintWidthViewRetur;
-    TTTAttributedLabel *lblMessageRetur;
+    IBOutlet TTTAttributedLabel *lblMessageRetur;
     IBOutlet UIView *viewRetur;
     IBOutlet UIImageView *imgRetur;
 }
@@ -43,7 +43,6 @@
 +(id)newcell;
 - (void)setLblDescriptionToko:(NSString *)strText;
 - (void)hiddenViewRetur;
-- (void)setLblRetur:(NSString *)str;
 - (TTTAttributedLabel *)getLblRetur;
 - (float)getHeightReturView;
 @end

@@ -37,6 +37,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 @end
 
 @implementation TalkCell
+{
+    BOOL _isFollowingTalk;
+    IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
+}
 
 #pragma mark - Initialization
 
@@ -57,13 +61,15 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _navigateController = [NavigateViewController new];
     _isSplitScreen = NO;
     
+    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
+    
     UITapGestureRecognizer *productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToProduct)];
     [self.productImageView addGestureRecognizer:productGesture];
-    [self.productImageView setUserInteractionEnabled:YES];
+    [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
     
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToUser)];
     [self.userImageView addGestureRecognizer:userGesture];
-    [self.userImageView setUserInteractionEnabled:YES];
+    [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
     
     UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
     [self.middleView addGestureRecognizer:talkGesture];
@@ -88,24 +94,18 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     if([modelView.talkOwnerStatus isEqualToString:@"0"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
-        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
-        CGRect newFrame = self.totalCommentButton.frame;
-        newFrame.origin.x = 0;
-        self.totalCommentButton.frame = newFrame;
 
+        commentButtonTrailingToVerticalBorder.priority = 750;
         self.divider.hidden = NO;
+        [self layoutIfNeeded];
     } else {
         [self.unfollowButton setHidden:YES];
-        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-        
-        CGRect newFrame = self.totalCommentButton.frame;
-        newFrame.origin.x = [_delegate getTable].frame.size.width/320 * 75;
-        self.totalCommentButton.frame = newFrame;
 
+        commentButtonTrailingToVerticalBorder.priority = 600;
         self.divider.hidden = YES;
+        [self layoutIfNeeded];
     }
-    
+
     [self setTalkFollowStatus:[modelView.followStatus isEqualToString:@"1"] ? YES : NO];
     
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:modelView.userImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -139,7 +139,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
-    _talkFollowStatus = talkFollowStatus;
+    _isFollowingTalk = talkFollowStatus;
     if (talkFollowStatus) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
@@ -397,17 +397,23 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             [table endUpdates];
         } else {
             NSArray *successMessages = [[NSMutableArray alloc] init];
-            if(tag == RequestDeleteTalk) {
-                successMessages = @[@"Anda berhasil menghapus diskusi ini."];
+            _isFollowingTalk = !_isFollowingTalk;
+            
+
+			if (tag == RequestDeleteTalk) {
+				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
 
                 NSDictionary *userInfo = @{@"index" : @(_unfollowIndexPath.row)};
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
                                                                     object:nil
                                                                   userInfo:userInfo];
-            
-            } else {
-                successMessages = @[@"Anda berhasil (batal) mengikuti diskusi ini."];
-            }
+			} else {
+            	if(_isFollowingTalk) {
+                	successMessages = @[@"Anda berhasil mengikuti diskusi ini."];
+	            } else {
+    	            successMessages = @[@"Anda batal mengikuti diskusi ini."];
+        	    }
+			}
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];
         }
