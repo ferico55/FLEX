@@ -29,6 +29,7 @@ enum TypePlacePicker : Int{
     @IBOutlet weak var locationView: UIView!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var pinPointImageView: UIImageView!
     
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
@@ -52,7 +53,7 @@ enum TypePlacePicker : Int{
     var dataTableView : [[String]] = [[],[]]
     var titleSection : [String] = ["Suggestions","Recent Search"]
     
-    var selectedSugestion : String!
+    var selectedSugestion : String = ""
 
     override func loadView() {
         var className:NSString = NSStringFromClass(self.classForCoder)
@@ -73,28 +74,7 @@ enum TypePlacePicker : Int{
         } else {
             // Fallback on earlier versions
         }
-    }
-    
-    func captureMapScreen(mapView:GMSMapView) -> UIImage
-    {
-        UIGraphicsBeginImageContextWithOptions(mapView.frame.size, true, 0.0)
-        mapView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        let refWidth:CGFloat = CGFloat(CGImageGetWidth(image.CGImage))
-        let refHeight:CGFloat = CGFloat(CGImageGetHeight(image.CGImage))
-        
-        let x:CGFloat = (refWidth - 220) / 2.0
-        let y:CGFloat = ((refHeight - 220) / 2.0) - 40
-        
-        let cropRect : CGRect = CGRectMake(x, y, 220, 220)
-        let imageRef : CGImageRef = CGImageCreateWithImageInRect(image.CGImage, cropRect)!
-        
-        let cropped : UIImage = UIImage.init(CGImage: imageRef, scale: 0, orientation: image.imageOrientation)
-        
-        return cropped
+        locationManager.startUpdatingLocation()
     }
     
     override func viewDidLoad() {
@@ -113,7 +93,7 @@ enum TypePlacePicker : Int{
     
     //MARK: View Action
     @IBAction func tapDone(sender: AnyObject) {
-        let mapImage : UIImage = captureMapScreen(mapView)
+        let mapImage : UIImage = mapView.captureMapScreen()
         delegate?.pickAddress(address, suggestion: selectedSugestion, longitude: mapView.marker.position.longitude, latitude: mapView.marker.position.latitude, mapImage: mapImage)
         self.navigationController?.popViewControllerAnimated(true)
     }
@@ -129,7 +109,7 @@ enum TypePlacePicker : Int{
             
         }
         else{
-            if(locationManager.location != nil){
+            if(locationManager.location != nil && (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0)){
                 mapView.updateCameraPosition(locationManager.location!.coordinate)
             }
         }
@@ -137,11 +117,21 @@ enum TypePlacePicker : Int{
     
     //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
-        mapView.selectedMarker.position = position.target
+        if(type == TypePlacePicker.TypeEditPlace.rawValue){ mapView.selectedMarker.position = position.target}
     }
     
     func mapView(mapView: GMSMapView!, idleAtCameraPosition position: GMSCameraPosition!) {
-        updateAddressSaveHistory(false, addressSugestion: nil)
+        if(type == TypePlacePicker.TypeEditPlace.rawValue){updateAddressSaveHistory(false, addressSugestion: nil)}
+    }
+    func mapView(mapView: GMSMapView!, markerInfoWindow marker: GMSMarker!) -> UIView! {
+        return self.mapView.infoWindowView;
+    }
+    
+    func didTapMyLocationButtonForMapView(mapView: GMSMapView!) -> Bool {
+        if (locationManager.location != nil){
+            self.mapView.updateCameraPosition((locationManager.location?.coordinate)!)
+        }
+        return true
     }
 
     //MARK: - Methods
@@ -153,6 +143,7 @@ enum TypePlacePicker : Int{
             self.navigationItem.rightBarButtonItem = doneBarButton
             self.title = "Pilih Lokasi"
             locationView.hidden = false
+            pinPointImageView.hidden = false
             mapView.updateIsShowMarker(false)
             mapView.myLocationEnabled = true;
             if (firstCoordinate.longitude == 0 && locationManager.location != nil) {
@@ -164,11 +155,16 @@ enum TypePlacePicker : Int{
             searchBar.hidden = true
             searchBar.hidden = true
             mapView.updateIsShowMarker(true)
+            mapView.updateCameraPosition(firstCoordinate)
+            locationView.hidden = true
+            pinPointImageView.hidden = true
             break;
             
         default:
             break;
         }
+        mapView.updateCameraPosition(firstCoordinate)
+        self.updateAddressSaveHistory(false, addressSugestion:nil)
     }
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
@@ -182,8 +178,8 @@ enum TypePlacePicker : Int{
                 let placemark :GMSAddress = response.firstResult()
                 
                 self.address = placemark
-                //            self.mapView.infoWindowView.addressLabel.setCustomAttributedText(self.addressString(placemark))
                 self.addressLabel.setCustomAttributedText(self.addressString(placemark))
+                self.mapView.updateAddress(self.addressString(placemark))
                 self.mapView.selectedMarker = self.mapView.selectedMarker
                 if (shouldSaveHistory) {
                     self.saveHistory(placemark, addressSuggestions: addressSugestion!)

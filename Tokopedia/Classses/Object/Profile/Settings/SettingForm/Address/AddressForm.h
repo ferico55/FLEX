@@ -16,5 +16,6 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) AddressFormResult *data;
+@property (nonatomic, strong) AddressFormResult *result;
 
 @end

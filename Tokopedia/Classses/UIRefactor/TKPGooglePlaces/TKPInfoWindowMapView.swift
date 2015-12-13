@@ -10,7 +10,7 @@ import UIKit
 
 class TKPInfoWindowMapView: UIView {
     
-    @IBOutlet var addressLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var whiteLocationInfoView: UIView!
 
     // MARK: Initialization
@@ -20,8 +20,14 @@ class TKPInfoWindowMapView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        whiteLocationInfoView.layer.cornerRadius = 5
     }
     
+    func newView()-> AnyObject! {
+        let views:Array = NSBundle.mainBundle().loadNibNamed(NSStringFromClass(self.dynamicType).componentsSeparatedByString(".").last!, owner: nil, options: nil)
+        for view:AnyObject in views{
+            return view;
+        }
+        return nil
+    }
 
 }

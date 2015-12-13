@@ -11,9 +11,10 @@
 #import "SettingAddressDetailViewController.h"
 #import "SettingAddressEditViewController.h"
 #import "SettingAddressViewController.h"
-#import "PlacePickerViewController.h"
 
 #import "NavigateViewController.h"
+#import "Tokopedia-Swift.h"
+
 
 #pragma mark - Setting Address Detail View Controller
 @interface SettingAddressDetailViewController ()
@@ -26,7 +27,6 @@
 {
     UIImage *_captureMap;
     AddressFormList *_address;
-    GMSMarker *_marker;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *labelreceivername;
@@ -39,7 +39,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelphonenumber;
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
-@property (weak, nonatomic) IBOutlet GMSMapView *mapview;
+@property (weak, nonatomic) IBOutlet TKPMapView *mapview;
 
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
@@ -102,25 +102,18 @@
 
 -(void)mapPosition
 {
-    AddressFormList *list = _address;
-
-    _marker.position = CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]);
-    _marker.map = _mapview;
-    _marker.icon = [UIImage imageNamed:@"icon_pinpoin_toped.png"];
-
-    
-    _mapview.selectedMarker = _marker;
-    _mapview.mapType = kGMSTypeNormal;
-    _mapview.settings.scrollGestures = YES;
-    
-    [PlacePickerViewController focusMap:_mapview toMarker:_marker];
+    _mapview.marker.position = CLLocationCoordinate2DMake([_address.latitude doubleValue], [_address.longitude doubleValue]);
+    _mapview.settings.scrollGestures = NO;
+    [_mapview updateIsShowMarker:YES];
+    [_mapview updateCameraPosition:_mapview.marker.position];
+    [_mapview showButtonCurrentLocation:NO];
     
     [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
 }
 
 -(void)setCaptureMap
 {
-    _captureMap = [PlacePickerViewController captureScreen:_mapview];
+    _captureMap = [_mapview captureMapScreen];
 
 }
 
@@ -142,7 +135,7 @@
                 AddressFormList *address = _address;
                 //TODO:: Uncomment for showing map address
                 if ([_address.longitude integerValue] != 0 && [address.latitude integerValue] != 0 ) {
-                    vc.imageMap = _captureMap?:[PlacePickerViewController captureScreen:_mapview];
+                    vc.imageMap = _captureMap?: [_mapview captureMapScreen];
                     vc.longitude = address.longitude;
                     vc.latitude = address.latitude;
                 }
@@ -195,6 +188,8 @@
     _data = data;
     if (data) {
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+        list.latitude = @"-6.1745";
+        list.longitude = @"106.8227";
         _address = list;
         self.title = list.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
         _labelreceivername.text = list.receiver_name?:@"";
@@ -213,7 +208,6 @@
         
         //TODO:: Uncomment for showing map address
         if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
-            _marker = [[GMSMarker alloc] init];
             [self mapPosition];
         }
         //
@@ -320,8 +314,7 @@
 
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMapDetail:(id)sender {
-    AddressFormList *list = _address;
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) type:TypeShowPlace fromViewController:self];
+    [NavigateViewController navigateToMap:_mapview.selectedMarker.position type:1 fromViewController:self];
 }
 //
 

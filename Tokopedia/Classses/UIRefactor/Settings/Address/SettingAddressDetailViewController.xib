@@ -1163,7 +1163,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="193.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGI-zU-X7j" customClass="GMSMapView">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGI-zU-X7j" customClass="TKPMapView" customModule="Tokopedia" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="193.5"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

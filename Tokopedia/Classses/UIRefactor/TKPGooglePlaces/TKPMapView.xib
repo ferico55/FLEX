@@ -21,7 +21,7 @@
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="Y27-Hd-N3v">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="Y27-Hd-N3v">
                     <rect key="frame" x="0.0" y="64" width="280" height="13"/>
                     <animations/>
                 </imageView>

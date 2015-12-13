@@ -16,6 +16,7 @@
                 <outlet property="doneButton" destination="48X-qA-qCM" id="Fur-XQ-l68"/>
                 <outlet property="locationView" destination="tq3-y5-YOS" id="yIP-k0-UuJ"/>
                 <outlet property="mapView" destination="wrD-rD-Jjn" id="WWd-PZ-b5M"/>
+                <outlet property="pinPointImageView" destination="vxt-Bn-wWg" id="BhG-DM-LbD"/>
                 <outlet property="searchBar" destination="1f4-A5-wM6" id="vyM-fp-DkZ"/>
                 <outlet property="tableView" destination="JeQ-fs-NTa" id="Oly-HA-Bzv"/>
                 <outlet property="transparentView" destination="72z-zm-lQ5" id="PmZ-ER-6Oj"/>
@@ -36,11 +37,11 @@
                         <outlet property="delegate" destination="-1" id="VBW-3j-MoJ"/>
                     </connections>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="vxt-Bn-wWg">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="vxt-Bn-wWg">
                     <rect key="frame" x="265" y="230" width="70" height="70"/>
                     <animations/>
                 </imageView>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tq3-y5-YOS">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tq3-y5-YOS">
                     <rect key="frame" x="160" y="150" width="280" height="74"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xf5-Ix-U7Q">

@@ -18,10 +18,25 @@
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BvQ-sC-AyP">
                     <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-DJ-CP2">
+                            <rect key="frame" x="10" y="0.0" width="260" height="64"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Ddn-DJ-CP2" firstAttribute="top" secondItem="BvQ-sC-AyP" secondAttribute="top" id="RSX-qb-TuX"/>
+                        <constraint firstItem="Ddn-DJ-CP2" firstAttribute="leading" secondItem="BvQ-sC-AyP" secondAttribute="leading" constant="10" id="b1V-nu-JeA"/>
+                        <constraint firstAttribute="trailing" secondItem="Ddn-DJ-CP2" secondAttribute="trailing" constant="10" id="hmo-fP-WBh"/>
+                        <constraint firstAttribute="bottom" secondItem="Ddn-DJ-CP2" secondAttribute="bottom" id="wjq-Sd-ElG"/>
+                    </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="JlO-Aa-4HO">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="JlO-Aa-4HO">
                     <rect key="frame" x="0.0" y="64" width="280" height="13"/>
                     <animations/>
                 </imageView>
@@ -29,29 +44,20 @@
                     <rect key="frame" x="130" y="64" width="20" height="10"/>
                     <animations/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-DJ-CP2">
-                    <rect key="frame" x="10" y="0.0" width="260" height="64"/>
-                    <animations/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="64" id="q32-4A-JH9"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="BvQ-sC-AyP" secondAttribute="trailing" id="80o-Gg-1qU"/>
-                <constraint firstItem="BvQ-sC-AyP" firstAttribute="leading" secondItem="Zt0-3F-nO3" secondAttribute="leading" id="AsC-ad-LSq"/>
-                <constraint firstAttribute="bottom" secondItem="BvQ-sC-AyP" secondAttribute="bottom" constant="16" id="NHB-Pu-ffC"/>
-                <constraint firstAttribute="bottom" secondItem="oA9-ED-XxW" secondAttribute="bottom" constant="6" id="S9t-0N-1R4"/>
-                <constraint firstAttribute="trailing" secondItem="Ddn-DJ-CP2" secondAttribute="trailing" constant="10" id="USV-MQ-F7K"/>
-                <constraint firstItem="Ddn-DJ-CP2" firstAttribute="top" secondItem="Zt0-3F-nO3" secondAttribute="top" id="gJh-7I-ccQ"/>
-                <constraint firstItem="BvQ-sC-AyP" firstAttribute="top" secondItem="Zt0-3F-nO3" secondAttribute="top" id="ksK-Nd-LUF"/>
-                <constraint firstItem="oA9-ED-XxW" firstAttribute="centerX" secondItem="Zt0-3F-nO3" secondAttribute="centerX" id="mQb-1u-5rm"/>
-                <constraint firstItem="Ddn-DJ-CP2" firstAttribute="leading" secondItem="Zt0-3F-nO3" secondAttribute="leading" constant="10" id="nnf-FK-Wml"/>
+                <constraint firstAttribute="trailing" secondItem="BvQ-sC-AyP" secondAttribute="trailing" id="4fi-Z6-1EY"/>
+                <constraint firstItem="oA9-ED-XxW" firstAttribute="top" secondItem="BvQ-sC-AyP" secondAttribute="bottom" id="5ec-jL-WlE"/>
+                <constraint firstItem="BvQ-sC-AyP" firstAttribute="leading" secondItem="JlO-Aa-4HO" secondAttribute="leading" id="7bm-J3-6gy"/>
+                <constraint firstItem="BvQ-sC-AyP" firstAttribute="centerX" secondItem="oA9-ED-XxW" secondAttribute="centerX" id="G72-V8-B5o"/>
+                <constraint firstItem="BvQ-sC-AyP" firstAttribute="trailing" secondItem="JlO-Aa-4HO" secondAttribute="trailing" id="JAK-LW-gGr"/>
+                <constraint firstItem="BvQ-sC-AyP" firstAttribute="top" secondItem="Zt0-3F-nO3" secondAttribute="top" id="NMn-cf-Xju"/>
+                <constraint firstAttribute="bottom" secondItem="JlO-Aa-4HO" secondAttribute="bottom" constant="3" id="bpe-g5-GAy"/>
+                <constraint firstItem="JlO-Aa-4HO" firstAttribute="top" secondItem="oA9-ED-XxW" secondAttribute="top" id="mGa-Kb-4bt"/>
+                <constraint firstItem="BvQ-sC-AyP" firstAttribute="leading" secondItem="Zt0-3F-nO3" secondAttribute="leading" id="qaQ-uv-ACt"/>
+                <constraint firstAttribute="bottom" secondItem="BvQ-sC-AyP" secondAttribute="bottom" constant="16" id="qve-1L-8nQ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
