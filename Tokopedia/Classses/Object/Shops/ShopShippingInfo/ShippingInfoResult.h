@@ -14,6 +14,7 @@
 #import "JNE.h"
 #import "POSIndonesia.h"
 #import "Tiki.h"
+#import "RPX.h"
 
 @interface ShippingInfoResult : NSObject
 @property (nonatomic, strong) NSArray *payment_options;
@@ -31,5 +32,7 @@
 @property (nonatomic, strong) JNE *jne;
 @property (nonatomic, strong) POSIndonesia *pos;
 @property (nonatomic, strong) Tiki *tiki;
+@property (nonatomic, strong) RPX *rpx;
+@property (nonatomic, strong) NSMutableArray *auto_resi;
 
 @end

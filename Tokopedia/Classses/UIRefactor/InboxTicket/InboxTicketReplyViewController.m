@@ -423,7 +423,7 @@
     
     if (tag == 2) {
         NSString *path = [NSString stringWithFormat:@"http://%@/ws", _generateHost.result.generated_host.upload_host];
-        _objectManager = [RKObjectManager sharedClientUploadImage:path];
+        _objectManager = [RKObjectManager sharedClient:path];
     } else {
         _objectManager = [RKObjectManager sharedClient];
     }

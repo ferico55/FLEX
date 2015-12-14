@@ -26,10 +26,11 @@
 #import "NSDictionaryCategory.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 
 #import "URLCacheController.h"
 #import "ShopContainerViewController.h"
+#import "SpellCheckRequest.h"
 
 @interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
@@ -38,6 +39,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
+@property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 
 -(void)cancel;
 -(void)loadData;
@@ -52,6 +54,7 @@
 {
     NSInteger _page;
     NSInteger _limit;
+    NoResultReusableView *_noResultView;
     
     NSMutableArray *_urlarray;
     NSMutableDictionary *_params;
@@ -91,6 +94,16 @@
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"no-result.png"
+                                 title:@"Oops..... Hasil pencarian Anda tidak dapat ditemukan."
+                                  desc:@"Silakan lakukan pencarian dengan kata kunci lain"
+                              btnTitle:@""];
+}
+
+
 #pragma mark - Life Cycle
 - (void)viewDidLoad
 {
@@ -114,6 +127,8 @@
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
+    
+    [self initNoResultView];
     
     /** set table footer view (loading act) **/
     if (_product.count > 0) {
@@ -149,7 +164,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
-                                               object:nil];    
+                                               object:nil];
+    
+    _spellCheckRequest = [SpellCheckRequest new];
+    _spellCheckRequest.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -161,8 +179,9 @@
             [self loadData];
         }
     }
-
-    self.screenName = @"Search Result - Shop Tab";
+    
+    [TPAnalytics trackScreenName:@"Shop Search Result"];
+    self.screenName = @"Shop Search Result";
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setTabShopActive" object:@""];
 }
@@ -413,12 +432,19 @@
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
-                    _table.tableFooterView = [NoResultView new].view;
-                }
-                
-                if (_product.count >0) {
-                    _table.tableFooterView = nil;
+                    
+                    if([self isUsingAnyFilter]){
+                        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+                        [_noResultView hideButton:YES];
+                    }else{
+                        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain"];
+                        [_noResultView hideButton:YES];
+                    }
+                    [_table addSubview: _noResultView];
+                }else{
+                    [_noResultView removeFromSuperview];
                     _urinext =  _searchitem.result.paging.uri_next;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
                     
                     NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
                     if(tempInt == _page)
@@ -552,6 +578,15 @@
     [_table reloadData];
     [self loadData];
 }
+- (BOOL) isUsingAnyFilter{
+    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![_params objectForKey:@"price_min"] == 0;
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![_params objectForKey:@"price_max"] == 0;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![_params objectForKey:@"shop_type"] == 0;
+    
+    return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
+}
 
 #pragma mark - Sort Delegate
 -(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
@@ -581,8 +616,6 @@
     _table.tableFooterView = _footer;
     [_act startAnimating];
 }
-
-
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton

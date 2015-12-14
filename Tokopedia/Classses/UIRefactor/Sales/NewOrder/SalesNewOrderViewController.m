@@ -126,8 +126,10 @@
     [super viewWillAppear:animated];
     
     self.title = @"Pesanan Baru";
-    self.screenName = @"New Order";
-
+    
+    [TPAnalytics trackScreenName:@"Sales - New Order"];
+    self.screenName = @"Sales - New Order";
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -284,6 +286,7 @@
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+            [self configureRestKit];
             [self request];
         }
     }

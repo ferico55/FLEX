@@ -54,7 +54,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     self.screenName = @"Forgot Password Page";
+    [TPAnalytics trackScreenName:@"Forgot Password Page"];
 }
 
 #pragma mark - Tokopedia Network Delegate

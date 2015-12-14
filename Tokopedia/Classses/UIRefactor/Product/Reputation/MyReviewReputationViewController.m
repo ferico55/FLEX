@@ -25,42 +25,50 @@
 #import "String_Reputation.h"
 #import "ShopBadgeLevel.h"
 #import "ShopContainerViewController.h"
-#import "TAGDataLayer.h"
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
 #import "WebViewInvoiceViewController.h"
+#import "NoResultReusableView.h"
+#import "RequestLDExtension.h"
+#import "NavigateViewController.h"
 
-#define CFailedGetData @"Process ambil data gagal"
+#define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"
 #define CActionGetInboxReputation @"get_inbox_reputation"
 #define CTagGetInboxReputation 1
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate>
 @end
 
 @implementation MyReviewReputationViewController
 {
     AlertRateView *alertRateView;
-    NoResultView *noResultView;
+    NoResultReusableView *_noResultView;
     CMPopTipView *cmPopTitpView;
     LoadingView *loadingView;
     NSMutableArray *arrList;
     NSString *strRequestingInsertReputation;
     TokopediaNetworkManager *tokopediaNetworkManager, *tokopediaNetworkInsertReputation;
     NSString *emoticonState, *strInsertReputationRole;
+    
+    NSString *givenSmileyImageString;
     int page;
     BOOL isRefreshing;
     NSString *strUriNext;
     NSIndexPath *indexPathInsertReputation;
+    NSString *currentFilter;
     UIRefreshControl *refreshControl;
     
     //GTM
     TAGContainer *_gtmContainer;
     NSString *baseUrl, *baseActionUrl;
     NSString *postUrl, *postActionUrl;
+    
+    RequestLDExtension *_requestLD;
+    NavigateViewController *_navigate;
 }
 @synthesize strNav;
 
@@ -75,9 +83,20 @@
     tokopediaNetworkInsertReputation = nil;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Belum ada ulasan"
+                                  desc:@""
+                              btnTitle:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
+    _navigate = [NavigateViewController new];
+    currentFilter = @"all";
     page = 0;
     tableContent.allowsSelection = NO;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
@@ -86,9 +105,30 @@
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [tableContent addSubview:refreshControl];
+    [self initNoResultView];
     
     [self loadMoreData:YES];
     [[self getNetworkManager:CTagGetInboxReputation] doRequest];
+    
+//    LuckyDeal *ld = [LuckyDeal new];
+//    LuckyDealAttributes *att = [LuckyDealAttributes new];
+//    LuckyDealData *data = [LuckyDealData new];
+//    att.token = @"Tokopedia Clover:q62yPVXnFRbDr9jh9wdBFhjU/DA=";
+//    att.extid = 1;
+//    att.code = 12400877;
+//    att.ut = 1448420536;
+//    data.ld_id = 1299609;
+//    data.type = 1;
+//    data.attributes = att;
+//    ld.data = data;
+//    ld.url =@"https://clover-staging.tokopedia.com/badge/member/extend/v1";
+//
+//
+////TODO:: REMOVE THIS
+//    _requestLD = [RequestLDExtension new];
+//    _requestLD.delegate = self;
+//    _requestLD.luckyDeal = ld;
+//    [_requestLD doRequestMemberExtendURLString:ld.url];
 }
 
 
@@ -115,13 +155,13 @@
 #pragma mark - Method
 - (void)showAlertAfterGiveRate {
     NSString *strMessage = @"";
-    if([emoticonState isEqualToString:CRevieweeScroreBad]) {
+    if([emoticonState isEqualToString:CReviewScoreBad]) {
         strMessage = [NSString stringWithFormat:@"Saya Tidak Puas"];
     }
-    else if([emoticonState isEqualToString:CRevieweeScroreNetral]) {
+    else if([emoticonState isEqualToString:CReviewScoreNeutral]) {
         strMessage = [NSString stringWithFormat:@"Saya Cukup Puas"];
     }
-    else if([emoticonState isEqualToString:CRevieweeScroreGood]) {
+    else if([emoticonState isEqualToString:CReviewScoreGood]) {
         strMessage = [NSString stringWithFormat:@"Saya Puas!"];
     }
     
@@ -350,6 +390,9 @@
                                                                  CRevieweeRole,
                                                                  COrderID,
                                                                  @"auto_read",
+                                                                 @"reputation_progress",
+                                                                 @"my_score_image",
+                                                                 @"their_score_image",
                                                                  CUnaccessedReputationReview,
                                                                  CShowRevieweeSCore,
                                                                  CRole]];
@@ -400,6 +443,9 @@
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
         
+        RKRelationshipMapping *LDRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ld" toKeyPath:@"ld" withMapping:[LuckyDeal mapping]];
+        [resultMapping addPropertyMapping:LDRel];
+        
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
         
@@ -448,14 +494,25 @@
         
         //Check any data or not
         if(arrList.count == 0) {
-            if(noResultView == nil) {
-                noResultView = [NoResultView new];
+            if([currentFilter isEqualToString:@"all"]){
+                if([strNav isEqualToString:@"inbox-reputation-my-product"]){
+                    [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
+                    [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
+                }else{
+                    [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                }
+            }else if([currentFilter isEqualToString:@"not-read"]){
+                [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
+            }else if([currentFilter isEqualToString:@"not-review"]){
+                [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
             }
-
-            tableContent.tableFooterView = noResultView.view;
+            tableContent.tableFooterView = _noResultView;
         }
-        else
+        else{
             [self loadMoreData:NO];
+            [_noResultView removeFromSuperview];
+        }
         if(tableContent.delegate == nil) {
             tableContent.delegate = self;
             tableContent.dataSource = self;
@@ -465,44 +522,62 @@
     else if(tag == CTagInsertReputation) {
         NSDateFormatter *formatter = [NSDateFormatter new];
         formatter.dateFormat = @"d MMMM yyyy, HH:mm";
-        
-        if([((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).role isEqualToString:@"2"]) {//Seller
-            if(((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score!=nil && ![((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score isEqualToString:@""])
-                ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).score_edit_time_fmt = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
-            
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score = emoticonState;
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.buyer_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).buyer_score;
-        }
-        else {
-            if(((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score!=nil && ![((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score isEqualToString:@""])
-                ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).score_edit_time_fmt = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
+        DetailMyInboxReputation *selectedReputation = arrList[indexPathInsertReputation.row];
+        GeneralAction *action = [resultDict objectForKey:@""];
+        if([action.result.is_success isEqualToString:@"1"]) {
+			if (action.result.ld.url && ![action.result.ld.url isEqualToString:@""]) {
+            	_requestLD = [RequestLDExtension new];
+            	_requestLD.luckyDeal = action.result.ld;
+            	_requestLD.delegate = self;
+            	[_requestLD doRequestMemberExtendURLString:action.result.ld.url];
+        	}
 
-            
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score = emoticonState;
-            ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).viewModel.seller_score = ((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).seller_score;
-        }
-        
-        //Get view controller based on device (ipad / iphone)
-        UIViewController *tempViewController;
-        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            UINavigationController *navController = [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC getDetailNavigation];
-            if(navController.viewControllers.count > 0) {
-                tempViewController = [navController.viewControllers firstObject];
+            if([selectedReputation.role isEqualToString:@"2"]) {//Seller
+                if(selectedReputation.buyer_score!=nil && ![selectedReputation.buyer_score isEqualToString:@""])
+                    selectedReputation.score_edit_time_fmt = selectedReputation.viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
+                
+                selectedReputation.buyer_score = emoticonState;
+                selectedReputation.viewModel.buyer_score = selectedReputation.buyer_score;
             }
-        }
-        else {
-            tempViewController = [self.navigationController.viewControllers lastObject];
-        }
-        
-        //Update ui detail reputation
-        if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-            [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:((DetailMyInboxReputation *) arrList[indexPathInsertReputation.row]).reputation_id withState:emoticonState];
+            else {
+                if(selectedReputation.seller_score!=nil && ![selectedReputation.seller_score isEqualToString:@""])
+                    selectedReputation.score_edit_time_fmt = selectedReputation.viewModel.score_edit_time_fmt = [formatter stringFromDate:[NSDate date]];
+                
+                
+                selectedReputation.seller_score = emoticonState;
+                selectedReputation.viewModel.seller_score = selectedReputation.seller_score;
+            }
             
-            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            selectedReputation.viewModel.just_updated = @"1";
+            selectedReputation.viewModel.their_score_image = givenSmileyImageString;
+            
+            //Get view controller based on device (ipad / iphone)
+            UIViewController *tempViewController;
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                UINavigationController *navController = [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC getDetailNavigation];
+                if(navController.viewControllers.count > 0) {
+                    tempViewController = [navController.viewControllers firstObject];
+                }
+            }
+            else {
+                tempViewController = [self.navigationController.viewControllers lastObject];
+            }
+            
+            //Update ui detail reputation
+            if([tempViewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+                [((DetailMyReviewReputationViewController *) tempViewController) successInsertReputation:selectedReputation.reputation_id withState:emoticonState];
+                
+                if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+                    [self showAlertAfterGiveRate];
+            }
+            else {
                 [self showAlertAfterGiveRate];
-        }
-        else {
-            [self showAlertAfterGiveRate];
+            }
+        
+        } else {
+            //gagal
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error delegate:self];
+            [stickyAlertView show];
         }
         
         strInsertReputationRole = strRequestingInsertReputation = emoticonState = nil;
@@ -555,6 +630,7 @@
 - (void)actionReview:(id)sender {
     page = 0;
     strUriNext = nil;
+    currentFilter = @"all";
     
     [arrList removeAllObjects];
     [tableContent reloadData];
@@ -565,6 +641,7 @@
 - (void)actionBelumDibaca:(id)sender {
     page = 0;
     strUriNext = nil;
+    currentFilter = @"not-read";
 
     [arrList removeAllObjects];
     [tableContent reloadData];
@@ -575,6 +652,7 @@
 - (void)actionBelumDireview:(id)sender {
     page = 0;
     strUriNext = nil;
+    currentFilter = @"not-review";
     
     [arrList removeAllObjects];
     [tableContent reloadData];
@@ -662,9 +740,17 @@
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
         
-        alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
-        alertRateView.tag = ((UIButton *) sender).tag;
-        [alertRateView show];
+        if([tempObj.reputation_progress isEqualToString:@"2"]) {
+            // add some stickey message
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf penilaian ini telah dikunci, Anda telah melewati batas waktu penilaian."] delegate:self];
+            [stickyAlertView show];
+        } else {
+            alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
+            alertRateView.tag = ((UIButton *) sender).tag;
+            [alertRateView show];
+        }
+        
+
     }
 }
 
@@ -694,63 +780,39 @@
     }
 }
 
-- (BOOL)anyScore:(NSString *)strScore {
-    return ([strScore isEqualToString:CRevieweeScroreBad] || [strScore isEqualToString:CRevieweeScroreNetral] || [strScore isEqualToString:CRevieweeScroreGood]);
-}
+
 
 - (void)actionFlagReview:(id)sender {
     DetailMyInboxReputation *object = arrList[((UIView *)sender).tag];
-//    1 buyer & seller sudah mengisi
-//    2 buyer sudah mengisi
-//    3 buyer belum mengisi
-//    4 seller & buyer sudah mengisi
-//    5 seller sudah mengisi
-//    6 seller belum mengisi
-    BOOL isSeller = [object.role isEqualToString:@"2"];
-    NSString *strPenjualOrPembeli = ([object.role isEqualToString:@"2"]? @"Pembeli":@"Penjual");
+    BOOL loggedInUserIsSeller = [object.role isEqualToString:@"2"];
+
+    NSString *img = object.my_score_image;
+    NSString *opponentRole;
+    NSString *alertString;
+    if(!loggedInUserIsSeller) {
+        //score given to me as buyer role
+        opponentRole = @"Penjual";
+    } else {
+        //score given to me as seller role
+        opponentRole = @"Pembeli";
+    }
+    
+    if([img isEqualToString:@"smiley_neutral"]) {
+        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah cukup puas", opponentRole];
+    } else if([img isEqualToString:@"smiley_bad"]) {
+        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah tidak puas", opponentRole];
+    } else if([img isEqualToString:@"smiley_good"]) {
+        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah puas", opponentRole];
+    } else if([img isEqualToString:@"grey_question_mark"] || [img isEqualToString:@"smiley_none"]) {
+        alertString = [NSString stringWithFormat:@"%@ belum memberikan penilaian untuk Anda", opponentRole];
+    } else if([img isEqualToString:@"blue_question_mark"]) {
+        alertString = [NSString stringWithFormat:@"Penasaran ? \n Isi penilaian untuk %@ dulu ya!", opponentRole];
+    }
     
     UIAlertView *alertView;
-    if([self anyScore:object.seller_score] && [self anyScore:object.buyer_score]) {
-        NSString *strRespond = @"Tidak Puas";
-        NSString *score = ([object.role isEqualToString:@"2"]? object.seller_score:object.buyer_score);
-        
-        if(score!=nil && ![score isEqualToString:@""]) {
-            if([score isEqualToString:CRevieweeScroreNetral]) {
-                strRespond = @"Cukup Puas";
-            }
-            else if([score isEqualToString:CRevieweeScroreGood]) {
-                strRespond = @"Puas";
-            }
-        }
-        else {
-            return;
-        }
-        
-        alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Review dari %@:\"%@\"", strPenjualOrPembeli, strRespond] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alertView show];
-    }
-    else {
-        if(![self anyScore:object.seller_score] && ![self anyScore:object.buyer_score]) {
-            alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"%@ belum memberikan penilaian untuk anda", strPenjualOrPembeli] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            [alertView show];
-        }
-        else if([self anyScore:object.seller_score] && ![self anyScore:object.buyer_score]) {
-            if(! isSeller) {
-                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penjual belum memberikan penilaian untuk anda" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            }
-            else {
-                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran?\n Isi penilaian untuk pembeli dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            }
-            [alertView show];
-        }
-        else if(![self anyScore:object.seller_score] && [self anyScore:object.buyer_score]) {
-            if(! isSeller)
-                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Penasaran\nIsi penilaian penjual dulu ya!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            else
-                alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Pembeli belum memberikan penilaian untuk anda" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            [alertView show];
-        }
-    }
+    alertView = [[UIAlertView alloc] initWithTitle:@"" message:alertString delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+    [alertView show];
+
 }
 
 - (void)actionFooter:(id)sender {
@@ -795,29 +857,32 @@
     switch (tag) {
         case CTagMerah:
         {
-            if([strCurrentScore isEqualToString:CRevieweeScroreBad]) {
+            if([strCurrentScore isEqualToString:CReviewScoreBad]) {
                 [self alertWarningReviewSmiley];
                 return;
             }
-            emoticonState = CRevieweeScroreBad;
+            emoticonState = CReviewScoreBad;
+            givenSmileyImageString = @"smiley_bad";
         }
             break;
         case CTagKuning:
         {
-            if([strCurrentScore isEqualToString:CRevieweeScroreNetral]) {
+            if([strCurrentScore isEqualToString:CReviewScoreNeutral]) {
                 [self alertWarningReviewSmiley];
                 return;
             }
-            emoticonState = CRevieweeScroreNetral;
+            emoticonState = CReviewScoreNeutral;
+            givenSmileyImageString = @"smiley_neutral";
         }
             break;
         case CTagHijau:
         {
-            if([strCurrentScore isEqualToString:CRevieweeScroreGood]) {
+            if([strCurrentScore isEqualToString:CReviewScoreGood]) {
                 [self alertWarningReviewSmiley];
                 return;
             }
-            emoticonState = CRevieweeScroreGood;
+            emoticonState = CReviewScoreGood;
+            givenSmileyImageString = @"smiley_good";
         }
             break;
     }
@@ -843,9 +908,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
@@ -877,4 +940,12 @@
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
+
+
+#pragma mark - Badge Extendsion
+- (void)showPopUpLuckyDeal:(LuckyDealWord *)words
+{
+    [_navigate popUpLuckyDeal:words];
+}
+
 @end

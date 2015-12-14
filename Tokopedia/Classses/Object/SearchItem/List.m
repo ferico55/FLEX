@@ -34,7 +34,6 @@
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
         _viewModel = viewModel;
     }
-    
     return _viewModel;
 }
 
@@ -47,7 +46,20 @@
         [viewModel setCatalogThumbUrl:self.catalog_image_300];
         _catalogViewModel = viewModel;
     }
-    
     return _catalogViewModel;
 }
+
+- (NSDictionary *)productFieldObjects {
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *productPrice = [[_product_price componentsSeparatedByCharactersInSet:characterSet]
+                              componentsJoinedByString: @""];
+    NSDictionary *productFieldObjects = @{
+        @"name"     : _product_name?:@"",
+        @"id"       : _product_id?:@"",
+        @"price"    : productPrice,
+        @"brand"    : _shop_name?:@"",
+    };
+    return productFieldObjects;
+}
+
 @end

@@ -12,7 +12,7 @@
 
 #import "HistoryProductViewController.h"
 #import "TokopediaNetworkManager.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 #import "NavigateViewController.h"
 
 #import "GeneralProductCollectionViewCell.h"
@@ -24,7 +24,15 @@ static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
 
-@interface HistoryProductViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, TokopediaNetworkManagerDelegate>
+@interface HistoryProductViewController ()
+<
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+UICollectionViewDelegateFlowLayout,
+UIScrollViewDelegate,
+TokopediaNetworkManagerDelegate,
+NoResultDelegate
+>
 
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -54,7 +62,7 @@ typedef enum TagRequest {
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
 }
 
 #pragma mark - Initialization
@@ -68,7 +76,14 @@ typedef enum TagRequest {
     }
     return self;
 }
-
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Segera lihat produk-produk favorit Anda!\nJangan sampai ketinggalan"
+                                  desc:@"Ini adalah daftar produk-produk yang telah Anda lihat"
+                              btnTitle:@"Lihat Hot List"];
+}
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -83,10 +98,11 @@ typedef enum TagRequest {
     _itemPerPage = kTKPDHOMEHOTLIST_LIMITPAGE;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSeeAProduct:) name:@"didSeeAProduct" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     
     //todo with view
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
+    [self initNoResultView];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -115,6 +131,7 @@ typedef enum TagRequest {
 {
     [super viewWillAppear:animated];
     self.screenName = @"Home - History Product";
+    [TPAnalytics trackScreenName:@"Home - History Product"];
 }
 
 #pragma mark - Collection Delegate
@@ -195,7 +212,6 @@ typedef enum TagRequest {
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
@@ -305,7 +321,7 @@ typedef enum TagRequest {
         [_product addObjectsFromArray: feed.data.list];
     }
     
-    [_noResult removeFromSuperview];
+    [_noResultView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
         _nextPageUri =  feed.data.paging.uri_next;
@@ -319,7 +335,8 @@ typedef enum TagRequest {
         // no data at all
         _isNoData = YES;
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResult];
+        [_collectionView addSubview:_noResultView];
+        //[self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -343,6 +360,10 @@ typedef enum TagRequest {
     
 }
 
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+}
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
@@ -363,6 +384,10 @@ typedef enum TagRequest {
 
 - (void)userDidLogin:(NSNotification*)notification {
     [self refreshView:_refreshControl];
+}
+
+- (void)didSeeAProduct:(NSNotification*)notification {
+    [self refreshView:nil];
 }
 
 #pragma mark - Other Method

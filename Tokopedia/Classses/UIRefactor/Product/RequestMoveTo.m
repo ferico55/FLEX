@@ -126,7 +126,7 @@
                     [_delegate failedMoveToWithMessages:array];
                 }
                 if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil gudangkan produk", nil];
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil menggudangkan produk", nil];
                     [_delegate successMoveToWithMessages:array];
                     [[NSNotificationCenter defaultCenter] postNotificationName:MOVE_PRODUCT_TO_WAREHOUSE_NOTIFICATION object:nil userInfo:nil];
                 }

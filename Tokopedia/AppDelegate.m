@@ -17,6 +17,7 @@
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
+#import <Google/Analytics.h>
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
 
@@ -35,7 +36,7 @@
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
-    
+        
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];
@@ -46,11 +47,10 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
-        
         [self configurePushNotificationsInApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-
+        
         [self preparePersistData];
     });
     
@@ -90,7 +90,7 @@
 - (void)configureGoogleAnalytics {
     //Google Analytics init
     [GAI sharedInstance].trackUncaughtExceptions = YES;
-    //        [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
     [GAI sharedInstance].dispatchInterval = 60;
     [[GAI sharedInstance] trackerWithTrackingId:GATrackingId];
     [[[GAI sharedInstance] trackerWithTrackingId:GATrackingId] setAllowIDFACollection:YES];

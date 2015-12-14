@@ -110,7 +110,9 @@
     [super viewWillAppear:animated];
     
     self.title = @"Daftar Transaksi";
-    self.screenName = @"Transaction List";
+    
+    [TPAnalytics trackScreenName:@"Sales - Transaction List"];
+    self.screenName = @"Sales - Transaction List";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered

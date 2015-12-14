@@ -149,6 +149,8 @@
     frame = _imageScrollView.frame;
     frame.size.width = [UIScreen mainScreen].bounds.size.width;
     _imageScrollView.frame = frame;
+    
+    [_lastSolutionLabel setCustomAttributedText:_lastSolution];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -612,9 +614,7 @@
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:selected];
                 NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-                if (sourceType == UIImagePickerControllerSourceTypeCamera)
-                    [data setObject:[NSIndexPath indexPathForRow:0 inSection:0] forKey:@"selected_indexpath"];
-                else [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
                 [self setImageData:[data copy] tag:index];
                 j++;
             }
@@ -754,9 +754,9 @@
     }
 }
 
--(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID
+-(void)changeSolution:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout remark:(NSString *)note photo:(NSString *)photo serverID:(NSString *)serverID isGotTheOrder:(BOOL)isGotTheOrder
 {
-    [_delegate solutionType:solutionType troubleType:troubleType refundAmount:refundAmout message:note photo:photo serverID:serverID];
+    [_delegate solutionType:solutionType troubleType:troubleType refundAmount:refundAmout message:note photo:photo serverID:serverID isGotTheOrder:isGotTheOrder];
 }
 
 -(NSString *)trouble

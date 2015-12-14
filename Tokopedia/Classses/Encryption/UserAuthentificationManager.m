@@ -196,4 +196,18 @@
     [_auth setObject:userImage forKey:@"user_image"];
 }
 
+- (ReputationDetail *)reputation {
+    if ([_auth objectForKey:@"has_reputation"]) {
+        ReputationDetail *reputation = [ReputationDetail new];
+        reputation.positive = [_auth objectForKey:@"reputation_positive"];
+        reputation.positive_percentage = [_auth objectForKey:@"reputation_positive_percentage"];
+        reputation.neutral = [_auth objectForKey:@"reputation_neutral"];
+        reputation.negative = [_auth objectForKey:@"reputation_negative"];
+        reputation.no_reputation = [[_auth objectForKey:@"no_reputation"] stringValue];
+        return reputation;
+    } else {
+        return nil;
+    }
+}
+
 @end

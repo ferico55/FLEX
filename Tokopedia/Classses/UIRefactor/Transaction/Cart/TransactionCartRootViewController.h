@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TransactionCartRootViewController : GAITrackedViewController
+@interface TransactionCartRootViewController : UIViewController
 
 @end

@@ -394,7 +394,7 @@
         }
         else if([self.title isEqualToString:TITLE_CHANGE_SOLUTION])
         {
-            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:_serverID];
+            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:_serverID isGotTheOrder:_isGotTheOrder];
             NSArray *viewControllers = self.navigationController.viewControllers;
             UIViewController *destinationVC;
             for (UIViewController *vc in viewControllers) {
@@ -466,7 +466,7 @@
     if (_isGotTheOrder) {
         if (indexPath.section == 0)
             return [self cellGotTheOrderSection0].frame.size.height;
-        if (indexPath.section == 1)
+        else if (indexPath.section == 1)
             return [self cellGotTheOrderSection1].frame.size.height;
         else if (indexPath.section == 2)
             return _cellNote.frame.size.height;
@@ -474,7 +474,14 @@
     else
     {
         if (indexPath.section == 0)
-            return _cellRefundAmount.frame.size.height;
+            return [self cellNotGotTheOrderSection0].frame.size.height;
+        else if (indexPath.section == 1){
+            if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_PACKAGE_NOT_RECEIVED[1]]) {
+                return 0;
+            }
+            else
+                return 138;
+        }
         else
             return _cellNote.frame.size.height;
     }
@@ -486,7 +493,7 @@
     if (_isGotTheOrder && _indexPage == 1)
         return ([self isNeed3Section])?3:2;
     else
-        return 2;
+        return 3;
     return 0;
 }
 
@@ -504,14 +511,12 @@
     }
     else
     {
-        if (indexPath.section == 0)
-            cell = _cellRefundAmount;
-        else
-            cell = _cellNote;
+        cell = [self cellNotGotTheOrderAtIndexPath:indexPath];
     }
     [self adjustDataCellAtIndexPath:indexPath];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.clipsToBounds = YES;
     return cell;
 }
 
@@ -528,20 +533,28 @@
     [_activeTextView resignFirstResponder];
     [_activeTextField resignFirstResponder];
     if ([tableView cellForRowAtIndexPath:indexPath] == _cellSolution) {
-        if (_indexPage == 0) {
-            if (_isCanEditProblem) {
-                [self shouldPushGeneralViewControllerTitle:@"Pilih Masalah"
-                                                   Objects:ARRAY_PROBLEM_COMPLAIN
-                                                 indexPath:indexPath
-                                            selectedObject:_selectedProblem];
-            }
-        }
-        else
-        {
+        if (!_isGotTheOrder) {
             [self shouldPushGeneralViewControllerTitle:@"Pilih Solusi"
                                                Objects:[self solutions]
                                              indexPath:indexPath
                                         selectedObject:_selectedSolution];
+        }
+        else {
+            if (_indexPage == 0) {
+                if (_isCanEditProblem) {
+                    [self shouldPushGeneralViewControllerTitle:@"Pilih Masalah"
+                                                       Objects:ARRAY_PROBLEM_COMPLAIN
+                                                     indexPath:indexPath
+                                                selectedObject:_selectedProblem];
+                }
+            }
+            else
+            {
+                [self shouldPushGeneralViewControllerTitle:@"Pilih Solusi"
+                                                   Objects:[self solutions]
+                                                 indexPath:indexPath
+                                            selectedObject:_selectedSolution];
+            }
         }
     }
 }
@@ -566,8 +579,8 @@
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (indexPath.section==0 && _isGotTheOrder) {
-        if (_indexPage == 0)
+    if (indexPath.section==0) {
+        if (_indexPage == 0  && _isGotTheOrder)
         {
             if ([_selectedProblem isEqual:object]) {
                 _selectedSolution = [[self solutions] firstObject];
@@ -594,12 +607,31 @@
     return cell;
 }
 
+-(UITableViewCell*)cellNotGotTheOrderAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell;
+    if (indexPath.section == 0)
+        cell = [self cellNotGotTheOrderSection0];
+    else if (indexPath.section == 1)
+        cell = _cellRefundAmount;
+    else
+        cell = _cellNote;
+    return cell;
+}
+
 -(UITableViewCell*)cellGotTheOrderSection0
 {
     UITableViewCell* cell;
     if ([_selectedProblem isEqualToString:[ARRAY_PROBLEM_COMPLAIN lastObject]]&&_indexPage == 1)
         cell = _cellRefundAmount;
     else cell = _cellSolution;
+    return cell;
+}
+
+-(UITableViewCell*)cellNotGotTheOrderSection0
+{
+    UITableViewCell* cell;
+    cell = _cellSolution;
     return cell;
 }
 
@@ -619,6 +651,8 @@
         cell = _cellNote;
     return cell;
 }
+
+
 
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
@@ -820,13 +854,16 @@
     if (_isGotTheOrder) {
         if(_isActionBySeller) _problemSolutionHeaderLabel.text = (_indexPage == 0)?@"Masalah pada barang yang diterima pembeli":@"Solusi yang Anda inginkan untuk masalah ini?";
         else _problemSolutionHeaderLabel.text = (_indexPage == 0)?@"Masalah pada barang yang Anda terima":@"Solusi yang Anda inginkan untuk masalah ini?";
-        _problemSolutionLabel.text = (_indexPage == 0)?@"Masalah":@"Solution";
+        _problemSolutionLabel.text = (_indexPage == 0)?@"Masalah":@"Solusi";
         _choosenProblemSolutionLabel.text = (_indexPage == 0)?_selectedProblem:_selectedSolution;
         
         _noteHeaderLabel.text = _isChangeSolution?@"Diskusikan permasalahan Anda":@"Pesan untuk penjual";
     }
     else
     {
+        _problemSolutionHeaderLabel.text = @"Solusi yang Anda inginkan untuk masalah ini?";
+        _problemSolutionLabel.text = @"Solusi";
+        _choosenProblemSolutionLabel.text = _selectedSolution;
         _noteHeaderLabel.text = @"Alasan Anda memilih salah satu solusi diatas";
     }
     
@@ -855,6 +892,14 @@
 -(NSArray*)solutions
 {
     NSArray *solutions;
+    
+    if (!_isGotTheOrder) {
+        if (_isChangeSolution) {
+            return ARRAY_SOLUTION_PACKAGE_NOT_RECEIVED_CHANGE_SOLUTION;
+        }
+        else return ARRAY_SOLUTION_PACKAGE_NOT_RECEIVED;
+    }
+    
     if ([_selectedProblem isEqualToString:ARRAY_PROBLEM_COMPLAIN[0]])
         solutions = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION;
     else if ([_selectedProblem isEqualToString:ARRAY_PROBLEM_COMPLAIN[1]])
@@ -865,6 +910,7 @@
         solutions = ARRAY_SOLUTION_DIFFERENT_SHIPPING_AGENCY;
     return solutions;
 }
+
 
 -(BOOL)isNeed3Section
 {
@@ -973,6 +1019,10 @@
     }
     else if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_DIFFERENT_QTY[1]]) {
         solutionType = @"5";
+    }
+    else if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_PACKAGE_NOT_RECEIVED[1]])
+    {
+        solutionType = @"6";
     }
     return solutionType;
 }

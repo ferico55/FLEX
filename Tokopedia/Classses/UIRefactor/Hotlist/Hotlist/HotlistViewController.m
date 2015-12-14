@@ -101,26 +101,13 @@ NotificationDelegate
 {
     [super viewDidLoad];
     
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-//        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
-//        [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
-//        [backButton setFrame:CGRectMake(0, 0, 25, 35)];
-//        [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
-//        
-//        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-//        self.navigationItem.leftBarButtonItem = backBarButton;
-//    } else {
-        UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
-        self.navigationItem.backBarButtonItem = backBarButton;
-//    }
-
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
     
     [self.navigationController.navigationBar setTranslucent:NO];
-    self.screenName = @"Home - HotList";
     
     _product = [NSMutableArray new];
     _page = 1;
@@ -195,6 +182,9 @@ NotificationDelegate
 {
     [super viewWillAppear:animated];
     
+    self.screenName = @"Hot List Page";
+    [TPAnalytics trackScreenName:@"Hot List Page"];
+
     [_cacheController getFileModificationDate];
     _timeinterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);
     
@@ -519,7 +509,7 @@ NotificationDelegate
         _cachePath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
         
         _cacheController.filePath = _cachePath;
-        _cacheController.URLCacheInterval = 300.0;
+        _cacheController.URLCacheInterval = 1800.0;
         [_cacheController initCacheWithDocumentPath:path];
     }
 }

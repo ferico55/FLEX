@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Breadcrumb.h"
+#import "ReputationDetail.h"
 
 @interface UserAuthentificationManager : NSObject {
     id userLoginData;
@@ -31,5 +32,7 @@
 - (NSDictionary *)autoAddParameter:(id)params ;
 
 - (void)setUserImage:(NSString *)userImage;
+
+- (ReputationDetail *)reputation;
 
 @end

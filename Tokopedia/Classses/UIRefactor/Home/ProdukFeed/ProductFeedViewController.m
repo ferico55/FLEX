@@ -13,7 +13,7 @@
 #import "ProductFeed.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 
 #import "NavigateViewController.h"
 #import "ProductCell.h"
@@ -45,7 +45,8 @@ UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
-PromoRequestDelegate
+PromoRequestDelegate,
+NoResultDelegate
 >
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -60,7 +61,7 @@ PromoRequestDelegate
 @property ScrollDirection scrollDirection;
 
 @property (strong, nonatomic) PromoRequest *promoRequest;
-
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
 
 
@@ -76,7 +77,7 @@ PromoRequestDelegate
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
 }
 
 #pragma mark - Initialization
@@ -90,6 +91,15 @@ PromoRequestDelegate
     return self;
 }
 
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"product-feed.png"
+                                 title:@"Lihat produk dari toko favorit Anda disini"
+                                  desc:@"Segera favoritkan toko yang Anda sukai untuk mendapatkan update produk terbaru."
+                              btnTitle:@"Toko Favorit"];
+}
+
 - (void) viewDidLoad {
     [super viewDidLoad];
     
@@ -101,7 +111,7 @@ PromoRequestDelegate
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 200)];
+    [self initNoResultView];
     _isNoData = (_product.count > 0);
     _page = 1;
     
@@ -124,6 +134,9 @@ PromoRequestDelegate
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addFavoriteShop:) name:@"addFavoriteShop" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeFavoriteShop:) name:@"removeFavoriteShop" object:nil];
+    
     //todo with network
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -136,13 +149,27 @@ PromoRequestDelegate
     [self requestPromo];
     
     [self registerNib];
+    self.contentView = self.view;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // UA
+    [TPAnalytics trackScreenName:@"Home - Product Feed"];
+    
+    // GA
     self.screenName = @"Home - Product Feed";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didSwipeHomeTab:)
+                                                 name:@"didSwipeHomeTab"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDidLogin:)
+                                                 name:TKPDUserDidLoginNotification
+                                               object:nil];
 }
 
 #pragma mark - Collection Delegate
@@ -214,7 +241,7 @@ PromoRequestDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
     ProductFeedList *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    //    [navigateController navigateToProductFromViewController:self withProductID:product.product_id];
+    [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
@@ -330,7 +357,8 @@ PromoRequestDelegate
                                                  kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
                                                  API_PRODUCT_NAME_KEY,
-                                                 @"shop_lucky"
+                                                 @"shop_lucky",
+                                                 @"shop_url"
                                                  ]];
     //relation
     RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
@@ -360,11 +388,11 @@ PromoRequestDelegate
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
-    [_noResult removeFromSuperview];
+    [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
     if (feed.data.list.count > 0) {
-        
+        [_noResultView removeFromSuperview];
         if (_page == 1) {
             [_product removeAllObjects];
             [_promo removeAllObjects];
@@ -372,6 +400,8 @@ PromoRequestDelegate
         }
         
         [_product addObject:feed.data.list];
+        
+        [TPAnalytics trackProductImpressions:feed.data.list];
         
         _isNoData = NO;
         _nextPageUri =  feed.data.paging.uri_next;
@@ -389,8 +419,11 @@ PromoRequestDelegate
     } else {
         // no data at all
         _isNoData = YES;
+        [_product removeAllObjects];
+        [_collectionView reloadData];
         [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResult];
+        [_collectionView addSubview:_noResultView];
+        //[self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -434,6 +467,26 @@ PromoRequestDelegate
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
     }
+    
+}
+
+- (void)addFavoriteShop:(NSNotification*)notification{
+    //if([self.view isEqual:_noResultView]){
+    if(_product.count == 0){
+        [_networkManager doRequest];
+    }
+    //self.view = _contentView;
+    [_noResultView removeFromSuperview];
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
+}
+
+- (void)removeFavoriteShop:(NSNotification*)notification{
+    _page = 1;
+    [_product removeAllObjects];
+    [_networkManager doRequest];
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
     
 }
 
@@ -481,6 +534,12 @@ PromoRequestDelegate
     }
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
+}
+
+#pragma mark - No Request delegate
+- (void)buttonDidTapped:(id)sender{
+    NSDictionary *userInfo = @{@"page" : @5};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
 }
 
 #pragma mark - Promo collection delegate

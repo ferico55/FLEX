@@ -25,7 +25,7 @@
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
 
-#import "NoResultView.h"
+#import "NoResultReusableView.h"
 
 @interface ShopNotesPageViewController ()
 <
@@ -35,7 +35,8 @@
     TKPDTabInboxTalkNavigationControllerDelegate,
     ShopPageHeaderDelegate,
     MGSwipeTableCellDelegate,
-    MyShopNoteDetailDelegate
+    MyShopNoteDetailDelegate,
+    NoResultDelegate
 >
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -98,7 +99,7 @@
     NSTimeInterval _timeinterval;
     Notes *_notes;
     Shop *_shop;
-    NoResultView *_noResult;
+    NoResultReusableView *_noResultView;
 }
 
 #pragma mark - Initialization
@@ -117,7 +118,14 @@
 - (void)initNotification {
 
 }
-
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:nil
+                                 title:@"Toko ini belum mempunyai catatan"
+                                  desc:@""
+                              btnTitle:nil];
+}
 
 #pragma mark - Life Cycle
 - (void)addBottomInsetWhen14inch {
@@ -162,7 +170,7 @@
     
     _table.tableFooterView = _footer;
     //_table.tableHeaderView = _header;
-    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
+    [self initNoResultView];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
@@ -179,21 +187,21 @@
     [self initNotification];
     [self configureRestKit];
     [self loadData];
-    
 }
 
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Shop - Note List"];
     self.screenName = @"Shop - Note List";
+    
     if (!_isrefreshview) {
         [self configureRestKit];
-        
         if (_isNoData && _page < 1) {
             [self loadData];
         }
     }
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -436,8 +444,10 @@
                 
                 [self.table reloadData];
                 if (_list.count == 0) {
-                    _table.tableFooterView = _noResult;
+                    _table.tableFooterView = _noResultView;
                     _act.hidden = YES;
+                }else{
+                    [_noResultView removeFromSuperview];
                 }
                 
             }
@@ -456,13 +466,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    self.table.tableFooterView = _noResult;
+                    self.table.tableFooterView = _noResultView;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                self.table.tableFooterView = _noResult;
+                self.table.tableFooterView = _noResultView;
             }
         }
     }

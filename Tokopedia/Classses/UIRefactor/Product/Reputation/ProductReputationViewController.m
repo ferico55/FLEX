@@ -28,7 +28,6 @@
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
 #import "String_Reputation.h"
-#import "TAGDataLayer.h"
 #import "TotalLikeDislikePost.h"
 #import "TotalLikeDislike.h"
 #import "TokopediaNetworkManager.h"
@@ -217,7 +216,7 @@
     
     
     NSString *strReview = @"Review";
-    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%d Review", [review.result.advance_review.product_rating_point intValue]];
+    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%d Review", [review.result.advance_review.product_review intValue]];
     UIFont *boldFont = [UIFont boldSystemFontOfSize:lblDescTotalHeaderRating.font.pointSize];
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblDescTotalHeaderRating.textColor, NSForegroundColorAttributeName, nil];
     NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblDescTotalHeaderRating.font, NSFontAttributeName, lblDescTotalHeaderRating.textColor, NSForegroundColorAttributeName, nil];
@@ -1454,9 +1453,7 @@
 
 #pragma mark - GTM
 - (void)configureGTM {
-    TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
+    [TPAnalytics trackUserId];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;

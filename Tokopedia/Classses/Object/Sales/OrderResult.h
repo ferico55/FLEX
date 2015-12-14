@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "Paging.h"
 #import "OrderOrder.h"
+#import "OrderBooking.h"
 
 @interface OrderResult : NSObject
 
 @property (nonatomic, strong) NSMutableArray *list;
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) OrderOrder *order;
+@property (nonatomic, strong) OrderBooking *booking;
 
 @end

@@ -747,6 +747,10 @@
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
+    // UA
+    [TPAnalytics trackScreenName:@"Add Product - Fail"];
+    
+    // GA
     id tracker = [[GAI sharedInstance] defaultTracker];
     [tracker setAllowIDFACollection:YES];
     [tracker set:kGAIScreenName value:@"Add Product - Fail"];
@@ -966,7 +970,7 @@
 {
     //_objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
     NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generateHost.result.generated_host.upload_host];
-    RKObjectManager *objectManager = [RKObjectManager sharedClientUploadImage:urlString];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:urlString];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductPicture class]];
@@ -1181,6 +1185,11 @@
             [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         }
         if (setting.result.is_success == 1 || setting.result.product_id!=0) {
+            
+            // UA
+            [TPAnalytics trackScreenName:@"Add Product - Success"];
+            
+            // GA
             id tracker = [[GAI sharedInstance] defaultTracker];
             [tracker setAllowIDFACollection:YES];
             [tracker set:kGAIScreenName value:@"Add Product - Success"];

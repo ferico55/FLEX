@@ -102,7 +102,9 @@
     [super viewWillAppear:animated];
     
     self.title = @"Status Pengiriman";
-    self.screenName = @"Shipping Status";
+    
+    [TPAnalytics trackScreenName:@"Sales - Shipping Status"];
+    self.screenName = @"Sales - Shipping Status";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                       style:UIBarButtonItemStyleBordered
@@ -224,6 +226,7 @@
         if (_nextURI != NULL && ![_nextURI isEqualToString:@"0"] && _nextURI != 0) {
             _tableView.tableFooterView = _footerView;
             [_activityIndicator startAnimating];
+            [self configureRestKit];
             [self requestInvoice:nil];
         } else {
             _tableView.tableFooterView = nil;

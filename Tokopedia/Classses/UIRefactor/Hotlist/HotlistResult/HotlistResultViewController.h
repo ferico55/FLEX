@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #pragma mark - Hotlist Result View Controller
-@interface HotlistResultViewController : GAITrackedViewController<UICollectionViewDataSource, UICollectionViewDelegate>
+@interface HotlistResultViewController : GAITrackedViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 {
     IBOutlet UICollectionViewFlowLayout *flowLayout;
     IBOutlet UICollectionView *viewCollection;

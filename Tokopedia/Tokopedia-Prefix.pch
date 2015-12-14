@@ -18,9 +18,7 @@
 #define CStringPoin @"Poin"
 #define CWidthItemPopUp 50
 #define CHeightItemPopUp 30
-#define CRevieweeScroreBad @"-1"
-#define CRevieweeScroreNetral @"1"
-#define CRevieweeScroreGood @"2"
+
 #define CPriceAlertCell @"PriceAlertCell"
 #define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
 #define CStringFailedInServer @"Server error"
@@ -72,4 +70,6 @@ enum emoticonTag
     #import "TokopediaNetworkManager.h"
     #import "TKPString.h"
     #import "TKPObjectMapping.h"
+
+    #import "TPAnalytics.h"
 #endif

@@ -25,7 +25,7 @@
 
 @end
 
-@interface TransactionCartViewController : UIViewController
+@interface TransactionCartViewController : GAITrackedViewController
 
 
 @property (nonatomic, weak) IBOutlet id<TransactionCartViewControllerDelegate> delegate;

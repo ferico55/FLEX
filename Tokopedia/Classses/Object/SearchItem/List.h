@@ -45,4 +45,6 @@
 @property (nonatomic, strong) ProductModelView *viewModel;
 @property (nonatomic, strong) CatalogModelView *catalogViewModel;
 
+- (NSDictionary *)productFieldObjects;
+
 @end
