@@ -15,5 +15,6 @@
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;
 @property (nonatomic) NSInteger type;
+@property (nonatomic, strong) NSString *pending_days;
 
 @end

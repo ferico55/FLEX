@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ResolutionLast : NSObject
+@interface ResolutionLast : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSNumber *last_resolution_id;
 @property (nonatomic, strong) NSNumber *last_action_by;

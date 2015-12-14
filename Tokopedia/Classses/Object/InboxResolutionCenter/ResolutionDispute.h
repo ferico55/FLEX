@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ResolutionDispute : NSObject
+@interface ResolutionDispute : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *dispute_update_time;
 @property (nonatomic) NSInteger dispute_is_responded;

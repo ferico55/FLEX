@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class ShopBadgeLevel;
+#import "ShopBadgeLevel.h"
 #define CToolTip @"tooltip"
 #define CReputationBadge @"reputation_badge"
 #define CReputationScore @"reputation_score"
@@ -15,7 +15,7 @@
 #define CMinBadgeScore @"min_badge_score"
 #define CReputationBadgeObject @"reputation_badge_object"
 
-@interface ShopReputation : NSObject
+@interface ShopReputation : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) NSString *tooltip;
 @property (nonatomic, strong) NSString *reputation_badge;
 @property (nonatomic, strong) NSString *reputation_score;

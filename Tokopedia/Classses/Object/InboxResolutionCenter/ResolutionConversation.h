@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ResolutionAttachment.h"
 
-@interface ResolutionConversation : NSObject
+@interface ResolutionConversation : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSArray *attachment;
 @property (nonatomic, strong) NSString *remark;

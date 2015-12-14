@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CCustomerReputation @"customer_reputation"
-@class ReputationDetail;
+#import "ReputationDetail.h"
 
-@interface ResolutionCustomer : NSObject
+#define CCustomerReputation @"customer_reputation"
+
+@interface ResolutionCustomer : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *customer_image;
 @property (nonatomic, strong) NSString *customer_name;
