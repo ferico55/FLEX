@@ -19,5 +19,5 @@
 @property (strong, nonatomic) UIViewController *masterViewController;
 
 -(void)replaceDataSelected:(NSDictionary *)data;
-
+-(id) initByMarkingOpenedTalkAsRead:(BOOL) marksOpenedTalkAsRead;
 @end

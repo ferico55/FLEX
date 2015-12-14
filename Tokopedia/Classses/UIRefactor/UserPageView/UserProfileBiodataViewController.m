@@ -87,6 +87,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     constraintHeightTableView.constant = self.view.bounds.size.height;
 }
 

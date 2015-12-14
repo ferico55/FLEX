@@ -88,7 +88,7 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:self.view.bounds];
     [_noResultView generateAllElements:nil
                                  title:@"Anda belum mengikuti diskusi produk"
                                   desc:@""

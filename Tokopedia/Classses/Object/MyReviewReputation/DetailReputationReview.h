@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DetailReviewReputaionViewModel.h"
+#import "DetailReviewReputationViewModel.h"
 #import "DetailReputationReview.h"
 #import "ReputationDetail.h"
 #import "ReviewResponse.h"
@@ -115,5 +115,5 @@
 @property (nonatomic, strong) ReputationDetail *review_user_reputation;
 @property (nonatomic, strong) ProductOwner *product_owner;
 @property (nonatomic, strong) ReviewResponse *review_response;
-@property (nonatomic, strong) DetailReviewReputaionViewModel *viewModel;
+@property (nonatomic, strong) DetailReviewReputationViewModel *viewModel;
 @end
