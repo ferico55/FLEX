@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		454A6B3F1C1E72DC004C66ED /* ReputationDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B3D1C1E7122004C66ED /* ReputationDetail.m */; };
 		62DFACFA1C1688B300403863 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DFA0781C1688AB00403863 /* AppDelegate.m */; };
 		62DFB1D01C1688B400403863 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA0F1C1688AF00403863 /* InfoPlist.strings */; };
 		62DFB1D11C1688B400403863 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA111C1688AF00403863 /* GoogleService-Info.plist */; };
@@ -333,7 +334,6 @@
 		921E9D951C1A6C1500BA817F /* Promote.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E92721C1A6C1000BA817F /* Promote.m */; };
 		921E9D961C1A6C1500BA817F /* PromoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E92741C1A6C1000BA817F /* PromoteResult.m */; };
 		921E9D971C1A6C1500BA817F /* Reputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E92771C1A6C1000BA817F /* Reputation.m */; };
-		921E9D981C1A6C1500BA817F /* ReputationDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E92791C1A6C1000BA817F /* ReputationDetail.m */; };
 		921E9D991C1A6C1500BA817F /* ReputationList.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E927B1C1A6C1000BA817F /* ReputationList.m */; };
 		921E9D9A1C1A6C1500BA817F /* ReputationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E927D1C1A6C1000BA817F /* ReputationResult.m */; };
 		921E9D9B1C1A6C1500BA817F /* ShopBadgeLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 921E927F1C1A6C1000BA817F /* ShopBadgeLevel.m */; };
@@ -2013,6 +2013,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		454A6B3C1C1E7122004C66ED /* ReputationDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetail.h; sourceTree = "<group>"; };
+		454A6B3D1C1E7122004C66ED /* ReputationDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetail.m; sourceTree = "<group>"; };
 		62DFA0771C1688AB00403863 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		62DFA0781C1688AB00403863 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		62DFAA101C1688AF00403863 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2629,8 +2631,6 @@
 		921E92741C1A6C1000BA817F /* PromoteResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromoteResult.m; sourceTree = "<group>"; };
 		921E92761C1A6C1000BA817F /* Reputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reputation.h; sourceTree = "<group>"; };
 		921E92771C1A6C1000BA817F /* Reputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reputation.m; sourceTree = "<group>"; };
-		921E92781C1A6C1000BA817F /* ReputationDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetail.h; sourceTree = "<group>"; };
-		921E92791C1A6C1000BA817F /* ReputationDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetail.m; sourceTree = "<group>"; };
 		921E927A1C1A6C1000BA817F /* ReputationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationList.h; sourceTree = "<group>"; };
 		921E927B1C1A6C1000BA817F /* ReputationList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationList.m; sourceTree = "<group>"; };
 		921E927C1C1A6C1000BA817F /* ReputationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationResult.h; sourceTree = "<group>"; };
@@ -6241,10 +6241,10 @@
 		921E92751C1A6C1000BA817F /* Reputation */ = {
 			isa = PBXGroup;
 			children = (
+				454A6B3C1C1E7122004C66ED /* ReputationDetail.h */,
+				454A6B3D1C1E7122004C66ED /* ReputationDetail.m */,
 				921E92761C1A6C1000BA817F /* Reputation.h */,
 				921E92771C1A6C1000BA817F /* Reputation.m */,
-				921E92781C1A6C1000BA817F /* ReputationDetail.h */,
-				921E92791C1A6C1000BA817F /* ReputationDetail.m */,
 				921E927A1C1A6C1000BA817F /* ReputationList.h */,
 				921E927B1C1A6C1000BA817F /* ReputationList.m */,
 				921E927C1C1A6C1000BA817F /* ReputationResult.h */,
@@ -11586,6 +11586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				454A6B3F1C1E72DC004C66ED /* ReputationDetail.m in Sources */,
 				921EA09D1C1A6C1500BA817F /* ShopInfoPaymentCell.m in Sources */,
 				921E9EF91C1A6C1500BA817F /* NoResultView.m in Sources */,
 				921E9CE01C1A6C1500BA817F /* Rating.m in Sources */,
@@ -12198,7 +12199,6 @@
 				921E9D5E1C1A6C1500BA817F /* Note.m in Sources */,
 				921EA1071C1A6C1500BA817F /* TxOrderTransactionDetailViewController.m in Sources */,
 				921EA0CD1C1A6C1500BA817F /* TokopediaCacheManager.m in Sources */,
-				921E9D981C1A6C1500BA817F /* ReputationDetail.m in Sources */,
 				921E9F241C1A6C1500BA817F /* GeneralSingleProductCell.m in Sources */,
 				921E9E311C1A6C1500BA817F /* TxOrderConfirmed.m in Sources */,
 				921EA02A1C1A6C1500BA817F /* SalesNewOrderViewController.m in Sources */,

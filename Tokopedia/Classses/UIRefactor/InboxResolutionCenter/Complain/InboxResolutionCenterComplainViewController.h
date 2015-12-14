@@ -11,10 +11,15 @@
 
 @interface InboxResolutionCenterComplainViewController : UIViewController
 ;
-@property BOOL isMyComplain;
 @property (nonatomic) NSInteger filterReadIndex;
+@property (nonatomic) NSInteger typeComplaint;
 
 @property (strong, nonatomic)ResolutionCenterDetailViewController *detailViewController;
 
+typedef enum {
+    TypeComplaintAll = 2,
+    TypeComplaintMine = 0,
+    TypeComplaintBuyer = 1
+} TypeComplaint;
 
 @end

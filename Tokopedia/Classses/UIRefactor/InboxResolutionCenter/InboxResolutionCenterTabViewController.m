@@ -16,6 +16,7 @@
     NSDictionary *_data;
     InboxResolutionCenterComplainViewController *_myComplainViewController;
     InboxResolutionCenterComplainViewController *_buyerComplainViewController;
+    InboxResolutionCenterComplainViewController *_allComplainViewController;
     NSDictionary *_auth;
     BOOL _isLogin;
     
@@ -127,19 +128,20 @@
 }
 
 - (IBAction)tap:(UISegmentedControl*)sender {
+    
+    UIPageViewControllerNavigationDirection direction;
+    if (_index>sender.selectedSegmentIndex)
+        direction = UIPageViewControllerNavigationDirectionReverse;
+    else
+        direction = UIPageViewControllerNavigationDirectionForward;
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:sender.selectedSegmentIndex]] direction:direction animated:YES completion:nil];
     _index = sender.selectedSegmentIndex;
+    [self updateCheckList];
+    
     switch (sender.selectedSegmentIndex) {
-        case 0:
+        case 2:
         {
-            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-            [self updateCheckList];
-            break;
-        }
-        case 1:
-        {
-            [_pageController setViewControllers:@[[self viewControllerAtIndex:1]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
             self.navigationItem.rightBarButtonItem = nil;
-            [self updateCheckList];
             break;
         }
         default:
@@ -298,20 +300,29 @@
     switch (index) {
         case 0:
         {
+            if(!_allComplainViewController)_allComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _allComplainViewController.detailViewController = _detailViewController;
+            _allComplainViewController.typeComplaint = TypeComplaintAll;
+            _allComplainViewController.filterReadIndex = _filterReadIndex;
+            childViewController = _allComplainViewController;
+            break;
+        }
+        case 1:
+        {
             if(!_myComplainViewController)_myComplainViewController = [InboxResolutionCenterComplainViewController new];
             _myComplainViewController.detailViewController = _detailViewController;
-            _myComplainViewController.isMyComplain = YES;
+            _myComplainViewController.typeComplaint = TypeComplaintMine;
             _myComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _myComplainViewController;
             break;
         }
-        case 1:
+        case 2:
         {
             self.navigationItem.rightBarButtonItem = nil;
             
             if(!_buyerComplainViewController)_buyerComplainViewController = [InboxResolutionCenterComplainViewController new];
             _buyerComplainViewController.detailViewController = _detailViewController;
-            _buyerComplainViewController.isMyComplain = NO;
+            _buyerComplainViewController.typeComplaint = TypeComplaintBuyer;
             _buyerComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _buyerComplainViewController;
             break;

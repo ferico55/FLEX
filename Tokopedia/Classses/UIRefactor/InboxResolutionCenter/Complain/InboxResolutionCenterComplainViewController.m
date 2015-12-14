@@ -89,6 +89,7 @@
     NSIndexPath *_selectedDetailIndexPath;
     
     TAGContainer *_gtmContainer;
+    NSArray *_arrayFilterUnread;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -147,7 +148,7 @@
     [_refreshControl addTarget:self action:@selector(refreshRequest)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
-    if (_isMyComplain) {
+    if (_typeComplaint == TypeComplaintMine) {
         _tableView.tableHeaderView = _headerView;
     }
     
@@ -284,7 +285,7 @@
     }
     
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
-    cell.viewLabelUser.text = _isMyComplain?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
+    cell.viewLabelUser.text = (_typeComplaint == TypeComplaintMine)?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
@@ -320,14 +321,14 @@
 //    }
     [cell.viewLabelUser setLabelBackground:resolution.resolution_by.user_label];
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_isMyComplain?resolution.resolution_shop.shop_image:resolution.resolution_customer.customer_image]
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(resolution.resolution_by.by_customer == 1)?resolution.resolution_shop.shop_image:resolution.resolution_customer.customer_image]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = cell.buyerProfileImageView;
     thumb.image = nil;
     [thumb setImageWithURLRequest:request
-                 placeholderImage:_isMyComplain?[UIImage imageNamed:@"icon_default_shop.jpg"]:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                 placeholderImage:(resolution.resolution_by.by_customer == 1)?[UIImage imageNamed:@"icon_default_shop.jpg"]:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -362,7 +363,7 @@
     cell.invoiceNumberLabel.text = resolution.resolution_order.order_invoice_ref_num;
     [cell.lastStatusLabel setCustomAttributedText:lastSolution];
     cell.disputeStatus = resolution.resolution_dispute.dispute_status;
-    cell.buyerOrSellerLabel.text = _isMyComplain?@"Pembelian dari":@"Pembelian oleh";
+    cell.buyerOrSellerLabel.text = (resolution.resolution_by.by_customer == 1)?@"Pembelian dari":@"Pembelian oleh";
     cell.indexPath = indexPath;
     
     cell.unreadBorderView.hidden = (((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status == 2)?YES:NO;
@@ -397,7 +398,7 @@
 -(void)goToShopOrProfileAtIndexPath:(NSIndexPath *)indexPath
 {
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    if (_isMyComplain)
+    if (_typeComplaint == TypeComplaintMine)
     {
         //gotoshop
         [_navigate navigateToShopFromViewController:self withShopID:(resolution.resolution_detail.resolution_shop.shop_id)?:@""];
@@ -580,7 +581,7 @@
 {
     if (tag == TAG_REQUEST_LIST) {
         NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-        NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
+        NSString *filterRead = _arrayFilterUnread[_filterReadIndex];
         NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
         
         NSString *status = @"";
@@ -607,7 +608,7 @@
             sortType = @"1";
         
         NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
-                                API_COMPLAIN_TYPE_KEY : _isMyComplain?@(0):@(1),
+                                API_COMPLAIN_TYPE_KEY : @(_typeComplaint),
                                 API_STATUS_KEY : status,
                                 API_UNREAD_KEY : unread,
                                 API_SORT_KEY :sortType,
@@ -831,6 +832,8 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[@"pending_days"]];
+    
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterList class]];
     [listMapping addAttributeMappingsFromArray:@[API_RESOLUTION_READ_STATUS_KEY]];
     
