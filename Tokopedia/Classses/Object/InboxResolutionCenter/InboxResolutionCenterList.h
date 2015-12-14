@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ResolutionDetail.h"
 
-@interface InboxResolutionCenterList : NSObject
+@interface InboxResolutionCenterList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) ResolutionDetail *resolution_detail;
 @property (nonatomic) NSInteger resolution_read_status;

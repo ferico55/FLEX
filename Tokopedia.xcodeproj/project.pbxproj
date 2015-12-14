@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		454A6B3F1C1E72DC004C66ED /* ReputationDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B3D1C1E7122004C66ED /* ReputationDetail.m */; };
+		454A6B421C1EB26A004C66ED /* ReputationDetailCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B411C1EB26A004C66ED /* ReputationDetailCopy.m */; };
 		62DFACFA1C1688B300403863 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DFA0781C1688AB00403863 /* AppDelegate.m */; };
 		62DFB1D01C1688B400403863 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA0F1C1688AF00403863 /* InfoPlist.strings */; };
 		62DFB1D11C1688B400403863 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA111C1688AF00403863 /* GoogleService-Info.plist */; };
@@ -2015,6 +2016,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		454A6B3C1C1E7122004C66ED /* ReputationDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetail.h; sourceTree = "<group>"; };
 		454A6B3D1C1E7122004C66ED /* ReputationDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetail.m; sourceTree = "<group>"; };
+		454A6B401C1EB26A004C66ED /* ReputationDetailCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetailCopy.h; sourceTree = "<group>"; };
+		454A6B411C1EB26A004C66ED /* ReputationDetailCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetailCopy.m; sourceTree = "<group>"; };
 		62DFA0771C1688AB00403863 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		62DFA0781C1688AB00403863 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		62DFAA101C1688AF00403863 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -6241,6 +6244,8 @@
 		921E92751C1A6C1000BA817F /* Reputation */ = {
 			isa = PBXGroup;
 			children = (
+				454A6B401C1EB26A004C66ED /* ReputationDetailCopy.h */,
+				454A6B411C1EB26A004C66ED /* ReputationDetailCopy.m */,
 				454A6B3C1C1E7122004C66ED /* ReputationDetail.h */,
 				454A6B3D1C1E7122004C66ED /* ReputationDetail.m */,
 				921E92761C1A6C1000BA817F /* Reputation.h */,
@@ -12461,6 +12466,7 @@
 				921E9E781C1A6C1500BA817F /* AlertInfoView.m in Sources */,
 				921E9F421C1A6C1500BA817F /* HomeFlowLayout.m in Sources */,
 				921E9D571C1A6C1500BA817F /* MyReviewReputationResult.m in Sources */,
+				454A6B421C1EB26A004C66ED /* ReputationDetailCopy.m in Sources */,
 				921E9EB91C1A6C1500BA817F /* FilterCatalogViewController.m in Sources */,
 				921E9C8B1C1A6C1500BA817F /* NSData+Encryption.m in Sources */,
 				921EA1461C1A6C1500BA817F /* ProductSingleViewCell.m in Sources */,

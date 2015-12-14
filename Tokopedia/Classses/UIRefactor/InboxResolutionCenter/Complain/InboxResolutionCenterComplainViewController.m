@@ -67,12 +67,8 @@
     NSMutableDictionary *_dataInput;
 
     CMPopTipView *cmPopTitpView;
-    InboxResolutionCenterObjectMapping *_mapping;
-    
-    __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     
-    __weak RKObjectManager *_objectManagerCancelComplain;
     __weak RKManagedObjectRequestOperation *_requestCancelComplain;
     
     NSMutableArray *_allObjectCancelComplain;
@@ -109,7 +105,6 @@
     _dataInput = [NSMutableDictionary new];
     _navigate = [NavigateViewController new];
     _operationQueue = [NSOperationQueue new];
-    _mapping = [InboxResolutionCenterObjectMapping new];
     _allObjectCancelComplain = [NSMutableArray new];
     
     _networkManager = [TokopediaNetworkManager new];
@@ -416,15 +411,6 @@
 -(void)showImageAtIndexPath:(NSIndexPath *)indexPath
 {
     [self goToShopOrProfileAtIndexPath:indexPath];
-//    InboxResolutionCenterList *resolution = _list[indexPath.row];
-//
-//    NSString *imageURLString = @"";
-//    if (_isMyComplain)
-//        imageURLString = resolution.resolution_detail.resolution_shop.shop_image;
-//    else
-//        imageURLString = resolution.resolution_detail.resolution_customer.customer_image;
-//
-//    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:@[imageURLString] indexImage:0];
 }
 
 -(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
@@ -512,14 +498,6 @@
 #pragma mark - Cell Delegate
 - (void)actionReputation:(id)sender {
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[((UIView *) sender).tag]).resolution_detail;
-    
-    
-    
-    
-    
-    
-    
-    
     if(resolution.resolution_by.by_customer == 1) {
         if(resolution.resolution_shop.shop_reputation.tooltip!=nil && resolution.resolution_shop.shop_reputation.tooltip.length>0)
             [self initPopUp:resolution.resolution_shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
@@ -821,158 +799,33 @@
 
 -(RKObjectManager*)objectManagerList
 {
-    _objectManager = [RKObjectManager sharedClient];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenter class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[@"pending_days"]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterList class]];
-    [listMapping addAttributeMappingsFromArray:@[API_RESOLUTION_READ_STATUS_KEY]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY,
-                                                        }];
-    RKObjectMapping *resolutionDetailMapping = [RKObjectMapping mappingForClass:[ResolutionDetail class]];
-    
-    RKObjectMapping *resolutionLastMapping = [_mapping resolutionLastMapping];
-    RKObjectMapping *resolutionOrderMapping = [_mapping resolutionOrderMapping];
-    RKObjectMapping *resolutionByMapping = [_mapping resolutionByMapping];
-    RKObjectMapping *resolutionShopMapping = [_mapping resolutionShopMapping];
-    RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
-    RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
-    
-    
-    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNoReputation,
-                                                                 CNegative,
-                                                                 CNeutral,
-                                                                 CPositif]];
-    
-    
-    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
-    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
-                                                           CReputationBadge,
-                                                           CReputationScore,
-                                                           CScore,
-                                                           CMinBadgeScore]];
-    
-    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-
-    [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
-    [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                toKeyPath:kTKPD_APILISTKEY
-                                                                              withMapping:listMapping];
-    
-    RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
-                                                                                   toKeyPath:kTKPD_APIPAGINGKEY
-                                                                                 withMapping:pagingMapping];
-    
-    RKRelationshipMapping *resolutionDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DETAIL_KEY
-                                                                                             toKeyPath:API_RESOLUTION_DETAIL_KEY
-                                                                                           withMapping:resolutionDetailMapping];
-    
-    RKRelationshipMapping *resolutionLastRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                           toKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                         withMapping:resolutionLastMapping];
-    
-    RKRelationshipMapping *resolutionOrderRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                            toKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                          withMapping:resolutionOrderMapping];
-    
-    RKRelationshipMapping *resolutionByRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_BY_KEY
-                                                                                        toKeyPath:API_RESOLUTION_BY_KEY
-                                                                                      withMapping:resolutionByMapping];
-    
-    RKRelationshipMapping *resolutionShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                           toKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                         withMapping:resolutionShopMapping];
-    
-    RKRelationshipMapping *resolutionCustomerRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                              toKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                            withMapping:resolutionCustomerMapping];
-    
-    RKRelationshipMapping *resolutionDisputeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                              toKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                            withMapping:resolutionDisputeMapping];
-    
-    
-    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
-    [statusMapping addPropertyMapping:resultRel];
-    
-    [resultMapping addPropertyMapping:listRel];
-    [resultMapping addPropertyMapping:pagingRel];
-    
-    [listMapping addPropertyMapping:resolutionDetailRel];
-    
-    [resolutionDetailMapping addPropertyMapping:resolutionLastRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionOrderRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionByRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionShopRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionCustomerRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionDisputeRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[InboxResolutionCenter mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:API_PATH_INBOX_RESOLUTION_CENTER
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManager addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
-    return _objectManager;
+    return objectManager;
 }
 
 
 -(RKObjectManager*)objectManagerCancelComplain
 //-(void)configureRestKitCancelComplain
 {
-    _objectManagerCancelComplain = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ResolutionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionAction mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:API_PATH_ACTION_RESOLUTION_CENTER
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerCancelComplain addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
-    return _objectManagerCancelComplain;
+    return objectManager;
 }
 
 

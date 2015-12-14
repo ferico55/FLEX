@@ -10,7 +10,7 @@
 #import "Paging.h"
 #import "InboxResolutionCenterList.h"
 
-@interface InboxResolutionCenterResult : NSObject
+@interface InboxResolutionCenterResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ReputationDetail.h"
+#import "ReputationDetailCopy.h"
 
 #define CCustomerReputation @"customer_reputation"
 
@@ -17,5 +18,7 @@
 @property (nonatomic, strong) NSString *customer_name;
 @property (nonatomic, strong) NSString *customer_url;
 @property (nonatomic, strong) NSString *customer_id;
-@property (nonatomic, strong) ReputationDetail *customer_reputation;
+//@property (nonatomic, strong) ReputationDetail *customer_reputation;
+@property (nonatomic, strong) ReputationDetailCopy *customer_reputation;
+
 @end

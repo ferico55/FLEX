@@ -10,4 +10,23 @@
 
 @implementation InboxResolutionCenterResult
 
+// MARK: TKPRootObjectMapping methods
++ (NSDictionary *)attributeMappingDictionary {
+    NSArray *keys = @[@"pending_days",
+                      @"type"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]]];
+    
+    RKRelationshipMapping *relMapping =[RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[InboxResolutionCenterList mapping]];
+    [mapping addPropertyMapping:relMapping];
+
+    return mapping;
+}
+
+
 @end
