@@ -9,8 +9,9 @@
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolutionCenterComplainViewController.h"
 #import "string_inbox_resolution_center.h"
+#import "AlertListFilterView.h"
 
-@interface InboxResolutionCenterTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate>
+@interface InboxResolutionCenterTabViewController ()<TKPDAlertViewDelegate, UIPageViewControllerDataSource,UIPageViewControllerDelegate>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -21,6 +22,7 @@
     BOOL _isLogin;
     
     NSInteger _filterReadIndex;
+    AlertListFilterView *_filter;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
@@ -190,6 +192,21 @@
         }];
     }
     [self updateCheckList];
+}
+
+-(IBAction)tapFilterRead:(id)sender
+{
+    if (!_filter) {
+        _filter = [AlertListFilterView newview];
+        _filter.list = ARRAY_FILTER_UNREAD;
+        _filter.selectedIndex = _filterReadIndex;
+        _filter.delegate = self;
+        [_filter show];
+    }else{
+        [_filter dismissWithClickedButtonIndex:-1 animated:YES];
+        _filter =nil;
+    }
+
 }
 
 -(IBAction)tapBarButton:(UIBarButtonItem*)sender
@@ -379,7 +396,7 @@
 - (void)setTitleButtonString:(NSString*)string {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 10, 17);
-    [button addTarget:self action:@selector(tapBarButton:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(tapFilterRead:) forControlEvents:UIControlEventTouchUpInside];
     button.tag = 11;
     
     NSString *title = [NSString stringWithFormat:@"%@",string];
@@ -413,5 +430,11 @@
     self.navigationItem.titleView = button;
 }
 
+-(void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    if (buttonIndex >= 0) {
+        _filterReadIndex = buttonIndex;
+    }
+    _filter = nil;
+}
 
 @end

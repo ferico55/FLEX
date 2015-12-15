@@ -280,7 +280,7 @@
     }
     
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
-    cell.viewLabelUser.text = (_typeComplaint == TypeComplaintMine)?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
+    cell.viewLabelUser.text = (_typeComplaint == resolution.resolution_by.by_customer==1)?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
@@ -393,7 +393,7 @@
 -(void)goToShopOrProfileAtIndexPath:(NSIndexPath *)indexPath
 {
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    if (_typeComplaint == TypeComplaintMine)
+    if (_typeComplaint == resolution.resolution_detail.resolution_by.by_customer)
     {
         //gotoshop
         [_navigate navigateToShopFromViewController:self withShopID:(resolution.resolution_detail.resolution_shop.shop_id)?:@""];
@@ -559,7 +559,7 @@
 {
     if (tag == TAG_REQUEST_LIST) {
         NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-        NSString *filterRead = _arrayFilterUnread[_filterReadIndex];
+        NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
         NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
         
         NSString *status = @"";
@@ -575,9 +575,9 @@
         
         if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
             unread = @"0";
-        else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[1]])
+        else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
             unread = @"1";
-        else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
+        else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[3]])
             unread = @"2";
         
         if ([filterSort isEqualToString:ARRAY_FILTER_SORT[0]])

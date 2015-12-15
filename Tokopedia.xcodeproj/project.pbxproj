@@ -10,6 +10,8 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		454A6B3F1C1E72DC004C66ED /* ReputationDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B3D1C1E7122004C66ED /* ReputationDetail.m */; };
 		454A6B421C1EB26A004C66ED /* ReputationDetailCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B411C1EB26A004C66ED /* ReputationDetailCopy.m */; };
+		454A6B461C1EC954004C66ED /* AlertListFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B441C1EC954004C66ED /* AlertListFilterView.m */; };
+		454A6B471C1EC954004C66ED /* AlertListFilterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454A6B451C1EC954004C66ED /* AlertListFilterView.xib */; };
 		62DFACFA1C1688B300403863 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DFA0781C1688AB00403863 /* AppDelegate.m */; };
 		62DFB1D01C1688B400403863 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA0F1C1688AF00403863 /* InfoPlist.strings */; };
 		62DFB1D11C1688B400403863 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA111C1688AF00403863 /* GoogleService-Info.plist */; };
@@ -2018,6 +2020,9 @@
 		454A6B3D1C1E7122004C66ED /* ReputationDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetail.m; sourceTree = "<group>"; };
 		454A6B401C1EB26A004C66ED /* ReputationDetailCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetailCopy.h; sourceTree = "<group>"; };
 		454A6B411C1EB26A004C66ED /* ReputationDetailCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetailCopy.m; sourceTree = "<group>"; };
+		454A6B431C1EC954004C66ED /* AlertListFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertListFilterView.h; sourceTree = "<group>"; };
+		454A6B441C1EC954004C66ED /* AlertListFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertListFilterView.m; sourceTree = "<group>"; };
+		454A6B451C1EC954004C66ED /* AlertListFilterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertListFilterView.xib; sourceTree = "<group>"; };
 		62DFA0771C1688AB00403863 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		62DFA0781C1688AB00403863 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		62DFAA101C1688AF00403863 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -7156,6 +7161,9 @@
 		921E945F1C1A6C1000BA817F /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				454A6B431C1EC954004C66ED /* AlertListFilterView.h */,
+				454A6B441C1EC954004C66ED /* AlertListFilterView.m */,
+				454A6B451C1EC954004C66ED /* AlertListFilterView.xib */,
 				921E94601C1A6C1000BA817F /* AlertBaseUrl.h */,
 				921E94611C1A6C1000BA817F /* AlertBaseUrl.m */,
 				921E94621C1A6C1000BA817F /* AlertBaseUrl.xib */,
@@ -11436,6 +11444,7 @@
 				921EA1061C1A6C1500BA817F /* TxOrderStatusViewController.xib in Resources */,
 				921EA2651C1A6C1500BA817F /* icon_medal_gold14@3x.png in Resources */,
 				921EA2BD1C1A6C1500BA817F /* icon_problem_new_user@3x.png in Resources */,
+				454A6B471C1EC954004C66ED /* AlertListFilterView.xib in Resources */,
 				921EA3FC1C1A6C1500BA817F /* wishlist@3x.png in Resources */,
 				921EA0771C1A6C1500BA817F /* SettingNotificationViewController.xib in Resources */,
 				921E9E731C1A6C1500BA817F /* AlertCameraView.xib in Resources */,
@@ -11664,6 +11673,7 @@
 				921E9CC61C1A6C1500BA817F /* DepositFormBankAccountList.m in Sources */,
 				921E9D261C1A6C1500BA817F /* ResolutionDispute.m in Sources */,
 				921E9D4A1C1A6C1500BA817F /* TotalLikeDislikePost.m in Sources */,
+				454A6B461C1EC954004C66ED /* AlertListFilterView.m in Sources */,
 				921E9F7F1C1A6C1500BA817F /* InboxTalkSplitViewController.m in Sources */,
 				921EA0011C1A6C1500BA817F /* ProfileContactViewController.m in Sources */,
 				921EA0321C1A6C1500BA817F /* SalesOrderCell.m in Sources */,
