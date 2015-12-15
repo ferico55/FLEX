@@ -1096,7 +1096,9 @@
 #pragma mark - Add / Edit Address Delegate
 -(void)SettingAddressEditViewController:(SettingAddressEditViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    [_delegate SettingAddressViewController:self withUserInfo:userInfo];
+    if (_delegate && [_delegate respondsToSelector:@selector(SettingAddressEditViewController:withUserInfo:)]) {
+        [_delegate SettingAddressViewController:self withUserInfo:userInfo];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

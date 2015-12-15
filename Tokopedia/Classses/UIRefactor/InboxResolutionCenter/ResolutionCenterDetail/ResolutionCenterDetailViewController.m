@@ -30,6 +30,11 @@
 
 #import "RequestResolutionCenter.h"
 
+#import "SettingAddressViewController.h"
+#import "profile.h"
+#import "string_settings.h"
+#import "AddressFormList.h"
+
 #define TAG_ALERT_CANCEL_COMPLAIN 10
 #define TAG_CHANGE_SOLUTION 11
 #define DATA_SELECTED_SHIPMENT_KEY @"data_selected_shipment"
@@ -37,6 +42,7 @@
 #define BUTTON_TITLE_ACCEPT_SOLUTION  @"Terima Solusi"
 #define BUTTON_TITLE_APPEAL  @"Naik Banding"
 #define BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION @"Terima Solusi Admin"
+#define BUTTON_TITLE_INPUT_ADDRESS @"Masukkan Alamat"
 #define BUTTON_TITLE_INPUT_RESI @"Masukkan No. Resi"
 #define BUTTON_TITLE_EDIT_RESI @"Ubah No. Resi"
 #define BUTTON_TITLE_FINISH_COMPLAIN @"Komplain Selesai"
@@ -60,7 +66,8 @@
     InboxResolutionCenterOpenViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
     RequestResolutionCenterDelegate,
-    UISplitViewControllerDelegate
+    UISplitViewControllerDelegate,
+    SettingAddressViewControllerDelegate
 >
 {
     BOOL _isNodata;
@@ -68,11 +75,6 @@
     NSMutableArray *_listResolutionConversation;
     
     NSOperationQueue *_operationQueue;
-    
-    __weak RKManagedObjectRequestOperation *_request;
-    
-    __weak RKObjectManager *_objectManagerCancelComplain;
-    __weak RKManagedObjectRequestOperation *_requestCancelComplain;
     
     __weak RKObjectManager *_objectManagerEditReceipt;
     __weak RKManagedObjectRequestOperation *_requestEditReceipt;
@@ -100,6 +102,7 @@
     RequestResolutionCenter *_requestResolutionCenter;
     
     GeneratedHost *_generatedHost;
+    AddressFormList *_selectedAddress;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -276,9 +279,7 @@
             ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
             
             rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
-            if ([self isShowOneButton:conversation atIndexPath:indexPath] ||
-                [self isShowTwoButton:conversation]
-                ) {
+            if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
                 rowHeight = cellRowHeight + deltaHeightCell;
             }
         }
@@ -298,7 +299,7 @@
             cellRowHeight += expectedLabelSize.height;
             
             rowHeight = cellRowHeight + deltaHeightCell;
-            if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
+            if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
                 rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
             }
             if ([self isShowAttachment:conversation]) {
@@ -429,6 +430,32 @@
         vc.selectedShipment = selectedShipment;
         vc.conversation = conversation;
         [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
+//        if ([address.receiver_name isEqualToString:@"0"]||!address.receiver_name) {
+//            SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
+//            vc.data = @{kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ATC)
+//                        };
+//            vc.delegate = self;
+//            
+//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//            nav.navigationBar.translucent = NO;
+//            
+//            [self.navigationController presentViewController:nav animated:YES completion:nil];
+//        }
+//        else
+//        {
+//            AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+            SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+            addressViewController.delegate = self;
+//            NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+            addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
+//                                           DATA_INDEXPATH_KEY: selectedIndexPath,
+//                                           DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]
+                                           };
+            [self.navigationController pushViewController:addressViewController animated:YES];
+//        }
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
@@ -664,9 +691,7 @@
     cell.indexPath = indexPath;
     
 
-    if (!([self isShowOneButton:conversation atIndexPath:indexPath] ||
-        [self isShowTwoButton:conversation]
-        )) {
+    if ([self countShowButton:conversation atIndexPath:indexPath] == 0) {
         cell.oneButtonConstraintHeight.constant = 0;
         cell.twoButtonConstraintHeight.constant = 0;
     }
@@ -679,7 +704,7 @@
             [self adjustTwoButtonsTitleConversation:conversation cell:cell];
             
         }
-        else if ([self isShowOneButton:conversation atIndexPath:indexPath])
+        else if ([self countShowButton:conversation atIndexPath:indexPath] == 1)
         {
             cell.oneButtonView.hidden = NO;
             [self adjustOneButtonTitleConversation:conversation cell:cell];
@@ -763,7 +788,7 @@
     {
         cell.twoButtonView.hidden = NO;
     }
-    else if ([self isShowOneButton:conversation atIndexPath:indexPath])
+    else if ([self countShowButton:conversation atIndexPath:indexPath] == 1)
     {
         cell.oneButtonView.hidden = NO;
         UIImage *btnImage;
@@ -784,7 +809,7 @@
     
     cell.indexPath = indexPath;
     
-    if (!([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]))
+    if ([self countShowButton:conversation atIndexPath:indexPath] == 0)
     {
         cell.twobuttonConstraintHeight.constant = 0;
         cell.oneButtonConstraintHeight.constant = 0;
@@ -835,6 +860,13 @@
                 else
                     title2 = BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION;
             }
+        }
+        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+        {
+            if ([title1 isEqualToString:@""])
+                title1 = BUTTON_TITLE_INPUT_ADDRESS;
+            else
+                title2 =BUTTON_TITLE_INPUT_ADDRESS;
         }
         if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
         {
@@ -889,6 +921,10 @@
         if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
         {
             buttonTitle = BUTTON_TITLE_INPUT_RESI;
+        }
+        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+        {
+            buttonTitle = BUTTON_TITLE_INPUT_ADDRESS;
         }
     }
     
@@ -999,6 +1035,8 @@
         return YES; //finish complain
     if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
         return YES; //finish complain
+    if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+        return YES; //finish complain
     
     return NO;
 }
@@ -1008,13 +1046,42 @@
     return conversation.isAddedConversation;
 }
 
--(BOOL)isShowOneButton:(ResolutionConversation*)conversation atIndexPath:(NSIndexPath*)indexPath
+//-(BOOL)isShowOneButton:(ResolutionConversation*)conversation atIndexPath:(NSIndexPath*)indexPath
+//{
+//    if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)||
+//        [self isShowRecievedSolutionButton:conversation]) {
+//        return YES;
+//    }
+//    return NO;
+//}
+
+-(NSInteger)countShowButton:(ResolutionConversation*)conversation atIndexPath:(NSIndexPath*)indexPath
 {
-    if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)||
-        [self isShowRecievedSolutionButton:conversation]) {
-        return YES;
+    int buttonCount = 0;
+    
+    if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)) {
+        return 1;
     }
-    return NO;
+
+    if (conversation.isAddedConversation) {
+        if([_resolutionDetail.resolution_last.last_show_accept_button integerValue] == 1)
+            buttonCount +=1;
+        
+        if([_resolutionDetail.resolution_last.last_show_appeal_button integerValue] == 1)
+        {
+            buttonCount +=1;
+            if([_resolutionDetail.resolution_last.last_show_accept_admin_button integerValue] == 1)
+                buttonCount +=1;
+        }
+        if([_resolutionDetail.resolution_last.last_show_finish_button integerValue] == 1)
+            buttonCount +=1;
+        if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
+            buttonCount +=1;
+        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+            buttonCount +=1;
+    }
+    
+    return buttonCount;
 }
 
 -(BOOL)isShowTwoButton:(ResolutionConversation*)conversation
@@ -1034,6 +1101,8 @@
         if([_resolutionDetail.resolution_last.last_show_finish_button integerValue] == 1)
             buttonCount +=1;
         if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
+            buttonCount +=1;
+        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
             buttonCount +=1;
     }
     
@@ -1148,6 +1217,10 @@
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_INPUT_RESI]) {
+        imageName = @"icon_edit_grey.png";
+    }
+    
+    if ([titleButton isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
         imageName = @"icon_edit_grey.png";
     }
     
@@ -1657,4 +1730,15 @@
     [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
 }
 
+
+-(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+    
+    NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+//    [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
+//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
+//    [_tableView reloadData];
+}
 @end

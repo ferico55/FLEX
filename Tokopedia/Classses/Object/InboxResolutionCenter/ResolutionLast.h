@@ -11,6 +11,7 @@
 @interface ResolutionLast : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSNumber *last_resolution_id;
+@property (nonatomic, strong) NSString *last_show_input_addr_button;
 @property (nonatomic, strong) NSNumber *last_action_by;
 @property (nonatomic, strong) NSNumber *last_show_appeal_button;
 @property (nonatomic, strong) NSNumber *last_show_finish_button;

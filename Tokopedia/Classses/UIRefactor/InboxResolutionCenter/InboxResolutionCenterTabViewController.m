@@ -89,7 +89,7 @@
     [self.view bringSubviewToFront:_readOption];
     
     _filterReadIndex = 0;
-    [self updateCheckList];
+    [self setTitleButtonString:ARRAY_FILTER_UNREAD[_filterReadIndex]];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -138,7 +138,6 @@
         direction = UIPageViewControllerNavigationDirectionForward;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:sender.selectedSegmentIndex]] direction:direction animated:YES completion:nil];
     _index = sender.selectedSegmentIndex;
-    [self updateCheckList];
     
     switch (sender.selectedSegmentIndex) {
         case 2:
@@ -150,48 +149,6 @@
             break;
     }
 
-}
-- (IBAction)tapButton:(UIButton*)sender {
-    
-    _filterReadIndex = sender.tag-10;
-    if(_readOption.isHidden) {
-        
-        _verticalSpaceButtons.constant = -131;
-        
-        CGRect frame = _buttonsContainer.frame;
-        frame.origin.y = -131;
-        _buttonsContainer.frame = frame;
-        
-        _readOption.hidden = NO;
-        _readOption.alpha = 0;
-        [UIView animateWithDuration:0.2 animations:^{
-            _readOption.alpha = 1;
-        }];
-        
-        _verticalSpaceButtons.constant = 0;
-        
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect frame = _buttonsContainer.frame;
-            frame.origin.y = 0;
-            _buttonsContainer.frame = frame;
-        }];
-    } else {
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-        _verticalSpaceButtons.constant = -131;
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            CGRect frame = _buttonsContainer.frame;
-            frame.origin.y = -131;
-            _buttonsContainer.frame = frame;
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.1 animations:^{
-                _readOption.alpha = 0;
-            } completion:^(BOOL finished) {
-                _readOption.hidden = YES;
-            }];
-        }];
-    }
-    [self updateCheckList];
 }
 
 -(IBAction)tapFilterRead:(id)sender
@@ -213,85 +170,6 @@
 {
     if (sender.tag == 10) {
         [self viewControllerAtIndex:_index];
-    }
-    if ( sender.tag == 11) {
-        if(_readOption.isHidden) {
-            
-            _verticalSpaceButtons.constant = -131;
-            
-            CGRect frame = _buttonsContainer.frame;
-            frame.origin.y = -131;
-            _buttonsContainer.frame = frame;
-            
-            _readOption.hidden = NO;
-            _readOption.alpha = 0;
-            [UIView animateWithDuration:0.2 animations:^{
-                _readOption.alpha = 1;
-            }];
-            
-            _verticalSpaceButtons.constant = 0;
-            
-            [UIView animateWithDuration:0.3 animations:^{
-                CGRect frame = _buttonsContainer.frame;
-                frame.origin.y = 0;
-                _buttonsContainer.frame = frame;
-            }];
-        } else {
-            [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-            _verticalSpaceButtons.constant = -131;
-            
-            [UIView animateWithDuration:0.2 animations:^{
-                CGRect frame = _buttonsContainer.frame;
-                frame.origin.y = -131;
-                _buttonsContainer.frame = frame;
-            } completion:^(BOOL finished) {
-                [UIView animateWithDuration:0.1 animations:^{
-                    _readOption.alpha = 0;
-                } completion:^(BOOL finished) {
-                    _readOption.hidden = YES;
-                }];
-            }];
-        }
-    }
-}
-- (IBAction)gesture:(id)sender {
-    if(_readOption.isHidden) {
-        
-        _verticalSpaceButtons.constant = -131;
-        
-        CGRect frame = _buttonsContainer.frame;
-        frame.origin.y = -131;
-        _buttonsContainer.frame = frame;
-        
-        _readOption.hidden = NO;
-        _readOption.alpha = 0;
-        [UIView animateWithDuration:0.2 animations:^{
-            _readOption.alpha = 1;
-        }];
-        
-        _verticalSpaceButtons.constant = 0;
-        
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect frame = _buttonsContainer.frame;
-            frame.origin.y = 0;
-            _buttonsContainer.frame = frame;
-        }];
-    } else {
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-        
-        _verticalSpaceButtons.constant = -131;
-        
-        [UIView animateWithDuration:0.2 animations:^{
-            CGRect frame = _buttonsContainer.frame;
-            frame.origin.y = -131;
-            _buttonsContainer.frame = frame;
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.1 animations:^{
-                _readOption.alpha = 0;
-            } completion:^(BOOL finished) {
-                _readOption.hidden = YES;
-            }];
-        }];
     }
 }
 
@@ -383,16 +261,6 @@
     return [self viewControllerAtIndex:index];
 }
 
--(void)updateCheckList
-{
-    for (UIImageView *image in _checkListImageViews) {
-        image.hidden = YES;
-    }
-    ((UIButton*)_checkListImageViews[_filterReadIndex]).hidden = NO;
-    [self setTitleButtonString:ARRAY_FILTER_UNREAD[_filterReadIndex]];
-
-}
-
 - (void)setTitleButtonString:(NSString*)string {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 10, 17);
@@ -433,8 +301,10 @@
 -(void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (buttonIndex >= 0) {
         _filterReadIndex = buttonIndex;
+        [self setTitleButtonString:ARRAY_FILTER_UNREAD[_filterReadIndex]];
     }
     _filter = nil;
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
 }
 
 @end

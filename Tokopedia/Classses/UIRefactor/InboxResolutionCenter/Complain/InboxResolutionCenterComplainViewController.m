@@ -86,6 +86,8 @@
     
     TAGContainer *_gtmContainer;
     NSArray *_arrayFilterUnread;
+    NSInteger _filterUnread;
+    NSInteger _filterStatus;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -93,6 +95,9 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutlet UIView *headerFilterDays;
+@property (strong, nonatomic) IBOutlet UILabel *labelFilterDaysCount;
+@property (strong, nonatomic) IBOutlet UILabel *labelPendingAmount;
 
 @end
 
@@ -109,6 +114,9 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManagerCancelComplain = [TokopediaNetworkManager new];
+    
+    _filterUnread = -1;
+    _filterStatus = -1;
     return self;
 }
 
@@ -142,10 +150,6 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshRequest)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
-    
-    if (_typeComplaint == TypeComplaintMine) {
-        _tableView.tableHeaderView = _headerView;
-    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didChangePreferredContentSize:)
@@ -238,6 +242,11 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
+- (IBAction)tapFilterDay:(id)sender {
+    _filterStatus = 3;
+    [_dataInput setObject:ARRAY_FILTER_PROCESS[1] forKey:DATA_FILTER_PROCESS_KEY];
+    [self refreshRequest];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -280,14 +289,15 @@
     }
     
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
-    cell.viewLabelUser.text = (_typeComplaint == resolution.resolution_by.by_customer==1)?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
+    cell.viewLabelUser.text = (resolution.resolution_by.by_customer==1)?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
     
-    if(resolution.resolution_by.by_customer == 1)
+    if(resolution.resolution_by.by_customer == 1){
         [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge_object.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
-    else {
+        [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
+    }else {
         if(resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"]) {
             [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
             [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
@@ -393,7 +403,7 @@
 -(void)goToShopOrProfileAtIndexPath:(NSIndexPath *)indexPath
 {
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    if (_typeComplaint == resolution.resolution_detail.resolution_by.by_customer)
+    if (resolution.resolution_detail.resolution_by.by_customer == 1)
     {
         //gotoshop
         [_navigate navigateToShopFromViewController:self withShopID:(resolution.resolution_detail.resolution_shop.shop_id)?:@""];
@@ -563,22 +573,25 @@
         NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
         
         NSString *status = @"";
-        NSString *unread = @"";
         NSString *sortType = @"";
         
-        if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[0]])
-            status = @"0";
-        else if([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[1]])
-            status = @"1";
-        else if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[2]])
-            status = @"2";
-        
-        if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
-            unread = @"0";
-        else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
-            unread = @"1";
-        else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[3]])
-            unread = @"2";
+        if (_filterStatus<0) {
+            if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[0]])
+                _filterStatus = 0;
+            else if([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[2]])
+                _filterStatus = 1;
+            else if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[3]])
+                _filterStatus = 2;
+        }
+
+        if (_filterUnread<0) {
+            if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
+                _filterUnread = 0;
+            else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[1]])
+                _filterUnread = 1;
+            else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
+                _filterUnread = 2;
+        }
         
         if ([filterSort isEqualToString:ARRAY_FILTER_SORT[0]])
             sortType = @"2";
@@ -587,8 +600,8 @@
         
         NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
                                 API_COMPLAIN_TYPE_KEY : @(_typeComplaint),
-                                API_STATUS_KEY : status,
-                                API_UNREAD_KEY : unread,
+                                API_STATUS_KEY : @(_filterStatus),
+                                API_UNREAD_KEY : @(_filterUnread),
                                 API_SORT_KEY :sortType,
                                 API_PAGE_KEY :@(_page)
                                 };
@@ -677,8 +690,13 @@
             if (_page == 1) {
                 [_list removeAllObjects];
             }
-            
             if (order.result.list.count >0) {
+                
+                if ([order.result.counter_days integerValue] > 0){
+                    [self adjustHeaderFilterDaysReso:order.result];
+                    _tableView.tableHeaderView = _headerFilterDays;
+                }
+                
                 [_list addObjectsFromArray:order.result.list];
                 _isNodata = NO;
                 _URINext =  order.result.paging.uri_next;
@@ -710,6 +728,8 @@
             }
             else
             {
+                _tableView.tableHeaderView = _headerView;
+                
                 if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Semua Status"]){
                     [_noResultView setNoResultTitle:@"Tidak ada komplain"];
                 }else if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Belum dibaca"]){
@@ -725,6 +745,25 @@
     }
     [_refreshControl endRefreshing];
     [_act stopAnimating];
+}
+
+-(void)adjustHeaderFilterDaysReso:(InboxResolutionCenterResult*)reso
+{
+    NSString *filterDaysString = [NSString stringWithFormat:@"Ada %@ komplain yang belum selesai lebih dari %@ hari", reso.counter_days, reso.pending_days];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:filterDaysString];
+    [string setColorForText:[NSString stringWithFormat:@"%@ komplain", reso.counter_days] withColor:COLOR_BLUE_DEFAULT withFont:FONT_GOTHAM_MEDIUM_11];
+    _labelFilterDaysCount.attributedText = string;
+    
+    _labelPendingAmount.text = [NSString stringWithFormat:@"Total dana berkendala Anda %@", reso.pending_amt.total_amt_idr];
+    string = [[NSMutableAttributedString alloc] initWithString:_labelPendingAmount.text];
+    [string setColorForText:reso.pending_amt.total_amt_idr withColor:COLOR_PENDING_AMOUNT withFont:FONT_GOTHAM_MEDIUM_11];
+    
+    _labelPendingAmount.attributedText = string;
+    
+    if ([reso.pending_amt.total_amt integerValue] == 0) {
+        [_headerFilterDays setFrame:CGRectMake(_headerFilterDays.frame.origin.x, _headerFilterDays.frame.origin.y, _headerFilterDays.frame.size.width, _headerFilterDays.frame.size.height - _labelPendingAmount.frame.size.height)];
+    }
 }
 
 -(void)requestSuccessCancelComplain:(id)successResult withOperation:(RKObjectRequestOperation *)operation

@@ -15,6 +15,8 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -22,7 +24,10 @@
             <connections>
                 <outlet property="act" destination="R0J-t9-MVo" id="sIX-kJ-sWl"/>
                 <outlet property="footer" destination="xCp-Pb-Bzx" id="ZLM-mg-24M"/>
+                <outlet property="headerFilterDays" destination="R6L-Ze-0GC" id="pD3-S0-S4y"/>
                 <outlet property="headerView" destination="R3a-kT-d1Y" id="uEI-Ea-mRZ"/>
+                <outlet property="labelFilterDaysCount" destination="MAq-eM-RId" id="Cl7-OP-KBm"/>
+                <outlet property="labelPendingAmount" destination="pbc-qs-rKQ" id="aJQ-BB-BZF"/>
                 <outlet property="tableView" destination="tF2-SW-y74" id="jtN-gF-tlU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -202,6 +207,7 @@
                     <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <state key="normal" title="Daftar Transaksi Pembelian">
+                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -231,6 +237,66 @@
             <color key="backgroundColor" red="1" green="1" blue="0.85902847782258063" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="440" y="-364.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="R6L-Ze-0GC" userLabel="Header Filter View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7do-PZ-caD">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ada 10 komplain yang belum selesai lebih dari 14 hari" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAq-eM-RId">
+                            <rect key="frame" x="15" y="0.0" width="295" height="35"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qeO-Lu-eWQ">
+                            <rect key="frame" x="39" y="0.0" width="91" height="35"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="91" id="NpY-CA-qcJ"/>
+                            </constraints>
+                            <connections>
+                                <action selector="tapFilterDay:" destination="-1" eventType="touchUpInside" id="4D1-6f-G11"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" red="1" green="1" blue="0.85902847780000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="1Qp-9n-Gry"/>
+                        <constraint firstItem="qeO-Lu-eWQ" firstAttribute="top" secondItem="7do-PZ-caD" secondAttribute="top" id="2VF-Z8-qi6"/>
+                        <constraint firstItem="MAq-eM-RId" firstAttribute="top" secondItem="7do-PZ-caD" secondAttribute="top" id="5pM-R5-dXp"/>
+                        <constraint firstAttribute="bottom" secondItem="MAq-eM-RId" secondAttribute="bottom" id="6GX-Pk-5vK"/>
+                        <constraint firstAttribute="trailing" secondItem="MAq-eM-RId" secondAttribute="trailing" constant="10" id="KrK-KA-K4e"/>
+                        <constraint firstItem="MAq-eM-RId" firstAttribute="leading" secondItem="7do-PZ-caD" secondAttribute="leading" constant="15" id="SNB-z6-s8y"/>
+                        <constraint firstItem="qeO-Lu-eWQ" firstAttribute="leading" secondItem="7do-PZ-caD" secondAttribute="leading" constant="39" id="VtD-dF-UPb"/>
+                        <constraint firstAttribute="bottom" secondItem="qeO-Lu-eWQ" secondAttribute="bottom" id="imL-da-PwP"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total dana berkendala anda Rp 1.000.000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbc-qs-rKQ">
+                    <rect key="frame" x="15" y="35" width="295" height="35"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="pbc-qs-rKQ" firstAttribute="top" secondItem="7do-PZ-caD" secondAttribute="bottom" id="3Xt-G8-0y3"/>
+                <constraint firstItem="7do-PZ-caD" firstAttribute="leading" secondItem="R6L-Ze-0GC" secondAttribute="leading" id="E3E-Oh-sx1"/>
+                <constraint firstAttribute="bottom" secondItem="pbc-qs-rKQ" secondAttribute="bottom" id="Paq-ne-ddx"/>
+                <constraint firstAttribute="trailing" secondItem="7do-PZ-caD" secondAttribute="trailing" id="Y00-zg-0tD"/>
+                <constraint firstItem="7do-PZ-caD" firstAttribute="top" secondItem="R6L-Ze-0GC" secondAttribute="top" id="hj0-ZR-CEA"/>
+                <constraint firstItem="pbc-qs-rKQ" firstAttribute="leading" secondItem="R6L-Ze-0GC" secondAttribute="leading" constant="15" id="jag-Yw-w5j"/>
+                <constraint firstAttribute="trailing" secondItem="pbc-qs-rKQ" secondAttribute="trailing" constant="10" id="vTe-lJ-V28"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="415" y="-224"/>
         </view>
     </objects>
     <resources>

@@ -60,6 +60,7 @@ enum emoticonTag
     #import "NSString+HTML.h"
     #import "NSStringAttribute.h"
     #import "UserAuthentificationManager.h"
+    #import "NSMutableAttributedString+TKPCategory.h"
 
     #import "StickyAlertView.h"
     #import "NoResultView.h"

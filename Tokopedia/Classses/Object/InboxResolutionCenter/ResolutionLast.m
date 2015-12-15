@@ -11,6 +11,7 @@
 
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"last_resolution_id",
+                      @"last_show_input_addr_button",
                       @"last_action_by",
                       @"last_show_appeal_button",
                       @"last_show_finish_button",

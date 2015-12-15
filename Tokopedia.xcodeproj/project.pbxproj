@@ -12,6 +12,8 @@
 		454A6B421C1EB26A004C66ED /* ReputationDetailCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B411C1EB26A004C66ED /* ReputationDetailCopy.m */; };
 		454A6B461C1EC954004C66ED /* AlertListFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 454A6B441C1EC954004C66ED /* AlertListFilterView.m */; };
 		454A6B471C1EC954004C66ED /* AlertListFilterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454A6B451C1EC954004C66ED /* AlertListFilterView.xib */; };
+		4557AF1C1C1FC94000F04FFA /* InboxResolutionPendingAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557AF1B1C1FC94000F04FFA /* InboxResolutionPendingAmount.m */; };
+		4557AF221C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557AF211C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m */; };
 		62DFACFA1C1688B300403863 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DFA0781C1688AB00403863 /* AppDelegate.m */; };
 		62DFB1D01C1688B400403863 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA0F1C1688AF00403863 /* InfoPlist.strings */; };
 		62DFB1D11C1688B400403863 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA111C1688AF00403863 /* GoogleService-Info.plist */; };
@@ -2023,6 +2025,10 @@
 		454A6B431C1EC954004C66ED /* AlertListFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertListFilterView.h; sourceTree = "<group>"; };
 		454A6B441C1EC954004C66ED /* AlertListFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertListFilterView.m; sourceTree = "<group>"; };
 		454A6B451C1EC954004C66ED /* AlertListFilterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertListFilterView.xib; sourceTree = "<group>"; };
+		4557AF1A1C1FC94000F04FFA /* InboxResolutionPendingAmount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionPendingAmount.h; sourceTree = "<group>"; };
+		4557AF1B1C1FC94000F04FFA /* InboxResolutionPendingAmount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionPendingAmount.m; sourceTree = "<group>"; };
+		4557AF201C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+TKPCategory.h"; sourceTree = "<group>"; };
+		4557AF211C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TKPCategory.m"; sourceTree = "<group>"; };
 		62DFA0771C1688AB00403863 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		62DFA0781C1688AB00403863 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		62DFAA101C1688AF00403863 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -5207,6 +5213,8 @@
 				921E903B1C1A6C0F00BA817F /* Utils */,
 				921E903E1C1A6C0F00BA817F /* ViewLabelUser.h */,
 				921E903F1C1A6C0F00BA817F /* ViewLabelUser.m */,
+				4557AF201C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.h */,
+				4557AF211C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -5764,6 +5772,8 @@
 				921E915F1C1A6C1000BA817F /* InboxResolutionCenterList.m */,
 				921E91601C1A6C1000BA817F /* InboxResolutionCenterResult.h */,
 				921E91611C1A6C1000BA817F /* InboxResolutionCenterResult.m */,
+				4557AF1A1C1FC94000F04FFA /* InboxResolutionPendingAmount.h */,
+				4557AF1B1C1FC94000F04FFA /* InboxResolutionPendingAmount.m */,
 				921E91621C1A6C1000BA817F /* ResolutionAttachment.h */,
 				921E91631C1A6C1000BA817F /* ResolutionAttachment.m */,
 				921E91641C1A6C1000BA817F /* ResolutionButton.h */,
@@ -11923,6 +11933,7 @@
 				921E9FAC1C1A6C1500BA817F /* MyShopShipmentTableViewController.m in Sources */,
 				921E9E371C1A6C1500BA817F /* TxOrderConfirmedDetailPayment.m in Sources */,
 				921E9D441C1A6C1500BA817F /* DetailTotalLikeDislike.m in Sources */,
+				4557AF221C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				921E9C951C1A6C1500BA817F /* TKPDSecureStorage.m in Sources */,
 				921EA1481C1A6C1500BA817F /* ProductTableViewCell.m in Sources */,
 				921EA0921C1A6C1500BA817F /* ShopDescriptionView.m in Sources */,
@@ -12516,6 +12527,7 @@
 				921E9DB31C1A6C1500BA817F /* SearchAWS.m in Sources */,
 				921EA00A1C1A6C1500BA817F /* ReputationDetailFormViewController.m in Sources */,
 				921E9FA11C1A6C1500BA817F /* MyShopEtalaseViewController.m in Sources */,
+				4557AF1C1C1FC94000F04FFA /* InboxResolutionPendingAmount.m in Sources */,
 				921E9DF61C1A6C1500BA817F /* TKPString.m in Sources */,
 				921E9CAE1C1A6C1500BA817F /* Register.m in Sources */,
 				921EA1321C1A6C1500BA817F /* ProfileBiodataShopCell.m in Sources */,
