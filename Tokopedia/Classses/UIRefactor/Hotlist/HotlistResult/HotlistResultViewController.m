@@ -163,6 +163,8 @@ HotlistBannerDelegate
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
 
+@property (nonatomic, strong) NSArray *hashtags;
+
 -(void)cancel;
 -(void)configureRestKit;
 -(void)request;
@@ -407,8 +409,7 @@ HotlistBannerDelegate
         // buttons tag >=20 are tags untuk hashtags
         if (button.tag >=20) {
             //TODO::
-            NSArray *hashtagsarray = _searchObject.result.hashtag;
-            Hashtags *hashtags = hashtagsarray[button.tag - 20];
+            Hashtags *hashtags = _hashtags[button.tag - 20];
             
             NSURL *url = [NSURL URLWithString:hashtags.url];
             NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
@@ -755,7 +756,10 @@ HotlistBannerDelegate
                     [_product removeAllObjects];
                     [_promo removeAllObjects];
                     [_firstFooter removeFromSuperview];
-                    [self setHashtags];
+                    if (_searchObject.result.hashtag) {
+                        _hashtags = _searchObject.result.hashtag;
+                        [self setHashtags];
+                    }
                     _shouldUseHashtag = NO;
                 }
 
@@ -912,21 +916,17 @@ HotlistBannerDelegate
         _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _bannerResult.info.hotlist_description?:@""]
                                                                            attributes:attributes];
     }
-    
-//    [self setHashtags];
 }
 
 -(void)setHashtags
 {
     _buttons = [NSMutableArray new];
     
-    NSArray *hashtags = _searchObject.result.hashtag;
-    
     CGFloat previousButtonWidth = 10;
     CGFloat totalWidth = 10;
     
-    for (int i = 0; i<hashtags.count; i++) {
-        Hashtags *hashtag = hashtags[i];
+    for (int i = 0; i<_hashtags.count; i++) {
+        Hashtags *hashtag = _hashtags[i];
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setTitle:[NSString stringWithFormat:@"#%@", hashtag.name] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor lightGrayColor]

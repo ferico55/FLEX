@@ -215,13 +215,13 @@
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
-	vc.hidesBottomBarWhenPushed = YES;
+	vc1.hidesBottomBarWhenPushed = YES;
     vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-	vc.hidesBottomBarWhenPushed = YES;
+	vc2.hidesBottomBarWhenPushed = YES;
     vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
