@@ -289,31 +289,23 @@
         isValid = NO;
         [messages addObject:@"Format email harus benar."];
     }
-//    else if (![email isEmail]) {
-//        isValid = NO;
-//        [messages addObject:@"Format email harus benar."];
-//    }
-//    else if (!email) {
-//        isValid = NO;
-//        [messages addObject:@"Email harus diisi."];
-//    }
-    
-    if ([predicate evaluateWithObject:phone]) {
-        if (phone.length > 0 && phone.length < 6) {
-            [messages addObject:@"Telepon terlalu pendek, minimum 6 karakter."];
-        }
-    } else {
+    else if (![predicate evaluateWithObject:phone]) {
+        isValid = NO;
         [messages addObject:@"Telepon harus berupa angka."];
     }
-    
-    if ([predicate evaluateWithObject:fax]) {
-        if (fax.length > 0 && fax.length < 6) {
-            [messages addObject:@"Fax terlalu pendek, minimum 6 karakter."];
-        }
-    } else {
+    else if (phone.length > 1 && phone.length < 6) {
+        isValid = NO;
+        [messages addObject:@"Telepon terlalu pendek, minimum 6 karakter."];
+    }
+    else if (![predicate evaluateWithObject:fax]) {
+        isValid = NO;
         [messages addObject:@"Fax harus berupa angka."];
     }
-
+    else if (fax.length > 1 && fax.length < 6) {
+        isValid = NO;
+        [messages addObject:@"Fax terlalu pendek, minimum 6 karakter."];
+    }
+    
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
