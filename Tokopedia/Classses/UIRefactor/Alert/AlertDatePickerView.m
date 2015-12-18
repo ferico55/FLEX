@@ -132,8 +132,7 @@
     //TODO::
     _type = [[_data objectForKey:kTKPDALERTVIEW_DATATYPEKEY]integerValue];
     switch (_type) {
-        case kTKPDALERT_DATAALERTTYPESHOPEDITKEY:
-        {
+        case kTKPDALERT_DATAALERTTYPESHOPEDITKEY: {
             NSDateComponents* deltaComps = [NSDateComponents new];
 
             if (_isSetMinimumDate) {
@@ -146,6 +145,29 @@
             NSDate* nextWeek = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
             [_datepicker setDate:_startDate ?: nextWeek];
            
+            break;
+        }
+        case kTKPDALERT_DATAALERTTYPEREGISTERKEY: {
+            if (_isSetMinimumDate) {
+                
+                NSCalendarUnit unit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
+                NSDateComponents *components = [[NSCalendar currentCalendar] components:unit fromDate:[NSDate date]];
+
+                NSInteger maximumYear = [components year] - 14;
+                NSInteger minimumYear = [components year] - 80;
+                
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"YYYY-MM-dd"];
+
+                NSString *maximum = [NSString stringWithFormat:@"%ld-12-31", maximumYear];
+                NSDate *maximumDate = [dateFormat dateFromString:maximum];
+
+                NSString *minimum = [NSString stringWithFormat:@"%ld-01-01", minimumYear];
+                NSDate *minimumDate = [dateFormat dateFromString:minimum];
+
+                [_datepicker setMaximumDate:maximumDate];
+                [_datepicker setMinimumDate:minimumDate];
+            }
             break;
         }
         default:

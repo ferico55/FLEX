@@ -552,6 +552,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     if (textField == _textfielddob) {
         // display datepicker
         AlertDatePickerView *v = [AlertDatePickerView newview];
+        v.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
         v.tag = 10;
         v.isSetMinimumDate = YES;
         v.delegate = self;
