@@ -179,7 +179,7 @@
     
     WebViewController *webViewController = [WebViewController new];
     webViewController.strTitle = @"Promo";
-    webViewController.strURL = @"http://tiket.tokopedia.com/kereta-api";
+    webViewController.strURL = banner.url;
     
     if(_delegate != nil) {
         [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];
