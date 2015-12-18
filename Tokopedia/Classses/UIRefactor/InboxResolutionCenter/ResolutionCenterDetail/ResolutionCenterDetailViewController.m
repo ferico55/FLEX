@@ -31,15 +31,19 @@
 #import "RequestResolutionCenter.h"
 
 #import "SettingAddressViewController.h"
+#import "SettingAddressEditViewController.h"
+
 #import "profile.h"
 #import "string_settings.h"
 #import "AddressFormList.h"
+#import "RequestResoInputAddress.h"
 
 #define TAG_ALERT_CANCEL_COMPLAIN 10
 #define TAG_CHANGE_SOLUTION 11
 #define DATA_SELECTED_SHIPMENT_KEY @"data_selected_shipment"
 
 #define BUTTON_TITLE_ACCEPT_SOLUTION  @"Terima Solusi"
+#define BUTTON_TITLE_EDIT_ADDRESS  @"Ubah Alamat"
 #define BUTTON_TITLE_APPEAL  @"Naik Banding"
 #define BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION @"Terima Solusi Admin"
 #define BUTTON_TITLE_INPUT_ADDRESS @"Masukkan Alamat"
@@ -67,7 +71,9 @@
     TokopediaNetworkManagerDelegate,
     RequestResolutionCenterDelegate,
     UISplitViewControllerDelegate,
-    SettingAddressViewControllerDelegate
+    SettingAddressViewControllerDelegate,
+    SettingAddressEditViewControllerDelegate,
+    addressDelegate
 >
 {
     BOOL _isNodata;
@@ -103,6 +109,7 @@
     
     GeneratedHost *_generatedHost;
     AddressFormList *_selectedAddress;
+    RequestResoInputAddress *_requestInputAddress;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -134,6 +141,8 @@
     _listResolutionConversation = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
     _navigate = [NavigateViewController new];
+    _requestInputAddress = [RequestResoInputAddress new];
+    _requestInputAddress.delegate = self;
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
@@ -433,29 +442,12 @@
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
-//        if ([address.receiver_name isEqualToString:@"0"]||!address.receiver_name) {
-//            SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-//            vc.data = @{kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ATC)
-//                        };
-//            vc.delegate = self;
-//            
-//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//            nav.navigationBar.translucent = NO;
-//            
-//            [self.navigationController presentViewController:nav animated:YES completion:nil];
-//        }
-//        else
-//        {
-//            AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-            SettingAddressViewController *addressViewController = [SettingAddressViewController new];
-            addressViewController.delegate = self;
-//            NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-//                                           DATA_INDEXPATH_KEY: selectedIndexPath,
-//                                           DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]
-                                           };
-            [self.navigationController pushViewController:addressViewController animated:YES];
-//        }
+        SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+        addressViewController.delegate = self;
+        addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ADD_RESO),
+                                       @"conversation" : conversation
+                                       };
+        [self.navigationController pushViewController:addressViewController animated:YES];
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
@@ -463,6 +455,14 @@
         [self requestAction:ACTION_ACCEPT_ADMIN_SOLUTION];
     }
     
+    if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
+        SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+        addressViewController.delegate = self;
+        addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_EDIT_RESO),
+                                       @"conversation":conversation
+                                       };
+        [self.navigationController pushViewController:addressViewController animated:YES];
+    }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
         [self configureRestKitAction];
         [self requestAction:ACTION_ACCEPT_SOLUTION];
@@ -671,6 +671,12 @@
     }
     [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
     
+    if([conversation.show_edit_addr_button integerValue] != 1 && conversation.address)
+    {
+        cell.markLabel.textColor = COLOR_STATUS_DONE;
+    }
+    else
+        cell.markLabel.textColor = [UIColor blackColor];
     cell.markLabel.text = [NSString convertHTML:[self markConversation:conversation]];
     
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
@@ -698,7 +704,7 @@
     else {
         cell.oneButtonConstraintHeight.constant = 44;
         cell.twoButtonConstraintHeight.constant = 44;
-        if ([self isShowTwoButton:conversation])
+        if ([self countShowButton:conversation atIndexPath:indexPath] == 2)
         {
             cell.twoButtonView.hidden = NO;
             [self adjustTwoButtonsTitleConversation:conversation cell:cell];
@@ -751,6 +757,7 @@
     NSString *sinceDateString = [NSString timeLeftSinceDate:createDate];
     cell.timeRemainingLabel.text = sinceDateString;
     cell.markLabel.text = [NSString convertHTML:[self markConversation:conversation]];
+
     [cell.btnReputation setTitle:_resolutionDetail.resolution_customer.customer_reputation.positive_percentage forState:UIControlStateNormal];
     
     [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
@@ -784,7 +791,7 @@
         cell.atachmentView.hidden = NO;
         cell.isShowAttachment = YES;
     }
-    if ([self isShowTwoButton:conversation])
+    if ([self countShowButton:conversation atIndexPath:indexPath] == 2)
     {
         cell.twoButtonView.hidden = NO;
     }
@@ -903,6 +910,10 @@
 -(void)adjustOneButtonTitleConversation:(ResolutionConversation*)conversation cell:(ResolutionCenterSystemCell*)cell
 {
     NSString *buttonTitle = @"";
+    
+    if ([conversation.show_edit_addr_button integerValue]==1) {
+        buttonTitle = BUTTON_TITLE_EDIT_ADDRESS;
+    }
     
     if (conversation.isAddedConversation)
     {
@@ -1034,9 +1045,9 @@
     if([_resolutionDetail.resolution_last.last_show_finish_button integerValue] == 1)
         return YES; //finish complain
     if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
-        return YES; //finish complain
+        return YES; //input resi
     if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
-        return YES; //finish complain
+        return YES; //input address
     
     return NO;
 }
@@ -1046,21 +1057,15 @@
     return conversation.isAddedConversation;
 }
 
-//-(BOOL)isShowOneButton:(ResolutionConversation*)conversation atIndexPath:(NSIndexPath*)indexPath
-//{
-//    if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)||
-//        [self isShowRecievedSolutionButton:conversation]) {
-//        return YES;
-//    }
-//    return NO;
-//}
-
 -(NSInteger)countShowButton:(ResolutionConversation*)conversation atIndexPath:(NSIndexPath*)indexPath
 {
     int buttonCount = 0;
     
     if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)) {
-        return 1;
+       return 1;
+    }
+    if ([conversation.show_edit_addr_button integerValue]==1) {
+        buttonCount +=1;
     }
 
     if (conversation.isAddedConversation) {
@@ -1082,36 +1087,6 @@
     }
     
     return buttonCount;
-}
-
--(BOOL)isShowTwoButton:(ResolutionConversation*)conversation
-{
-    int buttonCount = 0;
-
-    if (conversation.isAddedConversation) {
-        if([_resolutionDetail.resolution_last.last_show_accept_button integerValue] == 1)
-            buttonCount +=1;
-        
-        if([_resolutionDetail.resolution_last.last_show_appeal_button integerValue] == 1)
-        {
-            buttonCount +=1;
-            if([_resolutionDetail.resolution_last.last_show_accept_admin_button integerValue] == 1)
-                buttonCount +=1;
-        }
-        if([_resolutionDetail.resolution_last.last_show_finish_button integerValue] == 1)
-            buttonCount +=1;
-        if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
-            buttonCount +=1;
-        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
-            buttonCount +=1;
-    }
-    
-    if ([self isShowTrackAndEditButton:conversation]||
-        (buttonCount>=2)) {
-        return YES;
-    }
-    
-    return NO;
 }
 
 -(void)refreshRequest
@@ -1136,6 +1111,13 @@
     }
     
     NSString *markString = [[marks valueForKey:@"description"] componentsJoinedByString:@"\n"];
+    NSCharacterSet *whitespaces = [NSCharacterSet whitespaceCharacterSet];
+    NSPredicate *noEmptyStrings = [NSPredicate predicateWithFormat:@"SELF != ''"];
+    
+    NSArray *parts = [markString componentsSeparatedByCharactersInSet:whitespaces];
+    NSArray *filteredArray = [parts filteredArrayUsingPredicate:noEmptyStrings];
+    markString = [filteredArray componentsJoinedByString:@" "];
+
     return markString;
 }
 
@@ -1226,6 +1208,9 @@
     
     if ([titleButton isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
         imageName = @"icon_order_check-01.png";
+    }
+    if ([titleButton isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
+        imageName = @"icon_edit_grey.png";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
@@ -1501,12 +1486,12 @@
             
             [self refreshRequest];
             
-            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
-                [action isEqualToString:ACTION_ACCEPT_SOLUTION] ||
-                [action isEqualToString:ACTION_ACCEPT_ADMIN_SOLUTION] ) {
-                [_delegate finishComplain:_resolution atIndexPath:_indexPath];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
+//            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
+//                [action isEqualToString:ACTION_ACCEPT_SOLUTION] ||
+//                [action isEqualToString:ACTION_ACCEPT_ADMIN_SOLUTION] ) {
+//                [_delegate finishComplain:_resolution atIndexPath:_indexPath];
+//                [self.navigationController popViewControllerAnimated:YES];
+//            }
         }
         else
         {
@@ -1733,12 +1718,51 @@
 
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
+    BOOL isEditAddress = ([[viewController.data objectForKey:@"type"] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT_RESO);
+
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+    ResolutionConversation *conversation = viewController.data[@"conversation"];
+
+    if (address.address_id == 0) {
+        address.address_id = address.addr_id;
+    }
+
+    if (conversation.address.address_id == 0) {
+        conversation.address.address_id = conversation.address.addr_id;
+    }
     
-    NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-//    [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
-//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
-//    [_tableView reloadData];
+    NSString *oldDataID = @"";
+    if (isEditAddress) {
+        oldDataID = [NSString stringWithFormat:@"%ld-%@",conversation.address.address_id, conversation.conversation_id];
+    }
+    _selectedAddress = address;
+    NSString *action = @"";
+    if (isEditAddress) {
+        action = @"edit_address_resolution";
+    }
+    else
+        action = @"input_address_resolution";
+    
+    [_requestInputAddress setParamInputAddress:_selectedAddress
+                                  resolutionID:[_resolutionDetail.resolution_last.last_resolution_id stringValue]
+                                     oldDataID:oldDataID
+                                 isEditAddress:isEditAddress
+                                        action:action];
+    
+    [_requestInputAddress doRequest];
 }
+
+-(void)successAddress:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil mengubah alamat"] delegate:self];
+    [alert show];
+    [self refreshRequest];
+}
+
+-(void)failedAddress:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
+    [alert show];
+}
+
 @end

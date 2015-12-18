@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ResolutionAttachment.h"
+#import "AddressFormList.h"
 
 @interface ResolutionConversation : NSObject <TKPObjectMapping>
 
@@ -36,9 +37,12 @@
 @property (nonatomic) NSInteger action_by;
 @property (nonatomic) NSInteger solution_flag;
 @property (nonatomic) NSInteger system_flag;
-    
+@property (nonatomic, strong) NSString *address_edited;
+@property (nonatomic, strong) NSString *show_edit_addr_button;
 @property (nonatomic, strong) NSString *left_count;
 @property (nonatomic) NSInteger view_more;
+
+@property (nonatomic, strong) AddressFormList *address;
 
 @property (nonatomic) BOOL isAddedConversation;
 

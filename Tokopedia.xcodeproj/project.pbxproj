@@ -14,6 +14,7 @@
 		454A6B471C1EC954004C66ED /* AlertListFilterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454A6B451C1EC954004C66ED /* AlertListFilterView.xib */; };
 		4557AF1C1C1FC94000F04FFA /* InboxResolutionPendingAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557AF1B1C1FC94000F04FFA /* InboxResolutionPendingAmount.m */; };
 		4557AF221C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4557AF211C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m */; };
+		45AF9E1D1C2177A8006216F9 /* RequestResoInputAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AF9E1C1C2177A8006216F9 /* RequestResoInputAddress.m */; };
 		62DFACFA1C1688B300403863 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DFA0781C1688AB00403863 /* AppDelegate.m */; };
 		62DFB1D01C1688B400403863 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA0F1C1688AF00403863 /* InfoPlist.strings */; };
 		62DFB1D11C1688B400403863 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA111C1688AF00403863 /* GoogleService-Info.plist */; };
@@ -2029,6 +2030,8 @@
 		4557AF1B1C1FC94000F04FFA /* InboxResolutionPendingAmount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionPendingAmount.m; sourceTree = "<group>"; };
 		4557AF201C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+TKPCategory.h"; sourceTree = "<group>"; };
 		4557AF211C1FD12A00F04FFA /* NSMutableAttributedString+TKPCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TKPCategory.m"; sourceTree = "<group>"; };
+		45AF9E1B1C2177A8006216F9 /* RequestResoInputAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RequestResoInputAddress.h; path = Tokopedia/Classses/UIRefactor/InboxResolutionCenter/RequestResoInputAddress.h; sourceTree = SOURCE_ROOT; };
+		45AF9E1C1C2177A8006216F9 /* RequestResoInputAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RequestResoInputAddress.m; path = Tokopedia/Classses/UIRefactor/InboxResolutionCenter/RequestResoInputAddress.m; sourceTree = SOURCE_ROOT; };
 		62DFA0771C1688AB00403863 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		62DFA0781C1688AB00403863 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		62DFAA101C1688AF00403863 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -7851,6 +7854,8 @@
 		921E960F1C1A6C1100BA817F /* InboxResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				45AF9E1B1C2177A8006216F9 /* RequestResoInputAddress.h */,
+				45AF9E1C1C2177A8006216F9 /* RequestResoInputAddress.m */,
 				921E96101C1A6C1100BA817F /* Complain */,
 				921E961A1C1A6C1100BA817F /* InboxResolSplitViewController.h */,
 				921E961B1C1A6C1100BA817F /* InboxResolSplitViewController.m */,
@@ -12026,6 +12031,7 @@
 				921E9D771C1A6C1500BA817F /* ProfileEdit.m in Sources */,
 				921E9E6B1C1A6C1500BA817F /* AddressCell.m in Sources */,
 				921EA1591C1A6C1500BA817F /* VTToken.m in Sources */,
+				45AF9E1D1C2177A8006216F9 /* RequestResoInputAddress.m in Sources */,
 				921E9F1C1C1A6C1500BA817F /* GeneralProductCell.m in Sources */,
 				921E9CB21C1A6C1500BA817F /* AddressObj.m in Sources */,
 				921E9E931C1A6C1500BA817F /* BannerCollectionReusableView.m in Sources */,

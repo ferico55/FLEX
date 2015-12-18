@@ -23,4 +23,38 @@
 }
 
 
+// MARK: TKPRootObjectMapping methods
++ (NSDictionary *)attributeMappingDictionary {
+    NSArray *keys = @[@"country_name",
+                      @"receiver_name",
+                      @"address_name",
+                      @"address_id",
+                      @"receiver_phone",
+                      @"province_name",
+                      @"postal_code",
+                      @"address_status",
+                      @"address_street",
+                      @"district_name",
+                      @"province_id",
+                      @"city_id",
+                      @"district_id",
+                      @"city_name",
+                      @"address_country",
+                      @"address_postal",
+                      @"address_district",
+                      @"address_city",
+                      @"address_province",
+                      @"addr_id",
+                      @"addr_name"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
+
 @end

@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AddressFormList : NSObject
+@interface AddressFormList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *country_name;
 @property (nonatomic, strong) NSString *receiver_name;
 @property (nonatomic, strong) NSString *address_name;
+@property (nonatomic, strong) NSString *addr_name;
 @property (nonatomic) NSInteger address_id;
+@property (nonatomic) NSInteger addr_id;
 @property (nonatomic, strong) NSString *receiver_phone;
 @property (nonatomic, strong) NSString *province_name;
 @property (nonatomic, strong) NSString *postal_code;
@@ -29,5 +31,6 @@
 @property (nonatomic, strong) NSString *address_district;
 @property (nonatomic, strong) NSString *address_city;
 @property (nonatomic, strong) NSString *address_province;
+@property (nonatomic) NSInteger address;
 
 @end

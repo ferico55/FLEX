@@ -267,33 +267,20 @@
     [button addTarget:self action:@selector(tapFilterRead:) forControlEvents:UIControlEventTouchUpInside];
     button.tag = 11;
     
-    NSString *title = [NSString stringWithFormat:@"%@",string];
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.bounds = CGRectMake(0, 0, 10, 10);
+    attachment.image = [UIImage imageNamed:@"icon_triangle_down_white.png"];
     
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
-    [attributedText addAttribute:NSFontAttributeName
-                           value:[UIFont fontWithName:@"Gotham Medium" size:15.0]
-                           range:NSMakeRange(0, [string length])];
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
     button.titleLabel.numberOfLines = 2;
-    button.titleLabel.font = [UIFont systemFontOfSize: 11.0f];
+    button.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:15.0];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.textColor = [UIColor whiteColor];
-    [button setAttributedTitle:attributedText forState:UIControlStateNormal];
-    UIImage *arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
+
+    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ",string]];
+    [myString appendAttributedString:attachmentString];
     
-    CGRect rect = CGRectMake(0,0,10,7);
-    UIGraphicsBeginImageContext( rect.size );
-    [arrowImage drawInRect:rect];
-    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    NSData *imageData = UIImagePNGRepresentation(picture1);
-    UIImage *img=[UIImage imageWithData:imageData];
-    
-    [button setImage:img forState:UIControlStateNormal];
-    
-    
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -10);
+    [button setAttributedTitle:myString forState:UIControlStateNormal];
     
     self.navigationItem.titleView = button;
 }

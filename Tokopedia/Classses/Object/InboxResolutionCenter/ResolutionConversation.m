@@ -40,7 +40,9 @@
                       @"system_flag",
                       @"left_count",
                       @"view_more",
-                      @"isAddedConversation"];
+                      @"isAddedConversation",
+                      @"address_edited",
+                      @"show_edit_addr_button"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
@@ -49,6 +51,9 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     RKRelationshipMapping *conversationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"attachment" toKeyPath:@"attachment" withMapping:[ResolutionAttachment mapping]];
     [mapping addPropertyMapping:conversationMapping];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"address" toKeyPath:@"address" withMapping:[AddressFormList mapping]]];
+    
     return mapping;
 }
 

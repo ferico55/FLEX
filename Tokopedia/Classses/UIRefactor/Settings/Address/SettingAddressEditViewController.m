@@ -112,8 +112,8 @@
     
     [self setDefaultData:_data];
     
-    _viewpassword.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
-    _textfieldpass.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
+    _viewpassword.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?YES:NO;
+    _textfieldpass.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC|| _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?YES:NO;
     [_table reloadData];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -282,7 +282,7 @@
             case 11: {
                 //submit
                 if ([self isValidInput]) {
-                    if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
+                    if (_type == TYPE_ADD_EDIT_PROFILE_ATC|| _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO|| _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO) {
 
                         NSString *receivernName = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:@"";
                         NSString *addressName = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:@"";
@@ -308,6 +308,8 @@
                         detailAddress.province_id = provinceID;
                         detailAddress.province_name = provName;
                         detailAddress.receiver_phone = phone;
+                        detailAddress.address = -1;
+                        detailAddress.address_id = -1;
                         
                         NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
                         
@@ -482,9 +484,11 @@
         switch (_type) {
             case TYPE_ADD_EDIT_PROFILE_ATC:
             case TYPE_ADD_EDIT_PROFILE_ADD_NEW:
+            case TYPE_ADD_EDIT_PROFILE_ADD_RESO:
                 self.title = TITLE_NEW_ADDRESS;
                 break;
             case TYPE_ADD_EDIT_PROFILE_EDIT:
+            case TYPE_ADD_EDIT_PROFILE_EDIT_RESO:
                 self.title = TITLE_EDIT_ADDRESS;
                 break;
             default:
@@ -806,7 +810,7 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger sectionCount = 0;
-    sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?3:4;
+    sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC||_type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?3:4;
     return sectionCount;
 }
 

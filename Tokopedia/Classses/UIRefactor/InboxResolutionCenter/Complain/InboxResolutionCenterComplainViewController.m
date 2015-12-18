@@ -86,6 +86,7 @@
     
     TAGContainer *_gtmContainer;
     NSArray *_arrayFilterUnread;
+    NSMutableArray *_arrayFilterProcess;
     NSInteger _filterUnread;
     NSInteger _filterStatus;
 }
@@ -166,6 +167,9 @@
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
+    
+    _arrayFilterProcess = [NSMutableArray new];
+    [_arrayFilterProcess addObjectsFromArray:ARRAY_FILTER_PROCESS];
 }
 
 -(TAGContainer *)gtmContainer
@@ -222,8 +226,8 @@
         controller.title = @"Filter";
         controller.delegate = self;
         controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-        controller.objects = ARRAY_FILTER_PROCESS;
-        controller.selectedObject = filterProcess?:ARRAY_FILTER_PROCESS[0];
+        controller.objects = _arrayFilterProcess;
+        controller.selectedObject = filterProcess?:_arrayFilterProcess[0];
         [self.navigationController pushViewController:controller animated:YES];
     }
     
@@ -244,7 +248,7 @@
 }
 - (IBAction)tapFilterDay:(id)sender {
     _filterStatus = 3;
-    [_dataInput setObject:ARRAY_FILTER_PROCESS[1] forKey:DATA_FILTER_PROCESS_KEY];
+    [_dataInput setObject:_arrayFilterProcess[1] forKey:DATA_FILTER_PROCESS_KEY];
     [self refreshRequest];
 }
 
@@ -576,19 +580,21 @@
         NSString *sortType = @"";
         
         if (_filterStatus<0) {
-            if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[0]])
+            if ([filterProcess isEqualToString:_arrayFilterProcess[0]])
                 _filterStatus = 0;
-            else if([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[2]])
+            else if([filterProcess isEqualToString:_arrayFilterProcess[2]])
                 _filterStatus = 1;
-            else if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[3]])
+            else if ([filterProcess isEqualToString:_arrayFilterProcess[3]])
                 _filterStatus = 2;
+            else if ([filterProcess isEqualToString:_arrayFilterProcess[1]])
+                _filterStatus = 3;
         }
 
         if (_filterUnread<0) {
             if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
                 _filterUnread = 0;
             else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[1]])
-                _filterUnread = 1;
+                _filterUnread = 3;
             else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
                 _filterUnread = 2;
         }
@@ -687,6 +693,7 @@
             [alert show];
         }
         else{
+            [_arrayFilterProcess replaceObjectAtIndex:1 withObject:[NSString stringWithFormat:@"Komplain > %@ hari",order.result.pending_days]];
             if (_page == 1) {
                 [_list removeAllObjects];
             }
