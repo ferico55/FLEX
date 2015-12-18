@@ -775,6 +775,8 @@
                         vc.token = _cartSummary.token;
                         vc.cartDetail = _cartSummary;
                         vc.delegate = self;
+                        vc.paymentID = _cartSummary.payment_id;
+                        
                         UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
                         navigationController.navigationBar.translucent = NO;
@@ -1269,32 +1271,7 @@
 #pragma mark - Cell Delegate
 -(void)tapMoreButtonActionAtIndexPath:(NSIndexPath*)indexPath
 {
-    TransactionCartList *list = _list[indexPath.section];
-    NSInteger indexProduct = indexPath.row;
-    NSArray *listProducts = list.cart_products;
-    ProductDetail *product = listProducts[indexProduct];
-    
-    if ([product.product_error_msg isEqualToString:@""] ||
-        [product.product_error_msg isEqualToString:@"0"] ||
-        product.product_error_msg == nil ||
-        [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
-        UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
-                                @"Hapus",
-                                @"Edit",
-                                nil];
-        popup.tag = 1;
-        [popup showInView:[UIApplication sharedApplication].keyWindow];
-        [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
-    }
-    else
-    {
-        UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:nil otherButtonTitles:
-                                @"Hapus",
-                                nil];
-        popup.tag = 1;
-        [popup showInView:[UIApplication sharedApplication].keyWindow];
-        [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
-    }
+    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
 }
 
 -(void)GeneralSwitchCell:(GeneralSwitchCell *)cell withIndexPath:(NSIndexPath *)indexPath
@@ -2273,6 +2250,7 @@
     [(TransactionCartCell*)cell setCartViewModel:list.viewModel];
     [(TransactionCartCell*)cell setViewModel:product.viewModel];
     ((TransactionCartCell*)cell).userInteractionEnabled = (_indexPage ==0);
+    cell.actionSheetDelegate = self;
     return cell;
 }
 
@@ -3037,6 +3015,8 @@
             vc.cartDetail = _cartSummary;
             vc.emoney_code = cart.result.transaction.emoney_code;
             vc.delegate = self;
+            vc.paymentID = cart.result.transaction.payment_id;
+            
             UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
             navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
             navigationController.navigationBar.translucent = NO;

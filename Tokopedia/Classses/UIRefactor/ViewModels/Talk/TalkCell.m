@@ -30,24 +30,46 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     RequestReportTalk
 };
 
+@interface TalkCell ()
+
+@property (strong, nonatomic) NSDictionary *messageAttribute;
+
+@end
+
 @implementation TalkCell
+{
+    BOOL _isFollowingTalk;
+    IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
+}
 
 #pragma mark - Initialization
+
 - (void)awakeFromNib {
     // Initialization code
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    _messageAttribute = @{
+        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+        NSParagraphStyleAttributeName  : style,
+    };
+    
     _userManager = [UserAuthentificationManager new];
     _myShopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     _myUserID = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
     _navigateController = [NavigateViewController new];
     _isSplitScreen = NO;
     
+    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
+    
     UITapGestureRecognizer *productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToProduct)];
     [self.productImageView addGestureRecognizer:productGesture];
-    [self.productImageView setUserInteractionEnabled:YES];
+    [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
     
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToUser)];
     [self.userImageView addGestureRecognizer:userGesture];
-    [self.userImageView setUserInteractionEnabled:YES];
+    [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
     
     UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
     [self.middleView addGestureRecognizer:talkGesture];
@@ -65,30 +87,25 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
-    [self.messageLabel setText:modelView.talkMessage];
+    
+    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:modelView.talkMessage attributes:_messageAttribute];
     [self.createTimeLabel setText:modelView.createTime];
     [self.totalCommentButton setTitle:[NSString stringWithFormat:@"%@ Komentar", modelView.totalComment] forState:UIControlStateNormal];
     
-    if(![modelView.talkOwnerStatus isEqualToString:@"1"] && [_userManager isLogin]) {
+    if([modelView.talkOwnerStatus isEqualToString:@"0"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
-        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
-        CGRect newFrame = self.totalCommentButton.frame;
-        newFrame.origin.x = 0;
-        self.totalCommentButton.frame = newFrame;
 
+        commentButtonTrailingToVerticalBorder.priority = 750;
         self.divider.hidden = NO;
+        [self layoutIfNeeded];
     } else {
         [self.unfollowButton setHidden:YES];
-        [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:YES];
-        
-        CGRect newFrame = self.totalCommentButton.frame;
-        newFrame.origin.x = [_delegate getTable].frame.size.width/320 * 75;
-        self.totalCommentButton.frame = newFrame;
 
+        commentButtonTrailingToVerticalBorder.priority = 600;
         self.divider.hidden = YES;
+        [self layoutIfNeeded];
     }
-    
+
     [self setTalkFollowStatus:[modelView.followStatus isEqualToString:@"1"] ? YES : NO];
     
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:modelView.userImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -112,19 +129,17 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.userButton setText:modelView.userName];
     [self.unreadImageView setHidden:[modelView.readStatus isEqualToString:@"1"] ? NO : YES];
     
-    if(modelView.userReputation.no_reputation!=nil && [modelView.userReputation.no_reputation isEqualToString:@"1"]) {
+    if(modelView.userReputation.no_reputation != nil && [modelView.userReputation.no_reputation isEqualToString:@"1"]) {
         [self.reputationButton setTitle:@"" forState:UIControlStateNormal];
         [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-    else {
+    } else {
         [self.reputationButton setTitle:[NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage==nil? @"0":modelView.userReputation.positive_percentage] forState:UIControlStateNormal];
         [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
     }
-
 }
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
-    _talkFollowStatus = talkFollowStatus;
+    _isFollowingTalk = talkFollowStatus;
     if (talkFollowStatus) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
@@ -142,7 +157,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     NSInteger row = indexPath.row;
     NSMutableArray *talkList = [_delegate getTalkList];
     TalkList *list = talkList[row];
-    
+
     NSDictionary *data = @{
                            TKPD_TALK_MESSAGE:list.talk_message?:@0,
                            TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
@@ -158,7 +173,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                            TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
                            TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
                            TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
-                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0
+                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
                            };
     
     NSDictionary *userinfo;
@@ -382,11 +397,23 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             [table endUpdates];
         } else {
             NSArray *successMessages = [[NSMutableArray alloc] init];
-            if(tag == RequestDeleteTalk) {
-                successMessages = @[@"Anda berhasil menghapus diskusi ini."];
-            } else {
-                successMessages = @[@"Anda berhasil (batal) mengikuti diskusi ini."];
-            }
+            _isFollowingTalk = !_isFollowingTalk;
+            
+
+			if (tag == RequestDeleteTalk) {
+				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
+
+                NSDictionary *userInfo = @{@"index" : @(_unfollowIndexPath.row)};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
+                                                                    object:nil
+                                                                  userInfo:userInfo];
+			} else {
+            	if(_isFollowingTalk) {
+                	successMessages = @[@"Anda berhasil mengikuti diskusi ini."];
+	            } else {
+    	            successMessages = @[@"Anda batal mengikuti diskusi ini."];
+        	    }
+			}
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];
         }
@@ -430,9 +457,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         NSInteger row = [_deleteIndexPath row];
         NSMutableArray *talkList = [_delegate getTalkList];
         _deleteTalk = talkList[row];
-        
-        NSDictionary *userInfo = @{@"index" : @(row)};
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk" object:nil userInfo:userInfo];
         
         _deleteNetworkManager = [TokopediaNetworkManager new];
         _deleteNetworkManager.delegate = self;

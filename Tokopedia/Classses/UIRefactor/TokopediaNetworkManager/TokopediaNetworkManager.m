@@ -57,11 +57,16 @@
         requestObject = [_delegate getRequestObject:self.tagRequest];
     }
     
+    RKRequestMethod requestMethod = RKRequestMethodPOST;
+    if (_delegate && [_delegate respondsToSelector:@selector(getRequestMethod:)]) {
+        requestMethod = [_delegate getRequestMethod:self.tagRequest];
+    }
+    
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
-        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:[_delegate getRequestMethod:nil]] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
@@ -73,9 +78,8 @@
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         
-        
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
-                                                                              method:[_delegate getRequestMethod:self.tagRequest]
+                                                                              method:requestMethod
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:[[_delegate getParameter:self.tagRequest] autoParameters]];
     } else {
@@ -86,7 +90,7 @@
             parameters = [[_delegate getParameter:self.tagRequest] encrypt];
         }
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
-                                                                              method:RKRequestMethodPOST
+                                                                              method:requestMethod
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:parameters];
         
@@ -97,12 +101,14 @@
     [_requestTimer invalidate];
     _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Response string : %@", operation.HTTPRequestOperation.responseString);
         [self requestSuccess:mappingResult  withOperation:operation];
         [_requestTimer invalidate];
-        _requestTimer = nil;
+        _requestTimer = nil; 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
 //        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
+
         [self requestFail:error];
     }];
     
@@ -236,5 +242,7 @@
 - (void)resetRequestCount {
     _requestCount = 0;
 }
+
+
 
 @end

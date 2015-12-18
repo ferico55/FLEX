@@ -69,6 +69,8 @@ TKPDAlertViewDelegate
     
     _verifyButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
     _skipButton.titleLabel.font = [UIFont fontWithName:@"Gotham Medium" size:14];
+    _verifyButton.enabled = NO;
+    [_verifyButton setBackgroundColor:[UIColor grayColor]];
     
     self.verifyButton.layer.cornerRadius = 2;
     if(_isSkipButtonHidden){
@@ -164,6 +166,11 @@ TKPDAlertViewDelegate
 }
 
 - (int)getRequestMethod:(int)tag {
+    if(tag == RequestPhoneNumber){
+        return RKRequestMethodPOST;
+    }else if(tag == RequestOTP){
+        return RKRequestMethodGET;
+    }
     return RKRequestMethodPOST;
 }
 
@@ -245,6 +252,8 @@ TKPDAlertViewDelegate
                                [sPhone substringWithRange:NSMakeRange(8,sPhone.length -4 -4)]];
         [_phoneLabel setText:formatted];
         _phone = profile.result.data_user.user_phone;
+        _verifyButton.enabled = YES;
+        [_verifyButton setBackgroundColor:[UIColor colorWithRed:0.07 green:0.78 blue:0 alpha:1]];
     }else if(tag == RequestOTP){
         
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
@@ -262,7 +271,7 @@ TKPDAlertViewDelegate
                 
             }else{
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                                message:@"Anda hanya dapat mengirimkan kode verifikasi 3 kali dalam 1 jam, Anda harus menunggu 1 jam lagi untuk mengirimkan kode verifikasi kembali."
+                                                                message:@"Maaf permohonan Anda tidak dapat diproses. Terdapat dua kemungkinan:\n1. Nomor handphone Anda sudah meminta kode verifikasi lebih dari 3 kali selama 1 jam terakhir.\n2. Nomor handphone Anda sudah digunakan oleh banyak pengguna, silakan gunakan nomor lain."
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];

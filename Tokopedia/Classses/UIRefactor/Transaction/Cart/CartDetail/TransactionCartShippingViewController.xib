@@ -86,10 +86,10 @@
                 <constraint firstItem="36L-RY-E5P" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="D02-MS-6A9"/>
                 <constraint firstAttribute="bottom" secondItem="36L-RY-E5P" secondAttribute="bottom" id="XaL-sC-Peg"/>
                 <constraint firstItem="36L-RY-E5P" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="boo-B0-XHe">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
                 <constraint firstAttribute="trailing" secondItem="36L-RY-E5P" secondAttribute="trailing" id="oRh-BK-dZH">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
             </constraints>
             <point key="canvasLocation" x="79" y="154"/>

@@ -61,7 +61,7 @@
     
     NSString *_cachepath;
     NSTimeInterval _timeinterval;
-    NSString *product_id;
+    NSString *_product_id;
     UserAuthentificationManager *_userManager;
     ReportViewController *_reportController;
     NoResultView *_noResultView;
@@ -109,40 +109,20 @@
     _operationQueue = [NSOperationQueue new];
     _userManager = [UserAuthentificationManager new];
     _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
-    
-    _table.tableHeaderView = _header;
-    
-    //UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-//    barButtonItem.tag = 10;
-//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    //right button
+    _product_id = [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0;
 
-    NSString *shopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
-    BOOL isLogin = [_userManager isLogin];
-    if(isLogin && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
-
-        UIBarButtonItem *rightbar;
-        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-            UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        }
-        else
-            rightbar = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        [rightbar setTag:11];
-        self.navigationItem.rightBarButtonItem = rightbar;
-    }
-    
-    
-    if (_list.count>2) {
+    if (_list.count > 2) {
         _isnodata = NO;
     }
+
+    _table.tableHeaderView = _header;
+
+    UINib *talkCellNib = [UINib nibWithNibName:@"TalkProductCell" bundle:nil];
+    [_table registerNib:talkCellNib forCellReuseIdentifier:@"TalkProductCellIdentifier"];
+    
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
+    
+    [self setRightBarButton];
     
     [self setHeaderData:_data];
     
@@ -156,11 +136,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTalk:) name:@"UpdateTalk" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDeletedTalk:) name:@"TokopediaDeleteInboxTalk" object:nil];
-    
-    UINib *talkCellNib = [UINib nibWithNibName:@"TalkProductCell" bundle:nil];
-    [_table registerNib:talkCellNib forCellReuseIdentifier:@"TalkProductCellIdentifier"];
-    
-    product_id = [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0;
     
     [self configureRestKit];
     [self loadData];
@@ -181,6 +156,29 @@
     [self cancel];
 }
 
+- (void)setRightBarButton {
+    NSString *shopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
+    BOOL isLogin = [_userManager isLogin];
+    if(isLogin && ![shopID isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
+        NSBundle *bundle = [NSBundle mainBundle];
+        UIBarButtonItem *addButton;
+        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+            UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            addButton = [[UIBarButtonItem alloc] initWithImage:image
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(tap:)];
+        } else {
+            addButton = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(tap:)];
+        }
+        [addButton setTag:11];
+        self.navigationItem.rightBarButtonItem = addButton;
+    }
+}
+
 #pragma mark - Table View Data Source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 #ifdef kTKPDHOTLISTRESULT_NODATAENABLE
@@ -192,7 +190,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_list objectAtIndex:indexPath.row];
-    list.talk_product_id = product_id;
+    list.talk_product_id = _product_id;
     list.talk_product_name = [_data objectForKey:@"product_name"];
     list.talk_product_image = [_data objectForKey:@"talk_product_image"];
     list.talk_product_status = [_data objectForKey:@"talk_product_status"];
@@ -289,7 +287,8 @@
                                                  TKPD_TALK_SHOP_ID,
                                                  TKPD_TALK_USER_ID,
                                                  TKPD_TALK_USER_LABEL_ID,
-                                                 TKPD_TALK_USER_LABEL
+                                                 TKPD_TALK_USER_LABEL,
+                                                 TKPD_TALK_OWN
                                                  ]];
     
     RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
@@ -473,30 +472,19 @@
     ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
     NSInteger row = indexpath.row;
     TalkList *list = _list[row];
-    
-    
     ReputationDetail *tempReputationDetail;
     if(list.talk_user_reputation == nil) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary* auth = [secureStorage keychainDictionary];
         auth = [auth mutableCopy];
         if(auth) {
-            if([[auth objectForKey:@"user_id"] intValue] == list.talk_user_id) {
-                NSData *data = [[auth objectForKey:@"user_reputation"] dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                
-                if(tempDict) {
-                    tempReputationDetail = [ReputationDetail new];
-                    tempReputationDetail.positive_percentage = [tempDict objectForKey:CPositivePercentage];
-                    tempReputationDetail.negative = [tempDict objectForKey:CNegative];
-                    tempReputationDetail.neutral = [tempDict objectForKey:CNeutral];
-                    tempReputationDetail.positive = [tempDict objectForKey:CPositif];
-                    tempReputationDetail.no_reputation = [tempDict objectForKey:CNoReputation];
-                }
+            NSInteger userId = [[auth objectForKey:@"user_id"] integerValue];
+            if(list.talk_user_id == userId) {
+                UserAuthentificationManager *user = [UserAuthentificationManager new];
+                tempReputationDetail = user.reputation;
             }
         }
     }
-    
     
     NSMutableDictionary *dictData = [NSMutableDictionary new];
     [dictData setObject:list.talk_message?:@0 forKey:TKPD_TALK_MESSAGE];
@@ -507,7 +495,7 @@
     [dictData setObject:[NSString stringWithFormat:@"%d", list.talk_user_id] forKey:TKPD_TALK_USER_ID];
     [dictData setObject:list.talk_total_comment?:@0 forKey:TKPD_TALK_TOTAL_COMMENT];
     [dictData setObject:list.talk_shop_id?:@0 forKey:TKPD_TALK_SHOP_ID];
-    [dictData setObject:product_id forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
+    [dictData setObject:_product_id forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
     [dictData setObject:[_data objectForKey:@"talk_product_status"] forKey:TKPD_TALK_PRODUCT_STATUS];
     [dictData setObject:[_data objectForKey:@"talk_product_image"] forKey:TKPD_TALK_PRODUCT_IMAGE];
     [dictData setObject:[_data objectForKey:@"product_name"] forKey:TKPD_TALK_PRODUCT_NAME];
@@ -560,13 +548,18 @@
 #pragma mark - Notification Handler
 - (void)updateTotalComment:(NSNotification*)notification{
     NSDictionary *userinfo = notification.userInfo;
-    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
+    NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
+
     if(index > _list.count) return;
     
     TalkList *list = _list[index];
-    list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
-    list.viewModel = nil;
-    [_table reloadData];
+    if ([talkId isEqualToString:list.talk_id]) {
+        NSString *totalComment = [userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT];
+        list.talk_total_comment = [NSString stringWithFormat:@"%@", totalComment];
+        list.viewModel = nil;
+        [_table reloadData];
+    }
 }
 
 - (void)updateDeletedTalk:(NSNotification*)notification {
@@ -579,68 +572,64 @@
 
 - (void)updateTalk:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
+    UserAuthentificationManager *user = [UserAuthentificationManager new];
+    NSDictionary *auth = [user getUserLoginData];
     auth = [auth mutableCopy];
-   
-    
     if([userinfo objectForKey:@"talk_id"]) {
         NSInteger row = 0;
-        if(_list.count == 0) {
+        if (_list.count == 0) {
             [self insertList:userinfo];
-
             TalkList *list = _list[row];
             list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
             list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
             list.disable_comment = NO;
-            list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
-        }
-        else {
+            list.talk_user_id = [user.getUserId integerValue];
+            list.talk_user_reputation = user.reputation;
+        } else {
             TalkList *list = _list[row];
-            if(list.talk_id!=nil && ![list.talk_id isEqualToString:@""]) {
+            if(list.talk_id !=nil && ![list.talk_id isEqualToString:@""]) {
                 [self insertList:userinfo];
-                
                 list = _list[row];
                 list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
                 list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
                 list.disable_comment = NO;
-                list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
-            }
-            else {
+                list.talk_user_id = [user.getUserId integerValue];
+            } else {
                 list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
                 list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
                 list.disable_comment = NO;
-                list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
+                list.talk_user_id = [user.getUserId integerValue];
             }
         }
     } else {
         [self insertList:userinfo];
     }
-    
-    
     [_table reloadData];
-    
 }
 
 - (void)insertList:(NSDictionary *)userinfo {
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    auth = [auth mutableCopy];
+    UserAuthentificationManager *user = [UserAuthentificationManager new];
+    NSDictionary *auth = [user getUserLoginData];
     
-    ReputationDetail *repDetail = [ReputationDetail new];
-    repDetail.positive_percentage = @"0";
+    ReputationDetail *reputation;
+    if (user.reputation) {
+        reputation = user.reputation;
+    } else {
+        reputation = [ReputationDetail new];
+        reputation.positive_percentage = @"0";
+    }
     
     TalkList *list = [TalkList new];
     list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
     list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
     list.talk_user_image = [auth objectForKey:kTKPD_USERIMAGEKEY];
     list.talk_user_id = [[auth objectForKey:kTKPD_USERIDKEY] intValue];
-    list.talk_product_id = product_id;
+    list.talk_product_id = _product_id;
     list.talk_product_name = [_data objectForKey:@"product_name"];
     list.talk_product_image = [_data objectForKey:@"talk_product_image"];
     list.talk_product_status = [_data objectForKey:@"talk_product_status"];
     list.talk_user_label = CPengguna;
-    list.talk_user_reputation = repDetail;
+    list.talk_user_reputation = reputation;
     
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];

@@ -97,7 +97,11 @@
     if (![[self getUserId] isEqualToString:@"0"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
+#ifdef DEBUG
+    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
+#else
     [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
+#endif
     [parameters setValue:@"2" forKey:@"os_type"];
     
     NSString *hash;
@@ -194,6 +198,20 @@
 
 - (void)setUserImage:(NSString *)userImage {
     [_auth setObject:userImage forKey:@"user_image"];
+}
+
+- (ReputationDetail *)reputation {
+    if ([_auth objectForKey:@"has_reputation"]) {
+        ReputationDetail *reputation = [ReputationDetail new];
+        reputation.positive = [_auth objectForKey:@"reputation_positive"];
+        reputation.positive_percentage = [_auth objectForKey:@"reputation_positive_percentage"];
+        reputation.neutral = [_auth objectForKey:@"reputation_neutral"];
+        reputation.negative = [_auth objectForKey:@"reputation_negative"];
+        reputation.no_reputation = [[_auth objectForKey:@"no_reputation"] stringValue];
+        return reputation;
+    } else {
+        return nil;
+    }
 }
 
 @end

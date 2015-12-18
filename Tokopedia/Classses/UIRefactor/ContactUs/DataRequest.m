@@ -26,7 +26,7 @@
         [parameters setValue:@"2" forKey:@"os_type"];
         
         NSString *path = [NSString stringWithFormat:@"http://%@/ws", host.result.generated_host.upload_host];
-        objectManager = [RKObjectManager sharedClientUploadImage:path];
+        objectManager = [RKObjectManager sharedClient:path];
     } else {
         parameters = [parameters encrypt];
 

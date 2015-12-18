@@ -1067,16 +1067,12 @@ UIAlertViewDelegate
             if([_product.result.shop_info.shop_has_terms isEqualToString:@"0"]) {
                 NSString *strCanReture = [CStringCanReture stringByReplacingOccurrencesOfString:CStringCanRetureReplace withString:@""];
                 [productInfoCell setLblDescriptionToko:strCanReture];
-                [productInfoCell setLblRetur:strCanReture];
             }
             else {
                 [productInfoCell setLblDescriptionToko:CStringCanReture];
                 NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
-                [productInfoCell getLblRetur].enabledTextCheckingTypes = NSTextCheckingTypeLink;
                 [productInfoCell getLblRetur].delegate = self;
                 
-                [productInfoCell setLblRetur:CStringCanReture];
-                [productInfoCell getLblRetur].linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
                 [[productInfoCell getLblRetur] addLinkToURL:[NSURL URLWithString:@""] withRange:range];
                 
                 tokopediaNoteCanReture = [TokopediaNetworkManager new];
@@ -1087,7 +1083,6 @@ UIAlertViewDelegate
         }
         else if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"2"]) {
             [productInfoCell setLblDescriptionToko:CStringCannotReture];
-            [productInfoCell setLblRetur:CStringCannotReture];
         }
         else {
             [productInfoCell hiddenViewRetur];
@@ -1733,7 +1728,14 @@ UIAlertViewDelegate
         }
         else
         {
-            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+            //wishlist max is 1000, set custom error message. If other error happened, use default error message.
+            if([wishListObject.message_error[0] isEqual:@"Wishlist sudah mencapai batas (1000)."]){
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Maksimum wishlist Anda adalah 1000 produk"] delegate:self];
+            }else{
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+            }
+            
+            
             [self setBackgroundWishlist:NO];
             btnWishList.tag = 1;
             [self setRequestingAction:btnWishList isLoading:NO];
@@ -1758,11 +1760,14 @@ UIAlertViewDelegate
         }
         [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.result];
 }
 
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
+    
     if(tag == CTagPromote)
     {
         
@@ -1786,6 +1791,9 @@ UIAlertViewDelegate
     }
     else if(tag == CTagWishList)
     {
+        NSDictionary *result = ((RKMappingResult*) errorResult).dictionary;
+        NSString *errorMessage = [result objectForKey:kTKPD_APIERRORMESSAGEKEY];
+        
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
         [alert show];
         [self setBackgroundWishlist:NO];
@@ -2068,7 +2076,7 @@ UIAlertViewDelegate
             _product = stats;
             _product.isDummyProduct = NO;
         }
-
+        
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
         _formattedProductTitle = _product.result.product.product_name;
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];

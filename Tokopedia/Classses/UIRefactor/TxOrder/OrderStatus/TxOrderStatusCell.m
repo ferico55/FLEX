@@ -26,12 +26,7 @@
 
 - (void)awakeFromNib {
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenSize.width = screenSize.width-2*80;
-    } else {
-        screenSize.width = screenSize.width-20;
-    }
+    screenSize.width = screenSize.width-20;
     
     CGRect frame = _oneButtonView.frame;
     frame.size.width = screenSize.width;

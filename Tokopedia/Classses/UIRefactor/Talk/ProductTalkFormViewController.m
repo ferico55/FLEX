@@ -111,27 +111,22 @@
     _productlabel.text = [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     
     UIImageView *thumb = _productimage;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //request.URL = url;
-    
-    thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    UIImage *placeholderImage = [UIImage imageNamed:@"icon_shop_grey.png"];
+    NSURL *url = [NSURL URLWithString:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [thumb setImageWithURLRequest:request
+                 placeholderImage:placeholderImage
+                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
         [thumb setImage:image];
-        
 #pragma clang diagnostic pop
-        
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        
+        [thumb setImage:placeholderImage];
     }];
-    
 }
-
 
 -(void)doProductTalkForm {
     NSDictionary* param = @{

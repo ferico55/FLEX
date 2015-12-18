@@ -67,6 +67,8 @@ NoResultDelegate
     [_refreshControl addTarget:self action:@selector(refreshView) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
     
+    [_refreshControl beginRefreshing];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadDataSource:)
                                                  name:TKPDTabNotification
@@ -151,7 +153,7 @@ NoResultDelegate
     [users addObjectsFromArray:ticket.ticket_user_involve];
     cell.userInvolvedNameLabel.text = [[users valueForKey:@"description"] componentsJoinedByString:@", "];
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 
@@ -168,15 +170,23 @@ NoResultDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     InboxTicketList *ticket = [_tickets objectAtIndex:indexPath.row];
     
-    InboxTicketDetailViewController *controller = [InboxTicketDetailViewController new];
+    InboxTicketDetailViewController *controller = self.detailViewController;
+    if (self.detailViewController == nil) {
+        controller = [InboxTicketDetailViewController new];
+    }
+    
     controller.inboxTicket = ticket;
     controller.delegate = self;
     
     _selectedIndexPath = indexPath;
     
-    if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        [self.detailViewController updateTicket:ticket];
+    } else if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
         [self.delegate pushViewController:controller];
     }
+    
+    
 }
 
 #pragma mark - Tokopedia network manager
@@ -355,6 +365,17 @@ NoResultDelegate
     
     [self.tableView reloadData];
     
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxTicketList* ticket = _tickets.count? [_tickets objectAtIndex:0]: nil;
+        if (_tickets.count) {
+            if (!_selectedIndexPath) {
+                _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            }
+            [self selectCurrentTableRow];
+        }
+        [self.detailViewController updateTicket:ticket];
+    }
+    
     [_refreshControl endRefreshing];
 }
 
@@ -375,12 +396,24 @@ NoResultDelegate
 - (void)updateInboxTicket:(InboxTicketList *)inboxTicket {
     if (_currentTabSegmentIndex == 1 && [inboxTicket.ticket_status isEqualToString:@"2"]) {
         [_tickets removeObjectAtIndex:_selectedIndexPath.row];
+        [self.tableView reloadData];
     } else {
         if (_selectedIndexPath.row < _tickets.count) {
             [_tickets replaceObjectAtIndex:_selectedIndexPath.row withObject:inboxTicket];
+            [self reloadTableWhileRetainingSelection];
         }
     }
-    [self.tableView reloadData];
+}
+
+- (void)reloadTableWhileRetainingSelection {
+    [self.tableView reloadRowsAtIndexPaths:@[_selectedIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self selectCurrentTableRow];
+}
+
+- (void)selectCurrentTableRow {
+    dispatch_async(dispatch_get_main_queue(), ^(void) { //select the row after table finished loading
+        [self.tableView selectRowAtIndexPath:_selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    });
 }
 
 #pragma mark - Methods

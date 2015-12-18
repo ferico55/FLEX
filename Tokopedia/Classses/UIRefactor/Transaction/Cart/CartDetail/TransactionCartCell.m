@@ -40,8 +40,27 @@
 
 -(IBAction)tap:(id)sender
 {
+    UIActionSheet* popup = nil;
+    if([_viewModelProduct.productErrorMessage isEqualToString:@""] ||
+       [_viewModelProduct.productErrorMessage isEqualToString:@"0"] ||
+       _viewModelProduct.productErrorMessage == nil ||
+       [_viewModelProduct.productErrorMessage isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
+        popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:@"Hapus" otherButtonTitles:
+                                @"Edit",
+                                nil];
+    }
+    else {
+        popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:@"Hapus" otherButtonTitles:nil];
+    }
+    
+    [popup showFromRect:_editButton.frame inView:self animated:YES];
     [_delegate tapMoreButtonActionAtIndexPath:_indexPath];
 }
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self.actionSheetDelegate actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
+}
+
 - (IBAction)gesture:(id)sender {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10)

@@ -13,6 +13,7 @@
 #import "MyReviewReputationCell.h"
 #import "ReputationDetail.h"
 #import "ViewLabelUser.h"
+#import "NavigationHelper.h"
 //#define CTagPembeli 1
 //#define CTagPenjual 2
 #define CFormatWaitYourReview @"%@ Produk menunggu ulasan anda"
@@ -40,9 +41,11 @@
     imageProfile.layer.masksToBounds = YES;
     imageProfile.contentMode = UIViewContentModeScaleAspectFit;
 
-    labelUser.userInteractionEnabled = YES;
+    [labelUser setUserInteractionEnabled:YES];
+    [imageFlagReview setUserInteractionEnabled:YES];
     [labelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionLabelUser:)]];
     [imageFlagReview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionFlagReview:)]];
+    [labelUser setUserInteractionEnabled: [NavigationHelper shouldDoDeepNavigation]];
     
     //Set image
     imageQSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile20" ofType:@"png"]];
@@ -55,7 +58,7 @@
     imageSad = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_sad25" ofType:@"png"]];
     imageNetral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_netral25" ofType:@"png"]];
     imageSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile25" ofType:@"png"]];
-    imageNeutral = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral25" ofType:@"png"]];
+    imageNoSmile = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral25" ofType:@"png"]];
     
     imageFlagReview.layer.cornerRadius = imageFlagReview.bounds.size.width/2.0f;
     imageFlagReview.layer.masksToBounds = YES;
@@ -203,24 +206,26 @@
     }
     
     
-    // set right smiley
-
-    btnReview.userInteractionEnabled = !(object.score_edit_time_fmt!=nil && ![object.score_edit_time_fmt isEqualToString:@"0"]);
-    if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreBad]) {
-        [btnReview setImage:imageSad forState:UIControlStateNormal];
-    }
-    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreNeutral]) {
-        [btnReview setImage:imageNetral forState:UIControlStateNormal];
-    }
-    else if([([object.role isEqualToString:@"2"]?object.buyer_score:object.seller_score) isEqualToString:CReviewScoreGood]) {
+    
+    
+    // set right smiley interaction
+    if([object.reputation_progress isEqualToString:@"0"]) {
+        btnReview.userInteractionEnabled = YES;        
+    } else if([object.reputation_progress isEqualToString:@"1"]) {
+        btnReview.userInteractionEnabled = YES;
+    } else if([object.reputation_progress isEqualToString:@"2"]) {
+        btnReview.userInteractionEnabled = YES;
+    } else if([object.reputation_progress isEqualToString:@""]){
+        btnReview.userInteractionEnabled = YES;
+    } else {
         btnReview.userInteractionEnabled = NO;
-        [btnReview setImage:imageSmile forState:UIControlStateNormal];
-    }
-    else {
-        [btnReview setImage:imageNeutral forState:UIControlStateNormal];
     }
     
-    // if reputation_progress 2, lock right smiley, pesan error sudah di lock
+    //set right smiley image
+    [self setSmileyButton:btnReview withImageString:object.their_score_image];
+    
+    //set left smiley image
+    [self setSmileyImage:imageFlagReview withImageString:object.my_score_image];
     
     if(btnReview.isUserInteractionEnabled) {
         [btnReview setBackgroundColor:[UIColor whiteColor]];
@@ -229,47 +234,6 @@
         [btnReview setBackgroundColor:[UIColor colorWithRed:226/255.0f green:226/255.0f blue:226/255.0f alpha:1.0f]];
     }
     
-    
-    
-    //Check flag has reviewed or not
-    //1&4. kedua pihak sudah kasih reputation
-    //2&5. salah satu sudah kasih
-    //3&6. 2 pihak belum kasih
-    imageFlagReview.userInteractionEnabled = YES;
-
-    NSString *strScore = object.buyer_score;
-    if([object.role isEqualToString:@"2"]) {//Seller
-        strScore = object.seller_score;
-    }
-    
-    //Set icon smiley
-    if(([object.seller_score isEqualToString:CReviewScoreBad] || [object.seller_score isEqualToString:CReviewScoreNeutral] || [object.seller_score isEqualToString:CReviewScoreGood]) && (([object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreBad] || [object.buyer_score isEqualToString:CReviewScoreGood]))) {
-        if([strScore isEqualToString:CReviewScoreBad]) {
-            imageFlagReview.image = imageQBad;
-        }
-        else if([strScore isEqualToString:CReviewScoreNeutral]) {
-            imageFlagReview.image = imageQNetral;
-        }
-        else if([strScore isEqualToString:CReviewScoreGood]) {
-            imageFlagReview.image = imageQSmile;
-        }
-    }
-    else {
-        if([strScore isEqualToString:CReviewScoreBad] || [strScore isEqualToString:CReviewScoreNeutral] || [strScore isEqualToString:CReviewScoreGood]) {
-            imageFlagReview.image = imageQuestionBlue;
-        }
-        else {
-            imageFlagReview.image = imageQuestionGray;
-        }
-    }
-    
-    if([object.show_reviewee_score isEqualToString:@"2"] || [object.show_reviewee_score isEqualToString:@"5"]) {
-        imageFlagReview.image = imageQuestionBlue;
-    }
-    
-    if([object.show_reviewee_score isEqualToString:@"3"] || [object.show_reviewee_score isEqualToString:@"6"]) {
-        imageFlagReview.image = imageQuestionGray;
-    }
     
    
     viewFlagReadUnread.hidden = [object.show_bookmark isEqualToString:@"1"]?NO:YES;
@@ -306,6 +270,44 @@
     [UIView setAnimationsEnabled:YES];
 }
 
+- (void)setSmileyImage:(UIImageView*)image withImageString:(NSString*)img {
+    UIImage *buttonImage;
+    if([img isEqualToString:@"smiley_neutral"]) {
+        buttonImage = imageQNetral;
+    } else if([img isEqualToString:@"smiley_bad"]) {
+        buttonImage = imageQBad;
+    } else if([img isEqualToString:@"smiley_good"]) {
+        buttonImage = imageSmile;
+    } else if([img isEqualToString:@"smiley_none"]) {
+        buttonImage = imageNoSmile;
+    } else if([img isEqualToString:@"grey_question_mark"]) {
+        buttonImage = imageQuestionGray;
+    } else if([img isEqualToString:@"blue_question_mark"]) {
+        buttonImage = imageQuestionBlue;
+    }
+    
+    [image setImage:buttonImage];
+}
+
+- (void)setSmileyButton:(UIButton*)button withImageString:(NSString*)img {
+    UIImage *buttonImage;
+    if([img isEqualToString:@"smiley_neutral"]) {
+        buttonImage = imageQNetral;
+    } else if([img isEqualToString:@"smiley_bad"]) {
+        buttonImage = imageQBad;
+    } else if([img isEqualToString:@"smiley_good"]) {
+        buttonImage = imageSmile;
+        [button setUserInteractionEnabled:NO];
+    } else if([img isEqualToString:@"smiley_none"]) {
+        buttonImage = imageNoSmile;
+    } else if([img isEqualToString:@"grey_question_mark"]) {
+        buttonImage = imageQuestionGray;
+    } else if([img isEqualToString:@"blue_question_mark"]) {
+        buttonImage = imageQuestionBlue;
+    }
+    
+    [button setImage:buttonImage forState:UIControlStateNormal];
+}
 
 
 @end

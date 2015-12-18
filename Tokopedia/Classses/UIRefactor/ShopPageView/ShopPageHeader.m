@@ -79,27 +79,7 @@
 
 
 - (void)initButton {
-    //    self.leftButton.layer.cornerRadius = 3;
-    //    self.leftButton.layer.borderWidth = 1;
-    //    self.leftButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-    //
-    //    self.rightButton.layer.cornerRadius = 3;
-    //    self.rightButton.layer.borderWidth = 1;
-    //    self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-    //
     _auth = [_userManager getUserLoginData];
-    if ([_auth allValues] > 0) {
-        //toko sendiri dan login
-        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-            
-        } else {
-            
-        }
-    }
-    
-    
-    
-    
     if ([_auth allValues] > 0) {
         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
             [self.leftButton setTitle:@"Settings" forState:UIControlStateNormal];
@@ -113,7 +93,6 @@
             
             [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
             [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-            //            self.rightButton.tintColor = [UIColor lightGrayColor];
         }
     } else {
         [self.leftButton setTitle:@"Message" forState:UIControlStateNormal];
@@ -121,7 +100,6 @@
         
         [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
         [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-        //        self.rightButton.tintColor = [UIColor lightGrayColor];
     }
     
     self.leftButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -219,30 +197,28 @@
     _descriptionView.descriptionLabel.numberOfLines = 4;    
     
     _statView.locationLabel.text = _shop.result.info.shop_name;
-//    _statView.openStatusLabel.text = _shop.result.info.shop_location;
     [_statView.openStatusLabel setHidden:YES];
     [_statView.statLabel setHidden:YES];
     
-    NSString *stats = [NSString stringWithFormat:@"%@ Barang Terjual & %@ Favorit",
-                       _shop.result.stats.shop_item_sold,
-                       _shop.result.info.shop_total_favorit];
-    
-    
-    
-//    [_statView.statLabel setText:stats];
     // Set cover image
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    if([[_shop.result.is_open stringValue] isEqualToString:@"2"]) {
+    if ([[_shop.result.is_open stringValue] isEqualToString:@"1"]) {
+        _shopClosedView.hidden = YES;
+    } else if ([[_shop.result.is_open stringValue] isEqualToString:@"2"]) {
         _shopClosedView.hidden = NO;
         NSString *until = [NSString stringWithFormat:@"Toko ini akan tutup sampai : %@",_shop.result.closed_info.until];
         NSString *reason = [NSString stringWithFormat:@"Alasan : %@",_shop.result.closed_info.note];
         [_shopClosedReason setCustomAttributedText:reason];
         [_shopClosedUntil setText:until];
-    } else {
-        _shopClosedView.hidden = YES;
+    } else if ([[_shop.result.is_open stringValue] isEqualToString:@"3"]) {
+        _shopClosedView.hidden = NO;
+        NSString *title = @"Toko dalam status moderasi";
+        NSString *description = @"Kami sarankan untuk tidak melakukan transaksi secara langsung di toko ini.";
+        [_shopClosedReason setCustomAttributedText:description];
+        [_shopClosedUntil setText:title];
     }
     
     if(_shop.result.info.shop_is_gold == 1) {

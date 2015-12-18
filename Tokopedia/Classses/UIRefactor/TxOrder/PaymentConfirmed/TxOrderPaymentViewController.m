@@ -765,16 +765,16 @@
     NSNumber *year = @([components year])?:@(0);
     NSNumber *month = @([components month])?:@(0);
     NSNumber *day = @([components day])?:@(0);
-    NSString *comment = [_dataInput objectForKey:DATA_MARK_KEY]?:@"";
-    NSString *password = [_dataInput objectForKey:DATA_PASSWORD_KEY]?:@"";
+    NSString *comment = _markTextView.text?:@"";
+    NSString *password = _passwordTextField.text?:@"";
     NSString *systemBankID = systemBank.sysbank_id?:@"";
     NSNumber *bankID = @(bank.bank_id)?:@(0);
     NSString *bankName = bank.bank_name?:@"";
-    NSString *bankAccountName = bank.bank_account_name?:@"";
-    NSString *bankAccountBranch = bank.bank_branch?:@"";
-    NSString *bankAccountNumber = bank.bank_account_number?:@"";
+    NSString *bankAccountName = _accountNameTextField.text?:@"";
+    NSString *bankAccountBranch = _branchTextField.text?:@"";
+    NSString *bankAccountNumber = _rekeningNumberTextField.text?:@"";
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
-    NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
+    NSString *depositor = _depositorTextField.text?:@"";
     NSString *action = _isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
     if (isStepValidation) {
         action = ACTION_CONFIRM_PAYMENT_VALIDATION;

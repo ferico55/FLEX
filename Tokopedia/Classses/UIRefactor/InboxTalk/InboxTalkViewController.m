@@ -43,7 +43,6 @@
 @end
 
 @implementation InboxTalkViewController {
-    //------
     TokopediaNetworkManager *_networkManager;
     
     NSInteger _page;
@@ -78,7 +77,6 @@
     if (self) {
         
     }
-    
     return self;
 }
 
@@ -90,7 +88,7 @@
 }
 
 - (void)initNoResultView{
-    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:self.view.bounds];
     [_noResultView generateAllElements:nil
                                  title:@"Anda belum mengikuti diskusi produk"
                                   desc:@""
@@ -121,6 +119,8 @@
     
     [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
+    
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     
     // GTM
     [self configureGTM];
@@ -190,6 +190,10 @@
     return _delegate;
 }
 
+- (NSInteger)getSegmentedIndex {
+    return _currentTabSegmentIndex;
+}
+
 #pragma mark - Refresh View 
 - (void)refreshView:(UIRefreshControl*)refresh {
     [_networkManager requestCancel];
@@ -202,18 +206,23 @@
 #pragma mark - Notification Handler
 - (void)updateTotalComment:(NSNotification*)notification {
     NSDictionary *userinfo = notification.userInfo;
-    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
+    NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
     
+    if(index > _talkList.count) return;
+
     TalkList *list = _talkList[index];
-    list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
-    list.viewModel = nil;
-    [_table reloadData];
+    if ([talkId isEqualToString:list.talk_id]) {
+        NSString *totalComment = [userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT];
+        list.talk_total_comment = [NSString stringWithFormat:@"%@", totalComment];
+        list.viewModel = nil;
+        [_table reloadData];
+    }
 }
 
 - (void)updateDeletedTalk:(NSNotification*)notification {
     NSDictionary *userInfo = notification.userInfo;
     NSInteger index = [[userInfo objectForKey:@"index"] integerValue];
-    
     [_talkList removeObjectAtIndex:index];
     [_table reloadData];
 }
@@ -393,7 +402,6 @@
     
     [_talkList addObjectsFromArray: inboxTalk.result.list];
     
-    
     if (_talkList.count > 0) {
         _nextPageURL =  inboxTalk.result.paging.uri_next;
         if (![_nextPageURL isEqualToString:@"0"]) {
@@ -438,17 +446,16 @@
         [_noResultView setNoResultTitle:text];
         [_noResultView setNoResultDesc:desc];
         
+        _table.tableFooterView = nil;
         [_table addSubview:_noResultView];
     }
     
     [self.table reloadData];
     
-    
     [_refreshControl endRefreshing];
     [_refreshControl setHidden:YES];
     [_refreshControl setEnabled:NO];
     [_refreshControl layoutIfNeeded];
-    
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {

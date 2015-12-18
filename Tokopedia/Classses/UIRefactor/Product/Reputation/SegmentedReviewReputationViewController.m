@@ -11,6 +11,10 @@
 #import "SegmentedReviewReputationViewController.h"
 #import "SplitReputationViewController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
+
+#import "AlertLuckyView.h"
+#import "LuckyDealWord.h"
+
 #define CInboxReputation @"inbox-reputation"
 #define CInboxReputationMyProduct @"inbox-reputation-my-product"
 #define CInboxReputationMyReview @"inbox-reputation-my-review"
@@ -51,8 +55,8 @@
     [lblDescChangeReviewStyle setAttributedText:attribute];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     if(viewContent.subviews.count == 0) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -90,7 +94,7 @@
 {
     btnTitle = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnTitle setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    btnTitle.titleLabel.font = [self.navigationController.navigationBar.titleTextAttributes objectForKey:NSFontAttributeName];
+    btnTitle.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:15];
     btnTitle.backgroundColor = [UIColor clearColor];
     [btnTitle addTarget:self action:@selector(actionChangeFilter:) forControlEvents:UIControlEventTouchUpInside];
 

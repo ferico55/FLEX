@@ -116,6 +116,11 @@ NoResultDelegate>
 
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deleteTalk:)
+                                                 name:@"TokopediaDeleteInboxTalk"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTalkHeaderPosition:)
                                                  name:@"updateTalkHeaderPosition" object:nil];
     
@@ -144,7 +149,9 @@ NoResultDelegate>
     [super viewDidLoad];
     
     [self addBottomInsetWhen14inch];
+    
     _talkNavigationFlag = [_data objectForKey:@"nav"];
+    
     _page = 1;
     
     _operationQueue = [NSOperationQueue new];
@@ -162,16 +169,18 @@ NoResultDelegate>
     _shopPageHeader.delegate = self;
     _header = _shopPageHeader.view;
     
-    
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:20];
     [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
     _table.tableFooterView = _footer;
-    //_table.tableHeaderView = _header;
     
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self
+                        action:@selector(refreshView:)
+              forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
+    
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     
     if (_list.count > 0) {
         _isNoData = NO;
@@ -187,11 +196,8 @@ NoResultDelegate>
     
     [self initNotification];
 
-
     [self configureRestKit];
     [self loadData];
-
-    
 }
 
 
@@ -500,21 +506,54 @@ NoResultDelegate>
 }
 
 #pragma mark - Notification Handler
--(void) updateTotalComment:(NSNotification*)notification{
+- (void)updateTotalComment:(NSNotification*)notification{
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    NSString *talkId = [userinfo objectForKey:TKPD_TALK_ID];
+
+    if(index > _list.count) return;
     
     TalkList *list = _list[index];
-    list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
-    [_table reloadData];
+    if ([talkId isEqualToString:list.talk_id]) {
+        NSString *totalComment = [userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT];
+        list.talk_total_comment = [NSString stringWithFormat:@"%@", totalComment];
+        [_table reloadData];
+    }
 }
 
+- (void)deleteTalk:(NSNotification *)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
+    if(index > _list.count) return;
+    [_list removeObjectAtIndex:index];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [_table deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)updateTalkHeaderPosition:(NSNotification *)notification
+{
+    id userinfo = notification.userInfo;
+    float ypos;
+    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
+        ypos = 0;
+    } else {
+        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
+    }
+    CGPoint cgpoint = CGPointMake(0, ypos);
+    NSLog(@"Child Position %f",[[userinfo objectForKey:@"yposition"] floatValue]);
+    
+    //    if(ypos < _header.frame.size.height - _stickyTab.frame.size.height) {
+    _table.contentOffset = cgpoint;
+    //    }
+}
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
+
+#pragma mark - Scroll view delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSLog(@"Content offset container %f", scrollView.contentOffset.y);
@@ -541,24 +580,6 @@ NoResultDelegate>
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateNotesHeaderPosition" object:nil userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateProductHeaderPosition" object:nil userInfo:userInfo];
 
-}
-
-
-- (void)updateTalkHeaderPosition:(NSNotification *)notification
-{
-    id userinfo = notification.userInfo;
-    float ypos;
-    if([[userinfo objectForKey:@"y_position"] floatValue] < 0) {
-        ypos = 0;
-    } else {
-        ypos = [[userinfo objectForKey:@"y_position"] floatValue];
-    }
-    CGPoint cgpoint = CGPointMake(0, ypos);
-    NSLog(@"Child Position %f",[[userinfo objectForKey:@"yposition"] floatValue]);
-    
-//    if(ypos < _header.frame.size.height - _stickyTab.frame.size.height) {
-        _table.contentOffset = cgpoint;
-//    }
 }
 
 #pragma mark - Shop Header Delegate

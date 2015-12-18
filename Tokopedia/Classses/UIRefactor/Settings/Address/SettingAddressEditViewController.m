@@ -141,9 +141,13 @@
                            action:@selector(textFieldShouldEndEditing:)
                  forControlEvents:UIControlEventEditingChanged];
     
+    _textfieldpostcode.delegate = self;
+    
     [_textfieldphonenumber addTarget:self
                               action:@selector(textFieldShouldEndEditing:)
                     forControlEvents:UIControlEventEditingChanged];
+    
+    _textfieldphonenumber.delegate = self;
     
     [_textfieldpass addTarget:self
                        action:@selector(textFieldShouldEndEditing:)
@@ -192,6 +196,20 @@
     self.navigationItem.backBarButtonItem = back;
 }
 
+#pragma mark - Textfield delegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if(textField != _textfieldphonenumber && textField != _textfieldpostcode) return YES;
+    NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    return [newString isNumber];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    // select all text, needs dispatch for it to work reliably
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [textField selectAll:nil];
+    });
+}
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -834,6 +852,7 @@
     
     NSString *addressstreet = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
     NSString *password = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY]?:@"";
+    //TODO:: Lat Long
     
     NSDictionary *param =@{kTKPDPROFILE_APIACTIONKEY:action,
                            kTKPDPROFILESETTING_APIADDRESSIDKEY : @(addressid),

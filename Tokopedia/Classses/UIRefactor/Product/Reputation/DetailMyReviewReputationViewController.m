@@ -72,6 +72,7 @@
     NoResultView *noResultView;
     
     NavigateViewController *_TKPDNavigator;
+    void (^_reputationIconTapCallback)();
 }
 
 - (void)dealloc {
@@ -994,13 +995,12 @@
     }
 }
 
+- (void)onReputationIconTapped:(void(^)()) callback {
+    _reputationIconTapCallback = callback;
+}
+
 - (void)actionFlagReview:(id)sender {
-    UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-    if([tempViewController isMemberOfClass:[SegmentedReviewReputationViewController class]]) {
-        UIView *tempView = [UIView new];
-        tempView.tag = _tag;
-        [((MyReviewReputationViewController *)[((SegmentedReviewReputationViewController *) tempViewController) getSegmentedViewController]) actionFlagReview:tempView];
-    }
+    _reputationIconTapCallback();
 }
 
 
