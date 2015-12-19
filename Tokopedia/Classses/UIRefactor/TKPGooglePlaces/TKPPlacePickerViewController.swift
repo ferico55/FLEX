@@ -33,7 +33,7 @@ enum TypePlacePicker : Int{
     
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
-    internal var type : Int = 0
+    var type : Int = 0
     var autoCompleteResults : [GMSAutocompletePrediction] = []
 //    var autoCompleteResults : NSMutableArray = NSMutableArray()
     var placeHistories : NSMutableArray = NSMutableArray()
@@ -105,14 +105,13 @@ enum TypePlacePicker : Int{
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if (status == CLAuthorizationStatus.Denied){
-            
+        guard status != CLAuthorizationStatus.Denied else{
+            return;
         }
-        else{
-            if(locationManager.location != nil && (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0)){
-                mapView.updateCameraPosition(locationManager.location!.coordinate)
-            }
+        guard locationManager.location != nil && (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0) else{
+            return;
         }
+        mapView.updateCameraPosition(locationManager.location!.coordinate)
     }
     
     //MARK: - GMSMapView Delegate
