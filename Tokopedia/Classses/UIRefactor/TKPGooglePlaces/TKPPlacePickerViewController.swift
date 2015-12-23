@@ -31,11 +31,12 @@ enum TypePlacePicker : Int{
     @IBOutlet var tableView: UITableView!
     @IBOutlet var pinPointImageView: UIImageView!
     
+    @IBOutlet var infoAddressView: InfoAddressView!
+    
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
     var type : Int = 0
     var autoCompleteResults : [GMSAutocompletePrediction] = []
-//    var autoCompleteResults : NSMutableArray = NSMutableArray()
     var placeHistories : NSMutableArray = NSMutableArray()
     
     var placePicker : GMSPlacePicker?
@@ -54,6 +55,9 @@ enum TypePlacePicker : Int{
     var titleSection : [String] = ["Suggestions","Recent Search"]
     
     var selectedSugestion : String = ""
+    
+//    var infoAddressView = InfoAddressView()
+    var infoAddress : AddressViewModel!
 
     override func loadView() {
         var className:NSString = NSStringFromClass(self.classForCoder)
@@ -83,11 +87,6 @@ enum TypePlacePicker : Int{
         placesClient = GMSPlacesClient()
         initLocationManager()
         adustBehaviorType(type)
-
-        searchBar.placeholder = "Cari Alamat";
-        searchBar.tintColor = UIColor.whiteColor()
-        searchBar.delegate = self
-
         loadHistory()
     }
     
@@ -148,6 +147,7 @@ enum TypePlacePicker : Int{
             if (firstCoordinate.longitude == 0 && locationManager.location != nil) {
                 firstCoordinate =  locationManager.location!.coordinate
             }
+            if((infoAddress) != nil){adjustInfoAddress(infoAddress)}
             break;
         case TypePlacePicker.TypeShowPlace.rawValue:
             self.title = "Lokasi"
@@ -164,7 +164,16 @@ enum TypePlacePicker : Int{
         }
         mapView.updateCameraPosition(firstCoordinate)
         self.updateAddressSaveHistory(false, addressSugestion:nil)
+        searchBar.placeholder = "Cari Alamat";
+        searchBar.tintColor = UIColor.whiteColor()
+        searchBar.delegate = self
     }
+    
+    func adjustInfoAddress(address:AddressViewModel)
+    {
+
+    }
+    
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {

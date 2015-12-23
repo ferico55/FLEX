@@ -331,7 +331,13 @@
 
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMap:(id)sender {
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace fromViewController:self];
+    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    address = [AddressFormList new];
+    address.address_name = @"Alamat Kantor";
+    address.address_street = @"Wisma 77 Tower 2";
+    address.receiver_name = @"Orang Keren";
+    address.receiver_phone = @"0812345678";
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self ];
 }
 //
 
@@ -476,7 +482,6 @@
                     address.receiver_phone = _textfieldphonenumber.text?:@"";
                     address.longitude = _longitude;
                     address.latitude = _latitude;
-                    
                     [self.delegate successEditAddress:address];
                 }
                 

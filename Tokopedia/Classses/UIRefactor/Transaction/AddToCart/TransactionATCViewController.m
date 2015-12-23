@@ -239,7 +239,8 @@
     _networkManager.delegate = self;
 }
 - (IBAction)tapPinLocationButton:(id)sender {
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace fromViewController:self];
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
 }
 
 
@@ -573,7 +574,8 @@
             }
             case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
             {
-                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace fromViewController:self];
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
