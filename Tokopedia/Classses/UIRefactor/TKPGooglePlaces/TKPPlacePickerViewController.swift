@@ -31,8 +31,15 @@ enum TypePlacePicker : Int{
     @IBOutlet var tableView: UITableView!
     @IBOutlet var pinPointImageView: UIImageView!
     
-    @IBOutlet var infoAddressView: InfoAddressView!
+    @IBOutlet var infoAddressView: UIView!
     
+    @IBOutlet var receiverNumberLabel: UILabel!
+    @IBOutlet var addressStreetLabel: UILabel!
+    @IBOutlet var receiverNameLabel: UILabel!
+    @IBOutlet var addressNameLabel: UILabel!
+    
+    @IBOutlet var infoViewConstraintHeight: NSLayoutConstraint!
+    @IBOutlet var transparantInfoView: UIView!
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
     var type : Int = 0
@@ -56,6 +63,9 @@ enum TypePlacePicker : Int{
     
     var selectedSugestion : String = ""
     
+    var _previousY:CGFloat!
+    var _infoTopConstraint:NSLayoutConstraint!
+
 //    var infoAddressView = InfoAddressView()
     var infoAddress : AddressViewModel!
 
@@ -88,13 +98,37 @@ enum TypePlacePicker : Int{
         initLocationManager()
         adustBehaviorType(type)
         loadHistory()
+        
+        _infoTopConstraint = NSLayoutConstraint(
+            item: self.infoAddressView,
+            attribute: .Top,
+            relatedBy: .Equal,
+            toItem: self.view,
+            attribute: .Bottom,
+            multiplier: 1.0,
+            constant: -40.0)
+        self.view .addConstraint(_infoTopConstraint)
     }
     
-    //MARK: View Action
+    //MARK: - View Action
     @IBAction func tapDone(sender: AnyObject) {
         let mapImage : UIImage = mapView.captureMapScreen()
         delegate?.pickAddress(address, suggestion: selectedSugestion, longitude: mapView.marker.position.longitude, latitude: mapView.marker.position.latitude, mapImage: mapImage)
         self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func tapTransparantInfoView(sender: AnyObject) {
+        hideInfo()
+    }
+    
+    @IBAction func tapTransparentSearchBar(sender: AnyObject) {
+        setSearchBarActive(false, animated: true)
+    }
+    
+    @IBAction func tapShowInfoAddress(sender: AnyObject) {
+        if(_infoTopConstraint.constant <= -40){
+            showInfo()
+        }
     }
     
     //MARK: - Location Manager Delegate
@@ -147,7 +181,6 @@ enum TypePlacePicker : Int{
             if (firstCoordinate.longitude == 0 && locationManager.location != nil) {
                 firstCoordinate =  locationManager.location!.coordinate
             }
-            if((infoAddress) != nil){adjustInfoAddress(infoAddress)}
             break;
         case TypePlacePicker.TypeShowPlace.rawValue:
             self.title = "Lokasi"
@@ -167,13 +200,76 @@ enum TypePlacePicker : Int{
         searchBar.placeholder = "Cari Alamat";
         searchBar.tintColor = UIColor.whiteColor()
         searchBar.delegate = self
+        searchBar.setBackgroundImage(UIImage(named: "NavBar"), forBarPosition: .Top, barMetrics: .Default)
+        if((infoAddress) != nil){
+            adjustInfoAddress(infoAddress)
+        }
     }
     
-    func adjustInfoAddress(address:AddressViewModel)
-    {
+    func adjustInfoAddress(address:AddressViewModel) {
+        receiverNumberLabel.setCustomAttributedText(address.receiverNumber)
+        receiverNumberLabel.sizeToFit()
+        addressStreetLabel.setCustomAttributedText(address.addressStreet)
+        addressStreetLabel.sizeToFit()
+        receiverNameLabel.setCustomAttributedText(address.receiverName)
+        receiverNameLabel.sizeToFit()
+        addressNameLabel.setCustomAttributedText(address.addressName)
+        addressNameLabel.sizeToFit()
 
     }
     
+    @IBAction func panInfoAddress(gestureRecognizer: UIPanGestureRecognizer) {
+        infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
+
+        let touchPoint: CGPoint = gestureRecognizer.locationInView(self.view)
+        switch (gestureRecognizer.state){
+        case .Began:
+            break
+        case .Changed:
+            let delta:CGFloat = touchPoint.y - _previousY
+            _infoTopConstraint.constant+=delta
+            break
+        case .Failed, .Cancelled, .Ended:
+            let yVelocity:CGFloat = gestureRecognizer.velocityInView(gestureRecognizer.view).y
+            if (abs(yVelocity) > 700) {
+                if (yVelocity > 0) {
+                    hideInfo()
+                } else {
+                    showInfo()
+                }
+            } else if (infoAddressView.frame.origin.y < (self.view.frame.size.height-infoAddressView.frame.size.height+infoAddressView.frame.size.height/2)) {
+                showInfo()
+            } else {
+                hideInfo()
+            }
+            break
+        default: break
+        }
+        _previousY = touchPoint.y;
+        
+    }
+    
+    func hideInfo() -> Void{
+        transparantInfoView.hidden = true
+        _infoTopConstraint.constant = -40
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            }) { (finished: Bool) -> Void in
+                
+        }
+    }
+    
+    func showInfo() -> Void{
+        transparantInfoView.hidden = false
+        _infoTopConstraint.constant = -infoViewConstraintHeight.constant
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            }) { (finished: Bool) -> Void in
+                
+        }
+    }
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {

@@ -20,13 +20,19 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPPlacePickerViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
                 <outlet property="addressLabel" destination="STy-T0-3SC" id="4h6-DZ-tr0"/>
+                <outlet property="addressNameLabel" destination="moC-Bm-Mzo" id="lh0-uN-qos"/>
+                <outlet property="addressStreetLabel" destination="9dZ-KQ-oc1" id="QHT-LG-PEK"/>
                 <outlet property="doneButton" destination="48X-qA-qCM" id="Fur-XQ-l68"/>
                 <outlet property="infoAddressView" destination="ZaL-vy-Hga" id="UZe-TE-skS"/>
+                <outlet property="infoViewConstraintHeight" destination="88i-7z-Ejt" id="rLL-NM-gGr"/>
                 <outlet property="locationView" destination="tq3-y5-YOS" id="yIP-k0-UuJ"/>
                 <outlet property="mapView" destination="wrD-rD-Jjn" id="WWd-PZ-b5M"/>
                 <outlet property="pinPointImageView" destination="vxt-Bn-wWg" id="BhG-DM-LbD"/>
+                <outlet property="receiverNameLabel" destination="tbQ-wr-Aej" id="1fW-J8-OJa"/>
+                <outlet property="receiverNumberLabel" destination="wef-Tu-0dr" id="Jkt-CA-fbg"/>
                 <outlet property="searchBar" destination="1f4-A5-wM6" id="vyM-fp-DkZ"/>
                 <outlet property="tableView" destination="JeQ-fs-NTa" id="Oly-HA-Bzv"/>
+                <outlet property="transparantInfoView" destination="6XX-Ir-udL" id="5fH-Fq-33s"/>
                 <outlet property="transparentView" destination="72z-zm-lQ5" id="PmZ-ER-6Oj"/>
                 <outlet property="view" destination="EJy-Sg-pJF" id="b4S-zY-aps"/>
                 <outlet property="whiteLocationView" destination="xf5-Ix-U7Q" id="bnd-5P-G5g"/>
@@ -120,6 +126,18 @@
                     <animations/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.2622451241" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="Oht-tJ-FGZ" appends="YES" id="f8R-iN-FNv"/>
+                    </connections>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XX-Ir-udL">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.2622451241" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="CVp-Ca-VXr" appends="YES" id="QPF-am-6ay"/>
+                    </connections>
                 </view>
                 <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JeQ-fs-NTa">
                     <rect key="frame" x="0.0" y="44" width="600" height="556"/>
@@ -130,7 +148,7 @@
                         <outlet property="delegate" destination="-1" id="p8m-o2-Xk8"/>
                     </connections>
                 </tableView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZaL-vy-Hga" customClass="InfoAddressView" customModule="Tokopedia" customModuleProvider="target">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZaL-vy-Hga">
                     <rect key="frame" x="0.0" y="364" width="600" height="236"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat Kantor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="moC-Bm-Mzo">
@@ -219,6 +237,16 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHk-CY-Fjd">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="cVq-Z0-ms6"/>
+                            </constraints>
+                            <connections>
+                                <action selector="tapShowInfoAddress:" destination="-1" eventType="touchUpInside" id="NRO-zt-1dE"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -226,7 +254,8 @@
                     <constraints>
                         <constraint firstItem="moC-Bm-Mzo" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="1sZ-iO-jZN"/>
                         <constraint firstItem="0eE-CE-F5G" firstAttribute="top" secondItem="9dZ-KQ-oc1" secondAttribute="bottom" constant="21" id="2Xh-NB-xNN"/>
-                        <constraint firstAttribute="height" constant="236" id="88i-7z-Ejt"/>
+                        <constraint firstItem="mHk-CY-Fjd" firstAttribute="top" secondItem="ZaL-vy-Hga" secondAttribute="top" id="2nU-bQ-5Gs"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="236" id="88i-7z-Ejt"/>
                         <constraint firstItem="9A3-3j-agu" firstAttribute="top" secondItem="3H3-8N-MDv" secondAttribute="bottom" id="8E2-c2-EfZ"/>
                         <constraint firstItem="gIZ-8b-fld" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="BAf-SO-GOQ"/>
                         <constraint firstAttribute="trailing" secondItem="9dZ-KQ-oc1" secondAttribute="trailing" constant="15" id="BEK-jt-oI5"/>
@@ -242,18 +271,16 @@
                         <constraint firstItem="9A3-3j-agu" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" id="fIc-el-eSC"/>
                         <constraint firstItem="tbQ-wr-Aej" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="faG-Np-RL3"/>
                         <constraint firstAttribute="trailing" secondItem="wef-Tu-0dr" secondAttribute="trailing" constant="15" id="gg4-Bz-ql6"/>
+                        <constraint firstAttribute="trailing" secondItem="mHk-CY-Fjd" secondAttribute="trailing" id="jK9-2b-mYK"/>
                         <constraint firstItem="3H3-8N-MDv" firstAttribute="top" secondItem="ZaL-vy-Hga" secondAttribute="top" id="mI4-U4-mr8"/>
                         <constraint firstItem="4QJ-0K-71G" firstAttribute="top" secondItem="9A3-3j-agu" secondAttribute="bottom" constant="8" id="nOX-ls-6Bp"/>
                         <constraint firstItem="wef-Tu-0dr" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="oxl-kn-iVy"/>
                         <constraint firstItem="gIZ-8b-fld" firstAttribute="top" secondItem="tbQ-wr-Aej" secondAttribute="bottom" constant="14" id="q8b-Gc-plY"/>
                         <constraint firstAttribute="trailing" secondItem="9A3-3j-agu" secondAttribute="trailing" id="rQw-fB-9yA"/>
                         <constraint firstItem="tbQ-wr-Aej" firstAttribute="top" secondItem="4QJ-0K-71G" secondAttribute="bottom" constant="2" id="rcL-4N-T9n"/>
+                        <constraint firstItem="mHk-CY-Fjd" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" id="w2U-gA-SP3"/>
                     </constraints>
                     <connections>
-                        <outlet property="addressNameLabel" destination="moC-Bm-Mzo" id="i7o-rx-eB6"/>
-                        <outlet property="addressStreetLabel" destination="9dZ-KQ-oc1" id="Ba5-FG-W86"/>
-                        <outlet property="receiverNameLabel" destination="tbQ-wr-Aej" id="Zxb-ck-Ww8"/>
-                        <outlet property="receiverNumberLabel" destination="wef-Tu-0dr" id="DEg-RF-EFW"/>
                         <outletCollection property="gestureRecognizers" destination="IOZ-yy-DXy" appends="YES" id="o9g-DB-v1P"/>
                     </connections>
                 </view>
@@ -264,7 +291,9 @@
                 <constraint firstAttribute="trailing" secondItem="1f4-A5-wM6" secondAttribute="trailing" id="AlU-PB-d5V"/>
                 <constraint firstAttribute="bottom" secondItem="72z-zm-lQ5" secondAttribute="bottom" id="Bai-Ek-tBg"/>
                 <constraint firstItem="vxt-Bn-wWg" firstAttribute="centerX" secondItem="EJy-Sg-pJF" secondAttribute="centerX" id="FTF-JE-hHy"/>
+                <constraint firstAttribute="trailing" secondItem="6XX-Ir-udL" secondAttribute="trailing" id="Fh5-Zf-gov"/>
                 <constraint firstAttribute="trailing" secondItem="ZaL-vy-Hga" secondAttribute="trailing" id="FuQ-Vj-ofP"/>
+                <constraint firstItem="6XX-Ir-udL" firstAttribute="leading" secondItem="EJy-Sg-pJF" secondAttribute="leading" id="Hh7-kB-oBZ"/>
                 <constraint firstItem="72z-zm-lQ5" firstAttribute="top" secondItem="1f4-A5-wM6" secondAttribute="bottom" id="LZy-er-bZr"/>
                 <constraint firstItem="1f4-A5-wM6" firstAttribute="leading" secondItem="EJy-Sg-pJF" secondAttribute="leading" id="PP8-PV-0xh"/>
                 <constraint firstItem="wrD-rD-Jjn" firstAttribute="leading" secondItem="EJy-Sg-pJF" secondAttribute="leading" id="Pcq-4m-uzJ"/>
@@ -273,9 +302,11 @@
                 <constraint firstAttribute="trailing" secondItem="72z-zm-lQ5" secondAttribute="trailing" id="Ret-58-5hH"/>
                 <constraint firstAttribute="bottom" secondItem="JeQ-fs-NTa" secondAttribute="bottom" id="TjR-8Q-0UJ"/>
                 <constraint firstItem="vxt-Bn-wWg" firstAttribute="centerY" secondItem="EJy-Sg-pJF" secondAttribute="centerY" constant="-35" id="Xb6-jf-jHa"/>
+                <constraint firstAttribute="bottom" secondItem="6XX-Ir-udL" secondAttribute="bottom" id="ZyM-mc-ouL"/>
                 <constraint firstItem="1f4-A5-wM6" firstAttribute="top" secondItem="EJy-Sg-pJF" secondAttribute="top" id="cIT-Mh-DTw"/>
                 <constraint firstItem="JeQ-fs-NTa" firstAttribute="top" secondItem="1f4-A5-wM6" secondAttribute="bottom" id="cMh-q0-Yah"/>
                 <constraint firstAttribute="trailing" secondItem="JeQ-fs-NTa" secondAttribute="trailing" id="cnb-De-5d4"/>
+                <constraint firstItem="6XX-Ir-udL" firstAttribute="top" secondItem="EJy-Sg-pJF" secondAttribute="top" id="hBp-rh-FLx"/>
                 <constraint firstItem="tq3-y5-YOS" firstAttribute="centerX" secondItem="EJy-Sg-pJF" secondAttribute="centerX" id="jrs-Hu-zbn"/>
                 <constraint firstItem="JeQ-fs-NTa" firstAttribute="leading" secondItem="EJy-Sg-pJF" secondAttribute="leading" id="jw2-r1-2PD"/>
                 <constraint firstAttribute="bottom" secondItem="wrD-rD-Jjn" secondAttribute="bottom" id="kAu-WC-GWD"/>
@@ -285,7 +316,22 @@
                 <constraint firstItem="vxt-Bn-wWg" firstAttribute="top" secondItem="tq3-y5-YOS" secondAttribute="bottom" constant="6" id="zi2-VI-AdG"/>
             </constraints>
         </view>
-        <panGestureRecognizer minimumNumberOfTouches="1" id="IOZ-yy-DXy"/>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="IOZ-yy-DXy">
+            <connections>
+                <action selector="panInfoAddress:" destination="-1" id="PD4-PR-syD"/>
+                <outlet property="delegate" destination="-1" id="V8e-r2-cKG"/>
+            </connections>
+        </panGestureRecognizer>
+        <tapGestureRecognizer id="CVp-Ca-VXr">
+            <connections>
+                <action selector="tapTransparantInfoView:" destination="-1" id="LWK-fJ-0MV"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Oht-tJ-FGZ">
+            <connections>
+                <action selector="tapTransparentSearchBar:" destination="-1" id="Uxy-Nu-jby"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="Icon_check_green_bg.png" width="20" height="20"/>

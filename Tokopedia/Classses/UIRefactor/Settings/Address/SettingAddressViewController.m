@@ -1226,7 +1226,7 @@
 }
 
 - (int)getRequestMethod:(int)tag {
-    return RKRequestMethodPOST;
+    return RKRequestMethodGET;
 }
 
 - (id)getObjectManager:(int)tag
