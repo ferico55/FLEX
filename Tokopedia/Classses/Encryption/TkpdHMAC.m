@@ -84,7 +84,7 @@
 
 - (NSString*)getDate {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"EE, dd MMM YYYY HH:mm:ss Z"];
+    [dateFormatter setDateFormat:@"EE, dd MMM yyyy HH:mm:ss Z"];
     
     NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     [dateFormatter setLocale:usLocale];
