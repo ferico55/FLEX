@@ -21,8 +21,6 @@
 		45AC752C1C1841DE009C80A6 /* TKPMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AC752B1C1841DE009C80A6 /* TKPMapView.xib */; };
 		45AC752E1C18461C009C80A6 /* TKPInfoWindowMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AC752D1C18461C009C80A6 /* TKPInfoWindowMapView.swift */; };
 		45AC75301C184634009C80A6 /* TKPInfoWindowMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AC752F1C184634009C80A6 /* TKPInfoWindowMapView.xib */; };
-		45B92ED11C29349B005F87EF /* InfoAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B92ED01C29349B005F87EF /* InfoAddressView.swift */; };
-		45B92ED31C2934A7005F87EF /* InfoAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45B92ED21C2934A7005F87EF /* InfoAddressView.xib */; };
 		45B92ED71C293F50005F87EF /* AddressViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B92ED61C293F50005F87EF /* AddressViewModel.m */; };
 		45BB999E1C0C0B4300EA2C80 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D321C0C0B3E00EA2C80 /* TPAnalytics.m */; };
 		45BB999F1C0C0B4300EA2C80 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BB8D351C0C0B3E00EA2C80 /* URLCacheAlert.m */; };
@@ -2017,8 +2015,6 @@
 		45AC752B1C1841DE009C80A6 /* TKPMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPMapView.xib; sourceTree = "<group>"; };
 		45AC752D1C18461C009C80A6 /* TKPInfoWindowMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPInfoWindowMapView.swift; sourceTree = "<group>"; };
 		45AC752F1C184634009C80A6 /* TKPInfoWindowMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPInfoWindowMapView.xib; sourceTree = "<group>"; };
-		45B92ED01C29349B005F87EF /* InfoAddressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoAddressView.swift; sourceTree = "<group>"; };
-		45B92ED21C2934A7005F87EF /* InfoAddressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoAddressView.xib; sourceTree = "<group>"; };
 		45B92ED51C293F50005F87EF /* AddressViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressViewModel.h; sourceTree = "<group>"; };
 		45B92ED61C293F50005F87EF /* AddressViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressViewModel.m; sourceTree = "<group>"; };
 		45BB8D311C0C0B3E00EA2C80 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -8897,8 +8893,6 @@
 				45BB95CB1C0C0B4000EA2C80 /* PlacePickerViewController.m */,
 				45BB95CC1C0C0B4000EA2C80 /* PlacePickerViewController.xib */,
 				4554D2291C1596C9005F43DB /* Tokopedia-Bridging-Header.h */,
-				45B92ED01C29349B005F87EF /* InfoAddressView.swift */,
-				45B92ED21C2934A7005F87EF /* InfoAddressView.xib */,
 			);
 			path = TKPGooglePlaces;
 			sourceTree = "<group>";
@@ -10531,7 +10525,6 @@
 				45BB9F611C0C0B4300EA2C80 /* icon_medal.png in Resources */,
 				45BB9FE21C0C0B4300EA2C80 /* icon_retur@3x.png in Resources */,
 				45BB9BB51C0C0B4300EA2C80 /* CameraController.xib in Resources */,
-				45B92ED31C2934A7005F87EF /* InfoAddressView.xib in Resources */,
 				4536F2751C11979400C98565 /* icon_pinpoin_toped.png in Resources */,
 				45BB9BC71C0C0B4300EA2C80 /* CatalogProductCell.xib in Resources */,
 				45BB9F121C0C0B4300EA2C80 /* icon_clock@2x.png in Resources */,
@@ -11999,7 +11992,6 @@
 				45BB9AF01C0C0B4300EA2C80 /* AddShopResult.m in Sources */,
 				45BB9E651C0C0B4300EA2C80 /* TalkModelView.m in Sources */,
 				45BB9CA21C0C0B4300EA2C80 /* InboxTicketReplyViewController.m in Sources */,
-				45B92ED11C29349B005F87EF /* InfoAddressView.swift in Sources */,
 				45BB9DE41C0C0B4300EA2C80 /* MaintenanceViewController.m in Sources */,
 				45BB9A7F1C0C0B4300EA2C80 /* ResponseComment.m in Sources */,
 				45BB9ADF1C0C0B4300EA2C80 /* SearchAutoCompleteCategory.m in Sources */,

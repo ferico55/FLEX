@@ -332,11 +332,11 @@
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMap:(id)sender {
     AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    address = [AddressFormList new];
-    address.address_name = @"Alamat Kantor";
-    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
-    address.receiver_name = @"Orang Keren";
-    address.receiver_phone = @"0812345678";
+//    address = [AddressFormList new];
+//    address.address_name = @"Alamat Kantor";
+//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
+//    address.receiver_name = @"Orang Keren";
+//    address.receiver_phone = @"0812345678";
     [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self ];
 }
 //

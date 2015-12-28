@@ -98,16 +98,6 @@ enum TypePlacePicker : Int{
         initLocationManager()
         adustBehaviorType(type)
         loadHistory()
-        
-        _infoTopConstraint = NSLayoutConstraint(
-            item: self.infoAddressView,
-            attribute: .Top,
-            relatedBy: .Equal,
-            toItem: self.view,
-            attribute: .Bottom,
-            multiplier: 1.0,
-            constant: -40.0)
-        self.view .addConstraint(_infoTopConstraint)
     }
     
     //MARK: - View Action
@@ -202,6 +192,15 @@ enum TypePlacePicker : Int{
         searchBar.delegate = self
         searchBar.setBackgroundImage(UIImage(named: "NavBar"), forBarPosition: .Top, barMetrics: .Default)
         if((infoAddress) != nil){
+            _infoTopConstraint = NSLayoutConstraint(
+                item: self.infoAddressView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: self.view,
+                attribute: .Bottom,
+                multiplier: 1.0,
+                constant: -40.0)
+            self.view .addConstraint(_infoTopConstraint)
             adjustInfoAddress(infoAddress)
         }
     }
