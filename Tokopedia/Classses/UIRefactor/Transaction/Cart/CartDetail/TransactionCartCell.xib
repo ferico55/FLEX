@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -21,7 +21,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="126"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nrB-Gb-lSt" id="ObG-qm-9Xr">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="125.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="125"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOu-9t-o2o">
@@ -63,12 +63,13 @@
                                 <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-5u-Ef6">
-                                <rect key="frame" x="275" y="0.0" width="40" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-5u-Ef6">
+                                <rect key="frame" x="265" y="0.0" width="50" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="HWg-Ra-Blb"/>
-                                    <constraint firstAttribute="height" constant="40" id="UKy-rb-r5y"/>
+                                    <constraint firstAttribute="width" constant="50" id="HWg-Ra-Blb"/>
+                                    <constraint firstAttribute="height" constant="50" id="UKy-rb-r5y"/>
                                 </constraints>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="10" maxY="0.0"/>
                                 <state key="normal" image="icon_more_grey.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -102,13 +103,13 @@
                             <constraint firstItem="9B8-Qh-nPX" firstAttribute="leading" secondItem="fWE-ZZ-SIy" secondAttribute="trailing" constant="10" id="8t2-S3-EzV"/>
                             <constraint firstItem="fWE-ZZ-SIy" firstAttribute="top" secondItem="tiN-DT-ee1" secondAttribute="bottom" constant="9" id="D9a-IX-NxM"/>
                             <constraint firstAttribute="trailing" secondItem="syi-Ey-9on" secondAttribute="trailing" constant="15" id="IlI-6W-fld"/>
+                            <constraint firstItem="syi-Ey-9on" firstAttribute="top" secondItem="9B8-Qh-nPX" secondAttribute="bottom" constant="5" id="RFZ-Pn-uKm"/>
                             <constraint firstItem="2I2-9g-225" firstAttribute="leading" secondItem="ArF-vS-sw3" secondAttribute="trailing" constant="10" id="Uf8-WE-Xbd"/>
                             <constraint firstItem="syi-Ey-9on" firstAttribute="leading" secondItem="ArF-vS-sw3" secondAttribute="trailing" constant="10" id="VJO-NO-Y2m"/>
                             <constraint firstItem="ArF-vS-sw3" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" constant="15" id="VRL-Cz-UEa"/>
                             <constraint firstItem="2I2-9g-225" firstAttribute="leading" secondItem="ArF-vS-sw3" secondAttribute="trailing" constant="10" id="Xqr-uq-T7I"/>
                             <constraint firstItem="2I2-9g-225" firstAttribute="top" secondItem="9B8-Qh-nPX" secondAttribute="bottom" constant="24" id="YDn-D4-PHB"/>
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="YGL-Gh-nDz"/>
-                            <constraint firstItem="syi-Ey-9on" firstAttribute="top" secondItem="VEf-5u-Ef6" secondAttribute="bottom" constant="-3" id="aHf-My-abZ"/>
                             <constraint firstItem="tiN-DT-ee1" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="b68-Dc-1j6"/>
                             <constraint firstAttribute="height" constant="83" id="ctX-gc-l4n"/>
                             <constraint firstItem="9B8-Qh-nPX" firstAttribute="top" secondItem="tiN-DT-ee1" secondAttribute="bottom" constant="11" id="cvG-iZ-vG3"/>
@@ -116,7 +117,7 @@
                             <constraint firstItem="ArF-vS-sw3" firstAttribute="top" secondItem="tiN-DT-ee1" secondAttribute="bottom" constant="49" id="kiq-vO-gRk"/>
                             <constraint firstAttribute="trailing" secondItem="2I2-9g-225" secondAttribute="trailing" constant="15" id="kwp-sZ-NbN"/>
                             <constraint firstItem="fWE-ZZ-SIy" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" constant="15" id="lDq-tC-NSM"/>
-                            <constraint firstItem="VEf-5u-Ef6" firstAttribute="leading" secondItem="9B8-Qh-nPX" secondAttribute="trailing" constant="5" id="oFc-PE-0HX"/>
+                            <constraint firstItem="9B8-Qh-nPX" firstAttribute="trailing" secondItem="VEf-5u-Ef6" secondAttribute="leading" constant="5" id="oFc-PE-0HX"/>
                             <constraint firstAttribute="trailing" secondItem="tiN-DT-ee1" secondAttribute="trailing" id="q71-xn-kd7"/>
                             <constraint firstItem="tiN-DT-ee1" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" id="reA-Pv-yp7"/>
                         </constraints>
@@ -125,7 +126,7 @@
                         </connections>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CLh-ZD-D84" userLabel="View Name">
-                        <rect key="frame" x="0.0" y="91" width="320" height="34.5"/>
+                        <rect key="frame" x="0.0" y="91" width="320" height="34"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unQ-M8-7Wu">
                                 <rect key="frame" x="15" y="-3" width="76" height="21"/>
@@ -138,7 +139,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDt-Mq-1QP">
-                                <rect key="frame" x="15" y="13" width="290" height="21.5"/>
+                                <rect key="frame" x="15" y="13" width="290" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
