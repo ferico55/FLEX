@@ -241,7 +241,7 @@ typedef enum TagRequest {
 
 #pragma mark - Tokopedia Network Delegate
 - (NSString *)getPath:(int)tag {
-    return @"/web-service/v4/home/get_recent_view_product.pl";
+    return @"/v4/home/get_recent_view_product.pl";
 }
 
 - (NSDictionary *)getParameter:(int)tag {
