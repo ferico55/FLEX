@@ -569,8 +569,8 @@
         
         //TODO:: Uncomment for showing map address
         if ([list.longitude integerValue] != 0) {
-            _mapImageView.image = _imageMap;
-            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+//            _mapImageView.image = _imageMap;
+//            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
 
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                 GMSAddress *address = [response results][0];

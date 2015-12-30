@@ -286,7 +286,8 @@
     }
     else
         addressStreet = street;
-    [_pinLocationNameButton.titleLabel setCustomAttributedText:addressStreet];
+    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_pinLocationNameButton setCustomAttributedText:addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
@@ -1075,7 +1076,8 @@
                 // strAdd -> take bydefault value nil
                 GMSAddress *placemark = [response results][0];
                 //        [self marker].snippet = [self addressString:placemark];
-                [_pinLocationNameButton setTitle:[self addressString:placemark] forState:UIControlStateNormal];
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
             }];
             
             [_tableView reloadData];

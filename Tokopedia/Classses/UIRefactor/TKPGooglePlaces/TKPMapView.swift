@@ -33,8 +33,6 @@ class TKPMapView: GMSMapView {
         self.selectedMarker = marker
 
         self.myLocationEnabled = true
-
-        self.myLocationEnabled = true
         self.settings.myLocationButton = true
     }
     

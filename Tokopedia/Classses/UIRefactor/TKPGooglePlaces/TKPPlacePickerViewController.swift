@@ -169,7 +169,7 @@ enum TypePlacePicker : Int{
             locationView.hidden = false
             pinPointImageView.hidden = false
             mapView.updateIsShowMarker(false)
-            mapView.myLocationEnabled = true;
+            mapView.myLocationEnabled = true
             if (firstCoordinate.longitude == 0 && locationManager.location != nil) {
                 firstCoordinate =  locationManager.location!.coordinate
             }
@@ -182,6 +182,7 @@ enum TypePlacePicker : Int{
             mapView.updateCameraPosition(firstCoordinate)
             locationView.hidden = true
             pinPointImageView.hidden = true
+            mapView.showButtonCurrentLocation(false)
             break;
             
         default:
@@ -204,7 +205,7 @@ enum TypePlacePicker : Int{
                 constant: -40.0)
             self.view .addConstraint(_infoTopConstraint)
 //            mapViewBotomConstraint.constant = abs(_infoTopConstraint.constant)
-            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 40.0, 0.0);
+            mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, abs(_infoTopConstraint.constant), 0.0);
             adjustInfoAddress(infoAddress)
         }
         else
@@ -218,7 +219,7 @@ enum TypePlacePicker : Int{
                 multiplier: 1.0,
                 constant: 0.0)
             self.view .addConstraint(_infoTopConstraint)
-            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 0.0, 0.0);
+            mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, 0.0, 0.0);
 
         }
     }
