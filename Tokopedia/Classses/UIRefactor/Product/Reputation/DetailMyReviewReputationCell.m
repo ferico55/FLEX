@@ -5,8 +5,9 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "DetailReviewReputaionViewModel.h"
+#import "DetailReviewReputationViewModel.h"
 #import "DetailMyReviewReputationCell.h"
+#import "NavigationHelper.h"
 #define CStringKomentar @"Komentar"
 #define CStringPembeliBelumBeriUlasan @"Pembeli belum memberikan ulasan"
 #define CStringPembeliLewatiUlasan @"Pembeli telah melewati ulasan"
@@ -110,13 +111,14 @@
 
 }
 
-- (void)setView:(DetailReviewReputaionViewModel *)viewModel {
+- (void)setView:(DetailReviewReputationViewModel *)viewModel {
     lblDate.text = @"";
     [btnProduct setTitle:[NSString convertHTML:viewModel.product_name] forState:UIControlStateNormal];
     
     //Check deleted product status
     if([viewModel.product_status isEqualToString:@"1"]) {
-        btnProduct.userInteractionEnabled = YES;
+        btnProduct.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
+
         [btnProduct.titleLabel setTextColor:[UIColor colorWithRed:66/255.0f green:66/255.0f blue:66/255.0f alpha:1.0f]];
     }
     else {

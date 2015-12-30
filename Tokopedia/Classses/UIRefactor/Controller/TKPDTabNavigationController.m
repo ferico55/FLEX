@@ -122,7 +122,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.title = [self.navigationTitle capitalizedString];
+    if (self.navigationTitle) {
+        self.navigationItem.title = [self.navigationTitle capitalizedString];
+    }
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -170,10 +172,11 @@
 -(void)setData:(NSDictionary *)data
 {
     _data = [data mutableCopy];
-    
     if (data) {
-        if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)])
+        NSInteger type = [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY] integerValue];
+        if (type == kTKPDCATEGORY_DATATYPECATEGORYKEY) {
             self.navigationItem.title = kTKPDCONTROLLER_TITLECATEGORYKEY;
+        }
     }
 }
 
@@ -641,7 +644,9 @@
 }
 - (void)changeNavigationTitle:(NSNotification*)notification {
     NSString *title = [notification object];
-    self.navigationItem.title = [title capitalizedString];
+    if (title) {
+        self.navigationItem.title = [title capitalizedString];
+    }
 }
 
 @end

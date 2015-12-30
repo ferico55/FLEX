@@ -18,27 +18,25 @@
 }
 
 - (ConversationViewModel *)viewModel {
-    if (_viewModel == nil) {
-        ConversationViewModel *viewModel = [ConversationViewModel new];
-        viewModel.userName = _ticket_detail_user_name;
-        viewModel.userProfilePicture = _ticket_detail_user_image;
-        viewModel.conversationMessage = _ticket_detail_message;
-        viewModel.conversationDate = _ticket_detail_create_time_fmt;
-        viewModel.conversationPhotos = _ticket_detail_attachment;
-        viewModel.conversationDate = _ticket_detail_create_time;
-        if ([_ticket_detail_is_cs boolValue]) {
-            viewModel.conversationOwner = @"Administrator";
-        } else {
-            viewModel.conversationOwner = @"Pengguna";
-        }
-        if ([_ticket_detail_new_rating isEqualToString:@"1"]) {
-            viewModel.conversationNote = @"Memberikan Penilaian : Membantu";
-        } else if ([_ticket_detail_new_rating isEqualToString:@"2"]) {
-            viewModel.conversationNote = @"Memberikan Penilaian : Tidak Membantu";
-        }
-        _viewModel = viewModel;
+    ConversationViewModel *viewModel = [ConversationViewModel new];
+    viewModel.userName = _ticket_detail_user_name;
+    viewModel.userProfilePicture = _ticket_detail_user_image;
+    viewModel.conversationMessage = _ticket_detail_message;
+    viewModel.conversationDate = _ticket_detail_create_time_fmt;
+    viewModel.conversationPhotos = _ticket_detail_attachment;
+    viewModel.conversationDate = _ticket_detail_create_time;
+    if ([_ticket_detail_is_cs boolValue]) {
+        viewModel.conversationOwner = @"Administrator";
+    } else {
+        viewModel.conversationOwner = @"Pengguna";
     }
-    return _viewModel;
+    if ([_ticket_detail_new_rating isEqualToString:@"1"]) {
+        viewModel.conversationNote = @"Memberikan Penilaian : Membantu";
+    } else if ([_ticket_detail_new_rating isEqualToString:@"2"]) {
+        viewModel.conversationNote = @"Memberikan Penilaian : Tidak Membantu";
+    }
+
+    return viewModel;
 }
 
 @end

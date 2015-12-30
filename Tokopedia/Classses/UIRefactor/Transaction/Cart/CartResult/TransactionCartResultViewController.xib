@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -166,7 +166,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fMn-xg-Fit" id="MmE-8p-gZC">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="119.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="119"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah Pembayaran" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yyB-pd-Z90">
@@ -257,8 +257,11 @@
                         <rect key="frame" x="15" y="70" width="290" height="51.5"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Silahkan menghubungi kami apabila Anda mengalami kesulitan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-D9-MRs">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silahkan menghubungi kami apabila Anda mengalami kesulitan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-D9-MRs">
                     <rect key="frame" x="15" y="129" width="290" height="46"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="46" id="7lu-zR-j49"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -286,9 +289,12 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="e70-yU-41l" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="2b2-n1-3Ys"/>
+                <constraint firstItem="wYq-D9-MRs" firstAttribute="top" secondItem="V33-g9-JWw" secondAttribute="bottom" constant="13" id="6pD-g2-5TN"/>
                 <constraint firstAttribute="trailing" secondItem="V33-g9-JWw" secondAttribute="trailing" constant="15" id="83n-ya-J9Z"/>
+                <constraint firstItem="wYq-D9-MRs" firstAttribute="leading" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="CZ2-RM-Ugn"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QEA-BO-1aG" secondAttribute="top" constant="20" id="DWK-Rz-7ca"/>
                 <constraint firstAttribute="trailing" secondItem="e70-yU-41l" secondAttribute="trailing" constant="15" id="H6I-DI-EhI"/>
+                <constraint firstAttribute="trailing" secondItem="wYq-D9-MRs" secondAttribute="trailing" constant="15" id="M1y-ls-9wu"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="e70-yU-41l" secondAttribute="trailing" constant="15" id="cbb-cS-Brn"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="top" secondItem="QEA-BO-1aG" secondAttribute="top" constant="20" id="o8J-3m-3nl"/>
                 <constraint firstItem="e70-yU-41l" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QEA-BO-1aG" secondAttribute="leading" constant="15" id="sWq-lc-u7U"/>
@@ -848,7 +854,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
             <point key="canvasLocation" x="69" y="-240"/>
         </view>
         <view contentMode="scaleToFill" id="PI7-O1-Z1J" userLabel="HeaderIndomaretView">
-            <rect key="frame" x="0.0" y="1" width="320" height="111"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0013" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUd-5a-lvQ">
@@ -1459,7 +1465,7 @@ Pilih Tokopedia</string>
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D8K-ct-B4h" id="zaR-Rm-EOq">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Potensi Cashback" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PBD-aa-HyN">
@@ -1471,7 +1477,7 @@ Pilih Tokopedia</string>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ibf-8z-Mqu">
-                        <rect key="frame" x="264.5" y="16" width="40.5" height="12"/>
+                        <rect key="frame" x="264" y="16" width="41" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>

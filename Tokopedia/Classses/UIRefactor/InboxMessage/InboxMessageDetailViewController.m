@@ -18,6 +18,7 @@
 #import "detail.h"
 #import "NavigateViewController.h"
 #import "TagManagerHandler.h"
+#import "NavigationHelper.h"
 
 @interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UISplitViewControllerDelegate>
 
@@ -103,11 +104,11 @@
                                                                      target:self
                                                                      action:@selector(tap:)];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
+//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+//    barButtonItem.tag = 10;
+//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     _operationQueue = [NSOperationQueue new];
     _page = 1;
@@ -206,12 +207,7 @@
 #pragma mark - UITableView DataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _messages.count;
-#else
-    return _isnodata ? 0 : _messages.count;
-#endif
-    
+    return _data? _messages.count:0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -265,7 +261,7 @@
         UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
 
         [cell.avatarImageView addGestureRecognizer:tapUser];
-        [cell.avatarImageView setUserInteractionEnabled:YES];
+        [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
         cell.avatarImageView.tag = [message.user_id integerValue];
         cell.viewLabelUser.text = message.user_name;
         
@@ -861,6 +857,12 @@
         [self configureRestKit];
         [self loadData];
     }
+    else {
+        [_act stopAnimating];
+        [_table reloadData];
+    }
+    
+    _messagingview.hidden = _data == nil;
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation

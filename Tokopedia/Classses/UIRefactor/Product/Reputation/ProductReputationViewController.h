@@ -26,6 +26,9 @@
 }
 
 @property (nonatomic, strong) NSString *strShopDomain, *strProductID;
+@property (nonatomic, weak) IBOutlet UIView *filterView;
+
+
 - (void)reloadTable;
 - (IBAction)actionResetFilter:(id)sender;
 - (IBAction)actionFilter6Month:(id)sender;

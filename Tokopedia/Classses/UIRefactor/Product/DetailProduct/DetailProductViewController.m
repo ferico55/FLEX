@@ -1067,16 +1067,12 @@ UIAlertViewDelegate
             if([_product.result.shop_info.shop_has_terms isEqualToString:@"0"]) {
                 NSString *strCanReture = [CStringCanReture stringByReplacingOccurrencesOfString:CStringCanRetureReplace withString:@""];
                 [productInfoCell setLblDescriptionToko:strCanReture];
-                [productInfoCell setLblRetur:strCanReture];
             }
             else {
                 [productInfoCell setLblDescriptionToko:CStringCanReture];
                 NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
-                [productInfoCell getLblRetur].enabledTextCheckingTypes = NSTextCheckingTypeLink;
                 [productInfoCell getLblRetur].delegate = self;
                 
-                [productInfoCell setLblRetur:CStringCanReture];
-                [productInfoCell getLblRetur].linkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
                 [[productInfoCell getLblRetur] addLinkToURL:[NSURL URLWithString:@""] withRange:range];
                 
                 tokopediaNoteCanReture = [TokopediaNetworkManager new];
@@ -1087,7 +1083,6 @@ UIAlertViewDelegate
         }
         else if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"2"]) {
             [productInfoCell setLblDescriptionToko:CStringCannotReture];
-            [productInfoCell setLblRetur:CStringCannotReture];
         }
         else {
             [productInfoCell hiddenViewRetur];
