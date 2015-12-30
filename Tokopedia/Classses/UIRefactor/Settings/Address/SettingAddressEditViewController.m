@@ -162,7 +162,6 @@
              forControlEvents:UIControlEventEditingChanged];
     
     _constraintBottomMapName.constant = 20;
-    _buttonMapLocation.titleLabel.numberOfLines = 2;
 
 }
 
@@ -371,6 +370,7 @@
         _textfieldpostcode.text = addressStreet;
     
     _textfieldpostcode.text = address.postalCode;
+    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [_buttonMapLocation setCustomAttributedText:addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -583,7 +583,8 @@
                 {
                     addressString = address.thoroughfare;
                 }
-                [_buttonMapLocation setTitle:addressString forState:UIControlStateNormal];
+                _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_buttonMapLocation setCustomAttributedText:addressString];
                 _opsionalLabel.hidden = YES;
                 _constraintBottomMapName.constant = 0;
 
