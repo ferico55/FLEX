@@ -29,6 +29,8 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		7AFDF76F1C3384410084332F /* UIButtonCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFDF76D1C3384410084332F /* UIButtonCategory.swift */; };
+		7AFDF7701C3384410084332F /* UIViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFDF76E1C3384410084332F /* UIViewCategory.swift */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2043,6 +2045,10 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7AFDF76B1C3384400084332F /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
+		7AFDF76C1C3384410084332F /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
+		7AFDF76D1C3384410084332F /* UIButtonCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonCategory.swift; sourceTree = "<group>"; };
+		7AFDF76E1C3384410084332F /* UIViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewCategory.swift; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5150,6 +5156,9 @@
 		921E900C1C1A6C0F00BA817F /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				7AFDF76C1C3384410084332F /* Tokopedia-Bridging-Header.h */,
+				7AFDF76D1C3384410084332F /* UIButtonCategory.swift */,
+				7AFDF76E1C3384410084332F /* UIViewCategory.swift */,
 				921E900D1C1A6C0F00BA817F /* ALAsset+Date.h */,
 				921E900E1C1A6C0F00BA817F /* ALAsset+Date.m */,
 				921E900F1C1A6C0F00BA817F /* CMPopTipView.h */,
@@ -5199,6 +5208,7 @@
 				921E903B1C1A6C0F00BA817F /* Utils */,
 				921E903E1C1A6C0F00BA817F /* ViewLabelUser.h */,
 				921E903F1C1A6C0F00BA817F /* ViewLabelUser.m */,
+				7AFDF76B1C3384400084332F /* Tokopedia-Bridging-Header.h */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -10430,6 +10440,7 @@
 		FC36DF7B19B0656400AF74C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
@@ -11659,6 +11670,7 @@
 				921E9D261C1A6C1500BA817F /* ResolutionDispute.m in Sources */,
 				921E9D4A1C1A6C1500BA817F /* TotalLikeDislikePost.m in Sources */,
 				921E9F7F1C1A6C1500BA817F /* InboxTalkSplitViewController.m in Sources */,
+				7AFDF76F1C3384410084332F /* UIButtonCategory.swift in Sources */,
 				921EA0011C1A6C1500BA817F /* ProfileContactViewController.m in Sources */,
 				921EA0321C1A6C1500BA817F /* SalesOrderCell.m in Sources */,
 				921E9F531C1A6C1500BA817F /* InboxMessageCell.m in Sources */,
@@ -12424,6 +12436,7 @@
 				921E9EC61C1A6C1500BA817F /* RequestCategory.m in Sources */,
 				921E9D331C1A6C1500BA817F /* InboxTalkResult.m in Sources */,
 				921EA0F41C1A6C1500BA817F /* TransactionCartResultPaymentCell.m in Sources */,
+				7AFDF7701C3384410084332F /* UIViewCategory.swift in Sources */,
 				921E9F8B1C1A6C1500BA817F /* InboxTicketViewController.m in Sources */,
 				921E9D071C1A6C1500BA817F /* DepartmentChild2.m in Sources */,
 				921E9E211C1A6C1500BA817F /* InstallmentBank.m in Sources */,
@@ -12640,6 +12653,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -12653,6 +12667,7 @@
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -12672,6 +12687,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/Cocoa/Tokopedia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -12684,6 +12701,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				ENABLE_BITCODE = NO;
@@ -12697,6 +12715,7 @@
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -12716,6 +12735,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/Cocoa/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
