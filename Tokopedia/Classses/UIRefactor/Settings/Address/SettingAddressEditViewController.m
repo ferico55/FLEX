@@ -372,8 +372,8 @@
     
     _textfieldpostcode.text = address.postalCode;
     [_buttonMapLocation setCustomAttributedText:addressStreet];
-    _mapImageView.image = mapImage;
-    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+//    _mapImageView.image = mapImage;
+//    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;
     _constraintBottomMapName.constant = 0;
     
@@ -943,7 +943,7 @@
 }
 
 - (NSString *)getPath:(int)tag {
-    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"v4/action/people/edit_address.pl":@"v4/action/people/add_address.pl";
+    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"/web-service/v4/action/people/edit_address.pl":@"/web-service/v4/action/people/add_address.pl";
 }
 
 - (id)getObjectManager:(int)tag

@@ -36,19 +36,6 @@ class TKPMapView: GMSMapView {
 
         self.myLocationEnabled = true
         self.settings.myLocationButton = true
-        for object:UIView in self.subviews {
-            let className: NSString = NSStringFromClass(object.dynamicType)
-            print("CLASS \(className)")
-            if (className.isEqualToString("GMSUISettingsView")){
-                for view:UIView in object.subviews{
-                    print("VIEW \(view)")
-                    view.autoresizingMask = [.FlexibleRightMargin,.FlexibleTopMargin]
-                    var frame:CGRect = view.frame
-                    frame.origin.y = 5
-                    view.frame = frame
-                }
-            }
-        }
     }
     
     func updateIsShowMarker(isShowMarker: Bool){

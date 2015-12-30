@@ -12,6 +12,11 @@
 
 @property (strong, nonatomic) NSString *receiverNumber;
 @property (strong, nonatomic) NSString *addressStreet;
+@property (strong, nonatomic) NSString *addressPostalCode;
+@property (strong, nonatomic) NSString *addressDistrict;
+@property (strong, nonatomic) NSString *addressProvince;
+@property (strong, nonatomic) NSString *addressCountry;
+@property (strong, nonatomic) NSString *addressCity;
 @property (strong, nonatomic) NSString *receiverName;
 @property (strong, nonatomic) NSString *addressName;
 

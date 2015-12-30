@@ -39,6 +39,7 @@ enum TypePlacePicker : Int{
     @IBOutlet var addressNameLabel: UILabel!
     
     @IBOutlet var infoViewConstraintHeight: NSLayoutConstraint!
+    @IBOutlet var mapViewBotomConstraint: NSLayoutConstraint!
     @IBOutlet var transparantInfoView: UIView!
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
@@ -57,7 +58,7 @@ enum TypePlacePicker : Int{
     var isDragging :Bool = true
     var shouldStartSearch :Bool = false
     
-    var captureScreen : UIImage = UIImage(named:"JakartaMap.png")!
+    var captureScreen : UIImage = UIImage(named:"map_gokil.png")!
     var dataTableView : [[String]] = [[],[]]
     var titleSection : [String] = ["Suggestions","Recent Search"]
     
@@ -117,6 +118,7 @@ enum TypePlacePicker : Int{
     
     @IBAction func tapShowInfoAddress(sender: AnyObject) {
         if(_infoTopConstraint.constant <= -40){
+            infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
             showInfo()
         }
     }
@@ -201,14 +203,30 @@ enum TypePlacePicker : Int{
                 multiplier: 1.0,
                 constant: -40.0)
             self.view .addConstraint(_infoTopConstraint)
+//            mapViewBotomConstraint.constant = abs(_infoTopConstraint.constant)
+            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 40.0, 0.0);
             adjustInfoAddress(infoAddress)
+        }
+        else
+        {
+            _infoTopConstraint = NSLayoutConstraint(
+                item: self.infoAddressView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: self.view,
+                attribute: .Bottom,
+                multiplier: 1.0,
+                constant: 0.0)
+            self.view .addConstraint(_infoTopConstraint)
+            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 0.0, 0.0);
+
         }
     }
     
     func adjustInfoAddress(address:AddressViewModel) {
         receiverNumberLabel.setCustomAttributedText(address.receiverNumber)
         receiverNumberLabel.sizeToFit()
-        addressStreetLabel.setCustomAttributedText(address.addressStreet)
+        addressStreetLabel.setCustomAttributedText("\(address.addressStreet)\n\(address.addressDistrict),\n\(address.addressCity),\n\(address.addressProvince), \(address.addressCountry) \(address.addressPostalCode)")
         addressStreetLabel.sizeToFit()
         receiverNameLabel.setCustomAttributedText(address.receiverName)
         receiverNameLabel.sizeToFit()
@@ -230,7 +248,7 @@ enum TypePlacePicker : Int{
             break
         case .Failed, .Cancelled, .Ended:
             let yVelocity:CGFloat = gestureRecognizer.velocityInView(gestureRecognizer.view).y
-            if (abs(yVelocity) > 700) {
+            if (abs(yVelocity) > 50) {
                 if (yVelocity > 0) {
                     hideInfo()
                 } else {

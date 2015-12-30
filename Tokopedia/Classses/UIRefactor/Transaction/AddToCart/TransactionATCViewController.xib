@@ -33,6 +33,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -40,7 +41,6 @@
             <string>GothamLight</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -59,12 +59,12 @@
                 <outlet property="buyButton" destination="ZND-e2-NEY" id="Hzm-Ug-aPG"/>
                 <outlet property="footer" destination="7qp-b3-zGj" id="6Rx-Ku-Itj"/>
                 <outlet property="insuraceConstraint" destination="1nr-77-rUU" id="nZm-ic-rvp"/>
-                <outlet property="mapImageView" destination="eiV-0e-mNl" id="9by-zU-XUO"/>
+                <outlet property="mapImageView" destination="mVJ-c3-iyT" id="6xo-Ku-nch"/>
                 <outlet property="messageZeroShipmentLabel" destination="ZrZ-ED-WHQ" id="zkj-XQ-7HH"/>
                 <outlet property="messageZeroShipmentView" destination="tVL-of-Hh8" id="bfM-iq-ORD"/>
                 <outlet property="phoneLabel" destination="cqz-ce-FDb" id="0Ux-Ri-zzg"/>
-                <outlet property="pinLocationCell" destination="PYM-b7-lg6" id="V60-oT-TwQ"/>
-                <outlet property="pinLocationNameButton" destination="40H-M4-RDh" id="Byp-kR-GCm"/>
+                <outlet property="pinLocationCell" destination="rSf-S1-CmY" id="ahZ-Ti-gqB"/>
+                <outlet property="pinLocationNameButton" destination="1qJ-L8-fU5" id="0Hw-2o-xzV"/>
                 <outlet property="productDescriptionLabel" destination="jsc-eB-Aif" id="FOq-wd-cvk"/>
                 <outlet property="productQuantityTextField" destination="YBU-6k-Lh7" id="QPL-Fs-jAo"/>
                 <outlet property="productThumbImageView" destination="NY0-Dh-jHZ" id="isB-FZ-21h"/>
@@ -89,7 +89,7 @@
                 <outletCollection property="tableViewPaymentDetailCell" destination="T1e-I5-MeF" id="CHq-ha-RRb"/>
                 <outletCollection property="tableViewShipmentCell" destination="zrh-Ec-ndt" id="iXr-v9-aWw"/>
                 <outletCollection property="tableViewPaymentDetailCell" destination="BSY-vM-0Kc" id="0qs-b0-aK8"/>
-                <outletCollection property="tableViewShipmentCell" destination="PYM-b7-lg6" id="iI4-hp-KZz"/>
+                <outletCollection property="tableViewShipmentCell" destination="rSf-S1-CmY" id="XLc-44-2MS"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -1003,13 +1003,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-8N-w16">
+                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-8N-w16">
                         <rect key="frame" x="126" y="1" width="179" height="41"/>
                         <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0M-8H-2VQ">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0M-8H-2VQ">
                         <rect key="frame" x="15" y="1" width="95" height="41"/>
                         <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
@@ -1135,58 +1135,76 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="512" y="-841"/>
         </view>
-        <tableViewCell clipsSubviews="YES" tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="PYM-b7-lg6">
+        <tableViewCell clipsSubviews="YES" tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="rSf-S1-CmY">
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PYM-b7-lg6" id="1kR-sp-TKn">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rSf-S1-CmY" id="t7H-aY-2lg">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="69.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="eiV-0e-mNl">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_gokil.png" translatesAutoresizingMaskIntoConstraints="NO" id="mVJ-c3-iyT">
                         <rect key="frame" x="10" y="0.0" width="70" height="70"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="70" id="8kV-W7-DnP"/>
+                            <constraint firstAttribute="width" constant="70" id="mrQ-YP-cNu"/>
+                        </constraints>
                     </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40H-M4-RDh">
-                        <rect key="frame" x="0.0" y="0.0" width="284" height="70"/>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="DBf-5C-VX1">
+                        <rect key="frame" x="25" y="4" width="40" height="40"/>
                         <animations/>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                        <inset key="contentEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <state key="normal" title="Pilih Lokasi Pengiriman">
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="JNz-td-gkz"/>
+                            <constraint firstAttribute="width" constant="40" id="gO1-Az-9qy"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qJ-L8-fU5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <inset key="contentEdgeInsets" minX="93" minY="0.0" maxX="20" maxY="0.0"/>
+                        <state key="normal" title="Tentukan Peta Lokasi">
                             <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
                         <connections>
-                            <action selector="tapPinLocationButton:" destination="-1" eventType="touchUpInside" id="4Mf-G4-pR8"/>
+                            <action selector="tapPinLocationButton:" destination="-1" eventType="touchUpInside" id="rln-81-u31"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u9d-JN-BgY" userLabel="Border">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0A-5K-5l1" userLabel="Border">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                         <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="8Db-ic-QzM"/>
+                            <constraint firstAttribute="height" constant="1" id="JQa-wY-EGV"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="08a-Gh-AO0">
-                        <rect key="frame" x="292" y="28" width="13" height="13"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="MP7-7c-df8">
+                        <rect key="frame" x="301" y="29" width="13" height="13"/>
                         <animations/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="13" id="fS4-wQ-JH8"/>
-                            <constraint firstAttribute="height" constant="13" id="tE0-hL-Hx1"/>
+                            <constraint firstAttribute="width" constant="13" id="2yf-mh-Jrd"/>
+                            <constraint firstAttribute="height" constant="13" id="hOl-46-OmS"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="13" id="jes-Wg-mBB"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <animations/>
                 <constraints>
-                    <constraint firstItem="u9d-JN-BgY" firstAttribute="leading" secondItem="1kR-sp-TKn" secondAttribute="leading" id="5FE-rd-2BS"/>
-                    <constraint firstItem="40H-M4-RDh" firstAttribute="leading" secondItem="1kR-sp-TKn" secondAttribute="leading" id="6wm-qz-lkb"/>
-                    <constraint firstAttribute="trailing" secondItem="u9d-JN-BgY" secondAttribute="trailing" id="92N-AF-hf1"/>
-                    <constraint firstItem="08a-Gh-AO0" firstAttribute="centerY" secondItem="1kR-sp-TKn" secondAttribute="centerY" id="AUS-2V-JNR"/>
-                    <constraint firstItem="40H-M4-RDh" firstAttribute="top" secondItem="1kR-sp-TKn" secondAttribute="top" id="HhO-5t-p9G"/>
-                    <constraint firstItem="u9d-JN-BgY" firstAttribute="top" secondItem="1kR-sp-TKn" secondAttribute="top" id="Hvw-tY-Kaf"/>
-                    <constraint firstAttribute="trailing" secondItem="08a-Gh-AO0" secondAttribute="trailing" constant="15" id="JCL-3w-Z1K"/>
-                    <constraint firstAttribute="bottom" secondItem="40H-M4-RDh" secondAttribute="bottom" id="QDj-zA-83S"/>
-                    <constraint firstItem="08a-Gh-AO0" firstAttribute="leading" secondItem="40H-M4-RDh" secondAttribute="trailing" constant="8" id="Rvy-6l-1EU"/>
+                    <constraint firstItem="DBf-5C-VX1" firstAttribute="centerX" secondItem="mVJ-c3-iyT" secondAttribute="centerX" id="1i2-Im-ba0"/>
+                    <constraint firstItem="1qJ-L8-fU5" firstAttribute="leading" secondItem="t7H-aY-2lg" secondAttribute="leading" id="80I-Q7-TIr"/>
+                    <constraint firstAttribute="trailing" secondItem="MP7-7c-df8" secondAttribute="trailing" constant="6" id="8Iw-iI-VGK"/>
+                    <constraint firstItem="DBf-5C-VX1" firstAttribute="top" secondItem="mVJ-c3-iyT" secondAttribute="top" constant="4" id="Lnb-zs-fGE"/>
+                    <constraint firstItem="e0A-5K-5l1" firstAttribute="leading" secondItem="t7H-aY-2lg" secondAttribute="leading" id="N0B-jj-DF5"/>
+                    <constraint firstItem="mVJ-c3-iyT" firstAttribute="top" secondItem="t7H-aY-2lg" secondAttribute="top" id="OuY-2Q-OyP"/>
+                    <constraint firstItem="e0A-5K-5l1" firstAttribute="top" secondItem="t7H-aY-2lg" secondAttribute="top" id="W8M-TE-4nz"/>
+                    <constraint firstItem="mVJ-c3-iyT" firstAttribute="leading" secondItem="t7H-aY-2lg" secondAttribute="leading" constant="10" id="cYb-wI-oi6"/>
+                    <constraint firstItem="MP7-7c-df8" firstAttribute="centerY" secondItem="t7H-aY-2lg" secondAttribute="centerY" id="mAB-vE-By0"/>
+                    <constraint firstAttribute="trailing" secondItem="e0A-5K-5l1" secondAttribute="trailing" id="qFm-hd-dq3"/>
+                    <constraint firstItem="1qJ-L8-fU5" firstAttribute="top" secondItem="t7H-aY-2lg" secondAttribute="top" id="uL9-aJ-Y6z"/>
+                    <constraint firstAttribute="bottom" secondItem="1qJ-L8-fU5" secondAttribute="bottom" id="x2f-WC-siQ"/>
+                    <constraint firstAttribute="trailing" secondItem="1qJ-L8-fU5" secondAttribute="trailing" id="yd0-PA-jkN"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
@@ -1195,6 +1213,7 @@
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
-        <image name="icon_location.png" width="14" height="14"/>
+        <image name="icon_pinpoin_toped.png" width="70" height="70"/>
+        <image name="map_gokil.png" width="96" height="96"/>
     </resources>
 </document>

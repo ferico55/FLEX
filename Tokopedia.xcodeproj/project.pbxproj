@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		451209901C338BAF00B4679F /* map_gokil.png in Resources */ = {isa = PBXBuildFile; fileRef = 4512098F1C338BAF00B4679F /* map_gokil.png */; };
 		4536F26D1C1190B200C98565 /* pin_poin_toped.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F26C1C1190B200C98565 /* pin_poin_toped.png */; };
 		4536F26F1C11922900C98565 /* pin_poin_toped_60.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F26E1C11922900C98565 /* pin_poin_toped_60.png */; };
 		4536F2711C1194E600C98565 /* pin_poin_toped_70.png in Resources */ = {isa = PBXBuildFile; fileRef = 4536F2701C1194E600C98565 /* pin_poin_toped_70.png */; };
@@ -17,6 +18,7 @@
 		4554D2211C15476B005F43DB /* JakartaMap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4554D2201C15476B005F43DB /* JakartaMap.png */; };
 		4554D22C1C1596C9005F43DB /* TKPPlacePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4554D22A1C1596C9005F43DB /* TKPPlacePickerViewController.swift */; };
 		4554D22D1C1596C9005F43DB /* TKPPlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4554D22B1C1596C9005F43DB /* TKPPlacePickerViewController.xib */; };
+		45683B791C323E36008B4588 /* RequestEditAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 45683B781C323E36008B4588 /* RequestEditAddress.m */; };
 		45AC752A1C1841C0009C80A6 /* TKPMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AC75291C1841C0009C80A6 /* TKPMapView.swift */; };
 		45AC752C1C1841DE009C80A6 /* TKPMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45AC752B1C1841DE009C80A6 /* TKPMapView.xib */; };
 		45AC752E1C18461C009C80A6 /* TKPInfoWindowMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AC752D1C18461C009C80A6 /* TKPInfoWindowMapView.swift */; };
@@ -2001,6 +2003,7 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		4512098F1C338BAF00B4679F /* map_gokil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_gokil.png; sourceTree = "<group>"; };
 		4536F26C1C1190B200C98565 /* pin_poin_toped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pin_poin_toped.png; path = ../../../../../Downloads/pin_poin_toped.png; sourceTree = "<group>"; };
 		4536F26E1C11922900C98565 /* pin_poin_toped_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_poin_toped_60.png; sourceTree = "<group>"; };
 		4536F2701C1194E600C98565 /* pin_poin_toped_70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_poin_toped_70.png; sourceTree = "<group>"; };
@@ -2011,6 +2014,8 @@
 		4554D2291C1596C9005F43DB /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
 		4554D22A1C1596C9005F43DB /* TKPPlacePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPPlacePickerViewController.swift; sourceTree = "<group>"; };
 		4554D22B1C1596C9005F43DB /* TKPPlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPPlacePickerViewController.xib; sourceTree = "<group>"; };
+		45683B771C323E36008B4588 /* RequestEditAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestEditAddress.h; sourceTree = "<group>"; };
+		45683B781C323E36008B4588 /* RequestEditAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestEditAddress.m; sourceTree = "<group>"; };
 		45AC75291C1841C0009C80A6 /* TKPMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPMapView.swift; sourceTree = "<group>"; };
 		45AC752B1C1841DE009C80A6 /* TKPMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPMapView.xib; sourceTree = "<group>"; };
 		45AC752D1C18461C009C80A6 /* TKPInfoWindowMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPInfoWindowMapView.swift; sourceTree = "<group>"; };
@@ -8943,6 +8948,8 @@
 		45BB95E21C0C0B4100EA2C80 /* AddToCart */ = {
 			isa = PBXGroup;
 			children = (
+				45683B771C323E36008B4588 /* RequestEditAddress.h */,
+				45683B781C323E36008B4588 /* RequestEditAddress.m */,
 				45BB95E31C0C0B4100EA2C80 /* ShippingOptionsViewController.h */,
 				45BB95E41C0C0B4100EA2C80 /* ShippingOptionsViewController.m */,
 				45BB95E51C0C0B4100EA2C80 /* ShippingOptionsViewController.xib */,
@@ -9339,6 +9346,7 @@
 		45BB96D71C0C0B4100EA2C80 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				4512098F1C338BAF00B4679F /* map_gokil.png */,
 				4554D2201C15476B005F43DB /* JakartaMap.png */,
 				4536F2721C11979400C98565 /* icon_pinpoin_toped.png */,
 				4536F2731C11979400C98565 /* icon_pinpoin_toped@2x.png */,
@@ -11375,6 +11383,7 @@
 				45BBA0651C0C0B4300EA2C80 /* icon_home@2x.png in Resources */,
 				45BB9E7F1C0C0B4300EA2C80 /* button_white.png in Resources */,
 				45BB9D1A1C0C0B4300EA2C80 /* PromoCollectionReusableView.xib in Resources */,
+				451209901C338BAF00B4679F /* map_gokil.png in Resources */,
 				45BB9F6F1C0C0B4300EA2C80 /* icon_medal_diamond@3x.png in Resources */,
 				45BB9F7B1C0C0B4300EA2C80 /* icon_medal_gold@3x.png in Resources */,
 				45BB9BF81C0C0B4300EA2C80 /* ContactUsFormMainCategoryCell.xib in Resources */,
@@ -12148,6 +12157,7 @@
 				45BB9B671C0C0B4300EA2C80 /* TxOrderPaymentEditSystemBank.m in Sources */,
 				45BB9BD01C0C0B4300EA2C80 /* CatalogSpecificationCell.m in Sources */,
 				45BB9BA51C0C0B4300EA2C80 /* AlertPickerView.m in Sources */,
+				45683B791C323E36008B4588 /* RequestEditAddress.m in Sources */,
 				45BB9DE61C0C0B4300EA2C80 /* TokopediaCacheManager.m in Sources */,
 				45BB99D51C0C0B4300EA2C80 /* ContactUsActionResult.m in Sources */,
 				45BB9E2F1C0C0B4300EA2C80 /* TxOrderConfirmationViewController.m in Sources */,

@@ -46,7 +46,8 @@
                       @"user_password",
                       @"district",
                       @"longitude",
-                      @"latitude"];
+                      @"latitude",
+                      @"is_from_cart"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
