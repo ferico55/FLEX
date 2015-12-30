@@ -31,11 +31,20 @@ enum TypePlacePicker : Int{
     @IBOutlet var tableView: UITableView!
     @IBOutlet var pinPointImageView: UIImageView!
     
+    @IBOutlet var infoAddressView: UIView!
+    
+    @IBOutlet var receiverNumberLabel: UILabel!
+    @IBOutlet var addressStreetLabel: UILabel!
+    @IBOutlet var receiverNameLabel: UILabel!
+    @IBOutlet var addressNameLabel: UILabel!
+    
+    @IBOutlet var infoViewConstraintHeight: NSLayoutConstraint!
+    @IBOutlet var mapViewBotomConstraint: NSLayoutConstraint!
+    @IBOutlet var transparantInfoView: UIView!
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
-    internal var type : Int = 0
+    var type : Int = 0
     var autoCompleteResults : [GMSAutocompletePrediction] = []
-//    var autoCompleteResults : NSMutableArray = NSMutableArray()
     var placeHistories : NSMutableArray = NSMutableArray()
     
     var placePicker : GMSPlacePicker?
@@ -49,11 +58,17 @@ enum TypePlacePicker : Int{
     var isDragging :Bool = true
     var shouldStartSearch :Bool = false
     
-    var captureScreen : UIImage = UIImage(named:"JakartaMap.png")!
+    var captureScreen : UIImage = UIImage(named:"map_gokil.png")!
     var dataTableView : [[String]] = [[],[]]
     var titleSection : [String] = ["Suggestions","Recent Search"]
     
     var selectedSugestion : String = ""
+    
+    var _previousY:CGFloat!
+    var _infoTopConstraint:NSLayoutConstraint!
+
+//    var infoAddressView = InfoAddressView()
+    var infoAddress : AddressViewModel!
 
     override func loadView() {
         var className:NSString = NSStringFromClass(self.classForCoder)
@@ -83,19 +98,29 @@ enum TypePlacePicker : Int{
         placesClient = GMSPlacesClient()
         initLocationManager()
         adustBehaviorType(type)
-
-        searchBar.placeholder = "Cari Alamat";
-        searchBar.tintColor = UIColor.whiteColor()
-        searchBar.delegate = self
-
         loadHistory()
     }
     
-    //MARK: View Action
+    //MARK: - View Action
     @IBAction func tapDone(sender: AnyObject) {
         let mapImage : UIImage = mapView.captureMapScreen()
         delegate?.pickAddress(address, suggestion: selectedSugestion, longitude: mapView.marker.position.longitude, latitude: mapView.marker.position.latitude, mapImage: mapImage)
         self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func tapTransparantInfoView(sender: AnyObject) {
+        hideInfo()
+    }
+    
+    @IBAction func tapTransparentSearchBar(sender: AnyObject) {
+        setSearchBarActive(false, animated: true)
+    }
+    
+    @IBAction func tapShowInfoAddress(sender: AnyObject) {
+        if(_infoTopConstraint.constant <= -40){
+            infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
+            showInfo()
+        }
     }
     
     //MARK: - Location Manager Delegate
@@ -105,14 +130,13 @@ enum TypePlacePicker : Int{
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if (status == CLAuthorizationStatus.Denied){
-            
+        guard status != CLAuthorizationStatus.Denied else{
+            return;
         }
-        else{
-            if(locationManager.location != nil && (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0)){
-                mapView.updateCameraPosition(locationManager.location!.coordinate)
-            }
+        guard locationManager.location != nil && (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0) else{
+            return;
         }
+        mapView.updateCameraPosition(locationManager.location!.coordinate)
     }
     
     //MARK: - GMSMapView Delegate
@@ -165,6 +189,103 @@ enum TypePlacePicker : Int{
         }
         mapView.updateCameraPosition(firstCoordinate)
         self.updateAddressSaveHistory(false, addressSugestion:nil)
+        searchBar.placeholder = "Cari Alamat";
+        searchBar.tintColor = UIColor.whiteColor()
+        searchBar.delegate = self
+        searchBar.setBackgroundImage(UIImage(named: "NavBar"), forBarPosition: .Top, barMetrics: .Default)
+        if((infoAddress) != nil){
+            _infoTopConstraint = NSLayoutConstraint(
+                item: self.infoAddressView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: self.view,
+                attribute: .Bottom,
+                multiplier: 1.0,
+                constant: -40.0)
+            self.view .addConstraint(_infoTopConstraint)
+//            mapViewBotomConstraint.constant = abs(_infoTopConstraint.constant)
+            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 40.0, 0.0);
+            adjustInfoAddress(infoAddress)
+        }
+        else
+        {
+            _infoTopConstraint = NSLayoutConstraint(
+                item: self.infoAddressView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: self.view,
+                attribute: .Bottom,
+                multiplier: 1.0,
+                constant: 0.0)
+            self.view .addConstraint(_infoTopConstraint)
+            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 0.0, 0.0);
+
+        }
+    }
+    
+    func adjustInfoAddress(address:AddressViewModel) {
+        receiverNumberLabel.setCustomAttributedText(address.receiverNumber)
+        receiverNumberLabel.sizeToFit()
+        addressStreetLabel.setCustomAttributedText("\(address.addressStreet)\n\(address.addressDistrict),\n\(address.addressCity),\n\(address.addressProvince), \(address.addressCountry) \(address.addressPostalCode)")
+        addressStreetLabel.sizeToFit()
+        receiverNameLabel.setCustomAttributedText(address.receiverName)
+        receiverNameLabel.sizeToFit()
+        addressNameLabel.setCustomAttributedText(address.addressName)
+        addressNameLabel.sizeToFit()
+
+    }
+    
+    @IBAction func panInfoAddress(gestureRecognizer: UIPanGestureRecognizer) {
+        infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
+
+        let touchPoint: CGPoint = gestureRecognizer.locationInView(self.view)
+        switch (gestureRecognizer.state){
+        case .Began:
+            break
+        case .Changed:
+            let delta:CGFloat = touchPoint.y - _previousY
+            _infoTopConstraint.constant+=delta
+            break
+        case .Failed, .Cancelled, .Ended:
+            let yVelocity:CGFloat = gestureRecognizer.velocityInView(gestureRecognizer.view).y
+            if (abs(yVelocity) > 50) {
+                if (yVelocity > 0) {
+                    hideInfo()
+                } else {
+                    showInfo()
+                }
+            } else if (infoAddressView.frame.origin.y < (self.view.frame.size.height-infoAddressView.frame.size.height+infoAddressView.frame.size.height/2)) {
+                showInfo()
+            } else {
+                hideInfo()
+            }
+            break
+        default: break
+        }
+        _previousY = touchPoint.y;
+        
+    }
+    
+    func hideInfo() -> Void{
+        transparantInfoView.hidden = true
+        _infoTopConstraint.constant = -40
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            }) { (finished: Bool) -> Void in
+                
+        }
+    }
+    
+    func showInfo() -> Void{
+        transparantInfoView.hidden = false
+        _infoTopConstraint.constant = -infoViewConstraintHeight.constant
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            }) { (finished: Bool) -> Void in
+                
+        }
     }
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)

@@ -108,7 +108,10 @@
                                                         API_ADDRESS_COUNTRY,
                                                     API_ADDRESS_DISTRICT,
                                                     API_ADDRESS_CITY,
-                                                    API_ADDRESS_PROVINCE
+                                                    API_ADDRESS_PROVINCE,
+                                                    @"longitude",
+                                                    @"latitude",
+                                                    @"postal_code"
                                                          ]];
     return addressMapping;
 }

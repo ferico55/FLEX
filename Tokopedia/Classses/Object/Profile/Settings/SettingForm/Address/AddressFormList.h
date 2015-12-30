@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AddressViewModel.h"
 
 @interface AddressFormList : NSObject <TKPObjectMapping>
 
@@ -31,5 +32,7 @@
 @property (nonatomic, strong) NSString *address_province;
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
+
+@property (nonatomic, strong) AddressViewModel *viewModel;
 
 @end

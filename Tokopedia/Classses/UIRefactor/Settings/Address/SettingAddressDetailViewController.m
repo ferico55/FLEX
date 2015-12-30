@@ -314,7 +314,7 @@
 
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMapDetail:(id)sender {
-    [NavigateViewController navigateToMap:_mapview.selectedMarker.position type:1 fromViewController:self];
+    [NavigateViewController navigateToMap:_mapview.selectedMarker.position type:1 infoAddress:_address.viewModel fromViewController:self];
 }
 //
 

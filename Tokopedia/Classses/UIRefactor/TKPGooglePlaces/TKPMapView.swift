@@ -35,7 +35,7 @@ class TKPMapView: GMSMapView {
         self.myLocationEnabled = true
 
         self.myLocationEnabled = true
-        self.settings.myLocationButton = true;
+        self.settings.myLocationButton = true
     }
     
     func updateIsShowMarker(isShowMarker: Bool){

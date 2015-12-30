@@ -22,6 +22,24 @@
     return [_address_street kv_decodeHTMLCharacterEntities];
 }
 
+- (AddressViewModel *)viewModel {
+    if(_viewModel == nil) {
+        AddressViewModel *tempViewModel = [AddressViewModel new];
+        tempViewModel.receiverName = _receiver_name;
+        tempViewModel.receiverNumber = _receiver_phone;
+        tempViewModel.addressName = _address_name;
+        tempViewModel.addressStreet = _address_street;
+        tempViewModel.addressCity = _address_city;
+        tempViewModel.addressDistrict = _address_district;
+        tempViewModel.addressProvince = _address_province;
+        tempViewModel.addressPostalCode = _address_postal;
+        tempViewModel.addressCountry = _address_country;
+        _viewModel = tempViewModel;
+    }
+    
+    return _viewModel;
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"country_name",

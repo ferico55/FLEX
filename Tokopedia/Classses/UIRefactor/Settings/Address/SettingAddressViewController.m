@@ -1219,14 +1219,14 @@
 - (NSString *)getPath:(int)tag {
     if(tag == CTagRequest)
     {
-        return @"v4/people/get_address.pl";
+        return @"/v4/people/get_address.pl";
     }
     
     return @"";
 }
 
 - (int)getRequestMethod:(int)tag {
-    return RKRequestMethodPOST;
+    return RKRequestMethodGET;
 }
 
 - (id)getObjectManager:(int)tag

@@ -29,6 +29,10 @@
 #import "TokopediaNetworkManager.h"
 #import "NavigateViewController.h"
 #import "Localytics.h"
+#import "Tokopedia-swift.h"
+#import "RequestEditAddress.h"
+
+@import GoogleMaps;
 
 #define TAG_REQUEST_FORM 10
 #define TAG_REQUEST_ATC 11
@@ -45,7 +49,8 @@
     GeneralTableViewControllerDelegate,
     TransactionShipmentATCTableViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
-    PlacePickerDelegate,
+    RequestEditAddressDelegate,
+    TKPPlacePickerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
@@ -88,6 +93,10 @@
     TokopediaNetworkManager *_networkManagerATC;
     TokopediaNetworkManager *_networkManagerCalculate;
     TransactionATCForm *_ATCForm;
+    
+    RequestEditAddress *_requestEditAddress;
+    
+    AddressFormList *_selectedAddress;
     
     NSArray *_shipments;
     NSArray *_autoResi;
@@ -215,7 +224,6 @@
 }
 
 
-
 - (void)didChangePreferredContentSize:(NSNotification *)notification
 {
     [self.tableView reloadData];
@@ -239,7 +247,8 @@
     _networkManager.delegate = self;
 }
 - (IBAction)tapPinLocationButton:(id)sender {
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace fromViewController:self];
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
 }
 
 
@@ -251,6 +260,41 @@
     
     _activeTextField = nil;
     _activeTextView = nil;
+}
+
+-(RequestEditAddress*)requestEditAddress
+{
+    if (!_requestEditAddress) {
+        _requestEditAddress = [RequestEditAddress new];
+        _requestEditAddress.delegate = self;
+    }
+    return _requestEditAddress;
+}
+
+#pragma mark - Picker Place Delegate
+-(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
+{
+    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
+    
+    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+    [_pinLocationNameButton.titleLabel setCustomAttributedText:addressStreet];
+//    _mapImageView.image = mapImage;
+//    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+    _selectedAddress.longitude = _longitude;
+    _selectedAddress.latitude = _latitude;
+    [[self requestEditAddress] doRequestWithAddress:_selectedAddress];
+
 }
 
 #pragma mark - View Action
@@ -573,19 +617,20 @@
             }
             case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
             {
-                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace fromViewController:self];
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
             {
                 NSMutableArray *shipmentName = [NSMutableArray new];
                 for (ShippingInfoShipments *package in _shipments) {
-                    [shipmentName addObject:package.shipment_name];
+                    [shipmentName addObject:package.shipment_name?:@""];
                 }
                 
                 NSMutableArray *autoResiImage = [NSMutableArray new];
                 for (ShippingInfoShipments *package in _shipments) {
-                    [autoResiImage addObject:package.auto_resi_image];
+                    [autoResiImage addObject:package.auto_resi_image?:@""];
                 }
                 
                 TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
@@ -688,7 +733,8 @@
         NSInteger productID = [product.product_id integerValue];
         
         NSDictionary* param = @{API_ACTION_KEY :ACTION_ADD_TO_CART_FORM,
-                                API_PRODUCT_ID_KEY:@(productID)
+                                API_PRODUCT_ID_KEY:@(productID),
+                                @"address_id": @(_selectedAddress.address_id)?:@""
                                 };
         return param;
     }
@@ -957,7 +1003,10 @@
         }
         else{
             AddressFormList *address = _ATCForm.result.form.destination;
+            _selectedAddress = address;
             [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+            _longitude = address.longitude;
+            _latitude = address.latitude;
             
             NSArray *shipments = _ATCForm.result.form.shipment;
             _shipments = shipments;
@@ -970,9 +1019,15 @@
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
 //                NSMutableDictionary *shipmentAutoResiSupported = [NSMutableDictionary new];
+                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                    _selectedShipment = shipment;
+                }
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
+                    }
+                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
+                        _selectedShipmentPackage = package;
                     }
                 }
                 
@@ -992,8 +1047,9 @@
             
             _shipments = shipmentSupporteds;
 //            _autoResi = autoResiDetails;
-            _selectedShipment = [shipmentSupporteds firstObject];
-            _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+            
+            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
+            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
             
             ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
             product = _ATCForm.result.form.product_detail;
@@ -1015,10 +1071,41 @@
             [self buyButtonIsLoading:NO];
             _buyButton.hidden = NO;
             
+            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+                // strAdd -> take bydefault value nil
+                GMSAddress *placemark = [response results][0];
+                //        [self marker].snippet = [self addressString:placemark];
+                [_pinLocationNameButton setTitle:[self addressString:placemark] forState:UIControlStateNormal];
+            }];
+            
             [_tableView reloadData];
         }
     }
 
+}
+
+
+-(NSString*)addressString:(GMSAddress*)address
+{
+    NSString *strSnippet = @"Pilih lokasi pengiriman";
+    if (address.lines.count>0) {
+        strSnippet = address.lines[0];
+    }
+    else
+    {
+        if ([address.thoroughfare length] != 0)
+        {
+            // strAdd -> store value of current location
+            if ([strSnippet length] != 0)
+                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
+            else
+            {
+                // strAdd -> store only this value,which is not null
+                strSnippet = address.thoroughfare;
+            }
+        }
+    }
+    return  strSnippet;
 }
 
 #pragma mark Request Action Add To Cart
@@ -1176,6 +1263,7 @@
                 label.hidden = NO;
             }
             _tableView.tableHeaderView = (_shipments.count <= 0)?_messageZeroShipmentView:[[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+            
             [_tableView reloadData];
         }
     }
@@ -1288,6 +1376,7 @@
     NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
     [self calculatePriceWithAction:CALCULATE_SHIPMENT];
+    _selectedAddress = address;
     [_tableView reloadData];
 }
 
@@ -1592,28 +1681,9 @@ replacementString:(NSString*)string
     [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
 }
 
--(void)PickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude map:(UIImage *)map
+-(void)requestSuccessEditAddress:(id)successResult withOperation:(RKObjectRequestOperation *)operation
 {
-    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (![suggestion isEqualToString:@""]) {
-        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
-        addressStreet = addressSuggestions[0];
-    }
-    
-    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (addressStreet.length != 0) {
-        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
-    }
-    else
-        addressStreet = street;
-
-    [_pinLocationNameButton setTitle:addressStreet forState:UIControlStateNormal];
-
-    _mapImageView.image = map;
-    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
-    
-    _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
-    _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+    [self refreshView];
 }
 
 #pragma mark - Memory Management

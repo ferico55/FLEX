@@ -43,6 +43,7 @@
 #import "GeneralTableViewController.h"
 
 #import "ListRekeningBank.h"
+#import "Tokopedia-swift.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
@@ -66,7 +67,8 @@
     LoadingViewDelegate,
     RequestCartDelegate,
     TransactionCCViewControllerDelegate,
-    GeneralTableViewControllerDelegate
+    GeneralTableViewControllerDelegate,
+    TKPPlacePickerDelegate
 >
 {
     NSMutableArray *_list;
@@ -435,6 +437,39 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+#pragma mark - Picker Place Delegate
+//-(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
+//{
+//    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+//    if (![suggestion isEqualToString:@""]) {
+//        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+//        addressStreet = addressSuggestions[0];
+//    }
+//    
+//    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+//    if (addressStreet.length != 0) {
+//        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+//    }
+//    else
+//        addressStreet = street;
+//    //if ([_textviewaddress.text isEqualToString:@""]){
+//    _textviewaddress.text = addressStreet;
+//    _textviewaddress.placeholderLabel.hidden = YES;
+//    //}
+//    //if ([_textfieldpostcode.text isEqualToString:@""])
+//    _textfieldpostcode.text = addressStreet;
+//    
+//    _textfieldpostcode.text = address.postalCode;
+//    [_buttonMapLocation setCustomAttributedText:addressStreet];
+//    _mapImageView.image = mapImage;
+//    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+//    _opsionalLabel.hidden = YES;
+//    _constraintBottomMapName.constant = 0;
+//    
+//    _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+//    _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+//}
 
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

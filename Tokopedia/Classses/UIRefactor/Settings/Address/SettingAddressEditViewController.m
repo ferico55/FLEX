@@ -331,7 +331,13 @@
 
 //TODO:: Uncomment for showing map address
 - (IBAction)tapMap:(id)sender {
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace fromViewController:self];
+    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+//    address = [AddressFormList new];
+//    address.address_name = @"Alamat Kantor";
+//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
+//    address.receiver_name = @"Orang Keren";
+//    address.receiver_phone = @"0812345678";
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self ];
 }
 //
 
@@ -366,8 +372,8 @@
     
     _textfieldpostcode.text = address.postalCode;
     [_buttonMapLocation setCustomAttributedText:addressStreet];
-    _mapImageView.image = mapImage;
-    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+//    _mapImageView.image = mapImage;
+//    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;
     _constraintBottomMapName.constant = 0;
     
@@ -476,7 +482,6 @@
                     address.receiver_phone = _textfieldphonenumber.text?:@"";
                     address.longitude = _longitude;
                     address.latitude = _latitude;
-                    
                     [self.delegate successEditAddress:address];
                 }
                 
@@ -938,7 +943,7 @@
 }
 
 - (NSString *)getPath:(int)tag {
-    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"v4/action/people/edit_address.pl":@"v4/action/people/add_address.pl";
+    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"/v4/action/people/edit_address.pl":@"/v4/action/people/add_address.pl";
 }
 
 - (id)getObjectManager:(int)tag

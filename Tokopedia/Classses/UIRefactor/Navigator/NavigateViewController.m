@@ -45,7 +45,6 @@
 #import "InboxResolSplitViewController.h"
 #import "TKPDTabViewController.h"
 
-#import "PlacePickerViewController.h"
 
 #import "ProductImages.h"
 
@@ -53,7 +52,7 @@
 
 #import "GalleryViewController.h"
 
-#import "Tokopedia-Swift.h"
+
 
 @interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
 
@@ -436,12 +435,14 @@
     return nil;
 }
 
-+(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController
 {
     TKPPlacePickerViewController *placePicker = [TKPPlacePickerViewController new];
     placePicker.firstCoordinate = location;
     placePicker.type = type;
     placePicker.delegate = viewController;
+    placePicker.hidesBottomBarWhenPushed = YES;
+    placePicker.infoAddress = infoAddress;
 //    PlacePickerViewController *placePicker = [PlacePickerViewController new];
 //    placePicker.firstCoordinate = location;
 //    placePicker.type = type;

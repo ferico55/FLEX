@@ -32,7 +32,7 @@ static RKObjectManager *_sharedClientHttps = nil;
 + (RKObjectManager *)sharedClientHttps {
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
-        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://new.ws-wendy.ndvl/web-service"]];//[self TKPDStringHttps:TKPDBaseUrl]]];
+        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[self TKPDStringHttps:TKPDBaseUrl]]];
     });
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
@@ -65,7 +65,7 @@ static RKObjectManager *_sharedClientHttps = nil;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:_selectedBaseUrl]];
-        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"http://new.ws-wendy.ndvl/web-service"]];//[self TKPDStringHttps:_selectedBaseUrl]]];
+        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[self TKPDStringHttps:_selectedBaseUrl]]];
     });
 }
 
@@ -77,7 +77,7 @@ static RKObjectManager *_sharedClientHttps = nil;
         httpsUrl = [url stringByReplacingOccurrencesOfString:@"http://" withString:@"https://ws-"];
         httpsUrl = [httpsUrl stringByReplacingOccurrencesOfString:@"com/ws" withString:@"com"];
     }
-
+    
     
     return httpsUrl;
 }
