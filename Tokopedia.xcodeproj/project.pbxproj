@@ -1964,7 +1964,6 @@
 		45EA522C1C3A705E00B49A55 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EA4A811C3A705D00B49A55 /* MGSwipeTableCell.m */; };
 		45EA522D1C3A705E00B49A55 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 45EA4A821C3A705D00B49A55 /* MGSwipeTableCell.podspec */; };
 		45EA522E1C3A705E00B49A55 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 45EA4A831C3A705D00B49A55 /* README.md */; };
-		45EA522F1C3A705E00B49A55 /* libVTiOSAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45EA4A851C3A705D00B49A55 /* libVTiOSAPI.a */; };
 		45EA52301C3A705E00B49A55 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 45EA4A861C3A705D00B49A55 /* vt-iOSlib-1.0.1.tar.gz */; };
 		45EA52311C3A705E00B49A55 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 45EA4A871C3A705D00B49A55 /* vt-iOSlib-1.0.1.zip */; };
 		45EA52321C3A705E00B49A55 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EA4A8A1C3A705D00B49A55 /* XYPieChart.m */; };
@@ -5116,7 +5115,6 @@
 				8565E1DA1B9401E600843388 /* GoogleOpenSource.framework in Frameworks */,
 				45EA52281C3A705E00B49A55 /* libAdIdAccess.a in Frameworks */,
 				7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */,
-				45EA522F1C3A705E00B49A55 /* libVTiOSAPI.a in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				8565E1DB1B9401E600843388 /* GooglePlus.framework in Frameworks */,
 				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
@@ -12776,7 +12774,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -12814,7 +12812,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -12859,7 +12857,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "./Tokopedia-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/UIRefactor/TKPGooglePlaces/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -12905,7 +12903,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "./Tokopedia-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Classses/UIRefactor/TKPGooglePlaces/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
