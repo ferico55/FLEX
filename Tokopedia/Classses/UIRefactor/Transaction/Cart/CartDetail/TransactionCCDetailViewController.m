@@ -306,6 +306,8 @@
                 vc.cartDetail = _cartSummary;
                 vc.delegate = self;
                 vc.isVeritrans = YES;
+                vc.paymentID = _cartSummary.payment_id;
+
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
                 navigationController.navigationBar.translucent = NO;
@@ -339,7 +341,7 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *data = [secureStorage keychainDictionary];
     
-    NSString *baseURL = [data objectForKey:@"AppBaseUrl"];
+    NSString *baseURL = [data objectForKey:@"AppBaseUrl"]?:@"www.tokopedia.com";
     
     NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURL];
     
@@ -407,6 +409,8 @@
     vc.cartDetail = _cartSummary;
     vc.delegate = self;
     vc.CCParam = param;
+    vc.paymentID = _dataCC.payment_id?:@"";
+
     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;

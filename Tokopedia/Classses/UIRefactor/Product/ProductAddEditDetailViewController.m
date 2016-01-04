@@ -970,7 +970,7 @@
 {
     //_objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
     NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generateHost.result.generated_host.upload_host];
-    RKObjectManager *objectManager = [RKObjectManager sharedClientUploadImage:urlString];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:urlString];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductPicture class]];

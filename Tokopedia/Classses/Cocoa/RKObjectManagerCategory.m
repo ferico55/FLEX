@@ -51,15 +51,6 @@ static RKObjectManager *_sharedClientHttps = nil;
     return _sharedClient;
 }
 
-+ (RKObjectManager *)sharedClientUploadImage:(NSString*)baseURLString {
-    static RKObjectManager *_sharedClient = nil;
-    
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
-        _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseURLString]];
-    });
-    return _sharedClient;
-}
 
 + (void)refreshBaseUrl {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];

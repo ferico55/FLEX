@@ -26,6 +26,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
 #import "AppsFlyerTracker.h"
+#import "PhoneVerificationViewController.h"
+#import "HelloPhoneVerificationViewController.h"
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
@@ -558,22 +560,41 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             }
             
             if(_login.result.user_reputation != nil) {
-                NSString *strResult = [NSString stringWithFormat:@"{\"no_reputation\":\"%@\",\"positive\":\"%@\",\"negative\":\"%@\",\"neutral\":\"%@\",\"positive_percentage\":\"%@\"}", _login.result.user_reputation.no_reputation, _login.result.user_reputation.positive, _login.result.user_reputation.negative, _login.result.user_reputation.neutral, _login.result.user_reputation.positive_percentage];
-                [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
+                ReputationDetail *reputation = _login.result.user_reputation;
+                [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
+                [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
+                [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
+                [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
+                [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
+                [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
             }
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-
-            if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
-                [self.delegate redirectViewController:_redirectViewController];
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            } else {
-                UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
-                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
-                [self.tabBarController setSelectedIndex:0];
-                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
+            
+            if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
+                HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+                controller.delegate = self.delegate;
+                controller.redirectViewController = self.redirectViewController;
+                
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] init];
+                navigationController.navigationBarHidden = YES;
+                navigationController.viewControllers = @[controller];
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }else{
+                if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
+                    [self.delegate redirectViewController:_redirectViewController];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
+                    [self.tabBarController setSelectedIndex:0];
+                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
+                }
             }
+            
+            
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil
@@ -654,8 +675,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [secureStorage setKeychainWithValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] withKey:kTKPD_USEREMAIL];
             
             if(_login.result.user_reputation != nil) {
-                NSString *strResult = [NSString stringWithFormat:@"{\"no_reputation\":\"%@\",\"positive\":\"%@\",\"negative\":\"%@\",\"neutral\":\"%@\",\"positive_percentage\":\"%@\"}", _login.result.user_reputation.no_reputation, _login.result.user_reputation.positive, _login.result.user_reputation.negative, _login.result.user_reputation.neutral, _login.result.user_reputation.positive_percentage];
-                [secureStorage setKeychainWithValue:strResult withKey:CUserReputation];
+                ReputationDetail *reputation = _login.result.user_reputation;
+                [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
+                [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
+                [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
+                [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
+                [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
+                [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
             }
             
             // Login UA
@@ -675,15 +701,28 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
-            if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
-                [self.delegate redirectViewController:_redirectViewController];
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            } else {
-                UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
-                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
-                [self.tabBarController setSelectedIndex:0];
-                [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
+            if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
+                HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+                controller.delegate = self.delegate;
+                controller.redirectViewController = self.redirectViewController;
+                
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] init];
+                navigationController.navigationBarHidden = YES;
+                navigationController.viewControllers = @[controller];
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }else{
+                if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
+                    [self.delegate redirectViewController:_redirectViewController];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
+                    [self.tabBarController setSelectedIndex:0];
+                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
+                }
             }
+            
             
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                 object:nil

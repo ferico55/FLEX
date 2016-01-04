@@ -34,6 +34,8 @@
 @property NSString *emoney_code;
 @property TransactionSummaryDetail *cartDetail;
 
+@property NSString *paymentID;
+
 @property NSDictionary *data;
 
 @end

@@ -998,8 +998,8 @@ GeneralTableViewControllerDelegate
         
     } else if (indexPath.section == 3 && indexPath.row == 1) {
         AlertInfoView *alert = [AlertInfoView newview];
-        alert.text = @"Sistem I-Drop";
-        alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
+        alert.text = @"Sistem i-Drop";
+        alert.detailText = @"i-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
         [alert show];
         
         CGRect frame = alert.frame;
@@ -1071,6 +1071,8 @@ GeneralTableViewControllerDelegate
 
 - (IBAction)valueChangedSwitch:(UISwitch *)sender {
     // actions for JNE
+    NSNumber *number = [NSNumber numberWithInteger:[_JNE.shipment_id integerValue]];
+    NSMutableArray *tempAutoResi = [_shipment.auto_resi mutableCopy];
     if ([sender isEqual:_shipmentJNEYesSwitch]) {
         if (sender.isOn) {
             _JNEPackageYes.active = @"1";
@@ -1095,11 +1097,12 @@ GeneralTableViewControllerDelegate
     else if ([sender isEqual:_shipmentJNEAWBSwitch]) {
         if (sender.isOn) {
             _shipment.jne.jne_tiket = @"1";
-            [_shipment.auto_resi addObject:_JNE.shipment_id];
+            [tempAutoResi addObject:number];
         } else {
             _shipment.jne.jne_tiket = @"0";
-            [_shipment.auto_resi removeObject:_JNE.shipment_id];
+            [tempAutoResi removeObject:number];
         }
+        _shipment.auto_resi = tempAutoResi;
     }
     else if ([sender isEqual:_shipmentJNEMinimumWeightSwitch]) {
         _showJNEMinimumWeightTextField = sender.isOn;

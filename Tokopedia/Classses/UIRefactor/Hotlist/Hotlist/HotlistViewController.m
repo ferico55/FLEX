@@ -510,7 +510,7 @@ NotificationDelegate
         _cachePath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
         
         _cacheController.filePath = _cachePath;
-        _cacheController.URLCacheInterval = 300.0;
+        _cacheController.URLCacheInterval = 1800.0;
         [_cacheController initCacheWithDocumentPath:path];
     }
 }
