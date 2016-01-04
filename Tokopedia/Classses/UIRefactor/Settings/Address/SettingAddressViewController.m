@@ -279,7 +279,7 @@
                     ((GeneralCheckmarkCell*)cell).iconPinPoint.hidden = YES;
                 }
                 else {
-                    ((GeneralCheckmarkCell*)cell).cellLableLeadingConstraint.constant = 42;
+                    ((GeneralCheckmarkCell*)cell).cellLableLeadingConstraint.constant = 45;
                     ((GeneralCheckmarkCell*)cell).iconPinPoint.hidden = NO;
                 }
             }

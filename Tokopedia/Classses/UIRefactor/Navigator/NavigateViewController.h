@@ -34,6 +34,7 @@
                                 productData:(NSDictionary *)productData;
 
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController;
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
