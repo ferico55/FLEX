@@ -315,7 +315,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
                            @"event" : @"exception",
-                           @"event.description":description?:@""
+                           @"exception.description":description?:@""
                            };
     [analytics.dataLayer push:data];
 }
