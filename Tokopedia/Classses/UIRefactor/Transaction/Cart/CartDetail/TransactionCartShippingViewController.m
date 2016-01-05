@@ -941,18 +941,7 @@
 }
 
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage {
-    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (![suggestion isEqualToString:@""]) {
-        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
-        addressStreet = addressSuggestions[0];
-    }
-    
-    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (addressStreet.length != 0) {
-        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
-    }
-    else
-        addressStreet = street;
+    NSString *addressStreet = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
     [_pinLocationNameButton.titleLabel setCustomAttributedText:addressStreet];
     AddressFormList *addressList = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
     addressList.longitude = [[NSNumber numberWithDouble:longitude] stringValue];

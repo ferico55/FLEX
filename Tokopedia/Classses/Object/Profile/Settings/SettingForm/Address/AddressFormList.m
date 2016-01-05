@@ -29,11 +29,11 @@
         tempViewModel.receiverNumber = _receiver_phone;
         tempViewModel.addressName = _address_name;
         tempViewModel.addressStreet = _address_street;
-        tempViewModel.addressCity = _address_city;
-        tempViewModel.addressDistrict = _address_district;
-        tempViewModel.addressProvince = _address_province;
-        tempViewModel.addressPostalCode = _address_postal;
-        tempViewModel.addressCountry = _address_country;
+        tempViewModel.addressCity = _address_city?:_city_name;
+        tempViewModel.addressDistrict = _address_district?:_district_name;
+        tempViewModel.addressProvince = _address_province?:_province_name;
+        tempViewModel.addressPostalCode = _address_postal?:_postal_code;
+        tempViewModel.addressCountry = _address_country?:_country_name;
         _viewModel = tempViewModel;
     }
     

@@ -272,6 +272,16 @@
                     else
                         ((GeneralCheckmarkCell*)cell).checkmarkImageView.hidden = NO;
                 }
+                
+                if ([list.longitude integerValue] == 0 && [list.latitude integerValue] == 0)
+                {
+                    ((GeneralCheckmarkCell*)cell).cellLableLeadingConstraint.constant = 14;
+                    ((GeneralCheckmarkCell*)cell).iconPinPoint.hidden = YES;
+                }
+                else {
+                    ((GeneralCheckmarkCell*)cell).cellLableLeadingConstraint.constant = 45;
+                    ((GeneralCheckmarkCell*)cell).iconPinPoint.hidden = NO;
+                }
             }
             else
             {
@@ -300,7 +310,16 @@
                     if (![_searchKeyword isEqualToString:@""] && _searchKeyword != nil) {
                         ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@" ";
                     }
+                    
+                    if ([list.longitude integerValue] == 0 && [list.latitude integerValue] == 0)
+                    {
+                        cell.imageView.image = nil;
+                    }
+                    else {
+                        cell.imageView.image = [UIImage imageNamed:@"icon_pinpoin_toped.png"];
+                    }
                 }
+                
             }
         } else {
             NSString *cellid = kTKPDSETTINGADDRESSEXPANDEDCELL_IDENTIFIER;
@@ -491,9 +510,12 @@
     }
 }
 
+
 -(void)requestFailure:(id)object
 {
     [self requestProcess:object];
+    _table.tableFooterView = nil;
+    [_refreshControl endRefreshing];
 }
 
 -(void)requestProcess:(id)object
@@ -1219,7 +1241,7 @@
 - (NSString *)getPath:(int)tag {
     if(tag == CTagRequest)
     {
-        return @"/v4/people/get_address.pl";
+        return @"/web-service/v4/people/get_address.pl";
     }
     
     return @"";
@@ -1269,6 +1291,7 @@
 {
     if(tag == CTagRequest)
     {
+        
     }
 }
 

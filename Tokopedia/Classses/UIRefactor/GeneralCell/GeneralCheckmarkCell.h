@@ -13,6 +13,8 @@
 @interface GeneralCheckmarkCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *checkmarkImageView;
 @property (weak, nonatomic) IBOutlet UILabel *cellLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *cellLableLeadingConstraint;
+@property (strong, nonatomic) IBOutlet UIImageView *iconPinPoint;
 
 +(id)newcell;
 

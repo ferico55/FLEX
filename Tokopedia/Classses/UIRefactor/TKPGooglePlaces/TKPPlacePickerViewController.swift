@@ -169,8 +169,8 @@ enum TypePlacePicker : Int{
             locationView.hidden = false
             pinPointImageView.hidden = false
             mapView.updateIsShowMarker(false)
-            mapView.myLocationEnabled = true;
-            if (firstCoordinate.longitude == 0 && locationManager.location != nil) {
+            mapView.myLocationEnabled = true
+            if (firstCoordinate.longitude == 0 && firstCoordinate.latitude == 0 && locationManager.location != nil) {
                 firstCoordinate =  locationManager.location!.coordinate
             }
             break;
@@ -182,6 +182,7 @@ enum TypePlacePicker : Int{
             mapView.updateCameraPosition(firstCoordinate)
             locationView.hidden = true
             pinPointImageView.hidden = true
+            mapView.showButtonCurrentLocation(false)
             break;
             
         default:
@@ -204,7 +205,7 @@ enum TypePlacePicker : Int{
                 constant: -40.0)
             self.view .addConstraint(_infoTopConstraint)
 //            mapViewBotomConstraint.constant = abs(_infoTopConstraint.constant)
-            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 40.0, 0.0);
+            mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, abs(_infoTopConstraint.constant), 0.0);
             adjustInfoAddress(infoAddress)
         }
         else
@@ -218,7 +219,7 @@ enum TypePlacePicker : Int{
                 multiplier: 1.0,
                 constant: 0.0)
             self.view .addConstraint(_infoTopConstraint)
-            mapView.padding = UIEdgeInsetsMake(40.0, 0.0, 0.0, 0.0);
+            mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, 0.0, 0.0);
 
         }
     }
@@ -312,15 +313,16 @@ enum TypePlacePicker : Int{
     func loadHistory()
     {
         var destinationPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
-        destinationPath += "history_places.plist"
+        destinationPath += "/history_places.plist"
         let filemgr = NSFileManager.defaultManager()
         if filemgr.fileExistsAtPath(destinationPath) {
             print("File exists")
             do {
                 let histories = try NSArray(contentsOfFile: destinationPath)!
+                placeHistories.removeAllObjects()
                 placeHistories.addObjectsFromArray(histories as [AnyObject])
                 self.dataTableView[1] = []
-                for var index = 0; index < self.placeHistories.count; ++index{
+                for var index = 0; index < self.placeHistories.count-1; ++index{
                     self.dataTableView[1].insert(placeHistories[index]["addressSugestion"] as! String, atIndex: index)
                 }
                 // the above prints "some text"
@@ -365,7 +367,7 @@ enum TypePlacePicker : Int{
     func saveHistory (address :GMSAddress, addressSuggestions :GMSAutocompletePrediction)
     {
         var documentsPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
-        documentsPath += "history_places.plist"
+        documentsPath += "/history_places.plist"
         
         var addressString : String!
         if (address.lines.count>0){
@@ -406,7 +408,7 @@ enum TypePlacePicker : Int{
             if(results?.count > 0){
                 self.autoCompleteResults = results as! Array
                 self.dataTableView[0]=[]
-                for var index = 0; index < self.autoCompleteResults.count; ++index{
+                for var index = 0; index < self.autoCompleteResults.count-1; ++index{
                     let place :GMSAutocompletePrediction = results![index] as! GMSAutocompletePrediction
                     self.dataTableView[0].insert(place.attributedFullText.string, atIndex: index)
                 }

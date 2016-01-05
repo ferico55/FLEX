@@ -248,7 +248,7 @@
 }
 - (IBAction)tapPinLocationButton:(id)sender {
     AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue]?:0, [_longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
 }
 
 
@@ -274,19 +274,9 @@
 #pragma mark - Picker Place Delegate
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
-    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (![suggestion isEqualToString:@""]) {
-        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
-        addressStreet = addressSuggestions[0];
-    }
-    
-    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (addressStreet.length != 0) {
-        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
-    }
-    else
-        addressStreet = street;
-    [_pinLocationNameButton.titleLabel setCustomAttributedText:addressStreet];
+    NSString *addressStreet = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_pinLocationNameButton setCustomAttributedText:addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
@@ -618,7 +608,7 @@
             case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
             {
                 AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake(0, 0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue]?:0, [_longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
@@ -1075,7 +1065,8 @@
                 // strAdd -> take bydefault value nil
                 GMSAddress *placemark = [response results][0];
                 //        [self marker].snippet = [self addressString:placemark];
-                [_pinLocationNameButton setTitle:[self addressString:placemark] forState:UIControlStateNormal];
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
             }];
             
             [_tableView reloadData];

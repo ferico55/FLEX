@@ -162,7 +162,6 @@
              forControlEvents:UIControlEventEditingChanged];
     
     _constraintBottomMapName.constant = 20;
-    _buttonMapLocation.titleLabel.numberOfLines = 2;
 
 }
 
@@ -371,6 +370,7 @@
         _textfieldpostcode.text = addressStreet;
     
     _textfieldpostcode.text = address.postalCode;
+    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [_buttonMapLocation setCustomAttributedText:addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -569,8 +569,8 @@
         
         //TODO:: Uncomment for showing map address
         if ([list.longitude integerValue] != 0) {
-            _mapImageView.image = _imageMap;
-            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+//            _mapImageView.image = _imageMap;
+//            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
 
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                 GMSAddress *address = [response results][0];
@@ -583,7 +583,8 @@
                 {
                     addressString = address.thoroughfare;
                 }
-                [_buttonMapLocation setTitle:addressString forState:UIControlStateNormal];
+                _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_buttonMapLocation setCustomAttributedText:addressString];
                 _opsionalLabel.hidden = YES;
                 _constraintBottomMapName.constant = 0;
 
@@ -943,7 +944,7 @@
 }
 
 - (NSString *)getPath:(int)tag {
-    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"/v4/action/people/edit_address.pl":@"/v4/action/people/add_address.pl";
+    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"/web-service/v4/action/people/edit_address.pl":@"/web-service/v4/action/people/add_address.pl";
 }
 
 - (id)getObjectManager:(int)tag
