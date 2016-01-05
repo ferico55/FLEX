@@ -26,13 +26,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="78c-Mo-ift">
                     <rect key="frame" x="0.0" y="0.0" width="300" height="96"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anda berhasil menjadi Lucky Merchant" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbk-fx-EI2">
-                            <rect key="frame" x="0.0" y="49" width="300" height="32"/>
-                            <animations/>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selamat!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSp-SM-0pb">
                             <rect key="frame" x="0.0" y="22" width="300" height="32"/>
                             <animations/>
@@ -40,6 +33,13 @@
                                 <constraint firstAttribute="height" constant="32" id="gRE-yb-JQG"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="23"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anda berhasil menjadi Lucky Merchant" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbk-fx-EI2">
+                            <rect key="frame" x="0.0" y="46" width="300" height="47"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -119,6 +119,7 @@
             <connections>
                 <outlet property="FirstLineLabel" destination="Wbk-fx-EI2" id="cHb-fq-uh4"/>
                 <outlet property="Line3Label" destination="xWo-21-igN" id="2dF-J1-ZfV"/>
+                <outlet property="infoLabel" destination="baJ-1Q-9zT" id="mVM-ll-y6j"/>
                 <outlet property="klikDisiniButton" destination="hMZ-Mw-v2W" id="3eX-2a-pVY"/>
                 <outlet property="secondLineLabel" destination="mC9-Kk-qPM" id="f6Z-zN-aGw"/>
                 <outlet property="upperView" destination="78c-Mo-ift" id="xBM-mU-Lhi"/>

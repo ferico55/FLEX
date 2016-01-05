@@ -80,6 +80,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [self.productImage setImage:image];
+        [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
         self.productImage.backgroundColor = [UIColor whiteColor];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];

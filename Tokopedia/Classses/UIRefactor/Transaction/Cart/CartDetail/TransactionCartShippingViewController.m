@@ -25,6 +25,7 @@
 #import "SettingAddressViewController.h"
 #import "TransactionCalculatePrice.h"
 #import "TransactionCartViewController.h"
+#import "TransactionShipmentATCTableViewController.h"
 #import "Tokopedia-swift.h"
 #import "NavigateViewController.h"
 
@@ -34,8 +35,7 @@
 #define TAG_PICKER_ALERT_INSURANCE 10
 
 @import GoogleMaps;
-
-@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate, TKPPlacePickerDelegate, RequestEditAddressDelegate>
+@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate, TransactionShipmentATCTableViewControllerDelegate, TKPPlacePickerDelegate, RequestEditAddressDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
@@ -383,6 +383,11 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePriceResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"auto_resi":@"auto_resi"}];
+    
+    RKObjectMapping *rpxMapping = [RKObjectMapping mappingForClass:[RPX class]];
+    [rpxMapping addAttributeMappingsFromDictionary:@{@"indomaret_logo":@"indomaret_logo"}];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"rpx" toKeyPath:@"rpx" withMapping:rpxMapping]];
     
     RKObjectMapping *shipmentsMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipments class]];
     [shipmentsMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY,
@@ -509,6 +514,13 @@
                         [shipmentPackages addObject:package];
                     }
                 }
+                
+                if ([calculate.result.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
+                    shipment.auto_resi_image = calculate.result.rpx.indomaret_logo;
+                } else {
+                    shipment.auto_resi_image = @"";
+                }
+
                 
                 if (shipmentPackages.count>0) {
                     shipment.shipment_package = shipmentPackages;
@@ -915,8 +927,28 @@
             }
                 case 2:
             {
-                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+                if (_isFinishCalculate) {
+                    
+                    NSMutableArray *shipmentName = [NSMutableArray new];
+                    for (ShippingInfoShipments *package in _shipments) {
+                        [shipmentName addObject:package.shipment_name];
+                    }
+                    
+                    NSMutableArray *autoResiImage = [NSMutableArray new];
+                    for (ShippingInfoShipments *package in _shipments) {
+                        [autoResiImage addObject:package.auto_resi_image];
+                    }
+                    
+                    TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
+                    vc.title = @"Kurir Pengiriman";
+                    vc.selectedObject = _selectedShipment.shipment_name;
+                    vc.objects = shipmentName;
+                    vc.objectImages = autoResiImage;
+                    vc.senderIndexPath = indexPath;
+                    vc.delegate = self;
+                    
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
                 break;
             }
             case 3:
@@ -979,22 +1011,31 @@
 
 -(void)chooseShipmentAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (_isFinishCalculate) {
-        
-        NSMutableArray *shipmentName = [NSMutableArray new];
-        for (ShippingInfoShipments *package in _shipments) {
-            [shipmentName addObject:package.shipment_name];
-        }
-        
-        GeneralTableViewController *vc = [GeneralTableViewController new];
-        vc.title = @"Kurir Pengiriman";
-        vc.selectedObject = _selectedShipment.shipment_name;
-        vc.objects = shipmentName;
-        vc.senderIndexPath = indexPath;
-        vc.delegate = self;
-        
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+                if (_isFinishCalculate) {
+                    NSMutableArray *shipmentPackages = [NSMutableArray new];
+                    NSMutableArray *shipmentPackagesName = [NSMutableArray new];
+                    
+                    for (ShippingInfoShipments *shipment in _shipments) {
+                        if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
+                            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                                if (![package.price isEqualToString:@"0"]) {
+                                    [shipmentPackages addObject:package];
+                                    [shipmentPackagesName addObject:package.name];
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    GeneralTableViewController *vc = [GeneralTableViewController new];
+                    vc.title = @"Paket Pengiriman";
+                    vc.selectedObject = _selectedShipmentPackage.name;
+                    vc.objects = shipmentPackagesName;
+                    vc.senderIndexPath = indexPath;
+                    vc.delegate = self;
+                    
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
 }
 
 -(void)chooseShipmentPackageAtIndexPath:(NSIndexPath*)indexPath

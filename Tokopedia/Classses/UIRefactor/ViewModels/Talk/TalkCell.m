@@ -30,11 +30,27 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     RequestReportTalk
 };
 
+@interface TalkCell ()
+
+@property (strong, nonatomic) NSDictionary *messageAttribute;
+
+@end
+
 @implementation TalkCell
 
 #pragma mark - Initialization
+
 - (void)awakeFromNib {
     // Initialization code
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    _messageAttribute = @{
+        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+        NSParagraphStyleAttributeName  : style,
+    };
+    
     _userManager = [UserAuthentificationManager new];
     _myShopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     _myUserID = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
@@ -65,11 +81,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
-    [self.messageLabel setText:modelView.talkMessage];
+    
+    self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:modelView.talkMessage attributes:_messageAttribute];
     [self.createTimeLabel setText:modelView.createTime];
     [self.totalCommentButton setTitle:[NSString stringWithFormat:@"%@ Komentar", modelView.totalComment] forState:UIControlStateNormal];
     
-    if(![modelView.talkOwnerStatus isEqualToString:@"1"] && [_userManager isLogin]) {
+    if([modelView.talkOwnerStatus isEqualToString:@"0"] && [_userManager isLogin]) {
         [self.unfollowButton setHidden:NO];
         [self.totalCommentButton setTranslatesAutoresizingMaskIntoConstraints:NO];
         
@@ -112,15 +129,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.userButton setText:modelView.userName];
     [self.unreadImageView setHidden:[modelView.readStatus isEqualToString:@"1"] ? NO : YES];
     
-    if(modelView.userReputation.no_reputation!=nil && [modelView.userReputation.no_reputation isEqualToString:@"1"]) {
+    if(modelView.userReputation.no_reputation != nil && [modelView.userReputation.no_reputation isEqualToString:@"1"]) {
         [self.reputationButton setTitle:@"" forState:UIControlStateNormal];
         [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-    else {
+    } else {
         [self.reputationButton setTitle:[NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage==nil? @"0":modelView.userReputation.positive_percentage] forState:UIControlStateNormal];
         [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
     }
-
 }
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
@@ -384,6 +399,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             NSArray *successMessages = [[NSMutableArray alloc] init];
             if(tag == RequestDeleteTalk) {
                 successMessages = @[@"Anda berhasil menghapus diskusi ini."];
+
+                NSDictionary *userInfo = @{@"index" : @(_unfollowIndexPath.row)};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
+                                                                    object:nil
+                                                                  userInfo:userInfo];
+            
             } else {
                 successMessages = @[@"Anda berhasil (batal) mengikuti diskusi ini."];
             }
@@ -430,9 +451,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         NSInteger row = [_deleteIndexPath row];
         NSMutableArray *talkList = [_delegate getTalkList];
         _deleteTalk = talkList[row];
-        
-        NSDictionary *userInfo = @{@"index" : @(row)};
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk" object:nil userInfo:userInfo];
         
         _deleteNetworkManager = [TokopediaNetworkManager new];
         _deleteNetworkManager.delegate = self;

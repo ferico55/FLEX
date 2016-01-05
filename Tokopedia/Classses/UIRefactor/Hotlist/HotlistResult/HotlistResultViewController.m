@@ -191,8 +191,6 @@ HotlistBannerDelegate
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-
-//    self.screenName = @"Hotlist Result";
     
     // set title navigation
     if ([_data objectForKey:kTKPDHOME_DATATITLEKEY]) {
@@ -338,10 +336,10 @@ HotlistBannerDelegate
 
     if(self.isFromAutoComplete) {
         self.screenName = @"Hot List Detail (From Auto Complete Search)";
-        [TPAnalytics trackScreenName:@"Hot List Detail (From Auto Complete Search)"];
+        [TPAnalytics trackScreenName:@"Hot List Detail (From Auto Complete Search)" gridType:self.cellType];
     } else {
         self.screenName = @"Hot List Detail";
-        [TPAnalytics trackScreenName:@"Hot List Detail"];
+        [TPAnalytics trackScreenName:@"Hot List Detail" gridType:self.cellType];
     }
     
     self.hidesBottomBarWhenPushed = YES;

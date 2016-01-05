@@ -18,5 +18,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *secondLineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *Line3Label;
 @property (weak, nonatomic) IBOutlet UIButton *klikDisiniButton;
+@property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 
 @end

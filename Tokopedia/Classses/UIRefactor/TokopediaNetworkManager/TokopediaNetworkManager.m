@@ -56,6 +56,7 @@
     if (_delegate && [_delegate respondsToSelector:@selector(getRequestObject:)]) {
         requestObject = [_delegate getRequestObject:self.tagRequest];
     }
+    
     RKRequestMethod requestMethod = RKRequestMethodPOST;
     if (_delegate && [_delegate respondsToSelector:@selector(getRequestMethod:)]) {
         requestMethod = [_delegate getRequestMethod:self.tagRequest];
@@ -77,7 +78,6 @@
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         
-        
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
                                                                               method:requestMethod
                                                                                 path:[_delegate getPath:self.tagRequest]
@@ -90,7 +90,7 @@
             parameters = [[_delegate getParameter:self.tagRequest] encrypt];
         }
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:requestObject
-                                                                              method:RKRequestMethodPOST
+                                                                              method:requestMethod
                                                                                 path:[_delegate getPath:self.tagRequest]
                                                                           parameters:parameters];
         
@@ -101,12 +101,14 @@
     [_requestTimer invalidate];
     _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Response string : %@", operation.HTTPRequestOperation.responseString);
         [self requestSuccess:mappingResult  withOperation:operation];
         [_requestTimer invalidate];
-        _requestTimer = nil;
+        _requestTimer = nil; 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+//        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
+
         [self requestFail:error];
     }];
     

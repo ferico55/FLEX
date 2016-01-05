@@ -14,6 +14,8 @@
 
 @class TKPPlacePickerViewController;
 
+@class LuckyDealWord;
+
 @interface NavigateViewController : NSObject
 
 -(void)navigateToProfileFromViewController:(UIViewController*)viewController withUserID:(NSString *)userID;
@@ -32,6 +34,7 @@
 - (void)navigateToProductFromViewController:(UIViewController *)viewController
                                   promoData:(NSDictionary *)data
                                 productData:(NSDictionary *)productData;
+-(void)popUpLuckyDeal:(LuckyDealWord*)words;
 
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController;
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController;

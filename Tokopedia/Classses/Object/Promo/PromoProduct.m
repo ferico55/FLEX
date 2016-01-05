@@ -36,8 +36,8 @@
 
 - (NSDictionary *)productFieldObjects {
     return @{
-        @"id"   : _product_id,
-        @"name" : _product_name,
+             @"id"   : _product_id?:@"",
+             @"name" : _product_name?:@"",
     };
 }
 

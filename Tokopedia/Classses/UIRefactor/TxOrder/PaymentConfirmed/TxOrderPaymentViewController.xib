@@ -1020,7 +1020,7 @@ Contoh : 157500</string>
                                     <action selector="tapUploadProof:" destination="-1" eventType="touchUpInside" id="ugP-M8-ytl"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_upload_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="ReT-nT-pnO">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_upload_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="ReT-nT-pnO">
                                 <rect key="frame" x="15" y="10" width="50" height="50"/>
                                 <animations/>
                                 <constraints>

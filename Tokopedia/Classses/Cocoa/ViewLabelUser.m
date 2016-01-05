@@ -8,19 +8,12 @@
 #import "string_inbox_message.h"
 #import "ViewLabelUser.h"
 
-@implementation ViewLabelUser
-{
+@implementation ViewLabelUser {
     UILabel *lblUser;
     UILabel *lblText;
 }
+
 @synthesize inboxMessageCell;
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -71,7 +64,7 @@
     if(lblUser.text.length == 0)
         lblUser.frame = CGRectMake(0, 0, 0, lblUser.bounds.size.height);
         
-    lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:3)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+3+lblUser.bounds.size.width), lblUser.bounds.size.height);
+    lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:5)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+5+lblUser.bounds.size.width), lblUser.bounds.size.height);
     lblText.text = strText;
 }
 
@@ -108,7 +101,7 @@
         }
     
         lblUser.frame = CGRectMake(0, 0, (lblUser.text.length==0? 0 : [self calculateWidth:lblUser.text withFont:lblUser.font]+10), 21);
-        lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:3)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+3+lblUser.bounds.size.width), lblUser.bounds.size.height);
+        lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:5)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+5+lblUser.bounds.size.width), lblUser.bounds.size.height);
 
 }
 
@@ -179,7 +172,7 @@
     }
     
     lblUser.frame = CGRectMake(0, 0, (lblUser.text.length==0? 0 : [self calculateWidth:lblUser.text withFont:lblUser.font]+10), 21);
-    lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:3)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+3+lblUser.bounds.size.width), lblUser.bounds.size.height);
+    lblText.frame = CGRectMake(lblUser.frame.origin.x+(lblUser.text.length==0? 0:5)+lblUser.bounds.size.width, lblUser.frame.origin.y, self.bounds.size.width-(lblUser.frame.origin.x+5+lblUser.bounds.size.width), lblUser.bounds.size.height);
 }
 
 - (void)setText:(UIColor *)color withFont:(UIFont *)font
