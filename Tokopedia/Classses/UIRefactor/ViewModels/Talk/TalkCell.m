@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
     IBOutlet UIView* selectedMarker;
+    IBOutlet UILabel *_productNameLabel;
 }
 
 #pragma mark - Initialization
@@ -130,6 +131,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     }];
     
     [self.productButton setTitle:modelView.productName forState:UIControlStateNormal];
+    _productNameLabel.text = modelView.productName;
+
     [self.userButton setLabelBackground:modelView.userLabel];
     [self.userButton setText:modelView.userName];
     [self.unreadImageView setHidden:[modelView.readStatus isEqualToString:@"1"] ? NO : YES];
