@@ -234,7 +234,7 @@
     TalkList *list = _talkList[index];
     list.talk_read_status = @"2";
     list.viewModel = nil;
-    [_table reloadData];
+    [_table reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)reloadDataSource:(NSNotification *)notification {

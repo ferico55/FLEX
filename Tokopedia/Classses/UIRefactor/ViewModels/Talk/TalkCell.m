@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 {
     BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
+    IBOutlet UIView* selectedMarker;
 }
 
 #pragma mark - Initialization
@@ -75,6 +76,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.middleView addGestureRecognizer:talkGesture];
     [self.middleView setUserInteractionEnabled:YES];
     
+    productGesture.cancelsTouchesInView = NO;
+    userGesture.cancelsTouchesInView = NO;
+    talkGesture.cancelsTouchesInView = NO;
+    
     CGFloat borderWidth = 0.5f;
     
     self.view.frame = CGRectInset(self.frame, -borderWidth, -borderWidth);
@@ -83,7 +88,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    selectedMarker.hidden = !selected;
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
