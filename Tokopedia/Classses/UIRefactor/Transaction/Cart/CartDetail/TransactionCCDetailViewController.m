@@ -306,7 +306,7 @@
                 vc.cartDetail = _cartSummary;
                 vc.delegate = self;
                 vc.isVeritrans = YES;
-                vc.paymentID = _cartSummary.payment_id;
+                vc.paymentID = _dataCC.payment_id;
 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
