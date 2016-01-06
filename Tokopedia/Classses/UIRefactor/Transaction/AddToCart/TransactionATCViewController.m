@@ -190,10 +190,7 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.tagRequest = TAG_REQUEST_FORM;
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
+    [[self networkManager] doRequest];
     
     _networkManagerATC = [TokopediaNetworkManager new];
     _networkManagerATC.tagRequest = TAG_REQUEST_ATC;
@@ -216,6 +213,16 @@
     
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
+}
+
+-(TokopediaNetworkManager*)networkManager
+{
+    if (!_networkManager) {
+        _networkManager = [TokopediaNetworkManager new];
+        _networkManager.tagRequest = TAG_REQUEST_FORM;
+        _networkManager.delegate = self;
+    }
+    return _networkManager;
 }
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
@@ -249,7 +256,7 @@
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    _networkManager.delegate = self;
+    [self networkManager].delegate = self;
 }
 - (IBAction)tapPinLocationButton:(id)sender {
     AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
@@ -260,8 +267,6 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
     
     _activeTextField = nil;
     _activeTextView = nil;
@@ -1333,8 +1338,14 @@
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
             
             for (ShippingInfoShipments *shipment in _shipments) {
+                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                    _selectedShipment = shipment;
+                }
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
+                        _selectedShipmentPackage = package;
+                    }
                     if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
                     }
@@ -1354,8 +1365,8 @@
             }
             
             _shipments = shipmentSupporteds;
-            _selectedShipment = [shipmentSupporteds firstObject];
-            _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
+            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
             
             for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                 UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
@@ -1481,8 +1492,10 @@
     [self setAddress:address];
     NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
-    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
+//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
     _selectedAddress = address;
+    _isFinishRequesting = NO;
+    [self refreshView];
     [_tableView reloadData];
 }
 
@@ -1598,7 +1611,7 @@ replacementString:(NSString*)string
 
 -(void)refreshView
 {
-    [_networkManager doRequest];
+    [[self networkManager] doRequest];
 }
 
 -(void)setDefaultData:(NSDictionary*)data
@@ -1808,8 +1821,8 @@ replacementString:(NSString*)string
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
+    [[self networkManager] requestCancel];
+    [self networkManager].delegate = nil;
     _networkManager = nil;
 }
 

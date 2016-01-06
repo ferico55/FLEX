@@ -507,6 +507,9 @@
             
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
             for (ShippingInfoShipments *shipment in _shipments) {
+                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                    _selectedShipment = shipment;
+                }
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
