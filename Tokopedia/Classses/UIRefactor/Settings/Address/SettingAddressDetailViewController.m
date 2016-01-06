@@ -188,8 +188,6 @@
     _data = data;
     if (data) {
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-        list.latitude = @"-6.1745";
-        list.longitude = @"106.8227";
         _address = list;
         self.title = list.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
         _labelreceivername.text = list.receiver_name?:@"";
@@ -207,6 +205,7 @@
         _viewsetasdefault.hidden = isdefault;
         
         //TODO:: Uncomment for showing map address
+
         if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
             [self mapPosition];
         }

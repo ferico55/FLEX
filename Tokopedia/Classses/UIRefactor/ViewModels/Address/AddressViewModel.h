@@ -19,5 +19,7 @@
 @property (strong, nonatomic) NSString *addressCity;
 @property (strong, nonatomic) NSString *receiverName;
 @property (strong, nonatomic) NSString *addressName;
+@property (strong, nonatomic) NSString *latitude;
+@property (strong, nonatomic) NSString *longitude;
 
 @end

@@ -1801,6 +1801,7 @@ replacementString:(NSString*)string
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];
     [self refreshView];
+
 //    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
 }
 

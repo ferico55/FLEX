@@ -27,7 +27,7 @@
 
 @property (nonatomic, strong) NSDictionary *data;
 @property UIImage *imageMap;
-@property NSString *longitude;
-@property NSString *latitude;
+@property (nonatomic, strong) NSString *longitude;
+@property (nonatomic, strong) NSString *latitude;
 
 @end
