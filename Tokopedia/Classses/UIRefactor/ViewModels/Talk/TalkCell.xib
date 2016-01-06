@@ -15,7 +15,6 @@
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -116,7 +115,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label " lineBreakMode="characterWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2x-t9-LPv" userLabel="Message Label">
-                                        <rect key="frame" x="103" y="46" width="182" height="18"/>
+                                        <rect key="frame" x="103" y="40" width="182" height="18"/>
                                         <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="C8y-TE-b52"/>
@@ -124,20 +123,8 @@
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mAW-TB-q5Y">
-                                        <rect key="frame" x="103" y="22" width="182" height="24"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="cAn-uf-4yh"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                        <state key="normal" title="Button">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqY-46-fjh">
-                                        <rect key="frame" x="103" y="22" width="182" height="24"/>
+                                        <rect key="frame" x="103" y="22" width="182" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="ZNY-FJ-1zA"/>
                                         </constraints>
@@ -152,28 +139,22 @@
                                     <constraint firstItem="TqY-46-fjh" firstAttribute="top" secondItem="LoO-oE-hpb" secondAttribute="top" constant="22" id="4m1-mu-kkL"/>
                                     <constraint firstAttribute="trailing" secondItem="TqY-46-fjh" secondAttribute="trailing" constant="15" id="4sT-ka-kiL"/>
                                     <constraint firstItem="U2x-t9-LPv" firstAttribute="leading" secondItem="LoO-oE-hpb" secondAttribute="leading" constant="90" id="Bis-aN-8Z4"/>
-                                    <constraint firstItem="mAW-TB-q5Y" firstAttribute="leading" secondItem="LoO-oE-hpb" secondAttribute="leading" constant="90" id="EMx-tR-xfN"/>
                                     <constraint firstItem="TqY-46-fjh" firstAttribute="leading" secondItem="3yf-dZ-AHO" secondAttribute="trailing" constant="10" id="F1l-kl-oxo"/>
                                     <constraint firstItem="U2x-t9-LPv" firstAttribute="leading" secondItem="3yf-dZ-AHO" secondAttribute="trailing" constant="10" id="HPd-RD-2nd"/>
                                     <constraint firstAttribute="trailing" secondItem="U2x-t9-LPv" secondAttribute="trailing" constant="15" id="IV3-rJ-Evn"/>
                                     <constraint firstItem="s3C-lS-vGi" firstAttribute="top" secondItem="LoO-oE-hpb" secondAttribute="top" id="Iiq-Rx-RW3"/>
                                     <constraint firstItem="s3C-lS-vGi" firstAttribute="leading" secondItem="LoO-oE-hpb" secondAttribute="leading" constant="10" id="KLH-gn-NgS"/>
-                                    <constraint firstAttribute="trailing" secondItem="mAW-TB-q5Y" secondAttribute="trailing" constant="15" id="O7d-Jx-v1z"/>
                                     <constraint firstAttribute="height" constant="94" id="Pun-IF-MHF"/>
                                     <constraint firstAttribute="trailing" secondItem="s3C-lS-vGi" secondAttribute="trailing" constant="10" id="Qww-cg-hBv"/>
-                                    <constraint firstItem="mAW-TB-q5Y" firstAttribute="leading" secondItem="3yf-dZ-AHO" secondAttribute="trailing" constant="10" id="SmN-HE-cUY"/>
                                     <constraint firstItem="3yf-dZ-AHO" firstAttribute="top" secondItem="s3C-lS-vGi" secondAttribute="bottom" constant="11" id="Y3c-OD-auV"/>
                                     <constraint firstAttribute="bottom" secondItem="3yf-dZ-AHO" secondAttribute="bottom" constant="11" id="d8z-xk-dbU"/>
                                     <constraint firstItem="U2x-t9-LPv" firstAttribute="top" secondItem="LoO-oE-hpb" secondAttribute="top" constant="40" id="g69-jP-sLU"/>
-                                    <constraint firstItem="mAW-TB-q5Y" firstAttribute="top" secondItem="LoO-oE-hpb" secondAttribute="top" constant="22" id="mrR-SP-4aR"/>
-                                    <constraint firstItem="U2x-t9-LPv" firstAttribute="top" secondItem="mAW-TB-q5Y" secondAttribute="bottom" id="p7o-BF-2V2"/>
                                     <constraint firstItem="U2x-t9-LPv" firstAttribute="top" secondItem="TqY-46-fjh" secondAttribute="bottom" id="pBG-bw-T0z"/>
                                     <constraint firstItem="3yf-dZ-AHO" firstAttribute="leading" secondItem="LoO-oE-hpb" secondAttribute="leading" constant="12" id="vdS-Cp-6bM"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="Pun-IF-MHF"/>
-                                        <exclude reference="EMx-tR-xfN"/>
                                         <exclude reference="Bis-aN-8Z4"/>
                                         <exclude reference="g69-jP-sLU"/>
                                     </mask>
@@ -318,7 +299,6 @@
                 <outlet property="divider" destination="NPl-mv-Z4g" id="hJl-QO-flJ"/>
                 <outlet property="messageLabel" destination="U2x-t9-LPv" id="e5e-bs-Pkp"/>
                 <outlet property="middleView" destination="LoO-oE-hpb" id="uer-AW-jzy"/>
-                <outlet property="productButton" destination="mAW-TB-q5Y" id="mrB-Gg-qXG"/>
                 <outlet property="productImageView" destination="3yf-dZ-AHO" id="bz1-OU-NtO"/>
                 <outlet property="reputationButton" destination="cGQ-7Q-PkS" id="Uzm-kd-u2U"/>
                 <outlet property="selectedMarker" destination="Lp5-x7-i96" id="xnP-k7-6oq"/>

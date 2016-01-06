@@ -130,7 +130,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         [self.productImageView setContentMode:UIViewContentModeCenter];
     }];
     
-    [self.productButton setTitle:modelView.productName forState:UIControlStateNormal];
     _productNameLabel.text = modelView.productName;
 
     [self.userButton setLabelBackground:modelView.userLabel];
