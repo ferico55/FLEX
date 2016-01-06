@@ -281,17 +281,17 @@
                 if ([self isValidInput]) {
                     if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
 
-                        NSString *receivernName = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:@"";
-                        NSString *addressName = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:@"";
-                        NSString *addressStreet = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:@"";
-                        NSString *postcode = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY];
+                        NSString *receivernName = _textfieldreceivername.text?:@"";
+                        NSString *addressName = _textfieldaddressname.text?:@"";
+                        NSString *addressStreet = _textviewaddress.text?:@"";
+                        NSString *postcode = _textfieldpostcode.text?:@"";
                         NSNumber *districtID = _selectedDistrict[DATA_ID_KEY];
                         NSString *districtName = _selectedDistrict[DATA_NAME_KEY]?:@"";
                         NSNumber *cityID = _selectedCity[DATA_ID_KEY]?:@(0);
                         NSString *cityName = _selectedCity[DATA_NAME_KEY]?:@"";
                         NSNumber *provinceID = _selectedProvince[DATA_ID_KEY]?:@(0);
                         NSString *provName = _selectedProvince[DATA_NAME_KEY]?:@"";
-                        NSString *phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:@"";
+                        NSString *phone = _textfieldphonenumber.text?:@"";
                         
                         AddressFormList *detailAddress = [AddressFormList new];
                         detailAddress.address_name = addressName;
@@ -305,6 +305,8 @@
                         detailAddress.province_id = provinceID;
                         detailAddress.province_name = provName;
                         detailAddress.receiver_phone = phone;
+                        detailAddress.longitude = _longitude?:@"";
+                        detailAddress.latitude = _latitude?:@"";
                         
                         NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
                         

@@ -12,7 +12,8 @@
 
 +(NSDictionary *)attributeMappingDictionary
 {
-    NSArray *keys = @[@"is_success"];
+    NSArray *keys = @[@"is_success",
+                      @"address_id"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
