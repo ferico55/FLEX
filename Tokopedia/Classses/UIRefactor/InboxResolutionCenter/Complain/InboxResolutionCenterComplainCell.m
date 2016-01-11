@@ -14,6 +14,7 @@
 @implementation InboxResolutionCenterComplainCell
 {
     IBOutletCollection(UITapGestureRecognizer) NSArray* _gestureRecognizers;
+    IBOutlet UIView* _selectionMarker;
 }
 
 #pragma mark - Factory methods
@@ -46,9 +47,7 @@
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    _selectionMarker.hidden = !selected;
 }
 
 -(void)setDisputeStatus:(NSString *)disputeStatus
