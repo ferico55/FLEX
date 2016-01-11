@@ -101,6 +101,10 @@
     
     [self initNotification];
     
+    // allow table selection only on iPad through didSelectRowAtIndexPath
+    // on iPhone, each cell handles its own events currently
+    _table.allowsSelection = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    
     _page = 1;
     isFirstShow = YES;
     _readStatus = @"all";

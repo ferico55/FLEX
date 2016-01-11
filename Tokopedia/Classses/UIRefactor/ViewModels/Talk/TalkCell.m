@@ -75,11 +75,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
     [self.middleView addGestureRecognizer:talkGesture];
-    [self.middleView setUserInteractionEnabled:YES];
-    
-    productGesture.cancelsTouchesInView = NO;
-    userGesture.cancelsTouchesInView = NO;
-    talkGesture.cancelsTouchesInView = NO;
+    [self.middleView setUserInteractionEnabled:enableDeepNavigation];
     
     CGFloat borderWidth = 0.5f;
     
