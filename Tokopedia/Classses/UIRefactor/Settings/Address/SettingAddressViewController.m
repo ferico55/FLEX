@@ -1241,7 +1241,7 @@
 - (NSString *)getPath:(int)tag {
     if(tag == CTagRequest)
     {
-        return @"/web-service/v4/people/get_address.pl";
+        return @"/v4/people/get_address.pl";
     }
     
     return @"";

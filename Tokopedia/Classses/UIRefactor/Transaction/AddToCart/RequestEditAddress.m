@@ -76,7 +76,7 @@
 }
 
 - (NSString *)getPath:(int)tag {
-    return @"/web-service/v4/action/people/edit_address.pl";
+    return @"/v4/action/people/edit_address.pl";
 }
 
 - (id)getObjectManager:(int)tag
