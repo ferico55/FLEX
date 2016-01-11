@@ -449,6 +449,8 @@ typedef enum
 
 #define kTKPDSHOPSHIPMENT_APIAUTORESIKEY @"auto_resi"
 
+#define kTKPDSHOPSHIPMENT_APIALLOW_ACTIVATE_GOJEKKEY    @"allow_activate_gojek"
+
 #define kTKPDSHOPSHIPMENT_APILONGITUDEKEY @"longitude"
 #define kTKPDSHOPSHIPMENT_APILATITUDEKAY @"latitude"
 #define kTKPDSHOPSHIPMENT_APIADDR_STREETKEY @"addr_street"

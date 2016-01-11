@@ -218,6 +218,8 @@
 @property (weak, nonatomic) IBOutlet UIView *pickupMapContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *pickupLocationImageView;
 
+@property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
+
 @property BOOL mapIsHidden;
 
 @end
@@ -338,7 +340,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (_shipment) {
         if (_hasSelectKotaAsal) {
-            return 12;
+            return 13;
         } else {
             return 1;
         }
@@ -366,51 +368,56 @@
         }
             
         case 2: {
-            height = [self heightForJNEAtRow:indexPath.row];
+            height = [self heightForPhoneNumberRow:indexPath.row];
             break;
         }
             
         case 3: {
-            height = [self heightForTikiAtRow:indexPath.row];
+            height = [self heightForJNEAtRow:indexPath.row];
             break;
         }
             
         case 4: {
-            height = [self heightForRPXAtRow:indexPath.row];
+            height = [self heightForTikiAtRow:indexPath.row];
             break;
         }
             
         case 5: {
-            height = [self heightForWahanaAtRow:indexPath.row];
+            height = [self heightForRPXAtRow:indexPath.row];
             break;
         }
             
         case 6: {
-            height = [self heightForPosAtRow:indexPath.row];
+            height = [self heightForWahanaAtRow:indexPath.row];
             break;
         }
             
         case 7: {
-            height = [self heightForCahayaAtRow:indexPath.row];
+            height = [self heightForPosAtRow:indexPath.row];
             break;
         }
             
         case 8: {
-            height = [self heightForPanduAtRow:indexPath.row];
+            height = [self heightForCahayaAtRow:indexPath.row];
             break;
         }
             
         case 9: {
+            height = [self heightForPanduAtRow:indexPath.row];
+            break;
+        }
+            
+        case 10: {
             height = [self heightForFirstAtRow:indexPath.row];
             break;
         }
 
-        case 10: {
+        case 11: {
             height = [self heightForGoJekRow:indexPath.row];
             break;
         }
             
-        case 11: {
+        case 12: {
             height = [self heightForSiCepatAtRow:indexPath.row];
             break;
         }
@@ -460,6 +467,14 @@
         }
     }
     return height;
+}
+
+- (CGFloat)heightForPhoneNumberRow:(NSInteger)row {
+    if (_shipment.contact.msisdn_enc) {
+        return 44;
+    } else {
+        return 0;
+    }
 }
 
 - (CGFloat)heightForJNEAtRow:(NSInteger)row
@@ -979,6 +994,29 @@
             height = 44;
         }
         
+    } else if (createShopViewController) {
+        
+        //TODO: Better codes
+        if ([_shipment.allow_activate_gojek boolValue]) {
+            // cell to show courier name and logo
+            if (row == 0) {
+                height = 50;
+            }
+            
+            // return cell if information about package is existing
+            else if (row == 1) {
+                if (_gojekPackageGoKilat) {
+                    return 44;
+                } else {
+                    return 0;
+                }
+            }
+            
+            else if (row == 2) {
+                height = 44;
+            }
+        }
+        
     } else {
         if (row == 0) {
             height = 50;
@@ -1040,42 +1078,46 @@
             break;
 
         case 2:
-            numberOfRows = 12;
+            numberOfRows = 1;
             break;
             
         case 3:
-            numberOfRows = 8;
+            numberOfRows = 12;
             break;
             
         case 4:
-            numberOfRows = 7;
+            numberOfRows = 8;
             break;
             
         case 5:
-            numberOfRows = 5;
+            numberOfRows = 7;
             break;
             
         case 6:
-            numberOfRows = 11;
+            numberOfRows = 5;
             break;
             
         case 7:
-            numberOfRows = 5;
+            numberOfRows = 11;
             break;
             
         case 8:
             numberOfRows = 5;
             break;
-        
+            
         case 9:
             numberOfRows = 5;
             break;
-            
+        
         case 10:
+            numberOfRows = 5;
+            break;
+            
+        case 11:
             numberOfRows = 4;
             break;
 
-        case 11:
+        case 12:
             numberOfRows = 4;
             break;
 
@@ -1159,7 +1201,7 @@
         }
         [NavigateViewController navigateToMap:coordinate type:TypeEditPlace fromViewController:self];
         
-    } else if (indexPath.section == 3 && indexPath.row == 4) {
+    } else if (indexPath.section == 4 && indexPath.row == 4) {
         AlertInfoView *alert = [AlertInfoView newview];
         alert.text = @"Sistem AWB Otomatis";
         alert.detailText = @"Dengan menggunakan Sistem Kode Resi Otomatis, Anda tidak perlu lagi melakukan input nomor resi secara manual. Cukup cetak kode booking dan tunjukkan ke agen JNE yang mendukung, nomor resi akan otomatis masuk ke Tokopedia.";
@@ -1170,7 +1212,7 @@
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
         
-    } else if (indexPath.section == 5 && indexPath.row == 1) {
+    } else if (indexPath.section == 6 && indexPath.row == 1) {
         AlertInfoView *alert = [AlertInfoView newview];
         alert.text = @"Sistem I-Drop";
         alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
@@ -1194,6 +1236,12 @@
             title = @"    Lokasi Pickup";
         }
     } else if (section == 2) {
+        if (createShopViewController) {
+            title = nil;
+        } else {
+            title = @"    Nomor HP";
+        }
+    } else if (section == 3) {
         title = @"    Shipping Services";
     }
     return title;
@@ -1544,7 +1592,6 @@
                 _shipment.shop_shipping.district_id = 5573;
                 
             } else {
-                self.mapIsHidden = YES;
                 NSMutableArray *citiesName = [NSMutableArray new];
                 for (City *city in _cities) {
                     if (city.city_id == _shipment.shop_shipping.city_id) {
@@ -1632,7 +1679,8 @@
                                                    kTKPDSHOPSHIPMENT_APIISALLOWKEY,
                                                    kTKPDSHOPSHIPMENT_APIPOSFEEKEY,
                                                    kTKPDSHOPSHIPMENT_APISHOPNAMEKEY,
-                                                   kTKPDSHOPSHIPMENT_APIAUTORESIKEY
+                                                   kTKPDSHOPSHIPMENT_APIAUTORESIKEY,
+                                                   kTKPDSHOPSHIPMENT_APIALLOW_ACTIVATE_GOJEKKEY
                                                    ]];
     
     RKObjectMapping *provinceMapping = [RKObjectMapping mappingForClass:[Province class]];
@@ -1695,6 +1743,12 @@
 
     RKObjectMapping *gojekMapping = [RKObjectMapping mappingForClass:[Gojek class]];
     [gojekMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APIGOJEKWHITELISTEDKEY]];
+
+    RKObjectMapping *contactMapping = [RKObjectMapping mappingForClass:[ShippingContact class]];
+    [contactMapping addAttributeMappingsFromArray:@[@"messenger_enc",
+                                                    @"msisdn_enc",
+                                                    @"msisdn_verification",
+                                                    @"user_email_enc",]];
     
     RKObjectMapping *shopShippingMapping = [RKObjectMapping mappingForClass:[ShopShipping class]];
     [shopShippingMapping addAttributeMappingsFromArray:@[
@@ -1777,6 +1831,10 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIGOJEKKEY
                                                                                   toKeyPath:kTKPDSHOPSHIPMENT_APIGOJEKKEY
                                                                                 withMapping:gojekMapping]];
+
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"contact"
+                                                                                  toKeyPath:@"contact"
+                                                                                withMapping:contactMapping]];
 
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APISHOPSHIPPINGKEY
                                                                                   toKeyPath:kTKPDSHOPSHIPMENT_APISHOPSHIPPINGKEY
@@ -1863,6 +1921,7 @@
         [self setProvincesData];
         [self setProvincesLabelValue];
         [self showsMapForGojek];
+        [self showsPhoneNumber];
         
         [self setSaveButton];
         
@@ -1892,8 +1951,16 @@
             } else if (shipmentId == 9) {
                 self.first = shipment;
                 [self setFirstValues];
-            } else if (shipmentId == 10 && [_shipment.gojek.whitelisted boolValue]) {
-                self.gojek = shipment;
+            } else if (shipmentId == 10) {
+                if (createShopViewController) {
+                    if ([_shipment.allow_activate_gojek boolValue]) {
+                        self.gojek = shipment;
+                    }
+                } else {
+                    if ([_shipment.gojek.whitelisted boolValue]) {
+                        self.gojek = shipment;
+                    }
+                }
                 [self setGojekValues];
             } else if (shipmentId == 11) {
                 self.siCepat = shipment;
@@ -2003,15 +2070,16 @@
 }
 
 - (void)showsMapForGojek {
-    if ([_shipment.shop_shipping.province_name isEqualToString:@"DKI Jakarta"]) {
-        self.mapIsHidden = NO;
-    }
     for (ShippingInfoShipments *courier in _shipment.shipment) {
         if ([courier.shipment_id isEqualToString:@"10"] ||
             [courier.shipment_name isEqualToString:@"GO-JEK"]) {
             self.mapIsHidden = NO;
         }
     }
+}
+
+- (void)showsPhoneNumber {
+    _phoneNumberLabel.text = _shipment.contact.msisdn_enc;
 }
 
 - (void)setJNE:(ShippingInfoShipments *)shipment {

@@ -1993,6 +1993,7 @@
 		852635BD1C43AC0800D418D8 /* Province.m in Sources */ = {isa = PBXBuildFile; fileRef = 852635BC1C43AC0800D418D8 /* Province.m */; };
 		852635C01C43AC2E00D418D8 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 852635BF1C43AC2E00D418D8 /* City.m */; };
 		852635C31C43B5A100D418D8 /* Gojek.m in Sources */ = {isa = PBXBuildFile; fileRef = 852635C21C43B5A100D418D8 /* Gojek.m */; };
+		852635C61C43C00A00D418D8 /* ShippingContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 852635C51C43C00A00D418D8 /* ShippingContact.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -5044,6 +5045,8 @@
 		852635BF1C43AC2E00D418D8 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
 		852635C11C43B5A100D418D8 /* Gojek.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gojek.h; sourceTree = "<group>"; };
 		852635C21C43B5A100D418D8 /* Gojek.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gojek.m; sourceTree = "<group>"; };
+		852635C41C43C00A00D418D8 /* ShippingContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShippingContact.h; sourceTree = "<group>"; };
+		852635C51C43C00A00D418D8 /* ShippingContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShippingContact.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -6680,6 +6683,8 @@
 			children = (
 				852635BB1C43AC0800D418D8 /* Province.h */,
 				852635BC1C43AC0800D418D8 /* Province.m */,
+				852635C41C43C00A00D418D8 /* ShippingContact.h */,
+				852635C51C43C00A00D418D8 /* ShippingContact.m */,
 				852635BE1C43AC2E00D418D8 /* City.h */,
 				852635C11C43B5A100D418D8 /* Gojek.h */,
 				852635C21C43B5A100D418D8 /* Gojek.m */,
@@ -12684,6 +12689,7 @@
 				85262F231C43A6E600D418D8 /* Promote.m in Sources */,
 				852630761C43A6E600D418D8 /* TKPDTabInboxCustomerServiceNavigationController.m in Sources */,
 				852630361C43A6E600D418D8 /* RequestUploadImageHelper.m in Sources */,
+				852635C61C43C00A00D418D8 /* ShippingContact.m in Sources */,
 				85262EE31C43A6E600D418D8 /* DetailReviewReputaionViewModel.m in Sources */,
 				85262F691C43A6E600D418D8 /* Payment.m in Sources */,
 				85262FF11C43A6E600D418D8 /* UIViewController+TKPAdditions.m in Sources */,
