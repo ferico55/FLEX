@@ -31,11 +31,12 @@
 
 #import "StickyAlertView.h"
 #import "RequestEditAddress.h"
+#import "RequestAddAddress.h"
 
 #define TAG_PICKER_ALERT_INSURANCE 10
 
 @import GoogleMaps;
-@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate, TransactionShipmentATCTableViewControllerDelegate, TKPPlacePickerDelegate, RequestEditAddressDelegate>
+@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate, TransactionShipmentATCTableViewControllerDelegate, TKPPlacePickerDelegate, RequestEditAddressDelegate, RequestAddAddressDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
@@ -61,6 +62,7 @@
     BOOL _isRequestForShipment;
     
     RequestEditAddress *_requestEditAddress;
+    RequestAddAddress *_requestAddAddress;
 }
 
 #define TAG_REQUEST_FORM 10
@@ -505,6 +507,9 @@
             
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
             for (ShippingInfoShipments *shipment in _shipments) {
+                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                    _selectedShipment = shipment;
+                }
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
@@ -991,9 +996,27 @@
     }
     return _requestEditAddress;
 }
+-(RequestAddAddress*)requestAddAddress
+{
+    if (!_requestAddAddress) {
+        _requestAddAddress = [RequestAddAddress new];
+        _requestAddAddress.delegate = self;
+    }
+    return _requestAddAddress;
+}
 
 -(void)requestSuccessEditAddress:(id)successResult withOperation:(RKObjectRequestOperation *)operation
 {
+    [_networkManagerCalculate doRequest];
+}
+
+-(void)requestSuccessAddAddress:(AddressFormList *)address
+{
+    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+    
+    [_networkManagerCalculate doRequest];
+    
+    [_tableView reloadData];
     [_networkManagerCalculate doRequest];
 }
 
@@ -1089,6 +1112,11 @@
     address.address_postal = address.postal_code;
     address.address_city = address.city_name;
     address.address_province = address.province_name;
+    
+    if (address.address_id <=0) {
+        [[self requestAddAddress] doRequestWithAddress:address];
+        return;
+    }
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     
     [_networkManagerCalculate doRequest];
@@ -1407,6 +1435,8 @@
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
     if ([cart.cart_destination.latitude integerValue]!=0 && [cart.cart_destination.longitude integerValue]!=0) {
+        _isFinishCalculate = NO;
+        [_tableView reloadData];
         [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([cart.cart_destination.latitude doubleValue], [cart.cart_destination.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
             GMSAddress *placemark = [response results][0];
             _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;

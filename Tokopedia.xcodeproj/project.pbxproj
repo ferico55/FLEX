@@ -1967,6 +1967,7 @@
 		45EA52301C3A705E00B49A55 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 45EA4A861C3A705D00B49A55 /* vt-iOSlib-1.0.1.tar.gz */; };
 		45EA52311C3A705E00B49A55 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 45EA4A871C3A705D00B49A55 /* vt-iOSlib-1.0.1.zip */; };
 		45EA52321C3A705E00B49A55 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EA4A8A1C3A705D00B49A55 /* XYPieChart.m */; };
+		45F137861C3BB0E4003D718C /* RequestAddAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F137851C3BB0E4003D718C /* RequestAddAddress.m */; };
 		62DFACFA1C1688B300403863 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DFA0781C1688AB00403863 /* AppDelegate.m */; };
 		62DFB1D01C1688B400403863 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA0F1C1688AF00403863 /* InfoPlist.strings */; };
 		62DFB1D11C1688B400403863 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62DFAA111C1688AF00403863 /* GoogleService-Info.plist */; };
@@ -4998,6 +4999,8 @@
 		45EA4A871C3A705D00B49A55 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		45EA4A891C3A705D00B49A55 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		45EA4A8A1C3A705D00B49A55 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		45F137841C3BB0E4003D718C /* RequestAddAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestAddAddress.h; sourceTree = "<group>"; };
+		45F137851C3BB0E4003D718C /* RequestAddAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestAddAddress.m; sourceTree = "<group>"; };
 		62DFA0771C1688AB00403863 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		62DFA0781C1688AB00403863 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		62DFAA101C1688AF00403863 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -9083,6 +9086,8 @@
 		45EA46B61C3A705B00B49A55 /* AddToCart */ = {
 			isa = PBXGroup;
 			children = (
+				45F137841C3BB0E4003D718C /* RequestAddAddress.h */,
+				45F137851C3BB0E4003D718C /* RequestAddAddress.m */,
 				45EA46B71C3A705B00B49A55 /* RequestEditAddress.h */,
 				45EA46B81C3A705B00B49A55 /* RequestEditAddress.m */,
 				45EA46B91C3A705B00B49A55 /* ShippingOptionsViewController.h */,
@@ -10584,6 +10589,7 @@
 		FC36DF7B19B0656400AF74C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
@@ -12244,6 +12250,7 @@
 				45EA4CA01C3A705D00B49A55 /* AlertPickerView.m in Sources */,
 				45EA4C441C3A705D00B49A55 /* TxEMoneyResult.m in Sources */,
 				45EA4E501C3A705E00B49A55 /* ChangeCourierViewController.m in Sources */,
+				45F137861C3BB0E4003D718C /* RequestAddAddress.m in Sources */,
 				45EA4D6C1C3A705D00B49A55 /* UIView+HVDLayout.m in Sources */,
 				45EA4C9C1C3A705D00B49A55 /* AlertLuckyView.m in Sources */,
 				45EA4F071C3A705E00B49A55 /* TransactionCartShippingViewController.m in Sources */,

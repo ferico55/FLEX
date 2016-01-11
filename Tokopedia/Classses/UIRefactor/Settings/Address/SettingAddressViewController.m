@@ -273,7 +273,7 @@
                         ((GeneralCheckmarkCell*)cell).checkmarkImageView.hidden = NO;
                 }
                 
-                if ([list.longitude integerValue] == 0 && [list.latitude integerValue] == 0)
+                if (list.longitude  == 0 && list.latitude == 0)
                 {
                     ((GeneralCheckmarkCell*)cell).cellLableLeadingConstraint.constant = 14;
                     ((GeneralCheckmarkCell*)cell).iconPinPoint.hidden = YES;
@@ -311,7 +311,7 @@
                         ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@" ";
                     }
                     
-                    if ([list.longitude integerValue] == 0 && [list.latitude integerValue] == 0)
+                    if (list.longitude == 0 && list.latitude == 0)
                     {
                         cell.imageView.image = nil;
                     }
@@ -1241,7 +1241,7 @@
 - (NSString *)getPath:(int)tag {
     if(tag == CTagRequest)
     {
-        return @"/web-service/v4/people/get_address.pl";
+        return @"/v4/people/get_address.pl";
     }
     
     return @"";

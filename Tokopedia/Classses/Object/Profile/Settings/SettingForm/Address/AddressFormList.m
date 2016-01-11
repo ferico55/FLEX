@@ -34,6 +34,8 @@
         tempViewModel.addressProvince = _address_province?:_province_name;
         tempViewModel.addressPostalCode = _address_postal?:_postal_code;
         tempViewModel.addressCountry = _address_country?:_country_name;
+        tempViewModel.latitude = _latitude;
+        tempViewModel.longitude = _longitude;
         _viewModel = tempViewModel;
     }
     
