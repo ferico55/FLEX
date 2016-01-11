@@ -34,6 +34,7 @@
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *latitude;
 @property (nonatomic, strong) NSString *is_from_cart;
+@property (nonatomic, strong) NSString *password;
 
 @end
 
