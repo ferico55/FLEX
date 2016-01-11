@@ -9,6 +9,9 @@
 #import "InboxTicketCell.h"
 
 @implementation InboxTicketCell
+{
+    IBOutlet UIView* _selectionMarker;
+}
 
 + (id)initCell
 {
@@ -25,7 +28,7 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    _selectionMarker.hidden = !selected;
 }
 
 @end
