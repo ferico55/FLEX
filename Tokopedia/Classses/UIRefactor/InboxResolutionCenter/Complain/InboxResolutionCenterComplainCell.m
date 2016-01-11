@@ -12,6 +12,9 @@
 
 
 @implementation InboxResolutionCenterComplainCell
+{
+    IBOutletCollection(UITapGestureRecognizer) NSArray* _gestureRecognizers;
+}
 
 #pragma mark - Factory methods
 + (id)newCell
@@ -25,8 +28,14 @@
     return nil;
 }
 
+- (void)disableTouchesOnIpad {
+    for (UITapGestureRecognizer* gestureRecognizer in _gestureRecognizers) {
+        gestureRecognizer.enabled = [NavigationHelper shouldDoDeepNavigation];
+    }
+}
 
 - (void)awakeFromNib {
+    [self disableTouchesOnIpad];
     
     [_warningLabel setCustomAttributedText:@"Komplain lebih dari 30 hari"];
 }
@@ -72,13 +81,13 @@
 }
 - (IBAction)gesture:(id)sender {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-    if (gesture.view.tag == 10 && [NavigationHelper shouldDoDeepNavigation])
+    if (gesture.view.tag == 10)
         [_delegate goToInvoiceAtIndexPath:_indexPath];
-    else if(gesture.view.tag == 11 && [NavigationHelper shouldDoDeepNavigation])
+    else if(gesture.view.tag == 11)
         [_delegate goToShopOrProfileAtIndexPath:_indexPath];
     else if (gesture.view.tag == 12)
         [_delegate goToResolutionDetailAtIndexPath:_indexPath];
-    else if (gesture.view.tag == 13 && [NavigationHelper shouldDoDeepNavigation])
+    else if (gesture.view.tag == 13)
         [_delegate showImageAtIndexPath:_indexPath];
 }
 

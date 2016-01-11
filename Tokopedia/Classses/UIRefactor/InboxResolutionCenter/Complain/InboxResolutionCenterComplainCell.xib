@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -25,7 +25,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="203"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GyV-91-6B2" id="94h-cI-Em1">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="202.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="202"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RMC-KP-Mma">
@@ -286,6 +286,10 @@
                 <outlet property="unreadIconImageView" destination="1hb-65-coD" id="OoR-GM-vxr"/>
                 <outlet property="viewLabelUser" destination="h26-la-C3I" id="s5w-dA-w6A"/>
                 <outlet property="warningLabel" destination="8KS-26-HFG" id="xsG-pH-QMe"/>
+                <outletCollection property="_gestureRecognizers" destination="G8C-kZ-p1X" id="M1W-PG-DBW"/>
+                <outletCollection property="_gestureRecognizers" destination="ZBv-X1-SOK" id="ubl-xz-vi4"/>
+                <outletCollection property="_gestureRecognizers" destination="f77-OD-62t" id="vsV-xt-uT8"/>
+                <outletCollection property="_gestureRecognizers" destination="VBr-af-EVW" id="WLe-YA-igs"/>
             </connections>
             <point key="canvasLocation" x="436" y="337.5"/>
         </tableViewCell>
