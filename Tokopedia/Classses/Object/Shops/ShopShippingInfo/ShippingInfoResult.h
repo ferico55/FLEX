@@ -15,6 +15,7 @@
 #import "POSIndonesia.h"
 #import "Tiki.h"
 #import "RPX.h"
+#import "Gojek.h"
 
 @interface ShippingInfoResult : NSObject
 @property (nonatomic, strong) NSArray *payment_options;
@@ -34,5 +35,7 @@
 @property (nonatomic, strong) Tiki *tiki;
 @property (nonatomic, strong) RPX *rpx;
 @property (nonatomic, strong) NSMutableArray *auto_resi;
+@property (nonatomic, strong) NSArray *provinces_cities_districts;
+@property (nonatomic, strong) Gojek *gojek;
 
 @end

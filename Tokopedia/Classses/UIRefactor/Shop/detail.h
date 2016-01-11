@@ -395,6 +395,9 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APIPATH @"myshop-shipment.pl"
 
 #define kTKPDSHOPSHIPMENT_APIDISTRICTKEY @"district"
+#define kTKPDSHOPSHIPMENT_APIDISTRICTSKEY @"districts"
+#define kTKPDSHOPSHIPMENT_APIPROVINCESKEY    @"provinces_cities_districts"
+#define kTKPDSHOPSHIPMENT_APICITIESKEY    @"cities"
 #define kTKPDSHOPSHIPMENT_APISHIPMENTSKEY @"shipments"
 
 #define kTKPDSHOPSHIPMENT_APIISALLOWKEY @"is_allow"
@@ -431,12 +434,24 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APIDISTRICTNAMEKEY @"district_name"
 #define kTKPDSHOPSHIPMENT_APIDISCTRICTSUPPORTEDKEY @"district_shipping_supported"
 
+#define kTKPDSHOPSHIPMENT_APIPROVINCEIDKEY  @"province_id"
+#define kTKPDSHOPSHIPMENT_APIPROVINCENAMEKEY    @"province_name"
+#define kTKPDSHOPSHIPMENT_APICITIESKEY  @"cities"
+
+#define kTKPDSHOPSHIPMENT_APICITYIDKEY  @"city_id"
+#define kTKPDSHOPSHIPMENT_APICITYNAMEKEY    @"city_name"
+#define kTKPDSHIPSHIPMENT_APIDISCTRICTSKEY  @"districts"
+
 #define kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY @"courier_origin"
 
 #define kTKPDSHOPSHIPMENT_APISHIPMENTIDS @"shipment_ids"
 #define kTKPDSHOPSHIPMENT_APIPAYMENTIDS @"payment_ids"
 
 #define kTKPDSHOPSHIPMENT_APIAUTORESIKEY @"auto_resi"
+
+#define kTKPDSHOPSHIPMENT_APILONGITUDEKEY @"longitude"
+#define kTKPDSHOPSHIPMENT_APILATITUDEKAY @"latitude"
+#define kTKPDSHOPSHIPMENT_APIADDR_STREETKEY @"addr_street"
 
 //JNE
 #define kTKPDSHOPSHIPMENT_APIJNEKEY @"jne"
@@ -467,6 +482,9 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APIRPXIDROPKEY @"i_drop"
 #define kTKPDSHOPSHIPMENT_APIRPXINDOMARETLOGOKEY @"indomaret_logo"
 
+//Gojek
+#define kTKPDSHOPSHIPMENT_APIGOJEKKEY   @"gojek"
+#define kTKPDSHOPSHIPMENT_APIGOJEKWHITELISTEDKEY    @"whitelisted"
 
 #pragma mark -- Shop Edit Info
 
