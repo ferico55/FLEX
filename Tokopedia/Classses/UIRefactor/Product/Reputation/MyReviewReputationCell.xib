@@ -117,9 +117,10 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eg5-oG-5N6">
-                                <rect key="frame" x="73" y="58" width="155" height="22"/>
+                                <rect key="frame" x="73" y="58" width="65" height="22"/>
                                 <animations/>
                                 <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="65" id="30L-md-dDc"/>
                                     <constraint firstAttribute="height" constant="22" id="rLL-N9-NZc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
@@ -154,7 +155,6 @@
                             <constraint firstAttribute="trailing" secondItem="Rn9-8e-ZGs" secondAttribute="trailing" constant="8" id="h3C-ex-wDz"/>
                             <constraint firstItem="NWg-oh-8LE" firstAttribute="leading" secondItem="5cL-Ds-8lM" secondAttribute="leading" constant="8" id="kvB-Mq-8LD"/>
                             <constraint firstItem="Cp8-gL-H7k" firstAttribute="top" secondItem="Rn9-8e-ZGs" secondAttribute="bottom" constant="8" id="l2e-u5-fx7"/>
-                            <constraint firstItem="Orb-U7-fkv" firstAttribute="leading" secondItem="eg5-oG-5N6" secondAttribute="trailing" constant="8" id="m5O-pR-dmZ"/>
                             <constraint firstAttribute="trailing" secondItem="Orb-U7-fkv" secondAttribute="trailing" constant="8" id="nyE-tA-2K7"/>
                             <constraint firstItem="Cp8-gL-H7k" firstAttribute="leading" secondItem="NWg-oh-8LE" secondAttribute="trailing" constant="15" id="rNq-rF-FjH"/>
                             <constraint firstItem="r7v-eI-fZ4" firstAttribute="leading" secondItem="5cL-Ds-8lM" secondAttribute="leading" id="s5x-Wh-V5H"/>
