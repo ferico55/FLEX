@@ -1984,6 +1984,9 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BBB58B031C44DA0900FF0C61 /* HelpfulReviewRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB58B021C44DA0900FF0C61 /* HelpfulReviewRequest.m */; settings = {ASSET_TAGS = (); }; };
+		BBB58B061C44DA2000FF0C61 /* HelpfulReviewResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB58B051C44DA2000FF0C61 /* HelpfulReviewResponse.m */; settings = {ASSET_TAGS = (); }; };
+		BBB58B091C44DA2F00FF0C61 /* HelpfulReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB58B081C44DA2F00FF0C61 /* HelpfulReviewResult.m */; settings = {ASSET_TAGS = (); }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -4983,6 +4986,12 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BBB58B011C44DA0900FF0C61 /* HelpfulReviewRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpfulReviewRequest.h; sourceTree = "<group>"; };
+		BBB58B021C44DA0900FF0C61 /* HelpfulReviewRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpfulReviewRequest.m; sourceTree = "<group>"; };
+		BBB58B041C44DA2000FF0C61 /* HelpfulReviewResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpfulReviewResponse.h; sourceTree = "<group>"; };
+		BBB58B051C44DA2000FF0C61 /* HelpfulReviewResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpfulReviewResponse.m; sourceTree = "<group>"; };
+		BBB58B071C44DA2F00FF0C61 /* HelpfulReviewResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpfulReviewResult.h; sourceTree = "<group>"; };
+		BBB58B081C44DA2F00FF0C61 /* HelpfulReviewResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpfulReviewResult.m; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
@@ -8225,6 +8234,7 @@
 		85B13E091C30E69A001F1CBC /* Reputation */ = {
 			isa = PBXGroup;
 			children = (
+				BBB58B001C44D9EB00FF0C61 /* HelpfulReview */,
 				85B13E0A1C30E69A001F1CBC /* DetailMyReviewReputationCell.h */,
 				85B13E0B1C30E69A001F1CBC /* DetailMyReviewReputationCell.m */,
 				85B13E0C1C30E69A001F1CBC /* DetailMyReviewReputationCell.xib */,
@@ -10301,6 +10311,19 @@
 			path = "Third Party";
 			sourceTree = "<group>";
 		};
+		BBB58B001C44D9EB00FF0C61 /* HelpfulReview */ = {
+			isa = PBXGroup;
+			children = (
+				BBB58B011C44DA0900FF0C61 /* HelpfulReviewRequest.h */,
+				BBB58B021C44DA0900FF0C61 /* HelpfulReviewRequest.m */,
+				BBB58B041C44DA2000FF0C61 /* HelpfulReviewResponse.h */,
+				BBB58B051C44DA2000FF0C61 /* HelpfulReviewResponse.m */,
+				BBB58B071C44DA2F00FF0C61 /* HelpfulReviewResult.h */,
+				BBB58B081C44DA2F00FF0C61 /* HelpfulReviewResult.m */,
+			);
+			path = HelpfulReview;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -11711,6 +11734,7 @@
 				85B147F51C30E69F001F1CBC /* TransactionCartCostView.m in Sources */,
 				85B143B31C30E69F001F1CBC /* EncodeDecoderManager.m in Sources */,
 				85B148421C30E69F001F1CBC /* RequestPayment.m in Sources */,
+				BBB58B091C44DA2F00FF0C61 /* HelpfulReviewResult.m in Sources */,
 				85B144EF1C30E69F001F1CBC /* Owner.m in Sources */,
 				85B145E71C30E69F001F1CBC /* ContactUsWebViewController.m in Sources */,
 				85B145671C30E69F001F1CBC /* UploadImageImage.m in Sources */,
@@ -11878,6 +11902,7 @@
 				85B148331C30E69F001F1CBC /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				85B144691C30E69F001F1CBC /* DetailMyInboxReputation.m in Sources */,
 				85B144001C30E69F001F1CBC /* Statistic.m in Sources */,
+				BBB58B031C44DA0900FF0C61 /* HelpfulReviewRequest.m in Sources */,
 				85B145591C30E69F001F1CBC /* TxOrderPaymentEditOrder.m in Sources */,
 				85B1446D1C30E69F001F1CBC /* MyReviewReputationResult.m in Sources */,
 				85B1445D1C30E69F001F1CBC /* LikeDislikePostResult.m in Sources */,
@@ -12025,6 +12050,7 @@
 				85B1486D1C30E69F001F1CBC /* VTiOSAPI.m in Sources */,
 				85B148601C30E69F001F1CBC /* ProductThumbCell.m in Sources */,
 				85B145A11C30E69F001F1CBC /* AlertVerifyOTP.m in Sources */,
+				BBB58B061C44DA2000FF0C61 /* HelpfulReviewResponse.m in Sources */,
 				85B144931C30E69F001F1CBC /* ProfileInfoResult.m in Sources */,
 				85B1447A1C30E69F001F1CBC /* NotifyAttributes.m in Sources */,
 				85B145661C30E69F001F1CBC /* UploadImageHelperResult.m in Sources */,
@@ -12680,7 +12706,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "31893ac2-aa61-474c-a581-19663d58950b";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -12725,7 +12751,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "31893ac2-aa61-474c-a581-19663d58950b";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
