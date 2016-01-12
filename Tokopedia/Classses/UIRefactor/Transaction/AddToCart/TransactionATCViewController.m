@@ -1495,7 +1495,7 @@
 //    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
     _selectedAddress = address;
     _isFinishRequesting = NO;
-    [self refreshView];
+    [self refreshView]; //4645967 //3684833
     [_tableView reloadData];
 }
 
