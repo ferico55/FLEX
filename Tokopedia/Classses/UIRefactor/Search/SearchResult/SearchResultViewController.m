@@ -1009,7 +1009,7 @@ SpellCheckRequestDelegate
 
 - (BOOL) isUsingAnyFilter{
     BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
-    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil;
     BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_min"]] isEqualToString:@"0"];
     BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_max"]] isEqualToString:@"0"];;
     BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
