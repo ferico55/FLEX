@@ -60,6 +60,8 @@ static NSInteger userViewHeight = 70;
     NSDictionary *auth;
     NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
+    ProductReputationSimpleCell *helpfulCell;
+    
 }
 
 
@@ -118,6 +120,9 @@ static NSInteger userViewHeight = 70;
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    
+    helpfulCell = [ProductReputationSimpleCell new];
+	
 }
 
 - (void)didReceiveMemoryWarning {
@@ -263,24 +268,28 @@ static NSInteger userViewHeight = 70;
 #pragma mark - UITableView Delegate and DataSource 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DetailReputationReview *reputationDetail = arrList[indexPath.row];
-    UILabel *messageLabel = [[UILabel alloc] init];
-    
-    [messageLabel setText:reputationDetail.review_message];
-    [messageLabel sizeToFit];
-    
-    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                           context:nil];
-    messageLabel.frame = sizeOfMessage;
-    
-    CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
-    return height;
+    if(indexPath.section == 1){
+        DetailReputationReview *reputationDetail = arrList[indexPath.row];
+        UILabel *messageLabel = [[UILabel alloc] init];
+        
+        [messageLabel setText:reputationDetail.review_message];
+        [messageLabel sizeToFit];
+        
+        CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                                            attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                               context:nil];
+        messageLabel.frame = sizeOfMessage;
+        
+        CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
+        return height;
+    }else{
+        return 90;
+    }
 
 }
 
@@ -296,12 +305,16 @@ static NSInteger userViewHeight = 70;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == 1){
     ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
     DetailReputationReview *reputationDetail = arrList[indexPath.row];
     [cell setReputationModelView:reputationDetail.viewModel];
     
     return cell;
+    }else{
+        return helpfulCell;
+    }
 }
 
 - (void)mappingAttribute:(DetailReputationReview *)reputationReview {
@@ -319,7 +332,11 @@ static NSInteger userViewHeight = 70;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return arrList.count;
+    if(section==1){
+        return arrList.count;
+    }else{
+        return 1;
+    }
 }
 
 #pragma mark - TTTAttributeLabel Delegate
