@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="153"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="152.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="152"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5cL-Ds-8lM">
@@ -168,19 +168,30 @@
                             </mask>
                         </variation>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Gr-ef-d3A">
+                        <rect key="frame" x="312" y="8" width="5" height="137"/>
+                        <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="5" id="Gcy-QN-kBv"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
+                    <constraint firstItem="1Gr-ef-d3A" firstAttribute="top" secondItem="5cL-Ds-8lM" secondAttribute="top" id="16j-YR-bzg"/>
                     <constraint firstItem="5cL-Ds-8lM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="Hqu-5m-OZA"/>
                     <constraint firstAttribute="bottom" secondItem="5cL-Ds-8lM" secondAttribute="bottom" constant="7" id="Jz3-fB-8jJ"/>
                     <constraint firstAttribute="trailing" secondItem="5cL-Ds-8lM" secondAttribute="trailing" constant="8" id="Lsi-gr-Onb"/>
+                    <constraint firstItem="1Gr-ef-d3A" firstAttribute="bottom" secondItem="5cL-Ds-8lM" secondAttribute="bottom" id="RxV-D2-DjY"/>
                     <constraint firstItem="5cL-Ds-8lM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="ewN-Dc-8AF"/>
+                    <constraint firstItem="1Gr-ef-d3A" firstAttribute="leading" secondItem="5cL-Ds-8lM" secondAttribute="trailing" id="l8g-Jq-FNq"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="_selectionMarker" destination="1Gr-ef-d3A" id="1NJ-mk-odJ"/>
                 <outlet property="btnFooter" destination="6lh-6l-5wb" id="eiD-TA-EAd"/>
                 <outlet property="btnInvoice" destination="Rn9-8e-ZGs" id="s7d-qg-nuI"/>
                 <outlet property="btnReputation" destination="eg5-oG-5N6" id="HqJ-9C-JFt"/>

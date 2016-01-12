@@ -23,6 +23,9 @@
 #define CFormatUlasanDiKomentari @"%@ Ulasan produk telah dikomentari"
 
 @implementation MyReviewReputationCell
+{
+    IBOutlet UIView* _selectionMarker;
+}
 
 - (void)awakeFromNib {
     CGSize newSize = CGSizeMake(btnReview.bounds.size.height-5, btnReview.bounds.size.height-5);
@@ -65,9 +68,7 @@
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    _selectionMarker.hidden = !selected;
 }
 
 
