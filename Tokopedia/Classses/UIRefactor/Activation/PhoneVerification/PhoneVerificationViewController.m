@@ -157,6 +157,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
         alert.tag = 100;
         [alert show];
     }
+     
 }
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
@@ -178,7 +179,14 @@ UIAlertViewDelegate, UITextFieldDelegate>
     if(alertView.tag != 100){
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         [secureStorage setKeychainWithValue:@"1" withKey:@"msisdn_is_verified"];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        if(_isSkipButtonHidden){
+            //return to biodata
+            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:3] animated:YES];
+        }else{
+            //return to home
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
     }
 }
 -(void)alertViewCancel:(TKPDAlertView *)alertView
