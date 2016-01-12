@@ -64,7 +64,7 @@
                            @"province" : province,
                            @"postal_code" : postalcode,
                            @"address_street" : addressstreet,
-                           @"distict" : district,
+                           @"district" : district,
                            @"longitude": longitude,
                            @"latitude": latitude,
                            @"is_from_cart":@"1"
@@ -106,7 +106,7 @@
 
 -(int)getRequestMethod:(int)tag
 {
-    return RKRequestMethodPOST;
+    return RKRequestMethodGET;
 }
 
 - (NSString *)getPath:(int)tag {
