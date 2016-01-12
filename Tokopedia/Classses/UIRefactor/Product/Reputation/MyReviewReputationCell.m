@@ -41,7 +41,6 @@
     imageProfile.layer.masksToBounds = YES;
     imageProfile.contentMode = UIViewContentModeScaleAspectFit;
 
-    [labelUser setUserInteractionEnabled:YES];
     [imageFlagReview setUserInteractionEnabled:YES];
     [labelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionLabelUser:)]];
     [imageFlagReview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionFlagReview:)]];
