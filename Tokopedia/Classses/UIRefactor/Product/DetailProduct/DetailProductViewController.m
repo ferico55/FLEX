@@ -1998,20 +1998,15 @@ UIAlertViewDelegate
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
             viewContentTokoTutup.hidden = NO;
             lblDescTokoTutup.text = [NSString stringWithFormat:FORMAT_TOKO_TUTUP, _product.result.shop_info.shop_is_closed_until];
+        } else if (_product.result.shop_info.shop_status != nil && [_product.result.shop_info.shop_status isEqualToString:@"3"]) {
+            viewContentTokoTutup.hidden = NO;
+            lblDescTokoTutup.text = @"Toko ini sedang dimoderasi";
         }
         
         //Set shop in warehouse
-        if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE && [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
+        if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE &&
+           [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
             [self unsetWarehouse];
-//        }
-//        else if([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
-//                [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
-//            lblTitleWarehouse.text = CStringTitleBanned;
-//            [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
-//            
-//            float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
-//            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 8 + tempHeight);
-//            _table.tableHeaderView = _header;
         } else if ([_product.result.product.product_status intValue] ==PRODUCT_STATE_WAREHOUSE||
                    [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
             
@@ -2035,8 +2030,7 @@ UIAlertViewDelegate
             [viewContentWarehouse setHidden:NO];
             _table.tableHeaderView = _header;
         }
-        else
-        {
+        else {
             [self unsetWarehouse];
         }
         
