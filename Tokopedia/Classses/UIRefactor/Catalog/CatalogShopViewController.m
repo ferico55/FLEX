@@ -24,6 +24,7 @@
 #import "LoadingView.h"
 #import "Paging.h"
 #import "UIActivityViewController+Extensions.h"
+#import "NoResultReusableView.h"
 
 @interface CatalogShopViewController ()
 <
@@ -34,7 +35,8 @@
     CatalogShopDelegate,
     CMPopTipViewDelegate,
     TokopediaNetworkManagerDelegate,
-    LoadingViewDelegate
+    LoadingViewDelegate,
+    NoResultDelegate
 >
 {
     UserAuthentificationManager *_userManager;
@@ -103,6 +105,8 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
+    
+    if (_catalog_shops.count == 0) [self initNoResultView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -615,4 +619,20 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-    @end
+#pragma mark - No result view
+
+- (void)initNoResultView {
+    NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    noResultView.delegate = self;
+    [noResultView generateAllElements:@"no-result.png"
+                                title:@"Tidak ada penjual"
+                                 desc:@"Toko tidak ditemukan pada katalog ini"
+                             btnTitle:@"Kembali ke halaman sebelumnya"];
+    [self.tableView addSubview:noResultView];
+}
+
+- (void)buttonDidTapped:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+@end
