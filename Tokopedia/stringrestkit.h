@@ -38,6 +38,7 @@
 #define TKPD_TALK_USER_LABEL @"talk_user_label"
 #define TKPD_TALK_USER_LABEL_ID @"talk_user_label_id"
 
+#define TKPD_PRODUCT_ID @"product_id"
 
 /** string for comment talk */
 #pragma mark - Comment Talk
