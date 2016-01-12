@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		62E15C771C450F33007F382A /* icon_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C741C450F33007F382A /* icon_camera.png */; settings = {ASSET_TAGS = (); }; };
+		62E15C781C450F33007F382A /* icon_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C751C450F33007F382A /* icon_camera@2x.png */; settings = {ASSET_TAGS = (); }; };
+		62E15C791C450F33007F382A /* icon_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C761C450F33007F382A /* icon_camera@3x.png */; settings = {ASSET_TAGS = (); }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2013,6 +2016,9 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		62E15C741C450F33007F382A /* icon_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_camera.png; sourceTree = "<group>"; };
+		62E15C751C450F33007F382A /* icon_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@2x.png"; sourceTree = "<group>"; };
+		62E15C761C450F33007F382A /* icon_camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@3x.png"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -9380,6 +9386,9 @@
 		85B140B61C30E69C001F1CBC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				62E15C741C450F33007F382A /* icon_camera.png */,
+				62E15C751C450F33007F382A /* icon_camera@2x.png */,
+				62E15C761C450F33007F382A /* icon_camera@3x.png */,
 				85B140B71C30E69C001F1CBC /* badges_gold_merchant.png */,
 				85B140B81C30E69C001F1CBC /* balloon_read_left.png */,
 				85B140B91C30E69C001F1CBC /* balloon_read_right.png */,
@@ -10674,6 +10683,7 @@
 				85B149F91C30E6A0001F1CBC /* icon_search (deleted 1f85ced2a89be38343ca7c6249b002c7).png in Resources */,
 				85B148D51C30E69F001F1CBC /* icon_button_pricealert_active@2x.png in Resources */,
 				85B147BE1C30E69F001F1CBC /* ShopSettingViewController.xib in Resources */,
+				62E15C781C450F33007F382A /* icon_camera@2x.png in Resources */,
 				85B14A641C30E6A0001F1CBC /* icon_truck@2x.png in Resources */,
 				85B14AAD1C30E6A0001F1CBC /* person2.png in Resources */,
 				85B148F51C30E69F001F1CBC /* icon_14@3x.png in Resources */,
@@ -11013,6 +11023,7 @@
 				85B149651C30E6A0001F1CBC /* icon_love_active@2x.png in Resources */,
 				85B1482F1C30E69F001F1CBC /* TxOrderDropshipCell.xib in Resources */,
 				85B14A3E1C30E6A0001F1CBC /* icon_speed_grey_large.png in Resources */,
+				62E15C771C450F33007F382A /* icon_camera.png in Resources */,
 				85B148C51C30E69F001F1CBC /* icon_arrow_up@2x.png in Resources */,
 				85B149861C30E6A0001F1CBC /* icon_medal_silver.png in Resources */,
 				85B149EE1C30E6A0001F1CBC /* icon_sad20.png in Resources */,
@@ -11183,6 +11194,7 @@
 				85B14AA21C30E6A0001F1CBC /* navigation-button-bg-pt.png in Resources */,
 				85B147721C30E69F001F1CBC /* SearchResultShopViewController.xib in Resources */,
 				85B149521C30E6A0001F1CBC /* icon_info_grey.png in Resources */,
+				62E15C791C450F33007F382A /* icon_camera@3x.png in Resources */,
 				85B1473F1C30E69F001F1CBC /* ProductQuantityViewController.xib in Resources */,
 				85B146561C30E69F001F1CBC /* ProductFeedViewController.xib in Resources */,
 				85B149551C30E6A0001F1CBC /* icon_like@2x.png in Resources */,
