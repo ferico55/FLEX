@@ -64,6 +64,8 @@
     
     imageFlagReview.layer.cornerRadius = imageFlagReview.bounds.size.width/2.0f;
     imageFlagReview.layer.masksToBounds = YES;
+    
+    btnFooter.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
 }
 
 

@@ -32,6 +32,7 @@
 #import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
 #import "NavigateViewController.h"
+#import "NavigationHelper.h"
 
 #define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"
@@ -98,7 +99,7 @@
     _navigate = [NavigateViewController new];
     currentFilter = @"all";
     page = 0;
-//    tableContent.allowsSelection = NO;
+    tableContent.allowsSelection = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     
     refreshControl = [[UIRefreshControl alloc] init];
