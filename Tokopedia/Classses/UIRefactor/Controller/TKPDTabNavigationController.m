@@ -296,7 +296,12 @@
             self.navigationItem.rightBarButtonItem = nil;
         } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
             ((SearchResultViewController *)_selectedViewController).delegate = self;
-            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+            
+            if(_hascatalog && selectedIndex == 1){
+                self.navigationItem.rightBarButtonItem = nil;
+            }else{
+                self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+            }
         }
         
         if (animated && (deselect != nil) && (navigate != 0)) {
