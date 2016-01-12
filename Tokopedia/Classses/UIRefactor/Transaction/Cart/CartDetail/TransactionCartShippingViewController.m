@@ -667,6 +667,7 @@
                 }
                 else
                 {
+                    _isFinishCalculate = NO;
                     array = @[@"Anda telah berhasil mengubah alamat tujuan"];
                 }
                 
