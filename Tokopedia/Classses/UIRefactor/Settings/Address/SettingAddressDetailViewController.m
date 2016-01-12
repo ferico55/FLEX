@@ -327,11 +327,11 @@
 
 - (void)successEditAddress:(AddressFormList *)address
 {
-    address = [AddressFormList new];
-    address.address_name = @"Alamat Kantor";
-    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
-    address.receiver_name = @"Orang Keren";
-    address.receiver_phone = @"0812345678";
+//    address = [AddressFormList new];
+//    address.address_name = @"Alamat Kantor";
+//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
+//    address.receiver_name = @"Orang Keren";
+//    address.receiver_phone = @"0812345678";
 //    address.latitude = @"-6.211544";
 //    address.longitude = @"106.845172";
     
@@ -346,13 +346,14 @@
     self.labeldistrict.text = address.district_name;
     self.labelphonenumber.text = address.receiver_phone;
     
+    //TODO:: Uncomment for showing map address
+    if (![address.longitude integerValue] == 0 && ![address.latitude integerValue] == 0) {
+            [self performSelector:@selector(mapPosition) withObject:nil afterDelay:0.6f];
+    }
+    
+    
     _address = address;
     [_tableView reloadData];
-    
-    //TODO:: Uncomment for showing map address
-    if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
-        [self performSelector:@selector(mapPosition) withObject:nil afterDelay:1.f];
-    }
 }
 
 
