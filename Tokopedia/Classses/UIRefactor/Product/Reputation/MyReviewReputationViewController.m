@@ -311,7 +311,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    //TODO: refactor this nasty hack
+    MyReviewReputationCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    [self actionFooter:cell.getBtnFooter];
 }
 
 
