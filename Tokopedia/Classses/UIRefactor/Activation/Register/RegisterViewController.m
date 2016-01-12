@@ -551,12 +551,19 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     [textField resignFirstResponder];
     if (textField == _textfielddob) {
         // display datepicker
-        AlertDatePickerView *v = [AlertDatePickerView newview];
-        v.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
-        v.tag = 10;
-        v.isSetMinimumDate = YES;
-        v.delegate = self;
-        [v show];
+        AlertDatePickerView *datePicker = [AlertDatePickerView newview];
+        datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
+        datePicker.tag = 10;
+        datePicker.isSetMinimumDate = YES;
+        datePicker.delegate = self;
+
+        if (_textfielddob.text) {
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+            datePicker.currentdate = [dateFormatter dateFromString:_textfielddob.text];
+        }
+        
+        [datePicker show];
         [self.view endEditing:YES];
         return NO;
     }
