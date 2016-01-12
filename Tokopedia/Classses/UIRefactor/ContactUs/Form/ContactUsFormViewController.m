@@ -128,7 +128,7 @@
                                  NSForegroundColorAttributeName : textColor,
                                  };
     
-    NSString *title = @"Customer Care Tokopedia akan menjawab pesan kamu dalam waktu maksimal 1x24 jam.";
+    NSString *title = @"Customer Care Tokopedia akan menjawab pesan kamu.";
     NSString *subTitle = @"Silahkan cek layanan pengguna";
     
     UIColor *buttonColor = [UIColor blueColor];
