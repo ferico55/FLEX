@@ -9,6 +9,9 @@
 #import "InboxMessageCell.h"
 
 @implementation InboxMessageCell
+{
+    IBOutlet UIView* _selectionMarker;
+}
 
 + (id)newcell
 {
@@ -30,9 +33,7 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
+    _selectionMarker.hidden = !selected;
 }
 
 - (IBAction)actionSmile:(id)sender {
