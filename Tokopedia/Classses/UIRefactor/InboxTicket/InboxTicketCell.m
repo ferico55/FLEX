@@ -31,4 +31,8 @@
     _selectionMarker.hidden = !selected;
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    _selectionMarker.hidden = !highlighted;
+}
+
 @end

@@ -36,6 +36,10 @@
     _selectionMarker.hidden = !selected;
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    _selectionMarker.hidden = !highlighted;
+}
+
 - (IBAction)actionSmile:(id)sender {
     [_del actionSmile:sender];
 }

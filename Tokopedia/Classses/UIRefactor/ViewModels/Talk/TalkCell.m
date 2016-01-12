@@ -88,6 +88,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     selectedMarker.hidden = !selected;
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    selectedMarker.hidden = !highlighted;
+}
+
 - (void)setTalkViewModel:(TalkModelView *)modelView {
     
     self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:modelView.talkMessage attributes:_messageAttribute];

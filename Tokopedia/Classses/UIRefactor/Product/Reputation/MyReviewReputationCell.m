@@ -73,6 +73,10 @@
     _selectionMarker.hidden = !selected;
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    _selectionMarker.hidden = !highlighted;
+}
+
 
 #pragma mark - Setter
 - (NSLayoutConstraint *)getTopViewContentConstraint {
