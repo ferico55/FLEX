@@ -38,13 +38,13 @@ static RKObjectManager *_objectManager;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
 
-        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectEditAddress mapping] inverseMapping] objectClass:[RequestObjectEditAddress class] rootKeyPath:nil method:RKRequestMethodPOST];
+        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectEditAddress mapping] inverseMapping] objectClass:[RequestObjectEditAddress class] rootKeyPath:nil method:RKRequestMethodGET];
         
         [_objectManager addRequestDescriptor:requestDescriptor];
     });
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ProfileSettings mapping]
-                                                                                            method:RKRequestMethodPOST
+                                                                                            method:RKRequestMethodGET
                                                                                        pathPattern:nil
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];

@@ -36,43 +36,77 @@
 
 - (NSDictionary*)getParameter:(int)tag
 {
-    return @{};
-}
-
--(id)getRequestObject:(int)tag
-{
     AddressFormList *list = _editedAddress;
-    
+
     NSString *action = @"edit_address";
     NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
     NSString *city = [NSString stringWithFormat:@"%zd",[list.city_id integerValue]?:0];
     NSString *province = [NSString stringWithFormat:@"%zd",[list.province_id integerValue]?:0];
     NSString *district = [NSString stringWithFormat:@"%zd",[list.district_id integerValue]?:0];
-    
+
     NSString *longitude = list.longitude;
     NSString *latitude = list.latitude;
     
-    RequestObjectEditAddress *editAddress = [RequestObjectEditAddress new];
-    editAddress.action = action;
-    editAddress.address_id = addressid;
-    editAddress.city = city;
-    editAddress.receiver_name = list.receiver_name?:@"";
-    editAddress.address_name = list.address_name?:@"";
-    editAddress.receiver_phone = list.receiver_phone?:@"";
-    editAddress.province = province;
-    editAddress.postal_code = list.postal_code?:@"";
-    editAddress.address_street = list.address_street?:@"";
-    editAddress.district = district;
-    editAddress.longitude = longitude;
-    editAddress.latitude = latitude;
-    editAddress.is_from_cart = @"1";
+    NSString *recievername = list.receiver_name?:@"";
+    NSString *addressname = list.address_name?:@"";
+    NSString *phone = list.receiver_phone?:@"";
+    NSString *postalcode = list.postal_code?:@"";
     
-    return editAddress;
+    NSString *addressstreet = list.address_street?:@"";
+    
+    
+    NSDictionary *param =@{@"action":action,
+                           @"address_id" : addressid,
+                           @"city" : city,
+                           @"receiver_name" : recievername,
+                           @"address_name" : addressname,
+                           @"receiver_phone" : phone,
+                           @"province" : province,
+                           @"postal_code" : postalcode,
+                           @"address_street" : addressstreet,
+                           @"district" : district,
+                           @"longitude": longitude,
+                           @"latitude": latitude,
+                           @"is_from_cart":@"1"
+                           };
+    
+    return param;
 }
+
+//-(id)getRequestObject:(int)tag
+//{
+//    AddressFormList *list = _editedAddress;
+//    
+//    NSString *action = @"edit_address";
+//    NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
+//    NSString *city = [NSString stringWithFormat:@"%zd",[list.city_id integerValue]?:0];
+//    NSString *province = [NSString stringWithFormat:@"%zd",[list.province_id integerValue]?:0];
+//    NSString *district = [NSString stringWithFormat:@"%zd",[list.district_id integerValue]?:0];
+//    
+//    NSString *longitude = list.longitude;
+//    NSString *latitude = list.latitude;
+//    
+//    RequestObjectEditAddress *editAddress = [RequestObjectEditAddress new];
+//    editAddress.action = action;
+//    editAddress.address_id = addressid;
+//    editAddress.city = city;
+//    editAddress.receiver_name = list.receiver_name?:@"";
+//    editAddress.address_name = list.address_name?:@"";
+//    editAddress.receiver_phone = list.receiver_phone?:@"";
+//    editAddress.province = province;
+//    editAddress.postal_code = list.postal_code?:@"";
+//    editAddress.address_street = list.address_street?:@"";
+//    editAddress.district = district;
+//    editAddress.longitude = longitude;
+//    editAddress.latitude = latitude;
+//    editAddress.is_from_cart = @"1";
+//    
+//    return editAddress;
+//}
 
 -(int)getRequestMethod:(int)tag
 {
-    return RKRequestMethodPOST;
+    return RKRequestMethodGET;
 }
 
 - (NSString *)getPath:(int)tag {

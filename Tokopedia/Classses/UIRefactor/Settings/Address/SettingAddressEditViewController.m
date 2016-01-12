@@ -897,11 +897,6 @@
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag
 {
-    return @{};
-}
-
--(id)getRequestObject:(int)tag
-{
     NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
     tempDictUserInfo = nil;
     AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
@@ -921,28 +916,70 @@
     NSString *password = _textfieldpass.text?:@"";
     NSString *longitude = (!_longitude || [_longitude isEqualToString:@"0"])?@"":_longitude;
     NSString *latitude = (!_latitude || [_latitude isEqualToString:@"0"])?@"":_latitude;
+    //TODO:: Lat Long
     
-    RequestObjectEditAddress *editAddress = [RequestObjectEditAddress new];
-    editAddress.action = action;
-    editAddress.address_id = addressid;
-    editAddress.city = city;
-    editAddress.receiver_name = recievername;
-    editAddress.address_name = addressname;
-    editAddress.receiver_phone = phone;
-    editAddress.province = province;
-    editAddress.postal_code = postalcode;
-    editAddress.address_street = addressstreet;
-    editAddress.user_password = password;
-    editAddress.district = district;
-    editAddress.longitude = longitude;
-    editAddress.latitude = latitude;
+    NSDictionary *param =@{kTKPDPROFILE_APIACTIONKEY:action,
+                           kTKPDPROFILESETTING_APIADDRESSIDKEY : addressid,
+                           kTKPDPROFILESETTING_APICITYKEY : city,
+                           kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
+                           kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
+                           kTKPDPROFILESETTING_APIRECEIVERPHONEKEY : phone,
+                           kTKPDPROFILESETTING_APIPROVINCEKEY : province,
+                           kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
+                           kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
+                           kTKPDPROFILESETTING_APIDISTRICTKEY : district,
+                           kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password,
+                           @"longitude": longitude,
+                           @"latitude": latitude
+                           };
     
-    return editAddress;
+    return param;
 }
+
+//-(id)getRequestObject:(int)tag
+//{
+//    NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
+//    tempDictUserInfo = nil;
+//    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+//    
+//    NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
+//    NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
+//    NSString *city = [NSString stringWithFormat:@"%zd",[_selectedCity[@"ID"] integerValue]?:[list.city_id integerValue]?:0];
+//    NSString *province = [NSString stringWithFormat:@"%zd",[_selectedProvince[@"ID"] integerValue]?:[list.province_id integerValue]?:0];
+//    NSString *district = [NSString stringWithFormat:@"%zd",[_selectedDistrict[@"ID"] integerValue]?:[list.district_id integerValue]?:0];
+//    
+//    NSString *recievername = _textfieldreceivername.text?:@"";
+//    NSString *addressname = _textfieldaddressname.text?:@"";
+//    NSString *phone = _textfieldphonenumber.text?:@"";
+//    NSString *postalcode = _textfieldpostcode.text?:@"";
+//    
+//    NSString *addressstreet = _textviewaddress.text?:@"";
+//    NSString *password = _textfieldpass.text?:@"";
+//    NSString *longitude = (!_longitude || [_longitude isEqualToString:@"0"])?@"":_longitude;
+//    NSString *latitude = (!_latitude || [_latitude isEqualToString:@"0"])?@"":_latitude;
+//    
+//    RequestObjectEditAddress *editAddress = [RequestObjectEditAddress new];
+//    editAddress.action = action;
+//    editAddress.address_id = addressid;
+//    editAddress.city = city;
+//    editAddress.receiver_name = recievername;
+//    editAddress.address_name = addressname;
+//    editAddress.receiver_phone = phone;
+//    editAddress.province = province;
+//    editAddress.postal_code = postalcode;
+//    editAddress.address_street = addressstreet;
+//    editAddress.user_password = password;
+//    editAddress.district = district;
+//    editAddress.password = _textfieldpass.text?:@"";
+//    editAddress.longitude = longitude;
+//    editAddress.latitude = latitude;
+//    
+//    return editAddress;
+//}
 
 -(int)getRequestMethod:(int)tag
 {
-    return RKRequestMethodPOST;
+    return RKRequestMethodGET;
 }
 
 - (NSString *)getPath:(int)tag {

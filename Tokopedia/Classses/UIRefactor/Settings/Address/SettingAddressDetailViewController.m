@@ -93,6 +93,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -102,13 +103,15 @@
 
 -(void)mapPosition
 {
-    _mapview.marker.position = CLLocationCoordinate2DMake([_address.latitude doubleValue], [_address.longitude doubleValue]);
+    _mapview.selectedMarker.position = CLLocationCoordinate2DMake([_address.latitude doubleValue], [_address.longitude doubleValue]);
     _mapview.settings.scrollGestures = NO;
     [_mapview updateIsShowMarker:YES];
-    [_mapview updateCameraPosition:_mapview.marker.position];
+    [_mapview updateCameraPosition:_mapview.selectedMarker.position];
     [_mapview showButtonCurrentLocation:NO];
     
-    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
+    //(latitude = -6.1859237834858769, longitude = 106.799499168992)
+    
+//    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
 }
 
 -(void)setCaptureMap
@@ -285,6 +288,9 @@
                 if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
                     return 0;
                 }
+                else{
+                    return 194;
+                }
                 //
             }
             if (indexPath.row == 2) {
@@ -321,6 +327,14 @@
 
 - (void)successEditAddress:(AddressFormList *)address
 {
+//    address = [AddressFormList new];
+//    address.address_name = @"Alamat Kantor";
+//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
+//    address.receiver_name = @"Orang Keren";
+//    address.receiver_phone = @"0812345678";
+//    address.latitude = @"-6.211544";
+//    address.longitude = @"106.845172";
+    
     self.labeladdressname.text = address.address_name;
     self.labelreceivername.text = address.receiver_name;
 
@@ -333,12 +347,15 @@
     self.labelphonenumber.text = address.receiver_phone;
     
     //TODO:: Uncomment for showing map address
-    if (![address.longitude isEqualToString:@""] && ![address.latitude isEqualToString:@""]) {
-        [self mapPosition];
+    if (![address.longitude integerValue] == 0 && ![address.latitude integerValue] == 0) {
+            [self performSelector:@selector(mapPosition) withObject:nil afterDelay:0.6f];
     }
-    //
+    
+    
     _address = address;
+    [_tableView reloadData];
 }
+
 
 #pragma mark - Alert delegate
 
