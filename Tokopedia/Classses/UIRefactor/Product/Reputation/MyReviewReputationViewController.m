@@ -98,7 +98,7 @@
     _navigate = [NavigateViewController new];
     currentFilter = @"all";
     page = 0;
-    tableContent.allowsSelection = NO;
+//    tableContent.allowsSelection = NO;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     
     refreshControl = [[UIRefreshControl alloc] init];
@@ -308,6 +308,10 @@
     [cell setView:tempReputation.viewModel];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
 }
 
 
