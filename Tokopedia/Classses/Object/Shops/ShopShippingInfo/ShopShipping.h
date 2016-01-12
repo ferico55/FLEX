@@ -10,11 +10,18 @@
 
 @interface ShopShipping : NSObject
 
-@property (nonatomic) NSInteger district_id;
+@property NSInteger district_id;
 @property (nonatomic, strong) NSString *postal_code;
 @property (nonatomic) NSInteger origin;
 @property (nonatomic) NSInteger shipping_id;
 @property (nonatomic, strong) NSString *district_name;
 @property (nonatomic, strong) NSArray *district_shipping_supported;
+@property NSInteger city_id;
+@property (nonatomic, strong) NSString *city_name;
+@property NSInteger province_id;
+@property (nonatomic, strong) NSString *province_name;
+@property double longitude;
+@property double latitude;
+@property (nonatomic, strong) NSString *addr_street;
 
 @end
