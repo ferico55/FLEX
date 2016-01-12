@@ -83,6 +83,8 @@
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 
+#import "NoResultReusableView.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -110,7 +112,8 @@ MyShopEtalaseFilterViewControllerDelegate,
 RequestMoveToDelegate,
 UIAlertViewDelegate,
 CMPopTipViewDelegate,
-UIAlertViewDelegate
+UIAlertViewDelegate,
+NoResultDelegate
 >
 {
     CMPopTipView *cmPopTitpView;
@@ -1965,17 +1968,13 @@ UIAlertViewDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-//        if(_product.result == nil) {
-//            NoResultView *temp = [NoResultView new];
-//            [self.view addSubview:temp.view];
-//            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
-//            _act.hidden = YES;
-//            [_act stopAnimating];
-//            return;
-//        }
+        
+        if (_product.result == nil) {
+            [self initNoResultView];
+            return;
+        }
         
         //Set icon speed
-//        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
         [SmileyAndMedal setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
         [SmileyAndMedal generateMedalWithLevel:_product.result.shop_info.shop_stats.shop_badge_level.level withSet:_product.result.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
         
@@ -3179,6 +3178,7 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Other Method
+
 - (void)configureGTM {
 //    [TPAnalytics trackUserId];
     
@@ -3202,4 +3202,19 @@ UIAlertViewDelegate
                                  source:source];
     }
 }
+
+- (void)initNoResultView {
+    NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    noResultView.delegate = self;
+    [noResultView generateAllElements:@"icon_no_data_grey.png"
+                                title:@"Produk tidak ditemukan"
+                                 desc:@"Untuk informasi lebih lanjut silakan\nhubungi penjual"
+                             btnTitle:@"Kembali ke halaman sebelumnya"];
+    [self.view addSubview:noResultView];
+}
+
+- (void)buttonDidTapped:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end
