@@ -627,6 +627,12 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_ADDRESS];
     }
+    
+    if (address.length <20) {
+        isValid = NO;
+        [messages addObject:@"Alamat terlalu pendek, minimum 20 karakter"];
+    }
+    
     if (!postcode || [postcode isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_POSTAL_CODE];

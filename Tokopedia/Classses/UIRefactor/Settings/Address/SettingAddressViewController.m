@@ -1207,18 +1207,18 @@
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag
 {
-//    if(tag == CTagRequest)
-//    {
-//        NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
-//        NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-//        
-//        return @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERADDRESSKEY,
-//                                kTKPDPROFILE_APIPAGEKEY : @(_page),
-//                                kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
-//                                kTKPD_USERIDKEY : @(userID),
-//                                API_QUERY_KEY : query
-//                                };
-//    }
+    if(tag == CTagRequest)
+    {
+        NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
+        NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
+        
+        return @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERADDRESSKEY,
+                                kTKPDPROFILE_APIPAGEKEY : @(_page),
+                                kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
+                                kTKPD_USERIDKEY : @(userID),
+                                API_QUERY_KEY : query
+                                };
+    }
     
     return @{};
 }
