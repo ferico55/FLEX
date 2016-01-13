@@ -58,6 +58,7 @@
     NSString *givenSmileyImageString;
     int page;
     BOOL isRefreshing;
+    BOOL hasShownData;
     NSString *strUriNext;
     NSIndexPath *indexPathInsertReputation;
     NSString *currentFilter;
@@ -481,6 +482,14 @@
 }
 
 
+- (void)showFirstDataOnFirstShowInIpad {
+    if (arrList.count && !hasShownData && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        hasShownData = YES;
+        MyReviewReputationCell* cell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [self actionFooter:cell.getBtnFooter];
+    }
+}
+
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
@@ -524,6 +533,9 @@
             tableContent.delegate = self;
             tableContent.dataSource = self;
         }
+        
+        [self showFirstDataOnFirstShowInIpad];
+        
         [tableContent reloadData];
     }
     else if(tag == CTagInsertReputation) {
