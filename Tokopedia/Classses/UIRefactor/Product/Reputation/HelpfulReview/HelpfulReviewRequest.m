@@ -40,7 +40,20 @@
 @interface HelpfulReviewRequest()<TokopediaNetworkManagerDelegate>
 @end
 
-@implementation HelpfulReviewRequest
+@implementation HelpfulReviewRequest{
+    TokopediaNetworkManager *networkManager;
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        networkManager = [TokopediaNetworkManager new];
+        networkManager.delegate = self;
+    }
+    return self;
+}
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
