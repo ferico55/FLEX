@@ -52,6 +52,7 @@
     
     addPictureButtons = [NSArray sortViewsWithTagInArray:addPictureButtons];
     
+//    [addPictureButtons makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
     for (UIButton *pictureButton in addPictureButtons) {
         pictureButton.layer.cornerRadius = 5.0;
         pictureButton.layer.masksToBounds = YES;
