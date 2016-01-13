@@ -1804,6 +1804,7 @@
     
     _selectedInstallmentBank = nil;
     _selectedInstallmentDuration = nil;
+    _voucherData = nil;
     
     [_tableView reloadData];
 }
