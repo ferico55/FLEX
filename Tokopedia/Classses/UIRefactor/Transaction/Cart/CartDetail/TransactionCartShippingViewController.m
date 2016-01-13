@@ -693,23 +693,7 @@
             }
             
             _isFirstLoad = NO;
-            AddressFormList *address = [_dataInput objectForKey:@"address"];
-            
-            if ([address.latitude integerValue]!=0 && [address.longitude integerValue]!=0) {
-                _isFinishCalculate = NO;
-                [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                    GMSAddress *placemark = [response results][0];
-                    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
-                    _isFinishCalculate = YES;
-                    [_tableView reloadData];
-                }];
-            }
-            else
-            {
-                _isFinishCalculate = YES;
-                [_pinLocationNameButton setTitle:@"Pilih Lokasi Pengiriman" forState:UIControlStateNormal];
-            }
+
         }
         else
         {
@@ -1002,6 +986,9 @@
     addressList.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     addressList.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
     [_dataInput setObject:addressList forKey:DATA_ADDRESS_DETAIL_KEY];
+    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+    cart.cart_destination = addressList;
+    [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
     _isFinishCalculate = NO;
     [[self requestEditAddress] doRequestWithAddress:addressList];
 }
@@ -1447,6 +1434,24 @@
     _isFinishCalculate = YES;
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
+    AddressFormList *address = cart.cart_destination;
+    
+    if ([address.latitude integerValue]!=0 && [address.longitude integerValue]!=0) {
+        _isFinishCalculate = NO;
+        [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+            GMSAddress *placemark = [response results][0];
+            _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+            _isFinishCalculate = YES;
+            [_tableView reloadData];
+        }];
+    }
+    else
+    {
+        _isFinishCalculate = YES;
+        [_pinLocationNameButton setTitle:@"Pilih Lokasi Pengiriman" forState:UIControlStateNormal];
+    }
+    
     [_tableView reloadData];
 }
 
