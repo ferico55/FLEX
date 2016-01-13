@@ -160,7 +160,6 @@
                                         <constraint firstAttribute="bottom" secondItem="uBf-fa-Zfa" secondAttribute="bottom" constant="3" id="Sai-ML-gIv"/>
                                         <constraint firstItem="uBf-fa-Zfa" firstAttribute="leading" secondItem="SHu-wK-vF8" secondAttribute="leading" constant="8" id="T8k-ZK-md5"/>
                                         <constraint firstAttribute="height" constant="46" id="Tc3-is-n83"/>
-                                        <constraint firstAttribute="trailing" secondItem="h2k-r5-W3J" secondAttribute="trailing" constant="80" id="Xvt-7A-the"/>
                                         <constraint firstAttribute="bottom" secondItem="h2k-r5-W3J" secondAttribute="bottom" constant="3" id="YXp-Df-f33"/>
                                         <constraint firstAttribute="bottom" secondItem="UTx-qW-Cms" secondAttribute="bottom" constant="3" id="eoO-Jq-5KG"/>
                                         <constraint firstItem="UTx-qW-Cms" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="j8p-Jf-XKL"/>
