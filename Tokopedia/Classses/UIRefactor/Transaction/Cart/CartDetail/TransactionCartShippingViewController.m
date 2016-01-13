@@ -1036,25 +1036,19 @@
 -(void)chooseShipmentAtIndexPath:(NSIndexPath*)indexPath
 {
                 if (_isFinishCalculate) {
-                    NSMutableArray *shipmentPackages = [NSMutableArray new];
-                    NSMutableArray *shipmentPackagesName = [NSMutableArray new];
+                    NSMutableArray *shipments = [NSMutableArray new];
+                    NSMutableArray *shipmentsName = [NSMutableArray new];
                     
                     for (ShippingInfoShipments *shipment in _shipments) {
-                        if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
-                            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                                if (![package.price isEqualToString:@"0"]) {
-                                    [shipmentPackages addObject:package];
-                                    [shipmentPackagesName addObject:package.name];
-                                }
-                            }
-                            break;
-                        }
+                        [shipments addObject:shipment];
+                        [shipmentsName addObject:shipment.shipment_name];
+
                     }
 
                     GeneralTableViewController *vc = [GeneralTableViewController new];
-                    vc.title = @"Paket Pengiriman";
-                    vc.selectedObject = _selectedShipmentPackage.name;
-                    vc.objects = shipmentPackagesName;
+                    vc.title = @"Kurir Pengiriman";
+                    vc.selectedObject = _selectedShipment.shipment_name;
+                    vc.objects = shipmentsName;
                     vc.senderIndexPath = indexPath;
                     vc.delegate = self;
                     
@@ -1129,7 +1123,7 @@
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
     BOOL isValidShipment = YES;
-    if (indexPath.row == 2) {
+    if (indexPath.row == 3) {
         ShippingInfoShipments *shipmentObject;
         
         for (ShippingInfoShipments *package in _shipments) {
@@ -1160,7 +1154,7 @@
             }
         }
     }
-    else if (indexPath.row == 3)
+    else if (indexPath.row == 4)
     {
         for (ShippingInfoShipments *shipment in _shipments) {
             if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
