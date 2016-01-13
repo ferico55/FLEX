@@ -1017,6 +1017,8 @@
             }
         }
         
+    } else if ([_shipment.gojek.whitelisted boolValue] == NO) {
+        height = 0;
     } else {
         if (row == 0) {
             height = 50;
