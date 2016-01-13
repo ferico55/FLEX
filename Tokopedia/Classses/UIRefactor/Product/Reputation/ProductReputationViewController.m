@@ -52,7 +52,7 @@ static NSInteger userViewHeight = 70;
     LoadingView *loadingView;
     NoResultView *noResultView;
     NSOperationQueue *_operationQueue, *operationQueueLikeDislike;
-    
+
     int page, filterStar;
     NSString *strUri;
     Review *review;
@@ -62,6 +62,7 @@ static NSInteger userViewHeight = 70;
     TokopediaNetworkManager *tokopediaNetworkManager;
     ProductReputationSimpleCell *helpfulCell;
     
+    NSInteger sectionsCount;
 }
 
 
@@ -96,6 +97,8 @@ static NSInteger userViewHeight = 70;
     viewStarThree.tag = 3;
     viewStarFour.tag = 4;
     viewStarFive.tag = 5;
+    
+    sectionsCount = 2;
 
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -120,9 +123,6 @@ static NSInteger userViewHeight = 70;
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
-    
-    helpfulCell = [ProductReputationSimpleCell new];
-	
 }
 
 - (void)didReceiveMemoryWarning {
@@ -265,10 +265,10 @@ static NSInteger userViewHeight = 70;
 
 
 
-#pragma mark - UITableView Delegate and DataSource 
+#pragma mark - UITableView Delegate and DataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return sectionsCount;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -288,19 +288,37 @@ static NSInteger userViewHeight = 70;
         CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
         return height;
     }else{
-        return 90;
+        DetailReputationReview *reputationDetail = arrList[0];
+        UILabel *messageLabel = [[UILabel alloc] init];
+        
+        [messageLabel setText:reputationDetail.review_message];
+        [messageLabel sizeToFit];
+        
+        CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                                            attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                               context:nil];
+        messageLabel.frame = sizeOfMessage;
+        
+        CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
+        return height;
+
     }
 
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(indexPath.section != 0){
     cell.backgroundColor = [UIColor clearColor];
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
             [self setLoadingView:YES];
             [[self getNetworkManager:CTagGetProductReview] doRequest];
         }
+    }
+    }else{
+        [self animate];
     }
 }
 
@@ -313,6 +331,10 @@ static NSInteger userViewHeight = 70;
     
     return cell;
     }else{
+        helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+        DetailReputationReview *reputationDetail = arrList[0];
+        [helpfulCell setReputationModelView:reputationDetail.viewModel];
+        [self animate];
         return helpfulCell;
     }
 }
@@ -1055,6 +1077,15 @@ static NSInteger userViewHeight = 70;
 //    }
 }
 
+
+- (void)animate{[@[helpfulCell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
+        [cell setFrame:CGRectMake(320, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
+        [UIView animateWithDuration:0.7 animations:^{
+            
+            [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, 0)];
+        }];
+    }];
+}
 
 - (void)actionRate:(id)sender {
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
