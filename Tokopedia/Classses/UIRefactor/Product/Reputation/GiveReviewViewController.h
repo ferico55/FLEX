@@ -18,6 +18,7 @@
     IBOutlet UIScrollView *scrollView;
     IBOutlet UIView *viewContent, *viewContentRating;
     IBOutlet NSLayoutConstraint *constraintHeightScrollView, *constHeightContentView;
+    IBOutlet UIView *pictureView;
 }
 
 @property (nonatomic, unsafe_unretained) DetailMyReviewReputationViewController *delegate;

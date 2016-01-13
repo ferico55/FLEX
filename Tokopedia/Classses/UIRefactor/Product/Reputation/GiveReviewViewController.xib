@@ -21,6 +21,7 @@
                 <outlet property="constraintHeightScrollView" destination="Bxu-Bi-Lzb" id="HcQ-ib-PY6"/>
                 <outlet property="imgProduct" destination="0K8-hz-wA7" id="nge-CL-4gR"/>
                 <outlet property="lblProduct" destination="eQY-NZ-SZx" id="hUg-8m-4qr"/>
+                <outlet property="pictureView" destination="SHu-wK-vF8" id="K7r-GV-QI7"/>
                 <outlet property="scrollView" destination="n0e-OQ-9sF" id="Qnf-PF-SFR"/>
                 <outlet property="txtDes" destination="rcB-NB-gSS" id="WgF-fq-vTU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -88,8 +89,28 @@
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 </textView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SHu-wK-vF8">
+                                    <rect key="frame" x="0.0" y="182" width="320" height="46"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="NCM-rG-DiN">
+                                            <rect key="frame" x="8" y="8" width="30" height="30"/>
+                                        </imageView>
+                                        <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1gt-HE-BaI">
+                                            <rect key="frame" x="-29" y="-22" width="240" height="128"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="NCM-rG-DiN" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="8" id="A2n-nO-E6Z"/>
+                                        <constraint firstAttribute="bottom" secondItem="NCM-rG-DiN" secondAttribute="bottom" constant="8" id="E4g-eX-4fz"/>
+                                        <constraint firstAttribute="height" constant="46" id="Tc3-is-n83"/>
+                                        <constraint firstItem="NCM-rG-DiN" firstAttribute="leading" secondItem="SHu-wK-vF8" secondAttribute="leading" constant="8" id="lUm-cq-KUZ"/>
+                                        <constraint firstAttribute="trailing" secondItem="NCM-rG-DiN" secondAttribute="trailing" constant="282" id="t7Q-RY-m4k"/>
+                                    </constraints>
+                                </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UMp-fT-Zyg">
-                                    <rect key="frame" x="0.0" y="182" width="320" height="95"/>
+                                    <rect key="frame" x="0.0" y="236" width="320" height="95"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FQ4-VG-47W">
                                             <rect key="frame" x="0.0" y="10" width="320" height="1"/>
@@ -373,16 +394,21 @@
                                 <constraint firstItem="UMp-fT-Zyg" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" id="469-Qg-MWH"/>
                                 <constraint firstAttribute="trailing" secondItem="UMp-fT-Zyg" secondAttribute="trailing" id="4D3-II-5CE"/>
                                 <constraint firstItem="eQY-NZ-SZx" firstAttribute="leading" secondItem="0K8-hz-wA7" secondAttribute="trailing" constant="8" id="6JK-aM-xOS"/>
-                                <constraint firstItem="UMp-fT-Zyg" firstAttribute="top" secondItem="rcB-NB-gSS" secondAttribute="bottom" constant="8" id="Fh7-4f-Vob"/>
+                                <constraint firstItem="SHu-wK-vF8" firstAttribute="trailing" secondItem="UMp-fT-Zyg" secondAttribute="trailing" id="6th-t9-ipS"/>
+                                <constraint firstItem="SHu-wK-vF8" firstAttribute="top" secondItem="rcB-NB-gSS" secondAttribute="bottom" constant="8" id="CzY-6W-W0f"/>
                                 <constraint firstItem="lNq-1Y-VpO" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" id="K1Y-sP-bwb"/>
                                 <constraint firstItem="GL3-JT-WN8" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" id="K59-lX-5O8"/>
                                 <constraint firstAttribute="trailing" secondItem="rcB-NB-gSS" secondAttribute="trailing" constant="8" id="Wgv-i6-5Dk"/>
                                 <constraint firstItem="0K8-hz-wA7" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" constant="8" id="Wy1-rz-b8b"/>
                                 <constraint firstItem="0K8-hz-wA7" firstAttribute="top" secondItem="Gfa-da-sz9" secondAttribute="top" constant="8" id="ZCm-Oy-y6C"/>
                                 <constraint firstAttribute="trailing" secondItem="eQY-NZ-SZx" secondAttribute="trailing" constant="8" id="Zc7-Ik-D5K"/>
+                                <constraint firstAttribute="bottom" secondItem="UMp-fT-Zyg" secondAttribute="bottom" constant="237" id="bQJ-cm-Oy3"/>
+                                <constraint firstItem="SHu-wK-vF8" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" id="ct2-yC-3xT"/>
                                 <constraint firstAttribute="trailing" secondItem="GL3-JT-WN8" secondAttribute="trailing" id="dAp-kT-nm8"/>
                                 <constraint firstItem="rcB-NB-gSS" firstAttribute="top" secondItem="lNq-1Y-VpO" secondAttribute="bottom" constant="8" id="oFo-6V-3Nd"/>
                                 <constraint firstAttribute="height" constant="568" id="q4k-aG-Uad"/>
+                                <constraint firstItem="UMp-fT-Zyg" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="bottom" constant="8" id="rOP-Sw-vfn"/>
+                                <constraint firstAttribute="trailing" secondItem="SHu-wK-vF8" secondAttribute="trailing" id="rX1-lO-KgN"/>
                                 <constraint firstItem="rcB-NB-gSS" firstAttribute="leading" secondItem="Gfa-da-sz9" secondAttribute="leading" constant="8" id="tCh-Jy-KdU"/>
                                 <constraint firstAttribute="trailing" secondItem="lNq-1Y-VpO" secondAttribute="trailing" id="uGn-Kb-Vo5"/>
                                 <constraint firstItem="lNq-1Y-VpO" firstAttribute="top" secondItem="0K8-hz-wA7" secondAttribute="bottom" constant="8" id="uJz-lQ-UpP"/>
@@ -406,10 +432,11 @@
                 <constraint firstItem="n0e-OQ-9sF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bNG-6U-F9Z"/>
                 <constraint firstAttribute="trailing" secondItem="n0e-OQ-9sF" secondAttribute="trailing" id="uKX-7G-jpE"/>
             </constraints>
-            <point key="canvasLocation" x="418" y="334"/>
+            <point key="canvasLocation" x="299" y="469"/>
         </view>
     </objects>
     <resources>
+        <image name="icon_camera.png" width="30" height="30"/>
         <image name="icon_star.png" width="20" height="20"/>
     </resources>
 </document>

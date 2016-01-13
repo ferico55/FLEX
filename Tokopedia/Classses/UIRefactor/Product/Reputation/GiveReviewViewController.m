@@ -55,8 +55,9 @@
     [super viewWillAppear:animated];
     
     heightScreenView = self.view.bounds.size.height;
+//    heightScreenView = 500;
     constraintHeightScrollView.constant = heightScreenView;
-    constHeightContentView.constant = heightScreenView;
+//    constHeightContentView.constant = heightScreenView;
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignKeyboard:)]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -237,13 +238,13 @@
     CGRect rawFrame = [value CGRectValue];
     CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
     constraintHeightScrollView.constant = heightScreenView-keyboardFrame.size.height;
-    constHeightContentView.constant = viewContentRating.frame.origin.y+viewContentRating.bounds.size.height;
-    
+//    constHeightContentView.constant = viewContentRating.frame.origin.y+viewContentRating.bounds.size.height;
     
     
     if(keyboardFrame.origin.y < viewContentRating.frame.origin.y+viewContentRating.bounds.size.height) {
         scrollView.scrollEnabled = YES;
     }
+    
 }
 
 - (void)keyboardWillHide:(NSNotification *)note {
@@ -256,7 +257,7 @@
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
     constraintHeightScrollView.constant = heightScreenView;
-    constHeightContentView.constant = heightScreenView;
+//    constHeightContentView.constant = heightScreenView;
     [UIView commitAnimations];
 }
 
