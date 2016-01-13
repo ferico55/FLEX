@@ -1449,7 +1449,8 @@
     else
     {
         _isFinishCalculate = YES;
-        [_pinLocationNameButton setTitle:@"Pilih Lokasi Pengiriman" forState:UIControlStateNormal];
+        _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        [_pinLocationNameButton setCustomAttributedText:@"Pilih Lokasi Pengiriman"];
     }
     
     [_tableView reloadData];
