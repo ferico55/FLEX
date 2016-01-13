@@ -1971,6 +1971,7 @@ NoResultDelegate
         
         if (_product.result == nil) {
             [self initNoResultView];
+            self.table.hidden = YES;
             return;
         }
         
