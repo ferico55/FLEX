@@ -574,24 +574,6 @@
             [_networkManagerEditAddress doRequest];
             [_tableView reloadData];
         }
-        
-        TransactionCartList *cart = [_data objectForKey:DATA_CART_DETAIL_LIST_KEY];
-
-        if ([cart.cart_destination.latitude integerValue]!=0 && [cart.cart_destination.longitude integerValue]!=0) {
-            _isFinishCalculate = NO;
-            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([cart.cart_destination.latitude doubleValue], [cart.cart_destination.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                GMSAddress *placemark = [response results][0];
-                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
-                _isFinishCalculate = YES;
-                [_tableView reloadData];
-            }];
-        }
-        else
-        {
-            _isFinishCalculate = YES;
-            [_pinLocationNameButton setTitle:@"Pilih Lokasi Pengiriman" forState:UIControlStateNormal];
-        }
     }
 }
 
@@ -711,6 +693,23 @@
             }
             
             _isFirstLoad = NO;
+            AddressFormList *address = [_dataInput objectForKey:@"address"];
+            
+            if ([address.latitude integerValue]!=0 && [address.longitude integerValue]!=0) {
+                _isFinishCalculate = NO;
+                [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+                    GMSAddress *placemark = [response results][0];
+                    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                    _isFinishCalculate = YES;
+                    [_tableView reloadData];
+                }];
+            }
+            else
+            {
+                _isFinishCalculate = YES;
+                [_pinLocationNameButton setTitle:@"Pilih Lokasi Pengiriman" forState:UIControlStateNormal];
+            }
         }
         else
         {
