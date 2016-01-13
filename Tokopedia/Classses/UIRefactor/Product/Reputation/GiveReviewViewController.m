@@ -49,6 +49,14 @@
     
     self.title = isEdit? @"Ubah Ulasan":@"Tulis Ulasan";
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    
+    addPictureButtons = [NSArray sortViewsWithTagInArray:addPictureButtons];
+    
+    for (UIButton *pictureButton in addPictureButtons) {
+        pictureButton.layer.cornerRadius = 5.0;
+        pictureButton.layer.masksToBounds = YES;
+        [pictureButton.layer setBorderWidth:1.0f];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {

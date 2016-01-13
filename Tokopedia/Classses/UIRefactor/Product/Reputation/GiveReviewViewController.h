@@ -19,6 +19,8 @@
     IBOutlet UIView *viewContent, *viewContentRating;
     IBOutlet NSLayoutConstraint *constraintHeightScrollView, *constHeightContentView;
     IBOutlet UIView *pictureView;
+    IBOutletCollection(UIButton) NSArray *addPictureButtons;
+    
 }
 
 @property (nonatomic, unsafe_unretained) DetailMyReviewReputationViewController *delegate;

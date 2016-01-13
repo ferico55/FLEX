@@ -37,6 +37,11 @@
                 <outletCollection property="arrImgKualitas" destination="A43-W1-qrf" id="Xp2-Nd-C1z"/>
                 <outletCollection property="arrImgKualitas" destination="zFa-Jn-02j" id="Ct8-yu-yjY"/>
                 <outletCollection property="arrImgKualitas" destination="DNs-40-d1Q" id="psU-Zv-Un5"/>
+                <outletCollection property="addPictureButtons" destination="h2k-r5-W3J" id="8Ma-I4-2yb"/>
+                <outletCollection property="addPictureButtons" destination="EfL-Db-zCN" id="zj3-8X-WbQ"/>
+                <outletCollection property="addPictureButtons" destination="2zB-UU-RWv" id="Jig-uv-qUW"/>
+                <outletCollection property="addPictureButtons" destination="UTx-qW-Cms" id="zZb-Fr-vRA"/>
+                <outletCollection property="addPictureButtons" destination="uBf-fa-Zfa" id="g9V-hs-0Ge"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
