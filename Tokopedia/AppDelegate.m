@@ -71,7 +71,7 @@
             [DeeplinkController handleURL:url];
         } else {
             //universal search link, only available in iOS 9
-            if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+            if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
                 NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
                 if (userActivityDictionary) {
                     [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
@@ -86,14 +86,13 @@
         }
 
     });
-
     BOOL didFinishLaunching = [[FBSDKApplicationDelegate sharedInstance] application:application
                                                        didFinishLaunchingWithOptions:launchOptions];
     return didFinishLaunching;
 }
 
 - (void)configureAppIndexing {
-    if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
         [[GSDAppIndexing sharedInstance] registerApp:1001394201];
     }
 }
