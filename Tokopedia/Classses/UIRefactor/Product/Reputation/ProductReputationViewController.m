@@ -102,6 +102,7 @@ static NSInteger userViewHeight = 70;
     
     sectionsCount = 2;
     helpfulReviewCount = 1;
+    helpfulReviews = [[NSMutableArray alloc]init];
 
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -324,9 +325,9 @@ static NSInteger userViewHeight = 70;
         CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
         return height;
     }else{
-        if(indexPath.row == helpfulReviewCount){
+        if(helpfulReviewCount == 1 && indexPath.row == helpfulReviewCount){
             //"load more" cell
-            return 44;
+            return 30;
         }else{
             DetailReputationReview *reputationDetail = arrList[0];
             UILabel *messageLabel = [[UILabel alloc] init];
@@ -374,7 +375,7 @@ static NSInteger userViewHeight = 70;
     }else{
         if(indexPath.row == 0){
             helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-            DetailReputationReview *reputationDetail = arrList[0];
+            DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
             [helpfulCell setReputationModelView:reputationDetail.viewModel];
             [self animate];
             return helpfulCell;
@@ -1386,6 +1387,11 @@ static NSInteger userViewHeight = 70;
             segmentedControl.enabled = YES;
             btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
             [self setRateStar:(int)segmentedControl.selectedSegmentIndex withAnimate:YES];
+            
+            [helpfulReviews addObject:arrList[0]];
+            [helpfulReviews addObject:arrList[1]];
+            [helpfulReviews addObject:arrList[2]];
+            
         }
         else if(review.result.list != nil) {
             [arrList addObjectsFromArray:review.result.list];
