@@ -27,6 +27,8 @@
 
 @property (nonatomic, strong) NSString *strShopDomain, *strProductID;
 @property (nonatomic, weak) IBOutlet UIView *filterView;
+@property (strong, nonatomic) IBOutlet UIView *helpfulReviewFooter;
+@property (strong, nonatomic) IBOutlet UIView *helpfulReviewHeader;
 
 
 - (void)reloadTable;

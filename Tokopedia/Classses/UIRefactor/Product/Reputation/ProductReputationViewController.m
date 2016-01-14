@@ -63,6 +63,7 @@ static NSInteger userViewHeight = 70;
     ProductReputationSimpleCell *helpfulCell;
     
     NSInteger sectionsCount;
+    NSInteger helpfulReviewCount;
 }
 
 
@@ -99,6 +100,7 @@ static NSInteger userViewHeight = 70;
     viewStarFive.tag = 5;
     
     sectionsCount = 2;
+    helpfulReviewCount = 0;
 
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -266,6 +268,39 @@ static NSInteger userViewHeight = 70;
 
 
 #pragma mark - UITableView Delegate and DataSource
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *header;
+    if(section == 0){
+        header = _helpfulReviewHeader;
+    }
+    return header;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *footer;
+    if(section == 0){
+        footer = _helpfulReviewFooter;
+    }
+    return footer;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(section == 0){
+        return 40;
+    }
+    return 0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if(section == 0){
+        return 70;
+    }
+    return 0;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return sectionsCount;
@@ -502,6 +537,9 @@ static NSInteger userViewHeight = 70;
 
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
+}
+- (IBAction)buttonLoadMoreTapped:(id)sender {
+    
 }
 
 
