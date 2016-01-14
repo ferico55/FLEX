@@ -53,12 +53,14 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     
-    _startDate = [[NSDate date] dateByAddingTimeInterval:-7*24*60*60];
+    _startDate = [[NSDate date] dateByAddingTimeInterval:-30*24*60*60];
     _endDate = [NSDate date];
     _startDateString = [dateFormatter stringFromDate:_startDate];
     _endDateString = [dateFormatter stringFromDate:_endDate];
     
     if (_isOrderTransaction) {
+        _startDate = (![_startDateMark isEqualToString:@""])?[dateFormatter dateFromString:_startDateMark]:[[NSDate date] dateByAddingTimeInterval:-30*24*60*60];
+        _startDateString = [dateFormatter stringFromDate:_startDate];
         _endDate = [dateFormatter dateFromString:_endDateMark];
         _endDateString = (![_endDateMark isEqualToString:@""])?_endDateMark:[dateFormatter stringFromDate:[NSDate date]];
     }
