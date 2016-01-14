@@ -57,6 +57,7 @@
         pictureButton.layer.cornerRadius = 5.0;
         pictureButton.layer.masksToBounds = YES;
         [pictureButton.layer setBorderWidth:1.0f];
+        [pictureButton.layer setBorderColor:[[UIColor colorWithRed:(224.0/255) green:(224.0/255) blue:(224.0/255) alpha:1.0] CGColor]];
     }
 }
 
