@@ -277,26 +277,10 @@ static NSInteger userViewHeight = 70;
     return header;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *footer;
-    if(section == 0){
-        footer = _helpfulReviewFooter;
-    }
-    return footer;
-}
-
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if(section == 0){
         return 40;
-    }
-    return 0;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if(section == 0){
-        return 70;
     }
     return 0;
 }
@@ -538,10 +522,6 @@ static NSInteger userViewHeight = 70;
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
-- (IBAction)buttonLoadMoreTapped:(id)sender {
-    
-}
-
 
 #pragma mark - Method
 - (void)unloadRequesting {
