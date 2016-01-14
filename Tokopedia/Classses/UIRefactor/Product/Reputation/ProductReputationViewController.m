@@ -57,6 +57,7 @@ static NSInteger userViewHeight = 70;
     NSString *strUri;
     Review *review;
     NSMutableArray *arrList;
+    NSMutableArray *helpfulReviews;
     NSDictionary *auth;
     NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
@@ -100,7 +101,7 @@ static NSInteger userViewHeight = 70;
     viewStarFive.tag = 5;
     
     sectionsCount = 2;
-    helpfulReviewCount = 0;
+    helpfulReviewCount = 1;
 
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -277,10 +278,26 @@ static NSInteger userViewHeight = 70;
     return header;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *footer;
+    if(section == 0){
+        footer = _helpfulReviewFooter;
+    }
+    return footer;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if(section == 0){
-        return 40;
+        return 50;
+    }
+    return 10;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if(section == 0){
+        return 10;
     }
     return 0;
 }
@@ -307,23 +324,28 @@ static NSInteger userViewHeight = 70;
         CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
         return height;
     }else{
-        DetailReputationReview *reputationDetail = arrList[0];
-        UILabel *messageLabel = [[UILabel alloc] init];
-        
-        [messageLabel setText:reputationDetail.review_message];
-        [messageLabel sizeToFit];
-        
-        CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                               options:NSStringDrawingUsesLineFragmentOrigin
-                                                            attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                               context:nil];
-        messageLabel.frame = sizeOfMessage;
-        
-        CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
-        return height;
+        if(indexPath.row == helpfulReviewCount){
+            //"load more" cell
+            return 44;
+        }else{
+            DetailReputationReview *reputationDetail = arrList[0];
+            UILabel *messageLabel = [[UILabel alloc] init];
+            
+            [messageLabel setText:reputationDetail.review_message];
+            [messageLabel sizeToFit];
+            
+            CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                                   options:NSStringDrawingUsesLineFragmentOrigin
+                                                                attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                                   context:nil];
+            messageLabel.frame = sizeOfMessage;
+            
+            CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
+            return height;
+        }
 
     }
-
+    return 0;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -350,11 +372,15 @@ static NSInteger userViewHeight = 70;
     
     return cell;
     }else{
-        helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-        DetailReputationReview *reputationDetail = arrList[0];
-        [helpfulCell setReputationModelView:reputationDetail.viewModel];
-        [self animate];
-        return helpfulCell;
+        if(indexPath.row == 0){
+            helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+            DetailReputationReview *reputationDetail = arrList[0];
+            [helpfulCell setReputationModelView:reputationDetail.viewModel];
+            [self animate];
+            return helpfulCell;
+        }else{
+            return _helpfulReviewLoadMoreCell;
+        }
     }
 }
 
@@ -376,7 +402,10 @@ static NSInteger userViewHeight = 70;
     if(section==1){
         return arrList.count;
     }else{
-        return 1;
+        if(helpfulReviewCount == 1){
+            return 2;
+        }
+        return helpfulReviewCount;
     }
 }
 
@@ -522,6 +551,7 @@ static NSInteger userViewHeight = 70;
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
+
 
 #pragma mark - Method
 - (void)unloadRequesting {

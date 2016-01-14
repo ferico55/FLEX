@@ -32,7 +32,9 @@
                 <outlet property="constWidthLblRate5" destination="4Ug-F1-SXQ" id="IGp-is-1a1"/>
                 <outlet property="filterView" destination="6VA-Hf-K1C" id="px7-st-mUf"/>
                 <outlet property="footerActIndicator" destination="fhl-GW-L1p" id="kbz-UC-XUk"/>
+                <outlet property="helpfulReviewFooter" destination="XnB-vg-JYu" id="Rog-DL-y13"/>
                 <outlet property="helpfulReviewHeader" destination="eHF-cR-giv" id="c3k-Mh-f7F"/>
+                <outlet property="helpfulReviewLoadMoreCell" destination="HGg-gc-mde" id="NAV-dA-EkC"/>
                 <outlet property="lblDescTotalHeaderRating" destination="zEq-7U-cFz" id="HoJ-lk-6IX"/>
                 <outlet property="lblTotal1Rate" destination="Dtm-TO-BXB" id="R3m-TR-x80"/>
                 <outlet property="lblTotal2Rate" destination="i9g-h3-pLE" id="fBc-Iy-eZr"/>
@@ -793,6 +795,25 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="801" y="545.5"/>
         </view>
+        <view contentMode="scaleToFill" id="XnB-vg-JYu">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FRe-U4-st2">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="2"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f36-i6-4IA">
+                    <rect key="frame" x="139" y="8" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="1"/>
+                    <color key="textColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="201" y="191.5"/>
+        </view>
         <view contentMode="scaleToFill" id="eHF-cR-giv">
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -816,6 +837,22 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="201" y="114"/>
         </view>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="HGg-gc-mde">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HGg-gc-mde" id="bly-nT-9lX">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDm-ZM-P3x">
+                        <rect key="frame" x="102" y="7" width="116" height="30"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                        <state key="normal" title="Load More"/>
+                    </button>
+                </subviews>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="203" y="286"/>
+        </tableViewCell>
     </objects>
     <resources>
         <image name="icon_star.png" width="20" height="20"/>
