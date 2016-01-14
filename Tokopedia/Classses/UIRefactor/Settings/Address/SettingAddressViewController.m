@@ -1333,8 +1333,6 @@
 
 - (void)successAddAddress
 {
-    [_list removeAllObjects];
-
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
