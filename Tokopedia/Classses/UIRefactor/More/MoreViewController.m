@@ -726,6 +726,7 @@
         if(indexPath.row == 0) {
             
             ContactUsWebViewController *controller = [ContactUsWebViewController new];
+            controller.title = @"Hubungi Kami";
             controller.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:controller animated:YES];
             
