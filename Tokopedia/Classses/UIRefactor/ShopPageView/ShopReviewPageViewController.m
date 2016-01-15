@@ -476,9 +476,6 @@ NoResultDelegate>
             [dictLikeDislike setObject:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]) forKey:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]).review_id];
             [self performSelectorInBackground:@selector(updateDataInDetailView:) withObject:obj];
             
-            //Update UI
-            if([loadingLikeDislike objectForKey:list.review_id])
-                [_table reloadRowsAtIndexPaths:@[[[loadingLikeDislike objectForKey:list.review_id] objectAtIndex:1]] withRowAnimation:UITableViewRowAnimationNone];
             [loadingLikeDislike removeObjectForKey:list.review_id];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
@@ -595,6 +592,14 @@ NoResultDelegate>
     ReviewList *list = _list[indexPath.row];
     [cell setDelegate:self];
     [cell setShopReputationModelView:list];
+    
+    // this is required to load like info to detail, but was deleted
+    if (![dictLikeDislike objectForKey:list.review_id]) {
+        if(! [loadingLikeDislike objectForKey:list.review_id]) {
+            [loadingLikeDislike setObject:list.review_id forKey:list.review_id];
+            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[list, @(indexPath.row)]];
+        }
+    }
     
     return cell;
 }
