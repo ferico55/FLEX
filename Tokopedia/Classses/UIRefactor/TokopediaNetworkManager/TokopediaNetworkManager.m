@@ -63,7 +63,9 @@
     }
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
-    
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];

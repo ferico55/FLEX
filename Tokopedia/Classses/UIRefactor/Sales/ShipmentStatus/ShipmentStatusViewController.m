@@ -261,6 +261,9 @@
 {
     _objectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Order class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -537,11 +540,6 @@
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             
-            [_refreshControl endRefreshing];
-            
-            [_timer invalidate];
-            _timer = nil;
-            
             [self requestFailure:error];
             
         }];
@@ -617,7 +615,15 @@
 
 - (void)requestFailure:(id)object
 {
+    [_refreshControl endRefreshing];
     
+    [_timer invalidate];
+    _timer = nil;
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf, sedang terjadi kendala pada server. Silahkan coba beberapa saat lagi."] delegate:self];
+    [alert show];
+    
+    self.tableView.tableFooterView = nil;
 }
 
 - (void)cancel
@@ -638,6 +644,9 @@
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromArray:@[
                                                    kTKPD_APISTATUSKEY,
