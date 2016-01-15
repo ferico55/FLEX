@@ -824,7 +824,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="270" id="IV1-gM-NxL"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -846,9 +846,12 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDm-ZM-P3x">
-                        <rect key="frame" x="102" y="0.0" width="116" height="30"/>
+                        <rect key="frame" x="96" y="0.0" width="129" height="30"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="11"/>
-                        <state key="normal" title="Load More"/>
+                        <state key="normal" title="tampilkan lebih banyak"/>
+                        <connections>
+                            <action selector="showMoreTapped:" destination="-1" eventType="touchUpInside" id="pe4-iO-dyj"/>
+                        </connections>
                     </button>
                 </subviews>
             </tableViewCellContentView>

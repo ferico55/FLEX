@@ -64,9 +64,8 @@ static NSInteger userViewHeight = 70;
     TokopediaNetworkManager *tokopediaNetworkManager;
     ProductReputationSimpleCell *helpfulCell;
     
-    NSInteger sectionsCount;
-    NSInteger helpfulReviewCount;
     HelpfulReviewRequest *helpfulReviewRequest;
+    BOOL isShowingMore;
 }
 
 
@@ -104,9 +103,8 @@ static NSInteger userViewHeight = 70;
     viewStarFour.tag = 4;
     viewStarFive.tag = 5;
     
-    sectionsCount = 2;
-    helpfulReviewCount = 1;
     helpfulReviews = [[NSMutableArray alloc]init];
+    isShowingMore = NO;
 
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -311,79 +309,70 @@ static NSInteger userViewHeight = 70;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return sectionsCount;
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section == 1){
-        DetailReputationReview *reputationDetail = arrList[indexPath.row];
-        UILabel *messageLabel = [[UILabel alloc] init];
-        
-        [messageLabel setText:reputationDetail.review_message];
-        [messageLabel sizeToFit];
-        
-        CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                               options:NSStringDrawingUsesLineFragmentOrigin
-                                                            attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                               context:nil];
-        messageLabel.frame = sizeOfMessage;
-        
-        CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
-        return height;
+        return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
     }else{
-        if(helpfulReviewCount == 1 && indexPath.row == helpfulReviewCount){
+        if(!isShowingMore && indexPath.row == 1){
             //"load more" cell
             return 30;
+        }else if(isShowingMore && indexPath.row == helpfulReviews.count){
+            return 30;
         }else{
-            DetailReputationReview *reputationDetail = arrList[0];
-            UILabel *messageLabel = [[UILabel alloc] init];
-            
-            [messageLabel setText:reputationDetail.review_message];
-            [messageLabel sizeToFit];
-            
-            CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                                attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                                   context:nil];
-            messageLabel.frame = sizeOfMessage;
-            
-            CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
-            return height;
+            return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews];
         }
 
     }
     return 0;
 }
 
+- (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
+    DetailReputationReview *reputationDetail = arr[indexPath.row];
+    UILabel *messageLabel = [[UILabel alloc] init];
+    
+    [messageLabel setText:reputationDetail.review_message];
+    [messageLabel sizeToFit];
+    
+    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                           context:nil];
+    messageLabel.frame = sizeOfMessage;
+    
+    CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
+    return height;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section != 0){
-    cell.backgroundColor = [UIColor clearColor];
-    if(indexPath.row == arrList.count-1) {
-        if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
-            [self setLoadingView:YES];
-            [[self getNetworkManager:CTagGetProductReview] doRequest];
+        cell.backgroundColor = [UIColor clearColor];
+        if(indexPath.row == arrList.count-1) {
+            if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
+                [self setLoadingView:YES];
+                [[self getNetworkManager:CTagGetProductReview] doRequest];
+            }
         }
-    }
-    }else{
-        [self animate];
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section == 1){
-    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-    
-    DetailReputationReview *reputationDetail = arrList[indexPath.row];
-    [cell setReputationModelView:reputationDetail.viewModel];
-    
-    return cell;
+        ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+        
+        DetailReputationReview *reputationDetail = arrList[indexPath.row];
+        [cell setReputationModelView:reputationDetail.viewModel];
+        
+        return cell;
     }else{
-        if(indexPath.row == 0){
+        int limit = isShowingMore ? helpfulReviews.count : 1;
+        if(indexPath.row < limit){
             helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
             DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
             [helpfulCell setReputationModelView:reputationDetail.viewModel];
-            [self animate];
             return helpfulCell;
         }else{
             return _helpfulReviewLoadMoreCell;
@@ -401,18 +390,32 @@ static NSInteger userViewHeight = 70;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+    if(indexPath.section == 1){
+        DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+        [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+    }else{
+        if([self isLastCellInSectionZero:indexPath]){
+            [self showMoreTapped:nil];
+        }else{
+            DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        }
+    }
+}
+
+- (BOOL) isLastCellInSectionZero:(NSIndexPath *)indexPath{
+    if (isShowingMore){
+        return indexPath.row == helpfulReviews.count ? YES : NO;
+    }else{
+        return indexPath.row == 1 ? YES : NO;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(section==1){
         return arrList.count;
     }else{
-        if(helpfulReviewCount == 1){
-            return 2;
-        }
-        return helpfulReviewCount;
+        return isShowingMore ? helpfulReviews.count+1 : 2;
     }
 }
 
@@ -559,6 +562,14 @@ static NSInteger userViewHeight = 70;
     [self dismissAllPopTipViews];
 }
 
+- (IBAction)showMoreTapped:(id)sender {
+    if(isShowingMore){
+        isShowingMore = NO;
+    }else{
+        isShowingMore = YES;
+    }
+    [tableContent reloadData];
+}
 
 #pragma mark - Method
 - (void)unloadRequesting {
@@ -1133,12 +1144,27 @@ static NSInteger userViewHeight = 70;
 }
 
 
-- (void)animate{[@[helpfulCell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
+- (void)animate{
+    /*
+    [@[helpfulCell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
         [cell setFrame:CGRectMake(320, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
         [UIView animateWithDuration:0.7 animations:^{
             
             [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, 0)];
         }];
+    }];
+     */
+    [@[helpfulCell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
+        [UIView animateWithDuration:0.3
+                              delay:0.0
+             usingSpringWithDamping:0.3
+              initialSpringVelocity:1.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^
+         {
+             cell.layer.transform = CATransform3DIdentity;
+         }
+                         completion:nil];
     }];
 }
 
@@ -1394,11 +1420,6 @@ static NSInteger userViewHeight = 70;
             segmentedControl.enabled = YES;
             btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
             [self setRateStar:(int)segmentedControl.selectedSegmentIndex withAnimate:YES];
-            
-            [helpfulReviews addObject:arrList[0]];
-            [helpfulReviews addObject:arrList[1]];
-            [helpfulReviews addObject:arrList[2]];
-            
         }
         else if(review.result.list != nil) {
             [arrList addObjectsFromArray:review.result.list];
@@ -1504,7 +1525,7 @@ static NSInteger userViewHeight = 70;
 - (void) didReceiveHelpfulReview:(NSArray*)helpfulReview{
     [[self getNetworkManager:CTagGetProductReview] doRequest];
     
-    
+    [helpfulReviews removeAllObjects];
     [helpfulReviews addObjectsFromArray:helpfulReview];
     
     
