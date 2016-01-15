@@ -650,8 +650,7 @@
         if (_orders.count == 0) {
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
             NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-            _tableView.tableFooterView = noResultView;
-            _tableView.sectionFooterHeight = noResultView.frame.size.height;
+            [_tableView addSubview:noResultView];
         } else {
             _tableView.tableFooterView = nil;
         }
