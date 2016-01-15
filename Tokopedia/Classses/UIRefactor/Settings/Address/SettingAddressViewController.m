@@ -20,6 +20,9 @@
 #import "TokopediaNetworkManager.h"
 
 #import "MGSwipeButton.h"
+
+#import "RequestObject.h"
+
 #define CTagRequest 2
 
 @interface SettingAddressViewController ()
@@ -269,6 +272,16 @@
                     else
                         ((GeneralCheckmarkCell*)cell).checkmarkImageView.hidden = NO;
                 }
+                
+                if ([list.longitude integerValue]  == 0 && [list.latitude integerValue] == 0)
+                {
+                    ((GeneralCheckmarkCell*)cell).cellLableLeadingConstraint.constant = 14;
+                    ((GeneralCheckmarkCell*)cell).iconPinPoint.hidden = YES;
+                }
+                else {
+                    ((GeneralCheckmarkCell*)cell).cellLableLeadingConstraint.constant = 45;
+                    ((GeneralCheckmarkCell*)cell).iconPinPoint.hidden = NO;
+                }
             }
             else
             {
@@ -297,7 +310,16 @@
                     if (![_searchKeyword isEqualToString:@""] && _searchKeyword != nil) {
                         ((GeneralList1GestureCell*)cell).detailTextLabel.text = (list.address_status == 2)?@"Alamat Utama":@" ";
                     }
+                    
+                    if ([list.longitude integerValue]== 0 && [list.latitude integerValue] == 0)
+                    {
+                        cell.imageView.image = nil;
+                    }
+                    else {
+                        cell.imageView.image = [UIImage imageNamed:@"icon_pinpoin_toped.png"];
+                    }
                 }
+                
             }
         } else {
             NSString *cellid = kTKPDSETTINGADDRESSEXPANDEDCELL_IDENTIFIER;
@@ -488,16 +510,19 @@
     }
 }
 
+
 -(void)requestFailure:(id)object
 {
     [self requestProcess:object];
+    _table.tableFooterView = nil;
+    [_refreshControl endRefreshing];
 }
 
 -(void)requestProcess:(id)object
 {
     if (object) {
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
+        id stat = [result  objectForKey:@""];
         AddressForm *address = stat;
         BOOL status = [address.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
@@ -507,12 +532,12 @@
                 [_listTemp removeAllObjects];
             }
             
-            [_list addObjectsFromArray:address.result.list];
-            [_listTemp addObjectsFromArray:address.result.list];
+            [_list addObjectsFromArray:address.data.list];
+            [_listTemp addObjectsFromArray:address.data.list];
             
             if (_list.count >0) {
                 _isnodata = NO;
-                _urinext =  address.result.paging.uri_next;
+                _urinext =  address.data.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
                 NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                 
@@ -952,6 +977,7 @@
     {
         tokopediaNetworkManagerRequest = [TokopediaNetworkManager new];
         tokopediaNetworkManagerRequest.delegate = self;
+        tokopediaNetworkManagerRequest.isUsingHmac = YES;
     }
     tokopediaNetworkManagerRequest.tagRequest = tag;
     
@@ -1194,65 +1220,42 @@
                                 };
     }
     
-    return nil;
+    return @{};
 }
 
-- (NSString*)getPath:(int)tag
+-(id)getRequestObject:(int)tag
 {
-    if(tag == CTagRequest)
-        return kTKPDPROFILE_SETTINGAPIPATH;
+    NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
+    NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY];
+
+    RequestObjectGetAddress *requestObject = [RequestObjectGetAddress new];
+    requestObject.action = kTKPDPROFILE_APIGETUSERADDRESSKEY;
+    requestObject.page = [NSString stringWithFormat:@"%zd", _page];
+    requestObject.per_page = [NSString stringWithFormat:@"%zd",kTKPDPROFILESETTINGADDRESS_LIMITPAGE];
+    requestObject.user_id = userID;
+    requestObject.query = query;
     
-    return nil;
+    return requestObject;
+}
+
+- (NSString *)getPath:(int)tag {
+    if(tag == CTagRequest)
+    {
+        return @"/v4/people/get_address.pl";
+    }
+    
+    return @"";
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
 }
 
 - (id)getObjectManager:(int)tag
 {
     if(tag == CTagRequest)
     {
-        _objectmanager = [RKObjectManager sharedClient];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddressForm class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                            kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                            }];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddressFormResult class]];
-        
-        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[AddressFormList class]];
-        [listMapping addAttributeMappingsFromArray:@[kTKPDPROFILESETTING_APICOUNTRYNAMEKEY,
-                                                     kTKPDPROFILESETTING_APIRECEIVERNAMEKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSNAMEKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSIDKEY,
-                                                     kTKPDPROFILESETTING_APIRECEIVERPHONEKEY,
-                                                     kTKPDPROFILESETTING_APIPROVINCENAMEKEY,
-                                                     kTKPDPROFILESETTING_APIPOSTALCODEKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSSTATUSKEY,
-                                                     kTKPDPROFILESETTING_APIADDRESSSTREETKEY,
-                                                     kTKPDPROFILESETTING_APIDISTRICNAMEKEY,
-                                                     kTKPDPROFILESETTING_APICITYNAMEKEY,
-                                                     kTKPDPROFILESETTING_APICITYIDKEY,
-                                                     kTKPDPROFILESETTING_APIPROVINCEIDKEY,
-                                                     kTKPDPROFILESETTING_APIDISTRICTIDKEY
-                                                     ]];
-        
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY}];
-        
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-        
-        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-        [resultMapping addPropertyMapping:listRel];
-        
-        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY toKeyPath:kTKPD_APIPAGINGKEY withMapping:pagingMapping];
-        [resultMapping addPropertyMapping:pageRel];
-        
-        // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptor];
+        _objectmanager = [TKPMappingManager objectManagerGetAddress];
         return _objectmanager;
     }
     
@@ -1288,6 +1291,7 @@
 {
     if(tag == CTagRequest)
     {
+        
     }
 }
 
@@ -1329,8 +1333,6 @@
 
 - (void)successAddAddress
 {
-    [_list removeAllObjects];
-
     _table.tableFooterView = _footer;
     [_act startAnimating];
     

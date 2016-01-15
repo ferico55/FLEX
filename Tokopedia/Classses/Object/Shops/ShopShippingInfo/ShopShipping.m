@@ -10,4 +10,11 @@
 
 @implementation ShopShipping
 
+- (NSString *)addr_street {
+    NSString *addr_street = _addr_street;
+    addr_street = [addr_street stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
+    addr_street = [addr_street stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+    return addr_street;
+}
+
 @end

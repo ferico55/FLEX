@@ -217,6 +217,7 @@ NotificationDelegate
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
+    _networkManager.isUsingHmac = YES;
     _networkManager = nil;
 }
 

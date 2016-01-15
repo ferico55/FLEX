@@ -18,18 +18,36 @@
 #import "MyShopPaymentViewController.h"
 #import "MyShopShipmentInfoViewController.h"
 #import "AlertInfoView.h"
+#import "Province.h"
+#import "City.h"
+#import "PlacePickerViewController.h"
+#import "NavigateViewController.h"
+#import "TKPDTextView.h"
+#import "Tokopedia-Swift.h"
 
 @interface MyShopShipmentTableViewController ()
 <
-UITextFieldDelegate,
-GeneralTableViewControllerDelegate
+    UITextFieldDelegate,
+    GeneralTableViewControllerDelegate,
+    PlacePickerDelegate,
+    TKPPlacePickerDelegate
 >
 {
     ShippingInfoResult *_shipment;
-    NSArray *_districts;
+    NSArray *_availableProvinceName;
+    NSArray *_availableCityName;
+    NSArray *_availableDistrictName;
     NSArray *_availableShipments;
     
-    ShippingInfoShipments *_JNE;
+    NSArray *_provinces;
+    Province *_selectedProvince;
+    
+    NSArray *_cities;
+    City *_selectedCity;
+
+    NSArray *_disticts;
+    District *_selectedDistrict;
+    
     ShippingInfoShipmentPackage *_JNEPackageYes;
     ShippingInfoShipmentPackage *_JNEPackageReguler;
     ShippingInfoShipmentPackage *_JNEPackageOke;
@@ -37,37 +55,31 @@ GeneralTableViewControllerDelegate
     BOOL _showJNEExtraFeeTextField;
     BOOL _showJNEAWBSwitch;
     
-    ShippingInfoShipments *_tiki;
     ShippingInfoShipmentPackage *_tikiPackageReguler;
     ShippingInfoShipmentPackage *_tikiPackageONS;
     BOOL _showTikiExtraFee;
-    
-    ShippingInfoShipments *_posIndonesia;
+
     ShippingInfoShipmentPackage *_posPackageKhusus;
     ShippingInfoShipmentPackage *_posPackageBiasa;
     ShippingInfoShipmentPackage *_posPackageExpress;
     BOOL _showPosMinimumWeight;
     BOOL _showPosExtraFee;
     
-    ShippingInfoShipments *_RPX;
     ShippingInfoShipmentPackage *_RPXPackageNextDay;
     ShippingInfoShipmentPackage *_RPXPackageEconomy;
     BOOL _showRPXIDropSwitch;
     
-    ShippingInfoShipments *_wahana;
     ShippingInfoShipmentPackage *_wahanaPackageNormal;
     
-    ShippingInfoShipments *_cahaya;
     ShippingInfoShipmentPackage *_cahayaPackageNormal;
     
-    ShippingInfoShipments *_pandu;
     ShippingInfoShipmentPackage *_panduPackageRegular;
 
-    ShippingInfoShipments *_first;
     ShippingInfoShipmentPackage *_firstPackageRegular;
 
-    ShippingInfoShipments *_siCepat;
     ShippingInfoShipmentPackage *_siCepatPackageRegular;
+
+    ShippingInfoShipmentPackage *_gojekPackageGoKilat;
 
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -78,7 +90,21 @@ GeneralTableViewControllerDelegate
     BOOL _hasSelectKotaAsal;
 }
 
+@property (strong, nonatomic) ShippingInfoShipments *JNE;
+@property (strong, nonatomic) ShippingInfoShipments *tiki;
+@property (strong, nonatomic) ShippingInfoShipments *posIndonesia;
+@property (strong, nonatomic) ShippingInfoShipments *RPX;
+@property (strong, nonatomic) ShippingInfoShipments *wahana;
+@property (strong, nonatomic) ShippingInfoShipments *cahaya;
+@property (strong, nonatomic) ShippingInfoShipments *pandu;
+@property (strong, nonatomic) ShippingInfoShipments *first;
+@property (strong, nonatomic) ShippingInfoShipments *siCepat;
+@property (strong, nonatomic) ShippingInfoShipments *gojek;
+
 @property (weak, nonatomic) IBOutlet UILabel *provinceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *districtLabel;
+
 @property (weak, nonatomic) IBOutlet UITextField *postCodeTextField;
 
 @property (weak, nonatomic) IBOutlet UILabel *shipmentJNENameLabel;
@@ -180,35 +206,58 @@ GeneralTableViewControllerDelegate
 @property (weak, nonatomic) IBOutlet UITableViewCell *siCepatMoreInfoCell;
 @property (weak, nonatomic) IBOutlet UILabel *siCepatNotAvailableLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *gojekNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *gojekLogoImageView;
+@property (weak, nonatomic) IBOutlet UILabel *gojekGoKilatLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *gojekGoKilatSwitch;
+@property (weak, nonatomic) IBOutlet UITableViewCell *gojekMoreInfoCell;
+@property (weak, nonatomic) IBOutlet UILabel *gojekMoreInfoLabel;
+
+@property (weak, nonatomic) IBOutlet TKPDTextView *addressTextView;
+@property (weak, nonatomic) IBOutlet UILabel *pickupLocationLabel;
+@property (weak, nonatomic) IBOutlet UIView *pickupMapContainerView;
+@property (weak, nonatomic) IBOutlet UIImageView *pickupLocationImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
+
+@property BOOL mapIsHidden;
+
 @end
 
 @implementation MyShopShipmentTableViewController
+
 @synthesize createShopViewController;
+
 - (void)dealloc {
     [_request cancel];
     [_operationQueue cancelAllOperations];
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.title = @"Pengiriman";
+    
+    [self setLabelAttributedText];
+    [self setTextFieldsDelegate];
+    [self setSaveButton];
     
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
-    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:(createShopViewController!=nil? CStringLanjut:@"Simpan")
-                                                                   style:(createShopViewController!=nil? UIBarButtonItemStylePlain:UIBarButtonItemStyleDone)
-                                                                  target:self
-                                                                  action:@selector(tap:)];
+    self.mapIsHidden = YES;
+
+    _operationQueue = [NSOperationQueue new];
+    [self configureRestKit];
+    [self request];
     
-    
-    if(createShopViewController == nil) {
-        saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
-    }
-    
-    saveButton.enabled = NO;
-    self.navigationItem.rightBarButtonItem = saveButton;
-    
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (void)setTextFieldsDelegate {
     [_postCodeTextField addTarget:self
                            action:@selector(textFieldDidEndEditing:)
                  forControlEvents:UIControlEventEditingChanged];
@@ -230,7 +279,29 @@ GeneralTableViewControllerDelegate
     [_shipmentPosExtraFeeTextField addTarget:self
                                       action:@selector(textFieldDidEndEditing:)
                             forControlEvents:UIControlEventEditingChanged];
-    
+}
+
+- (void)setSaveButton {
+    NSString *title = createShopViewController?CStringLanjut:@"Simpan";
+    UIBarButtonItemStyle style = createShopViewController?UIBarButtonItemStylePlain:UIBarButtonItemStyleDone;
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:title
+                                                                   style:style
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    if(createShopViewController == nil) {
+        if (_shipment) {
+            UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
+            saveButton.tintColor = [UIColor whiteColor];
+            saveButton.enabled = YES;
+        } else {
+            saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+            saveButton.enabled = NO;
+        }
+    }
+    self.navigationItem.rightBarButtonItem = saveButton;
+}
+
+- (void)setLabelAttributedText {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     
@@ -246,8 +317,6 @@ GeneralTableViewControllerDelegate
     
     _shipmentTikiExtraFeeLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentTikiExtraFeeLabel.text attributes:attributes];
     
-    
-    
     _shipmePanduNotAvailableLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmePanduNotAvailableLabel.text attributes:attributes];
     
     _shipmentCahayaNotAvailabelLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentCahayaNotAvailabelLabel.text attributes:attributes];
@@ -259,31 +328,22 @@ GeneralTableViewControllerDelegate
     _shipmentPosNotAvailabelLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentPosNotAvailabelLabel.text attributes:attributes];
     
     _firstNotAvailableLabel.attributedText = [[NSAttributedString alloc] initWithString:_firstNotAvailableLabel.text attributes:attributes];
-
+    
     _siCepatNotAvailableLabel.attributedText = [[NSAttributedString alloc] initWithString:_siCepatNotAvailableLabel.text attributes:attributes];
-
+    
     NSString *note = @"Berat maksimum paket biasa 30 kg. Berat maksimum paket lain nya 150 kg.";
     _shipmentPosNoteCell.attributedText = [[NSAttributedString alloc] initWithString:note attributes:attributes];
-    
-    _operationQueue = [NSOperationQueue new];
-    
-    [self configureRestKit];
-    [self request];
-    
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (_shipment) {
-        if(createShopViewController!=nil && !_hasSelectKotaAsal)
+        if (_hasSelectKotaAsal) {
+            return 13;
+        } else {
             return 1;
-        return 10;
+        }
     } else {
         return 0;
     }
@@ -295,7 +355,7 @@ GeneralTableViewControllerDelegate
     switch (indexPath.section) {
         case 0: {
             if (_shipment) {
-                height = 44;
+                height = [self heightForFirstSectionIndexPath:indexPath];
             } else {
                 height = 0;
             }
@@ -303,46 +363,61 @@ GeneralTableViewControllerDelegate
         }
             
         case 1: {
-            height = [self heightForJNEAtRow:indexPath.row];
+            height = [self heightForSecondSectionIndexPath:indexPath];
             break;
         }
             
         case 2: {
-            height = [self heightForTikiAtRow:indexPath.row];
+            height = [self heightForPhoneNumberRow:indexPath.row];
             break;
         }
             
         case 3: {
-            height = [self heightForRPXAtRow:indexPath.row];
+            height = [self heightForJNEAtRow:indexPath.row];
             break;
         }
             
         case 4: {
-            height = [self heightForWahanaAtRow:indexPath.row];
+            height = [self heightForTikiAtRow:indexPath.row];
             break;
         }
             
         case 5: {
-            height = [self heightForPosAtRow:indexPath.row];
+            height = [self heightForRPXAtRow:indexPath.row];
             break;
         }
             
         case 6: {
-            height = [self heightForCahayaAtRow:indexPath.row];
+            height = [self heightForWahanaAtRow:indexPath.row];
             break;
         }
             
         case 7: {
-            height = [self heightForPanduAtRow:indexPath.row];
+            height = [self heightForPosAtRow:indexPath.row];
             break;
         }
             
         case 8: {
+            height = [self heightForCahayaAtRow:indexPath.row];
+            break;
+        }
+            
+        case 9: {
+            height = [self heightForPanduAtRow:indexPath.row];
+            break;
+        }
+            
+        case 10: {
             height = [self heightForFirstAtRow:indexPath.row];
             break;
         }
 
-        case 9: {
+        case 11: {
+            height = [self heightForGoJekRow:indexPath.row];
+            break;
+        }
+            
+        case 12: {
             height = [self heightForSiCepatAtRow:indexPath.row];
             break;
         }
@@ -352,6 +427,54 @@ GeneralTableViewControllerDelegate
             break;
     }
     return height;
+}
+
+- (CGFloat)heightForFirstSectionIndexPath:(NSIndexPath *)indexPath {
+    CGFloat height = 0.0f;
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            height = 44;
+        } else if (indexPath.row == 1 && _shipment.shop_shipping.province_id != 0) {
+            if ([_shipment.shop_shipping.province_name isEqualToString:@"DKI Jakarta"] ||
+                _shipment.shop_shipping.province_id == 13) {
+                height = 0;
+            } else {
+                height = 44;
+            }
+        } else if (indexPath.row == 2 && _shipment.shop_shipping.city_id != 0) {
+            if ([_shipment.shop_shipping.province_name isEqualToString:@"DKI Jakarta"] ||
+                _shipment.shop_shipping.province_id == 13) {
+                height = 0;
+            } else {
+                height = 44;
+            }
+        } else if (indexPath.row == 3) {
+            height = 44;
+        } else if (indexPath.row == 4) {
+            height = 140;
+        }
+    }
+    return height;
+}
+
+- (CGFloat)heightForSecondSectionIndexPath:(NSIndexPath *)indexPath {
+    CGFloat height = 0.0f;
+    if (self.mapIsHidden == NO) {
+        if (indexPath.row == 0) {
+            height = 120;
+        } else if (indexPath.row == 1) {
+            height = 60;
+        }
+    }
+    return height;
+}
+
+- (CGFloat)heightForPhoneNumberRow:(NSInteger)row {
+    if (_shipment.contact.msisdn_enc) {
+        return 44;
+    } else {
+        return 0;
+    }
 }
 
 - (CGFloat)heightForJNEAtRow:(NSInteger)row
@@ -849,6 +972,66 @@ GeneralTableViewControllerDelegate
     return height;
 }
 
+- (CGFloat)heightForGoJekRow:(NSInteger)row {
+    CGFloat height = 0.0f;
+    if ([_availableShipments containsObject:_gojek.shipment_id]) {
+        
+        // cell to show courier name and logo
+        if (row == 0) {
+            height = 50;
+        }
+        
+        // return cell if information about package is existing
+        else if (row == 1) {
+            if (_gojekPackageGoKilat) {
+                return 44;
+            } else {
+                return 0;
+            }
+        }
+        
+        else if (row == 2) {
+            height = 44;
+        }
+        
+    } else if (createShopViewController) {
+        
+        //TODO: Better codes
+        if ([_shipment.allow_activate_gojek boolValue]) {
+            // cell to show courier name and logo
+            if (row == 0) {
+                height = 50;
+            }
+            
+            // return cell if information about package is existing
+            else if (row == 1) {
+                if (_gojekPackageGoKilat) {
+                    return 44;
+                } else {
+                    return 0;
+                }
+            }
+            
+            else if (row == 2) {
+                height = 44;
+            }
+        }
+        
+    } else if ([_shipment.gojek.whitelisted boolValue] == NO) {
+        height = 0;
+    } else {
+        if (row == 0) {
+            height = 50;
+        }
+        else if (row == 3) {
+            height = 44;
+        } else {
+            height = 0;
+        }
+    }
+    return height;
+}
+
 - (CGFloat)heightForSiCepatAtRow:(NSInteger)row
 {
     CGFloat height = 0.0f;
@@ -877,7 +1060,7 @@ GeneralTableViewControllerDelegate
             height = 50;
         }
         else if (row == 3) {
-            height = 70;
+            height = 44;
         } else {
             height = 0;
         }
@@ -889,27 +1072,27 @@ GeneralTableViewControllerDelegate
     NSInteger numberOfRows;
     switch (section) {
         case 0:
-            numberOfRows = 2;
+            numberOfRows = 4;
             break;
             
         case 1:
-            numberOfRows = 12;
+            numberOfRows = 2;
             break;
-            
+
         case 2:
-            numberOfRows = 8;
+            numberOfRows = 1;
             break;
             
         case 3:
-            numberOfRows = 7;
+            numberOfRows = 12;
             break;
             
         case 4:
-            numberOfRows = 5;
+            numberOfRows = 8;
             break;
             
         case 5:
-            numberOfRows = 11;
+            numberOfRows = 7;
             break;
             
         case 6:
@@ -917,17 +1100,29 @@ GeneralTableViewControllerDelegate
             break;
             
         case 7:
-            numberOfRows = 5;
+            numberOfRows = 11;
             break;
-        
+            
         case 8:
             numberOfRows = 5;
             break;
             
         case 9:
-            numberOfRows = 4;
+            numberOfRows = 5;
+            break;
+        
+        case 10:
+            numberOfRows = 5;
             break;
             
+        case 11:
+            numberOfRows = 4;
+            break;
+
+        case 12:
+            numberOfRows = 4;
+            break;
+
         default:
             numberOfRows = 0;
             break;
@@ -938,7 +1133,9 @@ GeneralTableViewControllerDelegate
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BOOL shouldHighlight = NO;
-    if (indexPath.section == 0 && indexPath.row == 0 && _shipment) {
+    if (indexPath.section == 0 && indexPath.row < 3) {
+        shouldHighlight = YES;
+    } else if (indexPath.section == 1 && indexPath.row == 1) {
         shouldHighlight = YES;
     } else {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -962,6 +1159,8 @@ GeneralTableViewControllerDelegate
             shouldHighlight = YES;
         } else if ([cell isEqual:_firstMoreInfoCell]) {
             shouldHighlight = YES;
+        } else if ([cell isEqual:_gojekMoreInfoCell]) {
+            shouldHighlight = YES;
         } else if ([cell isEqual:_siCepatMoreInfoCell]) {
             shouldHighlight = YES;
         }
@@ -972,20 +1171,39 @@ GeneralTableViewControllerDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 0 && indexPath.row == 0 && _districts) {
+    if (indexPath.section == 0) {
+        
         GeneralTableViewController *controller = [GeneralTableViewController new];
         controller.title = @"Pilih Lokasi";
         controller.delegate = self;
-        controller.objects = _districts;
-        controller.selectedObject = _shipment.shop_shipping.district_name;
         controller.enableSearch = YES;
-        controller.isPresentedViewController = YES;
+        controller.senderIndexPath = indexPath;
         
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-        nav.navigationBar.translucent = NO;
+        if (indexPath.row == 0) {
+            controller.objects = _availableProvinceName;
+            controller.selectedObject = _shipment.shop_shipping.province_name;
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (indexPath.row == 1) {
+            controller.objects = _availableCityName;
+            controller.selectedObject = _shipment.shop_shipping.city_name;
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if (indexPath.row == 2) {
+            controller.objects = _availableDistrictName;
+            controller.selectedObject = _shipment.shop_shipping.district_name;
+            [self.navigationController pushViewController:controller animated:YES];
+        }
         
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
-    } else if (indexPath.section == 1 && indexPath.row == 4) {
+    } else if (indexPath.section == 1 && indexPath.row == 1) {
+        
+        CLLocationCoordinate2D coordinate;
+        if (_shipment.shop_shipping.latitude && _shipment.shop_shipping.longitude) {
+            coordinate = CLLocationCoordinate2DMake(_shipment.shop_shipping.latitude, _shipment.shop_shipping.longitude);
+        } else {
+            coordinate = CLLocationCoordinate2DMake(0, 0);
+        }
+        [NavigateViewController navigateToMap:coordinate type:TypeEditPlace fromViewController:self];
+        
+    } else if (indexPath.section == 4 && indexPath.row == 4) {
         AlertInfoView *alert = [AlertInfoView newview];
         alert.text = @"Sistem AWB Otomatis";
         alert.detailText = @"Dengan menggunakan Sistem Kode Resi Otomatis, Anda tidak perlu lagi melakukan input nomor resi secara manual. Cukup cetak kode booking dan tunjukkan ke agen JNE yang mendukung, nomor resi akan otomatis masuk ke Tokopedia.";
@@ -996,10 +1214,10 @@ GeneralTableViewControllerDelegate
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
         
-    } else if (indexPath.section == 3 && indexPath.row == 1) {
+    } else if (indexPath.section == 6 && indexPath.row == 1) {
         AlertInfoView *alert = [AlertInfoView newview];
-        alert.text = @"Sistem i-Drop";
-        alert.detailText = @"i-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
+        alert.text = @"Sistem I-Drop";
+        alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
         [alert show];
         
         CGRect frame = alert.frame;
@@ -1007,6 +1225,28 @@ GeneralTableViewControllerDelegate
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *title = @"";
+    if (section == 0) {
+        title = @"    Kota Asal";
+    } else if (section == 1) {
+        if (self.mapIsHidden) {
+            title = nil;
+        } else {
+            title = @"    Lokasi Pickup";
+        }
+    } else if (section == 2) {
+        if (createShopViewController) {
+            title = nil;
+        } else {
+            title = @"    Nomor HP";
+        }
+    } else if (section == 3) {
+        title = @"    Shipping Services";
+    }
+    return title;
 }
 
 #pragma mark - Actions
@@ -1033,7 +1273,7 @@ GeneralTableViewControllerDelegate
     
     if(errorMessage.count == 0) {
         if(createShopViewController != nil) {
-            if(! [self hasSelectedShipping]) {
+            if(![self hasSelectedShipping]) {
                 StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringSelectedShipping] delegate:self];
                 [stickyAlertView show];
                 
@@ -1071,8 +1311,6 @@ GeneralTableViewControllerDelegate
 
 - (IBAction)valueChangedSwitch:(UISwitch *)sender {
     // actions for JNE
-    NSNumber *number = [NSNumber numberWithInteger:[_JNE.shipment_id integerValue]];
-    NSMutableArray *tempAutoResi = [_shipment.auto_resi mutableCopy];
     if ([sender isEqual:_shipmentJNEYesSwitch]) {
         if (sender.isOn) {
             _JNEPackageYes.active = @"1";
@@ -1097,12 +1335,11 @@ GeneralTableViewControllerDelegate
     else if ([sender isEqual:_shipmentJNEAWBSwitch]) {
         if (sender.isOn) {
             _shipment.jne.jne_tiket = @"1";
-            [tempAutoResi addObject:number];
+            [_shipment.auto_resi addObject:_JNE.shipment_id];
         } else {
             _shipment.jne.jne_tiket = @"0";
-            [tempAutoResi removeObject:number];
+            [_shipment.auto_resi removeObject:_JNE.shipment_id];
         }
-        _shipment.auto_resi = tempAutoResi;
     }
     else if ([sender isEqual:_shipmentJNEMinimumWeightSwitch]) {
         _showJNEMinimumWeightTextField = sender.isOn;
@@ -1271,6 +1508,16 @@ GeneralTableViewControllerDelegate
             _firstPackageRegular.active = @"0";
         }
     }
+    
+    // actions for gojek
+    
+    else if ([sender isEqual:_gojekGoKilatSwitch]) {
+        if (sender.isOn) {
+            _gojekPackageGoKilat.active = @"1";
+        } else {
+            _gojekPackageGoKilat.active = @"0";
+        }
+    }
 
     // actions for SiCepat
     else if ([sender isEqual:_siCepatRegulerSwitch]) {
@@ -1312,24 +1559,101 @@ GeneralTableViewControllerDelegate
 
 #pragma mark - General table delegate
 
-- (void)didSelectObject:(id)object
+- (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
-    _hasSelectKotaAsal = YES;
-    [self validateEnableRightBarButtonItem];
-    
-    NSInteger index = [_districts indexOfObject:object];
-    District *district = [_shipment.district objectAtIndex:index];
-    _provinceLabel.text = district.district_name;
-    
-    if(createShopViewController!=nil && _shipment.shop_shipping==nil)
-        _shipment.shop_shipping = [ShopShipping new];
-    
-    
-    _shipment.shop_shipping.district_name = district.district_name;
-    _shipment.shop_shipping.district_id = district.district_id;
-    
-    _availableShipments = district.district_shipping_supported;
-    
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            
+            _hasSelectKotaAsal = NO;
+            
+            NSInteger index = [_availableProvinceName indexOfObject:object];
+            Province *province = [_provinces objectAtIndex:index];
+            
+            _shipment.shop_shipping.province_id = province.province_id;
+            _shipment.shop_shipping.province_name = province.province_name;
+
+            _provinceLabel.text = province.province_name;
+            _cityLabel.text = @"Pilih Kotamadya";
+            _districtLabel.text = @"Pilih Kecamatan";
+            
+            _cities = province.cities;
+            
+            // If jakarta, add map and user location address, and shows all available couriers.
+            if ([province.province_name isEqualToString:@"DKI Jakarta"] ||
+                province.province_id == 13) {
+                self.mapIsHidden = NO;
+                _hasSelectKotaAsal = YES;
+                
+                NSMutableArray *shipmentIds = [NSMutableArray new];
+                for (ShippingInfoShipments *shipment in _shipment.shipment) {
+                    [shipmentIds addObject:shipment.shipment_id];
+                }
+                _availableShipments = shipmentIds;
+
+                // ID DKI
+                _shipment.shop_shipping.district_id = 5573;
+                
+            } else {
+                NSMutableArray *citiesName = [NSMutableArray new];
+                for (City *city in _cities) {
+                    if (city.city_id == _shipment.shop_shipping.city_id) {
+                        _disticts = city.districts;
+                    }
+                    [citiesName addObject:city.city_name];
+                }
+                _availableCityName = citiesName;
+        
+                _shipment.shop_shipping.city_id = 0;
+                _shipment.shop_shipping.city_name = nil;
+                
+                _shipment.shop_shipping.district_id = 0;
+                _shipment.shop_shipping.district_name = nil;
+            }
+        } else if (indexPath.row == 1) {
+            
+            _hasSelectKotaAsal = NO;
+
+            NSInteger index = [_availableCityName indexOfObject:object];
+            City *city = [_cities objectAtIndex:index];
+            
+            _cityLabel.text = city.city_name;
+            _districtLabel.text = @"Pilih Kecamatan";
+            
+            _disticts = city.districts;
+            
+            NSMutableArray *districtsName = [NSMutableArray new];
+            for (District *district in _disticts) {
+                [districtsName addObject:district.district_name];
+            }
+            _availableDistrictName = districtsName;
+
+            _shipment.shop_shipping.city_id = city.city_id;
+            _shipment.shop_shipping.city_name = city.city_name;
+
+            _shipment.shop_shipping.district_id = 0;
+            _shipment.shop_shipping.district_name = nil;
+            
+        } else if (indexPath.row == 2) {
+            
+            _hasSelectKotaAsal = YES;
+            
+            [self validateEnableRightBarButtonItem];
+            
+            NSInteger index = [_availableDistrictName indexOfObject:object];
+            District *district = [_disticts objectAtIndex:index];
+            
+            _districtLabel.text = district.district_name;
+            
+            if(createShopViewController != nil && _shipment.shop_shipping == nil) {
+                _shipment.shop_shipping = [ShopShipping new];
+            }
+            
+            _shipment.shop_shipping.district_name = district.district_name;
+            _shipment.shop_shipping.district_id = district.district_id;
+            
+            _availableShipments = district.district_shipping_supported;
+        }
+    }
     [self.tableView reloadData];
 }
 
@@ -1357,15 +1681,26 @@ GeneralTableViewControllerDelegate
                                                    kTKPDSHOPSHIPMENT_APIISALLOWKEY,
                                                    kTKPDSHOPSHIPMENT_APIPOSFEEKEY,
                                                    kTKPDSHOPSHIPMENT_APISHOPNAMEKEY,
-                                                   kTKPDSHOPSHIPMENT_APIAUTORESIKEY
+                                                   kTKPDSHOPSHIPMENT_APIAUTORESIKEY,
+                                                   kTKPDSHOPSHIPMENT_APIALLOW_ACTIVATE_GOJEKKEY
                                                    ]];
     
+    RKObjectMapping *provinceMapping = [RKObjectMapping mappingForClass:[Province class]];
+    [provinceMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APIPROVINCEIDKEY,
+                                                     kTKPDSHOPSHIPMENT_APIPROVINCENAMEKEY,
+                                                     ]];
+    
+    RKObjectMapping *cityMapping = [RKObjectMapping mappingForClass:[City class]];
+    [cityMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APICITYIDKEY,
+                                                 kTKPDSHOPSHIPMENT_APICITYNAMEKEY,
+                                                 ]];
+
     RKObjectMapping *districtMapping = [RKObjectMapping mappingForClass:[District class]];
     [districtMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APIDISTRICTIDKEY,
                                                      kTKPDSHOPSHIPMENT_APIDISTRICTSHIPPINGSUPPORTEDKEY,
                                                      kTKPDSHOPSHIPMENT_APIDISTRICTNAMEKEY,
                                                      ]];
-    
+
     RKObjectMapping *shipmentsMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipments class]];
     [shipmentsMapping addAttributeMappingsFromArray:@[
                                                       kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY,
@@ -1373,8 +1708,6 @@ GeneralTableViewControllerDelegate
                                                       kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY,
                                                       kTKPDSHOPSHIPMENT_APISHIPMENTAVAILABLEKEY,
                                                       ]];
-    
-    
     
     RKObjectMapping *shipmentsPackageMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipmentPackage class]];
     [shipmentsPackageMapping addAttributeMappingsFromArray:@[
@@ -1409,22 +1742,48 @@ GeneralTableViewControllerDelegate
     RKObjectMapping *posWeightMapping = [RKObjectMapping mappingForClass:[PosMinWeight class]];
     [posWeightMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY,
                                                       kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY]];
+
+    RKObjectMapping *gojekMapping = [RKObjectMapping mappingForClass:[Gojek class]];
+    [gojekMapping addAttributeMappingsFromArray:@[kTKPDSHOPSHIPMENT_APIGOJEKWHITELISTEDKEY]];
+
+    RKObjectMapping *contactMapping = [RKObjectMapping mappingForClass:[ShippingContact class]];
+    [contactMapping addAttributeMappingsFromArray:@[@"messenger_enc",
+                                                    @"msisdn_enc",
+                                                    @"msisdn_verification",
+                                                    @"user_email_enc",]];
     
     RKObjectMapping *shopShippingMapping = [RKObjectMapping mappingForClass:[ShopShipping class]];
     [shopShippingMapping addAttributeMappingsFromArray:@[
-                                                         kTKPDSHOPSHIPMENT_APIDISTRICTIDKEY,
                                                          kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY,
                                                          kTKPDSHOPSHIPMENT_APIORIGINKEY,
                                                          kTKPDSHOPSHIPMENT_APISHIPPINGIDKEY,
+                                                         kTKPDSHOPSHIPMENT_APIDISCTRICTSUPPORTEDKEY,
+                                                         kTKPDSHOPSHIPMENT_APIDISTRICTIDKEY,
                                                          kTKPDSHOPSHIPMENT_APIDISTRICTNAMEKEY,
-                                                         kTKPDSHOPSHIPMENT_APIDISCTRICTSUPPORTEDKEY
+                                                         kTKPDSHOPSHIPMENT_APICITYIDKEY,
+                                                         kTKPDSHOPSHIPMENT_APICITYNAMEKEY,
+                                                         kTKPDSHOPSHIPMENT_APIPROVINCEIDKEY,
+                                                         kTKPDSHOPSHIPMENT_APIPROVINCENAMEKEY,
+                                                         kTKPDSHOPSHIPMENT_APIADDR_STREETKEY,
+                                                         kTKPDSHOPSHIPMENT_APILATITUDEKAY,
+                                                         kTKPDSHOPSHIPMENT_APILONGITUDEKEY
                                                          ]];
     
     // Relationship Mapping
-    RKRelationshipMapping *districtRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIDISTRICTKEY
-                                                                                     toKeyPath:kTKPDSHOPSHIPMENT_APIDISTRICTKEY
+    RKRelationshipMapping *provinceRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIPROVINCESKEY
+                                                                                     toKeyPath:kTKPDSHOPSHIPMENT_APIPROVINCESKEY
+                                                                                   withMapping:provinceMapping];
+    [resultMapping addPropertyMapping:provinceRel];
+    
+    RKRelationshipMapping *cityRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APICITIESKEY
+                                                                                 toKeyPath:kTKPDSHOPSHIPMENT_APICITIESKEY
+                                                                               withMapping:cityMapping];
+    [provinceMapping addPropertyMapping:cityRel];
+    
+    RKRelationshipMapping *districtRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIDISTRICTSKEY
+                                                                                     toKeyPath:kTKPDSHOPSHIPMENT_APIDISTRICTSKEY
                                                                                    withMapping:districtMapping];
-    [resultMapping addPropertyMapping:districtRel];
+    [cityMapping addPropertyMapping:districtRel];
     
     if(createShopViewController != nil)
     {
@@ -1470,7 +1829,15 @@ GeneralTableViewControllerDelegate
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY
                                                                                   toKeyPath:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY
                                                                                 withMapping:posWeightMapping]];
-    
+
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIGOJEKKEY
+                                                                                  toKeyPath:kTKPDSHOPSHIPMENT_APIGOJEKKEY
+                                                                                withMapping:gojekMapping]];
+
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"contact"
+                                                                                  toKeyPath:@"contact"
+                                                                                withMapping:contactMapping]];
+
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APISHOPSHIPPINGKEY
                                                                                   toKeyPath:kTKPDSHOPSHIPMENT_APISHOPSHIPPINGKEY
                                                                                 withMapping:shopShippingMapping]];
@@ -1520,27 +1887,88 @@ GeneralTableViewControllerDelegate
     [_operationQueue addOperation:_request];
 }
 
-- (void)requestSuccessResult:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation
-{
+- (void)requestSuccessResult:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation {
     ShippingInfo *shippingInfo = [result.dictionary objectForKey:@""];
     BOOL status = [shippingInfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
     if (shippingInfo.message_error) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:shippingInfo.message_error delegate:self];
         [alert show];
-    }
-    else if (status) {
-        
-        UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
-        if(createShopViewController == nil)
-        {
-            saveButton.tintColor = [UIColor whiteColor];
-            saveButton.enabled = YES;
-        }
-        
+    } else if (status) {
         _shipment = shippingInfo.result;
         _availableShipments = _shipment.shop_shipping.district_shipping_supported;
+        _provinces = _shipment.provinces_cities_districts;
+
+        _postCodeTextField.text = _shipment.shop_shipping.postal_code;
+
+        [_addressTextView setPlaceholder:@"Alamat Pickup (optional)"];
+        _addressTextView.text = _shipment.shop_shipping.addr_street;
         
+        double latitude = _shipment.shop_shipping.latitude;
+        double longitude = _shipment.shop_shipping.longitude;
+        if (latitude && longitude) {
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
+                                           completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+                                               GMSAddress *placemark = [response results][0];
+                                               self.pickupLocationLabel.text = [self streetNameFromAddress:placemark];
+            }];
+        } else {
+            self.pickupLocationLabel.text = @"Tentukan Peta Lokasi";
+        }
+        
+        if(createShopViewController) {
+            [self createShopDefaultValues];
+        }
+
+        [self setProvincesData];
+        [self setProvincesLabelValue];
+        [self showsMapForGojek];
+        [self showsPhoneNumber];
+        
+        [self setSaveButton];
+        
+        for (ShippingInfoShipments *shipment in _shipment.shipment) {
+            NSInteger shipmentId = [shipment.shipment_id integerValue];
+            if (shipmentId == 1) {
+                self.JNE = shipment;
+                [self setJNEValues];
+            } else if (shipmentId == 2) {
+                self.tiki = shipment;
+                [self setTikiValues];
+            } else if (shipmentId == 3) {
+                self.RPX = shipment;
+                [self setRPXValues];
+            } else if (shipmentId == 4) {
+                self.posIndonesia = shipment;
+                [self setPosValues];
+            } else if (shipmentId == 6) {
+                self.wahana = shipment;
+                [self setWahanaValues];
+            } else if (shipmentId == 7) {
+                self.cahaya = shipment;
+                [self setCahayaValues];
+            } else if (shipmentId == 8) {
+                self.pandu = shipment;
+                [self setPanduValues];
+            } else if (shipmentId == 9) {
+                self.first = shipment;
+                [self setFirstValues];
+            } else if (shipmentId == 10) {
+                if (createShopViewController) {
+                    if ([_shipment.allow_activate_gojek boolValue]) {
+                        self.gojek = shipment;
+                    }
+                } else {
+                    if ([_shipment.gojek.whitelisted boolValue]) {
+                        self.gojek = shipment;
+                    }
+                }
+                [self setGojekValues];
+            } else if (shipmentId == 11) {
+                self.siCepat = shipment;
+                [self setSiCepatValues];
+            }
+        }
         
         //Set Note for pay
         for (Payment *payment in _shipment.payment_options) {
@@ -1549,379 +1977,488 @@ GeneralTableViewControllerDelegate
             }
         }
         
-        NSMutableArray *districts = [NSMutableArray new];
-        for (District *district in _shipment.district) {
-            [districts addObject:district.district_name];
-        }
-        _districts = districts;
-        
-        if (_shipment.shop_shipping.district_name) {
-            _provinceLabel.text = _shipment.shop_shipping.district_name;
-            _hasSelectKotaAsal = YES;
-        }
-        
-        
-        _postCodeTextField.text = _shipment.shop_shipping.postal_code;
-        
-        if(createShopViewController != nil)
-        {
-            if(_shipment.jne == nil)
-            {
-                _shipment.jne = [JNE new];
-                _shipment.jne.jne_fee = 0;
-                _shipment.jne.jne_diff_district = @"0";
-                _shipment.jne.jne_min_weight = @"";
-                _shipment.jne.jne_tiket = @"0";
-            }
-            if(_shipment.tiki == nil)
-            {
-                _shipment.tiki = [Tiki new];
-                _shipment.tiki.tiki_fee = 0;
-            }
-            if(_shipment.pos == nil) {
-                _shipment.pos = [POSIndonesia new];
-                _shipment.pos.pos_fee = 0;
-                _shipment.pos.pos_min_weight = 0;
+        [self.tableView reloadData];
+    }
+}
+
+- (NSString *)streetNameFromAddress:(GMSAddress *)address {
+    NSString *strSnippet = @"Tentukan Peta Lokasi";
+    if (address.lines.count > 0) {
+        strSnippet = address.lines[0];
+    } else {
+        if ([address.thoroughfare length] != 0) {
+            if ([strSnippet length] != 0) {
+                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
+            } else {
+                strSnippet = address.thoroughfare;
             }
         }
-        
-        
-        for (ShippingInfoShipments *shipment in _shipment.shipment) {
-            if ([shipment.shipment_id isEqualToString:@"1"]) { // JNE
-                _JNE = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"6"]) { // YES
-                        _JNEPackageYes = package;
-                    } else if ([package.sp_id isEqualToString:@"1"]) { // Reguler
-                        _JNEPackageReguler = package;
-                    } else  if ([package.sp_id isEqualToString:@"2"]) { // OKE
-                        _JNEPackageOke = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"2"]) { // TIKI
-                _tiki = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"3"]) { // Reguler
-                        _tikiPackageReguler = package;
-                    } else if ([package.sp_id isEqualToString:@"16"]) { // One Night Service
-                        _tikiPackageONS = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"3"]) { // RPX
-                _RPX = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"4"]) { // Next Day Package
-                        _RPXPackageNextDay = package;
-                    } else if ([package.sp_id isEqualToString:@"5"]) { // Reguler Package (Live) || Economy Package (Staging)
-                        _RPXPackageEconomy = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"6"]) { // Wahana
-                _wahana = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"8"]) { // Service Normal
-                        _wahanaPackageNormal = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"4"]) { // Pos Indonesia
-                _posIndonesia = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"10"]) { // Pos Kilat Khusus
-                        _posPackageKhusus = package;
-                    } else if ([package.sp_id isEqualToString:@"9"]) { // Paket Biasa
-                        _posPackageBiasa = package;
-                    } else if ([package.sp_id isEqualToString:@"11"]) { // Pos Express
-                        _posPackageExpress = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"7"]) { // Cahaya
-                _cahaya = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"12"]) { // Service Normal
-                        _cahayaPackageNormal = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"8"]) { // Pandu
-                _pandu = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"14"]) { // Reguler
-                        _panduPackageRegular = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"9"]) { // First
-                _first = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"15"]) { // Reguler Service
-                        _firstPackageRegular = package;
-                    }
-                }
-            } else if ([shipment.shipment_id isEqualToString:@"11"]) { // SiCepat
-                _siCepat = shipment;
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:@"18"]) { // Regular Package
-                        _siCepatPackageRegular = package;
-                    }
-                }
-            }
-            
-            if (_JNE) {
-                _shipmentJNENameLabel.text = _JNE.shipment_name;
-                NSURL *url = [NSURL URLWithString:_JNE.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_shipmentJNELogoImageView setImageWithURLRequest:request
-                                                 placeholderImage:nil
-                                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                              _shipmentJNELogoImageView.image = image;
-                                                          } failure:nil];
-                
-                if (_JNEPackageReguler) {
-                    _shipmentJNERegulerLabel.text = _JNEPackageReguler.name;
-                    _shipmentJNERegulerSwitch.on = [_JNEPackageReguler.active boolValue];
-                }
-                
-                if (_JNEPackageYes) {
-                    _shipmentJNEYesLabel.text = _JNEPackageYes.name;
-                    _shipmentJNEYesSwitch.on = [_JNEPackageYes.active boolValue];
-                }
-                
-                if (_JNEPackageOke) {
-                    _shipmentJNEOkeLabel.text = _JNEPackageOke.name;
-                    _shipmentJNEOkeSwitch.on = [_JNEPackageOke.active boolValue];
-                }
-                
-                _shipmentJNEAWBSwitch.on = [_shipment.jne.jne_tiket boolValue];
-                
-                if ([_JNEPackageOke.active boolValue] ||
-                    [_JNEPackageReguler.active boolValue] ||
-                    [_JNEPackageYes.active boolValue]) {
-                    _showJNEAWBSwitch = YES;
-                } else {
-                    _showJNEAWBSwitch = NO;
-                }
-                
-                if ([_shipment.jne.jne_min_weight isEqualToString:@""] ||
-                    [_shipment.jne.jne_min_weight isEqualToString:@"0"]) {
-                    _shipmentJNEMinimumWeightSwitch.on = NO;
-                    _showJNEMinimumWeightTextField = NO;
-                } else {
-                    _shipmentJNEMinimumWeightSwitch.on = YES;
-                    _shipmentJNEMinimumWeightTextField.text = _shipment.jne.jne_min_weight;
-                    _showJNEMinimumWeightTextField = YES;
-                }
-                
-                _shipmentJNEDifferentDistrictSwitch.on = [_shipment.jne.jne_diff_district boolValue];
-                
-                if (_shipment.jne.jne_fee == 0) {
-                    _shipmentJNEExtraFeeSwitch.on = NO;
-                    _showJNEExtraFeeTextField = NO;
-                } else {
-                    _shipmentJNEExtraFeeSwitch.on = YES;
-                    _shipmentJNEExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.jne.jne_fee];
-                    _showJNEExtraFeeTextField = YES;
-                }
-            }
-            
-            if (_tiki) {
-                _shipmentTikiNameLabel.text = _tiki.shipment_name;
-                NSURL *url = [NSURL URLWithString:_tiki.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_shipmentTikiLogoImageView setImageWithURLRequest:request
-                                                  placeholderImage:nil
-                                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                               _shipmentTikiLogoImageView.image = image;
-                                                           } failure:nil];
-                
-                if (_tikiPackageReguler) {
-                    _shipmentTikiRegulerLabel.text = _tikiPackageReguler.name;
-                    _shipmentTikiRegulerSwitch.on = [_tikiPackageReguler.active boolValue];
-                }
-                
-                if (_tikiPackageONS) {
-                    _shipmentTikiONSLabel.text = _tikiPackageONS.name;
-                    _shipmentTikiONSSwitch.on = [_tikiPackageONS.active boolValue];
-                }
-                
-                if (_shipment.tiki.tiki_fee == 0) {
-                    _shipmentTikiExtraFeeSwitch.on = NO;
-                    _showTikiExtraFee = NO;
-                } else {
-                    _shipmentTikiExtraFeeSwitch.on = YES;
-                    _shipmentTikiExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.tiki.tiki_fee];
-                    _showTikiExtraFee = YES;
-                }
-            }
-            
-            if (_RPX) {
-                _shipmentRPXNameLabel.text = _RPX.shipment_name;
-                NSURL *url = [NSURL URLWithString:_RPX.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_shipmentRPXLogoImageView setImageWithURLRequest:request
-                                                 placeholderImage:nil
-                                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                              _shipmentRPXLogoImageView.image = image;
-                                                          } failure:nil];
-                /*
-                 TODO
-                 add Indomaret logo image
-                */
-                
-                NSURL *urlIndomaret = [NSURL URLWithString:_shipment.rpx.indomaret_logo];
-                NSURLRequest *requestLogoIndomaret = [NSURLRequest requestWithURL:urlIndomaret];
-                
-                if (_shipment.rpx.whitelisted_idrop) {
-                    [_shipmentRPXLogoIndomaretView setImageWithURLRequest:requestLogoIndomaret
-                                                         placeholderImage:nil
-                                                                  success:^(NSURLRequest *request, NSURLResponse *response, UIImage *image) {
-                        _shipmentRPXLogoIndomaretView.image = image;
-                                                                  } failure:nil];
-                }
-                
-                NSNumber *number = [NSNumber numberWithInteger:[_RPX.shipment_id integerValue]];
-                _shipmentRPXIDropSwitch.on = [_shipment.auto_resi containsObject:number];
-                
-                if (_RPXPackageEconomy) {
-                    _shipmentRPXEconomySwitch.on = [_RPXPackageEconomy.active boolValue];
-                }
-                
-                if (_RPXPackageNextDay) {
-                    _shipmentRPXNextDaySwitch.on = [_RPXPackageNextDay.active boolValue];
-                }
-            }
-            
-            if (_wahana) {
-                _shipmentWahanaNameLabel.text = _wahana.shipment_name;
-                NSURL *url = [NSURL URLWithString:_wahana.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_shipmentWahanaLogoImageView setImageWithURLRequest:request
-                                                    placeholderImage:nil
-                                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                                 _shipmentWahanaLogoImageView.image = image;
-                                                             } failure:nil];
-                
-                if (_wahanaPackageNormal) {
-                    _shipmentWahanaNextDayLabel.text = _wahanaPackageNormal.name;
-                    _shipmentWahanaNextDaySwitch.on = [_wahanaPackageNormal.active boolValue];
-                }
-            }
-            
-            if (_posIndonesia) {
-                _shipmentPosNameLabel.text = _posIndonesia.shipment_name;
-                NSURL *url = [NSURL URLWithString:_posIndonesia.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_shipmentPosLogoImageView setImageWithURLRequest:request
-                                                 placeholderImage:nil
-                                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                              _shipmentPosLogoImageView.image = image;
-                                                          } failure:nil];
-                
-                if (_posPackageKhusus) {
-                    _shipmentPosKilatKhususLabel.text = _posPackageKhusus.name;
-                    _shipmentPosKilatKhususSwitch.on = [_posPackageKhusus.active boolValue];
-                }
-                
-                if (_posPackageBiasa) {
-                    _shipmentPosBiasaLabel.text = _posPackageBiasa.name;
-                    _shipmentPosBiasaSwitch.on = [_posPackageBiasa.active boolValue];
-                }
-                
-                if (_posPackageExpress) {
-                    _shipmentPosExpressLabel.text = _posPackageExpress.name;
-                    _shipmentPosExpressSwitch.on = [_posPackageExpress.active boolValue];
-                }
-                
-                if (_shipment.pos.pos_min_weight == 0) {
-                    _shipmentPosMinWeightSwitch.on = NO;
-                    _showPosMinimumWeight = NO;
-                } else {
-                    _shipmentPosMinWeightSwitch.on = YES;
-                    _shipmentPosMinWeightTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_min_weight];
-                    _showPosMinimumWeight = YES;
-                }
-                
-                if (_shipment.pos.pos_fee == 0) {
-                    _shipmentPosExtraFeeSwitch.on = NO;
-                    _showPosExtraFee = NO;
-                } else {
-                    _shipmentPosExtraFeeSwitch.on = YES;
-                    _shipmentPosExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_fee];
-                    _showPosExtraFee = YES;
-                }
-            }
-            
-            if (_cahaya) {
-                _shipmentCahayaNameLabel.text = _cahaya.shipment_name;
-                NSURL *url = [NSURL URLWithString:_cahaya.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_shipmentCahayaLogoImageView setImageWithURLRequest:request
-                                                    placeholderImage:nil
-                                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                                 _shipmentCahayaLogoImageView.image = image;
-                                                             } failure:nil];
-                
-                if (_cahayaPackageNormal) {
-                    _shipmentCahayaNormalLabel.text = _cahayaPackageNormal.name;
-                    _shipmentCahayaNormalSwitch.on = [_cahayaPackageNormal.active boolValue];
-                }
-            }
-            
-            if (_pandu) {
-                _shipmentPanduNameLabel.text = _pandu.shipment_name;
-                NSURL *url = [NSURL URLWithString:_pandu.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_shipmentPanduLogoImageView setImageWithURLRequest:request
-                                                   placeholderImage:nil
-                                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                                _shipmentPanduLogoImageView.image = image;
-                                                            } failure:nil];
-                
-                if (_panduPackageRegular) {
-                    _shipmentPanduRegulerLabel.text = _panduPackageRegular.name;
-                    _shipmentPanduRegulerSwitch.on = [_panduPackageRegular.active boolValue];
-                }
-            }
-            
-            if (_first) {
-                _firstNameLabel.text = _first.shipment_name;
-                NSURL *url = [NSURL URLWithString:_first.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_firstLogoImageView setImageWithURLRequest:request
-                                           placeholderImage:nil
-                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                        _firstLogoImageView.image = image;
-                                                    } failure:nil];
-                
-                if (_firstPackageRegular) {
-                    _firstRegulerLabel.text = _firstPackageRegular.name;
-                    _firstRegulerSwitch.on = [_firstPackageRegular.active boolValue];
-                }
-            }
-            
-            if (_siCepat) {
-                _siCepatNameLabel.text = _siCepat.shipment_name;
-                NSURL *url = [NSURL URLWithString:_siCepat.shipment_image];
-                NSURLRequest *request = [NSURLRequest requestWithURL:url];
-                [_siCepatLogoImageView setImageWithURLRequest:request
-                                             placeholderImage:nil
-                                                      success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                          _siCepatLogoImageView.image = image;
-                                                      } failure:nil];
-                
-                if (_siCepatPackageRegular) {
-                    _siCepatRegulerLabel.text = _siCepatPackageRegular.name;
-                    _siCepatRegulerSwitch.on = [_siCepatPackageRegular.active boolValue];
-                }
-            }
+    }
+    return strSnippet;
+}
+
+- (void)requestError:(NSError *)error withOperation:(RKObjectRequestOperation *)operation {}
+
+#pragma mark - Method
+
+- (void)createShopDefaultValues {
+    if(_shipment.jne == nil) {
+        _shipment.jne = [JNE new];
+        _shipment.jne.jne_fee = 0;
+        _shipment.jne.jne_diff_district = @"0";
+        _shipment.jne.jne_min_weight = @"";
+        _shipment.jne.jne_tiket = @"0";
+    }
+    if(_shipment.tiki == nil) {
+        _shipment.tiki = [Tiki new];
+        _shipment.tiki.tiki_fee = 0;
+    }
+    if(_shipment.pos == nil) {
+        _shipment.pos = [POSIndonesia new];
+        _shipment.pos.pos_fee = 0;
+        _shipment.pos.pos_min_weight = 0;
+    }
+    if (_shipment.shop_shipping == nil) {
+        _shipment.shop_shipping = [ShopShipping new];
+    }
+}
+
+- (void)setProvincesData {
+    NSMutableArray *provincesName = [NSMutableArray new];
+    for (Province *province in _shipment.provinces_cities_districts) {
+        if (province.province_id == _shipment.shop_shipping.province_id) {
+            _cities = province.cities;
+        }
+        [provincesName addObject:province.province_name];
+    }
+    _provinces = _shipment.provinces_cities_districts;
+    _availableProvinceName = provincesName;
+
+    NSMutableArray *citiesName = [NSMutableArray new];
+    for (City *city in _cities) {
+        if (city.city_id == _shipment.shop_shipping.city_id) {
+            _disticts = city.districts;
+        }
+        [citiesName addObject:city.city_name];
+    }
+    _availableCityName = citiesName;
+
+    NSMutableArray *districtsName = [NSMutableArray new];
+    for (District *district in _disticts) {
+        [districtsName addObject:district.district_name];
+    }
+    _availableDistrictName = districtsName;
+}
+
+- (void)setProvincesLabelValue {
+    if (_shipment.shop_shipping.province_name) {
+        _provinceLabel.text = _shipment.shop_shipping.province_name;
+    } else {
+        _provinceLabel.text = @"Pilih Provinsi";
+    }
+    
+    if (_shipment.shop_shipping.city_name) {
+        _cityLabel.text = _shipment.shop_shipping.city_name;
+    } else {
+        _cityLabel.text = @"Pilih Kotamadya";
+    }
+    
+    if (_shipment.shop_shipping.district_name) {
+        _districtLabel.text = _shipment.shop_shipping.district_name;
+        _hasSelectKotaAsal = YES;
+    } else {
+        _districtLabel.text = @"Pilih Kecamatan";
+    }
+}
+
+- (void)showsMapForGojek {
+    for (ShippingInfoShipments *courier in _shipment.shipment) {
+        if ([courier.shipment_id isEqualToString:@"10"] ||
+            [courier.shipment_name isEqualToString:@"GO-JEK"]) {
+            self.mapIsHidden = NO;
         }
     }
 }
 
-- (void)requestError:(NSError *)error withOperation:(RKObjectRequestOperation *)operation
-{
-    
+- (void)showsPhoneNumber {
+    _phoneNumberLabel.text = _shipment.contact.msisdn_enc;
 }
 
+- (void)setJNE:(ShippingInfoShipments *)shipment {
+    _JNE = shipment;
+    for (ShippingInfoShipmentPackage *package in _JNE.shipment_package) {
+        if ([package.sp_id isEqualToString:@"6"]) {
+            // YES
+            _JNEPackageYes = package;
+        } else if ([package.sp_id isEqualToString:@"1"]) {
+            // Reguler
+            _JNEPackageReguler = package;
+        } else  if ([package.sp_id isEqualToString:@"2"]) {
+            // OKE
+            _JNEPackageOke = package;
+        }
+    }
+}
 
-#pragma mark - Method
+- (void)setJNEValues {
+    _shipmentJNENameLabel.text = _JNE.shipment_name;
+    NSURL *url = [NSURL URLWithString:_JNE.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_shipmentJNELogoImageView setImageWithURLRequest:request
+                                     placeholderImage:nil
+                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                  _shipmentJNELogoImageView.image = image;
+                                              } failure:nil];
+    
+    if (_JNEPackageReguler) {
+        _shipmentJNERegulerLabel.text = _JNEPackageReguler.name;
+        _shipmentJNERegulerSwitch.on = [_JNEPackageReguler.active boolValue];
+    }
+    
+    if (_JNEPackageYes) {
+        _shipmentJNEYesLabel.text = _JNEPackageYes.name;
+        _shipmentJNEYesSwitch.on = [_JNEPackageYes.active boolValue];
+    }
+    
+    if (_JNEPackageOke) {
+        _shipmentJNEOkeLabel.text = _JNEPackageOke.name;
+        _shipmentJNEOkeSwitch.on = [_JNEPackageOke.active boolValue];
+    }
+    
+    _shipmentJNEAWBSwitch.on = [_shipment.jne.jne_tiket boolValue];
+    
+    if ([_JNEPackageOke.active boolValue] ||
+        [_JNEPackageReguler.active boolValue] ||
+        [_JNEPackageYes.active boolValue]) {
+        _showJNEAWBSwitch = YES;
+    } else {
+        _showJNEAWBSwitch = NO;
+    }
+    
+    if ([_shipment.jne.jne_min_weight isEqualToString:@""] ||
+        [_shipment.jne.jne_min_weight isEqualToString:@"0"]) {
+        _shipmentJNEMinimumWeightSwitch.on = NO;
+        _showJNEMinimumWeightTextField = NO;
+    } else {
+        _shipmentJNEMinimumWeightSwitch.on = YES;
+        _shipmentJNEMinimumWeightTextField.text = _shipment.jne.jne_min_weight;
+        _showJNEMinimumWeightTextField = YES;
+    }
+    
+    _shipmentJNEDifferentDistrictSwitch.on = [_shipment.jne.jne_diff_district boolValue];
+    
+    if (_shipment.jne.jne_fee == 0) {
+        _shipmentJNEExtraFeeSwitch.on = NO;
+        _showJNEExtraFeeTextField = NO;
+    } else {
+        _shipmentJNEExtraFeeSwitch.on = YES;
+        _shipmentJNEExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.jne.jne_fee];
+        _showJNEExtraFeeTextField = YES;
+    }
+}
+
+- (void)setTiki:(ShippingInfoShipments *)shipment {
+    _tiki = shipment;
+    for (ShippingInfoShipmentPackage *package in _tiki.shipment_package) {
+        if ([package.sp_id isEqualToString:@"3"]) {
+            // Reguler
+            _tikiPackageReguler = package;
+        } else if ([package.sp_id isEqualToString:@"16"]) {
+            // One Night Service
+            _tikiPackageONS = package;
+        }
+    }
+}
+
+- (void)setTikiValues {
+    _shipmentTikiNameLabel.text = _tiki.shipment_name;
+    NSURL *url = [NSURL URLWithString:_tiki.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_shipmentTikiLogoImageView setImageWithURLRequest:request
+                                      placeholderImage:nil
+                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                   _shipmentTikiLogoImageView.image = image;
+                                               } failure:nil];
+    
+    if (_tikiPackageReguler) {
+        _shipmentTikiRegulerLabel.text = _tikiPackageReguler.name;
+        _shipmentTikiRegulerSwitch.on = [_tikiPackageReguler.active boolValue];
+    }
+    
+    if (_tikiPackageONS) {
+        _shipmentTikiONSLabel.text = _tikiPackageONS.name;
+        _shipmentTikiONSSwitch.on = [_tikiPackageONS.active boolValue];
+    }
+    
+    if (_shipment.tiki.tiki_fee == 0) {
+        _shipmentTikiExtraFeeSwitch.on = NO;
+        _showTikiExtraFee = NO;
+    } else {
+        _shipmentTikiExtraFeeSwitch.on = YES;
+        _shipmentTikiExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.tiki.tiki_fee];
+        _showTikiExtraFee = YES;
+    }
+}
+
+- (void)setRPX:(ShippingInfoShipments *)shipment {
+    _RPX = shipment;
+    for (ShippingInfoShipmentPackage *package in _RPX.shipment_package) {
+        if ([package.sp_id isEqualToString:@"4"]) {
+            // Next Day Package
+            _RPXPackageNextDay = package;
+        } else if ([package.sp_id isEqualToString:@"5"]) {
+            // Reguler Package (Live) || Economy Package (Staging)
+            _RPXPackageEconomy = package;
+        }
+    }
+}
+
+- (void)setRPXValues {
+    _shipmentRPXNameLabel.text = _RPX.shipment_name;
+    NSURL *url = [NSURL URLWithString:_RPX.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_shipmentRPXLogoImageView setImageWithURLRequest:request
+                                     placeholderImage:nil
+                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                  _shipmentRPXLogoImageView.image = image;
+                                              } failure:nil];
+    /*
+     TODO
+     add Indomaret logo image
+     */
+    
+    NSURL *urlIndomaret = [NSURL URLWithString:_shipment.rpx.indomaret_logo];
+    NSURLRequest *requestLogoIndomaret = [NSURLRequest requestWithURL:urlIndomaret];
+    
+    if (_shipment.rpx.whitelisted_idrop) {
+        [_shipmentRPXLogoIndomaretView setImageWithURLRequest:requestLogoIndomaret
+                                             placeholderImage:nil
+                                                      success:^(NSURLRequest *request, NSURLResponse *response, UIImage *image) {
+                                                          _shipmentRPXLogoIndomaretView.image = image;
+                                                      } failure:nil];
+    }
+    
+    NSNumber *number = [NSNumber numberWithInteger:[_RPX.shipment_id integerValue]];
+    _shipmentRPXIDropSwitch.on = [_shipment.auto_resi containsObject:number];
+    
+    if (_RPXPackageEconomy) {
+        _shipmentRPXEconomySwitch.on = [_RPXPackageEconomy.active boolValue];
+    }
+    
+    if (_RPXPackageNextDay) {
+        _shipmentRPXNextDaySwitch.on = [_RPXPackageNextDay.active boolValue];
+    }
+}
+
+- (void)setWahana:(ShippingInfoShipments *)shipment {
+    _wahana = shipment;
+    for (ShippingInfoShipmentPackage *package in _wahana.shipment_package) {
+        if ([package.sp_id isEqualToString:@"8"]) { // Service Normal
+            _wahanaPackageNormal = package;
+        }
+    }
+}
+
+- (void)setWahanaValues {
+    _shipmentWahanaNameLabel.text = _wahana.shipment_name;
+    NSURL *url = [NSURL URLWithString:_wahana.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_shipmentWahanaLogoImageView setImageWithURLRequest:request
+                                        placeholderImage:nil
+                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                     _shipmentWahanaLogoImageView.image = image;
+                                                 } failure:nil];
+    
+    if (_wahanaPackageNormal) {
+        _shipmentWahanaNextDayLabel.text = _wahanaPackageNormal.name;
+        _shipmentWahanaNextDaySwitch.on = [_wahanaPackageNormal.active boolValue];
+    }
+}
+
+- (void)setPos:(ShippingInfoShipments *)shipment {
+    _posIndonesia = shipment;
+    for (ShippingInfoShipmentPackage *package in _posIndonesia.shipment_package) {
+        if ([package.sp_id isEqualToString:@"10"]) { // Pos Kilat Khusus
+            _posPackageKhusus = package;
+        } else if ([package.sp_id isEqualToString:@"9"]) { // Paket Biasa
+            _posPackageBiasa = package;
+        } else if ([package.sp_id isEqualToString:@"11"]) { // Pos Express
+            _posPackageExpress = package;
+        }
+    }
+}
+
+- (void)setPosValues {
+    _shipmentPosNameLabel.text = _posIndonesia.shipment_name;
+    NSURL *url = [NSURL URLWithString:_posIndonesia.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_shipmentPosLogoImageView setImageWithURLRequest:request
+                                     placeholderImage:nil
+                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                  _shipmentPosLogoImageView.image = image;
+                                              } failure:nil];
+    
+    if (_posPackageKhusus) {
+        _shipmentPosKilatKhususLabel.text = _posPackageKhusus.name;
+        _shipmentPosKilatKhususSwitch.on = [_posPackageKhusus.active boolValue];
+    }
+    
+    if (_posPackageBiasa) {
+        _shipmentPosBiasaLabel.text = _posPackageBiasa.name;
+        _shipmentPosBiasaSwitch.on = [_posPackageBiasa.active boolValue];
+    }
+    
+    if (_posPackageExpress) {
+        _shipmentPosExpressLabel.text = _posPackageExpress.name;
+        _shipmentPosExpressSwitch.on = [_posPackageExpress.active boolValue];
+    }
+    
+    if (_shipment.pos.pos_min_weight == 0) {
+        _shipmentPosMinWeightSwitch.on = NO;
+        _showPosMinimumWeight = NO;
+    } else {
+        _shipmentPosMinWeightSwitch.on = YES;
+        _shipmentPosMinWeightTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_min_weight];
+        _showPosMinimumWeight = YES;
+    }
+    
+    if (_shipment.pos.pos_fee == 0) {
+        _shipmentPosExtraFeeSwitch.on = NO;
+        _showPosExtraFee = NO;
+    } else {
+        _shipmentPosExtraFeeSwitch.on = YES;
+        _shipmentPosExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", (long)_shipment.pos.pos_fee];
+        _showPosExtraFee = YES;
+    }
+}
+
+- (void)setCahaya:(ShippingInfoShipments *)shipment {
+    _cahaya = shipment;
+    for (ShippingInfoShipmentPackage *package in _cahaya.shipment_package) {
+        if ([package.sp_id isEqualToString:@"12"]) {
+            // Service Normal
+            _cahayaPackageNormal = package;
+        }
+    }
+}
+
+- (void)setCahayaValues {
+    _shipmentCahayaNameLabel.text = _cahaya.shipment_name;
+    NSURL *url = [NSURL URLWithString:_cahaya.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_shipmentCahayaLogoImageView setImageWithURLRequest:request
+                                        placeholderImage:nil
+                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                     _shipmentCahayaLogoImageView.image = image;
+                                                 } failure:nil];
+    
+    if (_cahayaPackageNormal) {
+        _shipmentCahayaNormalLabel.text = _cahayaPackageNormal.name;
+        _shipmentCahayaNormalSwitch.on = [_cahayaPackageNormal.active boolValue];
+    }
+}
+
+- (void)setPandu:(ShippingInfoShipments *)shipment {
+    _pandu = shipment;
+    for (ShippingInfoShipmentPackage *package in _pandu.shipment_package) {
+        if ([package.sp_id isEqualToString:@"14"]) {
+            // Reguler
+            _panduPackageRegular = package;
+        }
+    }
+}
+
+- (void)setPanduValues {
+    _shipmentPanduNameLabel.text = _pandu.shipment_name;
+    NSURL *url = [NSURL URLWithString:_pandu.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_shipmentPanduLogoImageView setImageWithURLRequest:request
+                                       placeholderImage:nil
+                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                    _shipmentPanduLogoImageView.image = image;
+                                                } failure:nil];
+    
+    if (_panduPackageRegular) {
+        _shipmentPanduRegulerLabel.text = _panduPackageRegular.name;
+        _shipmentPanduRegulerSwitch.on = [_panduPackageRegular.active boolValue];
+    }
+}
+
+- (void)setFirst:(ShippingInfoShipments *)shipment {
+    _first = shipment;
+    for (ShippingInfoShipmentPackage *package in _first.shipment_package) {
+        if ([package.sp_id isEqualToString:@"15"]) { // Reguler Service
+            _firstPackageRegular = package;
+        }
+    }
+}
+
+- (void)setFirstValues {
+    _firstNameLabel.text = _first.shipment_name;
+    NSURL *url = [NSURL URLWithString:_first.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_firstLogoImageView setImageWithURLRequest:request
+                               placeholderImage:nil
+                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                            _firstLogoImageView.image = image;
+                                        } failure:nil];
+    
+    if (_firstPackageRegular) {
+        _firstRegulerLabel.text = _firstPackageRegular.name;
+        _firstRegulerSwitch.on = [_firstPackageRegular.active boolValue];
+    }
+}
+
+- (void)setGojek:(ShippingInfoShipments *)shipment {
+    _gojek = shipment;
+    for (ShippingInfoShipmentPackage *package in _gojek.shipment_package) {
+        if ([package.sp_id isEqualToString:@"20"]) { // Go Kilat
+            _gojekPackageGoKilat = package;
+        }
+    }
+}
+
+- (void)setGojekValues {
+    _gojekNameLabel.text = _gojek.shipment_name;
+    NSURL *url = [NSURL URLWithString:_gojek.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_gojekLogoImageView setImageWithURLRequest:request
+                               placeholderImage:nil
+                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                            _gojekLogoImageView.image = image;
+                                        } failure:nil];
+    if (_gojekPackageGoKilat) {
+        _gojekGoKilatLabel.text = _gojekPackageGoKilat.name;
+        _gojekGoKilatSwitch.on = [_gojekPackageGoKilat.active boolValue];
+    }
+}
+
+- (void)setSiCepat:(ShippingInfoShipments *)shipment {
+    _siCepat = shipment;
+    for (ShippingInfoShipmentPackage *package in _siCepat.shipment_package) {
+        if ([package.sp_id isEqualToString:@"18"]) {
+            // Regular Package
+            _siCepatPackageRegular = package;
+        }
+    }
+}
+
+- (void)setSiCepatValues {
+    _siCepatNameLabel.text = _siCepat.shipment_name;
+    NSURL *url = [NSURL URLWithString:_siCepat.shipment_image];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_siCepatLogoImageView setImageWithURLRequest:request
+                                 placeholderImage:nil
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                              _siCepatLogoImageView.image = image;
+                                          } failure:nil];
+    
+    if (_siCepatPackageRegular) {
+        _siCepatRegulerLabel.text = _siCepatPackageRegular.name;
+        _siCepatRegulerSwitch.on = [_siCepatPackageRegular.active boolValue];
+    }
+}
+
 - (void)loadData {
     [self.loadingView startAnimating];
     self.loadingView.hidden = NO;
@@ -2004,6 +2541,12 @@ GeneralTableViewControllerDelegate
         }
     }
 
+    if ([[self getAvailShipment] containsObject:[self getGoJek].shipment_id]) {
+        if ([[self getGojekPackageGoKilat].active boolValue]) {
+            return YES;
+        }
+    }
+
     //si cepat
     if ([[self getAvailShipment] containsObject:[self getSiCepat].shipment_id]) {
         if ([[self getSiCepatPackageRegular].active boolValue]) {
@@ -2014,162 +2557,162 @@ GeneralTableViewControllerDelegate
     return NO;
 }
 
+#pragma mark - JNE
+
+- (ShippingInfoShipments *)getJne {
+    return _JNE;
+}
+
+- (ShippingInfoShipmentPackage *)getJnePackageReguler {
+    return _JNEPackageReguler;
+}
+
+- (ShippingInfoShipmentPackage *)getJnePackageYes {
+    return _JNEPackageYes;
+}
+
+- (ShippingInfoShipmentPackage *)getJnePackageOke {
+    return _JNEPackageOke;
+}
+
+- (BOOL)getJneExtraFeeTextField {
+    return _showJNEExtraFeeTextField;
+}
+
+- (BOOL)getJneMinWeightTextField {
+    return _showJNEMinimumWeightTextField;
+}
+
+#pragma mark - TIKI
+
+- (ShippingInfoShipments *)getTiki {
+    return _tiki;
+}
+
+- (ShippingInfoShipmentPackage *)getTikiPackageOn {
+    return _tikiPackageONS;
+}
+
+- (ShippingInfoShipmentPackage *)getTikiPackageRegular {
+    return _tikiPackageReguler;
+}
+
+- (BOOL)getTikiExtraFee {
+    return _showTikiExtraFee;
+}
+
+#pragma mark - RPX
+
+- (ShippingInfoShipments *)getRpx {
+    return _RPX;
+}
+
+- (ShippingInfoShipmentPackage *)getRpxPackageEco {
+    return _RPXPackageEconomy;
+}
+
+- (ShippingInfoShipmentPackage *)getRpxPackageNextDay {
+    return _RPXPackageNextDay;
+}
+
+#pragma mark - Wahana
+
+- (ShippingInfoShipments *)getWahana {
+    return _wahana;
+}
+
+- (ShippingInfoShipmentPackage *)getWahanaPackNormal {
+    return _wahanaPackageNormal;
+}
+
+#pragma mark - Pos Indonesia
+
+- (ShippingInfoShipments *)getPosIndo {
+    return _posIndonesia;
+}
+
+- (ShippingInfoShipmentPackage *)getPosPackageKhusus {
+    return _posPackageKhusus;
+}
+
+- (ShippingInfoShipmentPackage *)getPosPackageBiasa {
+    return _posPackageBiasa;
+}
+
+- (ShippingInfoShipmentPackage *)getPosPackageExpress {
+    return _posPackageExpress;
+}
+
+- (BOOL)getPosMinWeight {
+    return _showPosMinimumWeight;
+}
+
+- (BOOL)getPosExtraFee {
+    return _showPosExtraFee;
+}
+
+#pragma mark - Cahaya
+
+- (ShippingInfoShipments *)getCahaya {
+    return _cahaya;
+}
+
+- (ShippingInfoShipmentPackage *)getCahayaPackageNormal {
+    return _cahayaPackageNormal;
+}
+
+#pragma mark - Pandu
+
+- (ShippingInfoShipments *)getPandu {
+    return _pandu;
+}
+
+- (ShippingInfoShipmentPackage *)getPanduPackageRegular {
+    return _panduPackageRegular;
+}
+
+#pragma mark - First
+
 - (ShippingInfoShipments *)getFirst {
     return _first;
 }
+
+- (ShippingInfoShipmentPackage *)getFirstPackageRegular {
+    return _firstPackageRegular;
+}
+
+#pragma mark - Gojek
+
+- (ShippingInfoShipments *)getGoJek {
+    return _gojek;
+}
+
+- (ShippingInfoShipmentPackage *)getGojekPackageGoKilat {
+    return _gojekPackageGoKilat;
+}
+
+#pragma mark - Si Cepat
 
 - (ShippingInfoShipments *)getSiCepat {
     return _siCepat;
 }
 
-- (ShippingInfoShipments *)getPandu
-{
-    return _pandu;
-}
-
-- (NSArray *)getAvailShipment
-{
-    return _availableShipments;
-}
-
-- (ShippingInfoShipments *)getRpx
-{
-    return _RPX;
-}
-
-- (ShippingInfoShipments *)getCahaya
-{
-    return _cahaya;
-}
-
-- (ShippingInfoShipments *)getWahana
-{
-    return _wahana;
-}
-
-- (ShippingInfoShipmentPackage *)getTikiPackageOn
-{
-    return _tikiPackageONS;
-}
-
-- (ShippingInfoShipmentPackage *)getTikiPackageRegular
-{
-    return _tikiPackageReguler;
-}
-
-- (ShippingInfoShipmentPackage *)getRpxPackageEco
-{
-    return _RPXPackageEconomy;
-}
-
-- (ShippingInfoShipmentPackage *)getPosPackageBiasa
-{
-    return _posPackageBiasa;
-}
-
-- (ShippingInfoShipmentPackage *)getCahayaPackageNormal
-{
-    return _cahayaPackageNormal;
-}
-
-- (ShippingInfoShipmentPackage *)getPanduPackageRegular
-{
-    return _panduPackageRegular;
-}
-
-- (ShippingInfoShipmentPackage *)getFirstPackageRegular
-{
-    return _firstPackageRegular;
-}
-
-- (ShippingInfoShipmentPackage *)getSiCepatPackageRegular
-{
+- (ShippingInfoShipmentPackage *)getSiCepatPackageRegular {
     return _siCepatPackageRegular;
 }
 
-- (ShippingInfoShipmentPackage *)getPosPackageExpress
-{
-    return _posPackageExpress;
-}
+#pragma mark - Shipment
 
-- (ShippingInfoShipmentPackage *)getPosPackageKhusus
-{
-    return _posPackageKhusus;
-}
-
-- (ShippingInfoShipmentPackage *)getWahanaPackNormal
-{
-    return _wahanaPackageNormal;
-}
-
-- (ShippingInfoShipmentPackage *)getRpxPackageNextDay
-{
-    return _RPXPackageNextDay;
-}
-
-- (ShippingInfoShipmentPackage *)getJnePackageOke
-{
-    return _JNEPackageOke;
-}
-
-- (ShippingInfoShipmentPackage *)getJnePackageReguler
-{
-    return _JNEPackageReguler;
-}
-
-- (ShippingInfoShipmentPackage *)getJnePackageYes
-{
-    return _JNEPackageYes;
-}
-
-- (ShippingInfoResult *)getShipment
-{
+- (ShippingInfoResult *)getShipment {
     return _shipment;
 }
 
-- (ShippingInfoShipments *)getJne
-{
-    return _JNE;
+- (NSArray *)getAvailShipment {
+    return _availableShipments;
 }
 
-- (ShippingInfoShipments *)getTiki
-{
-    return _tiki;
-}
-
-- (ShippingInfoShipments *)getPosIndo
-{
-    return _posIndonesia;
-}
-
-- (int)getCourirOrigin
-{
+- (int)getCourirOrigin {
     return (int)_shipment.shop_shipping.district_id;
-}
-
-- (BOOL)getJneExtraFeeTextField
-{
-    return _showJNEExtraFeeTextField;
-}
-
-- (BOOL)getJneMinWeightTextField
-{
-    return _showJNEMinimumWeightTextField;
-}
-
-- (BOOL)getTikiExtraFee
-{
-    return _showTikiExtraFee;
-}
-
-- (BOOL)getPosMinWeight
-{
-    return _showPosMinimumWeight;
-}
-
-- (BOOL)getPosExtraFee
-{
-    return _showPosExtraFee;
 }
 
 - (NSString *)getPostalCode
@@ -2193,6 +2736,19 @@ GeneralTableViewControllerDelegate
     }
 }
 
+#pragma mark - Location & Address
+
+- (NSString *)getAddress {
+    return  self.addressTextView.text;
+}
+
+- (NSString *)getLatitude {
+    return [NSString stringWithFormat:@"%f", _shipment.shop_shipping.latitude];
+}
+
+- (NSString *)getLongitude {
+    return [NSString stringWithFormat:@"%f", _shipment.shop_shipping.longitude];
+}
 
 #pragma mark - Restkit Action
 
@@ -2436,6 +2992,16 @@ GeneralTableViewControllerDelegate
             [shipments setObject:first forKey:_first.shipment_id];
         }
     }
+    
+    NSMutableDictionary *gojek = [NSMutableDictionary new];
+    if ([_availableShipments containsObject:_gojek.shipment_id]) {
+        if ([_gojekPackageGoKilat.active boolValue]) {
+            [gojek setObject:@"1" forKey:_gojekPackageGoKilat.sp_id];
+        }
+        if ([[gojek allValues] count] > 0) {
+            [shipments setObject:gojek forKey:_gojek.shipment_id];
+        }
+    }
 
     NSMutableDictionary *siCepat = [NSMutableDictionary new];
     if ([_availableShipments containsObject:_siCepat.shipment_id]) {
@@ -2457,6 +3023,10 @@ GeneralTableViewControllerDelegate
     
     NSString *iDrop = _shipmentRPXIDropSwitch.isOn ? @"1" : @"0";
 
+    NSString *latitude = [NSString stringWithFormat:@"%f", _shipment.shop_shipping.latitude];
+    NSString *longitude = [NSString stringWithFormat:@"%f", _shipment.shop_shipping.longitude];
+    NSString *address_street = self.addressTextView.text;
+    
     NSDictionary *parameters = @{
                                  kTKPDDETAIL_APIACTIONKEY                : kTKPDDETAIL_APIEDITSHIPPINGINFOKEY,
                                  kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY    : courier_origin,
@@ -2474,11 +3044,16 @@ GeneralTableViewControllerDelegate
                                  kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY    : pos_min_weight,
                                  kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY : pos_min_weight_value,
                                  kTKPDSHOPSHIPMENT_APISHIPMENTIDS        : shipments_ids,
-                                 kTKPDSHOPSHIPMENT_APIRPXIDROPKEY        : iDrop
+                                 kTKPDSHOPSHIPMENT_APIRPXIDROPKEY        : iDrop,
+                                 @"latitude" : latitude,
+                                 @"longitude" : longitude,
+                                 @"addr_street" : address_street,
                                  };
     
     return parameters;
 }
+
+#pragma mark - Action
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -2510,6 +3085,9 @@ GeneralTableViewControllerDelegate
     } else if ([cell isEqual:_firstMoreInfoCell]) {
         title = _first.shipment_name;
         shipmentPackages = @[_firstPackageRegular];
+    } else if ([cell isEqual:_gojekMoreInfoCell]) {
+        title = _gojek.shipment_name;
+        shipmentPackages = @[_gojekPackageGoKilat];
     } else if ([cell isEqual:_siCepatMoreInfoCell]) {
         title = _siCepat.shipment_name;
         shipmentPackages = @[_siCepatPackageRegular];
@@ -2518,6 +3096,19 @@ GeneralTableViewControllerDelegate
     MyShopShipmentInfoViewController *controller = (MyShopShipmentInfoViewController *)segue.destinationViewController;
     controller.title = title;
     controller.shipment_packages = shipmentPackages;
+}
+
+#pragma mark - Map delegate
+
+- (void)pickAddress:(GMSAddress *)address
+         suggestion:(NSString *)suggestion
+          longitude:(double)longitude
+           latitude:(double)latitude
+           mapImage:(UIImage *)mapImage {
+    NSString *locationAddress = [self streetNameFromAddress:address];
+    self.pickupLocationLabel.text = locationAddress;
+    _shipment.shop_shipping.latitude = latitude;
+    _shipment.shop_shipping.longitude = longitude;
 }
 
 @end

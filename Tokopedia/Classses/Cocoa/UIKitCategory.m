@@ -42,6 +42,75 @@
     border.frame = CGRectMake(self.frame.size.width - borderWidth, 0, borderWidth, self.frame.size.height);
     [self.layer addSublayer:border];
 }
+
+-(UIView*)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius
+{
+    CGRect bounds = self.bounds;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:corners
+                                                         cornerRadii:CGSizeMake(radius, radius)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    self.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = self.backgroundColor.CGColor;
+    frameLayer.fillColor = nil;
+    
+    [self.layer addSublayer:frameLayer];
+    
+    return self;
+}
+
+@end
+
+@implementation UIButton (TkpdCategory)
+
+-(UIButton*)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius
+{
+    CGRect bounds = self.bounds;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:corners
+                                                         cornerRadii:CGSizeMake(radius, radius)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    self.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = self.backgroundColor.CGColor;
+    frameLayer.fillColor = nil;
+    
+    [self.layer addSublayer:frameLayer];
+    
+    return self;
+}
+
+-(void)setCustomAttributedText:(NSString *)text
+{
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [style setLineBreakMode:NSLineBreakByWordWrapping];
+    [style setLineSpacing:6.0];
+    
+    NSDictionary *dict1 = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
+                            NSFontAttributeName:self.font,
+                            NSParagraphStyleAttributeName:style};
+    
+    
+    NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] init];
+    [attString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", text] attributes:dict1]];
+    [self setAttributedTitle:attString forState:UIControlStateNormal];
+}
+
 @end
 
 #pragma mark - UIImageView

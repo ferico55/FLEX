@@ -22,6 +22,8 @@ static RKObjectManager *_sharedClientHttps = nil;
     
     dispatch_once(&oncePredicate, ^{
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:TKPDBaseUrl]];
+        _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[self TKPDStringHttps:TKPDBaseUrl]]];
+        
     });
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBaseUrl) name:@"didChangeBaseUrl" object:nil];
@@ -44,6 +46,8 @@ static RKObjectManager *_sharedClientHttps = nil;
     static RKObjectManager *_sharedClient = nil;
     
     _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:baseUrl?:TKPDBaseUrl]];
+    _sharedClientHttps = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[self TKPDStringHttps:TKPDBaseUrl]]];
+    
     return _sharedClient;
 }
 
@@ -68,10 +72,9 @@ static RKObjectManager *_sharedClientHttps = nil;
         httpsUrl = [url stringByReplacingOccurrencesOfString:@"http://" withString:@"https://ws-"];
         httpsUrl = [httpsUrl stringByReplacingOccurrencesOfString:@"com/ws" withString:@"com"];
     }
-
+    
     
     return httpsUrl;
 }
-
 
 @end

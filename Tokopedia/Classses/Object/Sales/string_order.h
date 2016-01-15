@@ -55,6 +55,7 @@
 #define API_LIST_ORDER_CUSTOMER         @"order_customer"
 #define API_LIST_ORDER_PAYMENT          @"order_payment"
 #define API_LIST_ORDER_DETAIL           @"order_detail"
+#define API_LIST_ORDER_SHOP             @"order_shop"
 #define API_LIST_ORDER_AUTO_RESI        @"order_auto_resi"
 #define API_LIST_ORDER_DEADLINE         @"order_deadline"
 #define API_LIST_ORDER_AUTO_AWB         @"order_auto_awb"
@@ -173,5 +174,13 @@
 #define API_ADDRESS_STREET              @"address_street"
 #define API_ADDRESS_CITY                @"address_city"
 #define API_ADDRESS_PROVINCE            @"address_province"
+
+#define API_SHOP_ADDRESS_POSTAL         @"address_postal"
+#define API_SHOP_ADDRESS_DISTRICT       @"address_district"
+#define API_SHOP_ADDRESS_CITY           @"address_city"
+#define API_SHOP_ADDRESS_STREET         @"address_street"
+#define API_SHOP_SHIPPER_PHONE          @"shipper_phone"
+#define API_SHOP_ADDRESS_COUNTRY        @"address_country"
+#define API_SHOP_ADDRESS_PROVINCE       @"address_province"
 
 #endif
