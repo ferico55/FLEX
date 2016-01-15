@@ -141,7 +141,7 @@ enum TypePlacePicker : Int{
     
     //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
-        if(type == TypePlacePicker.TypeEditPlace.rawValue){ mapView.selectedMarker.position = position.target}
+        if(type == TypePlacePicker.TypeEditPlace.rawValue){ if(position != nil){mapView.selectedMarker.position = position.target}}
     }
     
     func mapView(mapView: GMSMapView!, idleAtCameraPosition position: GMSCameraPosition!) {
@@ -306,6 +306,10 @@ enum TypePlacePicker : Int{
                 if (shouldSaveHistory) {
                     self.saveHistory(placemark, addressSuggestions: addressSugestion!)
                 }
+            }else {
+                self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
+                self.mapView.updateAddress("Lokasi yang Dituju")
+                self.mapView.selectedMarker = self.mapView.selectedMarker
             }
         }
     }

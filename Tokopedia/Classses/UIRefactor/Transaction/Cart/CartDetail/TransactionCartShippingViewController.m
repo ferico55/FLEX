@@ -129,11 +129,19 @@
     if ([cart.cart_destination.latitude integerValue]!=0 && [cart.cart_destination.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
         [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([cart.cart_destination.latitude doubleValue], [cart.cart_destination.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-            GMSAddress *placemark = [response results][0];
-            _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-            [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
-            _pinLocationSummaryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-            [_pinLocationSummaryButton setCustomAttributedText:[self addressString:placemark]];
+            if (response == nil) {
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                _pinLocationSummaryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationSummaryButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                
+            } else{
+                GMSAddress *placemark = [response results][0];
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                _pinLocationSummaryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationSummaryButton setCustomAttributedText:[self addressString:placemark]];
+            }
         }];
     }
         
@@ -1439,11 +1447,19 @@
     if ([address.latitude integerValue]!=0 && [address.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
         [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-            GMSAddress *placemark = [response results][0];
-            _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-            [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
-            _isFinishCalculate = YES;
-            [_tableView reloadData];
+            if (response == nil) {
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                _isFinishCalculate = YES;
+                [_tableView reloadData];
+                
+            } else{
+                GMSAddress *placemark = [response results][0];
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                _isFinishCalculate = YES;
+                [_tableView reloadData];
+            }
         }];
     }
     else
