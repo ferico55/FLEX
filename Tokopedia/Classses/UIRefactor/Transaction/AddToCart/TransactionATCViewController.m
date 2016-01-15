@@ -1507,6 +1507,14 @@
     return YES;
 }
 
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    // select all text in product quantity, needs dispatch for it to work reliably
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [textField selectAll:nil];
+    });
+}
+
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     _isFinishRequesting = NO;
@@ -1532,10 +1540,10 @@
 replacementString:(NSString*)string
 {
     NSString* newText;
-    
+
     newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
-    return [newText intValue] < 1000;
+    return [newText isNumber] && [newText integerValue] < 1000;
 }
 
 #pragma mark - Text View Delegate

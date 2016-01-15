@@ -142,7 +142,7 @@
                 NSArray *errors;
                 if(error.code == -1011) {
                     errors = @[@"Mohon maaf, terjadi kendala pada server"];
-                } else if (error.code==-1009 || error.code==-999) {
+                } else if (error.code==-1009) {
                     errors = @[@"Tidak ada koneksi internet"];
                 } else {
                     errors = @[error.localizedDescription];
@@ -153,7 +153,11 @@
                 else
                     alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:                    [((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
                 
-                [alert show];
+                //validate cancelled request
+                if(error.code != -999) {
+                    [alert show];
+                }
+
                 
             }
         }

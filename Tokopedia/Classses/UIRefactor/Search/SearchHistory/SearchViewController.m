@@ -190,6 +190,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
 
     [_historyResult addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
+    [_typedHistoryResult addObjectsFromArray:_historyResult];
 }
 
 -(void)clearHistory {
@@ -319,7 +320,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
              NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
              NSString *domainName = [domain objectForKey:@"title"];
              if([domainName isEqualToString:SearchDomainHistory]) {
-                 [self goToResultPage:[_historyResult objectAtIndex:indexPath.row] withAutoComplete:YES];
+                 [self goToResultPage:[_typedHistoryResult objectAtIndex:indexPath.row] withAutoComplete:YES];
              }
              
              else if ([domainName isEqualToString:SearchDomainGeneral]) {

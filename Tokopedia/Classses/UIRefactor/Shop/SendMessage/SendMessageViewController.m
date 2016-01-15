@@ -171,7 +171,6 @@
     _messagefield.del = self;
     _messagefield.placeholder = kTKPDMESSAGE_PLACEHOLDER;
     _messagefield.placeholderColor = [UIColor lightGrayColor];
-    _messagefield.textColor = [UIColor lightGrayColor]; //optional
     
     _operationQueue = [NSOperationQueue new];
     

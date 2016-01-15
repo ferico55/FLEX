@@ -175,6 +175,16 @@
     
     [pastikanLabel setAttributedText:attrString];
     
+    }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.scrollview addSubview:_contentView];
+    self.scrollview.contentSize = CGSizeMake(self.view.frame.size.width,
+                                             _contentView.frame.size.height);
+    self.scrollview.contentOffset = CGPointZero;
+    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
     if([[_auth objectForKey:@"msisdn_is_verified"] integerValue] == 1){
@@ -194,19 +204,10 @@
         [verifyView setHidden:NO];
         [verifyViewHeight setConstant:101];
     }
-
+    
     
     [self requestProfileForm];
-}
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.scrollview addSubview:_contentView];
-    self.scrollview.contentSize = CGSizeMake(self.view.frame.size.width,
-                                             _contentView.frame.size.height);
-    self.scrollview.contentOffset = CGPointZero;
-    
 }
 
 #pragma mark - Memory Management

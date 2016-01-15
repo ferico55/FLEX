@@ -1093,6 +1093,7 @@
     ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
     vc.indexPath = indexPath;
     vc.delegate = self;
+    vc.isNeedRequestListDetail = YES;
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     vc.resolutionID = resolutionID;

@@ -122,7 +122,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.title = [self.navigationTitle capitalizedString];
+    if (self.navigationTitle) {
+        self.navigationItem.title = [self.navigationTitle capitalizedString];
+    }
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -170,10 +172,11 @@
 -(void)setData:(NSDictionary *)data
 {
     _data = [data mutableCopy];
-    
     if (data) {
-        if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)])
+        NSInteger type = [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY] integerValue];
+        if (type == kTKPDCATEGORY_DATATYPECATEGORYKEY) {
             self.navigationItem.title = kTKPDCONTROLLER_TITLECATEGORYKEY;
+        }
     }
 }
 
@@ -293,7 +296,12 @@
             self.navigationItem.rightBarButtonItem = nil;
         } else if ([_selectedViewController isKindOfClass:[SearchResultViewController class]]) {
             ((SearchResultViewController *)_selectedViewController).delegate = self;
-            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+            
+            if(_hascatalog && selectedIndex == 1){
+                self.navigationItem.rightBarButtonItem = nil;
+            }else{
+                self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+            }
         }
         
         if (animated && (deselect != nil) && (navigate != 0)) {
@@ -641,7 +649,9 @@
 }
 - (void)changeNavigationTitle:(NSNotification*)notification {
     NSString *title = [notification object];
-    self.navigationItem.title = [title capitalizedString];
+    if (title) {
+        self.navigationItem.title = [title capitalizedString];
+    }
 }
 
 @end

@@ -2251,7 +2251,7 @@
     [(TransactionCartCell*)cell setCartViewModel:list.viewModel];
     [(TransactionCartCell*)cell setViewModel:product.viewModel];
     ((TransactionCartCell*)cell).userInteractionEnabled = (_indexPage ==0);
-    ((TransactionCartCell*)cell).actionSheetDelegate = self;
+    cell.actionSheetDelegate = self;
     return cell;
 }
 

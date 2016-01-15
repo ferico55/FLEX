@@ -35,7 +35,7 @@ static CGFloat messageTextSize = 17.0;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         return 220.0f;
     } else {
-        return 400.0f;
+        return 360.0f;
     }
 }
 

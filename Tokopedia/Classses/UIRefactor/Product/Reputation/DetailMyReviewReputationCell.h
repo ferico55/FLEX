@@ -13,7 +13,7 @@
 #define CHeightContentStar 35
 #define CHeightContentAction 40
 
-@class DetailReviewReputaionViewModel;
+@class DetailReviewReputationViewModel;
 @interface CustomBtnSkip : UIButton
 @property (nonatomic) BOOL isLewati, isLapor;
 @end
@@ -49,6 +49,6 @@
 - (IBAction)actionBeriReview:(id)sender;
 - (IBAction)actionProduct:(id)sender;
 - (TTTAttributedLabel *)getLabelDesc;
-- (void)setView:(DetailReviewReputaionViewModel *)viewModel;
+- (void)setView:(DetailReviewReputationViewModel *)viewModel;
 - (void)setUnClickViewAction;
 @end
