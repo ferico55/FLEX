@@ -62,7 +62,6 @@ static NSInteger userViewHeight = 70;
     NSDictionary *auth;
     NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
-    ProductReputationSimpleCell *helpfulCell;
     
     HelpfulReviewRequest *helpfulReviewRequest;
     BOOL isShowingMore;
@@ -277,7 +276,7 @@ static NSInteger userViewHeight = 70;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *header;
-    if(section == 0){
+    if(helpfulReviews.count >0 && section == 0){
         header = _helpfulReviewHeader;
     }
     return header;
@@ -285,7 +284,7 @@ static NSInteger userViewHeight = 70;
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footer;
-    if(section == 0){
+    if(helpfulReviews.count >0 && section == 0){
         footer = _helpfulReviewFooter;
     }
     return footer;
@@ -293,7 +292,7 @@ static NSInteger userViewHeight = 70;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(section == 0){
+    if(helpfulReviews.count >0 && section == 0){
         return 50;
     }
     return 10;
@@ -301,7 +300,7 @@ static NSInteger userViewHeight = 70;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if(section == 0){
+    if(helpfulReviews.count >0 && section == 0){
         return 10;
     }
     return 0;
@@ -309,22 +308,26 @@ static NSInteger userViewHeight = 70;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return helpfulReviews.count > 0 ? 2 : 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.section == 1){
-        return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
-    }else{
-        if(!isShowingMore && indexPath.row == 1){
-            //"load more" cell
-            return 30;
-        }else if(isShowingMore && indexPath.row == helpfulReviews.count){
-            return 30;
+    if(helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
         }else{
-            return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews];
+            if(!isShowingMore && indexPath.row == 1){
+                //"load more" cell
+                return 30;
+            }else if(isShowingMore && indexPath.row == helpfulReviews.count){
+                return 30;
+            }else{
+                return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews];
+            }
+            
         }
-
+    }else{
+        return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
     }
     return 0;
 }
@@ -348,7 +351,8 @@ static NSInteger userViewHeight = 70;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section != 0){
+    
+    if((helpfulReviews.count > 0 && indexPath.section != 0) || (helpfulReviews.count == 0 && indexPath.section != 0)){
         cell.backgroundColor = [UIColor clearColor];
         if(indexPath.row == arrList.count-1) {
             if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
@@ -360,23 +364,32 @@ static NSInteger userViewHeight = 70;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.section == 1){
+    if(helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+            
+            DetailReputationReview *reputationDetail = arrList[indexPath.row];
+            [cell setReputationModelView:reputationDetail.viewModel];
+            
+            return cell;
+        }else{
+            int limit = isShowingMore ? helpfulReviews.count : 1;
+            if(indexPath.row < limit){
+                ProductReputationSimpleCell *helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+                DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
+                [helpfulCell setReputationModelView:reputationDetail.viewModel];
+                return helpfulCell;
+            }else{
+                return _helpfulReviewLoadMoreCell;
+            }
+        }
+    }else{
         ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
         
         DetailReputationReview *reputationDetail = arrList[indexPath.row];
         [cell setReputationModelView:reputationDetail.viewModel];
         
         return cell;
-    }else{
-        int limit = isShowingMore ? helpfulReviews.count : 1;
-        if(indexPath.row < limit){
-            helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-            DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
-            [helpfulCell setReputationModelView:reputationDetail.viewModel];
-            return helpfulCell;
-        }else{
-            return _helpfulReviewLoadMoreCell;
-        }
     }
 }
 
@@ -390,16 +403,22 @@ static NSInteger userViewHeight = 70;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if(indexPath.section == 1){
+    if(helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        }else{
+            if([self isLastCellInSectionZero:indexPath]){
+                [self showMoreTapped:nil];
+            }else{
+                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+            }
+        }
+    }else{
         DetailReputationReview *detailReputationReview = arrList[indexPath.row];
         [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
-    }else{
-        if([self isLastCellInSectionZero:indexPath]){
-            [self showMoreTapped:nil];
-        }else{
-            DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
-            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
-        }
+
     }
 }
 
@@ -412,10 +431,14 @@ static NSInteger userViewHeight = 70;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if(helpfulReviews.count > 0){
     if(section==1){
         return arrList.count;
     }else{
         return isShowingMore ? helpfulReviews.count+1 : 2;
+    }
+    }else{
+        return arrList.count;
     }
 }
 
@@ -1154,7 +1177,8 @@ static NSInteger userViewHeight = 70;
         }];
     }];
      */
-    [@[helpfulCell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
+    /*
+    [helpfulReviews enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
         [UIView animateWithDuration:0.3
                               delay:0.0
              usingSpringWithDamping:0.3
@@ -1166,6 +1190,7 @@ static NSInteger userViewHeight = 70;
          }
                          completion:nil];
     }];
+     */
 }
 
 - (void)actionRate:(id)sender {
@@ -1528,7 +1553,9 @@ static NSInteger userViewHeight = 70;
     [helpfulReviews removeAllObjects];
     [helpfulReviews addObjectsFromArray:helpfulReview];
     
-    
+    if(helpfulReviews.count == 0){
+        
+    }
     
 }
 

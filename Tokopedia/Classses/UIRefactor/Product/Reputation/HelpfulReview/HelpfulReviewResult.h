@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HelpfulReviewReview.h"
 
 @interface HelpfulReviewResult : NSObject
 @property (nonatomic, strong) NSArray *helpful_reviews;
