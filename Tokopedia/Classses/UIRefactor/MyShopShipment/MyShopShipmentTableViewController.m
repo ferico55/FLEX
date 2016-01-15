@@ -1664,6 +1664,9 @@
     // initialize RestKit
     _objectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *shippingMapping = [RKObjectMapping mappingForClass:[ShippingInfo class]];
     [shippingMapping addAttributeMappingsFromArray:@[
@@ -1866,6 +1869,7 @@
     self.tableView.sectionHeaderHeight = 0;
     
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : (createShopViewController!=nil?kTKPDDETAIL_APIGET_OPEN_SHOP_FORM : kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY)};
+    
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:(createShopViewController!=nil? kTKPMYSHOP_APIPATH : kTKPDSHOPSHIPMENT_APIPATH)
@@ -2756,6 +2760,9 @@
 {
     _objectManagerAction = [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManagerAction.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
     [statusMapping addAttributeMappingsFromArray:@[
