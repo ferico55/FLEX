@@ -669,6 +669,11 @@
         [_activityIndicatorView stopAnimating];
         
         if (_orders.count == 0) {
+<<<<<<< HEAD
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            [_tableView addSubview:noResultView];
+=======
             
             if ([self isUsingAnyFilter]) {
                 [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", _startDate, _endDate]];
@@ -679,6 +684,7 @@
             }
             
             [_tableView addSubview:_noResultView];
+>>>>>>> e5454f78ffb7bdf076be8ec0c4543f1651d7d542
         } else {
             _tableView.tableFooterView = nil;
         }
