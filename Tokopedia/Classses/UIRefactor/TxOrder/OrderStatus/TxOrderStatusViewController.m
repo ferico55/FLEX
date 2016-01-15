@@ -34,6 +34,7 @@
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 
+#import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
@@ -44,7 +45,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -79,6 +80,7 @@
     LoadingView *_loadingView;
     
     RequestCancelResolution *_requestCancelComplain;
+    FilterSalesTransactionListViewController *_filterSalesTransactionList;
     
     UIViewController *_detailViewController;
     
@@ -100,7 +102,10 @@
 
 @end
 
-@implementation TxOrderStatusViewController
+@implementation TxOrderStatusViewController {
+    NoResultReusableView *_noResultView;
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -110,6 +115,18 @@
         
     }
     return self;
+}
+
+- (void)initNoResultView {
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [_noResultView generateAllElements:@"icon_no_data_grey.png"
+                                 title:@"Tidak ada data"
+                                  desc:@""
+                              btnTitle:@""];
+    
+    [_noResultView hideButton:YES];
+    _noResultView.delegate = self;
 }
 
 - (void)viewDidLoad {
@@ -139,6 +156,8 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     [_networkManager doRequest];
+    
+    [self initNoResultView];
 
     if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
 //        _filterView.hidden = NO;
@@ -713,6 +732,8 @@
     id stat = [resultDict objectForKey:@""];
     TxOrderStatus *order = stat;
     
+    [_noResultView removeFromSuperview];
+    
     if(order.message_error)
     {
         NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
@@ -745,11 +766,17 @@
             
             _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
             _tableView.tableFooterView = nil;
-        }
-        else
-        {
-            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
-            _tableView.tableFooterView = noResultView;
+        } else {
+            if ([self isUsingAnyFilter]) {
+                [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]]];
+                [_noResultView hideButton:YES];
+            } else {
+                [_noResultView setNoResultTitle:@"Belum ada transaksi"];
+                [_noResultView hideButton:YES];
+            }
+            
+            [_tableView addSubview:_noResultView];
+
         }
         
         [_tableView reloadData];
@@ -1427,6 +1454,19 @@
 {
     _isNeedPopUpLD = YES;
     _worlds = words;
+}
+
+- (BOOL) isUsingAnyFilter {
+    NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
+    NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
+    NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
+    NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
+    
+    BOOL isUsingInvoiceFilter = filterInvoice != nil && ![filterInvoice isEqualToString:@""];
+    BOOL isUsingTransactionStatusFilter = filterStatus != nil && ![filterStatus isEqualToString:@""];
+    BOOL isUsingDateFilter = (filterStartDate != nil && ![filterStartDate isEqualToString:@""]) || (filterEndDate != nil && ![filterEndDate isEqualToString:@""]);
+    
+    return (isUsingInvoiceFilter || isUsingTransactionStatusFilter || isUsingDateFilter);
 }
 
 @end

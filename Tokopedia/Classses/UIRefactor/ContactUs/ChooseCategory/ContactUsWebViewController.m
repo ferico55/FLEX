@@ -75,11 +75,14 @@
             title = [title capitalizedString];
         }
         
-        ContactUsWebViewController *controller = [ContactUsWebViewController new];
-        controller.title = title;
-        controller.url = request.URL;
-        [self.navigationController pushViewController:controller animated:YES];
-        
+        if ([request.URL.absoluteString rangeOfString:@"contact-us-faq.pl"].location == NSNotFound) {
+            ContactUsWebViewController *controller = [ContactUsWebViewController new];
+            controller.title = title;
+            controller.url = request.URL;
+            [self.navigationController pushViewController:controller animated:YES];
+        } else {
+            shouldStartLoad = YES;
+        }
     }
     return shouldStartLoad;
 }
@@ -93,7 +96,7 @@
     if (_url) {
         return _url;
     } else {
-        NSURL *initialURL = [NSURL URLWithString:@"https://m-alpha.tokopedia.com/help-center?device=ios&flag_app=2"];
+        NSURL *initialURL = [NSURL URLWithString:@"https://m.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios"];
         return initialURL;
     }
 }
