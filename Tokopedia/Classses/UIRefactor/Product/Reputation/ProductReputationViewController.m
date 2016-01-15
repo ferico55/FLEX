@@ -32,12 +32,13 @@
 #import "TotalLikeDislike.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductReputationSimpleCell.h"
+#import "HelpfulReviewRequest.h"
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
 static NSInteger userViewHeight = 70;
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -57,7 +58,7 @@ static NSInteger userViewHeight = 70;
     NSString *strUri;
     Review *review;
     NSMutableArray *arrList;
-    NSMutableArray *helpfulReviews;
+    NSMutableArray<DetailReputationReview*> *helpfulReviews;
     NSDictionary *auth;
     NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
@@ -65,6 +66,7 @@ static NSInteger userViewHeight = 70;
     
     NSInteger sectionsCount;
     NSInteger helpfulReviewCount;
+    HelpfulReviewRequest *helpfulReviewRequest;
 }
 
 
@@ -91,7 +93,9 @@ static NSInteger userViewHeight = 70;
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     auth = [_userManager getUserLoginData];
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    helpfulReviewRequest = [HelpfulReviewRequest new];
+    helpfulReviewRequest.delegate = self;
+    [helpfulReviewRequest requestHelpfulReview:_strProductID];
     
     //Add gesture to view star
     viewStarOne.tag = 1;
@@ -127,6 +131,8 @@ static NSInteger userViewHeight = 70;
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -1216,6 +1222,7 @@ static NSInteger userViewHeight = 70;
 - (NSString*)getPath:(int)tag {
     if(tag == CTagGetProductReview) {
         return [productPostUrl isEqualToString:@""] ? @"product.pl" : productPostUrl;
+        //return [productPostUrl isEqualToString:@""] ? @"helpful_review.pl" : productPostUrl;
     }
     
     return nil;
@@ -1492,6 +1499,17 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
 }
 
+#pragma mark - HelpfulReviewRequestDelegate
+
+- (void) didReceiveHelpfulReview:(NSArray*)helpfulReview{
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    
+    
+    [helpfulReviews addObjectsFromArray:helpfulReview];
+    
+    
+    
+}
 
 
 #pragma mark - GTM

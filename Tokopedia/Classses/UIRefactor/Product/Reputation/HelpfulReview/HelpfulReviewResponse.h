@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HelpfulReviewResult.h"
 
 @interface HelpfulReviewResponse : NSObject
-
+@property (nonatomic, strong) NSArray *config;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *server_process_time;
+@property (nonatomic, strong) HelpfulReviewResult *result;
 @end
