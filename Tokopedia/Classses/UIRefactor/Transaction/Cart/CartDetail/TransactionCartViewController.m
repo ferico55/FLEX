@@ -2976,7 +2976,7 @@
     TransactionSummary *cart = stat;
     
     TransactionSummaryDetail *summary = cart.result.transaction;
-    [TPAnalytics trackCheckout:summary.carts step:1 option:summary.gateway_name];
+    [TPAnalytics trackCheckout:summary.carts step:0 option:summary.gateway_name];
     
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
@@ -3003,7 +3003,7 @@
     TransactionBuy *cart = stat;
     
     TransactionSummaryDetail *summary = cart.result.transaction;
-    [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
+    [TPAnalytics trackCheckout:summary.carts step:1 option:summary.gateway_name];
     
     _cartBuy = cart.result;
     switch ([_cartSummary.gateway integerValue]) {
