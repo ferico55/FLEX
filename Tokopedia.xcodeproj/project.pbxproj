@@ -10697,6 +10697,7 @@
 		FC36DF7B19B0656400AF74C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
