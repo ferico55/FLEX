@@ -1174,7 +1174,7 @@
                 // strAdd -> take bydefault value nil
                 if (response == nil) {
                     _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_pinLocationNameButton setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%@,%@)",_latitude,_longitude]];
+                    [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
 
                 } else{
                     GMSAddress *placemark = [response results][0];

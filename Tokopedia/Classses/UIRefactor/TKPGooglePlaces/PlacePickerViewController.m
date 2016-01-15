@@ -587,8 +587,8 @@
         // strAdd -> take bydefault value nil
         //        [self marker].snippet = [self addressString:placemark];
         if (response == nil) {
-            [_addressLabel setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%f,%f)",[self marker].position.latitude,[self marker].position.longitude]];
-            [_addressInfoWindowLabel setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%f,%f)",[self marker].position.latitude,[self marker].position.longitude]];
+            [_addressLabel setCustomAttributedText:@"Lokasi yang Dituju"];
+            [_addressInfoWindowLabel setCustomAttributedText:@"Lokasi yang Dituju"];
         } else
         {
             GMSAddress *placemark = [response results][0];

@@ -307,8 +307,8 @@ enum TypePlacePicker : Int{
                     self.saveHistory(placemark, addressSuggestions: addressSugestion!)
                 }
             }else {
-                self.addressLabel.setCustomAttributedText("Lokasi(\(self.mapView.selectedMarker.position.latitude),\(self.mapView.selectedMarker.position.longitude))")
-                self.mapView.updateAddress("Lokasi(\(self.mapView.selectedMarker.position.latitude),\(self.mapView.selectedMarker.position.longitude))")
+                self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
+                self.mapView.updateAddress("Lokasi yang Dituju")
                 self.mapView.selectedMarker = self.mapView.selectedMarker
             }
         }

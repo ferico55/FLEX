@@ -596,7 +596,7 @@
                 
                 if (response == nil) {
                     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_buttonMapLocation setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%@,%@)",list.latitude,list.longitude]];
+                    [_buttonMapLocation setCustomAttributedText:@"Lokasi yang Dituju"];
 
                 } else {
                     GMSAddress *address = [response results][0];

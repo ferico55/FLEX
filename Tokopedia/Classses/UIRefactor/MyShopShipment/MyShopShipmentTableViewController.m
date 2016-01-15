@@ -1910,7 +1910,7 @@
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
                                            completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                    if (response == nil) {
-                       self.pickupLocationLabel.text = [NSString stringWithFormat:@"Lokasi(%f,%f)",latitude,longitude];
+                       self.pickupLocationLabel.text = [NSString stringWithFormat:@"Lokasi yang Dituju"];
                    } else {
                        GMSAddress *placemark = [response results][0];
                        self.pickupLocationLabel.text = [self streetNameFromAddress:placemark];
