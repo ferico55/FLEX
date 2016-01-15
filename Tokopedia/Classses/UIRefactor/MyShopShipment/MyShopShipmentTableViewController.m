@@ -220,8 +220,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
 
-@property BOOL mapIsHidden;
-
 @end
 
 @implementation MyShopShipmentTableViewController
@@ -240,12 +238,10 @@
     
     [self setLabelAttributedText];
     [self setTextFieldsDelegate];
-    [self setSaveButton];
+    [self createSaveButton];
     
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
-    self.mapIsHidden = YES;
-
     _operationQueue = [NSOperationQueue new];
     [self configureRestKit];
     [self request];
@@ -256,6 +252,8 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+#pragma mark - Text field
 
 - (void)setTextFieldsDelegate {
     [_postCodeTextField addTarget:self
@@ -281,25 +279,41 @@
                             forControlEvents:UIControlEventEditingChanged];
 }
 
-- (void)setSaveButton {
+#pragma mark - Save Button
+
+- (void)createSaveButton {
     NSString *title = createShopViewController?CStringLanjut:@"Simpan";
     UIBarButtonItemStyle style = createShopViewController?UIBarButtonItemStylePlain:UIBarButtonItemStyleDone;
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:title
                                                                    style:style
                                                                   target:self
                                                                   action:@selector(tap:)];
-    if(createShopViewController == nil) {
-        if (_shipment) {
-            UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
-            saveButton.tintColor = [UIColor whiteColor];
-            saveButton.enabled = YES;
-        } else {
-            saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
-            saveButton.enabled = NO;
-        }
-    }
+    saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+    saveButton.enabled = NO;
     self.navigationItem.rightBarButtonItem = saveButton;
 }
+
+- (void)validateSaveButton {
+    if(_hasSelectKotaAsal && _postCodeTextField.text.length > 4) {
+        [self enableSaveButton];
+    } else {
+        [self disableSaveButton];
+    }
+}
+
+- (void)enableSaveButton {
+    UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
+    saveButton.tintColor = [UIColor whiteColor];
+    saveButton.enabled = YES;
+}
+
+- (void)disableSaveButton {
+    UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
+    saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
+    saveButton.enabled = NO;
+}
+
+#pragma mark - Label attributed
 
 - (void)setLabelAttributedText {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -459,12 +473,10 @@
 
 - (CGFloat)heightForSecondSectionIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 0.0f;
-    if (self.mapIsHidden == NO) {
-        if (indexPath.row == 0) {
-            height = 120;
-        } else if (indexPath.row == 1) {
-            height = 60;
-        }
+    if (indexPath.row == 0) {
+        height = 120;
+    } else if (indexPath.row == 1) {
+        height = 60;
     }
     return height;
 }
@@ -1232,11 +1244,7 @@
     if (section == 0) {
         title = @"    Kota Asal";
     } else if (section == 1) {
-        if (self.mapIsHidden) {
-            title = nil;
-        } else {
-            title = @"    Lokasi Pickup";
-        }
+        title = @"    Lokasi Pickup";
     } else if (section == 2) {
         if (createShopViewController) {
             title = nil;
@@ -1272,7 +1280,7 @@
     }
     
     if(errorMessage.count == 0) {
-        if(createShopViewController != nil) {
+        if(createShopViewController) {
             if(![self hasSelectedShipping]) {
                 StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringSelectedShipping] delegate:self];
                 [stickyAlertView show];
@@ -1297,13 +1305,10 @@
 }
 
 
-- (void)tap:(id)sender
-{
-    if(createShopViewController != nil)
-    {
+- (void)tap:(id)sender {
+    if(createShopViewController) {
         [self validateShipment];
-    }
-    else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+    } else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         [self configureRestKitAction];
         [self requestAction];
     }
@@ -1537,7 +1542,7 @@
 {
     if ([textField isEqual:_postCodeTextField]) {
         _shipment.shop_shipping.postal_code = textField.text;
-        [self validateEnableRightBarButtonItem];
+        [self validateSaveButton];
     } else if ([textField isEqual:_shipmentJNEMinimumWeightTextField]) {
         _shipment.jne.jne_min_weight = textField.text;
     } else if ([textField isEqual:_shipmentJNEExtraFeeTextField]) {
@@ -1581,7 +1586,6 @@
             // If jakarta, add map and user location address, and shows all available couriers.
             if ([province.province_name isEqualToString:@"DKI Jakarta"] ||
                 province.province_id == 13) {
-                self.mapIsHidden = NO;
                 _hasSelectKotaAsal = YES;
                 
                 NSMutableArray *shipmentIds = [NSMutableArray new];
@@ -1637,7 +1641,7 @@
             
             _hasSelectKotaAsal = YES;
             
-            [self validateEnableRightBarButtonItem];
+            [self validateSaveButton];
             
             NSInteger index = [_availableDistrictName indexOfObject:object];
             District *district = [_disticts objectAtIndex:index];
@@ -1920,16 +1924,10 @@
             self.pickupLocationLabel.text = @"Tentukan Peta Lokasi";
         }
         
-        if(createShopViewController) {
-            [self createShopDefaultValues];
-        }
-
+        [self createShopDefaultValues];
         [self setProvincesData];
         [self setProvincesLabelValue];
-        [self showsMapForGojek];
         [self showsPhoneNumber];
-        
-        [self setSaveButton];
         
         for (ShippingInfoShipments *shipment in _shipment.shipment) {
             NSInteger shipmentId = [shipment.shipment_id integerValue];
@@ -1981,6 +1979,8 @@
             }
         }
         
+        [self validateSaveButton];
+        
         [self.tableView reloadData];
     }
 }
@@ -2006,24 +2006,26 @@
 #pragma mark - Method
 
 - (void)createShopDefaultValues {
-    if(_shipment.jne == nil) {
-        _shipment.jne = [JNE new];
-        _shipment.jne.jne_fee = 0;
-        _shipment.jne.jne_diff_district = @"0";
-        _shipment.jne.jne_min_weight = @"";
-        _shipment.jne.jne_tiket = @"0";
-    }
-    if(_shipment.tiki == nil) {
-        _shipment.tiki = [Tiki new];
-        _shipment.tiki.tiki_fee = 0;
-    }
-    if(_shipment.pos == nil) {
-        _shipment.pos = [POSIndonesia new];
-        _shipment.pos.pos_fee = 0;
-        _shipment.pos.pos_min_weight = 0;
-    }
-    if (_shipment.shop_shipping == nil) {
-        _shipment.shop_shipping = [ShopShipping new];
+    if (createShopViewController) {
+        if(_shipment.jne == nil) {
+            _shipment.jne = [JNE new];
+            _shipment.jne.jne_fee = 0;
+            _shipment.jne.jne_diff_district = @"0";
+            _shipment.jne.jne_min_weight = @"";
+            _shipment.jne.jne_tiket = @"0";
+        }
+        if(_shipment.tiki == nil) {
+            _shipment.tiki = [Tiki new];
+            _shipment.tiki.tiki_fee = 0;
+        }
+        if(_shipment.pos == nil) {
+            _shipment.pos = [POSIndonesia new];
+            _shipment.pos.pos_fee = 0;
+            _shipment.pos.pos_min_weight = 0;
+        }
+        if (_shipment.shop_shipping == nil) {
+            _shipment.shop_shipping = [ShopShipping new];
+        }
     }
 }
 
@@ -2072,15 +2074,6 @@
         _hasSelectKotaAsal = YES;
     } else {
         _districtLabel.text = @"Pilih Kecamatan";
-    }
-}
-
-- (void)showsMapForGojek {
-    for (ShippingInfoShipments *courier in _shipment.shipment) {
-        if ([courier.shipment_id isEqualToString:@"10"] ||
-            [courier.shipment_name isEqualToString:@"GO-JEK"]) {
-            self.mapIsHidden = NO;
-        }
     }
 }
 
@@ -2722,22 +2715,6 @@
 - (NSString *)getPostalCode
 {
     return _postCodeTextField.text;
-}
-
-- (void)validateEnableRightBarButtonItem
-{
-    if(_hasSelectKotaAsal && _postCodeTextField.text.length > 4)
-    {
-        UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
-        saveButton.tintColor = [UIColor whiteColor];
-        saveButton.enabled = YES;
-    }
-    else
-    {
-        UIBarButtonItem *saveButton = self.navigationItem.rightBarButtonItem;
-        saveButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.7];
-        saveButton.enabled = NO;
-    }
 }
 
 #pragma mark - Location & Address
