@@ -32,6 +32,7 @@
         tempViewModel.review_rate_quality = _review_rate_product;
         tempViewModel.review_user_name = _review_user_name;
         tempViewModel.review_user_image = _review_user_image;
+        tempViewModel.isMostHelpful = _isHelpfulReview;
 
         _viewModel = tempViewModel;
     }

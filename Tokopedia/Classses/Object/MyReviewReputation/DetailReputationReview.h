@@ -110,6 +110,7 @@
 @property (nonatomic, strong) NSString *review_user_label;
 @property (nonatomic, strong) NSString *review_rate_service_desc;   
 @property (nonatomic, strong) NSString *review_rate_service;
+@property BOOL isHelpfulReview;
 
 @property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
 @property (nonatomic, strong) ReputationDetail *review_user_reputation;

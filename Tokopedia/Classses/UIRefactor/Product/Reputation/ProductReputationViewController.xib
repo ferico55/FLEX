@@ -850,7 +850,7 @@
                         <rect key="frame" x="96" y="0.0" width="129" height="30"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="11"/>
                         <state key="normal" title="show more">
-                            <color key="titleColor" red="0.25098039215686274" green="0.74117647058823533" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleColor" red="0.32944893836975098" green="0.79858076572418213" blue="0.32810631394386292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
                         <connections>
                             <action selector="showMoreTapped:" destination="-1" eventType="touchUpInside" id="pe4-iO-dyj"/>

@@ -31,7 +31,12 @@
     
     [self.productView setHidden:YES];
     [self.productView setFrame:CGRectZero];
-    
+
+    if(viewModel.isMostHelpful){
+        _reputationMessageLabel.textColor = [UIColor colorWithRed:0.097 green:0.5 blue:0.095 alpha:1];
+    }else{
+        _reputationMessageLabel.textColor = [UIColor blackColor];
+    }
     //add border bottom
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, self.reputationBuyerView.frame.size.height - 40, self.reputationBuyerView.frame.size.width, 0.5f);
@@ -41,7 +46,7 @@
 }
 
 
-- (void)setShopReputationModelView:(ReviewList *)viewModel {
+- (void)setShopReputationModelView:(ReviewList *)viewModel{
     [self setReputationMessage:viewModel.review_message];
     [self setReputationStars:viewModel.review_rate_quality withAccuracy:viewModel.review_rate_accuracy];
     [self setUser:viewModel.review_user_name withCreateTime:viewModel.review_create_time andWithImage:viewModel.review_user_image];

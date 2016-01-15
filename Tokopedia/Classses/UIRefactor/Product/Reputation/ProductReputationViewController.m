@@ -361,6 +361,9 @@ static NSInteger userViewHeight = 70;
             }
         }
     }
+    if(helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
+        [self animate:cell];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -369,6 +372,7 @@ static NSInteger userViewHeight = 70;
             ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
             
             DetailReputationReview *reputationDetail = arrList[indexPath.row];
+            reputationDetail.isHelpfulReview = NO;
             [cell setReputationModelView:reputationDetail.viewModel];
             
             return cell;
@@ -377,6 +381,7 @@ static NSInteger userViewHeight = 70;
             if(indexPath.row < limit){
                 ProductReputationSimpleCell *helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
                 DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
+                reputationDetail.isHelpfulReview = YES;
                 [helpfulCell setReputationModelView:reputationDetail.viewModel];
                 return helpfulCell;
             }else{
@@ -387,6 +392,7 @@ static NSInteger userViewHeight = 70;
         ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
         
         DetailReputationReview *reputationDetail = arrList[indexPath.row];
+        reputationDetail.isHelpfulReview = NO;
         [cell setReputationModelView:reputationDetail.viewModel];
         
         return cell;
@@ -1169,7 +1175,7 @@ static NSInteger userViewHeight = 70;
 }
 
 
-- (void)animate{
+- (void)animate:(UITableViewCell *)cell {
     /*
     [@[helpfulCell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
         [cell setFrame:CGRectMake(320, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
@@ -1179,20 +1185,21 @@ static NSInteger userViewHeight = 70;
         }];
     }];
      */
-    /*
-    [helpfulReviews enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
-        [UIView animateWithDuration:0.3
+    
+    [@[cell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
+        [cell setFrame:CGRectMake(40, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
+        [UIView animateWithDuration:0.7
                               delay:0.0
              usingSpringWithDamping:0.3
               initialSpringVelocity:1.0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^
          {
-             cell.layer.transform = CATransform3DIdentity;
+             [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, 0)];
          }
                          completion:nil];
     }];
-     */
+    
 }
 
 - (void)actionRate:(id)sender {
