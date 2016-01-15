@@ -688,16 +688,16 @@ SpellCheckRequestDelegate
 
 - (id)getObjectManager:(int)tag {
     if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
 #ifdef DEBUG
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
         NSString *baseUrl;
 //        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
-        if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location != NSNotFound) {
-            baseUrl = @"https://ace-staging.tokopedia.com/";
+        if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
+            baseUrl = @"https://ace.tokopedia.com/";
         } else {
-            baseUrl = @"https://ajax.tokopedia.com/";
+            baseUrl = @"https://ace-staging.tokopedia.com/";
         }
         _objectmanager = [RKObjectManager sharedClient:baseUrl];
 #endif
