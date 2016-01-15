@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,41 +15,48 @@
                     <rect key="frame" x="0.0" y="46" width="600" height="600"/>
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Choose your own land here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xFX-gX-0sj">
-                            <rect key="frame" x="10" y="22" width="260" height="30"/>
+                            <rect key="frame" x="10" y="16" width="260" height="30"/>
+                            <animations/>
                             <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcf-bR-uOQ">
-                            <rect key="frame" x="149" y="60" width="121" height="30"/>
-                            <fontDescription key="fontDescription" name="CourierNewPS-BoldMT" family="Courier New" pointSize="13"/>
-                            <state key="normal" title="Go And Die &gt;&gt;"/>
-                            <connections>
-                                <action selector="tapSwithButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="mur-Hf-5b9"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dc6-E9-hHX">
-                            <rect key="frame" x="10" y="60" width="121" height="30"/>
-                            <fontDescription key="fontDescription" name="CourierNewPS-BoldMT" family="Courier New" pointSize="13"/>
-                            <state key="normal" title="&lt;&lt; Cancel"/>
-                            <connections>
-                                <action selector="tapCancelButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="G9N-4P-L88"/>
-                            </connections>
-                        </button>
                     </subviews>
+                    <animations/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome to the outcasted land" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9GX-1X-EmI">
-                    <rect key="frame" x="12" y="17" width="256" height="27"/>
+                    <rect key="frame" x="12" y="34" width="256" height="27"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="13"/>
                     <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter at your own risk" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uE-Eg-IJI">
-                    <rect key="frame" x="15" y="37" width="258" height="27"/>
+                    <rect key="frame" x="15" y="92" width="258" height="27"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="13"/>
                     <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcf-bR-uOQ">
+                    <rect key="frame" x="149" y="3" width="121" height="30"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" name="CourierNewPS-BoldMT" family="Courier New" pointSize="13"/>
+                    <state key="normal" title="Go And Die &gt;&gt;"/>
+                    <connections>
+                        <action selector="tapSwithButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="mur-Hf-5b9"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dc6-E9-hHX">
+                    <rect key="frame" x="10" y="3" width="121" height="30"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" name="CourierNewPS-BoldMT" family="Courier New" pointSize="13"/>
+                    <state key="normal" title="&lt;&lt; Cancel"/>
+                    <connections>
+                        <action selector="tapCancelButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="G9N-4P-L88"/>
+                    </connections>
+                </button>
             </subviews>
+            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

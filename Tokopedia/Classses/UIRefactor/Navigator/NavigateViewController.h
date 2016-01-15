@@ -7,6 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GoogleMaps/GoogleMaps.h>
+#import "Tokopedia-Swift.h"
+#import "PlacePickerViewController.h"
+@class AddressViewModel;
+
+@class TKPPlacePickerViewController;
 
 @class LuckyDealWord;
 
@@ -29,6 +35,9 @@
                                   promoData:(NSDictionary *)data
                                 productData:(NSDictionary *)productData;
 -(void)popUpLuckyDeal:(LuckyDealWord*)words;
+
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController;
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController;
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;

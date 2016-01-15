@@ -102,6 +102,7 @@
     _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"Response string : %@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
         [self requestSuccess:mappingResult  withOperation:operation];
         [_requestTimer invalidate];
         _requestTimer = nil; 

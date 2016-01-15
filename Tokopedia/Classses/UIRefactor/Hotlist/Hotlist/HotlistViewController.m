@@ -217,6 +217,7 @@ NotificationDelegate
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
+    _networkManager.isUsingHmac = YES;
     _networkManager = nil;
 }
 
@@ -413,7 +414,7 @@ NotificationDelegate
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectmanager = [RKObjectManager sharedClient];
+    _objectmanager = [RKObjectManager sharedClientHttps];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];

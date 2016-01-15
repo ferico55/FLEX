@@ -11,10 +11,15 @@
 @class TKPHomeProductsStore;
 @class TKPHomeBannerStore;
 
+@class TKPGooglePlaceDetailProductStore;
+
 @interface TKPStoreManager : NSObject
 
 @property (strong, nonatomic, readonly) TKPHomeProductsStore *homeProductStore;
 @property (strong, nonatomic, readonly) TKPHomeBannerStore *homeBannerStore;
+
+@property (strong, nonatomic, readonly) TKPGooglePlaceDetailProductStore *placeDetailStore;
+
 @property (strong, nonatomic, readonly) NSOperationQueue *networkQueue;
 
 

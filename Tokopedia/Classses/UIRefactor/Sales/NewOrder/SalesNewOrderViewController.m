@@ -30,6 +30,8 @@
 
 #import "ActionOrder.h"
 
+#import "OrderSellerShop.h"
+
 @interface SalesNewOrderViewController ()
 <
     UITableViewDataSource,
@@ -661,6 +663,15 @@
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];
     
+    RKObjectMapping *orderShopMapping = [RKObjectMapping mappingForClass:[OrderSellerShop class]];
+    [orderShopMapping addAttributeMappingsFromArray:@[API_SHOP_ADDRESS_STREET,
+                                                     API_SHOP_ADDRESS_DISTRICT,
+                                                     API_SHOP_ADDRESS_CITY,
+                                                     API_SHOP_ADDRESS_PROVINCE,
+                                                     API_SHOP_ADDRESS_COUNTRY,
+                                                     API_SHOP_ADDRESS_POSTAL
+                                                     API_SHOP_SHIPPER_PHONE]];
+    
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
                                                              API_DEADLINE_PROCESS_DAY_LEFT  : API_DEADLINE_PROCESS_DAY_LEFT,
@@ -763,6 +774,10 @@
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DETAIL
                                                                                 toKeyPath:API_LIST_ORDER_DETAIL
                                                                               withMapping:orderDetailMapping]];
+
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_SHOP
+                                                                                toKeyPath:API_LIST_ORDER_SHOP
+                                                                              withMapping:orderShopMapping]];
 
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DEADLINE
                                                                                 toKeyPath:API_LIST_ORDER_DEADLINE
