@@ -585,16 +585,23 @@
 {
     [_geocoder reverseGeocodeCoordinate:[self marker].position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
         // strAdd -> take bydefault value nil
-        GMSAddress *placemark = [response results][0];
-        _address = placemark;
         //        [self marker].snippet = [self addressString:placemark];
-        [_addressLabel setCustomAttributedText:[self addressString:placemark]];
-        [_addressInfoWindowLabel setCustomAttributedText:[self addressString:placemark]];
-        
-        [_mapview setSelectedMarker:[self marker]];
-        
-        if (shouldSaveHistory) {
-            [self saveHistory:placemark addressSugestion:addressSugestion];
+        if (response == nil) {
+            [_addressLabel setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%f,%f)",[self marker].position.latitude,[self marker].position.longitude]];
+            [_addressInfoWindowLabel setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%f,%f)",[self marker].position.latitude,[self marker].position.longitude]];
+        } else
+        {
+            GMSAddress *placemark = [response results][0];
+            
+            _address = placemark;
+
+            [_addressLabel setCustomAttributedText:[self addressString:placemark]];
+            [_addressInfoWindowLabel setCustomAttributedText:[self addressString:placemark]];
+            [_mapview setSelectedMarker:[self marker]];
+            
+            if (shouldSaveHistory) {
+                [self saveHistory:placemark addressSugestion:addressSugestion];
+            }
         }
     }];
 }

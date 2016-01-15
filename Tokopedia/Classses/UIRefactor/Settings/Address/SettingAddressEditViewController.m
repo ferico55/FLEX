@@ -593,18 +593,26 @@
 //            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
 
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                GMSAddress *address = [response results][0];
                 
-                NSString *addressString;
-                if (address.lines.count>0) {
-                    addressString = address.lines[0];
+                if (response == nil) {
+                    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_buttonMapLocation setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%@,%@)",list.latitude,list.longitude]];
+
+                } else {
+                    GMSAddress *address = [response results][0];
+                    NSString *addressString;
+                    if (address.lines.count>0) {
+                        addressString = address.lines[0];
+                    }
+                    else
+                    {
+                        addressString = address.thoroughfare;
+                    }
+                    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_buttonMapLocation setCustomAttributedText:addressString];
                 }
-                else
-                {
-                    addressString = address.thoroughfare;
-                }
-                _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_buttonMapLocation setCustomAttributedText:addressString];
+                
+
                 _opsionalLabel.hidden = YES;
                 _constraintBottomMapName.constant = 0;
 

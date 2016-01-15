@@ -1909,8 +1909,12 @@
             CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
                                            completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                                               GMSAddress *placemark = [response results][0];
-                                               self.pickupLocationLabel.text = [self streetNameFromAddress:placemark];
+                   if (response == nil) {
+                       self.pickupLocationLabel.text = [NSString stringWithFormat:@"Lokasi(%f,%f)",latitude,longitude];
+                   } else {
+                       GMSAddress *placemark = [response results][0];
+                       self.pickupLocationLabel.text = [self streetNameFromAddress:placemark];
+                   }
             }];
         } else {
             self.pickupLocationLabel.text = @"Tentukan Peta Lokasi";

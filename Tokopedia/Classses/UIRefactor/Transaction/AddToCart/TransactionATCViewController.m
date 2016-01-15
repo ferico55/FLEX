@@ -1172,10 +1172,16 @@
             
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                 // strAdd -> take bydefault value nil
-                GMSAddress *placemark = [response results][0];
-                //        [self marker].snippet = [self addressString:placemark];
-                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                if (response == nil) {
+                    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_pinLocationNameButton setCustomAttributedText:[NSString stringWithFormat:@"Lokasi(%@,%@)",_latitude,_longitude]];
+
+                } else{
+                    GMSAddress *placemark = [response results][0];
+                    //        [self marker].snippet = [self addressString:placemark];
+                    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                }
             }];
             
             [_tableView reloadData];
