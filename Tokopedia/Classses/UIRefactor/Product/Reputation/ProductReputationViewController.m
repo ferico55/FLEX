@@ -588,8 +588,10 @@ static NSInteger userViewHeight = 70;
 - (IBAction)showMoreTapped:(id)sender {
     if(isShowingMore){
         isShowingMore = NO;
+        [_buttonShowMore setTitle:@"show more" forState:UIControlStateNormal];
     }else{
         isShowingMore = YES;
+        [_buttonShowMore setTitle:@"show less" forState:UIControlStateNormal];
     }
     [tableContent reloadData];
 }

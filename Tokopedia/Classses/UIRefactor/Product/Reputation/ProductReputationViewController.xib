@@ -26,6 +26,7 @@
             <connections>
                 <outlet property="btnFilter6Month" destination="xj3-Ys-iZb" id="GIA-RQ-fWn"/>
                 <outlet property="btnFilterAllTime" destination="qq1-Gt-a3T" id="R0b-o8-wvC"/>
+                <outlet property="buttonShowMore" destination="LDm-ZM-P3x" id="Pby-qO-xSJ"/>
                 <outlet property="constWidthLblRate1" destination="NtD-pO-15P" id="QMy-qf-A15"/>
                 <outlet property="constWidthLblRate2" destination="yVq-oZ-Tsx" id="r3O-su-zKN"/>
                 <outlet property="constWidthLblRate3" destination="0DM-Sb-3dR" id="msh-rh-NpU"/>
@@ -848,7 +849,9 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDm-ZM-P3x">
                         <rect key="frame" x="96" y="0.0" width="129" height="30"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="11"/>
-                        <state key="normal" title="tampilkan lebih banyak"/>
+                        <state key="normal" title="show more">
+                            <color key="titleColor" red="0.25098039215686274" green="0.74117647058823533" blue="0.22745098039215686" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
                         <connections>
                             <action selector="showMoreTapped:" destination="-1" eventType="touchUpInside" id="pe4-iO-dyj"/>
                         </connections>
