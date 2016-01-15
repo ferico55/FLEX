@@ -414,7 +414,7 @@ NotificationDelegate
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectmanager = [RKObjectManager sharedClientHttps];
+    _objectmanager = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
