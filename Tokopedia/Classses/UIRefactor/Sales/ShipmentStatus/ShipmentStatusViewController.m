@@ -540,16 +540,6 @@
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             
-            [_refreshControl endRefreshing];
-            
-            [_timer invalidate];
-            _timer = nil;
-            
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf, sedang terjadi kendala pada server. Silahkan coba beberapa saat lagi."] delegate:self];
-            [alert show];
-
-            self.tableView.tableFooterView = nil;
-            
             [self requestFailure:error];
             
         }];
@@ -625,7 +615,15 @@
 
 - (void)requestFailure:(id)object
 {
+    [_refreshControl endRefreshing];
     
+    [_timer invalidate];
+    _timer = nil;
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf, sedang terjadi kendala pada server. Silahkan coba beberapa saat lagi."] delegate:self];
+    [alert show];
+    
+    self.tableView.tableFooterView = nil;
 }
 
 - (void)cancel
