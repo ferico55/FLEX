@@ -16,6 +16,7 @@
 #import "OrderLast.h"
 #import "OrderHistory.h"
 #import "OrderDestination.h"
+#import "OrderSellerShop.h"
 
 @interface OrderTransaction : NSObject
 
@@ -31,5 +32,6 @@
 @property (strong, nonatomic) OrderLast *order_last;
 @property (strong, nonatomic) NSMutableArray *order_history;
 @property (strong, nonatomic) OrderDestination *order_destination;
+@property (strong, nonatomic) OrderSellerShop *order_shop;
 
 @end

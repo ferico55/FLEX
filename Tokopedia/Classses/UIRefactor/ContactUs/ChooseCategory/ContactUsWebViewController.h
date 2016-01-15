@@ -10,4 +10,6 @@
 
 @interface ContactUsWebViewController : UIViewController
 
+@property (strong, nonatomic) NSURL *url;
+
 @end

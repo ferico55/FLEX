@@ -16,7 +16,7 @@
 - (void)addLeftBorderWithColor: (UIColor *) color andWidth:(CGFloat) borderWidth;
 - (void)addRightBorderWithColor: (UIColor *) color andWidth:(CGFloat) borderWidth;
 - (void)addTopBorderWithColor: (UIColor *) color andWidth:(CGFloat) borderWidth;
-
+- (UIView*)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius;
 @end
 
 #pragma mark - UIImageView
@@ -32,5 +32,12 @@
 
 - (void)setText:(NSString*)text animated:(BOOL)animated;
 -(void)setCustomAttributedText:(NSString *)text;
+
+@end
+
+@interface UIButton (TkpdCategory)
+
+- (UIButton*)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius;
+- (void)setCustomAttributedText:(NSString *)text;
 
 @end

@@ -19,9 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.title = @"Hubungi Kami";
-    
+        
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
@@ -33,7 +31,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.linkClicked = NO; 
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,11 +45,10 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    UIBarButtonItem *reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                  target:self
-                                                                                  action:@selector(reloadWebView)];
-    self.navigationItem.rightBarButtonItem = reloadButton;
+    self.navigationItem.rightBarButtonItem = nil;
 }
+
+
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     UIBarButtonItem *reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
@@ -64,16 +60,42 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     BOOL shouldStartLoad = YES;
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        shouldStartLoad = self.linkClicked?NO:YES;
-        self.linkClicked = YES;
+        shouldStartLoad = NO;
+        
+        NSString *title = @"Hubungi Kami";
+        NSArray *urlComponents = [request.URL.absoluteString componentsSeparatedByString:@"/"];
+        if (urlComponents.count > 3) {
+            title = [urlComponents objectAtIndex:urlComponents.count - 1];
+            NSArray *components = [title componentsSeparatedByString:@"?"];
+            if (components.count > 1) {
+                title = [components objectAtIndex:0];
+            }
+            title = [title stringByReplacingOccurrencesOfString:@".pl" withString:@""];
+            title = [title stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+            title = [title capitalizedString];
+        }
+        
+        ContactUsWebViewController *controller = [ContactUsWebViewController new];
+        controller.title = title;
+        controller.url = request.URL;
+        [self.navigationController pushViewController:controller animated:YES];
+        
     }
     return shouldStartLoad;
 }
 
 - (void)reloadWebView {
-    NSURL *redirectURL = [NSURL URLWithString:@"https://m.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:redirectURL];
+    NSURLRequest *request = [NSURLRequest requestWithURL:self.url];
     [self.webView loadRequest:request];
+}
+
+- (NSURL *)url {
+    if (_url) {
+        return _url;
+    } else {
+        NSURL *initialURL = [NSURL URLWithString:@"https://m-alpha.tokopedia.com/help-center?device=ios&flag_app=2"];
+        return initialURL;
+    }
 }
 
 @end

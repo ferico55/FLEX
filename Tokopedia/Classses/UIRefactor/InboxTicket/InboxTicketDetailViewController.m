@@ -130,7 +130,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = 1;
-//    [_networkManager doRequest];
+
+    if (self.inboxTicket || self.inboxTicketId) {
+        [_networkManager doRequest];
+    }
 
     _ratingNetworkManager = [TokopediaNetworkManager new];
     _ratingNetworkManager.delegate = self;
@@ -422,13 +425,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                            API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId
                            };
         } else {
-            if (_inboxTicket != nil)
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_DETAIL,
                            API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id?:_inboxTicketId,
                            };
-            
-            else dictionary = @{};
         }
     } else {
         
