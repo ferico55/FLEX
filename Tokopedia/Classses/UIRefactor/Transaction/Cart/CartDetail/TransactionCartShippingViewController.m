@@ -129,7 +129,10 @@
     if ([cart.cart_destination.latitude integerValue]!=0 && [cart.cart_destination.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
         [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([cart.cart_destination.latitude doubleValue], [cart.cart_destination.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-            if (response == nil) {
+            if (error != nil){
+                return;
+            }
+            if (response == nil|| response.results.count == 0) {
                 _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
                 _pinLocationSummaryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -1447,7 +1450,11 @@
     if ([address.latitude integerValue]!=0 && [address.longitude integerValue]!=0) {
         _isFinishCalculate = NO;
         [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-            if (response == nil) {
+            if (error != nil){
+                return;
+            }
+            
+            if (response == nil || response.results.count == 0) {
                 _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
                 _isFinishCalculate = YES;

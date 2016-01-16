@@ -1171,8 +1171,11 @@
             _buyButton.hidden = NO;
             
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                // strAdd -> take bydefault value nil
-                if (response == nil) {
+                if (error != nil){
+                    return;
+                }
+                
+                if (response == nil|| response.results.count == 0) {
                     _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                     [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
 
