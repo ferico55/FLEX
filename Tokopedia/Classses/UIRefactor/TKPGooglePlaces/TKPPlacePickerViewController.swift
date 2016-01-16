@@ -141,11 +141,17 @@ enum TypePlacePicker : Int{
     
     //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
-        if(type == TypePlacePicker.TypeEditPlace.rawValue){ if(position != nil){mapView.selectedMarker.position = position.target}}
+        if(type == TypePlacePicker.TypeEditPlace.rawValue){
+            if(position != nil && mapView.selectedMarker != nil){
+                mapView.selectedMarker.position = position.target
+            }
+        }
     }
     
     func mapView(mapView: GMSMapView!, idleAtCameraPosition position: GMSCameraPosition!) {
-        if(type == TypePlacePicker.TypeEditPlace.rawValue){updateAddressSaveHistory(false, addressSugestion: nil)}
+        if(type == TypePlacePicker.TypeEditPlace.rawValue){
+            updateAddressSaveHistory(false, addressSugestion: nil)
+        }
     }
     func mapView(mapView: GMSMapView!, markerInfoWindow marker: GMSMarker!) -> UIView! {
         return self.mapView.infoWindowView;
@@ -305,7 +311,7 @@ enum TypePlacePicker : Int{
                 self.addressLabel.setCustomAttributedText(self.addressString(placemark))
                 self.mapView.updateAddress(self.addressString(placemark))
                 self.mapView.selectedMarker = self.mapView.selectedMarker
-                if (shouldSaveHistory) {
+                if (shouldSaveHistory && addressSugestion != nil) {
                     self.saveHistory(placemark, addressSuggestions: addressSugestion!)
                 }
             }else {
@@ -370,12 +376,12 @@ enum TypePlacePicker : Int{
         return strSnippet;
     }
     
-    func saveHistory (address :GMSAddress, addressSuggestions :GMSAutocompletePrediction)
+    func saveHistory (address :GMSAddress, addressSuggestions :GMSAutocompletePrediction?)
     {
         var documentsPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
         documentsPath += "/history_places.plist"
         
-        var addressString : String!
+        var addressString : String = " "
         if (address.lines.count>0){
             addressString = address.lines[0] as! String
         }
@@ -386,12 +392,24 @@ enum TypePlacePicker : Int{
         var postalCode : String!
         if (address.postalCode == nil){ postalCode = ""} else{ postalCode = address.postalCode}
         
-        let history: [String: AnyObject]! = ["addressSugestion"   :addressSuggestions.attributedFullText.string,
+        var addressSugestionString:String = " "
+        var placeID: String = " "
+        var longitude: Double = 0
+        var latitude: Double = 0
+        if (addressSuggestions != nil){
+            addressSugestionString = addressSuggestions!.attributedFullText.string
+            placeID = addressSuggestions!.placeID!
+            longitude = address.coordinate.longitude
+            latitude = address.coordinate.latitude
+        }
+        
+        let history: [String: AnyObject]! = [
+            "addressSugestion"   :addressSugestionString,
             "address"            :addressString,
             "postal_code"        :postalCode,
-            "place_id"           :addressSuggestions.placeID!,
-            "longitude"          :address.coordinate.longitude,
-            "latitude"           :address.coordinate.latitude
+            "place_id"           :placeID,
+            "longitude"          :longitude,
+            "latitude"           :latitude
         ]
         let array : Array = dataTableView[1] as Array
         if(array.contains(history["addressSugestion"] as! String) == false)
