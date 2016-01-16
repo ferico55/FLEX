@@ -52,7 +52,8 @@
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
         
-        [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
+        NSString *GoogleMapAPIKey = [self.container stringForKey:@"google_map_api_key"]?:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU";
+        [GMSServices provideAPIKey:GoogleMapAPIKey];
         
         [self preparePersistData];
         
@@ -92,9 +93,7 @@
 }
 
 - (void)configureAppIndexing {
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
         [[GSDAppIndexing sharedInstance] registerApp:1001394201];
-    }
 }
 
 - (void)configureGoogleAnalytics {
