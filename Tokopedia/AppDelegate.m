@@ -238,6 +238,8 @@
 - (void)containerAvailable:(TAGContainer *)container {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.container = container;
+        NSString *GoogleMapAPIKey = [self.container stringForKey:@"google_map_api_key"]?:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU";
+        [GMSServices provideAPIKey:GoogleMapAPIKey];
     });
 }
 @end
