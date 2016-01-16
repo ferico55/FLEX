@@ -370,7 +370,7 @@
 #pragma mark - Picker Place Delegate
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
-    NSString *addressStreet= @"Lokasi yang Dituju";
+    NSString *addressStreet= @"";
     if (![suggestion isEqualToString:@""]) {
         NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
         addressStreet = addressSuggestions[0];
@@ -391,7 +391,7 @@
     
     _textfieldpostcode.text = address.postalCode;
     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_buttonMapLocation setCustomAttributedText:addressStreet];
+    [_buttonMapLocation setCustomAttributedText:addressStreet?:@"Lokasi yang Dituju"];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;
