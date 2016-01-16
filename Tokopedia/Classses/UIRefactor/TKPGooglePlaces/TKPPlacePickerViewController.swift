@@ -291,12 +291,14 @@ enum TypePlacePicker : Int{
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {
+        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
+        self.mapView.updateAddress("Lokasi yang Dituju")
         geocoder.reverseGeocodeCoordinate(mapView.selectedMarker.position) { (response, error) -> Void in
             if (error != nil){
                 return
             }
             
-            if (response != nil){
+            if (response != nil && response.results().count > 0){
                 let placemark :GMSAddress = response.firstResult()
                 
                 self.address = placemark

@@ -370,7 +370,7 @@
 #pragma mark - Picker Place Delegate
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
-    NSString *addressStreet;(address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    NSString *addressStreet= @"Lokasi yang Dituju";
     if (![suggestion isEqualToString:@""]) {
         NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
         addressStreet = addressSuggestions[0];
@@ -594,7 +594,11 @@
 
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                 
-                if (response == nil) {
+                if (error != nil){
+                    return;
+                }
+                
+                if (response == nil|| response.results.count == 0) {
                     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                     [_buttonMapLocation setCustomAttributedText:@"Lokasi yang Dituju"];
 

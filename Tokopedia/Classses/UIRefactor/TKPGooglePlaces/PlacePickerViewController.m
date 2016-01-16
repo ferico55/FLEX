@@ -584,9 +584,11 @@
 -(void)updateAddressSaveHistory:(BOOL)shouldSaveHistory addressSugestion:(GMSAutocompletePrediction *)addressSugestion
 {
     [_geocoder reverseGeocodeCoordinate:[self marker].position completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-        // strAdd -> take bydefault value nil
-        //        [self marker].snippet = [self addressString:placemark];
-        if (response == nil) {
+        if (error != nil){
+            return;
+        }
+        
+        if (response == nil|| response.results.count == 0) {
             [_addressLabel setCustomAttributedText:@"Lokasi yang Dituju"];
             [_addressInfoWindowLabel setCustomAttributedText:@"Lokasi yang Dituju"];
         } else
