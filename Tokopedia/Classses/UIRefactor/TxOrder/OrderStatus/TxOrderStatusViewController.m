@@ -788,6 +788,8 @@
     [_act stopAnimating];
     [_refreshControll endRefreshing];
     
+    [_noResultView removeFromSuperview];
+    
     if (_page == 1) {
         _tableView.contentOffset = CGPointZero;
     }
