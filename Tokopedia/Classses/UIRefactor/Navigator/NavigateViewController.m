@@ -79,7 +79,7 @@
 -(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    container.data = @{MORE_SHOP_ID : shopID};
+    container.data = @{MORE_SHOP_ID : shopID?:@""};
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -89,7 +89,7 @@
     UserContainerViewController *container = [UserContainerViewController new];
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     container.data = @{
-                       @"user_id" : userID,
+                       @"user_id" : userID?:@"",
                        @"auth" : [auth getUserLoginData]?:@""
                        };
     

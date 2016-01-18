@@ -363,11 +363,6 @@
     [_tableView reloadData];
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_CALCULATE) {
@@ -492,8 +487,10 @@
     return param;
 }
 - (IBAction)tapEditLocation:(id)sender {
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+    if (_isFinishCalculate) {
+        AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+        [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+    }
 }
 
 -(void)requestSuccessActionCalculate:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -991,8 +988,20 @@
 }
 
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage {
-    NSString *addressStreet = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    [_pinLocationNameButton.titleLabel setCustomAttributedText:addressStreet];
+    NSString *addressStreet= @"";
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
+    
+    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+    
+    [_pinLocationNameButton.titleLabel setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
     AddressFormList *addressList = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
     addressList.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     addressList.latitude = [[NSNumber numberWithDouble:latitude]stringValue];

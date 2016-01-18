@@ -1669,7 +1669,7 @@
     _objectManager =  [RKObjectManager sharedClient];
     
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [_objectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
     // setup object mappings
     RKObjectMapping *shippingMapping = [RKObjectMapping mappingForClass:[ShippingInfo class]];
@@ -2745,7 +2745,7 @@
     _objectManagerAction = [RKObjectManager sharedClient];
     
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [_objectManagerAction.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+    [_objectManagerAction.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
@@ -3096,8 +3096,21 @@
           longitude:(double)longitude
            latitude:(double)latitude
            mapImage:(UIImage *)mapImage {
+    NSString *addressStreet= @"";
+    
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
     NSString *locationAddress = [self streetNameFromAddress:address];
-    self.pickupLocationLabel.text = locationAddress;
+    NSString *street= locationAddress;
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+    
+    self.pickupLocationLabel.text = [locationAddress isEqualToString:@""]?@"Lokasi yang Dituju":locationAddress;
     _shipment.shop_shipping.latitude = latitude;
     _shipment.shop_shipping.longitude = longitude;
 }

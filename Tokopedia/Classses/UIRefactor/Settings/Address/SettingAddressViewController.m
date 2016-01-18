@@ -907,8 +907,7 @@
             NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
             NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
             SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-            vc.data = @{kTKPD_AUTHKEY: _auth,
-                        kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
+            vc.data = @{kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
                         };
             vc.delegate = self;
             

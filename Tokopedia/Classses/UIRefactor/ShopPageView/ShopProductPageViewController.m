@@ -76,7 +76,8 @@ GeneralProductCellDelegate,
 GeneralSingleProductDelegate,
 GeneralPhotoProductDelegate,
 TokopediaNetworkManagerDelegate,
-NoResultDelegate
+NoResultDelegate,
+RetryViewDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

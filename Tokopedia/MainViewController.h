@@ -24,5 +24,6 @@
 @interface MainViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSMutableDictionary *auth;
 
 @end

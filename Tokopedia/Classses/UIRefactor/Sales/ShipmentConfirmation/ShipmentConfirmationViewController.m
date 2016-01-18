@@ -356,7 +356,7 @@
     _objectManager =  [RKObjectManager sharedClient];
  
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [_objectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Order class]];
@@ -813,7 +813,7 @@
     _actionObjectManager =  [RKObjectManager sharedClient];
     
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [_actionObjectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+    [_actionObjectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
