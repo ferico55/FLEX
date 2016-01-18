@@ -48,8 +48,6 @@
     self.navigationItem.rightBarButtonItem = nil;
 }
 
-
-
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     UIBarButtonItem *reloadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                   target:self
@@ -96,7 +94,10 @@
     if (_url) {
         return _url;
     } else {
-        NSURL *initialURL = [NSURL URLWithString:@"https://m.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios"];
+        NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        appVersion = [appVersion stringByReplacingOccurrencesOfString:@"." withString:@""];
+        NSString *urlString = [NSString stringWithFormat:@"https://m.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios&app_version=%@", appVersion];
+        NSURL *initialURL = [NSURL URLWithString:urlString]; 
         return initialURL;
     }
 }
