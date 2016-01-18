@@ -639,6 +639,8 @@ SpellCheckRequestDelegate
 - (void)changeCategory:(NSNotification *)notification {
     //    [_product removeAllObjects];
     [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"department_id"];
+    [_params setObject:[_data objectForKey:@"search"] forKey:@"search"];
+    
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
     
