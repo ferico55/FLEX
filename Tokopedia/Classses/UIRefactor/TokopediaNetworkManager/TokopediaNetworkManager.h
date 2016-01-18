@@ -70,6 +70,7 @@
 - (NSString*)splitUriToPage:(NSString*)uri;
 - (RKManagedObjectRequestOperation *)getObjectRequest;
 - (void)requestCancel;
+- (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key;
 
 
 @end
