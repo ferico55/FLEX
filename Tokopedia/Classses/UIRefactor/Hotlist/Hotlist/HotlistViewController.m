@@ -39,7 +39,8 @@ UIGestureRecognizerDelegate,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout,
-NotificationDelegate
+NotificationDelegate,
+RetryViewDelegate
 >
 {
     NSMutableArray *_product;

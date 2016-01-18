@@ -64,7 +64,7 @@
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [_objectManager.HTTPClient setDefaultHeader:@"app_version" value:appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
