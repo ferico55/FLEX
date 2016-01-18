@@ -4814,7 +4814,7 @@
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="kIw-Fn-8YB"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SiCepat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKX-0e-gIf">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gojek" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKX-0e-gIf">
                                                     <rect key="frame" x="15" y="0.0" width="230" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="PCM-L4-aeT"/>
