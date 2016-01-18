@@ -25,9 +25,9 @@
 <
     NotificationManagerDelegate,
     UICollectionViewDataSource,
-    UICollectionViewDelegate,
-    BannerDelegate
->
+    UICollectionViewDelegate>
+//    BannerDelegate
+//>
 {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
@@ -187,18 +187,18 @@
     return cellSize;
 }
 
-- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    UICollectionReusableView *reusableView = nil;
-    if (kind == UICollectionElementKindSectionHeader) {
-        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                              withReuseIdentifier:@"BannerView"
-                                                                     forIndexPath:indexPath];
-        ((BannerCollectionReusableView*)reusableView).delegate = self;
-
-    }
-    
-    return reusableView;
-}
+//- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+//    UICollectionReusableView *reusableView = nil;
+//    if (kind == UICollectionElementKindSectionHeader) {
+//        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+//                                                              withReuseIdentifier:@"BannerView"
+//                                                                     forIndexPath:indexPath];
+//        ((BannerCollectionReusableView*)reusableView).delegate = self;
+//
+//    }
+//    
+//    return reusableView;
+//}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -283,38 +283,29 @@
     [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
         if (wself != nil) {
             _banner = banner;
-//            if(_banner.result.banner.count > 0) {
-//                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
-//            } else  {
-//                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-175);
+//            
+//            BOOL bannerExists = _banner.result.banner.count > 0;
+//            BOOL tickerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
+//            CGFloat bannerHeight;
+//
+//            if(bannerExists && !tickerExists) {
+//                //height of Banner
+//                bannerHeight = 175;
+//            } else if(!bannerExists && tickerExists) {
+//                //height of Ticker
+//                bannerHeight = 115;
+//            } else if(!bannerExists && !tickerExists){
+//                //height of Nothing
+//                bannerHeight = 0;
+//            } else {
+//                //height of Banner + Ticker
+//                bannerHeight = 290;
 //            }
 //            
-//            if([_banner.result.ticker.img_uri isEqualToString:@""]) {
-//                _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, _flowLayout.headerReferenceSize.height-96);
+//            if(_banner.result.banner.count > 0) {
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
 //            }
-            
-            BOOL bannerExists = _banner.result.banner.count > 0;
-            BOOL tickerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
-            CGFloat bannerHeight;
-
-            if(bannerExists && !tickerExists) {
-                //height of Banner
-                bannerHeight = 175;
-            } else if(!bannerExists && tickerExists) {
-                //height of Ticker
-                bannerHeight = 115;
-            } else if(!bannerExists && !tickerExists){
-                //height of Nothing
-                bannerHeight = 0;
-            } else {
-                //height of Banner + Ticker
-                bannerHeight = 290;
-            }
-            
-            if(_banner.result.banner.count > 0) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
-            }
-            _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, bannerHeight);
+//            _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, bannerHeight);
         }
     }];
 }
