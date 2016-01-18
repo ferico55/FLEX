@@ -3096,8 +3096,21 @@
           longitude:(double)longitude
            latitude:(double)latitude
            mapImage:(UIImage *)mapImage {
+    NSString *addressStreet= @"";
+    
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
     NSString *locationAddress = [self streetNameFromAddress:address];
-    self.pickupLocationLabel.text = locationAddress;
+    NSString *street= locationAddress;
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+    
+    self.pickupLocationLabel.text = [locationAddress isEqualToString:@""]?@"Lokasi yang Dituju":locationAddress;
     _shipment.shop_shipping.latitude = latitude;
     _shipment.shop_shipping.longitude = longitude;
 }

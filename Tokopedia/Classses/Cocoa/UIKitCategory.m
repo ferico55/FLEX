@@ -169,8 +169,8 @@
     style.lineSpacing = 6.0;
     style.alignment = self.textAlignment;
     
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: self.textColor,
-                                 NSFontAttributeName: self.font,
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: self.textColor?:[UIColor blackColor],
+                                 NSFontAttributeName: self.font?:FONT_GOTHAM_BOOK_11,
                                  NSParagraphStyleAttributeName: style,
                                  };
     
