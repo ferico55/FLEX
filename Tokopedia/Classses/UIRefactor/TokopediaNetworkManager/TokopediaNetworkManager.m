@@ -237,6 +237,26 @@
     return [queries objectForKey:@"page"];
 }
 
+- (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key {
+    NSURL *url = [NSURL URLWithString:URL];
+    NSArray *querry = [[url query] componentsSeparatedByString: @"&"];
+    
+    NSMutableDictionary *queries = [NSMutableDictionary new];
+    [queries removeAllObjects];
+    
+    for (NSString *keyValuePair in querry) {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        NSString *key = [pairComponents objectAtIndex:0];
+        NSString *value = [pairComponents objectAtIndex:1];
+        
+        [queries setObject:value forKey:key];
+    }
+    
+    return [queries objectForKey:key];
+}
+
+
+
 - (void)requestCancel {
     [_objectRequest cancel];
     _objectRequest = nil;
