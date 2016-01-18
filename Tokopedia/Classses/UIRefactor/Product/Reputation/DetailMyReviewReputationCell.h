@@ -30,12 +30,15 @@
 @interface DetailMyReviewReputationCell : UITableViewCell<TTTAttributedLabelDelegate>
 {
     IBOutlet UIView *viewContent, *viewContentStar, *viewContentAction, *viewKualitas, *viewAkurasi, *viewSeparatorContentAction;
+    IBOutlet UIView *viewAttachedImages;
     IBOutlet UIButton *btnProduct, *btnKomentar;
     IBOutlet CustomBtnSkip *btnUbah;
     TTTAttributedLabel *lblDesc;
     IBOutlet UIImageView *imgProduct;
     IBOutlet UILabel *lblKualitas, *lblAkurasi, *lblDate, *labelInfoSkip;
     IBOutletCollection(UIImageView) NSArray *arrImgKualitas, *arrImgAkurasi;
+    IBOutletCollection(UIImageView) NSArray *attachedImages;
+    
 }
 @property (nonatomic, strong) NSString *strRole;
 @property (nonatomic, unsafe_unretained) id<detailMyReviewReputationCell> delegate;
