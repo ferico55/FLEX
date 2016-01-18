@@ -52,8 +52,7 @@ static NSString const *rows = @"12";
 
 @end
 
-@implementation SearchResultShopViewController
-{
+@implementation SearchResultShopViewController {
     NSInteger _page;
     NSInteger _limit;
     
@@ -80,9 +79,6 @@ static NSString const *rows = @"12";
     
     
     LoadingView *loadingView;
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
 }
 
@@ -118,14 +114,8 @@ static NSString const *rows = @"12";
     _urlarray = [NSMutableArray new];
     _params = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
     
-    /** set first page become 1 **/
-    _page = 1;
     start = 0;
-    
-    /** set max data per page request **/
     _limit = kTKPDSEARCH_LIMITPAGE;
     
     
@@ -160,12 +150,6 @@ static NSString const *rows = @"12";
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHSHOP_APIRESPONSEFILEFORMAT, querry?:deptid]];
-
-    _cachecontroller.filePath = _cachepath;
-//    _cachecontroller.URLCacheInterval = 86400.0;
-    _cachecontroller.URLCacheInterval = 0;
-    [_cachecontroller initCacheWithDocumentPath:path];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
@@ -272,7 +256,6 @@ static NSString const *rows = @"12";
             List *list = [_product objectAtIndex:indexPath.row];
 
             ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
-            //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
@@ -342,9 +325,6 @@ static NSString const *rows = @"12";
 - (void)loadData
 {
     if ([self getNetworkManager].getObjectRequest.isExecuting) return;
-	[_cachecontroller getFileModificationDate];
-	
-    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         if (!_isrefreshview) {
@@ -383,39 +363,8 @@ static NSString const *rows = @"12";
     }
 }
 
--(void)requestfailure:(id)object
-{
-    if (_timeinterval > _cachecontroller.URLCacheInterval || start > 0 || _isrefreshview) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _searchitem = stats;
-            BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
+-(void)requestfailure:(id)object {
+    [self requestprocess:object];
 }
 
 -(void)requestprocess:(id)object
@@ -453,16 +402,8 @@ static NSString const *rows = @"12";
                     [_noResultView removeFromSuperview];
                     _urinext =  _searchitem.result.paging.uri_next;
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
-//                    
-//                    NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
-//                    if(tempInt == _page)
-//                        _urinext = nil;
-//                    _page = tempInt;
-//                    
-//                    NSLog(@"next page : %zd",_page);
                     
                     start = [[tokopediaNetworkManager explodeURL:_urinext withKey:@"start"] integerValue];
-                    
                     _isnodata = NO;
                     
                     if([_urinext isEqualToString:@""]) {
@@ -503,6 +444,7 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification
+
 -(IBAction)tap:(id)sender
 {
     UIButton *button = (UIButton *)sender;
