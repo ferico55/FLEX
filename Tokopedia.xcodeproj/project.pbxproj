@@ -1986,6 +1986,7 @@
 		45E3761F1C48981E00112E68 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 45E36E621C48981E00112E68 /* vt-iOSlib-1.0.1.tar.gz */; };
 		45E376201C48981E00112E68 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 45E36E631C48981E00112E68 /* vt-iOSlib-1.0.1.zip */; };
 		45E376211C48981E00112E68 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E36E661C48981E00112E68 /* XYPieChart.m */; };
+		7A71E8651C4CCF4C00D00615 /* SearchAWSShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71E8641C4CCF4C00D00615 /* SearchAWSShop.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -5048,6 +5049,8 @@
 		45E36E651C48981E00112E68 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		45E36E661C48981E00112E68 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		45E376221C48985B00112E68 /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
+		7A71E8631C4CCF4C00D00615 /* SearchAWSShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAWSShop.h; sourceTree = "<group>"; };
+		7A71E8641C4CCF4C00D00615 /* SearchAWSShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAWSShop.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6460,6 +6463,8 @@
 				45E3646D1C48981A00112E68 /* SearchAWSProduct.m */,
 				45E3646E1C48981A00112E68 /* SearchAWSResult.h */,
 				45E3646F1C48981A00112E68 /* SearchAWSResult.m */,
+				7A71E8631C4CCF4C00D00615 /* SearchAWSShop.h */,
+				7A71E8641C4CCF4C00D00615 /* SearchAWSShop.m */,
 			);
 			path = SearchAWS;
 			sourceTree = "<group>";
@@ -12300,6 +12305,7 @@
 				45E372D11C48981E00112E68 /* TKPPlacePickerViewController.swift in Sources */,
 				45E36E791C48981E00112E68 /* RequestUtils.m in Sources */,
 				45E3715F1C48981E00112E68 /* InboxResolutionCenterComplainViewController.m in Sources */,
+				7A71E8651C4CCF4C00D00615 /* SearchAWSShop.m in Sources */,
 				45E370D51C48981E00112E68 /* ContactUsFormCategoryCell.m in Sources */,
 				45E371EC1C48981E00112E68 /* MyReviewReputationCell.m in Sources */,
 				45E36F2A1C48981E00112E68 /* DetailInboxTicket.m in Sources */,
@@ -12993,10 +12999,10 @@
 					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "31893ac2-aa61-474c-a581-19663d58950b";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
@@ -13044,7 +13050,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "31893ac2-aa61-474c-a581-19663d58950b";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
