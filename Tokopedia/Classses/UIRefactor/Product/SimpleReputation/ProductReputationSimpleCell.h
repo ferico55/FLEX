@@ -45,6 +45,7 @@
 
 @property(nonatomic, weak) IBOutlet UIImageView *reputationBuyerImage;
 @property(nonatomic, weak) id<ProductReputationSimpleDelegate> delegate;
+@property (strong, nonatomic) IBOutlet UIView *leftBorderView;
 
 - (void)setReputationModelView:(DetailReviewReputationViewModel*)viewModel;
 - (void)setShopReputationModelView:(ReviewList*)viewModel;

@@ -33,9 +33,12 @@
     [self.productView setFrame:CGRectZero];
 
     if(viewModel.isMostHelpful){
-        _reputationMessageLabel.textColor = [UIColor colorWithRed:0.097 green:0.5 blue:0.095 alpha:1];
+        //_reputationMessageLabel.textColor = [UIColor colorWithRed:0.097 green:0.5 blue:0.095 alpha:1];
+        [_leftBorderView setHidden:NO];
+        
     }else{
-        _reputationMessageLabel.textColor = [UIColor blackColor];
+        //_reputationMessageLabel.textColor = [UIColor blackColor];
+        [_leftBorderView setHidden:YES];
     }
     //add border bottom
     CALayer *bottomBorder = [CALayer layer];
