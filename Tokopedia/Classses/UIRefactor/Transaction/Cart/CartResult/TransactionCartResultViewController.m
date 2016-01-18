@@ -62,7 +62,6 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *indomaretNotes;
 @property (weak, nonatomic) IBOutlet UILabel *IndomaretCodeLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *klikBCAImages;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *klikBCAAditionalConstraint;
 @property (strong, nonatomic) IBOutlet UITableViewCell *cashbackCell;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *klikBCAImagesSteps;
 @end
