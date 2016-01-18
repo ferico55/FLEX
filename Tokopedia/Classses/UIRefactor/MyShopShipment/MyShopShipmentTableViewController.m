@@ -1917,7 +1917,10 @@
             CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
             [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
                                            completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                   if (response == nil) {
+                   if (error != nil){
+                       return;
+                   }
+                   if (response == nil|| response.results.count == 0) {
                        self.pickupLocationLabel.text = [NSString stringWithFormat:@"Lokasi yang Dituju"];
                    } else {
                        GMSAddress *placemark = [response results][0];
