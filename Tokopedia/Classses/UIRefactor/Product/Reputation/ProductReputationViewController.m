@@ -64,7 +64,7 @@ static NSInteger userViewHeight = 70;
     TokopediaNetworkManager *tokopediaNetworkManager;
     
     HelpfulReviewRequest *helpfulReviewRequest;
-    BOOL isShowingMore;
+    BOOL isShowingMore, animationHasShown;
 }
 
 
@@ -130,6 +130,11 @@ static NSInteger userViewHeight = 70;
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
     
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    animationHasShown = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -276,7 +281,7 @@ static NSInteger userViewHeight = 70;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *header;
-    if(helpfulReviews.count >0 && section == 0){
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
         header = _helpfulReviewHeader;
     }
     return header;
@@ -284,7 +289,7 @@ static NSInteger userViewHeight = 70;
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footer;
-    if(helpfulReviews.count >0 && section == 0){
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
         footer = _helpfulReviewFooter;
     }
     return footer;
@@ -292,7 +297,7 @@ static NSInteger userViewHeight = 70;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(helpfulReviews.count >0 && section == 0){
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
         return 50;
     }
     return 10;
@@ -300,7 +305,7 @@ static NSInteger userViewHeight = 70;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if(helpfulReviews.count >0 && section == 0){
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
         return 10;
     }
     return 0;
@@ -308,11 +313,11 @@ static NSInteger userViewHeight = 70;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return helpfulReviews.count > 0 ? 2 : 1;
+    return (filterStar == 0 && helpfulReviews.count > 0) ? 2 : 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(helpfulReviews.count > 0){
+    if(filterStar == 0 && helpfulReviews.count > 0){
         if(indexPath.section == 1){
             return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
         }else{
@@ -352,7 +357,7 @@ static NSInteger userViewHeight = 70;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if((helpfulReviews.count > 0 && indexPath.section != 0) || (helpfulReviews.count == 0 && indexPath.section != 0)){
+    if((filterStar == 0 && helpfulReviews.count > 0 && indexPath.section != 0) || (helpfulReviews.count == 0 && indexPath.section != 0)){
         cell.backgroundColor = [UIColor clearColor];
         if(indexPath.row == arrList.count-1) {
             if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
@@ -361,13 +366,14 @@ static NSInteger userViewHeight = 70;
             }
         }
     }
-    if(helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
+    if(!animationHasShown && filterStar == 0 &&  helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
         [self animate:cell];
+        animationHasShown = YES;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(helpfulReviews.count > 0){
+    if(filterStar == 0 && helpfulReviews.count > 0){
         if(indexPath.section == 1){
             ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
             
@@ -383,6 +389,11 @@ static NSInteger userViewHeight = 70;
                 DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
                 reputationDetail.isHelpfulReview = YES;
                 [helpfulCell setReputationModelView:reputationDetail.viewModel];
+                
+                CGRect newFrame = helpfulCell.leftBorderView.frame;
+                newFrame.size.width = helpfulCell.leftBorderView.frame.size.width;
+                newFrame.size.height = [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews] - userViewHeight;
+                [helpfulCell.leftBorderView setFrame:newFrame];
                 return helpfulCell;
             }else{
                 return _helpfulReviewLoadMoreCell;
@@ -409,7 +420,7 @@ static NSInteger userViewHeight = 70;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if(helpfulReviews.count > 0){
+    if(filterStar == 0 && helpfulReviews.count > 0){
         if(indexPath.section == 1){
             DetailReputationReview *detailReputationReview = arrList[indexPath.row];
             [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
@@ -437,12 +448,12 @@ static NSInteger userViewHeight = 70;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(helpfulReviews.count > 0){
-    if(section==1){
-        return arrList.count;
-    }else{
-        return isShowingMore ? helpfulReviews.count+1 : 2;
-    }
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(section==1){
+            return arrList.count;
+        }else{
+            return isShowingMore ? helpfulReviews.count+1 : 2;
+        }
     }else{
         return arrList.count;
     }
@@ -521,6 +532,7 @@ static NSInteger userViewHeight = 70;
     page = 0;
     filterStar = 0;
     strUri = nil;
+    animationHasShown = NO;
     [arrList removeAllObjects];
     [tableContent reloadData];
     
@@ -541,6 +553,7 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     btnFilter6Month.tag = 1;
     btnFilterAllTime.tag = 0;
+    animationHasShown = NO;
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
@@ -559,6 +572,7 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     btnFilter6Month.tag = 0;
     btnFilterAllTime.tag = 1;
+    animationHasShown = NO;
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
@@ -594,10 +608,10 @@ static NSInteger userViewHeight = 70;
 - (IBAction)showMoreTapped:(id)sender {
     if(isShowingMore){
         isShowingMore = NO;
-        [_buttonShowMore setTitle:@"show more" forState:UIControlStateNormal];
+        [_buttonShowMore setTitle:@"tampilkan semua" forState:UIControlStateNormal];
     }else{
         isShowingMore = YES;
-        [_buttonShowMore setTitle:@"show less" forState:UIControlStateNormal];
+        [_buttonShowMore setTitle:@"sembunyikan" forState:UIControlStateNormal];
     }
     [tableContent reloadData];
 }
@@ -1176,26 +1190,16 @@ static NSInteger userViewHeight = 70;
 
 
 - (void)animate:(UITableViewCell *)cell {
-    /*
-    [@[helpfulCell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
-        [cell setFrame:CGRectMake(320, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
-        [UIView animateWithDuration:0.7 animations:^{
-            
-            [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, 0)];
-        }];
-    }];
-     */
-    
     [@[cell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
-        [cell setFrame:CGRectMake(40, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
-        [UIView animateWithDuration:0.7
-                              delay:0.0
-             usingSpringWithDamping:0.3
-              initialSpringVelocity:1.0
-                            options:UIViewAnimationOptionCurveEaseInOut
+        [cell setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
+        [UIView animateWithDuration:1
+                              delay:0.5
+             usingSpringWithDamping:0.7
+              initialSpringVelocity:0.2
+                            options:UIViewAnimationOptionCurveEaseOut
                          animations:^
          {
-             [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, 0)];
+             [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
          }
                          completion:nil];
     }];
