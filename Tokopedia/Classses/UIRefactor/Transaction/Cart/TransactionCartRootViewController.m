@@ -16,6 +16,7 @@
 #import "NoResultReusableView.h"
 
 #import "TransactionCartFormMandiriClickPayViewController.h"
+#import "MainViewController.h"
 
 #import "NotificationManager.h"
 
@@ -112,8 +113,8 @@
 
     if (_index == 0) {
         
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        _auth = [secureStorage keychainDictionary];
+        MainViewController *rootController = (MainViewController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+        _auth = rootController.auth;
         _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
         
         if(!_isLogin) {
