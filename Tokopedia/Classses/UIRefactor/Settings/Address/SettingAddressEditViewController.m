@@ -391,7 +391,7 @@
     
     _textfieldpostcode.text = address.postalCode;
     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_buttonMapLocation setCustomAttributedText:addressStreet?:@"Lokasi yang Dituju"];
+    [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;

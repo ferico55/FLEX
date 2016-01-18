@@ -293,9 +293,21 @@
 #pragma mark - Picker Place Delegate
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
-    NSString *addressStreet = (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    NSString *addressStreet= @"";
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
+    
+    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+    
     _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_pinLocationNameButton setCustomAttributedText:addressStreet];
+    [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _longitude = [[NSNumber numberWithDouble:longitude] stringValue];

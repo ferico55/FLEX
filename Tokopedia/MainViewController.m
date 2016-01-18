@@ -58,7 +58,6 @@
 >
 {
     UITabBarController *_tabBarController;
-    NSMutableDictionary *_auth;
     HomeTabViewController *_swipevc;
     URLCacheController *_cacheController;
     

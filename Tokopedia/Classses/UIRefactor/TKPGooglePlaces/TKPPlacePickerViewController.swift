@@ -141,18 +141,22 @@ enum TypePlacePicker : Int{
     
     //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
-        if(type == TypePlacePicker.TypeEditPlace.rawValue){
-            if(position != nil && mapView.selectedMarker != nil){
-                mapView.selectedMarker.position = position.target
-            }
-        }
+        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
+        self.mapView.updateAddress("Lokasi yang Dituju")
+    }
+    
+    func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
     }
     
     func mapView(mapView: GMSMapView!, idleAtCameraPosition position: GMSCameraPosition!) {
         if(type == TypePlacePicker.TypeEditPlace.rawValue){
-            updateAddressSaveHistory(false, addressSugestion: nil)
+            if(position != nil && mapView.selectedMarker != nil){
+                mapView.selectedMarker.position = position.target
+                updateAddressSaveHistory(false, addressSugestion: nil)
+            }
         }
     }
+    
     func mapView(mapView: GMSMapView!, markerInfoWindow marker: GMSMarker!) -> UIView! {
         return self.mapView.infoWindowView;
     }
