@@ -301,6 +301,13 @@ static NSInteger userViewHeight = 70;
     DetailReputationReview *reputationDetail = arrList[indexPath.row];
     [cell setReputationModelView:reputationDetail.viewModel];
     
+    if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+        if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+            [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, @(indexPath.row)]];
+        }
+    }
+    
     return cell;
 }
 
