@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
-		62E15C771C450F33007F382A /* icon_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C741C450F33007F382A /* icon_camera.png */; settings = {ASSET_TAGS = (); }; };
-		62E15C781C450F33007F382A /* icon_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C751C450F33007F382A /* icon_camera@2x.png */; settings = {ASSET_TAGS = (); }; };
-		62E15C791C450F33007F382A /* icon_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C761C450F33007F382A /* icon_camera@3x.png */; settings = {ASSET_TAGS = (); }; };
+		62DEFFC21C4E31DA00944EB3 /* ProductAddCaptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DEFFC01C4E31DA00944EB3 /* ProductAddCaptionViewController.m */; };
+		62DEFFC31C4E31DA00944EB3 /* ProductAddCaptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62DEFFC11C4E31DA00944EB3 /* ProductAddCaptionViewController.xib */; };
+		62E15C771C450F33007F382A /* icon_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C741C450F33007F382A /* icon_camera.png */; };
+		62E15C781C450F33007F382A /* icon_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C751C450F33007F382A /* icon_camera@2x.png */; };
+		62E15C791C450F33007F382A /* icon_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E15C761C450F33007F382A /* icon_camera@3x.png */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2016,6 +2018,9 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		62DEFFBF1C4E31DA00944EB3 /* ProductAddCaptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductAddCaptionViewController.h; sourceTree = "<group>"; };
+		62DEFFC01C4E31DA00944EB3 /* ProductAddCaptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductAddCaptionViewController.m; sourceTree = "<group>"; };
+		62DEFFC11C4E31DA00944EB3 /* ProductAddCaptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductAddCaptionViewController.xib; sourceTree = "<group>"; };
 		62E15C741C450F33007F382A /* icon_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_camera.png; sourceTree = "<group>"; };
 		62E15C751C450F33007F382A /* icon_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@2x.png"; sourceTree = "<group>"; };
 		62E15C761C450F33007F382A /* icon_camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@3x.png"; sourceTree = "<group>"; };
@@ -8154,6 +8159,9 @@
 				85B13E2C1C30E69A001F1CBC /* RequestMoveTo.m */,
 				85B13E2D1C30E69A001F1CBC /* SimpleReputation */,
 				85B13E331C30E69A001F1CBC /* string_product.h */,
+				62DEFFBF1C4E31DA00944EB3 /* ProductAddCaptionViewController.h */,
+				62DEFFC01C4E31DA00944EB3 /* ProductAddCaptionViewController.m */,
+				62DEFFC11C4E31DA00944EB3 /* ProductAddCaptionViewController.xib */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -10965,6 +10973,7 @@
 				85B149371C30E6A0001F1CBC /* icon_edit_grey.png in Resources */,
 				85B14AFE1C30E6A0001F1CBC /* Icon_check_green_bg@2x.png in Resources */,
 				85B149361C30E6A0001F1CBC /* icon_dislike_active@3x.png in Resources */,
+				62DEFFC31C4E31DA00944EB3 /* ProductAddCaptionViewController.xib in Resources */,
 				85B1481A1C30E69F001F1CBC /* TxOrderStatusDetailViewController.xib in Resources */,
 				85B149121C30E69F001F1CBC /* icon_checkmark_1.png in Resources */,
 				85B149801C30E6A0001F1CBC /* icon_medal_gold.png in Resources */,
@@ -12239,6 +12248,7 @@
 				85B143B01C30E69F001F1CBC /* UITextView+UITextView_Placeholder.m in Sources */,
 				85B143E61C30E69F001F1CBC /* CatalogMarketPlace.m in Sources */,
 				85B145761C30E69F001F1CBC /* CreatePasswordViewController.m in Sources */,
+				62DEFFC21C4E31DA00944EB3 /* ProductAddCaptionViewController.m in Sources */,
 				85B146B91C30E69F001F1CBC /* MyShopNoteDetailViewController.m in Sources */,
 				85B1468C1C30E69F001F1CBC /* DetailReviewViewController.m in Sources */,
 				85B146C41C30E69F001F1CBC /* NavigateViewController.m in Sources */,
