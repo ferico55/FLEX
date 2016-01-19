@@ -42,6 +42,11 @@
                 <outletCollection property="addPictureButtons" destination="2zB-UU-RWv" id="Jig-uv-qUW"/>
                 <outletCollection property="addPictureButtons" destination="UTx-qW-Cms" id="zZb-Fr-vRA"/>
                 <outletCollection property="addPictureButtons" destination="uBf-fa-Zfa" id="g9V-hs-0Ge"/>
+                <outletCollection property="attachedImages" destination="QnF-Xg-2Ok" id="BlP-qG-itp"/>
+                <outletCollection property="attachedImages" destination="v5P-6X-dwb" id="njj-He-41h"/>
+                <outletCollection property="attachedImages" destination="Qjc-em-jXs" id="sRC-2R-fhf"/>
+                <outletCollection property="attachedImages" destination="v3p-rb-Xqo" id="nIY-Wt-eyv"/>
+                <outletCollection property="attachedImages" destination="afu-ua-wfx" id="jba-vX-4wo"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -111,6 +116,9 @@
                                             <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
                                             <state key="normal" image="icon_camera.png"/>
                                             <state key="highlighted" image="icon_camera.png"/>
+                                            <connections>
+                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="F3P-Rb-Vbj"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" tag="21" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UTx-qW-Cms">
                                             <rect key="frame" x="56" y="3" width="40" height="40"/>
@@ -121,6 +129,9 @@
                                             <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
                                             <state key="normal" image="icon_camera.png"/>
                                             <state key="highlighted" image="icon_camera.png"/>
+                                            <connections>
+                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="zSH-yr-ZXX"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" tag="22" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zB-UU-RWv">
                                             <rect key="frame" x="104" y="3" width="40" height="40"/>
@@ -131,6 +142,9 @@
                                             <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
                                             <state key="normal" image="icon_camera.png"/>
                                             <state key="highlighted" image="icon_camera.png"/>
+                                            <connections>
+                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="8il-bd-uJu"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" tag="23" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EfL-Db-zCN">
                                             <rect key="frame" x="152" y="3" width="40" height="40"/>
@@ -141,6 +155,9 @@
                                             <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
                                             <state key="normal" image="icon_camera.png"/>
                                             <state key="highlighted" image="icon_camera.png"/>
+                                            <connections>
+                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="z8V-SX-Gyy"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" tag="24" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2k-r5-W3J">
                                             <rect key="frame" x="200" y="3" width="40" height="40"/>
@@ -151,6 +168,9 @@
                                             <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
                                             <state key="normal" image="icon_camera.png"/>
                                             <state key="highlighted" image="icon_camera.png"/>
+                                            <connections>
+                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="fhg-p3-xNN"/>
+                                            </connections>
                                         </button>
                                         <imageView userInteractionEnabled="NO" tag="20" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QnF-Xg-2Ok">
                                             <rect key="frame" x="8" y="3" width="40" height="40"/>
