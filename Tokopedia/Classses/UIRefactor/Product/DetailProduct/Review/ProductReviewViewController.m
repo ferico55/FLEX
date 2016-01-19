@@ -7,6 +7,7 @@
 //
 
 #import "detail.h"
+#import "string.h"
 #import "string_alert.h"
 #import "string_product.h"
 
