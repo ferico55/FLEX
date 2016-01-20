@@ -12981,7 +12981,7 @@
 					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
