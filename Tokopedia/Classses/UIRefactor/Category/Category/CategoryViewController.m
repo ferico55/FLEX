@@ -20,24 +20,21 @@
 #import "UIViewController+TKPAdditions.h"
 #import "TKPHomeBannerStore.h"
 #import "TKPStoreManager.h"
+#import "iCarousel.h"
+#import "CarouselDataSource.h"
 
-@interface CategoryViewController ()
-<
-    NotificationManagerDelegate,
-    UICollectionViewDataSource,
-    UICollectionViewDelegate>
-//    BannerDelegate
-//>
-{
+@interface CategoryViewController () <NotificationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate> {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
     NSURL *_deeplinkUrl;
     
     Banner *_banner;
+    UIActivityIndicatorView *loadIndicator;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+@property (nonatomic, strong) iCarousel *slider;
 
 
 @end
@@ -61,16 +58,21 @@
     /** Initialization variable **/
     _category = [NSMutableArray new];
     
-    _flowLayout.headerReferenceSize = CGSizeMake(_collectionView.frame.size.width, 290);
-    [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width + 290, _collectionView.frame.size.height)];
+    [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width , _collectionView.frame.size.height)];
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, ([[UIScreen mainScreen]bounds].size.height) )];
     
+    loadIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 30)];
+    [loadIndicator setBackgroundColor:[UIColor redColor]];
+    [_collectionView addSubview:loadIndicator];
+    
+    [loadIndicator bringSubviewToFront:self.view];
+    [loadIndicator startAnimating];
     
     /** Set title and icon for category **/
     NSArray *titles = kTKPDCATEGORY_TITLEARRAY;
     NSArray *dataids = kTKPDCATEGORY_IDARRAY;
     
-    for (int i = 0; i<22; i++) {
+    for (int i = 0; i < 22; i++) {
         NSString * imagename = [NSString stringWithFormat:@"icon_%zd",i];
         [_category addObject:@{kTKPDCATEGORY_DATATITLEKEY : titles[i], kTKPDCATEGORY_DATADIDKEY : dataids[i],kTKPDCATEGORY_DATAICONKEY:imagename}];
     }
@@ -282,10 +284,28 @@
     
     [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
         if (wself != nil) {
+            NSInteger sliderHeight = 175;
+            NSInteger bannerHeight = 115;
+            
             _banner = banner;
-//            
-//            BOOL bannerExists = _banner.result.banner.count > 0;
-//            BOOL tickerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
+            
+            [loadIndicator stopAnimating];
+            BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
+            
+            if(bannerExists) {
+                sliderHeight += bannerHeight;
+            }
+            
+            _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, -sliderHeight, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
+            CarouselDataSource *dataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
+            _slider.dataSource = dataSource;
+            _slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            _slider.type = iCarouselTypeCoverFlow2;
+            
+            [_collectionView addSubview:_slider];
+            [_collectionView bringSubviewToFront:_slider];
+            [_collectionView setContentInset:UIEdgeInsetsMake(_slider.frame.size.height, 0, 0, 0)];
+            
 //            CGFloat bannerHeight;
 //
 //            if(bannerExists && !tickerExists) {

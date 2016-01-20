@@ -1987,6 +1987,8 @@
 		7A71118A1C4CF81E00D00615 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7A7109CD1C4CF81D00D00615 /* vt-iOSlib-1.0.1.tar.gz */; };
 		7A71118B1C4CF81E00D00615 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A7109CE1C4CF81D00D00615 /* vt-iOSlib-1.0.1.zip */; };
 		7A71118C1C4CF81E00D00615 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7109D11C4CF81D00D00615 /* XYPieChart.m */; };
+		7A71262A1C4F823D00D00615 /* CarouselDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7126291C4F823C00D00615 /* CarouselDataSource.m */; };
+		7A71262D1C4F83D100D00615 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71262C1C4F83D100D00615 /* iCarousel.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -4366,6 +4368,10 @@
 		7A7109CE1C4CF81D00D00615 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		7A7109D01C4CF81D00D00615 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		7A7109D11C4CF81D00D00615 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		7A7126281C4F823C00D00615 /* CarouselDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarouselDataSource.h; sourceTree = "<group>"; };
+		7A7126291C4F823C00D00615 /* CarouselDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarouselDataSource.m; sourceTree = "<group>"; };
+		7A71262B1C4F83D100D00615 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		7A71262C1C4F83D100D00615 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		7A71FD051C4CF81800D00615 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		7A71FD061C4CF81800D00615 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		7A71FD081C4CF81800D00615 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -5793,6 +5799,8 @@
 		7A71015B1C4CF81900D00615 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				7A71262B1C4F83D100D00615 /* iCarousel.h */,
+				7A71262C1C4F83D100D00615 /* iCarousel.m */,
 				7A71015C1C4CF81900D00615 /* Analytics.h */,
 				7A71015D1C4CF81900D00615 /* Analytics.m */,
 			);
@@ -6163,6 +6171,8 @@
 				7A7102281C4CF81A00D00615 /* CategoryResult */,
 				7A71022A1C4CF81A00D00615 /* RequestCategory.h */,
 				7A71022B1C4CF81A00D00615 /* RequestCategory.m */,
+				7A7126281C4F823C00D00615 /* CarouselDataSource.h */,
+				7A7126291C4F823C00D00615 /* CarouselDataSource.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -11884,6 +11894,7 @@
 				7A710C5C1C4CF81D00D00615 /* BackgroundLayer.m in Sources */,
 				7A710CF81C4CF81D00D00615 /* MoreViewController.m in Sources */,
 				7A710A511C4CF81D00D00615 /* GeneralAction.m in Sources */,
+				7A71262A1C4F823D00D00615 /* CarouselDataSource.m in Sources */,
 				7A710EC71C4CF81D00D00615 /* VTAddress.m in Sources */,
 				7A710BD11C4CF81D00D00615 /* PhoneVerificationViewController.m in Sources */,
 				7A710C6F1C4CF81D00D00615 /* DepositFormAccountBankViewController.m in Sources */,
@@ -12022,6 +12033,7 @@
 				7A710C7F1C4CF81D00D00615 /* GeneralCheckmarkCell.m in Sources */,
 				7A710AE51C4CF81D00D00615 /* BankAccountFormList.m in Sources */,
 				7A710BFA1C4CF81D00D00615 /* TKPDAlert.m in Sources */,
+				7A71262D1C4F83D100D00615 /* iCarousel.m in Sources */,
 				7A710C4D1C4CF81D00D00615 /* TKPDTabBarNavigationController.m in Sources */,
 				7A710B991C4CF81D00D00615 /* TxOrderConfirmedList.m in Sources */,
 				7A7109E71C4CF81D00D00615 /* TKPDSecureStorage.m in Sources */,
