@@ -33,11 +33,20 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    _selectionMarker.hidden = !selected;
+    
+    if (self.isEditing) {
+        [super setSelected:selected animated:animated];
+    } else {
+        _selectionMarker.hidden = !selected;
+    }
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    _selectionMarker.hidden = !highlighted;
+    if (self.isEditing) {
+        [super setHighlighted:highlighted animated:animated];
+    } else {
+        _selectionMarker.hidden = !highlighted;
+    }
 }
 
 - (IBAction)actionSmile:(id)sender {
