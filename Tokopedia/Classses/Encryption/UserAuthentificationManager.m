@@ -10,6 +10,7 @@
 #import "TKPDSecureStorage.h"
 #import "NSString+MD5.h"
 #import "activation.h"
+#import "MainViewController.h"
 
 @implementation UserAuthentificationManager {
     NSMutableDictionary *_auth;
@@ -19,8 +20,11 @@
 {
     self = [super init];
     if (self) {
-        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+//        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+//        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+
+        id rootController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+        _auth = [NSMutableDictionary dictionaryWithDictionary:((MainViewController*)rootController).auth];
     }
     return self;
 }
@@ -97,11 +101,11 @@
     if (![[self getUserId] isEqualToString:@"0"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
-#ifdef DEBUG
-    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
-#else
+//#ifdef DEBUG
+//    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
+//#else
     [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
-#endif
+//#endif
     [parameters setValue:@"2" forKey:@"os_type"];
     
     NSString *hash;

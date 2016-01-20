@@ -39,7 +39,8 @@ UIGestureRecognizerDelegate,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout,
-NotificationDelegate
+NotificationDelegate,
+RetryViewDelegate
 >
 {
     NSMutableArray *_product;
@@ -217,6 +218,7 @@ NotificationDelegate
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
+    _networkManager.isUsingHmac = YES;
     _networkManager = nil;
 }
 

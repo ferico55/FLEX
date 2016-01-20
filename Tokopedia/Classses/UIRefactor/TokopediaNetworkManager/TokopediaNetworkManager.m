@@ -63,7 +63,9 @@
     }
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
-    
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
@@ -102,6 +104,7 @@
     _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"Response string : %@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
         [self requestSuccess:mappingResult  withOperation:operation];
         [_requestTimer invalidate];
         _requestTimer = nil; 
@@ -233,6 +236,26 @@
     
     return [queries objectForKey:@"page"];
 }
+
+- (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key {
+    NSURL *url = [NSURL URLWithString:URL];
+    NSArray *querry = [[url query] componentsSeparatedByString: @"&"];
+    
+    NSMutableDictionary *queries = [NSMutableDictionary new];
+    [queries removeAllObjects];
+    
+    for (NSString *keyValuePair in querry) {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        NSString *key = [pairComponents objectAtIndex:0];
+        NSString *value = [pairComponents objectAtIndex:1];
+        
+        [queries setObject:value forKey:key];
+    }
+    
+    return [queries objectForKey:key];
+}
+
+
 
 - (void)requestCancel {
     [_objectRequest cancel];

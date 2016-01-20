@@ -9,6 +9,7 @@ target "Tokopedia" do
     pod 'GoogleAppIndexing'
     pod 'Google/Analytics'
     pod 'GoogleTagManager'
+    pod 'GoogleMaps'
 end
 
 target "TokopediaTests" do

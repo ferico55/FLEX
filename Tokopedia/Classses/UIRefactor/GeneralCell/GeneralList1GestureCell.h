@@ -16,6 +16,10 @@
 @property (nonatomic) NSInteger type;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *cellLableLeadingConstraint;
+@property (strong, nonatomic) IBOutlet UIImageView *iconPinPoint;
+
+
 +(id)newcell;
 
 @end

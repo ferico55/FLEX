@@ -80,7 +80,6 @@
 @property (strong, nonatomic) IBOutlet UIView *noteView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) IBOutlet UIView *headerview;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -796,6 +795,9 @@
     [param setObject:[myShopShipmentTableViewController getPostalCode] forKey:kTKPD_SHOP_POSTAL];
     [param setObject:@"" forKey:kTKPDSHOPSHIPMENT_APIRPXPACKETKEY];
     [param setObject:@"" forKey:kTKPDSHOPSHIPMENT_APIRPXTICKETKEY];
+    [param setObject:[myShopShipmentTableViewController getAddress] forKey:@"addr_street"];
+    [param setObject:[myShopShipmentTableViewController getLatitude] forKey:@"latitude"];
+    [param setObject:[myShopShipmentTableViewController getLongitude] forKey:@"longitude"];
     
     //Set Shipping ID
     NSMutableDictionary *shipments = [NSMutableDictionary new];
@@ -919,6 +921,17 @@
         
         if ([[first allValues] count] > 0) {
             [shipments setObject:first forKey:[myShopShipmentTableViewController getFirst].shipment_id];
+        }
+    }
+    
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getGoJek].shipment_id]) {
+        NSMutableDictionary *gojek = [NSMutableDictionary new];
+        if ([[myShopShipmentTableViewController getGojekPackageGoKilat].active boolValue]) {
+            [gojek setObject:@"1" forKey:[myShopShipmentTableViewController getGojekPackageGoKilat].sp_id];
+        }
+        
+        if ([[gojek allValues] count] > 0) {
+            [shipments setObject:gojek forKey:[myShopShipmentTableViewController getGoJek].shipment_id];
         }
     }
     

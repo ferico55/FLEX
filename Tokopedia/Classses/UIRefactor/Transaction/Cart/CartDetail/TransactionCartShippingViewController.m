@@ -26,12 +26,17 @@
 #import "TransactionCalculatePrice.h"
 #import "TransactionCartViewController.h"
 #import "TransactionShipmentATCTableViewController.h"
+#import "Tokopedia-swift.h"
+#import "NavigateViewController.h"
 
 #import "StickyAlertView.h"
+#import "RequestEditAddress.h"
+#import "RequestAddAddress.h"
 
 #define TAG_PICKER_ALERT_INSURANCE 10
 
-@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate, TransactionShipmentATCTableViewControllerDelegate>
+@import GoogleMaps;
+@interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TKPDAlertViewDelegate, GeneralTableViewControllerDelegate, TokopediaNetworkManagerDelegate, TransactionShipmentATCTableViewControllerDelegate, TKPPlacePickerDelegate, RequestEditAddressDelegate, RequestAddAddressDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
@@ -55,6 +60,9 @@
     TokopediaNetworkManager *_networkManagereditInsurance;
     
     BOOL _isRequestForShipment;
+    
+    RequestEditAddress *_requestEditAddress;
+    RequestAddAddress *_requestAddAddress;
 }
 
 #define TAG_REQUEST_FORM 10
@@ -74,8 +82,11 @@
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewSummaryCell;
 @property (weak, nonatomic) IBOutlet UILabel *senderNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *senderPhoneLabel;
+@property (strong, nonatomic) IBOutlet UITableViewCell *cellPinLocation;
 
+@property (strong, nonatomic) IBOutlet UIButton *pinLocationNameButton;
 @property (weak, nonatomic) IBOutlet UIView *viewAddressCell;
+@property (strong, nonatomic) IBOutlet UIButton *pinLocationSummaryButton;
 
 @end
 
@@ -114,16 +125,61 @@
         _isFinishCalculate = NO;
         [_tableView reloadData];
     }
-    
+    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+    if ([cart.cart_destination.latitude integerValue]!=0 && [cart.cart_destination.longitude integerValue]!=0) {
+        _isFinishCalculate = NO;
+        [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([cart.cart_destination.latitude doubleValue], [cart.cart_destination.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+            if (error != nil){
+                return;
+            }
+            if (response == nil|| response.results.count == 0) {
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                _pinLocationSummaryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationSummaryButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                
+            } else{
+                GMSAddress *placemark = [response results][0];
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                _pinLocationSummaryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationSummaryButton setCustomAttributedText:[self addressString:placemark]];
+            }
+        }];
+    }
+        
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil];
     
     _isFirstLoad = YES;
 
     
     self.tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
-    
-
 }
+
+
+-(NSString*)addressString:(GMSAddress*)address
+{
+    NSString *strSnippet = @"Pilih lokasi pengiriman";
+    if (address.lines.count>0) {
+        strSnippet = address.lines[0];
+    }
+    else
+    {
+        if ([address.thoroughfare length] != 0)
+        {
+            // strAdd -> store value of current location
+            if ([strSnippet length] != 0)
+                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
+            else
+            {
+                // strAdd -> store only this value,which is not null
+                strSnippet = address.thoroughfare;
+            }
+        }
+    }
+    return  strSnippet;
+}
+
 
 -(void)initNetworkManager
 {
@@ -307,11 +363,6 @@
     [_tableView reloadData];
 }
 
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     if (tag == TAG_REQUEST_CALCULATE) {
@@ -435,6 +486,12 @@
                             };
     return param;
 }
+- (IBAction)tapEditLocation:(id)sender {
+    if (_isFinishCalculate) {
+        AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+        [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+    }
+}
 
 -(void)requestSuccessActionCalculate:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
@@ -458,8 +515,14 @@
             
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
             for (ShippingInfoShipments *shipment in _shipments) {
+                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                    _selectedShipment = shipment;
+                }
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
+                        _selectedShipmentPackage = package;
+                    }
                     if (![package.price isEqualToString:@"0"]&&![package.price isEqualToString:@""]&&package.price!=nil) {
                         [shipmentPackages addObject:package];
                     }
@@ -512,8 +575,8 @@
             }
             else
             {
-                _selectedShipment = [shipmentSupporteds firstObject];
-                _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+                _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
+                _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
             }
             
             [_networkManagerEditAddress doRequest];
@@ -612,6 +675,7 @@
                 }
                 else
                 {
+                    _isFinishCalculate = NO;
                     array = @[@"Anda telah berhasil mengubah alamat tujuan"];
                 }
                 
@@ -637,6 +701,7 @@
             }
             
             _isFirstLoad = NO;
+
         }
         else
         {
@@ -821,8 +886,14 @@
                 newFrame.size.height = expectedLabelSize.height;
                 return 290-70+newFrame.size.height;
             }
+            if (indexPath.row == 2) {
+                if ([_selectedShipment.shipment_id integerValue] == 10) {
+                    return 70;
+                }
+                return 0;
+            }
         }
-        else cell = _tableViewCell[indexPath.row + 5];
+        else cell = _tableViewCell[indexPath.row + 6];
 
     }
     else
@@ -845,7 +916,13 @@
         }
         cell = _tableViewSummaryCell[indexPath.row];
         TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-        if ([cart.cart_total_product integerValue] == 1 && indexPath.row == 4) {
+        if ([cart.cart_total_product integerValue] == 1 && indexPath.row == 5) {
+            return 0;
+        }
+        if (indexPath.row == 2) {
+            if ([_selectedShipment.shipment_id integerValue] == 10) {
+                return 70;
+            }
             return 0;
         }
     }
@@ -854,24 +931,16 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
             {
                 if (_indexPage == 0) {
-                    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                    SettingAddressViewController *addressViewController = [SettingAddressViewController new];
-                    addressViewController.delegate = self;
-                    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                                   DATA_INDEXPATH_KEY: selectedIndexPath,
-                                                   DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
-                    [self.navigationController pushViewController:addressViewController animated:YES];
+                    [self chooseAddress];
                 }
                 break;
             }
-            case 2:
+                case 2:
             {
                 if (_isFinishCalculate) {
                     
@@ -899,47 +968,157 @@
             }
             case 3:
             {
-                if (_isFinishCalculate) {
-                    NSMutableArray *shipmentPackages = [NSMutableArray new];
-                    NSMutableArray *shipmentPackagesName = [NSMutableArray new];
-                    
-                    for (ShippingInfoShipments *shipment in _shipments) {
-                        if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
-                            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                                if (![package.price isEqualToString:@"0"]) {
-                                    [shipmentPackages addObject:package];
-                                    [shipmentPackagesName addObject:package.name];
-                                }
-                            }
-                            break;
-                        }
-                    }
-
-                    GeneralTableViewController *vc = [GeneralTableViewController new];
-                    vc.title = @"Paket Pengiriman";
-                    vc.selectedObject = _selectedShipmentPackage.name;
-                    vc.objects = shipmentPackagesName;
-                    vc.senderIndexPath = indexPath;
-                    vc.delegate = self;
-                    
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
+                [self chooseShipmentAtIndexPath:indexPath];
                 break;
             }
-            case 4: // insurance
+            case 4:
             {
-                if ([cart.cart_force_insurance integerValue]!=1&&[cart.cart_cannot_insurance integerValue]!=1) {
-                    AlertPickerView *picker = [AlertPickerView newview];
-                    picker.delegate = self;
-                    picker.tag = TAG_PICKER_ALERT_INSURANCE;
-                    picker.pickerData = ARRAY_INSURACE;
-                    [picker show];
-                }
+                [self chooseShipmentPackageAtIndexPath:indexPath];
+                break;
+            }
+            case 5: // insurance
+            {
+                [self chooseInsurance];
                 break;
             }
             default:
                 break;
         }
+    }
+}
+
+-(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage {
+    NSString *addressStreet= @"";
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
+    
+    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+    
+    [_pinLocationNameButton.titleLabel setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
+    AddressFormList *addressList = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    addressList.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    addressList.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+    [_dataInput setObject:addressList forKey:DATA_ADDRESS_DETAIL_KEY];
+    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+    cart.cart_destination = addressList;
+    [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
+    _isFinishCalculate = NO;
+    [[self requestEditAddress] doRequestWithAddress:addressList];
+}
+
+-(RequestEditAddress*)requestEditAddress
+{
+    if (!_requestEditAddress) {
+        _requestEditAddress = [RequestEditAddress new];
+        _requestEditAddress.delegate = self;
+    }
+    return _requestEditAddress;
+}
+-(RequestAddAddress*)requestAddAddress
+{
+    if (!_requestAddAddress) {
+        _requestAddAddress = [RequestAddAddress new];
+        _requestAddAddress.delegate = self;
+    }
+    return _requestAddAddress;
+}
+
+-(void)requestSuccessEditAddress:(id)successResult withOperation:(RKObjectRequestOperation *)operation
+{
+    [_networkManagerCalculate doRequest];
+}
+
+-(void)requestSuccessAddAddress:(AddressFormList *)address
+{
+    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+    
+    [_networkManagerCalculate doRequest];
+    
+    [_tableView reloadData];
+    [_networkManagerCalculate doRequest];
+}
+
+-(void)chooseAddress
+{
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+    addressViewController.delegate = self;
+    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
+                                   DATA_INDEXPATH_KEY: selectedIndexPath,
+                                   DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
+    [self.navigationController pushViewController:addressViewController animated:YES];
+}
+
+-(void)chooseShipmentAtIndexPath:(NSIndexPath*)indexPath
+{
+                if (_isFinishCalculate) {
+                    NSMutableArray *shipments = [NSMutableArray new];
+                    NSMutableArray *shipmentsName = [NSMutableArray new];
+                    
+                    for (ShippingInfoShipments *shipment in _shipments) {
+                        [shipments addObject:shipment];
+                        [shipmentsName addObject:shipment.shipment_name];
+
+                    }
+
+                    GeneralTableViewController *vc = [GeneralTableViewController new];
+                    vc.title = @"Kurir Pengiriman";
+                    vc.selectedObject = _selectedShipment.shipment_name;
+                    vc.objects = shipmentsName;
+                    vc.senderIndexPath = indexPath;
+                    vc.delegate = self;
+                    
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+}
+
+-(void)chooseShipmentPackageAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (_isFinishCalculate) {
+        NSMutableArray *shipmentPackages = [NSMutableArray new];
+        NSMutableArray *shipmentPackagesName = [NSMutableArray new];
+        
+        for (ShippingInfoShipments *shipment in _shipments) {
+            if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
+                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if (![package.price isEqualToString:@"0"]) {
+                        [shipmentPackages addObject:package];
+                        [shipmentPackagesName addObject:package.name];
+                    }
+                }
+                break;
+            }
+        }
+        
+        GeneralTableViewController *vc = [GeneralTableViewController new];
+        vc.title = @"Paket Pengiriman";
+        vc.selectedObject = _selectedShipmentPackage.name;
+        vc.objects = shipmentPackagesName;
+        vc.senderIndexPath = indexPath;
+        vc.delegate = self;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+-(void)chooseInsurance
+{
+    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+
+    if ([cart.cart_force_insurance integerValue]!=1&&[cart.cart_cannot_insurance integerValue]!=1) {
+        AlertPickerView *picker = [AlertPickerView newview];
+        picker.delegate = self;
+        picker.tag = TAG_PICKER_ALERT_INSURANCE;
+        picker.pickerData = ARRAY_INSURACE;
+        [picker show];
     }
 }
 
@@ -952,6 +1131,11 @@
     address.address_postal = address.postal_code;
     address.address_city = address.city_name;
     address.address_province = address.province_name;
+    
+    if (address.address_id <=0) {
+        [[self requestAddAddress] doRequestWithAddress:address];
+        return;
+    }
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     
     [_networkManagerCalculate doRequest];
@@ -963,7 +1147,7 @@
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
     BOOL isValidShipment = YES;
-    if (indexPath.row == 2) {
+    if (indexPath.row == 3) {
         ShippingInfoShipments *shipmentObject;
         
         for (ShippingInfoShipments *package in _shipments) {
@@ -994,7 +1178,7 @@
             }
         }
     }
-    else if (indexPath.row == 3)
+    else if (indexPath.row == 4)
     {
         for (ShippingInfoShipments *shipment in _shipments) {
             if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
@@ -1068,6 +1252,20 @@
                 break;
             case 2:
             {
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                }
+                break;
+            }
+            case 3:
+            {
                 cell.detailTextLabel.text = shipment.shipment_name;
                 if (!_isFinishCalculate) {
                     UIActivityIndicatorView *activityView =
@@ -1081,7 +1279,7 @@
                 }
             }
                 break;
-            case 3:
+            case 4:
             {
                 NSString *shipmentPackageName = shipmentPackage.name?:cart.cart_shipments.shipment_package_name;
                 cell.detailTextLabel.text = shipmentPackageName;
@@ -1097,7 +1295,7 @@
                 }
                 break;
             }
-            case 4:
+            case 5:
             {
                 NSString *insuranceName;
                 if ([cart.cart_cannot_insurance integerValue]==1) {
@@ -1136,14 +1334,23 @@
         switch (indexPath.row) {
             case 0:
             {
-                cell = _tableViewCell[5];
+                cell = _tableViewCell[6];
                 NSString *totalPayment = shipmentPackage.price?:cart.cart_shipping_rate_idr;
                 [cell.detailTextLabel setText:totalPayment animated:YES];
+                if (!_isFinishCalculate) {
+                    UIActivityIndicatorView *activityView =
+                    [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    [activityView startAnimating];
+                    [cell setAccessoryView:activityView];
+                }
+                else
+                {   cell.accessoryView = nil;
+                }
                 break;
             }
             case 1:
             {
-                cell = _tableViewCell[6];
+                cell = _tableViewCell[7];
                 NSString *insuranceCost = cart.cart_insurance_price_idr;
                 [cell.detailTextLabel setText:insuranceCost animated:YES];
                 if (!_isFinishCalculate) {
@@ -1184,13 +1391,13 @@
             break;
         case 1:
             break;
-        case 2:
+        case 3:
         {
             NSString *shipmentPackageName = shipmentPackage.name?:shipment.shipment_package_name;
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",shipment.shipment_name?:@"",shipmentPackageName];
             break;
         }
-        case 3:
+        case 4:
         {
             NSString *insuranceName;
             if ([cart.cart_cannot_insurance integerValue]==1)
@@ -1211,18 +1418,18 @@
             cell.detailTextLabel.text = insuranceName;
             break;
         }
-        case 4:
+        case 5:
         {
             cell.detailTextLabel.text = partialString;
             break;
         }
-        case 5:
+        case 6:
         {
             NSString *dropship = (!dropshipName||[dropshipName isEqualToString:@""])?@"Tidak":@"Ya";
             cell.detailTextLabel.text = dropship;
             break;
         }
-        case 6:
+        case 7:
         {
             _senderNameLabel.text = dropshipName;
             _senderPhoneLabel.text = dropshipPhone;
@@ -1244,9 +1451,40 @@
 -(void)editInsurance:(NSNotification*)aNotification
 {
     NSDictionary *userInfo = aNotification.userInfo;
+    _isFinishCalculate = YES;
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
-    _isFinishCalculate = YES;
+    AddressFormList *address = cart.cart_destination;
+    
+    if ([address.latitude integerValue]!=0 && [address.longitude integerValue]!=0) {
+        _isFinishCalculate = NO;
+        [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+            if (error != nil){
+                return;
+            }
+            
+            if (response == nil || response.results.count == 0) {
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                _isFinishCalculate = YES;
+                [_tableView reloadData];
+                
+            } else{
+                GMSAddress *placemark = [response results][0];
+                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                _isFinishCalculate = YES;
+                [_tableView reloadData];
+            }
+        }];
+    }
+    else
+    {
+        _isFinishCalculate = YES;
+        _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        [_pinLocationNameButton setCustomAttributedText:@"Pilih Lokasi Pengiriman"];
+    }
+    
     [_tableView reloadData];
 }
 

@@ -22,6 +22,7 @@
 #import "DetailShipmentStatusViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 #import "NavigateViewController.h"
+#import "NoResultReusableView.h"
 
 @interface SalesTransactionListViewController ()
 <
@@ -30,7 +31,8 @@
     ShipmentStatusCellDelegate,
     FilterSalesTransactionListDelegate,
     ChangeReceiptNumberDelegate,
-    TrackOrderViewControllerDelegate
+    TrackOrderViewControllerDelegate,
+    NoResultDelegate
 >
 {
     __weak RKObjectManager *_objectManager;
@@ -70,7 +72,21 @@
 
 @end
 
-@implementation SalesTransactionListViewController
+@implementation SalesTransactionListViewController {
+    NoResultReusableView *_noResultView;
+}
+
+- (void)initNoResultView {
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [_noResultView generateAllElements:@"icon_no_data_grey.png"
+                                 title:@"Tidak ada data"
+                                  desc:@""
+                              btnTitle:@""];
+    
+    [_noResultView hideButton:YES];
+    _noResultView.delegate = self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -93,10 +109,12 @@
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     
     [_activityIndicatorView startAnimating];
+    
+    [self initNoResultView];
 
     [self configureRestKit];
     [self request];
-
+    
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
@@ -307,6 +325,9 @@
 {
     _objectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Order class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -393,6 +414,15 @@
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];
     
+    RKObjectMapping *orderShopMapping = [RKObjectMapping mappingForClass:[OrderSellerShop class]];
+    [orderShopMapping addAttributeMappingsFromArray:@[API_SHOP_ADDRESS_STREET,
+                                                      API_SHOP_ADDRESS_DISTRICT,
+                                                      API_SHOP_ADDRESS_CITY,
+                                                      API_SHOP_ADDRESS_PROVINCE,
+                                                      API_SHOP_ADDRESS_COUNTRY,
+                                                      API_SHOP_ADDRESS_POSTAL
+                                                      API_SHOP_SHIPPER_PHONE]];
+
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
                                                                API_DEADLINE_PROCESS_DAY_LEFT  : API_DEADLINE_PROCESS_DAY_LEFT,
@@ -496,6 +526,10 @@
                                                                                 toKeyPath:API_LIST_ORDER_DETAIL
                                                                               withMapping:orderDetailMapping]];
     
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_SHOP
+                                                                                toKeyPath:API_LIST_ORDER_SHOP
+                                                                              withMapping:orderShopMapping]];
+    
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DEADLINE
                                                                                 toKeyPath:API_LIST_ORDER_DEADLINE
                                                                               withMapping:orderDeadlineMapping]];
@@ -547,8 +581,6 @@
     NSLog(@"\n\n\n%@\n\n\n", param);
     
     if (_page >= 1) {
-        
-        [_activityIndicatorView startAnimating];
         
         _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                         method:RKRequestMethodPOST
@@ -610,6 +642,8 @@
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         _resultOrder = [result objectForKey:@""];
         
+        [_noResultView removeFromSuperview];
+        
         if (_page == 1) {
             _orders = _resultOrder.result.list;
         } else {
@@ -633,17 +667,24 @@
         NSLog(@"next page : %ld",(long)_page);
         
         [_activityIndicatorView stopAnimating];
-
+        
         if (_orders.count == 0) {
-            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
-            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-            _tableView.tableFooterView = noResultView;
-            _tableView.sectionFooterHeight = noResultView.frame.size.height;
+            if ([self isUsingAnyFilter]) {
+                [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", _startDate, _endDate]];
+                [_noResultView hideButton:YES];
+            } else {
+                [_noResultView setNoResultTitle:@"Belum ada transaksi"];
+                [_noResultView hideButton:YES];
+            }
+            
+            [_tableView addSubview:_noResultView];
         } else {
             _tableView.tableFooterView = nil;
         }
         
         [_tableView reloadData];
+        
+        [_refreshControl endRefreshing];
     }
 }
 
@@ -651,6 +692,8 @@
 {
     [_activityIndicatorView stopAnimating];
     _tableView.tableFooterView = nil;
+    
+    [_refreshControl endRefreshing];
 }
 
 - (void)cancel
@@ -672,6 +715,9 @@
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_actionObjectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
@@ -787,6 +833,16 @@
     _page = 1;
     [self configureRestKit];
     [self request];
+}
+
+#pragma mark - Other Method
+
+- (BOOL) isUsingAnyFilter {
+    BOOL isUsingInvoiceFilter = _invoice != nil && ![_invoice isEqualToString:@""];
+    BOOL isUsingTransactionStatusFilter = _transactionStatus != nil && ![_transactionStatus isEqualToString:@""];
+    BOOL isUsingDateFilter = (_startDate != nil && ![_startDate isEqualToString:@""]) || (_endDate != nil && ![_endDate isEqualToString:@""]);
+    
+    return (isUsingInvoiceFilter || isUsingTransactionStatusFilter || isUsingDateFilter);
 }
 
 @end

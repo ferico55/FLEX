@@ -20,6 +20,7 @@
 #import <Google/Analytics.h>
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation AppDelegate
 
@@ -51,7 +52,17 @@
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
         
+        NSString *GoogleMapAPIKey = [self.container stringForKey:@"google_map_api_key"]?:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU";
+        [GMSServices provideAPIKey:GoogleMapAPIKey];
+        
         [self preparePersistData];
+        
+        //change app language for google mapp address become indonesia
+        NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+        if (![[languages firstObject] isEqualToString:@"id"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:@[@"id"] forKey:@"AppleLanguages"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     });
     
     //opening URL in background state
@@ -61,7 +72,7 @@
             [DeeplinkController handleURL:url];
         } else {
             //universal search link, only available in iOS 9
-            if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+            if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
                 NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
                 if (userActivityDictionary) {
                     [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
@@ -82,9 +93,7 @@
 }
 
 - (void)configureAppIndexing {
-    if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
         [[GSDAppIndexing sharedInstance] registerApp:1001394201];
-    }
 }
 
 - (void)configureGoogleAnalytics {
@@ -229,6 +238,8 @@
 - (void)containerAvailable:(TAGContainer *)container {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.container = container;
+        NSString *GoogleMapAPIKey = [self.container stringForKey:@"google_map_api_key"]?:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU";
+        [GMSServices provideAPIKey:GoogleMapAPIKey];
     });
 }
 @end

@@ -76,30 +76,6 @@
     NSString *finishLabelText;
     UIColor *finishLabelColor;
     switch (deadlineProcessDayLeft) {
-        case 5:
-            finishLabelText = @"5 Hari Lagi";
-            finishLabelColor = COLOR_STATUS_CANCEL_3DAYS;
-            [_finishLabel setHidden:NO];
-            [_cancelAutomaticLabel setHidden:NO];
-            break;
-        case 4:
-            finishLabelText = @"4 Hari Lagi";
-            finishLabelColor = COLOR_STATUS_CANCEL_3DAYS;
-            [_finishLabel setHidden:NO];
-            [_cancelAutomaticLabel setHidden:NO];
-            break;
-        case 3:
-            finishLabelText = @"3 Hari Lagi";
-            finishLabelColor = COLOR_STATUS_CANCEL_3DAYS;
-            [_finishLabel setHidden:NO];
-            [_cancelAutomaticLabel setHidden:NO];
-            break;
-        case 2:
-            finishLabelText = @"2 Hari Lagi";
-            finishLabelColor = COLOR_STATUS_CANCEL_3DAYS;
-            [_finishLabel setHidden:NO];
-            [_cancelAutomaticLabel setHidden:NO];
-            break;
         case 1:
             finishLabelText = @"Besok";
             finishLabelColor = COLOR_STATUS_CANCEL_TOMORROW;
@@ -113,6 +89,10 @@
             [_cancelAutomaticLabel setHidden:NO];
             break;
         default:
+            finishLabelText = [NSString stringWithFormat:@"%zd Hari Lagi",deadlineProcessDayLeft];
+            finishLabelColor = COLOR_STATUS_CANCEL_3DAYS;
+            [_finishLabel setHidden:NO];
+            [_cancelAutomaticLabel setHidden:NO];
             break;
     }
     if (deadlineProcessDayLeft<0) {

@@ -639,6 +639,8 @@ SpellCheckRequestDelegate
 - (void)changeCategory:(NSNotification *)notification {
     //    [_product removeAllObjects];
     [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"department_id"];
+    [_params setObject:[_data objectForKey:@"search"] forKey:@"search"];
+    
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
     
@@ -688,16 +690,16 @@ SpellCheckRequestDelegate
 
 - (id)getObjectManager:(int)tag {
     if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
 #ifdef DEBUG
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
         NSString *baseUrl;
 //        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
         if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
-            baseUrl = @"https://ajax.tokopedia.com/";
+            baseUrl = @"https://ace.tokopedia.com/";
         } else {
-            baseUrl = @"https://ajax-staging.tokopedia.com/";
+            baseUrl = @"https://ace-staging.tokopedia.com/";
         }
         _objectmanager = [RKObjectManager sharedClient:baseUrl];
 #endif

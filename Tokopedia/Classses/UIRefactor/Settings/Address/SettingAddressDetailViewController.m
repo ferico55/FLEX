@@ -12,6 +12,10 @@
 #import "SettingAddressEditViewController.h"
 #import "SettingAddressViewController.h"
 
+#import "NavigateViewController.h"
+#import "Tokopedia-Swift.h"
+
+
 #pragma mark - Setting Address Detail View Controller
 @interface SettingAddressDetailViewController ()
 <
@@ -20,6 +24,10 @@
     UIAlertViewDelegate,
     SettingAddressEditViewControllerDelegate
 >
+{
+    UIImage *_captureMap;
+    AddressFormList *_address;
+}
 
 @property (weak, nonatomic) IBOutlet UILabel *labelreceivername;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
@@ -31,12 +39,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelphonenumber;
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
+@property (weak, nonatomic) IBOutlet TKPMapView *mapview;
+
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4Cells;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -75,17 +86,38 @@
     
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
+
+    _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)mapPosition
+{
+    _mapview.selectedMarker.position = CLLocationCoordinate2DMake([_address.latitude doubleValue], [_address.longitude doubleValue]);
+    _mapview.settings.scrollGestures = NO;
+    [_mapview updateIsShowMarker:YES];
+    [_mapview updateCameraPosition:_mapview.selectedMarker.position];
+    [_mapview showButtonCurrentLocation:NO];
+    
+    //(latitude = -6.1859237834858769, longitude = 106.799499168992)
+    
+//    [self performSelector:@selector(setCaptureMap) withObject:nil afterDelay:1.0f];
+}
+
+-(void)setCaptureMap
+{
+    _captureMap = [_mapview captureMapScreen];
+
 }
 
 #pragma mark - View Action
@@ -97,12 +129,21 @@
             case 11:
             {   //Edit
                 SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-                vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY],
+                vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : _address,
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                             kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_EDIT),
                             kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
                             };
                 vc.delegate = self;
+                AddressFormList *address = _address;
+                //TODO:: Uncomment for showing map address
+                if ([_address.longitude integerValue] != 0 && [address.latitude integerValue] != 0 ) {
+                    vc.imageMap = _captureMap?: [_mapview captureMapScreen];
+                    vc.longitude = address.longitude;
+                    vc.latitude = address.latitude;
+                }
+                //
+                
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
                 nav.navigationBar.translucent = NO;
@@ -150,23 +191,11 @@
     _data = data;
     if (data) {
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+        _address = list;
         self.title = list.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
         _labelreceivername.text = list.receiver_name?:@"";
         _labeladdressname.text = list.address_name?:@"";
-
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 4.0;
-        
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                                     NSParagraphStyleAttributeName  : style,
-                                     NSForegroundColorAttributeName : [UIColor colorWithRed:66.0/255.0
-                                                                                      green:66.0/255.0
-                                                                                       blue:66.0/255.0
-                                                                                      alpha:1],
-                                     };
-        
-        _labeladdress.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:list.address_street] attributes:attributes];
+        [_labeladdress setCustomAttributedText:[NSString convertHTML:list.address_street]];
         
         NSString *postalcode = list.postal_code?list.postal_code:@"";
         _labelpostcode.text = postalcode;
@@ -177,6 +206,13 @@
         BOOL isdefault = [[_data objectForKey:kTKPDPROFILE_DATAISDEFAULTKEY]boolValue];
         _viewdefault.hidden = !isdefault;
         _viewsetasdefault.hidden = isdefault;
+        
+        //TODO:: Uncomment for showing map address
+
+        if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
+            [self mapPosition];
+        }
+        //
     }
 }
 
@@ -237,6 +273,8 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    AddressFormList *address = _address;
+
     switch (indexPath.section) {
         case 0:
             return [_section0Cells[indexPath.row] frame].size.height;
@@ -245,6 +283,26 @@
             return [_section1Cells[indexPath.row] frame].size.height;
             break;
         case 2:
+            if (indexPath.row == 1) {
+                //TODO:: Uncomment for showing map address
+                if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
+                    return 0;
+                }
+                else{
+                    return 194;
+                }
+                //
+            }
+            if (indexPath.row == 2) {
+                NSString *string = address.address_street;
+                
+                //Calculate the expected size based on the font and linebreak mode of your label
+                CGSize maximumLabelSize = CGSizeMake(190,9999);
+                CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+                                              constrainedToSize:maximumLabelSize
+                                                  lineBreakMode:NSLineBreakByTruncatingTail];
+                return 40+expectedLabelSize.height;
+            }
             return [_section2Cells[indexPath.row] frame].size.height;
             break;
         case 3:
@@ -259,34 +317,45 @@
     return 0;
 }
 
+//TODO:: Uncomment for showing map address
+- (IBAction)tapMapDetail:(id)sender {
+    [NavigateViewController navigateToMap:_mapview.selectedMarker.position type:1 infoAddress:_address.viewModel fromViewController:self];
+}
+//
+
 #pragma mark - Edit address delegate
 
 - (void)successEditAddress:(AddressFormList *)address
 {
+//    address = [AddressFormList new];
+//    address.address_name = @"Alamat Kantor";
+//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
+//    address.receiver_name = @"Orang Keren";
+//    address.receiver_phone = @"0812345678";
+//    address.latitude = @"-6.211544";
+//    address.longitude = @"106.845172";
+    
     self.labeladdressname.text = address.address_name;
     self.labelreceivername.text = address.receiver_name;
 
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
-                                                                                  green:117.0/255.0
-                                                                                   blue:117.0/255.0
-                                                                                  alpha:1],
-                                 };
-    
-    self.labeladdress.attributedText = [[NSAttributedString alloc] initWithString:address.address_street
-                                                                       attributes:attributes];
+    [self.labeladdress setCustomAttributedText:address.address_street];
     
     self.labelpostcode.text = address.postal_code;
     self.labelprovince.text = address.province_name;
     self.labelcity.text = address.city_name;
     self.labeldistrict.text = address.district_name;
     self.labelphonenumber.text = address.receiver_phone;
+    
+    //TODO:: Uncomment for showing map address
+    if (![address.longitude integerValue] == 0 && ![address.latitude integerValue] == 0) {
+            [self performSelector:@selector(mapPosition) withObject:nil afterDelay:0.6f];
+    }
+    
+    
+    _address = address;
+    [_tableView reloadData];
 }
+
 
 #pragma mark - Alert delegate
 
