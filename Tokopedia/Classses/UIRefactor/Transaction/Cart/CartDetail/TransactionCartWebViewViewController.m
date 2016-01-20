@@ -229,6 +229,9 @@
         
     }
     else if (gateway == TYPE_GATEWAY_BRI_EPAY){
+        if ([request.URL.absoluteString rangeOfString:@"ecommerce/ecommerce_payment"].location != NSNotFound) {
+            self.navigationItem.leftBarButtonItem = nil;
+        }
         if ([request.URL.absoluteString rangeOfString:BRI_EPAY_CALLBACK_URL].location != NSNotFound) {
             NSDictionary *param = @{
                                     @"action" : @"validate_payment",
