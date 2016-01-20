@@ -10,6 +10,14 @@
 
 @interface ProductAddCaptionViewController ()
 
+@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIImageView *attachedImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *deleteIconImageView;
+@property (weak, nonatomic) IBOutlet UITextField *imageCaptionTextField;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachedImages;
+
+
+
 @end
 
 @implementation ProductAddCaptionViewController
