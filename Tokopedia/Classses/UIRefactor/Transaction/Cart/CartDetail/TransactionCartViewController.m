@@ -2815,6 +2815,10 @@
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
     }
+    if (tag == TAG_REQUEST_BRI_EPAY) {
+        [_delegate shouldBackToFirstPage];
+        [_act stopAnimating];
+    }
     
     [self endRefreshing];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
