@@ -23,7 +23,7 @@
 #import "iCarousel.h"
 #import "CarouselDataSource.h"
 
-@interface CategoryViewController () <NotificationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate> {
+@interface CategoryViewController () <NotificationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, iCarouselDelegate> {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
     NSURL *_deeplinkUrl;
@@ -35,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) iCarousel *slider;
+@property (nonatomic, strong) CarouselDataSource *carouselDataSource;
 
 
 @end
@@ -88,11 +89,6 @@
     UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
     [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
     
-//    [self loadBanners];
-    
-    //add timer so it will refreshed periodically
-//    NSTimer* timer = [NSTimer timerWithTimeInterval:300.0f target:self selector:@selector(loadBanners) userInfo:nil repeats:YES];
-//    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -136,7 +132,6 @@
     return _category.count;
 
 }
-
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellid = @"CategoryViewCellIdentifier";
@@ -188,19 +183,6 @@
     cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
     return cellSize;
 }
-
-//- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-//    UICollectionReusableView *reusableView = nil;
-//    if (kind == UICollectionElementKindSectionHeader) {
-//        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-//                                                              withReuseIdentifier:@"BannerView"
-//                                                                     forIndexPath:indexPath];
-//        ((BannerCollectionReusableView*)reusableView).delegate = self;
-//
-//    }
-//    
-//    return reusableView;
-//}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -293,42 +275,39 @@
             BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
             
             if(bannerExists) {
-                sliderHeight += bannerHeight;
+//                sliderHeight += bannerHeight;
             }
             
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, -sliderHeight, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
-            CarouselDataSource *dataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
-            _slider.dataSource = dataSource;
+            _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
+            _slider.type = iCarouselTypeLinear;
+            _slider.dataSource = _carouselDataSource;
+            _slider.delegate = self;
             _slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            _slider.type = iCarouselTypeCoverFlow2;
+
             
             [_collectionView addSubview:_slider];
             [_collectionView bringSubviewToFront:_slider];
             [_collectionView setContentInset:UIEdgeInsetsMake(_slider.frame.size.height, 0, 0, 0)];
-            
-//            CGFloat bannerHeight;
-//
-//            if(bannerExists && !tickerExists) {
-//                //height of Banner
-//                bannerHeight = 175;
-//            } else if(!bannerExists && tickerExists) {
-//                //height of Ticker
-//                bannerHeight = 115;
-//            } else if(!bannerExists && !tickerExists){
-//                //height of Nothing
-//                bannerHeight = 0;
-//            } else {
-//                //height of Banner + Ticker
-//                bannerHeight = 290;
-//            }
-//            
-//            if(_banner.result.banner.count > 0) {
-//                [[NSNotificationCenter defaultCenter] postNotificationName:@"TKPDidReceiveBanners" object:self userInfo:@{@"banners" : _banner}];
-//            }
-//            _flowLayout.headerReferenceSize = CGSizeMake(_flowLayout.headerReferenceSize.width, bannerHeight);
+            [_collectionView setContentOffset:CGPointMake(0, -sliderHeight)];
         }
     }];
 }
+
+- (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
+    switch (option) {
+        case iCarouselOptionWrap :
+            return YES;
+            break;
+        case iCarouselOptionSpacing:
+            return value * 1.01f;
+            break;
+        default:
+            return value;
+            break;
+    }
+}
+
 
 
 @end

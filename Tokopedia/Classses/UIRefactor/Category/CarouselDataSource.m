@@ -9,6 +9,9 @@
 #import "CarouselDataSource.h"
 #import "BannerList.h"
 
+NSInteger const bannerHeight = 175;
+NSInteger const bannerIpadWidth = 350;
+
 @implementation CarouselDataSource {
     NSArray *_banners;
 }
@@ -29,10 +32,19 @@
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
-    if(!view) {
-        view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-        [view setBackgroundColor:[UIColor redColor]];
+    if(view == nil) {
+        CGFloat bannerWidth;
+        if(IS_IPAD) {
+            bannerWidth = bannerIpadWidth;
+        } else {
+            bannerWidth = [UIScreen mainScreen].bounds.size.width;
+        }
+        view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, bannerHeight)];
+
     }
+    
+    BannerList *banner = _banners[index];
+    [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.img_uri] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     
     return view;
 }
