@@ -278,11 +278,17 @@
 //                sliderHeight += bannerHeight;
             }
             
+            //prevent double slider
+            if(_slider) {
+                [_slider removeFromSuperview];                
+            }
+
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, -sliderHeight, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
             _slider.type = iCarouselTypeLinear;
             _slider.dataSource = _carouselDataSource;
             _slider.delegate = self;
+            _slider.decelerationRate = 0.5;
             _slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
             
