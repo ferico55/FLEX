@@ -9,6 +9,8 @@
 #import "string_home.h"
 #import "string_product.h"
 #import "detail.h"
+#import "search.h"
+
 #import "ProductFeedViewController.h"
 #import "ProductFeed.h"
 #import "TokopediaNetworkManager.h"
@@ -20,6 +22,9 @@
 
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
+#import "SearchAWS.h"
+#import "SearchAWSResult.h"
+#import "SearchAWSProduct.h"
 
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
@@ -68,6 +73,8 @@ NoResultDelegate
 @implementation ProductFeedViewController {
     NSInteger _page;
     NSString *_nextPageUri;
+    NSInteger _perPage;
+    NSInteger _start;
     
     BOOL _isNoData;
     BOOL _isFailRequest;
@@ -113,7 +120,9 @@ NoResultDelegate
     
     [self initNoResultView];
     _isNoData = (_product.count > 0);
-    _page = 1;
+    _page = 0;
+    _perPage = 10;
+    _start = 0;
     
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -141,7 +150,8 @@ NoResultDelegate
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductFeedTag;
-    _networkManager.isUsingHmac = YES;
+    _networkManager.isUsingHmac = NO;
+    _networkManager.isParameterNotEncrypted = YES;
     [_networkManager doRequest];
     
     _promoRequest = [PromoRequest new];
@@ -312,20 +322,25 @@ NoResultDelegate
 
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:@(_page), kTKPDHOME_APIPAGEKEY,
-                               @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
+    //NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:@(_page), kTKPDHOME_APIPAGEKEY, @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
+    UserAuthentificationManager *ua = [UserAuthentificationManager new];
+    id asd = [ua getUserLoginData];
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
+    [parameter setObject:@"ios" forKey:@"device"];
+    [parameter setObject:@(_perPage) forKey:@"rows"];
+    [parameter setObject:@((_page*_perPage)+1) forKey:@"start"];
     
     return parameter;
 }
 
 - (NSString *)getPath:(int)tag {
-    return @"/v4/home/get_product_feed.pl";
+    return @"search/v1/product";
 }
 
 - (NSString *)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
-    ProductFeed *list = stat;
+    SearchAWS *list = stat;
     
     return list.status;
 }
@@ -336,47 +351,49 @@ NoResultDelegate
 
 - (id)getObjectManager:(int)tag {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClientHttps];
+    _objectmanager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductFeed class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
     
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ProductFeedResult class]];
     
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
+    
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
+                                                        }];
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+    //product
+    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+    
+    // paging mapping
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
     
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ProductFeedList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,
-                                                 kTKPDDETAILCATALOG_APIPRODUCTIDKEY,
-                                                 kTKPDDETAILCATALOG_APISHOPGOLDSTATUSKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                 kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
-                                                 API_PRODUCT_NAME_KEY,
-                                                 @"shop_lucky",
-                                                 @"shop_url"
-                                                 ]];
-    //relation
-    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
-    [statusMapping addPropertyMapping:dataRel];
+    //add list relationship
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [dataMapping addPropertyMapping:pageRel];
+    RKRelationshipMapping *productsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
     
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [dataMapping addPropertyMapping:listRel];
+    [resultMapping addPropertyMapping:productsRel];
     
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[self getPath:nil] keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    // add page relationship
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
     
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:[self getRequestMethod:0]
+                                                                                       pathPattern:[self getPath:0]
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    //add response description to object manager
+    [_objectmanager addResponseDescriptor:responseDescriptor];
     
     return _objectmanager;
 }
@@ -387,11 +404,11 @@ NoResultDelegate
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    ProductFeed *feed = [result objectForKey:@""];
+    SearchAWS *feed = [result objectForKey:@""];
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
-    if (feed.data.list.count > 0) {
+    if (feed.result.products.count > 0) {
         [_noResultView removeFromSuperview];
         if (_page == 1) {
             [_product removeAllObjects];
@@ -399,13 +416,14 @@ NoResultDelegate
             [_firstFooter removeFromSuperview];
         }
         
-        [_product addObject:feed.data.list];
+        [_product addObject:feed.result.products];
         
-        [TPAnalytics trackProductImpressions:feed.data.list];
+        [TPAnalytics trackProductImpressions:feed.result.products];
         
         _isNoData = NO;
-        _nextPageUri =  feed.data.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
+        _nextPageUri =  feed.result.paging.uri_next;
+        //_page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
+        _page++;
         
         if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
             //remove loadingview if there is no more item
