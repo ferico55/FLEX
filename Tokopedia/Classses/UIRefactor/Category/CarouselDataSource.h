@@ -11,7 +11,7 @@
 
 @class BannerList;
 
-@interface CarouselDataSource : NSObject <iCarouselDataSource>
+@interface CarouselDataSource : NSObject <iCarouselDataSource, iCarouselDelegate>
 
 - (instancetype)initWithBanner:(NSArray <BannerList*>*)banners;
 

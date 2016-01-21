@@ -46,6 +46,20 @@ NSInteger const bannerIpadWidth = 350;
     return view;
 }
 
+- (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
+    switch (option) {
+        case iCarouselOptionWrap :
+            return YES;
+            break;
+        case iCarouselOptionSpacing:
+            return value * 1.02f;
+            break;
+        default:
+            return value;
+            break;
+    }
+}
+
 
 
 

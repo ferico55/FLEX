@@ -35,6 +35,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) iCarousel *slider;
+@property (nonatomic, strong) UIImageView *bannerView;
 @property (nonatomic, strong) CarouselDataSource *carouselDataSource;
 
 
@@ -272,47 +273,44 @@
             _banner = banner;
             
             [loadIndicator stopAnimating];
-            BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
-            
-            if(bannerExists) {
-//                sliderHeight += bannerHeight;
-            }
+
             
             //prevent double slider
             if(_slider) {
                 [_slider removeFromSuperview];                
+            }
+            
+            BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
+            
+            if(bannerExists) {
+                if(_bannerView) {
+                    [_bannerView removeFromSuperview];
+                }
+                _bannerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -bannerHeight, [UIScreen mainScreen].bounds.size.width, bannerHeight)];
+                [_bannerView setImageWithURL:[NSURL URLWithString:banner.result.ticker.img_uri] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+                [_bannerView setContentMode:UIViewContentModeScaleAspectFit];
+                
+                sliderHeight += bannerHeight;
+                [_collectionView addSubview:_bannerView];
             }
 
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, -sliderHeight, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
             _slider.type = iCarouselTypeLinear;
             _slider.dataSource = _carouselDataSource;
-            _slider.delegate = self;
+            _slider.delegate = _carouselDataSource;
             _slider.decelerationRate = 0.5;
+            if (bannerExists) _slider.contentOffset = CGSizeMake(0, -(bannerHeight/2));
             _slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-            
             [_collectionView addSubview:_slider];
             [_collectionView bringSubviewToFront:_slider];
-            [_collectionView setContentInset:UIEdgeInsetsMake(_slider.frame.size.height, 0, 0, 0)];
+            [_collectionView setContentInset:UIEdgeInsetsMake(sliderHeight, 0, 0, 0)];
             [_collectionView setContentOffset:CGPointMake(0, -sliderHeight)];
         }
     }];
 }
 
-- (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
-    switch (option) {
-        case iCarouselOptionWrap :
-            return YES;
-            break;
-        case iCarouselOptionSpacing:
-            return value * 1.01f;
-            break;
-        default:
-            return value;
-            break;
-    }
-}
 
 
 
