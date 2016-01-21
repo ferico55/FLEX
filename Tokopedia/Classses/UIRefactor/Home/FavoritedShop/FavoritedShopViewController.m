@@ -19,6 +19,7 @@
 #import "PromoRequest.h"
 #import "PromoInfoAlertView.h"
 #import "WebViewController.h"
+#import "FavoriteShopRequest.h"
 
 #define CTagFavoriteButton 11
 #define CTagRequest 234
@@ -31,7 +32,8 @@ FavoritedShopCellDelegate,
 TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 TKPDAlertViewDelegate,
-PromoRequestDelegate
+PromoRequestDelegate,
+FavoriteShopRequestDelegate
 >
 {
     BOOL _isnodata;
@@ -55,6 +57,7 @@ PromoRequestDelegate
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *tokopediaNetworkManager;
     PromoRequest *_promoRequest;
+    FavoriteShopRequest *_favoriteShopRequest;
     
     PromoShop *_selectedPromoShop;
 }
@@ -101,6 +104,8 @@ PromoRequestDelegate
     
     tokopediaNetworkManager = [TokopediaNetworkManager new];
     tokopediaNetworkManager.delegate = self;
+    _favoriteShopRequest = [FavoriteShopRequest new];
+    _favoriteShopRequest.delegate = self;
     
     [self setTableInset];
     
@@ -370,6 +375,10 @@ PromoRequestDelegate
     [_table endUpdates];
 }
 
+- (void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
+    
+}
+
 
 #pragma mark - Request + Mapping
 
@@ -384,7 +393,10 @@ PromoRequestDelegate
     
     tokopediaNetworkManager.tagRequest = CTagRequest;
     tokopediaNetworkManager.isUsingHmac = YES;
-    [tokopediaNetworkManager doRequest];
+    //[tokopediaNetworkManager doRequest];
+    
+    
+    [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
 }
 
 - (int)getRequestMethod:(int)tag {
