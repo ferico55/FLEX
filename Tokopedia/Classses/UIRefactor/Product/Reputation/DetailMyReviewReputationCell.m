@@ -40,6 +40,8 @@
     imgProduct.frame = CGRectMake(imgProduct.frame.origin.x, imgProduct.frame.origin.y, CDiameterImage, CDiameterImage);
     btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, ((labelInfoSkip.isHidden && lblDate.text.length>0)? imgProduct.frame.origin.y:(imgProduct.frame.origin.y+((imgProduct.bounds.size.height-lblDate.bounds.size.height)/2.0f))), self.bounds.size.width-(CPaddingTopBottom*5)-CDiameterImage, (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
     
+    //Set Attached Images
+    viewAttachedImages.frame = CGRectMake(imgProduct.frame.origin.x,lblDesc.frame.origin.y+lblDesc.bounds.size.height+8,(self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), (viewAttachedImages.isHidden)?0:60);
     
     //Set content star
     viewContentStar.frame = CGRectMake(imgProduct.frame.origin.x, viewAttachedImages.frame.origin.y+viewAttachedImages.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), (viewContentStar.isHidden)?0:CHeightContentStar);
@@ -54,10 +56,6 @@
     viewSeparatorContentAction.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewSeparatorContentAction.bounds.size.height);
     btnKomentar.frame = CGRectMake(CPaddingTopBottom, 0, 100, viewContentAction.bounds.size.height);
     btnUbah.frame = CGRectMake(viewContentStar.bounds.size.width-100, 0, 100, viewContentAction.bounds.size.height);
-    
-    //Set Attached Images
-    viewAttachedImages.frame = CGRectMake(imgProduct.frame.origin.x,lblDesc.frame.origin.y+lblDesc.bounds.size.height+8,(self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), (viewAttachedImages.isHidden)?0:60);
-    
     
     labelInfoSkip.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewContentAction.bounds.size.height);
     
@@ -215,9 +213,6 @@
             [btnKomentar setTitle:[NSString stringWithFormat:@"0 %@", CStringKomentar] forState:UIControlStateNormal];
         [btnKomentar setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
-    
-    
-    
     
     //Set date
     labelInfoSkip.hidden = YES;

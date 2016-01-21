@@ -198,7 +198,8 @@
         height += CPaddingTopBottom + CPaddingTopBottom;
     }
     
-    return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
+    // Later delete the 60
+    return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height + 60;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
