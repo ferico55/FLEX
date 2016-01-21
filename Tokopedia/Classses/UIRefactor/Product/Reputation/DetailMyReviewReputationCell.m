@@ -247,4 +247,21 @@
 {
     [_delegate attributedLabel:label didSelectLinkWithURL:url];
 }
+
+#pragma mark - Gesture
+- (IBAction)gesture:(UITapGestureRecognizer*)sender {
+    if (((UIImageView*)attachedImages[sender.view.tag-10]).image == nil) {
+        return;
+    }
+    
+    NSMutableArray *images = [NSMutableArray new];
+    for (UIImageView *imageView in attachedImages) {
+        if (imageView.image != nil) {
+            [images addObject:imageView];
+        }
+    }
+    
+    [_delegate goToImageViewerImages:[images copy] atIndexImage:sender.view.tag-10 atIndexPath:indexPath];
+}
+
 @end
