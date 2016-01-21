@@ -23,10 +23,11 @@
 #import "iCarousel.h"
 #import "CarouselDataSource.h"
 #import "WebViewController.h"
+#import "CategoryDataSource.h"
 
 NSInteger const bannerHeight = 115;
 
-@interface CategoryViewController () <NotificationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, iCarouselDelegate> {
+@interface CategoryViewController () <NotificationManagerDelegate, iCarouselDelegate> {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
     NSURL *_deeplinkUrl;
@@ -40,6 +41,7 @@ NSInteger const bannerHeight = 115;
 @property (nonatomic, strong) iCarousel *slider;
 @property (nonatomic, strong) UIImageView *bannerView;
 @property (nonatomic, strong) CarouselDataSource *carouselDataSource;
+@property (nonatomic, strong) CategoryDataSource *categoryDataSource;
 
 
 @end
@@ -61,7 +63,7 @@ NSInteger const bannerHeight = 115;
     [super viewDidLoad];
     
     /** Initialization variable **/
-    _category = [NSMutableArray new];
+//    _category = [NSMutableArray new];
     
     [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width , _collectionView.frame.size.height)];
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, ([[UIScreen mainScreen]bounds].size.height) )];
@@ -73,25 +75,22 @@ NSInteger const bannerHeight = 115;
     [loadIndicator bringSubviewToFront:self.view];
     [loadIndicator startAnimating];
     
+    _categoryDataSource = [[CategoryDataSource alloc]init];
+    [_collectionView setDataSource:_categoryDataSource];
+    
     /** Set title and icon for category **/
-    NSArray *titles = kTKPDCATEGORY_TITLEARRAY;
-    NSArray *dataids = kTKPDCATEGORY_IDARRAY;
+//    NSArray *titles = kTKPDCATEGORY_TITLEARRAY;
+//    NSArray *dataids = kTKPDCATEGORY_IDARRAY;
+//    
+//    for (int i = 0; i < 22; i++) {
+//        NSString * imagename = [NSString stringWithFormat:@"icon_%zd",i];
+//        [_category addObject:@{kTKPDCATEGORY_DATATITLEKEY : titles[i], kTKPDCATEGORY_DATADIDKEY : dataids[i],kTKPDCATEGORY_DATAICONKEY:imagename}];
+//    }
     
-    for (int i = 0; i < 22; i++) {
-        NSString * imagename = [NSString stringWithFormat:@"icon_%zd",i];
-        [_category addObject:@{kTKPDCATEGORY_DATATITLEKEY : titles[i], kTKPDCATEGORY_DATADIDKEY : dataids[i],kTKPDCATEGORY_DATAICONKEY:imagename}];
-    }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
-    
-    UINib *bannerNib = [UINib nibWithNibName:@"BannerCollectionReusableView" bundle:nil];
-    [_collectionView registerNib:bannerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BannerView"];
     
 }
 
@@ -132,31 +131,31 @@ NSInteger const bannerHeight = 115;
 }
 
 #pragma mark - Collection
-- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _category.count;
-
-}
-
-- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellid = @"CategoryViewCellIdentifier";
-    CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-    
-    NSString *title =[_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:6];
-    [paragrahStyle setAlignment:NSTextAlignmentCenter];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
-    
-    cell.categoryLabel.attributedText = attributedString;
-    
-    NSString *icon = [_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATAICONKEY];
-    cell.icon.image = [UIImage imageNamed:icon];
-    
-    cell.backgroundColor = [UIColor whiteColor];
-    
-	return cell;
-}
+//- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+//    return _category.count;
+//
+//}
+//
+//- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    NSString *cellid = @"CategoryViewCellIdentifier";
+//    CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+//    
+//    NSString *title =[_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+//    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
+//    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+//    [paragrahStyle setLineSpacing:6];
+//    [paragrahStyle setAlignment:NSTextAlignmentCenter];
+//    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
+//    
+//    cell.categoryLabel.attributedText = attributedString;
+//    
+//    NSString *icon = [_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATAICONKEY];
+//    cell.icon.image = [UIImage imageNamed:icon];
+//    
+//    cell.backgroundColor = [UIColor whiteColor];
+//    
+//	return cell;
+//}
 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
