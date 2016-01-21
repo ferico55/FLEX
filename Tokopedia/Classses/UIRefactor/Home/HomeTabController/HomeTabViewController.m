@@ -98,9 +98,6 @@
     
 	__weak typeof(self) weakSelf = self;
     _categoryController = [CategoryViewController new];
-    _categoryController.delegate = weakSelf;
-    
-    
     
     _productFeedController = [ProductFeedViewController new];
     _productFeedController.delegate = weakSelf;
