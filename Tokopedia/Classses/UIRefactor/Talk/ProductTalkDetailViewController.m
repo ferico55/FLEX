@@ -1511,6 +1511,8 @@
     if (data) {
         _page = 1;
         [_list removeAllObjects];
+        [_table reloadData];
+        
         [self configureRestKit];
         [self loadData];
         [self setHeaderData:data];
