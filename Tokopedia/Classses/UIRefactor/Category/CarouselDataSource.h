@@ -15,4 +15,6 @@
 
 - (instancetype)initWithBanner:(NSArray <BannerList*>*)banners;
 
+@property(nonatomic, weak) UIViewController *delegate;
+
 @end

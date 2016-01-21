@@ -22,6 +22,9 @@
 #import "TKPStoreManager.h"
 #import "iCarousel.h"
 #import "CarouselDataSource.h"
+#import "WebViewController.h"
+
+NSInteger const bannerHeight = 115;
 
 @interface CategoryViewController () <NotificationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, iCarouselDelegate> {
     NSMutableArray *_category;
@@ -267,14 +270,10 @@
     
     [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
         if (wself != nil) {
-            NSInteger sliderHeight = 175;
-            NSInteger bannerHeight = 115;
-            
-            _banner = banner;
-            
             [loadIndicator stopAnimating];
-
             
+            NSInteger sliderHeight = 175;
+            _banner = banner;
             //prevent double slider
             if(_slider) {
                 [_slider removeFromSuperview];                
@@ -283,19 +282,14 @@
             BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
             
             if(bannerExists) {
-                if(_bannerView) {
-                    [_bannerView removeFromSuperview];
-                }
-                _bannerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -bannerHeight, [UIScreen mainScreen].bounds.size.width, bannerHeight)];
-                [_bannerView setImageWithURL:[NSURL URLWithString:banner.result.ticker.img_uri] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-                [_bannerView setContentMode:UIViewContentModeScaleAspectFit];
-                
+                [self setBanner:_banner.result.ticker.img_uri];
                 sliderHeight += bannerHeight;
-                [_collectionView addSubview:_bannerView];
             }
 
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, -sliderHeight, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
+            _carouselDataSource.delegate = self;
+
             _slider.type = iCarouselTypeLinear;
             _slider.dataSource = _carouselDataSource;
             _slider.delegate = _carouselDataSource;
@@ -309,6 +303,31 @@
             [_collectionView setContentOffset:CGPointMake(0, -sliderHeight)];
         }
     }];
+}
+
+- (void)setBanner:(NSString*)bannerURL {
+    if(_bannerView) {
+        [_bannerView removeFromSuperview];
+    }
+    _bannerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -bannerHeight, [UIScreen mainScreen].bounds.size.width, bannerHeight)];
+    [_bannerView setImageWithURL:[NSURL URLWithString:bannerURL] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    [_bannerView setContentMode:UIViewContentModeScaleAspectFit];
+    
+    UITapGestureRecognizer *tapBanner = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapBanner)];
+    [_bannerView addGestureRecognizer:tapBanner];
+    [_bannerView setUserInteractionEnabled:YES];
+    
+    [_collectionView addSubview:_bannerView];
+}
+
+- (void)didTapBanner {
+    if(_banner) {
+        WebViewController *webView = [[WebViewController alloc] init];
+        webView.strTitle = @"Promo";
+        webView.strURL = _banner.result.ticker.url;
+        
+        [self.navigationController pushViewController:webView animated:YES];
+    }
 }
 
 

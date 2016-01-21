@@ -8,6 +8,7 @@
 
 #import "CarouselDataSource.h"
 #import "BannerList.h"
+#import "WebViewController.h"
 
 NSInteger const bannerHeight = 175;
 NSInteger const bannerIpadWidth = 350;
@@ -60,7 +61,18 @@ NSInteger const bannerIpadWidth = 350;
     }
 }
 
+#pragma mark - delegate
+- (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
+    BannerList *banner = _banners[index];
 
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strTitle = @"Promo";
+    webViewController.strURL = banner.url;
+
+    if(_delegate != nil) {
+        [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];
+    }
+}
 
 
 @end
