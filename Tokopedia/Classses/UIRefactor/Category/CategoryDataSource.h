@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CategoryDataSource : NSObject <UICollectionViewDataSource>
+@interface CategoryDataSource : NSObject <UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property(nonatomic, weak) UIViewController *delegate;
 
 @end

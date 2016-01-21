@@ -8,10 +8,17 @@
 
 #import "CategoryDataSource.h"
 #import "CategoryViewCell.h"
+#import "Localytics.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
+#import "TKPDTabNavigationController.h"
 
 #define categoryNames @[@"Pakaian",@"Handphone & Tablet", @"Office & Stationery", @"Fashion & Aksesoris", @"Laptop & Aksesoris", @"Souvenir, Kado & Hadiah", @"Kecantikan", @"Komputer & Aksesoris", @"Mainan & Hobi", @"Kesehatan", @"Elektronik", @"Makanan & Minuman", @"Rumah Tangga", @"Kamera, Foto & Video", @"Buku", @"Dapur", @"Otomotif", @"Software", @"Perawatan Bayi", @"Olahraga", @"Film, Musik & Game", @"Produk Lainnya"]
 
 #define categoryIds @[@"78",@"65",@"642",  @"79",@"288",@"54",  @"61",@"297",@"55",  @"715",@"60",@"35",  @"984",@"578",@"8",  @"983",@"63",@"20",  @"56",@"62",@"57",  @"36"]
+#define categoryIdKey @"department_id"
+#define categoryNameKey @"department_name"
+#define searchTypeKey @"type"
 
 
 @implementation CategoryDataSource {
@@ -60,6 +67,68 @@
     return _categoryIds.count;
 }
 
+#pragma mark - delegate
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    CGSize cellSize = CGSizeMake(0, 0);
+    
+    NSInteger cellCount;
+    float heightRatio;
+    float widhtRatio;
+    float inset;
+    
+    cellCount = 3;
+    heightRatio = 128;
+    widhtRatio = 106;
+    inset = 1;
+    
+    CGFloat cellWidth;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        screenWidth = screenRect.size.width/2;
+        cellWidth = screenWidth/cellCount-inset;
+    } else {
+        screenWidth = screenRect.size.width;
+        cellWidth = screenWidth/cellCount-inset;
+    }
+    
+    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    return cellSize;
+}
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSInteger index =  indexPath.row;
+    NSString *categoryName = _categoryNames[index];
+    NSString *categoryId = _categoryIds[index];
+    
+    [Localytics tagEvent:@"Event : Clicked Category" attributes:@{@"Category Name" : categoryName}];
+    
+    SearchResultViewController *vc = [SearchResultViewController new];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_product"};
+    
+    SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc1.hidesBottomBarWhenPushed = YES;
+    vc1.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_catalog"};
+    
+    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc2.hidesBottomBarWhenPushed = YES;
+    vc2.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_shop"};
+    
+    NSArray *viewcontrollers = @[vc,vc1,vc2];
+    
+    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    NSDictionary *data = @{searchTypeKey : @(1),categoryIdKey : categoryId};
+    [viewController setData:data];
+    [viewController setNavigationTitle:categoryName];
+    [viewController setSelectedIndex:0];
+    [viewController setViewControllers:viewcontrollers];
+    viewController.hidesBottomBarWhenPushed = YES;
+    [viewController setNavigationTitle:categoryName?:@""];
+    
+    [_delegate.navigationController pushViewController:viewController animated:YES];
+}
 
 @end

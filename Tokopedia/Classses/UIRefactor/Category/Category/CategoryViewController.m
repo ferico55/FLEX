@@ -6,17 +6,10 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "category.h"
-#import "search.h"
-#import "DBManager.h"
 #import "CategoryViewController.h"
 #import "CategoryViewCell.h"
-#import "TKPDTabNavigationController.h"
-#import "SearchResultViewController.h"
-#import "SearchResultShopViewController.h"
 #import "NotificationManager.h"
 
-#import "Localytics.h"
 #import "UIViewController+TKPAdditions.h"
 #import "TKPHomeBannerStore.h"
 #import "TKPStoreManager.h"
@@ -28,9 +21,7 @@
 NSInteger const bannerHeight = 115;
 
 @interface CategoryViewController () <NotificationManagerDelegate, iCarouselDelegate> {
-    NSMutableArray *_category;
     NotificationManager *_notifManager;
-    NSURL *_deeplinkUrl;
     
     Banner *_banner;
     UIActivityIndicatorView *loadIndicator;
@@ -38,6 +29,7 @@ NSInteger const bannerHeight = 115;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+
 @property (nonatomic, strong) iCarousel *slider;
 @property (nonatomic, strong) UIImageView *bannerView;
 @property (nonatomic, strong) CarouselDataSource *carouselDataSource;
@@ -62,9 +54,6 @@ NSInteger const bannerHeight = 115;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    /** Initialization variable **/
-//    _category = [NSMutableArray new];
-    
     [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width , _collectionView.frame.size.height)];
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, ([[UIScreen mainScreen]bounds].size.height) )];
     
@@ -76,16 +65,10 @@ NSInteger const bannerHeight = 115;
     [loadIndicator startAnimating];
     
     _categoryDataSource = [[CategoryDataSource alloc]init];
-    [_collectionView setDataSource:_categoryDataSource];
+    [_categoryDataSource setDelegate:self];
     
-    /** Set title and icon for category **/
-//    NSArray *titles = kTKPDCATEGORY_TITLEARRAY;
-//    NSArray *dataids = kTKPDCATEGORY_IDARRAY;
-//    
-//    for (int i = 0; i < 22; i++) {
-//        NSString * imagename = [NSString stringWithFormat:@"icon_%zd",i];
-//        [_category addObject:@{kTKPDCATEGORY_DATATITLEKEY : titles[i], kTKPDCATEGORY_DATADIDKEY : dataids[i],kTKPDCATEGORY_DATAICONKEY:imagename}];
-//    }
+    [_collectionView setDataSource:_categoryDataSource];
+    [_collectionView setDelegate:_categoryDataSource];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     
@@ -99,10 +82,7 @@ NSInteger const bannerHeight = 115;
 
     self.tabBarController.title = @"Kategori";
 
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:self action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [self initNotificationManager];
@@ -117,117 +97,13 @@ NSInteger const bannerHeight = 115;
     
     TKPHomeBannerStore *bannersStore = [[[[self class] TKP_rootController] storeManager] homeBannerStore];
     [bannersStore stopBannerRequest];
-    
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-}
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark - Collection
-//- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-//    return _category.count;
-//
-//}
-//
-//- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSString *cellid = @"CategoryViewCellIdentifier";
-//    CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-//    
-//    NSString *title =[_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-//    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
-//    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-//    [paragrahStyle setLineSpacing:6];
-//    [paragrahStyle setAlignment:NSTextAlignmentCenter];
-//    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
-//    
-//    cell.categoryLabel.attributedText = attributedString;
-//    
-//    NSString *icon = [_category[indexPath.row] objectForKey:kTKPDCATEGORY_DATAICONKEY];
-//    cell.icon.image = [UIImage imageNamed:icon];
-//    
-//    cell.backgroundColor = [UIColor whiteColor];
-//    
-//	return cell;
-//}
-
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    
-    CGSize cellSize = CGSizeMake(0, 0);
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    cellCount = 3;
-    heightRatio = 128;
-    widhtRatio = 106;
-    inset = 1;
-    
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
-    }
-    
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger index =  indexPath.row;
-    NSString *title = [_category[index] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    NSString *id = [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"";
-    
-    [Localytics tagEvent:@"Event : Clicked Category" attributes:@{@"Category Name" : title}];
-
-    SearchResultViewController *vc = [SearchResultViewController new];
-	vc.hidesBottomBarWhenPushed = YES;
-    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
-               kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
-               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
-    
-    SearchResultViewController *vc1 = [SearchResultViewController new];
-	vc1.hidesBottomBarWhenPushed = YES;
-    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
-                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
-    
-    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-	vc2.hidesBottomBarWhenPushed = YES;
-    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : id,
-                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : title,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
-    
-    NSArray *viewcontrollers = @[vc,vc1,vc2];
-    
-    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-    NSDictionary *data = @{
-        kTKPDCATEGORY_DATATYPEKEY : @(kTKPDCATEGORY_DATATYPECATEGORYKEY),
-        kTKPDSEARCH_APIDEPARTMENTIDKEY : id
-    };
-    [viewController setData:data];
-    [viewController setNavigationTitle:title];
-    [viewController setSelectedIndex:0];
-    [viewController setViewControllers:viewcontrollers];
-    viewController.hidesBottomBarWhenPushed = YES;
-    [viewController setNavigationTitle:[_category[index] objectForKey:@"title"]?:@""];
-    
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Notification Manager
@@ -328,8 +204,6 @@ NSInteger const bannerHeight = 115;
         [self.navigationController pushViewController:webView animated:YES];
     }
 }
-
-
 
 
 @end
