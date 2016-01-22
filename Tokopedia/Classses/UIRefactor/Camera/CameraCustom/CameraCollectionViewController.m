@@ -9,6 +9,8 @@
 #import "camera.h"
 #import "CameraCollectionViewController.h"
 #import "CameraCollectionCell.h"
+#import "ProductAddCaptionViewController.h"
+#import "GiveReviewViewController.h"
 #import "TKPDLiveCameraTableViewCell.h"
 #import "TKPDPhotoPicker.h"
 
@@ -322,8 +324,16 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
             }
         }
     }
-    [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if (_isAddReviewImage) {
+        ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
+        vc.userInfo = @{@"selected_images":[_selectedImages copy],
+                        @"selected_indexPath":arrayIndexPath};
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 

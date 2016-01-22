@@ -31,4 +31,6 @@
 @property NSInteger maxSelected;
 
 @property BOOL isAddEditProduct;
+@property BOOL isAddReviewImage;
+
 @end

@@ -19,6 +19,7 @@
 #import "RequestUploadImage.h"
 #import "CameraController.h"
 #import "RequestGenerateHost.h"
+#import "ProductAddCaptionViewController.h"
 
 #define CStringTidakAdaPerubahan @"Tidak ada perubahan ulasan"
 #define CStringAndaTidakDapatMenurunkanRate @"Anda tidak dapat memberi penurunan rating"
@@ -420,6 +421,7 @@
     }
     
     photoVC.selectedIndexPath = _selectedIndexPathCameraController;
+    photoVC.isAddReviewImage = YES;
     
     UINavigationController *nav = [[UINavigationController alloc]init];
     nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -595,38 +597,40 @@
 
 #pragma mark - Camera Delegate
 - (void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo {
-    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
-    NSInteger sourceType = [[userinfo objectForKey:@"source_type"] integerValue];
+//    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
+//    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
+//    
+//    // Cari Index Image yang kosong
+//    NSMutableArray *emptyImageIndex = [NSMutableArray new];
+//    for (UIImageView *image in attachedImages) {
+//        if (image.image == nil)
+//        {
+//            [emptyImageIndex addObject:@(image.tag - 20)];
+//        }
+//    }
+//    
+//    //Upload Image yg belum diupload tp dipilih
+//    int j = 0;
+//    for (NSDictionary *selected in selectedImages) {
+//        if ([selected isKindOfClass:[NSDictionary class]]) {
+//            if (j>=emptyImageIndex.count) {
+//                return;
+//            }
+//            if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
+//                NSUInteger index = [emptyImageIndex[j] integerValue];
+//                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
+//                NSMutableDictionary *data = [NSMutableDictionary new];
+//                [data addEntriesFromDictionary:selected];
+//                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
+//                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+//                [self setImageData:[data copy] tag:index];
+//                j++;
+//            }
+//        }
+//    }
     
-    // Cari Index Image yang kosong
-    NSMutableArray *emptyImageIndex = [NSMutableArray new];
-    for (UIImageView *image in attachedImages) {
-        if (image.image == nil)
-        {
-            [emptyImageIndex addObject:@(image.tag - 20)];
-        }
-    }
-    
-    //Upload Image yg belum diupload tp dipilih
-    int j = 0;
-    for (NSDictionary *selected in selectedImages) {
-        if ([selected isKindOfClass:[NSDictionary class]]) {
-            if (j>=emptyImageIndex.count) {
-                return;
-            }
-            if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
-                NSUInteger index = [emptyImageIndex[j] integerValue];
-                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
-                NSMutableDictionary *data = [NSMutableDictionary new];
-                [data addEntriesFromDictionary:selected];
-                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
-                [self setImageData:[data copy] tag:index];
-                j++;
-            }
-        }
-    }
+    ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
