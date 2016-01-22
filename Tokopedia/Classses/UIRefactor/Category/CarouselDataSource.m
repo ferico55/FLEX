@@ -10,7 +10,7 @@
 #import "BannerList.h"
 #import "WebViewController.h"
 
-NSInteger const bannerHeight = 175;
+NSInteger const sliderHeight = 175;
 NSInteger const bannerIpadWidth = 350;
 
 @implementation CarouselDataSource {
@@ -40,7 +40,7 @@ NSInteger const bannerIpadWidth = 350;
         bannerWidth = [UIScreen mainScreen].bounds.size.width;
     }
 
-    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, bannerHeight)];
+    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, sliderHeight)];
     BannerList *banner = _banners[index];
     [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.img_uri] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     
