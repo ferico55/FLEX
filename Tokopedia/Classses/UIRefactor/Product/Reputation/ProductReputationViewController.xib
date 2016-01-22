@@ -44,6 +44,7 @@
                 <outlet property="lblTotal4Rate" destination="MQ4-8k-Evu" id="lvJ-FK-5gS"/>
                 <outlet property="lblTotal5Rate" destination="rnJ-8b-i6p" id="mNo-J8-zIN"/>
                 <outlet property="lblTotalHeaderRating" destination="BL3-Q4-kSv" id="CnU-dC-CrJ"/>
+                <outlet property="middleMargin" destination="vcc-Wm-S1O" id="6Rk-Z3-ktP"/>
                 <outlet property="progress1" destination="TA8-3T-vYB" id="bY7-nR-Gaf"/>
                 <outlet property="progress2" destination="PqS-Oz-H64" id="0iF-B1-6Zl"/>
                 <outlet property="progress3" destination="tBM-rU-0Nf" id="mCD-zp-6ZK"/>
@@ -668,7 +669,7 @@
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcc-Wm-S1O">
                     <rect key="frame" x="0.0" y="312" width="320" height="10"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="10" id="KcR-PE-jrD"/>
                     </constraints>
@@ -768,7 +769,7 @@
                         <constraint firstAttribute="width" constant="270" id="IV1-gM-NxL"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

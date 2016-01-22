@@ -31,6 +31,7 @@
 @property (strong, nonatomic) IBOutlet UIView *helpfulReviewHeader;
 @property (strong, nonatomic) IBOutlet UITableViewCell *helpfulReviewLoadMoreCell;
 @property (strong, nonatomic) IBOutlet UIButton *buttonShowMore;
+@property (strong, nonatomic) IBOutlet UIView *middleMargin;
 
 
 

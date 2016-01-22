@@ -366,7 +366,8 @@ static NSInteger userViewHeight = 70;
             }
         }
     }
-    if(!animationHasShown && filterStar == 0 &&  helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
+    //if(!animationHasShown && filterStar == 0 &&  helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
+    if(!animationHasShown && helpfulReviews.count > 0){
         [self animate:cell];
         animationHasShown = YES;
     }
@@ -532,10 +533,12 @@ static NSInteger userViewHeight = 70;
     page = 0;
     filterStar = 0;
     strUri = nil;
-    animationHasShown = NO;
     [arrList removeAllObjects];
     [tableContent reloadData];
     
+    if(helpfulReviews.count > 0){
+        [_middleMargin setHidden:NO];
+    }
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
@@ -735,6 +738,7 @@ static NSInteger userViewHeight = 70;
             break;
     }
     
+    [_middleMargin setHidden:YES];
     
     //Load data
     [operationQueueLikeDislike cancelAllOperations];
@@ -1567,7 +1571,7 @@ static NSInteger userViewHeight = 70;
     [helpfulReviews addObjectsFromArray:helpfulReview];
     
     if(helpfulReviews.count == 0){
-        
+        [_middleMargin setHidden:YES];
     }
     
 }
