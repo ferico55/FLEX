@@ -15,6 +15,10 @@
 #import "AddressViewController.h"
 #import "TKPDTextView.h"
 #import "TokopediaNetworkManager.h"
+#import "PlacePickerViewController.h"
+#import "NavigateViewController.h"
+#import "RequestObject.h"
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Setting Address Edit View Controller
 @interface SettingAddressEditViewController ()
@@ -25,7 +29,9 @@
     UIScrollViewDelegate,
     UITextFieldDelegate,
     UITextViewDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    PlacePickerDelegate,
+    TKPPlacePickerDelegate
 >
 {
     NSInteger _type;
@@ -56,12 +62,15 @@
     NSDictionary *_selectedProvince;
     NSDictionary *_selectedDistrict;
     NSDictionary *_selectedCity;
+    
+
 }
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBottomMapName;
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldreceivername;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
@@ -76,6 +85,9 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIImageView *mapImageView;
+@property (weak, nonatomic) IBOutlet UIButton *buttonMapLocation;
+@property (weak, nonatomic) IBOutlet UILabel *opsionalLabel;
 
 -(void)cancelActionAddAddress;
 -(void)requestActionAddAddress:(id)object;
@@ -152,6 +164,9 @@
     [_textfieldpass addTarget:self
                        action:@selector(textFieldShouldEndEditing:)
              forControlEvents:UIControlEventEditingChanged];
+    
+    _constraintBottomMapName.constant = 20;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -284,17 +299,17 @@
                 if ([self isValidInput]) {
                     if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
 
-                        NSString *receivernName = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:@"";
-                        NSString *addressName = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:@"";
-                        NSString *addressStreet = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:@"";
-                        NSString *postcode = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY];
+                        NSString *receivernName = _textfieldreceivername.text?:@"";
+                        NSString *addressName = _textfieldaddressname.text?:@"";
+                        NSString *addressStreet = _textviewaddress.text?:@"";
+                        NSString *postcode = _textfieldpostcode.text?:@"";
                         NSNumber *districtID = _selectedDistrict[DATA_ID_KEY];
                         NSString *districtName = _selectedDistrict[DATA_NAME_KEY]?:@"";
                         NSNumber *cityID = _selectedCity[DATA_ID_KEY]?:@(0);
                         NSString *cityName = _selectedCity[DATA_NAME_KEY]?:@"";
                         NSNumber *provinceID = _selectedProvince[DATA_ID_KEY]?:@(0);
                         NSString *provName = _selectedProvince[DATA_NAME_KEY]?:@"";
-                        NSString *phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:@"";
+                        NSString *phone = _textfieldphonenumber.text?:@"";
                         
                         AddressFormList *detailAddress = [AddressFormList new];
                         detailAddress.address_name = addressName;
@@ -308,6 +323,8 @@
                         detailAddress.province_id = provinceID;
                         detailAddress.province_name = provName;
                         detailAddress.receiver_phone = phone;
+                        detailAddress.longitude = _longitude?:@"";
+                        detailAddress.latitude = _latitude?:@"";
                         
                         NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
                         
@@ -331,12 +348,57 @@
     }
 }
 
+//TODO:: Uncomment for showing map address
+- (IBAction)tapMap:(id)sender {
+    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+//    address = [AddressFormList new];
+//    address.address_name = @"Alamat Kantor";
+//    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
+//    address.receiver_name = @"Orang Keren";
+//    address.receiver_phone = @"0812345678";
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self ];
+}
+//
 
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
     [_activetextview resignFirstResponder];
     [_textviewaddress resignFirstResponder];
     [_datainput setObject:_textviewaddress.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
+}
+
+#pragma mark - Picker Place Delegate
+-(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
+{
+    NSString *addressStreet= @"";
+    if (![suggestion isEqualToString:@""]) {
+        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
+        addressStreet = addressSuggestions[0];
+    }
+    
+    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
+    if (addressStreet.length != 0) {
+        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
+    }
+    else
+        addressStreet = street;
+    //if ([_textviewaddress.text isEqualToString:@""]){
+        _textviewaddress.text = addressStreet;
+        _textviewaddress.placeholderLabel.hidden = YES;
+    //}
+    //if ([_textfieldpostcode.text isEqualToString:@""])
+        _textfieldpostcode.text = addressStreet;
+    
+    _textfieldpostcode.text = address.postalCode;
+    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
+//    _mapImageView.image = mapImage;
+//    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _opsionalLabel.hidden = YES;
+    _constraintBottomMapName.constant = 0;
+    
+    _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
 }
 
 #pragma mark - Request Action AddAddress
@@ -402,7 +464,7 @@
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                 [alert show];
             }
-            if (setting.result.is_success == 1) {
+            if (setting.data.is_success == 1) {
                 //TODO:: add alert
                 NSDictionary *userinfo;
                 if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
@@ -429,17 +491,17 @@
                                                                   userInfo:userinfo];
                 
                 if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
-                    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-
-                    AddressFormList *address = [AddressFormList new];
-                    address.receiver_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name?:@"";
-                    address.address_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name?:@"";
-                    address.address_street = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
-                    address.postal_code = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code?:@"";
-                    address.city_name = _selectedCity[DATA_NAME_KEY]?:list.city_name?:@"";
-                    address.province_name = _selectedProvince[DATA_NAME_KEY]?:list.province_name?:@"";
-                    address.district_name = _selectedDistrict[DATA_NAME_KEY]?:list.district_name?:@"";
-                    address.receiver_phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone?:@"";
+                    AddressFormList *address = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+                    address.receiver_name = _textfieldreceivername.text?:@"";
+                    address.address_name = _textfieldaddressname.text?:@"";
+                    address.address_street = _textviewaddress.text?:@"";
+                    address.postal_code = _textfieldpostcode.text?:@"";
+                    address.city_name = _selectedCity[DATA_NAME_KEY]?:address.city_name?:@"";
+                    address.province_name = _selectedProvince[DATA_NAME_KEY]?:address.province_name?:@"";
+                    address.district_name = _selectedDistrict[DATA_NAME_KEY]?:address.district_name?:@"";
+                    address.receiver_phone = _textfieldphonenumber.text?:@"";
+                    address.longitude = _longitude;
+                    address.latitude = _latitude;
                     [self.delegate successEditAddress:address];
                 }
                 
@@ -468,6 +530,7 @@
     {
         tokopediaNetworkManager = [TokopediaNetworkManager new];
         tokopediaNetworkManager.delegate = self;
+        tokopediaNetworkManager.isUsingHmac = YES;
     }
     
     return tokopediaNetworkManager;
@@ -523,6 +586,43 @@
             _buttondistrict.enabled = NO;
             _buttoncity.enabled = NO;
         }
+        
+        //TODO:: Uncomment for showing map address
+        if ([list.longitude integerValue] != 0) {
+//            _mapImageView.image = _imageMap;
+//            _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+
+            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+                
+                if (error != nil){
+                    return;
+                }
+                
+                if (response == nil|| response.results.count == 0) {
+                    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_buttonMapLocation setCustomAttributedText:@"Lokasi yang Dituju"];
+
+                } else {
+                    GMSAddress *address = [response results][0];
+                    NSString *addressString;
+                    if (address.lines.count>0) {
+                        addressString = address.lines[0];
+                    }
+                    else
+                    {
+                        addressString = address.thoroughfare;
+                    }
+                    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_buttonMapLocation setCustomAttributedText:addressString];
+                }
+                
+
+                _opsionalLabel.hidden = YES;
+                _constraintBottomMapName.constant = 0;
+
+            }];
+        }
+        //
     }
 }
 
@@ -535,15 +635,15 @@
     
     NSMutableArray *messages = [NSMutableArray new];
     
-    NSString *receivername = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name;
-    NSString *addressname = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name;
-    NSString *address = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_name;
-    NSString *postcode = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code;
+    NSString *receivername = _textfieldreceivername.text;
+    NSString *addressname = _textfieldaddressname.text;
+    NSString *address = _textviewaddress.text;
+    NSString *postcode = _textfieldpostcode.text;
     NSString *district = _selectedDistrict[DATA_NAME_KEY]?:list.district_name;
     NSString *city = _selectedCity[DATA_NAME_KEY]?:list.city_name;
     NSString *prov = _selectedProvince[DATA_NAME_KEY]?:list.province_name;
-    NSString *phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone;
-    NSString *pass = [_datainput objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
+    NSString *phone = _textfieldphonenumber.text;
+    NSString *pass = _textfieldpass.text;
     
     if (!receivername || [receivername isEqualToString:@""]) {
         isValid = NO;
@@ -557,6 +657,12 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_ADDRESS];
     }
+    
+    if (address.length <20) {
+        isValid = NO;
+        [messages addObject:@"Alamat terlalu pendek, minimum 20 karakter"];
+    }
+    
     if (!postcode || [postcode isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_POSTAL_CODE];
@@ -649,14 +755,6 @@
         default:
             break;
     }
-}
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
-    [_textviewaddress resignFirstResponder];
-
 }
 
 #pragma mark - Textfield Delegate
@@ -840,22 +938,24 @@
     AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
     
     NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
-    NSInteger addressid = list.address_id?:0;
-    NSNumber *city = _selectedCity[@"ID"]?:list.city_id?:@(0);
-    NSNumber *province = _selectedProvince[@"ID"]?:list.province_id?:@(0);
-    NSNumber *distric = _selectedDistrict[@"ID"]?:list.district_id?:@(0);
+    NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
+    NSString *city = [NSString stringWithFormat:@"%zd",[_selectedCity[@"ID"] integerValue]?:[list.city_id integerValue]?:0];
+    NSString *province = [NSString stringWithFormat:@"%zd",[_selectedProvince[@"ID"] integerValue]?:[list.province_id integerValue]?:0];
+    NSString *district = [NSString stringWithFormat:@"%zd",[_selectedDistrict[@"ID"] integerValue]?:[list.district_id integerValue]?:0];
     
-    NSString *recievername = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name?:@"";
-    NSString *addressname = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name?:@"";
-    NSString *phone = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone?:@(0);
-    NSString *postalcode = [userinfo objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code?:@"0";
+    NSString *recievername = _textfieldreceivername.text?:@"";
+    NSString *addressname = _textfieldaddressname.text?:@"";
+    NSString *phone = _textfieldphonenumber.text?:@"";
+    NSString *postalcode = _textfieldpostcode.text?:@"";
     
-    NSString *addressstreet = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
-    NSString *password = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY]?:@"";
+    NSString *addressstreet = _textviewaddress.text?:@"";
+    NSString *password = _textfieldpass.text?:@"";
+    NSString *longitude = (!_longitude || [_longitude isEqualToString:@"0"])?@"":_longitude;
+    NSString *latitude = (!_latitude || [_latitude isEqualToString:@"0"])?@"":_latitude;
     //TODO:: Lat Long
     
     NSDictionary *param =@{kTKPDPROFILE_APIACTIONKEY:action,
-                           kTKPDPROFILESETTING_APIADDRESSIDKEY : @(addressid),
+                           kTKPDPROFILESETTING_APIADDRESSIDKEY : addressid,
                            kTKPDPROFILESETTING_APICITYKEY : city,
                            kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
                            kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
@@ -863,47 +963,68 @@
                            kTKPDPROFILESETTING_APIPROVINCEKEY : province,
                            kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
                            kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
-                           kTKPDPROFILESETTING_APIDISTRICTKEY : distric,
-                           kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password
+                           kTKPDPROFILESETTING_APIDISTRICTKEY : district,
+                           kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password,
+                           @"longitude": longitude,
+                           @"latitude": latitude
                            };
     
     return param;
 }
 
-- (NSString*)getPath:(int)tag
+//-(id)getRequestObject:(int)tag
+//{
+//    NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
+//    tempDictUserInfo = nil;
+//    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+//    
+//    NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
+//    NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
+//    NSString *city = [NSString stringWithFormat:@"%zd",[_selectedCity[@"ID"] integerValue]?:[list.city_id integerValue]?:0];
+//    NSString *province = [NSString stringWithFormat:@"%zd",[_selectedProvince[@"ID"] integerValue]?:[list.province_id integerValue]?:0];
+//    NSString *district = [NSString stringWithFormat:@"%zd",[_selectedDistrict[@"ID"] integerValue]?:[list.district_id integerValue]?:0];
+//    
+//    NSString *recievername = _textfieldreceivername.text?:@"";
+//    NSString *addressname = _textfieldaddressname.text?:@"";
+//    NSString *phone = _textfieldphonenumber.text?:@"";
+//    NSString *postalcode = _textfieldpostcode.text?:@"";
+//    
+//    NSString *addressstreet = _textviewaddress.text?:@"";
+//    NSString *password = _textfieldpass.text?:@"";
+//    NSString *longitude = (!_longitude || [_longitude isEqualToString:@"0"])?@"":_longitude;
+//    NSString *latitude = (!_latitude || [_latitude isEqualToString:@"0"])?@"":_latitude;
+//    
+//    RequestObjectEditAddress *editAddress = [RequestObjectEditAddress new];
+//    editAddress.action = action;
+//    editAddress.address_id = addressid;
+//    editAddress.city = city;
+//    editAddress.receiver_name = recievername;
+//    editAddress.address_name = addressname;
+//    editAddress.receiver_phone = phone;
+//    editAddress.province = province;
+//    editAddress.postal_code = postalcode;
+//    editAddress.address_street = addressstreet;
+//    editAddress.user_password = password;
+//    editAddress.district = district;
+//    editAddress.password = _textfieldpass.text?:@"";
+//    editAddress.longitude = longitude;
+//    editAddress.latitude = latitude;
+//    
+//    return editAddress;
+//}
+
+-(int)getRequestMethod:(int)tag
 {
-    return kTKPDPROFILE_PROFILESETTINGAPIPATH;
+    return RKRequestMethodGET;
+}
+
+- (NSString *)getPath:(int)tag {
+    return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"/v4/action/people/edit_address.pl":@"/v4/action/people/add_address.pl";
 }
 
 - (id)getObjectManager:(int)tag
 {
-    _objectmanagerActionAddAddress = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromArray:@[
-                                                   kTKPD_APISTATUSMESSAGEKEY,
-                                                   kTKPD_APIERRORMESSAGEKEY,
-                                                   kTKPD_APISTATUSKEY,
-                                                   kTKPD_APISERVERPROCESSTIMEKEY,
-                                                   ]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionAddAddress addResponseDescriptor:responseDescriptor];
-    
+    _objectmanagerActionAddAddress = [TKPMappingManager objectManagerEditAddress];
     return _objectmanagerActionAddAddress;
 }
 

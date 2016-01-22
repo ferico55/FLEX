@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -16,13 +16,22 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MUZ-hF-HvQ" id="g0d-H1-tH8">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K21-b3-57A">
-                        <rect key="frame" x="15" y="11" width="260" height="21"/>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gbk-ii-Fcr">
+                        <rect key="frame" x="14" y="14" width="20" height="20"/>
+                        <animations/>
                         <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="260" id="fO5-CQ-qDl"/>
+                            <constraint firstAttribute="height" constant="20" id="jbH-cJ-XNd"/>
+                            <constraint firstAttribute="width" constant="20" id="tpE-j4-jKw"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K21-b3-57A">
+                        <rect key="frame" x="14" y="11" width="261" height="21"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="238" id="fO5-CQ-qDl"/>
                             <constraint firstAttribute="height" constant="21" id="nhZ-AV-TLx"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
@@ -32,30 +41,38 @@
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_check_orange.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zf3-Qz-umR">
                         <rect key="frame" x="290" y="14" width="15" height="15"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="gOm-DM-Dts"/>
                             <constraint firstAttribute="width" constant="15" id="pP5-uO-4PZ"/>
                         </constraints>
                     </imageView>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="K21-b3-57A" firstAttribute="top" secondItem="g0d-H1-tH8" secondAttribute="top" constant="11" id="3eD-Ix-ugk"/>
+                    <constraint firstItem="Gbk-ii-Fcr" firstAttribute="leading" secondItem="g0d-H1-tH8" secondAttribute="leading" constant="14" id="9BS-Kl-S8M"/>
                     <constraint firstItem="Zf3-Qz-umR" firstAttribute="top" secondItem="g0d-H1-tH8" secondAttribute="top" constant="14" id="HtM-Le-GUn"/>
-                    <constraint firstItem="K21-b3-57A" firstAttribute="leading" secondItem="g0d-H1-tH8" secondAttribute="leading" constant="15" id="JAM-1S-znH"/>
+                    <constraint firstItem="K21-b3-57A" firstAttribute="leading" secondItem="g0d-H1-tH8" secondAttribute="leading" constant="14" id="JAM-1S-znH"/>
                     <constraint firstItem="Zf3-Qz-umR" firstAttribute="leading" secondItem="K21-b3-57A" secondAttribute="trailing" constant="15" id="Lrn-Or-QPD"/>
+                    <constraint firstItem="Gbk-ii-Fcr" firstAttribute="top" secondItem="g0d-H1-tH8" secondAttribute="top" constant="14" id="ScH-gE-wEp"/>
                     <constraint firstAttribute="bottom" secondItem="Zf3-Qz-umR" secondAttribute="bottom" constant="14" id="XJ8-9D-l3f"/>
                     <constraint firstAttribute="bottom" secondItem="K21-b3-57A" secondAttribute="bottom" constant="11" id="nDW-CU-Quz"/>
                     <constraint firstAttribute="trailing" secondItem="Zf3-Qz-umR" secondAttribute="trailing" constant="15" id="oNy-M6-gHb"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <gestureRecognizers/>
             <connections>
                 <outlet property="cellLabel" destination="K21-b3-57A" id="LT9-De-Zhi"/>
+                <outlet property="cellLableLeadingConstraint" destination="JAM-1S-znH" id="w4b-vj-feK"/>
                 <outlet property="checkmarkImageView" destination="Zf3-Qz-umR" id="mdk-sY-w2x"/>
+                <outlet property="iconPinPoint" destination="Gbk-ii-Fcr" id="Xp3-hd-e3d"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_check_orange.png" width="14" height="14"/>
+        <image name="icon_pinpoin_toped.png" width="70" height="70"/>
     </resources>
 </document>

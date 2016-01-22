@@ -20,6 +20,7 @@
 #import "TransactionCartRootViewController.h"
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
+#import "MyShopShipmentTableViewController.h"
 
 #import "string_product.h"
 
@@ -145,6 +146,9 @@
     }
     else if ([[url absoluteString] rangeOfString:@"contact-us-faq.pl"].location != NSNotFound) {
         [self redirectToContactUs];
+    }
+    else if ([[url absoluteString] rangeOfString:@"tab=shipping"].location != NSNotFound) {
+        [self redirectToShipmentSetting];
     }
     else if(explodedPathUrl.count == 2) {
         //shop
@@ -357,6 +361,12 @@
 - (void)redirectToContactUs {
     TPContactUsDependencies *dependencies = [TPContactUsDependencies new];
     [dependencies pushContactUsViewControllerFromNavigation:self.activeController.navigationController];
+}
+
+- (void)redirectToShipmentSetting {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    MyShopShipmentTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+    [self.activeController.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Static method

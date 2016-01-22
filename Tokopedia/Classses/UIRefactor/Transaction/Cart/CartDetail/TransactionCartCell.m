@@ -28,7 +28,6 @@
 }
 
 - (void)awakeFromNib {
-    [_productNameLabel sizeToFit];
     
 }
 
@@ -78,47 +77,11 @@
     
     self.backgroundColor = (_indexPage==0)?[UIColor whiteColor]:[UIColor colorWithRed:247.0f/255.0f green:247.0f/255.0f blue:247.0f/255.0f alpha:1];
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    
-    style.lineSpacing = 8.0;
-    
-    
-    NSMutableDictionary* textAttributes = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                          
-                                                                                          NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                                                                                          
-                                                                                          NSParagraphStyleAttributeName  : style,
-                                                                                          
-                                                                                          NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
-                                                                                          
-                                                                                          }];
-    
-    
-    
-    NSAttributedString *attributedText;
-    
-    if (_indexPage==0) {
-        
-        UIColor *color = [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1];
-        
-        [textAttributes setObject:color forKey:NSForegroundColorAttributeName];
-        
-        attributedText = [[NSAttributedString alloc] initWithString:viewModel.productName
-                          
-                                                         attributes:textAttributes];
-        
-    } else {
-        
-        [textAttributes setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
-        
-        attributedText = [[NSAttributedString alloc] initWithString:viewModel.productName
-                          
-                                                         attributes:textAttributes];
-        
+    if (_indexPage == 1) {
+        self.productNameLabel.textColor = [UIColor blackColor];
     }
     
-    [self.productNameLabel setAttributedText:attributedText];
-    
+    self.productNameLabel.text = viewModel.productName;
     
     
     NSString *priceIsChangedString = [NSString stringWithFormat:@"%@ (Sebelumnya %@)", viewModel.productPriceIDR, viewModel.productPriceBeforeChange];

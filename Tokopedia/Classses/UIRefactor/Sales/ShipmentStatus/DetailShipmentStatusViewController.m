@@ -98,6 +98,10 @@
         _changeReceiptButton.enabled = NO;
     }
     
+    if (_order.order_shipment.shipment_id == 10) {
+        _changeReceiptButton.hidden = YES;
+    }
+    
     _history = _order.order_history;
     _currentReceiptNumber = self.order.order_detail.detail_ship_ref_num;
 }

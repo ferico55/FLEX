@@ -382,6 +382,13 @@ static NSInteger userViewHeight = 70;
             reputationDetail.isHelpfulReview = NO;
             [cell setReputationModelView:reputationDetail.viewModel];
             
+			if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+     	  		 if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+         		   [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+ 	    	       [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, @(indexPath.row)]];
+			   }
+  		 	 }
+
             return cell;
         }else{
             int limit = isShowingMore ? helpfulReviews.count : 1;
@@ -407,6 +414,13 @@ static NSInteger userViewHeight = 70;
         reputationDetail.isHelpfulReview = NO;
         [cell setReputationModelView:reputationDetail.viewModel];
         
+		if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+        if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+            [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, @(indexPath.row)]];
+        }
+    }
+
         return cell;
     }
 }

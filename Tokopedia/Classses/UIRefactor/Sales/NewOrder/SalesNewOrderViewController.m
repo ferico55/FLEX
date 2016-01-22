@@ -30,6 +30,8 @@
 
 #import "ActionOrder.h"
 
+#import "OrderSellerShop.h"
+
 @interface SalesNewOrderViewController ()
 <
     UITableViewDataSource,
@@ -577,6 +579,9 @@
 {
     _objectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Order class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -660,6 +665,15 @@
                                                              @"detail_total_add_fee"        : @"detail_total_add_fee",
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];
+    
+    RKObjectMapping *orderShopMapping = [RKObjectMapping mappingForClass:[OrderSellerShop class]];
+    [orderShopMapping addAttributeMappingsFromArray:@[API_SHOP_ADDRESS_STREET,
+                                                     API_SHOP_ADDRESS_DISTRICT,
+                                                     API_SHOP_ADDRESS_CITY,
+                                                     API_SHOP_ADDRESS_PROVINCE,
+                                                     API_SHOP_ADDRESS_COUNTRY,
+                                                     API_SHOP_ADDRESS_POSTAL
+                                                     API_SHOP_SHIPPER_PHONE]];
     
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
@@ -763,6 +777,10 @@
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DETAIL
                                                                                 toKeyPath:API_LIST_ORDER_DETAIL
                                                                               withMapping:orderDetailMapping]];
+
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_SHOP
+                                                                                toKeyPath:API_LIST_ORDER_SHOP
+                                                                              withMapping:orderShopMapping]];
 
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DEADLINE
                                                                                 toKeyPath:API_LIST_ORDER_DEADLINE
@@ -963,6 +981,9 @@
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_actionObjectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,

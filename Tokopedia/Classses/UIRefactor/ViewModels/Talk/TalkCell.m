@@ -186,7 +186,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         }
     }
     else {
-        ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
         vc.data = data;
 
         UIViewController *controller = [_delegate getNavigationController:self];
@@ -403,7 +403,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 			if (tag == RequestDeleteTalk) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
 
-                NSDictionary *userInfo = @{@"index" : @(_unfollowIndexPath.row)};
+                NSDictionary *userInfo = @{@"index" : @(_deleteIndexPath.row)};
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
                                                                     object:nil
                                                                   userInfo:userInfo];

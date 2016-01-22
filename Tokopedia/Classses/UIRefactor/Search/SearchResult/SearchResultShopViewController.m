@@ -32,6 +32,8 @@
 #import "ShopContainerViewController.h"
 #import "SpellCheckRequest.h"
 
+static NSString const *rows = @"12";
+
 @interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -50,10 +52,11 @@
 
 @end
 
-@implementation SearchResultShopViewController
-{
+@implementation SearchResultShopViewController {
     NSInteger _page;
     NSInteger _limit;
+    
+    NSInteger start;
     NoResultReusableView *_noResultView;
     
     NSMutableArray *_urlarray;
@@ -76,9 +79,6 @@
     
     
     LoadingView *loadingView;
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
 }
 
@@ -114,13 +114,8 @@
     _urlarray = [NSMutableArray new];
     _params = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
     
-    /** set first page become 1 **/
-    _page = 1;
-    
-    /** set max data per page request **/
+    start = 0;
     _limit = kTKPDSEARCH_LIMITPAGE;
     
     
@@ -155,12 +150,6 @@
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHSHOP_APIRESPONSEFILEFORMAT, querry?:deptid]];
-
-    _cachecontroller.filePath = _cachepath;
-//    _cachecontroller.URLCacheInterval = 86400.0;
-    _cachecontroller.URLCacheInterval = 0;
-    [_cachecontroller initCacheWithDocumentPath:path];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
@@ -226,7 +215,7 @@
 	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext !=0 ) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext !=0 && ![_urinext isEqualToString:@""]) {
             /** called if need to load next page **/
             [self loadData];
         }
@@ -267,7 +256,6 @@
             List *list = [_product objectAtIndex:indexPath.row];
 
             ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
-            //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
@@ -283,6 +271,9 @@
             } else {
                 [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
             }
+            
+            //there is no fav condition
+            [((SearchResultShopCell*)cell).favbutton setHidden:YES];
             
             UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
             thumb = [UIImageView circleimageview:thumb];
@@ -334,9 +325,6 @@
 - (void)loadData
 {
     if ([self getNetworkManager].getObjectRequest.isExecuting) return;
-	[_cachecontroller getFileModificationDate];
-	
-    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         if (!_isrefreshview) {
@@ -364,50 +352,19 @@
     BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if (_page<=1 && !_isrefreshview) {
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-            [_cachecontroller connectionDidFinish:_cacheconnection];
-            //save response data to plist
-            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        }
+//        if (start && !_isrefreshview) {
+//            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+//            [_cachecontroller connectionDidFinish:_cacheconnection];
+//            //save response data to plist
+//            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+//        }
         
         [self requestprocess:object];
     }
 }
 
--(void)requestfailure:(id)object
-{
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _searchitem = stats;
-            BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
+-(void)requestfailure:(id)object {
+    [self requestprocess:object];
 }
 
 -(void)requestprocess:(id)object
@@ -424,11 +381,11 @@
             NSString *uriredirect = _searchitem.result.redirect_url;
             
             if (uriredirect == nil) {
-                if (_page == 1) {
+                if (start == 0) {
                     [_product removeAllObjects];
                 }
                 
-                [_product addObjectsFromArray:_searchitem.result.list];
+                [_product addObjectsFromArray:_searchitem.result.shops];
                 
                 if (_product.count == 0) {
                     [_act stopAnimating];
@@ -446,33 +403,15 @@
                     _urinext =  _searchitem.result.paging.uri_next;
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
                     
-                    NSInteger tempInt = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
-                    if(tempInt == _page)
-                        _urinext = nil;
-                    _page = tempInt;
-                    
-                    NSLog(@"next page : %zd",_page);
+                    start = [[tokopediaNetworkManager explodeURL:_urinext withKey:@"start"] integerValue];
                     _isnodata = NO;
                     
+                    if([_urinext isEqualToString:@""]) {
+                        _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+                    }
+                    
                     [_table reloadData];
-                }
-            }
-            else{
-                _uriredirect =  uriredirect;
-                NSURL *url = [NSURL URLWithString:_uriredirect];
-                NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
-                
-                // Redirect URI to hotlist
-                if ([querry[1] isEqualToString:@"hot"]) {
-                    HotlistResultViewController *vc = [HotlistResultViewController new];
-                    vc.data = @{kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES), kTKPDSEARCHHOTLIST_APIQUERYKEY : querry[2]};
-                    [self.navigationController pushViewController:vc animated:NO];
-                }
-                // redirect uri to search category
-                if ([querry[1] isEqualToString:@"p"]) {
-                    NSString *deptid = _searchitem.result.department_id;
-                    [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-                    [self loadData];
+
                 }
             }
             
@@ -505,6 +444,7 @@
 }
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification
+
 -(IBAction)tap:(id)sender
 {
     UIButton *button = (UIButton *)sender;
@@ -545,6 +485,7 @@
     {
         tokopediaNetworkManager = [TokopediaNetworkManager new];
         tokopediaNetworkManager.delegate = self;
+        tokopediaNetworkManager.isParameterNotEncrypted = YES;
     }
     
     return tokopediaNetworkManager;
@@ -572,6 +513,7 @@
 {
     [self cancel];
     _page = 1;
+    start = 0;
     _isrefreshview = YES;
     _requestcount = 0;
     
@@ -607,7 +549,6 @@
 }
 
 #pragma mark - Category notification
-
 - (void)changeCategory:(NSNotification *)notification
 {
     [_product removeAllObjects];
@@ -618,56 +559,61 @@
 }
 
 #pragma mark - LoadingView Delegate
-- (void)pressRetryButton
-{
+- (void)pressRetryButton {
     [self loadData];
 }
 
 
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
+- (NSDictionary*)getParameter:(int)tag {
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
     NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     
     NSDictionary* param;
+
     if (deptid == nil ) {
-        param = @{kTKPDSEARCH_APIQUERYKEY       :   querry?:@"",
-                  kTKPDSEARCH_APIACTIONTYPEKEY  :   type?:@"",
-                  kTKPDSEARCH_APIPAGEKEY        :   @(_page),
-                  kTKPDSEARCH_APILIMITKEY       :   @(kTKPDSEARCH_LIMITPAGE),
-                  kTKPDSEARCH_APIORDERBYKEY     :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                  kTKPDSEARCH_APILOCATIONKEY    :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                  kTKPDSEARCH_APISHOPTYPEKEY    :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMINKEY    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMAXKEY    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+        param = @{@"q"       :   querry?:@"",
+                  @"start" : @(start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  @"ob"     :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  @"floc"    :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  @"fshop"    :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  @"pmin"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  @"pmax"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     } else {
-        param = @{kTKPDSEARCH_APIDEPARTEMENTIDKEY   :   deptid?:@"",
-                  kTKPDSEARCH_APIACTIONTYPEKEY      :   type?:@"",
-                  kTKPDSEARCH_APIPAGEKEY            :   @(_page),
-                  kTKPDSEARCH_APILIMITKEY           :   @(kTKPDSEARCH_LIMITPAGE),
-                  kTKPDSEARCH_APIORDERBYKEY         :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                  kTKPDSEARCH_APILOCATIONKEY        :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                  kTKPDSEARCH_APISHOPTYPEKEY        :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMINKEY        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMAXKEY        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+        param = @{@"sc"   :   deptid?:@"",
+                  @"start" : @(start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  @"ob"         :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  @"floc"        :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  @"fshop"        :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  @"pmin"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  @"pmax"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     }
     
     return param;
 }
 
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
+}
+
+
+
 - (NSString*)getPath:(int)tag
 {
-    return kTKPDSEARCH_APIPATH;
+    return @"search/v1/shop";
 }
 
 - (id)getObjectManager:(int)tag
 {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+
+    _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];
@@ -683,7 +629,7 @@
                                                         }];
     
     // setup object mappings
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSShop class]];
     [listMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APISHOPIDKEY:kTKPDSEARCH_APISHOPIDKEY,
                                                       kTKPDSEARCH_APISHOPIMAGEKEY:kTKPDSEARCH_APISHOPIMAGEKEY,
                                                       kTKPDSEARCH_APISHOPLOCATIONKEY:kTKPDSEARCH_APISHOPLOCATIONKEY,
@@ -701,7 +647,7 @@
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APILISTKEY toKeyPath:kTKPDSEARCH_APILISTKEY withMapping:listMapping];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shops" toKeyPath:@"shops" withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
     // add page relationship
@@ -711,8 +657,8 @@
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDSEARCH_APIPATH
+                                                                                            method:RKRequestMethodGET
+                                                                                       pathPattern:[self getPath:nil]
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -721,33 +667,22 @@
     return _objectmanager;
 }
 
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
     return ((SearchItem *) stat).status;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     [self requestsuccess:successResult withOperation:operation];
     [_table reloadData];
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
+    
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{}
-
-- (void)actionBeforeRequest:(int)tag
-{}
-
-- (void)actionRequestAsync:(int)tag
-{}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;

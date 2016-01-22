@@ -20,6 +20,8 @@
 #import "HistoryProduct.h"
 #import "ProductCell.h"
 
+#import "RetryCollectionReusableView.h"
+
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
@@ -31,7 +33,8 @@ UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
-NoResultDelegate
+NoResultDelegate,
+RetryViewDelegate
 >
 
 
@@ -165,6 +168,7 @@ typedef enum TagRequest {
     if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView *)reusableView).delegate = self;
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
@@ -391,7 +395,7 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Other Method
-- (IBAction)pressRetryButton:(id)sender {
+- (void)pressRetryButton {
     [_networkManager doRequest];
     _isFailRequest = NO;
     [_collectionView reloadData];

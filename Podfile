@@ -9,6 +9,8 @@ target "Tokopedia" do
     pod 'GoogleAppIndexing'
     pod 'Google/Analytics'
     pod 'GoogleTagManager'
+    pod 'GoogleMaps'
+    pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 end
 
 target "TokopediaTests" do

@@ -76,7 +76,8 @@ GeneralProductCellDelegate,
 GeneralSingleProductDelegate,
 GeneralPhotoProductDelegate,
 TokopediaNetworkManagerDelegate,
-NoResultDelegate
+NoResultDelegate,
+RetryViewDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -931,6 +932,10 @@ NoResultDelegate
             [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
         }
         [_collectionView addSubview:_noResultView];
+        [_collectionView sendSubviewToBack:_noResultView];
+        [_collectionView sendSubviewToBack:_footer];
+        [_collectionView bringSubviewToFront:_header];
+        
         [_refreshControl endRefreshing];
         [_refreshControl setHidden:YES];
         [_refreshControl setEnabled:NO];

@@ -46,7 +46,6 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 
-
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -59,7 +58,6 @@
 >
 {
     UITabBarController *_tabBarController;
-    NSMutableDictionary *_auth;
     HomeTabViewController *_swipevc;
     URLCacheController *_cacheController;
     
@@ -236,7 +234,7 @@ typedef enum TagRequest {
     }
     else{
         // after login
-        CategoryViewController *controller = [[CategoryViewController alloc] init];
+        HotlistViewController *controller = [[HotlistViewController alloc] init];
         controller.data = @{@"auth" : _auth?:@{}};
         [viewcontrollers addObject:controller];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
@@ -259,7 +257,6 @@ typedef enum TagRequest {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    categoryvc.delegate = self;
     
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];

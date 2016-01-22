@@ -22,6 +22,7 @@
 
 #import "ShipmentStatusCell.h"
 #import "StickyAlertView.h"
+#import "OrderSellerShop.h"
 
 @interface ShipmentStatusViewController ()
 <
@@ -173,13 +174,16 @@
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] &&
         order.order_detail.detail_ship_ref_num) {
         
-        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+        if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
+            [cell showTrackButton];
+        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING &&
+                   order.order_shipment.shipment_id == 10) {
+            [cell showTrackButton];
+        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
             order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
             [cell showAllButton];
-        } else if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
-            [cell showTrackButton];
         } else {
             [cell hideAllButton];
         }
@@ -257,6 +261,9 @@
 {
     _objectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Order class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -342,6 +349,15 @@
                                                              @"detail_total_add_fee"        : @"detail_total_add_fee",
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];
+    
+    RKObjectMapping *orderShopMapping = [RKObjectMapping mappingForClass:[OrderSellerShop class]];
+    [orderShopMapping addAttributeMappingsFromArray:@[API_SHOP_ADDRESS_STREET,
+                                                      API_SHOP_ADDRESS_DISTRICT,
+                                                      API_SHOP_ADDRESS_CITY,
+                                                      API_SHOP_ADDRESS_PROVINCE,
+                                                      API_SHOP_ADDRESS_COUNTRY,
+                                                      API_SHOP_ADDRESS_POSTAL
+                                                      API_SHOP_SHIPPER_PHONE]];
     
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
@@ -448,6 +464,10 @@
                                                                                 toKeyPath:API_LIST_ORDER_DETAIL
                                                                               withMapping:orderDetailMapping]];
     
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_SHOP
+                                                                                toKeyPath:API_LIST_ORDER_SHOP
+                                                                              withMapping:orderShopMapping]];
+
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DEADLINE
                                                                                 toKeyPath:API_LIST_ORDER_DEADLINE
                                                                               withMapping:orderDeadlineMapping]];
@@ -519,11 +539,6 @@
             [self requestSuccess:mappingResult withOperation:operation];
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            
-            [_refreshControl endRefreshing];
-            
-            [_timer invalidate];
-            _timer = nil;
             
             [self requestFailure:error];
             
@@ -600,7 +615,15 @@
 
 - (void)requestFailure:(id)object
 {
+    [_refreshControl endRefreshing];
     
+    [_timer invalidate];
+    _timer = nil;
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf, sedang terjadi kendala pada server. Silahkan coba beberapa saat lagi."] delegate:self];
+    [alert show];
+    
+    self.tableView.tableFooterView = nil;
 }
 
 - (void)cancel
@@ -621,6 +644,9 @@
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromArray:@[
                                                    kTKPD_APISTATUSKEY,

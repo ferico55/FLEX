@@ -9,11 +9,13 @@
 #import "TKPStoreManager.h"
 #import "TKPHomeProductsStore.h"
 #import "TKPHomeBannerStore.h"
+#import "TKPGooglePlaceDetailProductStore.h"
 
 @implementation TKPStoreManager
 
 @synthesize homeProductStore = _homeProductStore;
 @synthesize homeBannerStore = _homeBannerStore;
+@synthesize placeDetailStore = _placeDetailStore;
 @synthesize networkQueue = _networkQueue;
 
 - (TKPHomeProductsStore *)homeProductStore {
@@ -28,6 +30,13 @@
         _homeBannerStore = [[TKPHomeBannerStore alloc] initWithStoreManager:self];
     }
     return _homeBannerStore;
+}
+
+- (TKPGooglePlaceDetailProductStore *)placeDetailStore {
+    if (_placeDetailStore == nil) {
+        _placeDetailStore = [[TKPGooglePlaceDetailProductStore alloc] initWithStoreManager:self];
+    }
+    return _placeDetailStore;
 }
 
 
