@@ -8,7 +8,7 @@
 
 #import "ProductAddCaptionViewController.h"
 #import "NavigateViewController.h"
-
+#import "CameraCollectionViewController.h"
 
 
 @interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate> {
@@ -153,10 +153,13 @@
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             case 11: // Tombol "Simpan"
+                [_delegate didDismissController:self withUserInfo:_userInfo];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             default:
                 break;
         }
     }
 }
+
 @end

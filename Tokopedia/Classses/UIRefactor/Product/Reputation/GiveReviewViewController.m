@@ -35,7 +35,8 @@
     CameraCollectionViewControllerDelegate,
     GenerateHostDelegate,
     CameraControllerDelegate,
-    RequestUploadImageDelegate
+    RequestUploadImageDelegate,
+    ProductAddCaptionDelegate
 >
 {
     NSMutableArray *_selectedImagesCameraController;
@@ -595,42 +596,39 @@
     postActionUrl = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
 }
 
-#pragma mark - Camera Delegate
-- (void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo {
-//    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
-//    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
-//    
-//    // Cari Index Image yang kosong
-//    NSMutableArray *emptyImageIndex = [NSMutableArray new];
-//    for (UIImageView *image in attachedImages) {
-//        if (image.image == nil)
-//        {
-//            [emptyImageIndex addObject:@(image.tag - 20)];
-//        }
-//    }
-//    
-//    //Upload Image yg belum diupload tp dipilih
-//    int j = 0;
-//    for (NSDictionary *selected in selectedImages) {
-//        if ([selected isKindOfClass:[NSDictionary class]]) {
-//            if (j>=emptyImageIndex.count) {
-//                return;
-//            }
-//            if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
-//                NSUInteger index = [emptyImageIndex[j] integerValue];
-//                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
-//                NSMutableDictionary *data = [NSMutableDictionary new];
-//                [data addEntriesFromDictionary:selected];
-//                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-//                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
-//                [self setImageData:[data copy] tag:index];
-//                j++;
-//            }
-//        }
-//    }
+#pragma mark - Product Add Caption Delegate
+- (void)didDismissController:(ProductAddCaptionViewController*)controller withUserInfo:(NSDictionary *)userinfo {
+    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
+    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
     
-    ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+    // Cari Index Image yang kosong
+    NSMutableArray *emptyImageIndex = [NSMutableArray new];
+    for (UIImageView *image in attachedImages) {
+        if (image.image == nil)
+        {
+            [emptyImageIndex addObject:@(image.tag - 20)];
+        }
+    }
+    
+    //Upload Image yg belum diupload tp dipilih
+    int j = 0;
+    for (NSDictionary *selected in selectedImages) {
+        if ([selected isKindOfClass:[NSDictionary class]]) {
+            if (j>=emptyImageIndex.count) {
+                return;
+            }
+            if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
+                NSUInteger index = [emptyImageIndex[j] integerValue];
+                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
+                NSMutableDictionary *data = [NSMutableDictionary new];
+                [data addEntriesFromDictionary:selected];
+                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
+                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+                [self setImageData:[data copy] tag:index];
+                j++;
+            }
+        }
+    }
 }
 
 -(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
