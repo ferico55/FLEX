@@ -969,13 +969,16 @@
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
         [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
         [gatewayImages addObject:gateway.gateway_image?:@""];
-        //TODO:: Need to uncomment this before release
-//        for (NSString *hiddenGateway in hiddenGatewayArray) {
-//            if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
-//                [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
-//                [hiddenGatewayName addObject:gateway.gateway_name];
-//            }
-//        }
+#ifdef DEBUG
+        
+#else
+        for (NSString *hiddenGateway in hiddenGatewayArray) {
+            if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
+                [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
+                [hiddenGatewayName addObject:gateway.gateway_name];
+            }
+        }
+#endif
     }
     
     [gatewayImages removeObjectsInArray:hiddenGatewayImage];
