@@ -366,8 +366,8 @@ static NSInteger userViewHeight = 70;
             }
         }
     }
-    //if(!animationHasShown && filterStar == 0 &&  helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
-    if(!animationHasShown && helpfulReviews.count > 0){
+    //if(!animationHasShown  &&  helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
+    if(!animationHasShown && helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
         [self animate:cell];
         animationHasShown = YES;
     }
@@ -382,16 +382,15 @@ static NSInteger userViewHeight = 70;
             reputationDetail.isHelpfulReview = NO;
             [cell setReputationModelView:reputationDetail.viewModel];
             
-			if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
-     	  		 if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
-         		   [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
- 	    	       [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, @(indexPath.row)]];
-			   }
-  		 	 }
-
+            if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+                if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+                    [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+                    [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
+                }
+            }
             return cell;
         }else{
-            int limit = isShowingMore ? helpfulReviews.count : 1;
+            NSInteger limit = isShowingMore ? helpfulReviews.count : 1;
             if(indexPath.row < limit){
                 ProductReputationSimpleCell *helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
                 DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
@@ -402,6 +401,14 @@ static NSInteger userViewHeight = 70;
                 newFrame.size.width = helpfulCell.leftBorderView.frame.size.width;
                 newFrame.size.height = [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews] - userViewHeight;
                 [helpfulCell.leftBorderView setFrame:newFrame];
+                
+                if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+                    if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+                        [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+                        [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
+                    }
+                }
+                
                 return helpfulCell;
             }else{
                 return _helpfulReviewLoadMoreCell;
@@ -414,12 +421,12 @@ static NSInteger userViewHeight = 70;
         reputationDetail.isHelpfulReview = NO;
         [cell setReputationModelView:reputationDetail.viewModel];
         
-		if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
-        if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
-            [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
-            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, @(indexPath.row)]];
+        if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+            if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+                [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+                [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
+            }
         }
-    }
 
         return cell;
     }
@@ -953,6 +960,7 @@ static NSInteger userViewHeight = 70;
     
     dispatch_async(dispatch_get_main_queue(), ^(void){
         DetailReputationReview *list = (DetailReputationReview *)[arrayList firstObject];
+        NSIndexPath* indexPath = (NSIndexPath*) [arrayList lastObject];
         RKObjectManager *tempObjectManager = [self getObjectManagerTotalLike];
         NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
                                 kTKPDDETAIL_REVIEWIDS : list.review_id,
@@ -962,7 +970,7 @@ static NSInteger userViewHeight = 70;
         
         NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
-        [loadingLikeDislike setObject:@[tempRequest, [NSIndexPath indexPathForRow:[[arrayList lastObject] intValue] inSection:0], timerLikeDislike] forKey:list.review_id];
+        [loadingLikeDislike setObject:@[tempRequest, indexPath, timerLikeDislike] forKey:list.review_id];
         
         
         [tempRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -977,7 +985,7 @@ static NSInteger userViewHeight = 70;
             
             //Update UI
             if([loadingLikeDislike objectForKey:list.review_id])
-                [tableContent reloadRowsAtIndexPaths:@[[[loadingLikeDislike objectForKey:list.review_id] objectAtIndex:1]] withRowAnimation:UITableViewRowAnimationNone];
+                [tableContent reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             [loadingLikeDislike removeObjectForKey:list.review_id];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
@@ -1211,7 +1219,7 @@ static NSInteger userViewHeight = 70;
     [@[cell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
         [cell setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
         [UIView animateWithDuration:1
-                              delay:0.5
+                              delay:0
              usingSpringWithDamping:0.7
               initialSpringVelocity:0.2
                             options:UIViewAnimationOptionCurveEaseOut
