@@ -352,7 +352,8 @@ FavoriteShopRequestDelegate
 -(void)pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
     tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
-    [tokopediaNetworkManager doRequest];
+    //[tokopediaNetworkManager doRequest];
+    [_favoriteShopRequest requestActionButtonFavoriteShop:strTempShopID withAdKey:_selectedPromoShop.ad_key];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
 }
 
@@ -375,8 +376,62 @@ FavoriteShopRequestDelegate
     [_table endUpdates];
 }
 
+
+#pragma mark - Favorite Shop Request Delegate
+
 - (void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
+    if(_page == 1) {
+        _shop = [favoriteShops.list mutableCopy];
+    } else {
+        [_shop addObjectsFromArray: favoriteShops.list];
+    }
     
+    if (_shop.count > 0) {
+        _isnodata = NO;
+        _urinext =  favoriteShops.paging.uri_next;
+        NSURL *url = [NSURL URLWithString:_urinext];
+        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+        
+        NSMutableDictionary *queries = [NSMutableDictionary new];
+        [queries removeAllObjects];
+        for (NSString *keyValuePair in querry)
+        {
+            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString *key = [pairComponents objectAtIndex:0];
+            NSString *value = [pairComponents objectAtIndex:1];
+            
+            [queries setObject:value forKey:key];
+        }
+        
+        _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+    } else {
+        _isnodata = YES;
+    }
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
+    
+    [_table reloadData];
+
+    [_act stopAnimating];
+    _table.tableFooterView = nil;
+    [_table reloadData];
+    _isrefreshview = NO;
+    [_refreshControl endRefreshing];
+    [_timer invalidate];
+    _timer = nil;
+
+}
+
+-(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
+    [_act stopAnimating];
+    _table.tableFooterView = nil;
+    [_table reloadData];
+    _isrefreshview = NO;
+    [_refreshControl endRefreshing];
+    [_timer invalidate];
+    _timer = nil;
 }
 
 

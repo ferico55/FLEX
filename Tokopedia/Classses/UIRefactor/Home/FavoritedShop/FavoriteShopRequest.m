@@ -44,7 +44,9 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     [networkManager doRequest];
 }
 
--(void)requestActionButtonFavoriteShop:(NSString*)shopId withAdKey:(NSString*)adKey{
+-(void)requestActionButtonFavoriteShop:(NSString*)shopIdd withAdKey:(NSString*)adKeyy{
+    shopId = shopIdd;
+    adKey = adKeyy;
     networkManager.tagRequest = FavoriteShopRequestDoFavorite;
     [networkManager doRequest];
 }
@@ -63,7 +65,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     }else if(tag == FavoriteShopRequestDoFavorite){
         return @{
                  @"shop_id":shopId,
-                 @"ad_key":adKey,
+                 @"ad_key":adKey
                  };
     }else if(tag == FavoriteShopRequestGetProductFeed){
         return @{
@@ -243,7 +245,11 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag{
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id temp = [result objectForKey:@""];
-
+    
+    if([self getRequestStatus:successResult withTag:tag]){
+        [self actionFailAfterRequest:successResult withTag:tag];
+    }
+    
     if(tag == FavoriteShopRequestListing){
         [_delegate didReceiveFavoriteShopListing:((FavoritedShop*)temp).data];
     }else if(tag == FavoriteShopRequestDoFavorite){
