@@ -146,8 +146,17 @@
 #pragma mark - Action
 - (IBAction)tap:(id)sender {
     [_activeTextField resignFirstResponder];
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = 
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem*)sender;
+        switch (button.tag) {
+            case 10: // Tombol "Batal"
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                break;
+            case 11: // Tombol "Simpan"
+                break;
+            default:
+                break;
+        }
     }
 }
 @end
