@@ -57,6 +57,7 @@ NSInteger const bannerHeight = 115;
     
     [_collectionView setContentSize:self.view.bounds.size];
     
+    //set change orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
 
@@ -81,6 +82,9 @@ NSInteger const bannerHeight = 115;
     
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
+    
+    NSTimer* timer = [NSTimer timerWithTimeInterval:5.0f target:self selector:@selector(moveToNextSlider) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
 }
 
@@ -178,9 +182,11 @@ NSInteger const bannerHeight = 115;
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
             _carouselDataSource.delegate = self;
 
+
             _slider.type = iCarouselTypeLinear;
             _slider.dataSource = _carouselDataSource;
             _slider.delegate = _carouselDataSource;
+
             _slider.decelerationRate = 0.5;
 //            if (bannerExists) _slider.contentOffset = CGSizeMake(0, -(bannerHeight/2));
 
@@ -216,6 +222,10 @@ NSInteger const bannerHeight = 115;
         
         [self.navigationController pushViewController:webView animated:YES];
     }
+}
+
+- (void)moveToNextSlider {
+    [_slider scrollToItemAtIndex:_slider.currentItemIndex+1 duration:1.0];
 }
 
 
