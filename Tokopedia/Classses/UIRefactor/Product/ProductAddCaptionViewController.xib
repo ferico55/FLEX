@@ -58,10 +58,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DX4-bV-VK4">
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DX4-bV-VK4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="11W-vU-MBe">
+                    <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="11W-vU-MBe">
                         <rect key="frame" x="290" y="0.0" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="Nfa-Xe-j74"/>
@@ -237,7 +237,6 @@
                             <constraint firstItem="7mm-fP-cs3" firstAttribute="leading" secondItem="lUp-if-vv3" secondAttribute="trailing" constant="8" id="q7F-8n-Lbr"/>
                             <constraint firstAttribute="trailing" secondItem="S3Y-Ar-Aed" secondAttribute="trailing" id="qlr-G7-9LM"/>
                             <constraint firstItem="YeG-am-8L2" firstAttribute="top" secondItem="lUp-if-vv3" secondAttribute="bottom" constant="5" id="r8t-bt-JZK"/>
-                            <constraint firstAttribute="trailing" secondItem="7mm-fP-cs3" secondAttribute="trailing" constant="50" id="rpN-XK-geZ"/>
                             <constraint firstItem="YeG-am-8L2" firstAttribute="top" secondItem="hHD-y4-7lO" secondAttribute="bottom" constant="5" id="uhb-gJ-eW4"/>
                         </constraints>
                     </view>
@@ -251,12 +250,36 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="569" y="527"/>
         </tableViewCell>
-        <tapGestureRecognizer id="DLu-C1-eY2"/>
-        <tapGestureRecognizer id="A6q-Gf-h7h"/>
-        <tapGestureRecognizer id="gtH-85-YOD"/>
-        <tapGestureRecognizer id="DKB-w7-eRI"/>
-        <tapGestureRecognizer id="Oee-Je-Rkl"/>
-        <tapGestureRecognizer id="REO-IP-jUX"/>
+        <tapGestureRecognizer id="DLu-C1-eY2">
+            <connections>
+                <action selector="gesture:" destination="-1" id="d8R-sE-D1x"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="A6q-Gf-h7h">
+            <connections>
+                <action selector="gesture:" destination="-1" id="iFw-hq-3fw"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="gtH-85-YOD">
+            <connections>
+                <action selector="gesture:" destination="-1" id="vsC-nE-zE9"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="DKB-w7-eRI">
+            <connections>
+                <action selector="gesture:" destination="-1" id="hWE-z4-Abx"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Oee-Je-Rkl">
+            <connections>
+                <action selector="gesture:" destination="-1" id="slS-gI-Eji"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="REO-IP-jUX">
+            <connections>
+                <action selector="gesture:" destination="-1" id="0yO-yh-Ae4"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_cancel.png" width="20" height="20"/>
