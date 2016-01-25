@@ -56,6 +56,10 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     [networkManager doRequest];
 }
 
+-(void)cancelAllOperation{
+    [_objectmanager.operationQueue cancelAllOperations];
+}
+
 #pragma mark Tokopedia Network Manager Delegate
 - (NSDictionary*)getParameter:(int)tag{
     if(tag == FavoriteShopRequestListing){
@@ -92,6 +96,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
         networkManager.isUsingHmac = YES;
         return RKRequestMethodGET;
     }else if(tag == FavoriteShopRequestDoFavorite){
+        networkManager.isUsingHmac = YES;
         return RKRequestMethodGET;
     }else if(tag == FavoriteShopRequestGetProductFeed){
         networkManager.isUsingHmac = NO;
@@ -165,6 +170,9 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
         RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
         [dataMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
                                                           @"is_success":@"is_success"}];
+        
+        RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
+        [statusMapping addPropertyMapping:dataRel];
         
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor
@@ -246,14 +254,11 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id temp = [result objectForKey:@""];
     
-    if([self getRequestStatus:successResult withTag:tag]){
-        [self actionFailAfterRequest:successResult withTag:tag];
-    }
-    
     if(tag == FavoriteShopRequestListing){
         [_delegate didReceiveFavoriteShopListing:((FavoritedShop*)temp).data];
     }else if(tag == FavoriteShopRequestDoFavorite){
-        [_delegate didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction*)temp];
+        FavoriteShopAction* favShopAction = (FavoriteShopAction*)temp;
+        [_delegate didReceiveActionButtonFavoriteShopConfirmation:favShopAction];
     }else if(tag == FavoriteShopRequestGetProductFeed){
         [_delegate didReceiveProductFeed:((SearchAWS*)temp).result.products];
     }
@@ -261,11 +266,11 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag{
     if(tag == FavoriteShopRequestListing){
-        
+        [_delegate failToRequestFavoriteShopListing];
     }else if(tag == FavoriteShopRequestDoFavorite){
-        
+        [_delegate failToRequestActionButtonFavoriteShopConfirmation];
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        
+        [_delegate failToRequestProductFeed];
     }
 }
 

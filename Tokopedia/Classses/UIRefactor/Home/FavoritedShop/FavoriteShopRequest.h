@@ -24,12 +24,18 @@
 - (void) didReceiveFavoriteShopListing:(FavoritedShopResult*)favoriteShops;
 - (void) didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction*)action;
 - (void) didReceiveProductFeed:(NSArray<SearchAWSProduct*>*)products;
+
+- (void) failToRequestFavoriteShopListing;
+- (void) failToRequestActionButtonFavoriteShopConfirmation;
+- (void) failToRequestProductFeed;
+
 @end
 
 @interface FavoriteShopRequest : NSObject
 -(void)requestFavoriteShopListingsWithPage:(NSInteger)page;
 -(void)requestActionButtonFavoriteShop:(NSString*)shopId withAdKey:(NSString*)adKey;
 -(void)requestProductFeedWithFavoriteShopList:(FavoriteShopResult*)favoriteShopResult;
+-(void)cancelAllOperation;
 
 @property (weak, nonatomic) id<FavoriteShopRequestDelegate> delegate;
 @end
