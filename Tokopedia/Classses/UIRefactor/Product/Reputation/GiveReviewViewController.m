@@ -46,6 +46,7 @@
     NSMutableArray *_uploadedImages;
     NSMutableArray *_uploadingImages;
     GenerateHost *_generateHost;
+    GeneratedHost *_generatedHost;
     
     NSOperationQueue *_operationQueue;
     
@@ -85,6 +86,7 @@
     
     _operationQueue = [NSOperationQueue new];
     _generateHost = [GenerateHost new];
+    _generatedHost = [GeneratedHost new];
     
     addPictureButtons = [NSArray sortViewsWithTagInArray:addPictureButtons];
     attachedImages = [NSArray sortViewsWithTagInArray:attachedImages];
@@ -684,6 +686,10 @@
 }
 
 #pragma mark - Request Generate Host
+- (void)setGenerateHost:(GeneratedHost *)generateHost {
+    _generatedHost = generateHost;
+}
+
 - (void)successGenerateHost:(GenerateHost *)generateHost {
     _generateHost = generateHost;
     [_del setGenerateHost:_generateHost.result.generated_host];

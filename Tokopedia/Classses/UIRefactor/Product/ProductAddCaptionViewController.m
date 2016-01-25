@@ -9,11 +9,23 @@
 #import "ProductAddCaptionViewController.h"
 #import "NavigateViewController.h"
 #import "CameraCollectionViewController.h"
+#import "RequestGenerateHost.h"
+#import "RequestUploadImage.h"
 
-
-@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate> {
+@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate> {
     NavigateViewController *_navigate;
+    
     UITextField *_activeTextField;
+    
+    GenerateHost *_generateHost;
+    
+    NSOperationQueue *_operationQueue;
+    NSMutableArray *_uploadedImages;
+    NSMutableArray *_uploadingImages;
+    NSMutableArray *_selectedImagesCameraController;
+    NSMutableArray *_selectedIndexPathCameraController;
+    
+    BOOL _isFinishedUploadingImage;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -57,6 +69,14 @@
                      selector:@selector(keyboardWillHide:)
                          name:UIKeyboardWillHideNotification
                        object:nil];
+    
+    _generateHost = [GenerateHost new];
+    _operationQueue = [NSOperationQueue new];
+    
+    RequestGenerateHost *requestHost = [RequestGenerateHost new];
+    [requestHost configureRestkitGenerateHost];
+    [requestHost requestGenerateHost];
+    requestHost.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -77,6 +97,37 @@
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
     
 }
+
+- (NSInteger)totalUploadedAndUploadingImage {
+    NSMutableArray *fileThumbImage = [NSMutableArray new];
+    for (NSString *image in _uploadedImages) {
+        if (![image isEqualToString:@""]) {
+            [fileThumbImage addObject:image];
+        }
+    }
+    
+    return fileThumbImage.count + _uploadingImages.count;
+}
+
+- (BOOL)image:(UIImage*)image1 isEqualTo:(UIImage*)image2 {
+    return [UIImagePNGRepresentation(image1) isEqual:UIImagePNGRepresentation(image2)];
+}
+
+- (BOOL)array:(NSArray*)arr containsObject:(NSDictionary*)object {
+    if (object && [object isKindOfClass:[NSDictionary class]]) {
+        for (id objectInArray in arr) {
+            if ([objectInArray isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *photoObjectInArray = [objectInArray objectForKey:@"photo"];
+                NSDictionary *photoObject = [object objectForKey:@"photo"];
+                if ([self image:[photoObjectInArray objectForKey:@"photo"] isEqualTo:[photoObject objectForKey:@"photo"]]) {
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
+}
+
 
 #pragma mark - Table View Delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -160,6 +211,153 @@
                 break;
         }
     }
+}
+
+#pragma mark - Request Generate Host
+- (void)successGenerateHost:(GenerateHost *)generateHost {
+    _generateHost = generateHost;
+    [_delegate setGenerateHost:_generateHost.result.generated_host];
+}
+
+- (void)failedGenerateHost:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
+}
+
+#pragma mark - Request Action Upload Image
+- (void)actionUploadImage:(id)object {
+    if (![_uploadingImages containsObject:object]) {
+        [_uploadingImages addObject:object];
+    }
+    
+    _isFinishedUploadingImage = NO;
+    
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    [uploadImage requestActionUploadObject:object
+                             generatedHost:_generateHost.result.generated_host
+                                    action:@"upload_contact_image"
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:@"fileToUpload"
+                                   success:^(id imageObject, UploadImage *image) {
+                                       [self successUploadObject:object withMappingResult:image];
+                                   } failure:^(id imageObject, NSError *error) {
+                                       [self failedUploadObject:imageObject];
+                                   }];
+}
+
+- (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
+    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    imageView.alpha = 1.0;
+    
+    if (![_uploadedImages containsObject:uploadImage.result.file_th]) {
+        [_uploadedImages replaceObjectAtIndex:imageView.tag-20 withObject:uploadImage.result.file_th];
+    }
+    
+    [_uploadingImages removeObject:object];
+    _isFinishedUploadingImage = YES;
+}
+
+- (void)failedUploadObject:(id)object {
+    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    imageView.image = nil;
+    
+    for (UIImageView *image in _attachedImages) {
+        if (image.tag == image.tag) {
+            image.hidden = NO;
+        }
+    }
+    
+    imageView.hidden = YES;
+    
+    [_uploadingImages removeObject:object];
+    NSMutableArray *objectProductPhoto = [NSMutableArray new];
+    objectProductPhoto = _uploadedImages;
+    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
+        if ([_selectedImagesCameraController[i]isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
+            [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
+            [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
+            [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
+        }
+    }
+}
+
+#pragma mark - Camera Collection Delegate
+- (void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo {
+    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
+    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
+    
+    // Cari Index Image yang kosong
+    NSMutableArray *emptyImageIndex = [NSMutableArray new];
+    for (UIImageView *image in _attachedImages) {
+        if (image.image == nil)
+        {
+            [emptyImageIndex addObject:@(image.tag - 20)];
+        }
+    }
+    
+    //Upload Image yg belum diupload tp dipilih
+    int j = 0;
+    for (NSDictionary *selected in selectedImages) {
+        if ([selected isKindOfClass:[NSDictionary class]]) {
+            if (j>=emptyImageIndex.count) {
+                return;
+            }
+            if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
+                NSUInteger index = [emptyImageIndex[j] integerValue];
+                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
+                NSMutableDictionary *data = [NSMutableDictionary new];
+                [data addEntriesFromDictionary:selected];
+                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
+                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+                [self setImageData:[data copy] tag:index];
+                j++;
+            }
+        }
+    }
+}
+
+-(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
+{
+    id selectedIndexpaths = [data objectForKey:@"selected_indexpath"];
+    [_selectedIndexPathCameraController replaceObjectAtIndex:tag withObject:selectedIndexpaths?:@""];
+    
+    NSInteger tagView = tag + 20;
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:data forKey:@"photo"];
+    UIImageView *imageView;
+    
+    NSDictionary* photo = [data objectForKey:@"photo"];
+    
+    UIImage* imagePhoto = [photo objectForKey:@"photo"];
+    
+    for (UIImageView *image in _attachedImages) {
+        if (image.tag == tagView) {
+            imageView = image;
+            image.image = imagePhoto;
+            image.hidden = NO;
+            image.alpha = 0.5f;
+            image.userInteractionEnabled = NO;
+        }
+        
+        if (image.tag == tagView + 1) {
+            if (image.image == nil) {
+                image.image = [UIImage imageNamed:@"icon_upload_image.png"];
+                image.userInteractionEnabled = YES;
+                image.hidden = NO;
+            }
+        }
+    }
+    
+    if (imageView != nil) {
+        [object setObject:imageView forKey:@"data_selected_image_view"];
+    }
+    
+    [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
+    [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
+    
+    [self actionUploadImage:object];
 }
 
 @end

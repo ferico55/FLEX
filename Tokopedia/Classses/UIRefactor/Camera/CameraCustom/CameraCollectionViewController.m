@@ -331,6 +331,9 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         vc.delegate = _delegate;
         
         [self.navigationController pushViewController:vc animated:YES];
+//        [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
+//        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
     } else {
         [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];

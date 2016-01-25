@@ -49,9 +49,6 @@
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="A6q-Gf-h7h" appends="YES" id="5xf-QU-Si1"/>
-            </connections>
             <point key="canvasLocation" x="-4.5" y="266"/>
         </view>
         <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="290" id="8S6-ds-lm9">
@@ -61,7 +58,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="DX4-bV-VK4">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DX4-bV-VK4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="11W-vU-MBe">
@@ -70,6 +67,9 @@
                             <constraint firstAttribute="height" constant="30" id="Nfa-Xe-j74"/>
                             <constraint firstAttribute="width" constant="30" id="kAE-i3-3i3"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="REO-IP-jUX" appends="YES" id="U5Y-md-UVd"/>
+                        </connections>
                     </imageView>
                 </subviews>
                 <constraints>
@@ -157,40 +157,55 @@
                                     <constraint firstAttribute="height" constant="1" id="FZx-gM-cLx"/>
                                 </constraints>
                             </view>
-                            <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="LaD-sQ-uaD" userLabel="1">
+                            <imageView tag="20" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LaD-sQ-uaD" userLabel="1">
                                 <rect key="frame" x="8" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="3AJ-tK-3fM"/>
                                     <constraint firstAttribute="height" constant="46" id="BOS-iJ-7qJ"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="DLu-C1-eY2" appends="YES" id="fcs-rr-4aj"/>
+                                </connections>
                             </imageView>
-                            <imageView tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="hHD-y4-7lO" userLabel="2">
+                            <imageView tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hHD-y4-7lO" userLabel="2">
                                 <rect key="frame" x="62" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="Cxg-Yr-AVn"/>
                                     <constraint firstAttribute="height" constant="46" id="keP-q8-SbS"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="A6q-Gf-h7h" appends="YES" id="VHj-lO-Eza"/>
+                                </connections>
                             </imageView>
-                            <imageView tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="UmR-P9-4gz" userLabel="3">
+                            <imageView tag="22" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UmR-P9-4gz" userLabel="3">
                                 <rect key="frame" x="116" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="2Kc-6k-O7g"/>
                                     <constraint firstAttribute="width" constant="46" id="vUt-mi-Wdk"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="gtH-85-YOD" appends="YES" id="s0a-Jq-5DX"/>
+                                </connections>
                             </imageView>
-                            <imageView tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="lUp-if-vv3" userLabel="4">
+                            <imageView tag="23" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lUp-if-vv3" userLabel="4">
                                 <rect key="frame" x="170" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="miB-N1-Twh"/>
                                     <constraint firstAttribute="height" constant="46" id="zz5-YW-Wyn"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="DKB-w7-eRI" appends="YES" id="6Lt-OI-GR6"/>
+                                </connections>
                             </imageView>
-                            <imageView tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="7mm-fP-cs3" userLabel="5">
+                            <imageView tag="24" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7mm-fP-cs3" userLabel="5">
                                 <rect key="frame" x="224" y="8" width="46" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="Ggc-jW-SbF"/>
                                     <constraint firstAttribute="height" constant="46" id="ai5-KF-Yvs"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Oee-Je-Rkl" appends="YES" id="rYe-XD-dzW"/>
+                                </connections>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YeG-am-8L2" userLabel="Border Bottom">
                                 <rect key="frame" x="0.0" y="59" width="320" height="1"/>
@@ -212,7 +227,6 @@
                             <constraint firstItem="7mm-fP-cs3" firstAttribute="top" secondItem="S3Y-Ar-Aed" secondAttribute="bottom" constant="7" id="J4p-3Y-OHz"/>
                             <constraint firstItem="YeG-am-8L2" firstAttribute="top" secondItem="7mm-fP-cs3" secondAttribute="bottom" constant="5" id="KMh-pD-wmh"/>
                             <constraint firstAttribute="bottom" secondItem="YeG-am-8L2" secondAttribute="bottom" id="QeW-2z-dxv"/>
-                            <constraint firstAttribute="trailing" secondItem="7mm-fP-cs3" secondAttribute="trailing" constant="50" id="SIu-0e-4yA"/>
                             <constraint firstItem="YeG-am-8L2" firstAttribute="top" secondItem="UmR-P9-4gz" secondAttribute="bottom" constant="5" id="Wjy-AD-kiT"/>
                             <constraint firstItem="YeG-am-8L2" firstAttribute="leading" secondItem="3UZ-bl-Xdo" secondAttribute="leading" id="YPC-mt-X5P"/>
                             <constraint firstItem="S3Y-Ar-Aed" firstAttribute="top" secondItem="3UZ-bl-Xdo" secondAttribute="top" id="biK-7B-k9n"/>
@@ -223,6 +237,7 @@
                             <constraint firstItem="7mm-fP-cs3" firstAttribute="leading" secondItem="lUp-if-vv3" secondAttribute="trailing" constant="8" id="q7F-8n-Lbr"/>
                             <constraint firstAttribute="trailing" secondItem="S3Y-Ar-Aed" secondAttribute="trailing" id="qlr-G7-9LM"/>
                             <constraint firstItem="YeG-am-8L2" firstAttribute="top" secondItem="lUp-if-vv3" secondAttribute="bottom" constant="5" id="r8t-bt-JZK"/>
+                            <constraint firstAttribute="trailing" secondItem="7mm-fP-cs3" secondAttribute="trailing" constant="50" id="rpN-XK-geZ"/>
                             <constraint firstItem="YeG-am-8L2" firstAttribute="top" secondItem="hHD-y4-7lO" secondAttribute="bottom" constant="5" id="uhb-gJ-eW4"/>
                         </constraints>
                     </view>
@@ -236,10 +251,14 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="569" y="527"/>
         </tableViewCell>
+        <tapGestureRecognizer id="DLu-C1-eY2"/>
         <tapGestureRecognizer id="A6q-Gf-h7h"/>
+        <tapGestureRecognizer id="gtH-85-YOD"/>
+        <tapGestureRecognizer id="DKB-w7-eRI"/>
+        <tapGestureRecognizer id="Oee-Je-Rkl"/>
+        <tapGestureRecognizer id="REO-IP-jUX"/>
     </objects>
     <resources>
         <image name="icon_cancel.png" width="20" height="20"/>
-        <image name="icon_toped_alert.png" width="90" height="90"/>
     </resources>
 </document>

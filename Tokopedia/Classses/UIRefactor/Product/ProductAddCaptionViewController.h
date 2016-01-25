@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class ProductAddCaptionViewController;
+@class ProductAddCaptionViewController, GeneratedHost;
 
 @protocol ProductAddCaptionDelegate <NSObject>
 @optional
 - (void)didDismissController:(ProductAddCaptionViewController*)controller withUserInfo:(NSDictionary*)userInfo;
+- (void)setGenerateHost:(GeneratedHost*)generateHost;
 @end
 
 @interface ProductAddCaptionViewController : UIViewController
