@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 {
     BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
+    IBOutlet UIView* selectedMarker;
+    IBOutlet UILabel *_productNameLabel;
 }
 
 #pragma mark - Initialization
@@ -73,7 +75,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
     [self.middleView addGestureRecognizer:talkGesture];
-    [self.middleView setUserInteractionEnabled:YES];
+    [self.middleView setUserInteractionEnabled:enableDeepNavigation];
     
     CGFloat borderWidth = 0.5f;
     
@@ -83,7 +85,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    selectedMarker.hidden = !selected;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    selectedMarker.hidden = !highlighted;
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
@@ -124,7 +130,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         [self.productImageView setContentMode:UIViewContentModeCenter];
     }];
     
-    [self.productButton setTitle:modelView.productName forState:UIControlStateNormal];
+    _productNameLabel.text = modelView.productName;
+
     [self.userButton setLabelBackground:modelView.userLabel];
     [self.userButton setText:modelView.userName];
     [self.unreadImageView setHidden:[modelView.readStatus isEqualToString:@"1"] ? NO : YES];
