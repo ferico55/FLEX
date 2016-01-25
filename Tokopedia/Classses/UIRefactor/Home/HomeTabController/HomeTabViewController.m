@@ -213,15 +213,15 @@
 }
 
 - (void)setArrow {
-    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
-    CGRect frame = greenArrowImageView.frame;
-    frame.size.width = 13;
-    frame.size.height = 7;
-    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
-    frame.origin.y = 64;
-    greenArrowImageView.frame = frame;
-//    [self.navigationController.navigationBar addSubview:greenArrowImageView];
-    [self.view addSubview:greenArrowImageView];
+//    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
+//    CGRect frame = greenArrowImageView.frame;
+//    frame.size.width = 13;
+//    frame.size.height = 7;
+//    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
+//    frame.origin.y = 64;
+//    greenArrowImageView.frame = frame;
+////    [self.navigationController.navigationBar addSubview:greenArrowImageView];
+//    [self.view addSubview:greenArrowImageView];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
