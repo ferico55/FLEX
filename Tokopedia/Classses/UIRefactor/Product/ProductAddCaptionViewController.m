@@ -9,6 +9,7 @@
 #import "ProductAddCaptionViewController.h"
 #import "NavigateViewController.h"
 #import "CameraCollectionViewController.h"
+#import "CameraAlbumListViewController.h"
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
 
@@ -102,10 +103,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)gesture:(UITapGestureRecognizer*)sender {
-    
 }
 
 - (NSInteger)totalUploadedAndUploadingImage {
@@ -223,12 +220,23 @@
     }
 }
 
+- (IBAction)gesture:(UITapGestureRecognizer*)sender {
+    if (sender.view.tag == 0) {
+        
+    } else {
+        if (((UIImageView*)self.attachedImages[sender.view.tag-20]).image != [UIImage imageNamed:@"icon_upload_image.png"]) {
+            [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
+        } else {
+            return;
+        }
+    }
+}
+
 #pragma mark - Request Generate Host
 - (void)successGenerateHost:(GenerateHost *)generateHost {
     _generateHost = generateHost;
     _generatedHost = _generateHost.result.generated_host;
-//    [_delegate setGenerateHost:_generateHost.result.generated_host];
-    [self startUploadingImage];
+    [self startUploadingImageWithUserInfo:_userInfo];
 }
 
 - (void)failedGenerateHost:(NSArray *)errorMessages {
@@ -238,15 +246,14 @@
 
 
 #pragma mark - Camera Collection Delegate
-- (void)startUploadingImage {
-    NSArray *selectedImages = [_userInfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexpaths = [_userInfo objectForKey:@"selected_indexpath"];
+- (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo{
+    NSArray *selectedImages = [userInfo objectForKey:@"selected_images"];
+    NSArray *selectedIndexpaths = [userInfo objectForKey:@"selected_indexpath"];
     
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
     for (UIImageView *image in _attachedImages) {
-        if (image.image == nil)
-        {
+        if (image.image == nil || image.userInteractionEnabled == YES) {
             [emptyImageIndex addObject:@(image.tag - 20)];
         }
     }
@@ -351,7 +358,7 @@
 
 - (void)failedUploadObject:(id)object {
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.image = nil;
+    imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
     
     for (UIImageView *image in _attachedImages) {
         if (image.tag == image.tag) {
@@ -371,6 +378,62 @@
             [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
         }
     }
+}
+
+#pragma mark - Go to Camera Collection
+- (void)didTapImage:(UIImageView*)sender {
+    CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
+    albumVC.title = @"Album";
+    albumVC.delegate = self;
+    CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
+    photoVC.title = @"All Picture";
+    photoVC.delegate = self;
+    photoVC.isAddEditProduct = YES;
+    photoVC.tag = sender.tag;
+    
+    NSMutableArray *notEmptyImageIndex = [NSMutableArray new];
+    for (UIImageView *image in _attachedImages) {
+        if (image.image == nil) {
+            [notEmptyImageIndex addObject:@(image.tag - 20)];
+        }
+    }
+    
+    NSMutableArray *selectedImage = [NSMutableArray new];
+    for (id selected in _selectedImagesCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedImage addObject:selected];
+        }
+    }
+    
+    NSMutableArray *selectedIndexPath = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedIndexPath addObject:selected];
+        }
+    }
+    
+    photoVC.maxSelected = 5;
+    photoVC.selectedImagesArray = selectedImage;
+    
+    selectedIndexPath = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedIndexPath addObject:selected];
+        }
+    }
+    
+    photoVC.selectedIndexPath = _selectedIndexPathCameraController;
+//    photoVC.isAddReviewImage = YES;
+    photoVC.isAddMoreReviewImage = YES;
+    
+    UINavigationController *nav = [[UINavigationController alloc]init];
+    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    nav.navigationBar.translucent = NO;
+    nav.navigationBar.tintColor = [UIColor whiteColor];
+    NSArray *controllers = @[albumVC,photoVC];
+    [nav setViewControllers:controllers];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    
 }
 
 

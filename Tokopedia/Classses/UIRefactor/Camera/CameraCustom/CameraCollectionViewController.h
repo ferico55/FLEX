@@ -15,6 +15,7 @@
 @protocol CameraCollectionViewControllerDelegate <NSObject>
 @optional
 - (void)didDismissController:(CameraCollectionViewController*)controller withUserInfo:(NSDictionary *)userinfo;
+- (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo;
 - (void)didRemoveImageDictionary:(NSDictionary*)removedImage;
 @end
 
@@ -32,5 +33,6 @@
 
 @property BOOL isAddEditProduct;
 @property BOOL isAddReviewImage;
+@property BOOL isAddMoreReviewImage;
 
 @end
