@@ -20,11 +20,12 @@
 {
     self = [super init];
     if (self) {
-//        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-//        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
-
         id rootController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
         _auth = [NSMutableDictionary dictionaryWithDictionary:((MainViewController*)rootController).auth];
+        if ([_auth objectForKey:@"user_id"] == nil) {
+            TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+            _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
+        }
     }
     return self;
 }
