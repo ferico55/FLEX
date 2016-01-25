@@ -42,7 +42,8 @@ NSInteger const bannerIpadWidth = 350;
 
     view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, sliderHeight)];
     BannerList *banner = _banners[index];
-    [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.img_uri] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.img_uri] placeholderImage:nil];
+    
     
     return view;
 }
