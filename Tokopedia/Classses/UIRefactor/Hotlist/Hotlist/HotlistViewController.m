@@ -146,6 +146,8 @@ RetryViewDelegate
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
@@ -373,8 +375,15 @@ RetryViewDelegate
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat cellWidth;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        CGFloat screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth-15;
+        UIDeviceOrientation *orientation = [[UIDevice currentDevice] orientation];
+        if(UIDeviceOrientationIsLandscape(orientation)) {
+            CGFloat screenWidth = screenRect.size.width/3;
+            cellWidth = screenWidth-15;
+        } else {
+            CGFloat screenWidth = screenRect.size.width/2;
+            cellWidth = screenWidth-15;
+        }
+
     } else {
         CGFloat screenWidth = screenRect.size.width;
         cellWidth = screenWidth-20;
@@ -685,5 +694,11 @@ RetryViewDelegate
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
+#pragma mark - orientation changed
+- (void)orientationChanged:(NSNotification *)note {
+    [_collectionView reloadData];
+}
+
 
 @end
