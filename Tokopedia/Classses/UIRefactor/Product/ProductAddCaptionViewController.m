@@ -18,10 +18,12 @@
     UITextField *_activeTextField;
     
     GenerateHost *_generateHost;
+    GeneratedHost *_generatedHost;
     
     NSOperationQueue *_operationQueue;
     NSMutableArray *_uploadedImages;
     NSMutableArray *_uploadingImages;
+    NSMutableArray *_attachedImageURLs;
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     
@@ -71,7 +73,15 @@
                        object:nil];
     
     _generateHost = [GenerateHost new];
+    _generatedHost = [GeneratedHost new];
     _operationQueue = [NSOperationQueue new];
+    
+    _uploadingImages = [NSMutableArray new];
+    _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _attachedImageURLs = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    
+    _attachedImages = [NSArray sortViewsWithTagInArray:_attachedImages];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
     [requestHost configureRestkitGenerateHost];
@@ -216,7 +226,9 @@
 #pragma mark - Request Generate Host
 - (void)successGenerateHost:(GenerateHost *)generateHost {
     _generateHost = generateHost;
-    [_delegate setGenerateHost:_generateHost.result.generated_host];
+    _generatedHost = _generateHost.result.generated_host;
+//    [_delegate setGenerateHost:_generateHost.result.generated_host];
+    [self startUploadingImage];
 }
 
 - (void)failedGenerateHost:(NSArray *)errorMessages {
@@ -224,69 +236,11 @@
     [alert show];
 }
 
-#pragma mark - Request Action Upload Image
-- (void)actionUploadImage:(id)object {
-    if (![_uploadingImages containsObject:object]) {
-        [_uploadingImages addObject:object];
-    }
-    
-    _isFinishedUploadingImage = NO;
-    
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    [uploadImage requestActionUploadObject:object
-                             generatedHost:_generateHost.result.generated_host
-                                    action:@"upload_contact_image"
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:@"fileToUpload"
-                                   success:^(id imageObject, UploadImage *image) {
-                                       [self successUploadObject:object withMappingResult:image];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       [self failedUploadObject:imageObject];
-                                   }];
-}
-
-- (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
-    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.alpha = 1.0;
-    
-    if (![_uploadedImages containsObject:uploadImage.result.file_th]) {
-        [_uploadedImages replaceObjectAtIndex:imageView.tag-20 withObject:uploadImage.result.file_th];
-    }
-    
-    [_uploadingImages removeObject:object];
-    _isFinishedUploadingImage = YES;
-}
-
-- (void)failedUploadObject:(id)object {
-    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.image = nil;
-    
-    for (UIImageView *image in _attachedImages) {
-        if (image.tag == image.tag) {
-            image.hidden = NO;
-        }
-    }
-    
-    imageView.hidden = YES;
-    
-    [_uploadingImages removeObject:object];
-    NSMutableArray *objectProductPhoto = [NSMutableArray new];
-    objectProductPhoto = _uploadedImages;
-    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-        if ([_selectedImagesCameraController[i]isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
-            [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
-            [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
-            [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
-        }
-    }
-}
 
 #pragma mark - Camera Collection Delegate
-- (void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo {
-    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
+- (void)startUploadingImage {
+    NSArray *selectedImages = [_userInfo objectForKey:@"selected_images"];
+    NSArray *selectedIndexpaths = [_userInfo objectForKey:@"selected_indexpath"];
     
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
@@ -359,5 +313,65 @@
     
     [self actionUploadImage:object];
 }
+
+#pragma mark - Request Action Upload Image
+- (void)actionUploadImage:(id)object {
+    if (![_uploadingImages containsObject:object]) {
+        [_uploadingImages addObject:object];
+    }
+    
+    _isFinishedUploadingImage = NO;
+    
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    [uploadImage requestActionUploadObject:object
+                             generatedHost:_generateHost.result.generated_host
+                                    action:@"upload_contact_image"
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:@"fileToUpload"
+                                   success:^(id imageObject, UploadImage *image) {
+                                       [self successUploadObject:object withMappingResult:image];
+                                   } failure:^(id imageObject, NSError *error) {
+                                       [self failedUploadObject:imageObject];
+                                   }];
+}
+
+- (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
+    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    imageView.alpha = 1.0;
+    
+    if (![_uploadedImages containsObject:uploadImage.result.file_th]) {
+        [_uploadedImages replaceObjectAtIndex:imageView.tag-20 withObject:uploadImage.result.file_th];
+    }
+    
+    [_uploadingImages removeObject:object];
+    _isFinishedUploadingImage = YES;
+}
+
+- (void)failedUploadObject:(id)object {
+    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    imageView.image = nil;
+    
+    for (UIImageView *image in _attachedImages) {
+        if (image.tag == image.tag) {
+            image.hidden = NO;
+        }
+    }
+    
+    imageView.hidden = YES;
+    
+    [_uploadingImages removeObject:object];
+    NSMutableArray *objectProductPhoto = [NSMutableArray new];
+    objectProductPhoto = _uploadedImages;
+    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
+        if ([_selectedImagesCameraController[i]isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
+            [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
+            [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
+            [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
+        }
+    }
+}
+
 
 @end

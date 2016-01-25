@@ -328,9 +328,10 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
         vc.userInfo = @{@"selected_images":[_selectedImages copy],
                         @"selected_indexpath":arrayIndexPath};
-        vc.delegate = _delegate;
+//        vc.delegate = _delegate;
         
         [self.navigationController pushViewController:vc animated:YES];
+        
 //        [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
 //        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
