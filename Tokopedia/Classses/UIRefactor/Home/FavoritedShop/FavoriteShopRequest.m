@@ -172,12 +172,12 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
                                                           @"is_success":@"is_success"}];
         
         RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
-        [statusMapping addPropertyMapping:dataRel];
+        //[statusMapping addPropertyMapping:dataRel];
         
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor
                                                           responseDescriptorWithMapping:statusMapping
-                                                          method:RKRequestMethodPOST
+                                                          method:[self getRequestMethod:FavoriteShopRequestDoFavorite]
                                                           pathPattern:[self getPath:FavoriteShopRequestDoFavorite]
                                                           keyPath:@""
                                                           statusCodes:kTkpdIndexSetStatusCodeOK];

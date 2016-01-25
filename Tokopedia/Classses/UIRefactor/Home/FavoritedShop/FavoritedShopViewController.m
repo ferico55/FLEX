@@ -14,7 +14,6 @@
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
 #import "ShopContainerViewController.h"
-#import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "PromoRequest.h"
 #import "PromoInfoAlertView.h"
@@ -29,7 +28,6 @@
 UITableViewDataSource,
 UITableViewDelegate,
 FavoritedShopCellDelegate,
-TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 TKPDAlertViewDelegate,
 PromoRequestDelegate,
@@ -55,7 +53,6 @@ FavoriteShopRequestDelegate
     
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
-    TokopediaNetworkManager *tokopediaNetworkManager;
     PromoRequest *_promoRequest;
     FavoriteShopRequest *_favoriteShopRequest;
     
@@ -95,8 +92,6 @@ FavoriteShopRequestDelegate
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    tokopediaNetworkManager = [TokopediaNetworkManager new];
-    tokopediaNetworkManager.delegate = self;
     _favoriteShopRequest = [FavoriteShopRequest new];
     _favoriteShopRequest.delegate = self;
     
@@ -145,11 +140,6 @@ FavoriteShopRequestDelegate
     [TPAnalytics trackScreenName:@"Home - Favorited Shop"];
 
     [self refreshView:nil];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [tokopediaNetworkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -327,7 +317,6 @@ FavoriteShopRequestDelegate
 
 -(void)pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
-    tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
     [_favoriteShopRequest requestActionButtonFavoriteShop:strTempShopID withAdKey:_selectedPromoShop.ad_key];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
 }
@@ -432,12 +421,27 @@ FavoriteShopRequestDelegate
                            };
         
     } else {
-        FavoritedShopList *shop = [_shop objectAtIndex:indexpath.row];
-        container.data = @{
-                           kTKPDDETAIL_APISHOPIDKEY:shop.shop_id?:@0,
-                           kTKPDDETAIL_APISHOPNAMEKEY:shop.shop_name?:@"",
-                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                           };
+        id shopTemp = [_shop objectAtIndex:indexpath.row];
+        FavoritedShopList* favShop;
+        PromoShop* promoShop;
+        
+        if([shopTemp isKindOfClass:[PromoShop class]]){
+            promoShop = (PromoShop*)shopTemp;
+            container.data = @{
+                               kTKPDDETAIL_APISHOPIDKEY:promoShop.shop_id?:@0,
+                               kTKPDDETAIL_APISHOPNAMEKEY:promoShop.shop_name?:@"",
+                               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                               };
+        }else{
+            favShop = (FavoritedShopList*)shopTemp;
+            container.data = @{
+                               kTKPDDETAIL_APISHOPIDKEY:favShop.shop_id?:@0,
+                               kTKPDDETAIL_APISHOPNAMEKEY:favShop.shop_name?:@"",
+                               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                               };
+        }
+        
+        
     }
     
     [self.navigationController pushViewController:container animated:YES];
@@ -467,8 +471,6 @@ FavoriteShopRequestDelegate
 {
     _table.tableFooterView = _footer;
     [_act startAnimating];
-    tokopediaNetworkManager.tagRequest = CTagRequest;
-    [tokopediaNetworkManager doRequest];
 }
 
 
@@ -493,9 +495,6 @@ FavoriteShopRequestDelegate
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
-    tokopediaNetworkManager = nil;
 }
 
 #pragma mark - Actions
