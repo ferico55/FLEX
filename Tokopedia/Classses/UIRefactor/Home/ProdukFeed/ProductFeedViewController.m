@@ -26,6 +26,8 @@
 #import "SearchAWSResult.h"
 #import "SearchAWSProduct.h"
 
+#import "FavoriteShopRequest.h"
+
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
 static NSInteger const normalHeight = 568;
@@ -51,7 +53,8 @@ UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
 PromoRequestDelegate,
-NoResultDelegate
+NoResultDelegate,
+FavoriteShopRequestDelegate
 >
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -67,6 +70,7 @@ NoResultDelegate
 
 @property (strong, nonatomic) PromoRequest *promoRequest;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) FavoriteShopRequest *favoriteShopRequest;
 @end
 
 
@@ -85,6 +89,7 @@ NoResultDelegate
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
+    FavoritedShopResult *_favoritedShops;
 }
 
 #pragma mark - Initialization
@@ -152,7 +157,11 @@ NoResultDelegate
     _networkManager.tagRequest = ProductFeedTag;
     _networkManager.isUsingHmac = NO;
     _networkManager.isParameterNotEncrypted = YES;
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
+    
+    _favoriteShopRequest = [FavoriteShopRequest new];
+    _favoriteShopRequest.delegate = self;
+    [_favoriteShopRequest requestFavoriteShopListings];
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
@@ -205,7 +214,8 @@ NoResultDelegate
     if (indexPath.section == section && indexPath.row == row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
-            [_networkManager doRequest];
+            //[_networkManager doRequest];
+            [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         }
     }
     
@@ -323,8 +333,6 @@ NoResultDelegate
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
     //NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:@(_page), kTKPDHOME_APIPAGEKEY, @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
-    UserAuthentificationManager *ua = [UserAuthentificationManager new];
-    id asd = [ua getUserLoginData];
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:@(_perPage) forKey:@"rows"];
@@ -491,7 +499,8 @@ NoResultDelegate
 - (void)addFavoriteShop:(NSNotification*)notification{
     //if([self.view isEqual:_noResultView]){
     if(_product.count == 0){
-        [_networkManager doRequest];
+        //[_networkManager doRequest];
+        [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     }
     //self.view = _contentView;
     [_noResultView removeFromSuperview];
@@ -502,7 +511,8 @@ NoResultDelegate
 - (void)removeFavoriteShop:(NSNotification*)notification{
     _page = 1;
     [_product removeAllObjects];
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
+    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
     
@@ -510,7 +520,8 @@ NoResultDelegate
 
 #pragma mark - Other Method
 - (IBAction)pressRetryButton:(id)sender {
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
+    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     _isFailRequest = NO;
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
@@ -519,7 +530,8 @@ NoResultDelegate
 -(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
     _isShowRefreshControl = YES;
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
+    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
 }
 
 - (void)registerNib {
@@ -597,6 +609,77 @@ NoResultDelegate
         self.scrollDirection = ScrollDirectionDown;
     }
     self.lastContentOffset = scrollView.contentOffset.y;
+}
+
+#pragma mark - Favorite Shop Request delegate
+
+-(void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
+    _favoritedShops = favoriteShops;
+    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+}
+
+-(void)didReceiveProductFeed:(SearchAWS *)feed{
+    [_noResultView removeFromSuperview];
+    [_firstFooter removeFromSuperview];
+    
+    if (feed.result.products.count > 0) {
+        [_noResultView removeFromSuperview];
+        if (_page == 1) {
+            [_product removeAllObjects];
+            [_promo removeAllObjects];
+            [_firstFooter removeFromSuperview];
+        }
+        
+        [_product addObject:feed.result.products];
+        
+        [TPAnalytics trackProductImpressions:feed.result.products];
+        
+        _isNoData = NO;
+        _nextPageUri =  feed.result.paging.uri_next;
+        //_page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
+        _page++;
+        
+        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
+            //remove loadingview if there is no more item
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
+        } else {
+            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
+        }
+        
+        if (_page > 1) [self requestPromo];
+        
+    } else {
+        // no data at all
+        _isNoData = YES;
+        [_product removeAllObjects];
+        [_collectionView reloadData];
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        [_collectionView addSubview:_noResultView];
+    }
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+        [_collectionView reloadData];
+    } else  {
+        [_collectionView reloadData];
+    }
+    [_collectionView layoutIfNeeded];
+}
+
+-(void)failToRequestFavoriteShopListing{
+    _isShowRefreshControl = NO;
+    [_refreshControl endRefreshing];
+    _isFailRequest = YES;
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
+}
+
+-(void)failToRequestProductFeed{
+    _isShowRefreshControl = NO;
+    [_refreshControl endRefreshing];
+    _isFailRequest = YES;
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
 }
 
 @end

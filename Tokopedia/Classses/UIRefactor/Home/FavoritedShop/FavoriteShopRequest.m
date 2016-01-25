@@ -9,9 +9,10 @@
 #import "FavoriteShopRequest.h"
 #import "TokopediaNetworkManager.h"
 
-#define PER_PAGE 5
+#define PER_PAGE 6
 
 typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
+    FavoriteShopRequestAll,
     FavoriteShopRequestListing,
     FavoriteShopRequestDoFavorite,
     FavoriteShopRequestGetProductFeed
@@ -25,6 +26,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     NSString* shopId;
     NSString* adKey;
     NSInteger page;
+    FavoritedShopResult* favShops;
     __weak RKObjectManager *_objectmanager;
 }
 
@@ -38,6 +40,11 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 }
 
 #pragma mark Public Function
+-(void)requestFavoriteShopListings{
+    networkManager.tagRequest = FavoriteShopRequestAll;
+    [networkManager doRequest];
+}
+
 -(void)requestFavoriteShopListingsWithPage:(NSInteger)p{
     page = p;
     networkManager.tagRequest = FavoriteShopRequestListing;
@@ -51,7 +58,9 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     [networkManager doRequest];
 }
 
--(void)requestProductFeedWithFavoriteShopList:(FavoriteShopResult*)favoriteShopResult{
+-(void)requestProductFeedWithFavoriteShopList:(FavoritedShopResult*)favoriteShopResult withPage:(NSInteger)p{
+    favShops = favoriteShopResult;
+    page = p;
     networkManager.tagRequest = FavoriteShopRequestGetProductFeed;
     [networkManager doRequest];
 }
@@ -72,16 +81,20 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
                  @"ad_key":adKey
                  };
     }else if(tag == FavoriteShopRequestGetProductFeed){
+        NSString* strShops = [self generateShopString];
         return @{
                  @"device":@"ios",
                  @"rows":@(PER_PAGE),
-                 @"start":@((page*PER_PAGE)+1)
+                 @"start":@((page*PER_PAGE)+1),
+                 @"shop_id":strShops
                  };
+    }else if(tag == FavoriteShopRequestAll){
+        return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT};
     }
     return nil;
 }
 - (NSString*)getPath:(int)tag{
-    if(tag == FavoriteShopRequestListing){
+    if(tag == FavoriteShopRequestListing || tag == FavoriteShopRequestAll){
         return @"/v4/home/get_favorite_shop.pl";
     }else if(tag == FavoriteShopRequestDoFavorite){
         return @"/v4/action/favorite-shop/fav_shop.pl";
@@ -92,7 +105,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 }
 
 - (int)getRequestMethod:(int)tag{
-    if(tag == FavoriteShopRequestListing){
+    if(tag == FavoriteShopRequestListing || tag == FavoriteShopRequestAll){
         networkManager.isUsingHmac = YES;
         return RKRequestMethodGET;
     }else if(tag == FavoriteShopRequestDoFavorite){
@@ -107,7 +120,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 }
 
 - (id)getObjectManager:(int)tag{
-    if(tag == FavoriteShopRequestListing){
+    if(tag == FavoriteShopRequestListing || tag == FavoriteShopRequestAll){
         _objectmanager =  [RKObjectManager sharedClientHttps];
         
         // setup object mappings
@@ -240,7 +253,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
-    if(tag == FavoriteShopRequestListing){
+    if(tag == FavoriteShopRequestListing || tag == FavoriteShopRequestAll){
         return ((FavoritedShop*) stat).status;
     }else if(tag == FavoriteShopRequestDoFavorite){
         return ((FavoriteShopAction*) stat).status;
@@ -254,18 +267,18 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id temp = [result objectForKey:@""];
     
-    if(tag == FavoriteShopRequestListing){
+    if(tag == FavoriteShopRequestListing || tag == FavoriteShopRequestAll){
         [_delegate didReceiveFavoriteShopListing:((FavoritedShop*)temp).data];
     }else if(tag == FavoriteShopRequestDoFavorite){
         FavoriteShopAction* favShopAction = (FavoriteShopAction*)temp;
         [_delegate didReceiveActionButtonFavoriteShopConfirmation:favShopAction];
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        [_delegate didReceiveProductFeed:((SearchAWS*)temp).result.products];
+        [_delegate didReceiveProductFeed:(SearchAWS*)temp];
     }
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag{
-    if(tag == FavoriteShopRequestListing){
+    if(tag == FavoriteShopRequestListing || tag == FavoriteShopRequestAll){
         [_delegate failToRequestFavoriteShopListing];
     }else if(tag == FavoriteShopRequestDoFavorite){
         [_delegate failToRequestActionButtonFavoriteShopConfirmation];
@@ -275,5 +288,15 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 }
 
 #pragma mark Utils Method
+
+//return string with format: shop_id_0, shop_id_1, shop_id_2, dst
+-(NSMutableString*) generateShopString{
+    NSMutableString* result = [NSMutableString string];
+    for (FavoritedShopList* shop in favShops.list) {
+        [result appendFormat:@"%@,",shop.shop_id];
+    }
+    [result deleteCharactersInRange:NSMakeRange([result length]-1, 1)];
+    return result;
+}
 
 @end
