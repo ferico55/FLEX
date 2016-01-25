@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CategoryDataSource : NSObject <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface CategoryDataSource : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property(nonatomic, weak) UIViewController *delegate;
 
