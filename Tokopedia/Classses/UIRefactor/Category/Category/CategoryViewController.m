@@ -32,6 +32,7 @@ NSInteger const bannerHeight = 115;
 
 @property (nonatomic, strong) iCarousel *slider;
 @property (nonatomic, strong) UIImageView *bannerView;
+@property (nonatomic, strong) UIView *sliderView;
 @property (nonatomic, strong) CarouselDataSource *carouselDataSource;
 @property (nonatomic, strong) CategoryDataSource *categoryDataSource;
 
@@ -54,11 +55,13 @@ NSInteger const bannerHeight = 115;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [_collectionView setContentSize:CGSizeMake(_collectionView.frame.size.width , _collectionView.frame.size.height)];
-    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, ([[UIScreen mainScreen]bounds].size.height) )];
+    [_collectionView setContentSize:self.view.bounds.size];
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+
     
     loadIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 30)];
-    [loadIndicator setBackgroundColor:[UIColor redColor]];
     [_collectionView addSubview:loadIndicator];
     
     [loadIndicator bringSubviewToFront:self.view];
@@ -69,12 +72,20 @@ NSInteger const bannerHeight = 115;
     
     [_collectionView setDataSource:_categoryDataSource];
     [_collectionView setDelegate:_categoryDataSource];
+
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.headerReferenceSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 175);
+    [_collectionView setCollectionViewLayout:flowLayout];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     
     UINib *cellNib = [UINib nibWithNibName:@"CategoryViewCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"CategoryViewCellIdentifier"];
     
+}
+
+- (void)orientationChanged:(NSNotification *)note {
+    [_collectionView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -91,6 +102,7 @@ NSInteger const bannerHeight = 115;
     self.screenName = @"Top Category";
     [TPAnalytics trackScreenName:@"Top Category"];
 }
+
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -154,14 +166,15 @@ NSInteger const bannerHeight = 115;
                 [_slider removeFromSuperview];                
             }
             
-            BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""];
+            //remove banner if ipad
+//            BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""] && !IS_IPAD;
+            BOOL bannerExists = false;
             
             if(bannerExists) {
                 [self setBanner:_banner.result.ticker.img_uri];
                 sliderHeight += bannerHeight;
             }
-
-            _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, -sliderHeight, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
+            _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
             _carouselDataSource.delegate = self;
 
@@ -169,13 +182,12 @@ NSInteger const bannerHeight = 115;
             _slider.dataSource = _carouselDataSource;
             _slider.delegate = _carouselDataSource;
             _slider.decelerationRate = 0.5;
-            if (bannerExists) _slider.contentOffset = CGSizeMake(0, -(bannerHeight/2));
-            _slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//            if (bannerExists) _slider.contentOffset = CGSizeMake(0, -(bannerHeight/2));
 
-            [_collectionView addSubview:_slider];
+
+            [self.collectionView addSubview:_slider];
             [_collectionView bringSubviewToFront:_slider];
-            [_collectionView setContentInset:UIEdgeInsetsMake(sliderHeight, 0, 0, 0)];
-            [_collectionView setContentOffset:CGPointMake(0, -sliderHeight)];
+
         }
     }];
 }
@@ -185,6 +197,7 @@ NSInteger const bannerHeight = 115;
         [_bannerView removeFromSuperview];
     }
     _bannerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -bannerHeight, [UIScreen mainScreen].bounds.size.width, bannerHeight)];
+    [_bannerView setBackgroundColor:[UIColor whiteColor]];
     [_bannerView setImageWithURL:[NSURL URLWithString:bannerURL] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     [_bannerView setContentMode:UIViewContentModeScaleAspectFit];
     
@@ -192,7 +205,7 @@ NSInteger const bannerHeight = 115;
     [_bannerView addGestureRecognizer:tapBanner];
     [_bannerView setUserInteractionEnabled:YES];
     
-    [_collectionView addSubview:_bannerView];
+    [self.collectionView addSubview:_bannerView];
 }
 
 - (void)didTapBanner {
