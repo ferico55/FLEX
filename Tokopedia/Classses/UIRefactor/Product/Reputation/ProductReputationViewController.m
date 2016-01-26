@@ -408,7 +408,7 @@ static NSInteger userViewHeight = 70;
                         [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
                     }
                 }
-                
+                helpfulCell.selectionStyle = UITableViewCellSelectionStyleNone;
                 return helpfulCell;
             }else{
                 return _helpfulReviewLoadMoreCell;
@@ -450,8 +450,9 @@ static NSInteger userViewHeight = 70;
             if([self isLastCellInSectionZero:indexPath]){
                 [self showMoreTapped:nil];
             }else{
-                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
-                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+                //will show most hr details when jerry team has already STP
+                //DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                //[self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
             }
         }
     }else{
