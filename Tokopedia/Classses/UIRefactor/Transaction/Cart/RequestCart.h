@@ -17,6 +17,7 @@
 #define TAG_REQUEST_EMONEY 16
 #define TAG_REQUEST_BCA_CLICK_PAY 17
 #define TAG_REQUEST_CC 18
+#define TAG_REQUEST_BRI_EPAY 19
 
 @protocol RequestCartDelegate <NSObject>
 @required
@@ -29,6 +30,7 @@
 -(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 
 -(void)actionBeforeRequest:(int)tag;
 -(void)actionAfterFailRequestMaxTries:(int)tag;
@@ -53,5 +55,6 @@
 -(void)doRequestEMoney;
 -(void)doRequestBCAClickPay;
 -(void)doRequestCC;
+-(void)dorequestBRIEPay;
 
 @end

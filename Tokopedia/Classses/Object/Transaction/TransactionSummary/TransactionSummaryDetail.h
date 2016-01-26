@@ -57,6 +57,8 @@
 @property (nonatomic,strong) NSString *grand_total_before_fee;
 @property (nonatomic,strong) NSString *conf_code_idr;
 @property (nonatomic,strong) NSString *payment_left;
+@property (nonatomic,strong) NSString *transaction_code;
+@property (nonatomic,strong) NSString *bri_website_link;
 
 @property (nonatomic,strong) CCFee *credit_card;
 @property (nonatomic, strong) IndomaretData *indomaret;

@@ -799,6 +799,24 @@
                     [self pushToCCInformation];
                 }
                     break;
+                case TYPE_GATEWAY_BRI_EPAY:
+                {
+                    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+                    vc.gateway = _cartSummary.gateway;
+                    vc.token = _cartSummary.token;
+                    vc.URLString = _cartSummary.bri_website_link?:@"";
+                    vc.cartDetail = _cartSummary;
+                    vc.transactionCode = _cartSummary.transaction_code?:@"";
+                    vc.delegate = self;
+                    vc.paymentID = _cartSummary.payment_id;
+                    
+                    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+                    break;
                 default:
                     break;
             }
@@ -951,12 +969,16 @@
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
         [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
         [gatewayImages addObject:gateway.gateway_image?:@""];
+#ifdef DEBUG
+        
+#else
         for (NSString *hiddenGateway in hiddenGatewayArray) {
             if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
                 [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
                 [hiddenGatewayName addObject:gateway.gateway_name];
             }
         }
+#endif
     }
     
     [gatewayImages removeObjectsInArray:hiddenGatewayImage];
@@ -1726,6 +1748,12 @@
 {
     _requestCart.param = @{};
     [_requestCart doRequestBCAClickPay];
+}
+
+-(void)shouldDoRequestBRIEPay:(NSDictionary *)param
+{
+    _requestCart.param = param?:@{};
+    [_requestCart dorequestBRIEPay];
 }
 
 #pragma mark - Methods
@@ -2791,6 +2819,10 @@
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
     }
+    if (tag == TAG_REQUEST_BRI_EPAY) {
+        [_delegate shouldBackToFirstPage];
+        [_act stopAnimating];
+    }
     
     [self endRefreshing];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
@@ -3085,6 +3117,22 @@
         [_requestCart doRequestCart];
     }
     [_tableView reloadData];
+}
+
+#pragma mark - Request BRI E-Pay
+-(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    TransactionBuyResult *BRIEPay = [TransactionBuyResult new];
+    BRIEPay.transaction = _cartSummary;
+    
+    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BRIEPay?:[TransactionBuyResult new]};
+    [_delegate didFinishRequestBuyData:userInfo?:@{}];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+    
+    [_act stopAnimating];
+    
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 #pragma mark - Request E-Money
