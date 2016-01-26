@@ -21,6 +21,7 @@
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
 #import <GoogleMaps/GoogleMaps.h>
+#import <Rollout/Rollout.h>
 
 @implementation AppDelegate
 
@@ -37,6 +38,12 @@
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
+    
+    #if defined( DEBUG )
+        [Rollout setupWithDebug:YES];
+    #else
+        [Rollout setupWithDebug:NO];
+    #endif
         
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
