@@ -108,16 +108,7 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
     
-    for (UIImageView *image in attachedImages) {
-        if (image.tag == 20) {
-            image.image = [UIImage imageNamed:@"icon_upload_image.png"];
-            image.alpha = 1;
-            image.hidden = NO;
-            image.userInteractionEnabled = YES;
-        } else {
-            image.image = nil;
-        }
-    }
+    [self initCameraIcon];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -228,6 +219,20 @@
         nRateKualitas = (_detailReputationView.product_rating_point==nil || _detailReputationView.product_rating_point.length==0)? 0:[_detailReputationView.product_rating_point intValue];
         if(nRateKualitas != 0) {
             [self setKualitasStar];
+        }
+    }
+}
+
+- (void)initCameraIcon {
+    for (UIImageView *image in attachedImages) {
+        if (image.tag == 20) {
+            image.image = [UIImage imageNamed:@"icon_camera.png"];
+            image.alpha = 1;
+            image.hidden = NO;
+            image.userInteractionEnabled = YES;
+            image.contentMode = UIViewContentModeCenter;
+        } else {
+            image.image = nil;
         }
     }
 }
@@ -388,7 +393,7 @@
 //}
 
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
-    if ([self image:((UIImageView*)attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
+    if ([self image:((UIImageView*)attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
         [self didTapImage:((UIImageView*)attachedImages[sender.view.tag-20])];
     }
 }
@@ -617,7 +622,7 @@
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
     for (UIImageView *image in attachedImages) {
-        if (image.image == nil || [self image:image.image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
+        if (image.image == nil || [self image:image.image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
             [emptyImageIndex addObject:@(image.tag - 20)];
         }
     }
@@ -662,15 +667,16 @@
             imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
-            //            image.alpha = 0.5f;
             image.userInteractionEnabled = NO;
+            image.contentMode = UIViewContentModeScaleToFill;
         }
         
         if (image.tag == tagView + 1) {
             if (image.image == nil) {
-                image.image = [UIImage imageNamed:@"icon_upload_image.png"];
+                image.image = [UIImage imageNamed:@"icon_camera.png"];
                 image.userInteractionEnabled = YES;
                 image.hidden = NO;
+                image.contentMode = UIViewContentModeCenter;
             }
         }
     }
@@ -682,27 +688,6 @@
     [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
     [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
     
-//    for (UIButton *button in addPictureButtons) {
-//        if (button.tag == tagView) {
-//            button.hidden = YES;
-//        }
-//        if (button.tag == tagView+1)
-//        {
-//            for (UIImageView *image in attachedImages) {
-//                if (image.tag == tagView+1)
-//                {
-//                    if (image.image == nil) {
-//                        button.hidden = NO;
-//                        button.enabled = YES;
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-    
-    
-//    [self actionUploadImage:object];
 }
 
 #pragma mark - Request Generate Host
