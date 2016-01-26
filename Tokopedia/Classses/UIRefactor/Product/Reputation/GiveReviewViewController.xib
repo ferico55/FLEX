@@ -37,11 +37,6 @@
                 <outletCollection property="arrImgKualitas" destination="A43-W1-qrf" id="Xp2-Nd-C1z"/>
                 <outletCollection property="arrImgKualitas" destination="zFa-Jn-02j" id="Ct8-yu-yjY"/>
                 <outletCollection property="arrImgKualitas" destination="DNs-40-d1Q" id="psU-Zv-Un5"/>
-                <outletCollection property="addPictureButtons" destination="h2k-r5-W3J" id="8Ma-I4-2yb"/>
-                <outletCollection property="addPictureButtons" destination="EfL-Db-zCN" id="zj3-8X-WbQ"/>
-                <outletCollection property="addPictureButtons" destination="2zB-UU-RWv" id="Jig-uv-qUW"/>
-                <outletCollection property="addPictureButtons" destination="UTx-qW-Cms" id="zZb-Fr-vRA"/>
-                <outletCollection property="addPictureButtons" destination="uBf-fa-Zfa" id="g9V-hs-0Ge"/>
                 <outletCollection property="attachedImages" destination="QnF-Xg-2Ok" id="BlP-qG-itp"/>
                 <outletCollection property="attachedImages" destination="v5P-6X-dwb" id="njj-He-41h"/>
                 <outletCollection property="attachedImages" destination="Qjc-em-jXs" id="sRC-2R-fhf"/>
@@ -107,105 +102,55 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SHu-wK-vF8">
                                     <rect key="frame" x="0.0" y="152" width="320" height="46"/>
                                     <subviews>
-                                        <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uBf-fa-Zfa">
-                                            <rect key="frame" x="8" y="3" width="40" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="6St-n0-kSq"/>
-                                                <constraint firstAttribute="width" constant="40" id="A1o-Ah-UrP"/>
-                                            </constraints>
-                                            <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
-                                            <state key="normal" image="icon_camera.png"/>
-                                            <state key="highlighted" image="icon_camera.png"/>
-                                            <connections>
-                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="F3P-Rb-Vbj"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" tag="21" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UTx-qW-Cms">
-                                            <rect key="frame" x="56" y="3" width="40" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="4GI-Nt-VdT"/>
-                                                <constraint firstAttribute="height" constant="40" id="Xi2-Uo-c6h"/>
-                                            </constraints>
-                                            <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
-                                            <state key="normal" image="icon_camera.png"/>
-                                            <state key="highlighted" image="icon_camera.png"/>
-                                            <connections>
-                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="zSH-yr-ZXX"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" tag="22" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zB-UU-RWv">
-                                            <rect key="frame" x="104" y="3" width="40" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="gWn-QL-r3y"/>
-                                                <constraint firstAttribute="height" constant="40" id="iXZ-PG-MZ3"/>
-                                            </constraints>
-                                            <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
-                                            <state key="normal" image="icon_camera.png"/>
-                                            <state key="highlighted" image="icon_camera.png"/>
-                                            <connections>
-                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="8il-bd-uJu"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" tag="23" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EfL-Db-zCN">
-                                            <rect key="frame" x="152" y="3" width="40" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="O9N-1l-BxQ"/>
-                                                <constraint firstAttribute="height" constant="40" id="xOz-Yk-xgj"/>
-                                            </constraints>
-                                            <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
-                                            <state key="normal" image="icon_camera.png"/>
-                                            <state key="highlighted" image="icon_camera.png"/>
-                                            <connections>
-                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="z8V-SX-Gyy"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" tag="24" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2k-r5-W3J">
-                                            <rect key="frame" x="200" y="3" width="40" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="6Wu-3t-Drj"/>
-                                                <constraint firstAttribute="height" constant="40" id="Zbq-SS-zyE"/>
-                                            </constraints>
-                                            <size key="titleShadowOffset" width="2.2250738585072014e-308" height="0.0"/>
-                                            <state key="normal" image="icon_camera.png"/>
-                                            <state key="highlighted" image="icon_camera.png"/>
-                                            <connections>
-                                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="fhg-p3-xNN"/>
-                                            </connections>
-                                        </button>
-                                        <imageView userInteractionEnabled="NO" tag="20" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QnF-Xg-2Ok">
+                                        <imageView userInteractionEnabled="NO" tag="20" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QnF-Xg-2Ok" userLabel="1">
                                             <rect key="frame" x="8" y="3" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="qNC-RD-J8c"/>
                                                 <constraint firstAttribute="width" constant="40" id="t2z-9Q-1kL"/>
                                             </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="jWY-BP-qfg" appends="YES" id="jvB-hW-vgn"/>
+                                            </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v5P-6X-dwb">
+                                        <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v5P-6X-dwb" userLabel="2">
                                             <rect key="frame" x="56" y="3" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="1L9-kw-ynl"/>
                                                 <constraint firstAttribute="width" constant="40" id="TlY-lj-5Cg"/>
                                             </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="KcD-TS-xZO" appends="YES" id="vs6-gb-cCG"/>
+                                            </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="22" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qjc-em-jXs">
+                                        <imageView userInteractionEnabled="NO" tag="22" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qjc-em-jXs" userLabel="3">
                                             <rect key="frame" x="104" y="3" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="40" id="DgO-5J-d8D"/>
                                                 <constraint firstAttribute="height" constant="40" id="FYL-g0-ipu"/>
                                             </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="u7q-fP-JmV" appends="YES" id="QuB-qV-gwA"/>
+                                            </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="23" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v3p-rb-Xqo">
+                                        <imageView userInteractionEnabled="NO" tag="23" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v3p-rb-Xqo" userLabel="4">
                                             <rect key="frame" x="152" y="3" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="AQs-45-XAW"/>
                                                 <constraint firstAttribute="width" constant="40" id="i7X-ho-JMc"/>
                                             </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="gdO-KX-PoH" appends="YES" id="fc2-2E-RDl"/>
+                                            </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="24" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="afu-ua-wfx">
+                                        <imageView userInteractionEnabled="NO" tag="24" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="afu-ua-wfx" userLabel="5">
                                             <rect key="frame" x="200" y="3" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="40" id="awV-qA-SrI"/>
                                                 <constraint firstAttribute="height" constant="40" id="siZ-tE-GaM"/>
                                             </constraints>
+                                            <connections>
+                                                <outletCollection property="gestureRecognizers" destination="9u1-nA-cxi" appends="YES" id="oMs-Yd-ORQ"/>
+                                            </connections>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -213,35 +158,19 @@
                                         <constraint firstItem="Qjc-em-jXs" firstAttribute="leading" secondItem="v5P-6X-dwb" secondAttribute="trailing" constant="8" id="3M1-eT-Lxi"/>
                                         <constraint firstAttribute="bottom" secondItem="afu-ua-wfx" secondAttribute="bottom" constant="3" id="3Vc-Bh-323"/>
                                         <constraint firstAttribute="bottom" secondItem="QnF-Xg-2Ok" secondAttribute="bottom" constant="3" id="46W-79-5lE"/>
-                                        <constraint firstAttribute="bottom" secondItem="EfL-Db-zCN" secondAttribute="bottom" constant="3" id="4We-5k-skM"/>
                                         <constraint firstItem="Qjc-em-jXs" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="4Z9-Gb-Lvy"/>
-                                        <constraint firstItem="EfL-Db-zCN" firstAttribute="leading" secondItem="2zB-UU-RWv" secondAttribute="trailing" constant="8" id="6Uc-ST-7Ti"/>
                                         <constraint firstItem="v5P-6X-dwb" firstAttribute="leading" secondItem="QnF-Xg-2Ok" secondAttribute="trailing" constant="8" id="8vi-Ta-cZD"/>
                                         <constraint firstItem="v3p-rb-Xqo" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="9hS-vO-Gme"/>
-                                        <constraint firstItem="2zB-UU-RWv" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="C69-ZA-n1y"/>
                                         <constraint firstItem="afu-ua-wfx" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="Dd7-MP-fqK"/>
-                                        <constraint firstItem="uBf-fa-Zfa" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="Ecm-AY-1cX"/>
                                         <constraint firstItem="afu-ua-wfx" firstAttribute="leading" secondItem="v3p-rb-Xqo" secondAttribute="trailing" constant="8" id="G40-cM-kIQ"/>
                                         <constraint firstItem="v5P-6X-dwb" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="Gpg-M5-eG1"/>
-                                        <constraint firstAttribute="bottom" secondItem="2zB-UU-RWv" secondAttribute="bottom" constant="3" id="I5C-y0-UWC"/>
-                                        <constraint firstItem="UTx-qW-Cms" firstAttribute="leading" secondItem="uBf-fa-Zfa" secondAttribute="trailing" constant="8" id="II8-Hz-rBu"/>
-                                        <constraint firstItem="EfL-Db-zCN" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="IlI-lF-s29"/>
                                         <constraint firstAttribute="bottom" secondItem="v3p-rb-Xqo" secondAttribute="bottom" constant="3" id="Js3-pP-Mjs"/>
                                         <constraint firstAttribute="bottom" secondItem="Qjc-em-jXs" secondAttribute="bottom" constant="3" id="LBE-QE-Mh9"/>
-                                        <constraint firstAttribute="bottom" secondItem="uBf-fa-Zfa" secondAttribute="bottom" constant="3" id="Sai-ML-gIv"/>
-                                        <constraint firstItem="uBf-fa-Zfa" firstAttribute="leading" secondItem="SHu-wK-vF8" secondAttribute="leading" constant="8" id="T8k-ZK-md5"/>
                                         <constraint firstAttribute="height" constant="46" id="Tc3-is-n83"/>
                                         <constraint firstAttribute="bottom" secondItem="v5P-6X-dwb" secondAttribute="bottom" constant="3" id="USG-lY-I3g"/>
-                                        <constraint firstAttribute="bottom" secondItem="h2k-r5-W3J" secondAttribute="bottom" constant="3" id="YXp-Df-f33"/>
-                                        <constraint firstAttribute="bottom" secondItem="UTx-qW-Cms" secondAttribute="bottom" constant="3" id="eoO-Jq-5KG"/>
                                         <constraint firstItem="QnF-Xg-2Ok" firstAttribute="leading" secondItem="SHu-wK-vF8" secondAttribute="leading" constant="8" id="g8d-mo-OAx"/>
-                                        <constraint firstItem="UTx-qW-Cms" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="j8p-Jf-XKL"/>
-                                        <constraint firstItem="h2k-r5-W3J" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="o7w-uJ-FCb"/>
-                                        <constraint firstItem="2zB-UU-RWv" firstAttribute="leading" secondItem="UTx-qW-Cms" secondAttribute="trailing" constant="8" id="s61-GN-K2W"/>
-                                        <constraint firstItem="UTx-qW-Cms" firstAttribute="leading" secondItem="uBf-fa-Zfa" secondAttribute="trailing" constant="8" id="uxe-Da-wMy"/>
                                         <constraint firstItem="QnF-Xg-2Ok" firstAttribute="top" secondItem="SHu-wK-vF8" secondAttribute="top" constant="3" id="v9Z-iz-9ym"/>
                                         <constraint firstItem="v3p-rb-Xqo" firstAttribute="leading" secondItem="Qjc-em-jXs" secondAttribute="trailing" constant="8" id="vuc-gJ-Xtp"/>
-                                        <constraint firstItem="h2k-r5-W3J" firstAttribute="leading" secondItem="EfL-Db-zCN" secondAttribute="trailing" constant="8" id="wPA-ks-lpg"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UMp-fT-Zyg">
@@ -564,9 +493,33 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="407" y="448"/>
         </view>
+        <tapGestureRecognizer id="jWY-BP-qfg">
+            <connections>
+                <action selector="gesture:" destination="-1" id="2v5-bi-0MC"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="KcD-TS-xZO">
+            <connections>
+                <action selector="gesture:" destination="-1" id="WQJ-ij-FvV"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="u7q-fP-JmV">
+            <connections>
+                <action selector="gesture:" destination="-1" id="u43-lk-ZKG"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="gdO-KX-PoH">
+            <connections>
+                <action selector="gesture:" destination="-1" id="9c6-dv-IaP"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="9u1-nA-cxi">
+            <connections>
+                <action selector="gesture:" destination="-1" id="tHV-XW-xzs"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_camera.png" width="30" height="30"/>
         <image name="icon_star.png" width="20" height="20"/>
     </resources>
 </document>
