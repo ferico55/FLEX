@@ -405,4 +405,159 @@
     
   };
 }
+
+- (id)blockFor_classMethod_Void___Record_CLLocationCoordinate2D___Int___ObjCObjectPointer_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^void(id rcv, __rollout_dummy_struct__k$63xrfGHT0Pv5v_lBvIfdIQKgM arg0, int arg1, id arg2) {
+    void (*originalFunction)(id, SEL, __rollout_dummy_struct__k$63xrfGHT0Pv5v_lBvIfdIQKgM, int, id) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithRecordPointer:&arg0 ofSize:sizeof(__rollout_dummy_struct__k$63xrfGHT0Pv5v_lBvIfdIQKgM) shouldBeFreedInDealloc:NO], 
+     [[RolloutTypeWrapper alloc] initWithInt:arg1], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg2], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), *(__rollout_dummy_struct__k$63xrfGHT0Pv5v_lBvIfdIQKgM*)((RolloutTypeWrapper*)arguments[0]).recordPointer, ((RolloutTypeWrapper*)arguments[1]).intValue, ((RolloutTypeWrapper*)arguments[2]).objCObjectPointerValue); return [[RolloutTypeWrapper alloc] initWithVoid];
+    }];
+
+    
+  };
+}
+
+- (id)blockFor_instanceMethod_Record_struct_RolloutSpace_CGSize___ObjCObjectPointer___ObjCObjectPointer___Int_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^__rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM(id rcv, id arg0, id arg1, int arg2) {
+    __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM (*originalFunction)(id, SEL, id, id, int) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg0], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg1], 
+     [[RolloutTypeWrapper alloc] initWithInt:arg2], 
+]];
+    __block __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM record;
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        record = originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[1]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[2]).intValue);
+        return [[RolloutTypeWrapper alloc] initWithRecordPointer:&record ofSize:sizeof(__rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM) shouldBeFreedInDealloc:NO];
+    }];
+
+    return *(__rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM *)result.recordPointer;
+  };
+}
+
+- (id)blockFor_classMethod_UInt___ObjCObjectPointer_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^unsigned int(id rcv, id arg0) {
+    unsigned int (*originalFunction)(id, SEL, id) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg0], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        return [[RolloutTypeWrapper alloc] initWithUInt:originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).objCObjectPointerValue)];
+    }];
+
+    return result.uIntValue;
+  };
+}
+
+- (id)blockFor_instanceMethod_UInt___UInt___UInt_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^unsigned int(id rcv, unsigned int arg0, unsigned int arg1) {
+    unsigned int (*originalFunction)(id, SEL, unsigned int, unsigned int) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithUInt:arg0], 
+     [[RolloutTypeWrapper alloc] initWithUInt:arg1], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        return [[RolloutTypeWrapper alloc] initWithUInt:originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).uIntValue, ((RolloutTypeWrapper*)arguments[1]).uIntValue)];
+    }];
+
+    return result.uIntValue;
+  };
+}
+
+- (id)blockFor_instanceMethod_Void___ULong___ObjCObjectPointer___ObjCObjectPointer___ObjCObjectPointer_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^void(id rcv, unsigned long arg0, id arg1, id arg2, id arg3) {
+    void (*originalFunction)(id, SEL, unsigned long, id, id, id) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithULong:arg0], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg1], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg2], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg3], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).uLongValue, ((RolloutTypeWrapper*)arguments[1]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[2]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[3]).objCObjectPointerValue); return [[RolloutTypeWrapper alloc] initWithVoid];
+    }];
+
+    
+  };
+}
+
+- (id)blockFor_instanceMethod_CGFloat___ObjCObjectPointer___ObjCObjectPointer___Int_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^CGFloat(id rcv, id arg0, id arg1, int arg2) {
+    CGFloat (*originalFunction)(id, SEL, id, id, int) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg0], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg1], 
+     [[RolloutTypeWrapper alloc] initWithInt:arg2], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        return [[RolloutTypeWrapper alloc] initWithFloat:originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[1]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[2]).intValue)];
+    }];
+
+    return result.floatValue;
+  };
+}
+
+- (id)blockFor_instanceMethod_ObjCObjectPointer___Enum___Int___ObjCObjectPointer___ObjCObjectPointer___ObjCObjectPointer_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^id(id rcv, __rollout_enum arg0, int arg1, id arg2, id arg3, id arg4) {
+    id (*originalFunction)(id, SEL, __rollout_enum, int, id, id, id) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithEnum:arg0], 
+     [[RolloutTypeWrapper alloc] initWithInt:arg1], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg2], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg3], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg4], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        return [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).enumValue, ((RolloutTypeWrapper*)arguments[1]).intValue, ((RolloutTypeWrapper*)arguments[2]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[3]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[4]).objCObjectPointerValue)];
+    }];
+
+    return result.objCObjectPointerValue;
+  };
+}
+
+- (id)blockFor_instanceMethod_BOOL___UInt_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^BOOL(id rcv, unsigned int arg0) {
+    BOOL (*originalFunction)(id, SEL, unsigned int) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithUInt:arg0], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        return [[RolloutTypeWrapper alloc] initWithSChar:originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).uIntValue)];
+    }];
+
+    return result.sCharValue;
+  };
+}
+
+- (id)blockFor_classMethod_ObjCObjectPointer___ObjCObjectPointer___Int___Int___Int___ObjCObjectPointer___ObjCObjectPointer_withOriginalImplementation:(IMP)originalImplementation tweakId:(RolloutTweakId *)tweakId
+{
+  return ^id(id rcv, id arg0, int arg1, int arg2, int arg3, id arg4, id arg5) {
+    id (*originalFunction)(id, SEL, id, int, int, int, id, id) = (void *) originalImplementation;
+    RolloutInvocationContext *invocationContext = [[RolloutInvocationContext alloc] initWithTarget:rcv tweakId:tweakId arguments:@[     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg0], 
+     [[RolloutTypeWrapper alloc] initWithInt:arg1], 
+     [[RolloutTypeWrapper alloc] initWithInt:arg2], 
+     [[RolloutTypeWrapper alloc] initWithInt:arg3], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg4], 
+     [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:arg5], 
+]];
+    
+    RolloutTypeWrapper *result __attribute__((unused)) = [self->_invocation invokeWithContext:invocationContext originalMethodWrapper:^RolloutTypeWrapper *(NSArray *arguments) {
+        return [[RolloutTypeWrapper alloc] initWithObjCObjectPointer:originalFunction(rcv, NSSelectorFromString(tweakId.methodId.selector), ((RolloutTypeWrapper*)arguments[0]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[1]).intValue, ((RolloutTypeWrapper*)arguments[2]).intValue, ((RolloutTypeWrapper*)arguments[3]).intValue, ((RolloutTypeWrapper*)arguments[4]).objCObjectPointerValue, ((RolloutTypeWrapper*)arguments[5]).objCObjectPointerValue)];
+    }];
+
+    return result.objCObjectPointerValue;
+  };
+}
 @end

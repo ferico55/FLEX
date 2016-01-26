@@ -143,3 +143,72 @@ typedef struct __rollout_dummy_struct__jviU81zjFf3q9k1qOLfWJKJwUdk {
   float x;
   float y;
 } __rollout_dummy_struct__jviU81zjFf3q9k1qOLfWJKJwUdk;
+typedef struct __rollout_dummy_struct__r5ouMjAKmzEbgcmRq5DIfiumCzg {
+  unsigned int location;
+  unsigned int length;
+} __rollout_dummy_struct__r5ouMjAKmzEbgcmRq5DIfiumCzg;
+typedef struct __rollout_dummy_struct__zCAWsL3voSvlrUFV0hHzxtU$mSY {
+  CGFloat top;
+  CGFloat left;
+  CGFloat bottom;
+  CGFloat right;
+} __rollout_dummy_struct__zCAWsL3voSvlrUFV0hHzxtU$mSY;
+typedef struct __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM {
+  CGFloat width;
+  CGFloat height;
+} __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM;
+typedef struct __rollout_dummy_struct__R2avCXJVvq_97r2996lkLvKT2Fs {
+  CGFloat x;
+  CGFloat y;
+} __rollout_dummy_struct__R2avCXJVvq_97r2996lkLvKT2Fs;
+typedef struct __rollout_dummy_struct__jc9slQ7iaEAkp24qe0AZIP$kOCU {
+  __rollout_dummy_struct__R2avCXJVvq_97r2996lkLvKT2Fs origin;
+  __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM size;
+} __rollout_dummy_struct__jc9slQ7iaEAkp24qe0AZIP$kOCU;
+typedef struct __rollout_dummy_struct__5RZ0cxpFDzoSrICiR4kUL_rkPN4 {
+  __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM contentSize;
+  __rollout_dummy_struct__jc9slQ7iaEAkp24qe0AZIP$kOCU likeButtonFrame;
+  __rollout_dummy_struct__jc9slQ7iaEAkp24qe0AZIP$kOCU auxiliaryViewFrame;
+} __rollout_dummy_struct__5RZ0cxpFDzoSrICiR4kUL_rkPN4;
+typedef struct __rollout_dummy_struct__BKV9dIPI_K_JcBDk5m9To$SH7sQ {
+  __rollout_enum state;
+  CGFloat level;
+} __rollout_dummy_struct__BKV9dIPI_K_JcBDk5m9To$SH7sQ;
+typedef struct __rollout_dummy_struct__hQl0ixPVPkibUTn0DRKX8TY57N4 {
+  int majorVersion;
+  int minorVersion;
+  int patchVersion;
+} __rollout_dummy_struct__hQl0ixPVPkibUTn0DRKX8TY57N4;
+typedef struct __rollout_dummy_struct__RddRZw0r3SfDjJVyimz$o$RGb5A {
+  long location;
+  long length;
+} __rollout_dummy_struct__RddRZw0r3SfDjJVyimz$o$RGb5A;
+typedef struct __rollout_dummy_struct__toIbApKBaMxgqNC2Sw4kEBjoisU {
+  __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM size;
+} __rollout_dummy_struct__toIbApKBaMxgqNC2Sw4kEBjoisU;
+typedef struct __rollout_dummy_struct__Ezp4PnnU5vfm3Ep2lu6VDq0G07s {
+  CGFloat horizontal;
+  CGFloat vertical;
+} __rollout_dummy_struct__Ezp4PnnU5vfm3Ep2lu6VDq0G07s;
+typedef struct __rollout_dummy_struct__m22KjdI8le8UDiEOLT$1dj$KvmA {
+  __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM blurSize;
+  __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM totalSize;
+  __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM imageSize;
+  __rollout_dummy_struct__clAxoRtDAaGXUsgvOYmN_G0UQkM blurFraction;
+} __rollout_dummy_struct__m22KjdI8le8UDiEOLT$1dj$KvmA;
+typedef struct __rollout_dummy_struct__YYhx_ptwXiT1ZIVQ0XCyCc8zoao {
+  CGFloat a;
+  CGFloat b;
+  CGFloat c;
+  CGFloat d;
+  CGFloat tx;
+  CGFloat ty;
+} __rollout_dummy_struct__YYhx_ptwXiT1ZIVQ0XCyCc8zoao;
+typedef struct __rollout_dummy_struct__f1UVziccq$g$G3CJuEbQxqagrOc {
+  CGFloat dx;
+  CGFloat dy;
+} __rollout_dummy_struct__f1UVziccq$g$G3CJuEbQxqagrOc;
+typedef struct __rollout_dummy_struct__sccGee8hJ9dB$kAaDkQnbFIzAmc {
+  CGFloat value;
+  int scale;
+} __rollout_dummy_struct__sccGee8hJ9dB$kAaDkQnbFIzAmc;
