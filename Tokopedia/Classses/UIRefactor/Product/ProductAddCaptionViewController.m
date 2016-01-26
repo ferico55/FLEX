@@ -247,13 +247,14 @@
 
 #pragma mark - Camera Collection Delegate
 - (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo{
+    _userInfo = userInfo;
     NSArray *selectedImages = [userInfo objectForKey:@"selected_images"];
     NSArray *selectedIndexpaths = [userInfo objectForKey:@"selected_indexpath"];
     
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
     for (UIImageView *image in _attachedImages) {
-        if (image.image == nil || image.userInteractionEnabled == YES) {
+        if (image.image == nil || [self image:image.image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [emptyImageIndex addObject:@(image.tag - 20)];
         }
     }

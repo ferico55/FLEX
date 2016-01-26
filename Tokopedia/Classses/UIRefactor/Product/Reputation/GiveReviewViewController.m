@@ -653,7 +653,7 @@
             imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
-            image.alpha = 0.5f;
+//            image.alpha = 0.5f;
         }
     }
     
@@ -682,7 +682,7 @@
         }
     }
     
-    [self actionUploadImage:object];
+//    [self actionUploadImage:object];
 }
 
 #pragma mark - Request Generate Host
