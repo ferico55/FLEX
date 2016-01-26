@@ -28,6 +28,7 @@
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     TokopediaNetworkManager *_networkManagerCC;
+    TokopediaNetworkManager *_networkManagerBRIEpay;
     
     TransactionObjectManager *_objectManager;
     
@@ -140,6 +141,15 @@
     return _networkManagerCC;
 }
 
+-(TokopediaNetworkManager*)networkManagerBRIEpay{
+    if (!_networkManagerBRIEpay) {
+        _networkManagerBRIEpay = [TokopediaNetworkManager new];
+        _networkManagerBRIEpay.tagRequest = TAG_REQUEST_BRI_EPAY;
+        _networkManagerBRIEpay.delegate = self;
+    }
+    return _networkManagerBRIEpay;
+}
+
 -(void)doRequestCart
 {
     [[self networkManager] doRequest];
@@ -185,6 +195,11 @@
     [[self networkManagerCC]doRequest];
 }
 
+-(void)dorequestBRIEPay
+{
+    [[self networkManagerBRIEpay] doRequest];
+}
+
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
@@ -214,6 +229,9 @@
     }
     if (tag == TAG_REQUEST_CC) {
         return [[self objectManager] objectManagerCC];
+    }
+    if (tag == TAG_REQUEST_BRI_EPAY) {
+        return [[self objectManager] objectManagerBRIEPay];
     }
     
     return nil;
@@ -252,6 +270,9 @@
     }
     if (tag == TAG_REQUEST_CC) {
         return API_ACTION_CC_PATH;
+    }
+    if (tag == TAG_REQUEST_BRI_EPAY) {
+        return @"tx-payment-briepay.pl";
     }
     return nil;
 }
@@ -300,6 +321,10 @@
     }
     if (tag == TAG_REQUEST_CC) {
         TransactionCC *action = stat;
+        return action.status;
+    }
+    if (tag == TAG_REQUEST_BRI_EPAY) {
+        TransactionAction *action = stat;
         return action.status;
     }
     return nil;
@@ -429,6 +454,20 @@
         else
         {
             [self showErrorMesage:actionCC.message_error?:@[@"Pembayaran Anda gagal"]];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
+    }
+    if (tag == TAG_REQUEST_BRI_EPAY) {
+        TransactionAction *action = stat;
+        
+        if (action.result.is_success == 1) {
+            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            [self showStatusMesage:successMessages];
+            [_delegate requestSuccessBRIEPay:successResult withOperation:operation];
+        }
+        else
+        {
+            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
     }
