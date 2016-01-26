@@ -12951,14 +12951,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/tokopedia/Downloads/FacebookSDKs-iOS-20150910",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -12977,8 +12976,6 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -12986,7 +12983,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -12999,14 +12996,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/tokopedia/Downloads/FacebookSDKs-iOS-20150910",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -13025,8 +13021,6 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				ONLY_ACTIVE_ARCH = NO;
@@ -13034,7 +13028,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
