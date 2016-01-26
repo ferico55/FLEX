@@ -123,11 +123,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger sections = 1;
-    if ([self showsReceiptInputText]) {
-        sections = 2;
-    }
-    return sections;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -140,7 +136,9 @@
             rows = 1;
         }
     } else if (section == 1) {
-        rows = 1;
+        if ([self showsReceiptInputText] || _changeCourier) {
+            rows = 1;
+        }
     }
     return rows;
 }
@@ -364,13 +362,28 @@
     _changeCourier = [sender isOn];
     
     NSArray *indexPaths = @[
-                            [NSIndexPath indexPathForRow:1 inSection:0],
-                            [NSIndexPath indexPathForRow:2 inSection:0],
-                            ];
+        [NSIndexPath indexPathForRow:1 inSection:0],
+        [NSIndexPath indexPathForRow:2 inSection:0],
+    ];
+
+    NSArray *indexPathsForInstantCourier = @[
+        [NSIndexPath indexPathForRow:1 inSection:0],
+        [NSIndexPath indexPathForRow:2 inSection:0],
+        [NSIndexPath indexPathForRow:0 inSection:1],
+    ];
+    
     if (_changeCourier && [self.tableView numberOfRowsInSection:0] == 1) {
-        [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        if ([self isInstantCourier]) {
+            [_tableView insertRowsAtIndexPaths:indexPathsForInstantCourier withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        }
     } else if (!_changeCourier && [self.tableView numberOfRowsInSection:0] == 3) {
-        [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        if ([self isInstantCourier]) {
+            [_tableView deleteRowsAtIndexPaths:indexPathsForInstantCourier withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        }
     }
 }
 
