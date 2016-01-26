@@ -230,6 +230,7 @@
     [_networkManager requestCancel];
     _page = 1;
     
+    [_talkList removeAllObjects];
     [_table reloadData];
     [_networkManager doRequest];
 }
