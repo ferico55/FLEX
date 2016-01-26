@@ -87,18 +87,12 @@
     _operationQueue = [NSOperationQueue new];
     _generateHost = [GenerateHost new];
     _generatedHost = [GeneratedHost new];
-    
-    addPictureButtons = [NSArray sortViewsWithTagInArray:addPictureButtons];
     attachedImages = [NSArray sortViewsWithTagInArray:attachedImages];
     
     _uploadingImages = [NSMutableArray new];
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImageURLs = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-    
-    for (UIButton *buttonAdd in addPictureButtons) {
-        buttonAdd.enabled = YES;
-    }
     
     _isFinishedUploadingImage = YES;
     
@@ -113,6 +107,17 @@
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
+    
+    for (UIImageView *image in attachedImages) {
+        if (image.tag == 20) {
+            image.image = [UIImage imageNamed:@"icon_upload_image.png"];
+            image.alpha = 1;
+            image.hidden = NO;
+            image.userInteractionEnabled = YES;
+        } else {
+            image.image = nil;
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -367,22 +372,28 @@
     [self setKualitasStar];
 }
 
-- (IBAction)tap:(id)sender {
-    if ([self totalUploadedAndUploadingImage] == 0) {
-        [self didTapImageButton:(UIButton*)sender];
-    } else {
-        for (UIImageView *imageView in attachedImages) {
-            if (imageView.image == nil) {
-                UIButton* button = [UIButton new];
-                button.tag = imageView.tag;
-                [self didTapImageButton:button];
-                break;
-            }
-        }
+//- (IBAction)tap:(id)sender {
+//    if ([self totalUploadedAndUploadingImage] == 0) {
+//        [self didTapImageButton:(UIButton*)sender];
+//    } else {
+//        for (UIImageView *imageView in attachedImages) {
+//            if (imageView.image == nil) {
+//                UIButton* button = [UIButton new];
+//                button.tag = imageView.tag;
+//                [self didTapImageButton:button];
+//                break;
+//            }
+//        }
+//    }
+//}
+
+- (IBAction)gesture:(UITapGestureRecognizer*)sender {
+    if ([self image:((UIImageView*)attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
+        [self didTapImage:((UIImageView*)attachedImages[sender.view.tag-20])];
     }
 }
 
-- (void)didTapImageButton:(UIButton*)sender {
+- (void)didTapImage:(UIImageView*)sender {
     CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
     albumVC.title = @"Album";
     albumVC.delegate = self;
@@ -606,8 +617,7 @@
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
     for (UIImageView *image in attachedImages) {
-        if (image.image == nil)
-        {
+        if (image.image == nil || [self image:image.image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [emptyImageIndex addObject:@(image.tag - 20)];
         }
     }
@@ -648,12 +658,20 @@
     UIImage* imagePhoto = [photo objectForKey:@"photo"];
     
     for (UIImageView *image in attachedImages) {
-        if (image.tag == tagView)
-        {
+        if (image.tag == tagView) {
             imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
-//            image.alpha = 0.5f;
+            //            image.alpha = 0.5f;
+            image.userInteractionEnabled = NO;
+        }
+        
+        if (image.tag == tagView + 1) {
+            if (image.image == nil) {
+                image.image = [UIImage imageNamed:@"icon_upload_image.png"];
+                image.userInteractionEnabled = YES;
+                image.hidden = NO;
+            }
         }
     }
     
@@ -664,23 +682,25 @@
     [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
     [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
     
-    for (UIButton *button in addPictureButtons) {
-        if (button.tag == tagView) {
-            button.hidden = YES;
-        }
-        if (button.tag == tagView+1)
-        {
-            for (UIImageView *image in attachedImages) {
-                if (image.tag == tagView+1)
-                {
-                    if (image.image == nil) {
-                        button.hidden = NO;
-                        button.enabled = YES;
-                    }
-                }
-            }
-        }
-    }
+//    for (UIButton *button in addPictureButtons) {
+//        if (button.tag == tagView) {
+//            button.hidden = YES;
+//        }
+//        if (button.tag == tagView+1)
+//        {
+//            for (UIImageView *image in attachedImages) {
+//                if (image.tag == tagView+1)
+//                {
+//                    if (image.image == nil) {
+//                        button.hidden = NO;
+//                        button.enabled = YES;
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+    
     
 //    [self actionUploadImage:object];
 }

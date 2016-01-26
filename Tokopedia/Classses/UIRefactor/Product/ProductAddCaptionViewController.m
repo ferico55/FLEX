@@ -224,7 +224,7 @@
     if (sender.view.tag == 0) {
         
     } else {
-        if (((UIImageView*)self.attachedImages[sender.view.tag-20]).image != [UIImage imageNamed:@"icon_upload_image.png"]) {
+        if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
         } else {
             return;
@@ -424,7 +424,6 @@
     }
     
     photoVC.selectedIndexPath = _selectedIndexPathCameraController;
-//    photoVC.isAddReviewImage = YES;
     photoVC.isAddMoreReviewImage = YES;
     
     UINavigationController *nav = [[UINavigationController alloc]init];
