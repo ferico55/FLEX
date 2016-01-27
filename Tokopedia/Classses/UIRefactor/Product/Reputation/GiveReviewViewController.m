@@ -392,7 +392,14 @@
         vc.delegate = self;
         vc.isFromGiveReview = YES;
         
-        [self.navigationController pushViewController:vc animated:YES];
+        UINavigationController *nav = [[UINavigationController alloc]init];
+        nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        nav.navigationBar.translucent = NO;
+        nav.navigationBar.tintColor = [UIColor whiteColor];
+        NSArray *controllers = @[vc];
+        [nav setViewControllers:controllers];
+        
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
 }
 
