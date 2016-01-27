@@ -17,6 +17,7 @@
 - (void)doRequestCC:(NSDictionary*)param;
 - (void)isSucessSprintAsia:(NSDictionary*)param;
 - (void)refreshCartAfterCancelPayment;
+- (void)shouldDoRequestBRIEPay:(NSDictionary*)param;
 
 @end
 
@@ -32,6 +33,7 @@
 @property NSString *token;
 @property NSString *URLString;
 @property NSString *emoney_code;
+@property NSString *transactionCode;
 @property TransactionSummaryDetail *cartDetail;
 
 @property NSString *paymentID;

@@ -19,11 +19,13 @@
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "ChangeCourierViewController.h"
 #import "NavigateViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "AlertInfoView.h"
 #import "OrderBookingData.h"
 #import "OrderBookingResponse.h"
+#import "AlertShipmentCodeView.h"
 
 #define CTagAddress 2
 #define CTagPhone 3
@@ -42,7 +44,8 @@ typedef enum TagRequest {
     RejectExplanationDelegate,
     SubmitShipmentConfirmationDelegate,
     CancelShipmentConfirmationDelegate,
-    TokopediaNetworkManagerDelegate
+    TokopediaNetworkManagerDelegate,
+    ChangeCourierDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIView *topButtonsView;
@@ -103,6 +106,7 @@ typedef enum TagRequest {
 
 @property (strong, nonatomic) RKObjectManager *objectManager;
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
+@property (strong, nonatomic) AlertShipmentCodeView *alert;
 
 @end
 
@@ -404,6 +408,10 @@ typedef enum TagRequest {
 
     if (_transaction.order_shipment.shipment_id == 10) {
         [_acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
+    } else if ([_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+        [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
+        [_acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
+        _acceptButton.tag = 3;
     } else {
         [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
     }
@@ -678,6 +686,16 @@ typedef enum TagRequest {
     } else if (button.tag == 2) {
         
         SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+        controller.delegate = self;
+        controller.shipmentCouriers = _shipmentCouriers;
+        controller.order = _transaction;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        
+    } else if (button.tag == 3) {
+        
+        ChangeCourierViewController *controller = [ChangeCourierViewController new];
         controller.delegate = self;
         controller.shipmentCouriers = _shipmentCouriers;
         controller.order = _transaction;
@@ -1086,10 +1104,14 @@ typedef enum TagRequest {
     _singleTapGestureRecognizer.numberOfTapsRequired = 1;
     
     if([code isEqualToString:@"try again"]) {
-        text = [[NSAttributedString alloc] initWithString:code attributes:@{
-                                                                            NSForegroundColorAttributeName:[UIColor colorWithRed:(62.0/255.0) green:(170.0/255.0) blue:(36.0/255.0) alpha:(255.0/255.0)],
-                                                                            NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0]
-                                                                            }];
+//        text = [[NSAttributedString alloc] initWithString:code attributes:@{
+//                                                                            NSForegroundColorAttributeName:[UIColor colorWithRed:(62.0/255.0) green:(170.0/255.0) blue:(36.0/255.0) alpha:(255.0/255.0)],
+//                                                                            NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0]
+//                                                                            }];
+        
+        text = [[NSAttributedString alloc] initWithString:@"Kode sedang diproses..." attributes:@{
+                                                                                                  NSForegroundColorAttributeName:[UIColor blackColor]}];
+        
         [_getCodeButton setImage:[UIImage imageNamed:@"icon_pesan_ulang.png"] forState:UIControlStateNormal];
         [_getCodeButton setHidden:NO];
         _getCodeButton.enabled = YES;
@@ -1107,6 +1129,12 @@ typedef enum TagRequest {
         [_courierAgentLabel setUserInteractionEnabled:NO];
         _singleTapGestureRecognizer.enabled = NO;
         [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
+        
+        [self.view layoutSubviews];
+        
+        _alert = [AlertShipmentCodeView newview];
+        [_alert setText:code];
+        [_alert show];
     }
     
     NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];

@@ -204,7 +204,9 @@
                                                         @"cashback_idr",
                                                         @"cashback",
                                                         @"lp_amount_idr",
-                                                        @"lp_amount"
+                                                        @"lp_amount",
+                                                        @"bri_website_link",
+                                                        @"transaction_code"
                                                         ]];
     return transactionMapping;
 }

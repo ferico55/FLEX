@@ -11,6 +11,7 @@ target "Tokopedia" do
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
+    pod 'Rollout.io', '~> 0.13.0'
 end
 
 target "TokopediaTests" do

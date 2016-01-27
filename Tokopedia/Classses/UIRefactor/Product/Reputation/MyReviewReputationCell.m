@@ -23,6 +23,9 @@
 #define CFormatUlasanDiKomentari @"%@ Ulasan produk telah dikomentari"
 
 @implementation MyReviewReputationCell
+{
+    IBOutlet UIView* _selectionMarker;
+}
 
 - (void)awakeFromNib {
     CGSize newSize = CGSizeMake(btnReview.bounds.size.height-5, btnReview.bounds.size.height-5);
@@ -41,7 +44,6 @@
     imageProfile.layer.masksToBounds = YES;
     imageProfile.contentMode = UIViewContentModeScaleAspectFit;
 
-    [labelUser setUserInteractionEnabled:YES];
     [imageFlagReview setUserInteractionEnabled:YES];
     [labelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionLabelUser:)]];
     [imageFlagReview addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionFlagReview:)]];
@@ -62,13 +64,17 @@
     
     imageFlagReview.layer.cornerRadius = imageFlagReview.bounds.size.width/2.0f;
     imageFlagReview.layer.masksToBounds = YES;
+    
+    btnFooter.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
 }
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    _selectionMarker.hidden = !selected;
+}
 
-    // Configure the view for the selected state
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    _selectionMarker.hidden = !highlighted;
 }
 
 
