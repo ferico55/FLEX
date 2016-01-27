@@ -136,6 +136,9 @@ NoResultDelegate
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addFavoriteShop:) name:@"addFavoriteShop" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeFavoriteShop:) name:@"removeFavoriteShop" object:nil];
+    //set change orientation
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     //todo with network
     _networkManager = [TokopediaNetworkManager new];
@@ -245,35 +248,26 @@ NoResultDelegate
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    CGSize cellSize = CGSizeMake(0, 0);
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    CGFloat screenWidth = screenRect.size.width;
-    
-    cellCount = 2;
-    heightRatio = 41;
-    widhtRatio = 29;
-    inset = 15;
-    
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger numberOfCell;
+    NSInteger cellHeight;
+    if(IS_IPAD) {
+        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+        if(UIInterfaceOrientationIsLandscape(orientation)) {
+            numberOfCell = 5;
+        } else {
+            numberOfCell = 4;
+        }
+        cellHeight = 250;
     } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
+        numberOfCell = 2;
+        cellHeight = 205;
     }
+
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellWidth = screenWidth/numberOfCell - 15;
     
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
+    return CGSizeMake(cellWidth, cellHeight);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
@@ -581,4 +575,7 @@ NoResultDelegate
     self.lastContentOffset = scrollView.contentOffset.y;
 }
 
+- (void)orientationChanged:(NSNotification *)note {
+    [_collectionView reloadData];
+}
 @end
