@@ -20,6 +20,7 @@
 #import "CameraController.h"
 #import "RequestGenerateHost.h"
 #import "ProductAddCaptionViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define CStringTidakAdaPerubahan @"Tidak ada perubahan ulasan"
 #define CStringAndaTidakDapatMenurunkanRate @"Anda tidak dapat memberi penurunan rating"
@@ -231,6 +232,11 @@
             image.hidden = NO;
             image.userInteractionEnabled = YES;
             image.contentMode = UIViewContentModeCenter;
+            [image.layer setBorderColor:[[UIColor blackColor] CGColor]];
+            [image.layer setBorderWidth:1.0];
+            image.layer.cornerRadius = 5.0;
+            image.layer.masksToBounds = YES;
+            
         } else {
             image.image = nil;
         }
@@ -395,6 +401,13 @@
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
     if ([self image:((UIImageView*)attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
         [self didTapImage:((UIImageView*)attachedImages[sender.view.tag-20])];
+    } else {
+        ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
+        vc.userInfo = _userInfo;
+        vc.delegate = self;
+        vc.isFromGiveReview = YES;
+        
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -616,6 +629,7 @@
 
 #pragma mark - Product Add Caption Delegate
 - (void)didDismissController:(ProductAddCaptionViewController*)controller withUserInfo:(NSDictionary *)userinfo {
+    _userInfo = userinfo;
     NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
     NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
     
@@ -667,7 +681,7 @@
             imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
-            image.userInteractionEnabled = NO;
+            image.userInteractionEnabled = YES;
             image.contentMode = UIViewContentModeScaleToFill;
         }
         
@@ -677,6 +691,11 @@
                 image.userInteractionEnabled = YES;
                 image.hidden = NO;
                 image.contentMode = UIViewContentModeCenter;
+                [image.layer setBorderColor:[[UIColor blackColor] CGColor]];
+                [image.layer setBorderWidth:1.0];
+                image.layer.cornerRadius = 5.0;
+                image.layer.masksToBounds = YES;
+
             }
         }
     }

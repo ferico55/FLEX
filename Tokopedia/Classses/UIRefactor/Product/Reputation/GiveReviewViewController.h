@@ -33,4 +33,6 @@
 
 @property (nonatomic, unsafe_unretained) DetailMyReviewReputationViewController *delegate;
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputationView;
+@property (nonatomic, strong) NSDictionary *userInfo;
+
 @end

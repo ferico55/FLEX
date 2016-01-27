@@ -12,6 +12,7 @@
 #import "CameraAlbumListViewController.h"
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate> {
     NavigateViewController *_navigate;
@@ -227,6 +228,7 @@
         if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
         } else {
+            [self highlightImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
             return;
         }
     }
@@ -300,7 +302,8 @@
             image.image = imagePhoto;
             image.hidden = NO;
             image.alpha = 0.5f;
-            image.userInteractionEnabled = NO;
+            image.userInteractionEnabled = YES;
+            _attachedImageView.image = imagePhoto;
         }
         
         if (image.tag == tagView + 1) {
@@ -318,6 +321,8 @@
     
     [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
     [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
+    
+    
     
     [self actionUploadImage:object];
 }
@@ -436,5 +441,19 @@
     
 }
 
+#pragma mark - Methods
+- (void)highlightImage:(UIImageView*)sender {
+    [sender.layer setBorderColor:[[UIColor blueColor] CGColor]];
+    [sender.layer setBorderWidth:2.0];
+    
+    for (UIImageView *image in _attachedImages) {
+        if (image != sender) {
+            [sender.layer setBorderColor:[[UIColor clearColor] CGColor]];
+            [sender.layer setBorderWidth:0];
+        }
+    }
+    
+    _attachedImageView.image = sender.image;
+}
 
 @end

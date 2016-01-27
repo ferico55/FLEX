@@ -20,5 +20,6 @@
 
 @property (weak, nonatomic) id<ProductAddCaptionDelegate> delegate;
 @property (nonatomic, strong) NSDictionary *userInfo;
+@property BOOL isFromGiveReview;
 
 @end
