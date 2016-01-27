@@ -144,10 +144,11 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    _marksOpenedTalksAsRead = NO;
+    
     
     if (self) {
         _isnodata = YES;
+        _marksOpenedTalksAsRead = NO;
         self.title = kTKPDTITLE_TALK;
     }
     

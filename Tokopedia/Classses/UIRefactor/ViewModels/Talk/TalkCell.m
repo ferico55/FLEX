@@ -193,7 +193,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         }
     }
     else {
-        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
+        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:_marksOpenedTalkAsRead];
         vc.data = data;
 
         UIViewController *controller = [_delegate getNavigationController:self];
