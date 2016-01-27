@@ -493,7 +493,11 @@
     } else {
         [_header setHidden:NO];
         if([_userManager isLogin]) {
-            [_talkInputView setHidden:NO];
+            if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+               ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+               ) {
+                [_talkInputView setHidden:NO];
+            }
             [_sendButton setEnabled:NO];
         } else {
             [_talkInputView setHidden:YES];
