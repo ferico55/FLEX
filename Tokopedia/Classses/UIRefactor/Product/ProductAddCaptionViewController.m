@@ -29,6 +29,8 @@
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     
+    UIImageView *_selectedImage;
+    
     BOOL _isFinishedUploadingImage;
 }
 
@@ -228,7 +230,19 @@
         if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
         } else {
-            [self highlightImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
+            _selectedImage = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
+            [_selectedImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
+            [_selectedImage.layer setBorderWidth:2.0];
+            
+            for (UIImageView *image in _attachedImages) {
+                if (image.tag != _selectedImage.tag) {
+                    [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
+                    [image.layer setBorderWidth:0];
+                }
+            }
+            
+            _attachedImageView.image = _selectedImage.image;
+
             return;
         }
     }
@@ -303,6 +317,10 @@
             image.hidden = NO;
             image.alpha = 0.5f;
             image.userInteractionEnabled = YES;
+            [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
+            [image.layer setBorderWidth:1.0];
+            image.layer.cornerRadius = 5.0;
+            image.layer.masksToBounds = YES;
             _attachedImageView.image = imagePhoto;
         }
         
@@ -311,8 +329,14 @@
                 image.image = [UIImage imageNamed:@"icon_upload_image.png"];
                 image.userInteractionEnabled = YES;
                 image.hidden = NO;
+                [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
+                [image.layer setBorderWidth:1.0];
+                image.layer.cornerRadius = 5.0;
+                image.layer.masksToBounds = YES;
             }
         }
+        
+        
     }
     
     if (imageView != nil) {
@@ -439,21 +463,6 @@
     [nav setViewControllers:controllers];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
     
-}
-
-#pragma mark - Methods
-- (void)highlightImage:(UIImageView*)sender {
-    [sender.layer setBorderColor:[[UIColor blueColor] CGColor]];
-    [sender.layer setBorderWidth:2.0];
-    
-    for (UIImageView *image in _attachedImages) {
-        if (image != sender) {
-            [sender.layer setBorderColor:[[UIColor clearColor] CGColor]];
-            [sender.layer setBorderWidth:0];
-        }
-    }
-    
-    _attachedImageView.image = sender.image;
 }
 
 @end

@@ -232,7 +232,7 @@
             image.hidden = NO;
             image.userInteractionEnabled = YES;
             image.contentMode = UIViewContentModeCenter;
-            [image.layer setBorderColor:[[UIColor blackColor] CGColor]];
+            [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
             [image.layer setBorderWidth:1.0];
             image.layer.cornerRadius = 5.0;
             image.layer.masksToBounds = YES;
@@ -382,21 +382,6 @@
     nRateKualitas = (int)sender.view.tag;
     [self setKualitasStar];
 }
-
-//- (IBAction)tap:(id)sender {
-//    if ([self totalUploadedAndUploadingImage] == 0) {
-//        [self didTapImageButton:(UIButton*)sender];
-//    } else {
-//        for (UIImageView *imageView in attachedImages) {
-//            if (imageView.image == nil) {
-//                UIButton* button = [UIButton new];
-//                button.tag = imageView.tag;
-//                [self didTapImageButton:button];
-//                break;
-//            }
-//        }
-//    }
-//}
 
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
     if ([self image:((UIImageView*)attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
@@ -691,7 +676,7 @@
                 image.userInteractionEnabled = YES;
                 image.hidden = NO;
                 image.contentMode = UIViewContentModeCenter;
-                [image.layer setBorderColor:[[UIColor blackColor] CGColor]];
+                [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
                 [image.layer setBorderWidth:1.0];
                 image.layer.cornerRadius = 5.0;
                 image.layer.masksToBounds = YES;
