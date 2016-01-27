@@ -391,6 +391,7 @@
         vc.userInfo = _userInfo;
         vc.delegate = self;
         vc.isFromGiveReview = YES;
+        vc.selectedImageTag = (int)sender.view.tag;
         
         UINavigationController *nav = [[UINavigationController alloc]init];
         nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];

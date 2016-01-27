@@ -29,7 +29,8 @@
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     
-    UIImageView *_selectedImage;
+    UIImageView *_selectedImageIcon;
+    UIImageView *_selectedImageView;
     
     BOOL _isFinishedUploadingImage;
 }
@@ -230,18 +231,18 @@
         if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
         } else {
-            _selectedImage = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
-            [_selectedImage.layer setBorderColor:[[UIColor blueColor] CGColor]];
-            [_selectedImage.layer setBorderWidth:2.0];
+            _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
+            [_selectedImageIcon.layer setBorderColor:[[UIColor blueColor] CGColor]];
+            [_selectedImageIcon.layer setBorderWidth:2.0];
             
             for (UIImageView *image in _attachedImages) {
-                if (image.tag != _selectedImage.tag) {
+                if (image.tag != _selectedImageIcon.tag) {
                     [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
                     [image.layer setBorderWidth:0];
                 }
             }
             
-            _attachedImageView.image = _selectedImage.image;
+            _attachedImageView.image = _selectedImageIcon.image;
 
             return;
         }
@@ -294,6 +295,11 @@
             }
         }
     }
+    
+    if (_selectedImageView) {
+        _attachedImageView.image = _selectedImageView.image;
+    }
+    
 }
 
 -(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
@@ -317,11 +323,13 @@
             image.hidden = NO;
             image.alpha = _isFromGiveReview?1.0f:0.5f;
             image.userInteractionEnabled = YES;
-            [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
-            [image.layer setBorderWidth:1.0];
+            [image.layer setBorderColor:(_selectedImageTag == tagView)?[[UIColor blueColor] CGColor]:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
+            [image.layer setBorderWidth:(_selectedImageTag == tagView)?2.0:1.0];
             image.layer.cornerRadius = 5.0;
             image.layer.masksToBounds = YES;
-            _attachedImageView.image = imagePhoto;
+            if (_selectedImageTag == tagView) {
+                _selectedImageView = image;
+            }
         }
         
         if (image.tag == tagView + 1) {
@@ -329,15 +337,11 @@
                 image.image = [UIImage imageNamed:@"icon_upload_image.png"];
                 image.userInteractionEnabled = YES;
                 image.hidden = NO;
-                [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
-                [image.layer setBorderWidth:1.0];
-                image.layer.cornerRadius = 5.0;
-                image.layer.masksToBounds = YES;
             }
         }
-        
-        
     }
+    
+    _attachedImageView.image = imagePhoto;    
     
     if (imageView != nil) {
         [object setObject:imageView forKey:@"data_selected_image_view"];
