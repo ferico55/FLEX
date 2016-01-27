@@ -33,7 +33,7 @@
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *footer;
+@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -116,7 +116,6 @@
     
     _table.delegate = self;
     _table.dataSource = self;
-    _table.tableFooterView = _footer;
     
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
@@ -415,21 +414,17 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [indicator startAnimating];
-    
-    CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 60);
-    UIView *loadingView = [[UIView alloc] initWithFrame:frame];
-    [loadingView addSubview:indicator];
-    
-    indicator.center = loadingView.center;
-    
-    self.table.tableFooterView = loadingView;
+    if (_page != 1) {
+        self.table.tableFooterView = _footer;
+    } else {
+        [_refreshControl beginRefreshing];
+    }
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    [_refreshControl endRefreshing];
+    
     InboxTalk *inboxTalk = [mappingResult.dictionary objectForKey:@""];
-    [_refreshControl setHidden:YES];
     
     if (_page == 1) {
         [_talkList removeAllObjects];
@@ -447,7 +442,6 @@
     } else {
         NSString *text;
         NSString *desc;
-        [_refreshControl setHidden:YES];
         
         if([_readStatus isEqualToString:@"all"]){
             if (self.inboxTalkType == InboxTalkTypeAll) {
@@ -486,11 +480,6 @@
     }
     
     [self.table reloadData];
-    
-    [_refreshControl endRefreshing];
-    [_refreshControl setHidden:YES];
-    [_refreshControl setEnabled:NO];
-    [_refreshControl layoutIfNeeded];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
