@@ -262,7 +262,7 @@
 
 
 #pragma mark - Camera Collection Delegate
-- (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo{
+- (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo {
     _userInfo = userInfo;
     NSArray *selectedImages = [userInfo objectForKey:@"selected_images"];
     NSArray *selectedIndexpaths = [userInfo objectForKey:@"selected_indexpath"];
@@ -315,7 +315,7 @@
             imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
-            image.alpha = 0.5f;
+            image.alpha = _isFromGiveReview?1.0f:0.5f;
             image.userInteractionEnabled = YES;
             [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
             [image.layer setBorderWidth:1.0];
@@ -346,9 +346,9 @@
     [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
     [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
     
-    
-    
-    [self actionUploadImage:object];
+    if (!_isFromGiveReview) {
+        [self actionUploadImage:object];
+    }
 }
 
 #pragma mark - Request Action Upload Image
