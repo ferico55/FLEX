@@ -15,11 +15,11 @@
 #import "InboxReviewViewController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
 #import "SalesNewOrderViewController.h"
+#import "TxOrderStatusViewController.h"
 
 #import "NotificationState.h"
 
 #import "NavigateViewController.h"
-
 
 @implementation RedirectHandler
 {
@@ -54,6 +54,10 @@
         [self redirectToReview];
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
+    } else if (state == STATE_PURCHASE_REJECTED) {
+        [self redirectToOrderStatus];
+    } else if (STATE_PURCHASE_PROCESS_PARTIAL) {
+        [self redirectToOrderStatus];
     }
 }
 
@@ -83,7 +87,14 @@
     controller.hidesBottomBarWhenPushed = YES;
     
     [nav.navigationController pushViewController:controller animated:YES];
-    
+}
+
+- (void)redirectToOrderStatus {
+    _navigationController = (UINavigationController*)_delegate;
+    TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+    vc.action = @"get_tx_order_status";
+    vc.viewControllerTitle = @"Status Pemesanan";
+    [_navigationController.navigationController pushViewController:vc animated:YES];
 }
 
 @end
