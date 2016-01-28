@@ -198,7 +198,8 @@
         height += CPaddingTopBottom + CPaddingTopBottom;
     }
     
-    return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
+    // Later delete the 60
+    return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height + 60;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -868,6 +869,10 @@
         return;
     DetailReputationReview *detailReputationReview = arrList[label.tag];
     [self redirectToProductDetailReputationReview:detailReputationReview];
+}
+
+- (void)goToImageViewerImages:(NSArray *)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath {
+    [_TKPDNavigator navigateToShowImageFromViewController:self withImageDictionaries:images imageDescriptions:@[] indexImage:index];
 }
 
 

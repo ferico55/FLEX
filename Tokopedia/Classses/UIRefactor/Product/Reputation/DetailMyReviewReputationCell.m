@@ -40,9 +40,11 @@
     imgProduct.frame = CGRectMake(imgProduct.frame.origin.x, imgProduct.frame.origin.y, CDiameterImage, CDiameterImage);
     btnProduct.frame = CGRectMake(imgProduct.frame.origin.x+imgProduct.bounds.size.width+CPaddingTopBottom, ((labelInfoSkip.isHidden && lblDate.text.length>0)? imgProduct.frame.origin.y:(imgProduct.frame.origin.y+((imgProduct.bounds.size.height-lblDate.bounds.size.height)/2.0f))), self.bounds.size.width-(CPaddingTopBottom*5)-CDiameterImage, (lblDate.isHidden? CDiameterImage:CDiameterImage/2.0f));
     
+    //Set Attached Images
+    viewAttachedImages.frame = CGRectMake(imgProduct.frame.origin.x,lblDesc.frame.origin.y+lblDesc.bounds.size.height+8,(self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), (viewAttachedImages.isHidden)?0:60);
     
     //Set content star
-    viewContentStar.frame = CGRectMake(imgProduct.frame.origin.x, lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), (viewContentStar.isHidden)?0:CHeightContentStar);
+    viewContentStar.frame = CGRectMake(imgProduct.frame.origin.x, viewAttachedImages.frame.origin.y+viewAttachedImages.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(CPaddingTopBottom*2))-(imgProduct.frame.origin.x*2), (viewContentStar.isHidden)?0:CHeightContentStar);
     lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, 0, lblKualitas.bounds.size.width, viewContentStar.bounds.size.height);
     viewKualitas.frame = CGRectMake(lblKualitas.frame.origin.x+lblKualitas.bounds.size.width, (viewContentStar.bounds.size.height-viewKualitas.bounds.size.height)/2.0f, viewKualitas.bounds.size.width, viewKualitas.bounds.size.height);
     
@@ -212,9 +214,6 @@
         [btnKomentar setTitleColor:[UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f] forState:UIControlStateNormal];
     }
     
-    
-    
-    
     //Set date
     labelInfoSkip.hidden = YES;
     if([viewModel.review_is_skipped isEqualToString:@"1"]) {
@@ -248,4 +247,21 @@
 {
     [_delegate attributedLabel:label didSelectLinkWithURL:url];
 }
+
+#pragma mark - Gesture
+- (IBAction)gesture:(UITapGestureRecognizer*)sender {
+    if (((UIImageView*)attachedImages[sender.view.tag-10]).image == nil) {
+        return;
+    }
+    
+    NSMutableArray *images = [NSMutableArray new];
+    for (UIImageView *imageView in attachedImages) {
+        if (imageView.image != nil) {
+            [images addObject:imageView];
+        }
+    }
+    
+    [_delegate goToImageViewerImages:[images copy] atIndexImage:sender.view.tag-10 atIndexPath:indexPath];
+}
+
 @end
