@@ -48,17 +48,17 @@
 
 @interface ProductTalkDetailViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
-UIScrollViewDelegate,
-UISplitViewControllerDelegate,
-MGSwipeTableCellDelegate,
-HPGrowingTextViewDelegate,
-ReportViewControllerDelegate,
-LoginViewDelegate,
-GeneralTalkCommentCellDelegate,
-SmileyDelegate,
-CMPopTipViewDelegate
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UIScrollViewDelegate,
+    UISplitViewControllerDelegate,
+    MGSwipeTableCellDelegate,
+    HPGrowingTextViewDelegate,
+    ReportViewControllerDelegate,
+    LoginViewDelegate,
+    GeneralTalkCommentCellDelegate,
+    SmileyDelegate,
+    CMPopTipViewDelegate
 >
 {
     BOOL _isnodata;
@@ -76,7 +76,7 @@ CMPopTipViewDelegate
     NSString *_savedComment;
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *dictCell;
-    
+
     NSInteger _requestcount;
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -93,7 +93,7 @@ CMPopTipViewDelegate
     NSOperationQueue *_operationSendCommentQueue;
     NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
-    
+
     HPGrowingTextView *_growingtextview;
     
     NSTimeInterval _timeinterval;
@@ -163,11 +163,11 @@ CMPopTipViewDelegate
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
-        
+
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
     }
-    
+
     return self;
 }
 
@@ -200,7 +200,7 @@ CMPopTipViewDelegate
     _datainput = [NSMutableDictionary new];
     _userManager = [UserAuthentificationManager new];
     _navigateController = [NavigateViewController new];
-    
+
     _page = 1;
     
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -222,13 +222,13 @@ CMPopTipViewDelegate
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
-    // add gesture to product image
+
+        // add gesture to product image
     UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_talkProductImage addGestureRecognizer:productGesture];
     [_talkProductImage setUserInteractionEnabled: [NavigationHelper shouldDoDeepNavigation]];
-    
-    
+
+
     _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
     _talkuserimage.layer.masksToBounds = YES;
     
@@ -248,7 +248,7 @@ CMPopTipViewDelegate
     
     [self configureRestKit];
     [self loadData];
-    
+
     [self setHeaderData:_data];
 }
 
@@ -282,7 +282,7 @@ CMPopTipViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TalkCommentList *list = _list[indexPath.row];
-    
+
     GeneralTalkCommentCell *cell = [dictCell objectForKey:list.comment_id==nil? @"-1":list.comment_id];
     if (cell == nil) {
         NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"GeneralTalkCommentCell" owner:nil options:0];
@@ -294,7 +294,7 @@ CMPopTipViewDelegate
         
         [dictCell setObject:cell forKey:list.comment_id==nil? @"-1":list.comment_id];
     }
-    
+
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
     NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
@@ -387,7 +387,7 @@ CMPopTipViewDelegate
             } else {
                 ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             }
-            
+        
             NSURL *url;
             if ([list.comment_user_label isEqualToString:@"Penjual"]) {
                 url = [NSURL URLWithString:list.comment_shop_image];
@@ -401,18 +401,18 @@ CMPopTipViewDelegate
             
             UIImageView *user_image = ((GeneralTalkCommentCell*)cell).user_image;
             user_image.image = nil;
-            
+
             [user_image setImageWithURLRequest:request
                               placeholderImage:[UIImage imageNamed:@"default-boy.png"]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                           //NSLOG(@"thumb: %@", thumb);
-                                           [user_image setImage:image];
-                                           
+                //NSLOG(@"thumb: %@", thumb);
+                [user_image setImage:image];
+            
 #pragma clang diagnostic pop
-                                           
-                                       } failure:nil];
+                
+            } failure:nil];
             
             [cell setNeedsUpdateConstraints];
             [cell updateConstraintsIfNeeded];
@@ -499,14 +499,14 @@ CMPopTipViewDelegate
             [_talkInputView setHidden:YES];
         }
     }
-    
+
     CGFloat previouseLabelHeight = _talkmessagelabel.frame.size.height;
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 3.0;
-    
+
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
                                  NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: style
@@ -518,7 +518,7 @@ CMPopTipViewDelegate
     _talkmessagelabel.textAlignment = NSTextAlignmentLeft;
     _talkmessagelabel.numberOfLines = 0;
     [_talkmessagelabel sizeToFit];
-    
+
     CGFloat currentLabelHeight = _talkmessagelabel.frame.size.height;
     CGFloat paddingBottom = -20;
     // add 10 for padding bottom
@@ -528,17 +528,17 @@ CMPopTipViewDelegate
     headerFrame.size.height += differenceLabelHeight;
     self.header.frame = headerFrame;
     self.table.tableHeaderView = self.header;
-    
+
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
     
     [_userButton setLabelBackground:[data objectForKey:TKPD_TALK_USER_LABEL]];
     [_userButton setText:[data objectForKey:TKPD_TALK_USER_NAME]];
     [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
-    
+
     UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userButton addGestureRecognizer:tapUser];
     [_userButton setUserInteractionEnabled:YES];
-    
+
     [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]] forState:UIControlStateNormal];
     
     if([data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]) {
@@ -597,7 +597,7 @@ CMPopTipViewDelegate
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     _growingtextview.maxHeight = 150.f;
-    
+
     //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
@@ -638,7 +638,7 @@ CMPopTipViewDelegate
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkCommentResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkCommentList class]];
-    
+
     [listMapping addAttributeMappingsFromArray:@[
                                                  TKPD_TALK_COMMENT_ID,
                                                  TKPD_TALK_COMMENT_MESSAGE,
@@ -871,10 +871,10 @@ CMPopTipViewDelegate
             }
                 
                 
-                
+            
                 
             default:
-                break;
+            break;
         }
     }
     
@@ -889,7 +889,7 @@ CMPopTipViewDelegate
                 TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 NSDictionary* auth = [secureStorage keychainDictionary];
                 _auth = [auth mutableCopy];
-                
+
                 if(_auth) {
                     
                     TalkCommentList *comment = [TalkCommentList new];
@@ -897,7 +897,7 @@ CMPopTipViewDelegate
                     comment.comment_user_name = [_auth objectForKey:@"full_name"];
                     comment.comment_user_image = [_auth objectForKey:@"user_image"];
                     comment.comment_message =_growingtextview.text;
-                    
+
                     if ([_auth objectForKey:@"shop_id"]) {
                         if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:[_userManager getShopId]]) {
                             comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
@@ -907,7 +907,7 @@ CMPopTipViewDelegate
                         comment.comment_is_seller = @"1";
                         comment.comment_user_label = @"Penjual";
                     }
-                    
+
                     NSDate *today = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                     [dateFormat setDateFormat:@"dd MMMM yyyy, HH:mm"];
@@ -977,7 +977,7 @@ CMPopTipViewDelegate
                 [self.navigationController pushViewController:reportController animated:YES];
                 break;
             }
-                
+
             default:
                 break;
         }
@@ -1044,7 +1044,7 @@ CMPopTipViewDelegate
     
     _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    
+
 }
 
 - (void)requestactionsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
@@ -1081,10 +1081,10 @@ CMPopTipViewDelegate
             }
             
             NSDictionary *userInfo = @{
-                                       TKPD_TALK_TOTAL_COMMENT  : @(_list.count)?:0,
-                                       kTKPDDETAIL_DATAINDEXKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
-                                       TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
-                                       };
+                TKPD_TALK_TOTAL_COMMENT  : @(_list.count)?:0,
+                kTKPDDETAIL_DATAINDEXKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
+                TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
+            };
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
                                                                 object:nil
@@ -1172,13 +1172,13 @@ CMPopTipViewDelegate
 #pragma mark - Swipe Delegate
 -(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
 {
-    
+
     if([_userManager isLogin]) {
         return YES;
     }
     
     return NO;
-    
+
 }
 
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
@@ -1249,7 +1249,7 @@ CMPopTipViewDelegate
             
             UIButton *button = (UIButton *)sender;
             [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
-            
+
         }
     }
 }
@@ -1307,7 +1307,7 @@ CMPopTipViewDelegate
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
-    
+
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
     [statusMapping addPropertyMapping:resulRel];
     
@@ -1320,7 +1320,7 @@ CMPopTipViewDelegate
     if(_requestDeleteComment.isExecuting) return;
     
     _requestDeleteCommentCount++;
-    
+
     NSDictionary *param = @{
                             @"action" : @"delete_comment_talk",
                             @"product_id" : [_datainput objectForKey:@"product_id"],
@@ -1340,7 +1340,7 @@ CMPopTipViewDelegate
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        
+ 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [_timer invalidate];
         _timer = nil;
@@ -1395,10 +1395,10 @@ CMPopTipViewDelegate
                                              forState:UIControlStateNormal];
                     
                     NSDictionary *userinfo = @{
-                                               TKPD_TALK_TOTAL_COMMENT : @(_list.count)?:0,
-                                               kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
-                                               TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
-                                               };
+                        TKPD_TALK_TOTAL_COMMENT : @(_list.count)?:0,
+                        kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
+                        TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
+                    };
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
                                                                         object:nil
@@ -1464,7 +1464,7 @@ CMPopTipViewDelegate
 
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController {
-    
+
 }
 
 #pragma mark - GrowingTextView Delegate
@@ -1482,7 +1482,7 @@ CMPopTipViewDelegate
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
-    _userManager = [UserAuthentificationManager new];
+    _userManager = [UserAuthentificationManager new];    
 }
 
 #pragma mark - CMPopTipView Delegate
