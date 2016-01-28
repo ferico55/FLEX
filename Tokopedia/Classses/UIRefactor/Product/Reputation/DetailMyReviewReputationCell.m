@@ -199,6 +199,10 @@
     
     lblDesc.frame = tempLblRect;
     
+    if ((viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) && [_strRole isEqualToString:@"1"]) {
+        viewAttachedImages.hidden = YES;
+    }
+    
     if((viewModel.review_message==nil || [viewModel.review_message isEqualToString:@"0"]) && [_strRole isEqualToString:@"1"]) {
         btnKomentar.hidden = NO;
         [self setHiddenRating:YES];
