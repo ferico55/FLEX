@@ -114,6 +114,9 @@
 
 - (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
 {
+    if ([strTitle isKindOfClass:[NSNumber class]]) {
+        strTitle = [NSString stringWithFormat:@"%zd", [strTitle integerValue]];
+    }
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.frame = rectFrame;
     [tempBtn setImage:image forState:UIControlStateNormal];
