@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TKPDTextView, DetailReputationReview, DetailMyReviewReputationViewController;
+@class TKPDTextView, DetailReputationReview, DetailMyReviewReputationViewController, GeneratedHost;
+
+@protocol GiveReviewDelegate <NSObject>
+@optional
+- (void)setGenerateHost:(GeneratedHost*)generateHost;
+@end
 
 @interface GiveReviewViewController : UIViewController
 {
@@ -18,8 +23,16 @@
     IBOutlet UIScrollView *scrollView;
     IBOutlet UIView *viewContent, *viewContentRating;
     IBOutlet NSLayoutConstraint *constraintHeightScrollView, *constHeightContentView;
+    IBOutlet UIView *pictureView;
+    IBOutletCollection(UIButton) NSArray *addPictureButtons;
+    IBOutletCollection(UIImageView) NSArray *attachedImages;
+    
 }
+
+@property (nonatomic, weak) IBOutlet id<GiveReviewDelegate> del;
 
 @property (nonatomic, unsafe_unretained) DetailMyReviewReputationViewController *delegate;
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputationView;
+@property (nonatomic, strong) NSDictionary *userInfo;
+
 @end
