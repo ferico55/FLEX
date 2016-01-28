@@ -90,13 +90,15 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _hotlist = [NSMutableArray new];
     
 
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    [searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
-    [searchBar setOpaque:YES];
-    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
-    [searchBar setTintColor:[UIColor whiteColor]];
-    [[UITextField appearance] setTintColor:[UIColor blueColor]];
-    _searchBar = searchBar;
+//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
+    
+//    [searchBar setOpaque:YES];
+//    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
+//    [searchBar setTintColor:[UIColor whiteColor]];
+//    [[UITextField appearance] setTintColor:[UIColor blueColor]];
+//    _searchBar = searchBar;
+    [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
+    [_searchBar setTintColor:[UIColor whiteColor]];
     [self.view addSubview:_searchBar];
 
     _searchBar.delegate = self;
