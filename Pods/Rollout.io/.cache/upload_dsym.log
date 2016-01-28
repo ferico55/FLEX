@@ -1,22 +1,6 @@
-2016-01-26_14:05:42: session 30422 started (-k 56a717aed7bed00574f5169c -m 76d53b2fe22805ab487d9f4839135f2d -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-26_14:05:42.dsym")
-2016-01-26_14:06:26: session 30422 finished
-2016-01-26_14:16:16: session 20802 started (-k 56a717aed7bed00574f5169c -m 76d53b2fe22805ab487d9f4839135f2d -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-26_14:16:15.dsym")
-2016-01-26_14:16:41: session 20802 finished
-2016-01-26_14:28:48: session 10363 started (-k 56a717aed7bed00574f5169c -m 76d53b2fe22805ab487d9f4839135f2d -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-26_14:28:48.dsym")
-2016-01-26_14:29:32: session 10363 finished
-2016-01-26_15:50:54: session 29398 started (-k 56a717aed7bed00574f5169c -m 87e9efa6ad13c0c5c7dfb9718bd5fd82 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-26_15:50:53.dsym")
-2016-01-26_15:51:48: session 29398 finished
-2016-01-26_16:05:46: session 5690 started (-k 56a717aed7bed00574f5169c -m 943f96bb44c305a7676870359b1a1545 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-26_16:05:43.dsym")
-2016-01-26_16:06:39: session 5690 finished
-2016-01-26_16:18:00: session 1140 started (-k 56a717aed7bed00574f5169c -m 943f96bb44c305a7676870359b1a1545 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-26_16:17:59.dsym")
-2016-01-26_16:18:47: session 1140 finished
-2016-01-27_10:36:44: session 409 started (-k 56a717aed7bed00574f5169c -m 0ba2e3194a985b3b996a802fc7e13d58 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-27_10:36:43.dsym")
-2016-01-27_10:37:28: session 409 finished
-2016-01-27_10:41:18: session 758 started (-k 56a717aed7bed00574f5169c -m 8da1b73d5909619cd7cc3483ad9155c0 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-27_10:41:17.dsym")
-2016-01-27_10:42:19: session 758 finished
-2016-01-27_10:57:37: session 20439 started (-k 56a717aed7bed00574f5169c -m ce8ec132e728beb41cc0f20c0fdb82fb -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-27_10:57:36.dsym")
-2016-01-27_10:58:06: session 20439 finished
-2016-01-27_11:16:26: session 16071 started (-k 56a717aed7bed00574f5169c -m ce8ec132e728beb41cc0f20c0fdb82fb -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-27_11:16:25.dsym")
-2016-01-27_11:17:57: session 14448 started (-k 56a717aed7bed00574f5169c -m ce8ec132e728beb41cc0f20c0fdb82fb -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-27_11:17:56.dsym")
-2016-01-27_11:18:00: session 16071 finished
-2016-01-27_11:18:58: session 14448 finished
+2016-01-28_18:00:02: session 14040 started (-k 56a717aed7bed00574f5169c -m 753c2eab834170fbdd19a1d3b5562512 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-28_18:00:02.dsym")
+2016-01-28_18:01:05: session 14040 finished
+2016-01-28_18:04:04: session 30516 started (-k 56a717aed7bed00574f5169c -m 9e4aa482d5eefed31c3d3f585a2b2398 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-28_18:04:04.dsym")
+2016-01-28_18:04:47: session 17022 started (-k 56a717aed7bed00574f5169c -m 753c2eab834170fbdd19a1d3b5562512 -d "/Users/tonitoacen/Documents/Project iOS/Tokopedia/tokopedia-ios/Pods/Rollout.io/.cache/pending_upload/dsym__56a717aed7bed00574f5169c__1.0__2016-01-28_18:04:47.dsym")
+2016-01-28_18:04:50: session 30516 finished
+2016-01-28_18:05:28: session 17022 finished
