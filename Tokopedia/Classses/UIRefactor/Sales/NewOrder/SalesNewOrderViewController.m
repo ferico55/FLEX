@@ -961,6 +961,7 @@
         
         if (_page == 0) {
             [_activityIndicator stopAnimating];
+            _activityIndicator.hidden = YES;
             _tableView.tableFooterView = nil;
         }
         
