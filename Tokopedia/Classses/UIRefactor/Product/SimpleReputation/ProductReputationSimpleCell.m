@@ -80,7 +80,7 @@ TTTAttributedLabelDelegate
     //count label height dynamically
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 5.0;
+    style.lineSpacing = 4.0;
     
     NSString *strLihatSelengkapnya = @"Lihat Selengkapnya";
     NSString *strDescription = [NSString convertHTML:message];
@@ -110,7 +110,7 @@ TTTAttributedLabelDelegate
         [_reputationMessageLabel addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
     }
     
-    CGFloat heightOfMessage = 40;
+    CGFloat heightOfMessage = 45;
     /*
     CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
                                                            options:NSStringDrawingUsesLineFragmentOrigin
