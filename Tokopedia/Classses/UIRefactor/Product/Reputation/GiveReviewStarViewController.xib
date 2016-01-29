@@ -38,6 +38,7 @@
                             <rect key="frame" x="16" y="8" width="44" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="44" id="9oG-ob-rXU"/>
+                                <constraint firstAttribute="height" constant="44" id="aud-Qb-M7R"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kwa-AB-Xby">
@@ -193,38 +194,38 @@
                             <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YFQ-Di-VJz" userLabel="Quality Star View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YFQ-Di-VJz" userLabel="Accuracy Star View">
                             <rect key="frame" x="16" y="69" width="382" height="30"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="aPp-B0-DEQ" userLabel="Quality Star 1">
+                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="aPp-B0-DEQ" userLabel="Accuracy Star 1">
                                     <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="30" id="9fV-5R-Mo2"/>
                                         <constraint firstAttribute="height" constant="30" id="NKm-Uc-zVk"/>
                                     </constraints>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="PSm-Cg-FZb" userLabel="Quality Star 2">
+                                <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="PSm-Cg-FZb" userLabel="Accuracy Star 2">
                                     <rect key="frame" x="33" y="0.0" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="DYg-90-iKa"/>
                                         <constraint firstAttribute="width" constant="30" id="MHY-1v-smp"/>
                                     </constraints>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="m5W-qt-C74" userLabel="Quality Star 3">
+                                <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="m5W-qt-C74" userLabel="Accuracy Star 3">
                                     <rect key="frame" x="66" y="0.0" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="30" id="oin-gL-JCs"/>
                                         <constraint firstAttribute="height" constant="30" id="tf1-VQ-wWD"/>
                                     </constraints>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="6fD-dJ-hd8" userLabel="Quality Star 4">
+                                <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="6fD-dJ-hd8" userLabel="Accuracy Star 4">
                                     <rect key="frame" x="99" y="0.0" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="DiM-di-M03"/>
                                         <constraint firstAttribute="width" constant="30" id="sRj-Mq-csk"/>
                                     </constraints>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="DkK-hR-gMP" userLabel="Quality Star 5">
+                                <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="DkK-hR-gMP" userLabel="Accuracy Star 5">
                                     <rect key="frame" x="132" y="0.0" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="Eo3-h3-Yj0"/>
