@@ -21,7 +21,6 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *qualityStarsArray;
 @property (weak, nonatomic) IBOutlet UILabel *accuracyLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *accuracyStarsArray;
-@property (weak, nonatomic) IBOutlet UIButton *continueButton;
 
 @end
 
@@ -36,10 +35,15 @@
     
     _navigate = [NavigateViewController new];
     
+    _qualityStarsArray = [NSArray sortViewsWithTagInArray:_qualityStarsArray];
+    _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut"
                                                                               style:UIBarButtonItemStyleDone
                                                                              target:self
                                                                              action:@selector(tapToContinue:)];
+    
+    [self initData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,54 +95,102 @@
 }
 
 #pragma mark - Methods
-- (void)setQualityLabel {
-    switch (_qualityRate) {
-        case 0:
-            _qualityLabel.text = @"";
-            break;
-        case 1:
-            _qualityLabel.text = @"Sangat Buruk";
-            break;
-        case 2:
-            _qualityLabel.text = @"Buruk";
-            break;
-        case 3:
-            _qualityLabel.text = @"Netral";
-            break;
-        case 4:
-            _qualityLabel.text = @"Bagus";
-            break;
-        case 5:
-            _qualityLabel.text = @"Sangat Bagus";
-            break;
-        default:
-            break;
+- (void)initData {
+    _productName.text = [NSString convertHTML:_detailReputationReview.product_name];
+    
+    // Set Product Image
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_productImageView setImageWithURLRequest:request
+                             placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]
+                                      success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                          [_productImageView setImage:image];
+#pragma clang diagnostic pop
+                                      }
+                                      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                          NSLog(@"Failure get image in giveReviewViewController");
+                                      }];
+    
+    if (!_isEdit) {
+        _qualityLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Kualitas:"
+                                                                       attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+        _accuracyLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Akurasi:"
+                                                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
     }
 }
 
-- (void)setAccuracyLabel {
-    switch (_accuracyRate) {
+- (void)setQualityLabel {
+    NSString *quality = @"";
+    NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] initWithString:@"Kualitas:"
+                                                                               attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+    
+    switch (_qualityRate) {
         case 0:
-            _accuracyLabel.text = @"";
+            quality = @"";
             break;
         case 1:
-            _accuracyLabel.text = @"Sangat Buruk";
+            quality = @"Sangat Buruk";
             break;
         case 2:
-            _accuracyLabel.text = @"Buruk";
+            quality = @"Buruk";
             break;
         case 3:
-            _accuracyLabel.text = @"Netral";
+            quality = @"Netral";
             break;
         case 4:
-            _accuracyLabel.text = @"Bagus";
+            quality = @"Bagus";
             break;
         case 5:
-            _accuracyLabel.text = @"Sangat Bagus";
+            quality = @"Sangat Bagus";
             break;
         default:
             break;
     }
+    
+    [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+    [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:quality
+                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:17.0]}]];
+    
+    _qualityLabel.attributedText = mutableString;
+}
+
+- (void)setAccuracyLabel {
+    NSString *accuracy = @"";
+    NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] initWithString:@"Akurasi:"
+                                                                                      attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+    
+    switch (_accuracyRate) {
+        case 0:
+            accuracy = @"";
+            break;
+        case 1:
+            accuracy = @"Sangat Buruk";
+            break;
+        case 2:
+            accuracy = @"Buruk";
+            break;
+        case 3:
+            accuracy = @"Netral";
+            break;
+        case 4:
+            accuracy = @"Bagus";
+            break;
+        case 5:
+            accuracy = @"Sangat Bagus";
+            break;
+        default:
+            break;
+    }
+    
+    [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+    [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:accuracy
+                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:17.0]}]];
+    
+    _accuracyLabel.attributedText = mutableString;
 }
 
 @end

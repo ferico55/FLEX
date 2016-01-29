@@ -35,6 +35,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
+#import "GiveReviewRatingViewController.h"
 
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
@@ -423,12 +424,18 @@
 }
 
 - (void)redirectToGiveReviewViewController:(int)tag {
-    GiveReviewViewController *giveReviewViewController = [GiveReviewViewController new];
+//    GiveReviewViewController *giveReviewViewController = [GiveReviewViewController new];
+//    DetailReputationReview *detailReputationReview = arrList[tag];
+//    
+//    giveReviewViewController.delegate = self;
+//    giveReviewViewController.detailReputationView = detailReputationReview;
+//    [self.navigationController pushViewController:giveReviewViewController animated:YES];
+    
+    GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
     DetailReputationReview *detailReputationReview = arrList[tag];
     
-    giveReviewViewController.delegate = self;
-    giveReviewViewController.detailReputationView = detailReputationReview;
-    [self.navigationController pushViewController:giveReviewViewController animated:YES];
+    vc.detailReputationReview = detailReputationReview;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)reloadTable {
