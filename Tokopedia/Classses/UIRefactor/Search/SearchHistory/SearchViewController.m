@@ -22,6 +22,7 @@
 #import "SearchAutoCompleteObject.h"
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
+#import "UIView+HVDLayout.h"
 
 #import "Localytics.h"
 
@@ -123,12 +124,13 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    
     [self.collectionView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
 
     [_domains removeAllObjects];
@@ -254,6 +256,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     UICollectionViewCell *cell = nil;
     
     SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+    
     NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
     NSString *domainName = [domain objectForKey:@"title"];
     if([domainName isEqualToString:SearchDomainHistory]) {
@@ -613,6 +616,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+- (void)orientationChanged:(NSNotification*)note {
+    [_collectionView reloadData];
+}
 
 
 @end
