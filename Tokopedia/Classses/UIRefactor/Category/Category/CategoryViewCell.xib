@@ -26,8 +26,8 @@
                             <constraint firstAttribute="width" constant="50" id="rNA-gJ-5U1"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="87" translatesAutoresizingMaskIntoConstraints="NO" id="J9z-Nw-DKp">
-                        <rect key="frame" x="10" y="88" width="86" height="32"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="87" translatesAutoresizingMaskIntoConstraints="NO" id="J9z-Nw-DKp">
+                        <rect key="frame" x="10" y="88" width="86" height="27"/>
                         <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                         <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
@@ -40,15 +40,17 @@
             <animations/>
             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="deviceRGB"/>
             <constraints>
-                <constraint firstItem="J9z-Nw-DKp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="0bz-Nt-MpP"/>
+                <constraint firstItem="J9z-Nw-DKp" firstAttribute="centerX" secondItem="r7R-WL-qeS" secondAttribute="centerX" id="3rO-TI-zLs"/>
                 <constraint firstItem="r7R-WL-qeS" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="25" id="7z4-0s-Xqr"/>
                 <constraint firstItem="J9z-Nw-DKp" firstAttribute="top" secondItem="r7R-WL-qeS" secondAttribute="bottom" constant="8" id="8t6-HO-V9R"/>
-                <constraint firstAttribute="trailing" secondItem="J9z-Nw-DKp" secondAttribute="trailing" constant="10" id="Ax5-y9-iu3"/>
+                <constraint firstItem="J9z-Nw-DKp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="Nxm-zq-hQM"/>
+                <constraint firstAttribute="bottom" secondItem="J9z-Nw-DKp" secondAttribute="bottom" constant="13" id="RyF-iF-gvJ"/>
                 <constraint firstAttribute="bottom" secondItem="J9z-Nw-DKp" secondAttribute="bottom" constant="21" id="SJl-iD-NVF"/>
                 <constraint firstAttribute="trailing" secondItem="r7R-WL-qeS" secondAttribute="trailing" constant="28" id="SnP-Sj-5oY"/>
                 <constraint firstItem="r7R-WL-qeS" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="dQh-6X-Gyg"/>
                 <constraint firstAttribute="bottom" secondItem="r7R-WL-qeS" secondAttribute="bottom" constant="53" id="epj-Wc-A4o"/>
                 <constraint firstItem="r7R-WL-qeS" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="28" id="jT7-dc-BS8"/>
+                <constraint firstItem="J9z-Nw-DKp" firstAttribute="top" secondItem="r7R-WL-qeS" secondAttribute="bottom" constant="13" id="lCk-xb-aNs"/>
                 <constraint firstItem="J9z-Nw-DKp" firstAttribute="top" secondItem="r7R-WL-qeS" secondAttribute="bottom" constant="13" id="qo2-Yu-ujh"/>
                 <constraint firstAttribute="bottom" secondItem="J9z-Nw-DKp" secondAttribute="bottom" constant="8" id="ujI-eC-IE6"/>
             </constraints>
@@ -60,6 +62,7 @@
                     <exclude reference="8t6-HO-V9R"/>
                     <exclude reference="SJl-iD-NVF"/>
                     <exclude reference="qo2-Yu-ujh"/>
+                    <exclude reference="ujI-eC-IE6"/>
                 </mask>
             </variation>
             <connections>
