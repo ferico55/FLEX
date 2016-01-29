@@ -1031,47 +1031,52 @@ HotlistBannerDelegate
 
 
 #pragma mark - CollectionView Delegate And Datasource
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    CGSize cellSize = CGSizeMake(0, 0);
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    CGFloat screenWidth = screenRect.size.width;
-    
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        cellCount = 1;
-        heightRatio = 389;
-        widhtRatio = 300;
-        inset = 15;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        cellCount = 2;
-        heightRatio = 41;
-        widhtRatio = 29;
-        inset = 15;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger numberOfCell;
+    NSInteger cellHeight;
+    if(IS_IPAD) {
+        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+        if(self.cellType == UITableViewCellTypeTwoColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 5;
+            } else {
+                numberOfCell = 4;
+            }
+            cellHeight = 250;
+        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 8;
+            } else {
+                numberOfCell = 6;
+            }
+            cellHeight = 150;
+        } else if(self.cellType == UITableViewCellTypeOneColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 4;
+                cellHeight = 400;
+            } else {
+                numberOfCell = 2;
+                cellHeight = 450;
+            }
+
+        }
     } else {
-        cellCount = 3;
-        heightRatio = 1;
-        widhtRatio = 1;
-        inset = 14;
+        if(self.cellType == UITableViewCellTypeTwoColumn) {
+            numberOfCell = 2;
+            cellHeight = 205;
+        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
+            numberOfCell = 3;
+            cellHeight = [UIScreen mainScreen].bounds.size.width / 3 - 15;
+        } else {
+            numberOfCell = 1;
+            cellHeight = [UIScreen mainScreen].bounds.size.width + 100;
+        }
     }
-    
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
-    }
-    
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
+
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellWidth = screenWidth/numberOfCell - 15;
+
+    return CGSizeMake(cellWidth, cellHeight);
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -1296,6 +1301,8 @@ HotlistBannerDelegate
     CGRect newFrame = _iPadView.frame;
     newFrame.size.width = [UIScreen mainScreen].bounds.size.width;
     _iPadView.frame = newFrame;
+    
+    [viewCollection reloadData];
 }
 
 
