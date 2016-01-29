@@ -417,7 +417,6 @@ static NSInteger userViewHeight = 70;
                         [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
                     }
                 }
-                helpfulCell.selectionStyle = UITableViewCellSelectionStyleNone;
                 return helpfulCell;
             }else{
                 return _helpfulReviewLoadMoreCell;

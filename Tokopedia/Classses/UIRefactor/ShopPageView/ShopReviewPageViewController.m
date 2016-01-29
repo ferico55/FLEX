@@ -62,7 +62,8 @@ ShopPageHeaderDelegate,
 SmileyDelegate,
 UIScrollViewDelegate,
 UIAlertViewDelegate,
-NoResultDelegate>
+NoResultDelegate,
+ProductReputationSimpleDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -1423,5 +1424,9 @@ NoResultDelegate>
 
 - (NSString *)getPath {
     return @"action/review.pl";
+}
+
+- (void)showMoreDidTappedInIndexPath:(NSIndexPath*)indexPath{
+    [self redirectToProductDetailReputation:_list[indexPath.row] withIndexPath:indexPath];
 }
 @end
