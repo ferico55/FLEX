@@ -1,18 +1,18 @@
 //
-//  GiveReviewStarViewController.m
+//  GiveReviewRatingViewController.m
 //  Tokopedia
 //
 //  Created by Kenneth Vincent on 1/29/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "GiveReviewStarViewController.h"
+#import "GiveReviewRatingViewController.h"
 
-@interface GiveReviewStarViewController ()
+@interface GiveReviewRatingViewController ()
 
 @end
 
-@implementation GiveReviewStarViewController
+@implementation GiveReviewRatingViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

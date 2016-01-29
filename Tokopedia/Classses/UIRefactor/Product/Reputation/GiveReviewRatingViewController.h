@@ -1,5 +1,5 @@
 //
-//  GiveReviewStarViewController.h
+//  GiveReviewRatingViewController.h
 //  Tokopedia
 //
 //  Created by Kenneth Vincent on 1/29/16.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GiveReviewStarViewController : UIViewController
+@interface GiveReviewRatingViewController : UIViewController
 
 @end
