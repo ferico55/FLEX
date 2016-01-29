@@ -592,6 +592,7 @@ NoResultDelegate>
     ReviewList *list = _list[indexPath.row];
     [cell setDelegate:self];
     [cell setShopReputationModelView:list];
+    cell.isHelpful = NO;
     
     // this is required to load like info to detail, but was deleted
     if (![dictLikeDislike objectForKey:list.review_id]) {

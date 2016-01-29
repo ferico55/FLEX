@@ -38,7 +38,7 @@
 
 static NSInteger userViewHeight = 70;
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -338,6 +338,7 @@ static NSInteger userViewHeight = 70;
 }
 
 - (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
+    /*
     DetailReputationReview *reputationDetail = arr[indexPath.row];
     UILabel *messageLabel = [[UILabel alloc] init];
     
@@ -352,6 +353,10 @@ static NSInteger userViewHeight = 70;
     
     CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
     return height;
+     */
+    
+    
+    return 150;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -366,7 +371,6 @@ static NSInteger userViewHeight = 70;
             }
         }
     }
-    //if(!animationHasShown  &&  helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
     if(!animationHasShown && helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
         [self animate:cell];
         animationHasShown = YES;
@@ -377,9 +381,11 @@ static NSInteger userViewHeight = 70;
     if(filterStar == 0 && helpfulReviews.count > 0){
         if(indexPath.section == 1){
             ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+            cell.isHelpful = NO;
+            cell.delegate = self;
+            cell.indexPath = indexPath;
             
             DetailReputationReview *reputationDetail = arrList[indexPath.row];
-            reputationDetail.isHelpfulReview = NO;
             [cell setReputationModelView:reputationDetail.viewModel];
             
             if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
@@ -393,8 +399,11 @@ static NSInteger userViewHeight = 70;
             NSInteger limit = isShowingMore ? helpfulReviews.count : 1;
             if(indexPath.row < limit){
                 ProductReputationSimpleCell *helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+                helpfulCell.isHelpful = YES;
+                helpfulCell.delegate = self;
+                helpfulCell.indexPath = indexPath;
+                
                 DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
-                reputationDetail.isHelpfulReview = YES;
                 [helpfulCell setReputationModelView:reputationDetail.viewModel];
                 
                 CGRect newFrame = helpfulCell.leftBorderView.frame;
@@ -416,9 +425,11 @@ static NSInteger userViewHeight = 70;
         }
     }else{
         ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+        cell.isHelpful = NO;
+        cell.delegate = self;
+        cell.indexPath = indexPath;
         
         DetailReputationReview *reputationDetail = arrList[indexPath.row];
-        reputationDetail.isHelpfulReview = NO;
         [cell setReputationModelView:reputationDetail.viewModel];
         
         if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
@@ -451,8 +462,8 @@ static NSInteger userViewHeight = 70;
                 [self showMoreTapped:nil];
             }else{
                 //will show most hr details when jerry team has already STP
-                //DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
-                //[self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
             }
         }
     }else{
@@ -1313,7 +1324,6 @@ static NSInteger userViewHeight = 70;
 - (NSString*)getPath:(int)tag {
     if(tag == CTagGetProductReview) {
         return [productPostUrl isEqualToString:@""] ? @"product.pl" : productPostUrl;
-        //return [productPostUrl isEqualToString:@""] ? @"helpful_review.pl" : productPostUrl;
     }
     
     return nil;
@@ -1597,6 +1607,28 @@ static NSInteger userViewHeight = 70;
         [_middleMargin setHidden:YES];
     }
     
+}
+
+- (void)showMoreDidTappedInIndexPath:(NSIndexPath*)indexPath{
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        }else{
+            if([self isLastCellInSectionZero:indexPath]){
+                [self showMoreTapped:nil];
+            }else{
+                //will show most hr details when jerry team has already STP
+                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+            }
+        }
+    }else{
+        DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+        [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        
+    }
+
 }
 
 

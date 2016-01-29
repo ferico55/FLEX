@@ -29,12 +29,18 @@
                         <rect key="frame" x="10" y="8" width="300" height="180"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5hs-ji-BLb">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="35"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5hs-ji-BLb" customClass="TTTAttributedLabel">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="kern">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <view contentMode="scaleToFill" id="oLf-f4-Td7">
                                 <rect key="frame" x="0.0" y="41" width="300" height="120"/>
@@ -137,7 +143,7 @@
                 <outlet property="reputationBuyerLabel" destination="ScT-B2-KV9" id="Isi-3R-593"/>
                 <outlet property="reputationBuyerView" destination="oLf-f4-Td7" id="htq-Jv-21l"/>
                 <outlet property="reputationDateLabel" destination="IuD-ZD-AYv" id="kvZ-c5-FCX"/>
-                <outlet property="reputationMessageLabel" destination="5hs-ji-BLb" id="jNr-ez-B52"/>
+                <outlet property="reputationMessageLabel" destination="5hs-ji-BLb" id="EuP-Wg-Sx5"/>
                 <outlet property="reputationStarAccuracyRating" destination="sZh-oP-2Ko" id="i7P-6t-Ya0"/>
                 <outlet property="reputationStarAccuracyView" destination="fEE-vj-aoS" id="fak-UG-7tm"/>
                 <outlet property="reputationStarQualityRating" destination="odt-z6-PvE" id="YVt-Iy-LWX"/>

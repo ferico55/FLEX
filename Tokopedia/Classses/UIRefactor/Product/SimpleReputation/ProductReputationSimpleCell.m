@@ -9,8 +9,13 @@
 #import "DetailReviewReputationViewModel.h"
 #import "ReviewList.h"
 #import "NavigateViewController.h"
+#import "TTTAttributedLabel.h"
 
+@interface ProductReputationSimpleCell()<
+TTTAttributedLabelDelegate
+>
 
+@end
 @implementation ProductReputationSimpleCell
 
 - (void)awakeFromNib {
@@ -32,7 +37,7 @@
     [self.productView setHidden:YES];
     [self.productView setFrame:CGRectZero];
 
-    if(viewModel.isMostHelpful){
+    if(_isHelpful){
         //_reputationMessageLabel.textColor = [UIColor colorWithRed:0.097 green:0.5 blue:0.095 alpha:1];
         [_leftBorderView setHidden:NO];
         
@@ -66,40 +71,68 @@
     _productName = viewModel.review_product_name;
     _productImage = viewModel.review_product_image;
 }
+- (IBAction)showMoreTapped:(id)sender {
+    
+}
 
 #pragma mark - internally used method
 - (void)setReputationMessage:(NSString*)message {
     //count label height dynamically
-    UILabel *messageLabel = self.reputationMessageLabel;
     
-    [messageLabel setText:message];
-    [messageLabel sizeToFit];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 5.0;
     
-    //set label attribute
-    NSString *labelText = message;
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:labelText];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:5];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [labelText length])];
-    messageLabel.attributedText = attributedString ;
+    NSString *strLihatSelengkapnya = @"Lihat Selengkapnya";
+    NSString *strDescription = [NSString convertHTML:message];
     
+    if(strDescription.length > 80) {
+        strDescription = [NSString stringWithFormat:@"%@... %@", [strDescription substringToIndex:80], strLihatSelengkapnya];
+        
+        NSRange range = [strDescription rangeOfString:strLihatSelengkapnya];
+        _reputationMessageLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+        _reputationMessageLabel.activeLinkAttributes = @{(id)kCTForegroundColorAttributeName:[UIColor lightGrayColor], NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+        _reputationMessageLabel.linkAttributes = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone)};
+        
+        
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
+        [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Medium" size:_reputationMessageLabel.font.pointSize] range:NSMakeRange(0, strDescription.length)];
+        _reputationMessageLabel.attributedText = str;
+        [_reputationMessageLabel addLinkToURL:[NSURL URLWithString:@""] withRange:range];
+    }
+    else {
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
+        [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Medium" size:_reputationMessageLabel.font.pointSize] range:NSMakeRange(0, strDescription.length)];
+        _reputationMessageLabel.attributedText = str;
+        _reputationMessageLabel.delegate = nil;
+        [_reputationMessageLabel addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
+    }
+    
+    CGFloat heightOfMessage = 40;
+    /*
     CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
                                                            options:NSStringDrawingUsesLineFragmentOrigin
                                                         attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
                                                            context:nil];
     sizeOfMessage.size.width = [UIScreen mainScreen].bounds.size.width-20;
     messageLabel.frame = sizeOfMessage;
+     */
+    
     
     //set vertical origin of user view
     CGRect newFrame = self.reputationBuyerView.frame;
-    newFrame.origin.y = sizeOfMessage.size.height + 20;
+    newFrame.origin.y = heightOfMessage + 20;
     newFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
     self.reputationBuyerView.frame = newFrame;
     
     //set wrapper viewheight
     CGRect reputationViewFrame = self.listReputationView.frame;
-    reputationViewFrame.size.height = self.reputationBuyerView.frame.size.height + 10 + messageLabel.frame.size.height;
+    reputationViewFrame.size.height = self.reputationBuyerView.frame.size.height + 10 + _reputationMessageLabel.frame.size.height;
     self.listReputationView.frame = reputationViewFrame;
+    
+    _reputationMessageLabel.delegate = self;
 }
 
 - (void)setReputationStars:(NSString*)quality withAccuracy:(NSString*)accuracy {
@@ -159,6 +192,18 @@
     NavigateViewController *navigator = [[NavigateViewController alloc] init];
     [navigator navigateToProductFromViewController:_delegate withName:_productName withPrice:nil withId:_productID withImageurl:_productImage withShopName:nil];
 }
+
+#pragma mark - TTTAttributedLabel Delegate
+- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
+{
+    
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    [_delegate showMoreDidTappedInIndexPath:_indexPath];
+}
+
 
 
 @end

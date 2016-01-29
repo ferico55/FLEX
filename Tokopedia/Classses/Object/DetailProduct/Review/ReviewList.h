@@ -54,5 +54,7 @@
 
 @property (nonatomic, strong) ProductReputationViewModel *viewModel;
 
+@property (nonatomic, strong) NSString *is_helpful;
+
 
 @end
