@@ -75,7 +75,7 @@
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wjl-CI-hCG" userLabel="Rating View">
-                    <rect key="frame" x="8" y="68" width="398" height="247"/>
+                    <rect key="frame" x="8" y="68" width="398" height="265"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cQH-Cx-EVc" userLabel="Quality Rating View">
                             <rect key="frame" x="0.0" y="0.0" width="398" height="119"/>
@@ -304,7 +304,7 @@
                     <constraints>
                         <constraint firstItem="f4X-aH-OSY" firstAttribute="top" secondItem="Wjl-CI-hCG" secondAttribute="top" constant="128" id="0ji-Z3-TCt"/>
                         <constraint firstItem="xiY-ri-9N9" firstAttribute="top" secondItem="Wjl-CI-hCG" secondAttribute="top" constant="127" id="2vd-rO-57M"/>
-                        <constraint firstAttribute="bottom" secondItem="f4X-aH-OSY" secondAttribute="bottom" id="41x-3s-OJq"/>
+                        <constraint firstAttribute="bottom" secondItem="f4X-aH-OSY" secondAttribute="bottom" constant="18" id="41x-3s-OJq"/>
                         <constraint firstItem="cQH-Cx-EVc" firstAttribute="top" secondItem="Wjl-CI-hCG" secondAttribute="top" id="7eK-UP-HNc"/>
                         <constraint firstItem="cQH-Cx-EVc" firstAttribute="trailing" secondItem="f4X-aH-OSY" secondAttribute="trailing" id="AF0-eg-xBK"/>
                         <constraint firstAttribute="trailing" secondItem="cQH-Cx-EVc" secondAttribute="trailing" id="ZGT-4r-4um"/>
@@ -324,7 +324,7 @@
                 <constraint firstItem="C7E-tS-stT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GYX-ag-wVT"/>
                 <constraint firstItem="Wjl-CI-hCG" firstAttribute="top" secondItem="C7E-tS-stT" secondAttribute="bottom" constant="8" symbolic="YES" id="TMj-eR-AUd"/>
                 <constraint firstAttribute="trailing" secondItem="C7E-tS-stT" secondAttribute="trailing" id="diP-BD-xWh"/>
-                <constraint firstAttribute="bottom" secondItem="Wjl-CI-hCG" secondAttribute="bottom" constant="421" id="fRP-o4-u0w"/>
+                <constraint firstAttribute="bottom" secondItem="Wjl-CI-hCG" secondAttribute="bottom" constant="403" id="fRP-o4-u0w"/>
                 <constraint firstItem="Wjl-CI-hCG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="68" id="v5e-8A-2HS"/>
                 <constraint firstItem="Wjl-CI-hCG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="zrS-2a-0j0"/>
             </constraints>

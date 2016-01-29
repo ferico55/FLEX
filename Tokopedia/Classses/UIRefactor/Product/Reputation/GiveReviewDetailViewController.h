@@ -10,4 +10,8 @@
 
 @interface GiveReviewDetailViewController : UIViewController
 
+@property BOOL isEdit;
+@property int qualityRate;
+@property int accuracyRate;
+
 @end
