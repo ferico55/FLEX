@@ -784,6 +784,8 @@
 		628178D41C59FF2800D8F4AF /* icon_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178D11C59FF2800D8F4AF /* icon_camera@3x.png */; };
 		62F200DC1C5B11F5008787A9 /* GiveReviewStarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F200DA1C5B11F5008787A9 /* GiveReviewStarViewController.m */; };
 		62F200DD1C5B11F5008787A9 /* GiveReviewStarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62F200DB1C5B11F5008787A9 /* GiveReviewStarViewController.xib */; };
+		62F200E11C5B1D91008787A9 /* GiveReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F200DF1C5B1D91008787A9 /* GiveReviewDetailViewController.m */; };
+		62F200E21C5B1D91008787A9 /* GiveReviewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62F200E01C5B1D91008787A9 /* GiveReviewDetailViewController.xib */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A7109D21C4CF81D00D00615 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD061C4CF81800D00615 /* TPAnalytics.m */; };
 		7A7109D31C4CF81D00D00615 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD091C4CF81800D00615 /* URLCacheAlert.m */; };
@@ -3347,6 +3349,9 @@
 		62F200D91C5B11F5008787A9 /* GiveReviewStarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewStarViewController.h; sourceTree = "<group>"; };
 		62F200DA1C5B11F5008787A9 /* GiveReviewStarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewStarViewController.m; sourceTree = "<group>"; };
 		62F200DB1C5B11F5008787A9 /* GiveReviewStarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewStarViewController.xib; sourceTree = "<group>"; };
+		62F200DE1C5B1D91008787A9 /* GiveReviewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewDetailViewController.h; sourceTree = "<group>"; };
+		62F200DF1C5B1D91008787A9 /* GiveReviewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewDetailViewController.m; sourceTree = "<group>"; };
+		62F200E01C5B1D91008787A9 /* GiveReviewDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewDetailViewController.xib; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7A7100001C4CF81900D00615 /* ShipmentCourier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentCourier.h; sourceTree = "<group>"; };
 		7A7100011C4CF81900D00615 /* ShipmentCourier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentCourier.m; sourceTree = "<group>"; };
@@ -6550,6 +6555,9 @@
 				62F200D91C5B11F5008787A9 /* GiveReviewStarViewController.h */,
 				62F200DA1C5B11F5008787A9 /* GiveReviewStarViewController.m */,
 				62F200DB1C5B11F5008787A9 /* GiveReviewStarViewController.xib */,
+				62F200DE1C5B1D91008787A9 /* GiveReviewDetailViewController.h */,
+				62F200DF1C5B1D91008787A9 /* GiveReviewDetailViewController.m */,
+				62F200E01C5B1D91008787A9 /* GiveReviewDetailViewController.xib */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -11393,6 +11401,7 @@
 				7A7110EB1C4CF81D00D00615 /* location@2x.png in Resources */,
 				7A710F781C4CF81D00D00615 /* icon_contact_us.png in Resources */,
 				7A7110EA1C4CF81D00D00615 /* location.png in Resources */,
+				62F200E21C5B1D91008787A9 /* GiveReviewDetailViewController.xib in Resources */,
 				7A7110361C4CF81D00D00615 /* icon_problem_new_user@2x.png in Resources */,
 				7A71112F1C4CF81E00D00615 /* icon_signin_active@3x.png in Resources */,
 				628177ED1C59FF1D00D8F4AF /* SettingPrivacyCell.xib in Resources */,
@@ -12578,6 +12587,7 @@
 				628177641C59FF1D00D8F4AF /* ProductDetailReputationCell.m in Sources */,
 				628176411C59FF1C00D8F4AF /* ContactUsWebViewController.m in Sources */,
 				7A7109EA1C4CF81D00D00615 /* UIButtonCategory.swift in Sources */,
+				62F200E11C5B1D91008787A9 /* GiveReviewDetailViewController.m in Sources */,
 				7A710ECB1C4CF81D00D00615 /* VTConfig.m in Sources */,
 				6281760B1C59FF1C00D8F4AF /* CameraAlbumListCell.m in Sources */,
 				7A710A8C1C4CF81D00D00615 /* InboxReviewActionResult.m in Sources */,
