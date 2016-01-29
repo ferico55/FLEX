@@ -23,7 +23,22 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GiveReviewRatingViewController">
             <connections>
+                <outlet property="accuracyLabel" destination="xVB-0O-UZt" id="4UV-hz-bqW"/>
+                <outlet property="continueButton" destination="3RN-Im-IMB" id="EKl-AT-ncN"/>
+                <outlet property="productImageView" destination="MKd-yH-GVp" id="qQ2-Kp-tlJ"/>
+                <outlet property="productName" destination="kwa-AB-Xby" id="0DT-iT-iVc"/>
+                <outlet property="qualityLabel" destination="bF5-1P-CPa" id="pK4-MR-thc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outletCollection property="qualityStarsArray" destination="aW4-Zg-ctQ" id="vju-uu-bVy"/>
+                <outletCollection property="qualityStarsArray" destination="dF2-Bo-que" id="lva-xa-rgX"/>
+                <outletCollection property="qualityStarsArray" destination="G7t-Ck-A9Y" id="Tii-Kw-fHI"/>
+                <outletCollection property="qualityStarsArray" destination="SF6-w4-nXE" id="6aP-0y-DT1"/>
+                <outletCollection property="qualityStarsArray" destination="BDq-Ik-raZ" id="VCT-Qs-51T"/>
+                <outletCollection property="accuracyStarsArray" destination="aPp-B0-DEQ" id="yA1-uq-aKq"/>
+                <outletCollection property="accuracyStarsArray" destination="PSm-Cg-FZb" id="EAQ-kP-0My"/>
+                <outletCollection property="accuracyStarsArray" destination="m5W-qt-C74" id="wwA-Yb-Oat"/>
+                <outletCollection property="accuracyStarsArray" destination="6fD-dJ-hd8" id="THn-A4-du8"/>
+                <outletCollection property="accuracyStarsArray" destination="DkK-hR-gMP" id="IEb-4g-TzD"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -58,6 +73,9 @@
                         <constraint firstItem="kwa-AB-Xby" firstAttribute="centerY" secondItem="MKd-yH-GVp" secondAttribute="centerY" id="uu3-Rr-9NA"/>
                         <constraint firstItem="kwa-AB-Xby" firstAttribute="top" secondItem="C7E-tS-stT" secondAttribute="top" constant="19" id="zCV-lm-oS6"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="yPQ-4z-2MU" appends="YES" id="Xgq-RY-28z"/>
+                    </connections>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cQH-Cx-EVc" userLabel="Quality Rating View">
                     <rect key="frame" x="0.0" y="60" width="414" height="119"/>
@@ -96,6 +114,9 @@
                                         <constraint firstAttribute="height" constant="30" id="JRD-79-xsZ"/>
                                         <constraint firstAttribute="width" constant="30" id="b8y-7y-jpf"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="slU-xD-mAf" appends="YES" id="nFU-kE-gBd"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="dF2-Bo-que" userLabel="Quality Star 2">
                                     <rect key="frame" x="33" y="0.0" width="30" height="30"/>
@@ -103,6 +124,9 @@
                                         <constraint firstAttribute="width" constant="30" id="be4-8X-Slh"/>
                                         <constraint firstAttribute="height" constant="30" id="jSz-3t-RpW"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="slU-xD-mAf" appends="YES" id="Ltm-zB-oHx"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="G7t-Ck-A9Y" userLabel="Quality Star 3">
                                     <rect key="frame" x="66" y="0.0" width="30" height="30"/>
@@ -110,6 +134,9 @@
                                         <constraint firstAttribute="width" constant="30" id="2Tw-Eg-roA"/>
                                         <constraint firstAttribute="height" constant="30" id="k3I-8V-NR6"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="slU-xD-mAf" appends="YES" id="zaq-DZ-5WA"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="SF6-w4-nXE" userLabel="Quality Star 4">
                                     <rect key="frame" x="99" y="0.0" width="30" height="30"/>
@@ -117,6 +144,9 @@
                                         <constraint firstAttribute="width" constant="30" id="7Pf-r5-Dce"/>
                                         <constraint firstAttribute="height" constant="30" id="dQi-v0-Gly"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="slU-xD-mAf" appends="YES" id="ctI-Vr-XQ0"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="BDq-Ik-raZ" userLabel="Quality Star 5">
                                     <rect key="frame" x="132" y="0.0" width="30" height="30"/>
@@ -124,6 +154,9 @@
                                         <constraint firstAttribute="width" constant="30" id="pGS-AW-loi"/>
                                         <constraint firstAttribute="height" constant="30" id="uta-JI-otI"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="slU-xD-mAf" appends="YES" id="4jz-0V-hsH"/>
+                                    </connections>
                                 </imageView>
                             </subviews>
                             <constraints>
@@ -203,6 +236,9 @@
                                         <constraint firstAttribute="width" constant="30" id="9fV-5R-Mo2"/>
                                         <constraint firstAttribute="height" constant="30" id="NKm-Uc-zVk"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="P5v-AY-4tb" appends="YES" id="hbI-sf-Z1U"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="PSm-Cg-FZb" userLabel="Accuracy Star 2">
                                     <rect key="frame" x="33" y="0.0" width="30" height="30"/>
@@ -210,6 +246,9 @@
                                         <constraint firstAttribute="height" constant="30" id="DYg-90-iKa"/>
                                         <constraint firstAttribute="width" constant="30" id="MHY-1v-smp"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="P5v-AY-4tb" appends="YES" id="C7E-Eh-pDr"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="m5W-qt-C74" userLabel="Accuracy Star 3">
                                     <rect key="frame" x="66" y="0.0" width="30" height="30"/>
@@ -217,6 +256,9 @@
                                         <constraint firstAttribute="width" constant="30" id="oin-gL-JCs"/>
                                         <constraint firstAttribute="height" constant="30" id="tf1-VQ-wWD"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="P5v-AY-4tb" appends="YES" id="rcD-j4-HDJ"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="6fD-dJ-hd8" userLabel="Accuracy Star 4">
                                     <rect key="frame" x="99" y="0.0" width="30" height="30"/>
@@ -224,6 +266,9 @@
                                         <constraint firstAttribute="height" constant="30" id="DiM-di-M03"/>
                                         <constraint firstAttribute="width" constant="30" id="sRj-Mq-csk"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="P5v-AY-4tb" appends="YES" id="IUj-VC-AD4"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="DkK-hR-gMP" userLabel="Accuracy Star 5">
                                     <rect key="frame" x="132" y="0.0" width="30" height="30"/>
@@ -231,6 +276,9 @@
                                         <constraint firstAttribute="height" constant="30" id="Eo3-h3-Yj0"/>
                                         <constraint firstAttribute="width" constant="30" id="SWO-QA-vjv"/>
                                     </constraints>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="P5v-AY-4tb" appends="YES" id="tkO-KX-7gx"/>
+                                    </connections>
                                 </imageView>
                             </subviews>
                             <constraints>
@@ -279,6 +327,9 @@
                     <state key="normal" title="Lanjutkan">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="tapToContinue:" destination="-1" eventType="touchUpInside" id="O26-q6-mVO"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -306,6 +357,21 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
             <point key="canvasLocation" x="225" y="455"/>
         </view>
+        <tapGestureRecognizer id="slU-xD-mAf">
+            <connections>
+                <action selector="tapQualityStars:" destination="-1" id="5gC-4h-lts"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="P5v-AY-4tb">
+            <connections>
+                <action selector="tapAccuracyStars:" destination="-1" id="jEd-jg-vz1"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="yPQ-4z-2MU">
+            <connections>
+                <action selector="tapProduct:" destination="-1" id="jkp-ZS-WTe"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_star.png" width="20" height="20"/>
