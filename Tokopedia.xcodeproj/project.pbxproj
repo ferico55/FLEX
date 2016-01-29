@@ -782,6 +782,8 @@
 		628178D21C59FF2800D8F4AF /* icon_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178CF1C59FF2800D8F4AF /* icon_camera.png */; };
 		628178D31C59FF2800D8F4AF /* icon_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178D01C59FF2800D8F4AF /* icon_camera@2x.png */; };
 		628178D41C59FF2800D8F4AF /* icon_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178D11C59FF2800D8F4AF /* icon_camera@3x.png */; };
+		62F200DC1C5B11F5008787A9 /* GiveReviewStarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F200DA1C5B11F5008787A9 /* GiveReviewStarViewController.m */; };
+		62F200DD1C5B11F5008787A9 /* GiveReviewStarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62F200DB1C5B11F5008787A9 /* GiveReviewStarViewController.xib */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A7109D21C4CF81D00D00615 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD061C4CF81800D00615 /* TPAnalytics.m */; };
 		7A7109D31C4CF81D00D00615 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD091C4CF81800D00615 /* URLCacheAlert.m */; };
@@ -3342,6 +3344,9 @@
 		628178D01C59FF2800D8F4AF /* icon_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@2x.png"; sourceTree = "<group>"; };
 		628178D11C59FF2800D8F4AF /* icon_camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@3x.png"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
+		62F200D91C5B11F5008787A9 /* GiveReviewStarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewStarViewController.h; sourceTree = "<group>"; };
+		62F200DA1C5B11F5008787A9 /* GiveReviewStarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewStarViewController.m; sourceTree = "<group>"; };
+		62F200DB1C5B11F5008787A9 /* GiveReviewStarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewStarViewController.xib; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7A7100001C4CF81900D00615 /* ShipmentCourier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentCourier.h; sourceTree = "<group>"; };
 		7A7100011C4CF81900D00615 /* ShipmentCourier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentCourier.m; sourceTree = "<group>"; };
@@ -6542,6 +6547,9 @@
 				6281735B1C59FF1C00D8F4AF /* SplitReputationViewController.h */,
 				6281735C1C59FF1C00D8F4AF /* SplitReputationViewController.m */,
 				6281735D1C59FF1C00D8F4AF /* String_Reputation.h */,
+				62F200D91C5B11F5008787A9 /* GiveReviewStarViewController.h */,
+				62F200DA1C5B11F5008787A9 /* GiveReviewStarViewController.m */,
+				62F200DB1C5B11F5008787A9 /* GiveReviewStarViewController.xib */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -11196,6 +11204,7 @@
 				7A7111751C4CF81E00D00615 /* icon_upload_image.png in Resources */,
 				7A7110351C4CF81D00D00615 /* icon_problem_new_user.png in Resources */,
 				628175F71C59FF1C00D8F4AF /* AlertPickerView.xib in Resources */,
+				62F200DD1C5B11F5008787A9 /* GiveReviewStarViewController.xib in Resources */,
 				7A710FAE1C4CF81D00D00615 /* icon_like@2x.png in Resources */,
 				6281762B1C59FF1C00D8F4AF /* CatalogSellerHeaderView.xib in Resources */,
 				7A7110131C4CF81D00D00615 /* icon_neutral_smile50@2x.png in Resources */,
@@ -12471,6 +12480,7 @@
 				7A710B831C4CF81D00D00615 /* TxOrderConfirmationResult.m in Sources */,
 				7A710AEC1C4CF81D00D00615 /* NotificationFormResult.m in Sources */,
 				6281767B1C59FF1C00D8F4AF /* DepositListBankViewController.m in Sources */,
+				62F200DC1C5B11F5008787A9 /* GiveReviewStarViewController.m in Sources */,
 				7A710AFA1C4CF81D00D00615 /* ReputationResult.m in Sources */,
 				7A710B9D1C4CF81D00D00615 /* TxOrderConfirmedDetailOrder.m in Sources */,
 				7A710AED1C4CF81D00D00615 /* PrivacyForm.m in Sources */,
