@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class GeneratedHost, DetailReputationReview;
+@class GeneratedHost, DetailReputationReview, GiveReviewRatingViewController;
 
 @protocol GiveReviewDetailDelegate <NSObject>
 @optional
@@ -19,8 +19,12 @@
 @property (nonatomic, weak) IBOutlet id<GiveReviewDetailDelegate> delegate;
 @property (nonatomic, weak) DetailReputationReview *detailReputationReview;
 
+
 @property BOOL isEdit;
 @property int qualityRate;
 @property int accuracyRate;
+@property NSString *reviewMessage;
+@property NSDictionary *userInfo;
+@property (nonatomic, weak) GiveReviewRatingViewController *reviewRating;
 
 @end

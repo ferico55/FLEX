@@ -22,5 +22,6 @@
 @property BOOL isEdit;
 @property int accuracyRate;
 @property int qualityRate;
+@property NSString *reviewMessage;
 
 @end

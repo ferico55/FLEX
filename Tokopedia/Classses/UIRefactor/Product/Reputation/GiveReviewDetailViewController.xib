@@ -84,18 +84,9 @@
                                             <real key="value" value="5"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
-                                </imageView>
-                                <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7aL-nO-5kV" userLabel="Attached Image 2">
-                                    <rect key="frame" x="52" y="16" width="44" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="WkX-2q-Hap"/>
-                                        <constraint firstAttribute="width" constant="44" id="Xvv-T2-6zt"/>
-                                    </constraints>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                            <real key="value" value="5"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="83n-4O-ds0" appends="YES" id="TbD-xO-dYg"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="22" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bhv-ls-Fk6" userLabel="Attached Image 3">
                                     <rect key="frame" x="104" y="16" width="44" height="44"/>
@@ -108,6 +99,9 @@
                                             <real key="value" value="5"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="0df-hX-KDO" appends="YES" id="SlM-z7-7dd"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="23" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KjK-tC-eTp" userLabel="Attached Image 4">
                                     <rect key="frame" x="156" y="16" width="44" height="44"/>
@@ -120,6 +114,9 @@
                                             <real key="value" value="5"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="lIc-xt-b7h" appends="YES" id="5Fa-He-D7X"/>
+                                    </connections>
                                 </imageView>
                                 <imageView userInteractionEnabled="NO" tag="24" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OAS-eZ-Wqa" userLabel="Attached Image 5">
                                     <rect key="frame" x="208" y="16" width="44" height="44"/>
@@ -132,6 +129,24 @@
                                             <real key="value" value="5"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="LRJ-TG-XNF" appends="YES" id="5zH-Is-z62"/>
+                                    </connections>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7aL-nO-5kV" userLabel="Attached Image 2">
+                                    <rect key="frame" x="52" y="16" width="44" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="WkX-2q-Hap"/>
+                                        <constraint firstAttribute="width" constant="44" id="Xvv-T2-6zt"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="wSN-iy-lcx" appends="YES" id="Ljn-Tx-3mc"/>
+                                    </connections>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -183,7 +198,32 @@
                 <constraint firstItem="HhS-Cv-jey" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wfd-4u-hcL"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-            <point key="canvasLocation" x="209" y="410"/>
+            <point key="canvasLocation" x="30" y="12"/>
         </view>
+        <tapGestureRecognizer id="83n-4O-ds0">
+            <connections>
+                <action selector="tapImage:" destination="-1" id="ep1-Zv-AKw"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="wSN-iy-lcx">
+            <connections>
+                <action selector="tapImage:" destination="-1" id="bqq-mF-KRb"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="0df-hX-KDO">
+            <connections>
+                <action selector="tapImage:" destination="-1" id="ghH-vw-UjL"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="lIc-xt-b7h">
+            <connections>
+                <action selector="tapImage:" destination="-1" id="1x7-lX-2Rm"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="LRJ-TG-XNF">
+            <connections>
+                <action selector="tapImage:" destination="-1" id="uzP-Nh-JxK"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

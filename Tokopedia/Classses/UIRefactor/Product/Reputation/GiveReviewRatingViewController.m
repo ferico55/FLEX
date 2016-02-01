@@ -66,10 +66,6 @@
     
 }
 
-- (IBAction)tapProduct:(id)sender {
-//    [_navigate navigateToProductFromViewController:self withData:@{@"product_id":_detailReputationReview.product_id}];
-}
-
 - (IBAction)tapQualityStars:(UITapGestureRecognizer *)sender {
     _qualityRate = (int)sender.view.tag;
     
