@@ -413,7 +413,10 @@
 
 -(NSString*)getSprintAsiaURLString
 {
-    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",kTkpdBaseURLString];
+    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    NSString *baseURLString = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+    
+    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURLString];
     
     return stringURL;
 }
