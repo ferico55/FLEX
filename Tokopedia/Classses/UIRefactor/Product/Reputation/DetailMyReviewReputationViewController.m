@@ -56,7 +56,7 @@
     CMPopTipView *cmPopTitpView;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSString *strUriNext;
-    BOOL isRefreshing, getDataFromMasterInServer;
+    BOOL isRefreshing, getDataFromMasterInServer, isEdit;
     int page, tempTagSkip;
     float heightBtnFooter;
     NSMutableParagraphStyle *style;
@@ -435,6 +435,8 @@
     DetailReputationReview *detailReputationReview = arrList[tag];
     
     vc.detailReputationReview = detailReputationReview;
+    vc.isEdit = isEdit;
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -866,6 +868,7 @@
         [self.navigationController pushViewController:reportViewController animated:YES];
     }
     else {
+        isEdit = YES;
         [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
     }
 }
