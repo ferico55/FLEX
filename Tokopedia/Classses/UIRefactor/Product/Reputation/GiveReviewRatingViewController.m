@@ -124,6 +124,21 @@
                                                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
         _accuracyLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Akurasi:"
                                                                         attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+    } else {
+        _qualityRate = (_detailReputationReview.product_rating_point==nil || _detailReputationReview.product_rating_point.length==0)? 0:[_detailReputationReview.product_rating_point intValue];
+        [self setQualityLabel];
+        for (int ii = 0; ii < _qualityStarsArray.count; ii++) {
+            UIImageView *temp = [_qualityStarsArray objectAtIndex:ii];
+            temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < _qualityRate)? @"icon_star_active":@"icon_star") ofType:@"png"]];
+        }
+        
+        
+        _accuracyRate = (_detailReputationReview.product_accuracy_point==nil || _detailReputationReview.product_accuracy_point.length==0)? 0:[_detailReputationReview.product_accuracy_point intValue];
+        [self setAccuracyLabel];
+        for (int ii = 0; ii < _accuracyStarsArray.count; ii++) {
+            UIImageView *temp = [_accuracyStarsArray objectAtIndex:ii];
+            temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < _accuracyRate)? @"icon_star_active":@"icon_star") ofType:@"png"]];
+        }
     }
 }
 
@@ -199,7 +214,11 @@
 
 - (BOOL)isSuccessValidateRating {
     if (_isEdit) {
-        
+        if ([_detailReputationReview.product_accuracy_point intValue] > _accuracyRate || [_detailReputationReview.product_rating_point intValue] > _qualityRate) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda tidak dapat memberi penurunan rating"] delegate:self];
+            [stickyAlertView show];
+            return NO;
+        }
     } else {
         if (_accuracyRate == 0 || _qualityRate == 0) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Rating harus diisi"]
