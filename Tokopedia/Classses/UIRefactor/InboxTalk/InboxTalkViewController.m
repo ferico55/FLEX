@@ -165,11 +165,6 @@
     
     [cell setTalkViewModel:list.viewModel];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && indexPath.row == 1 && isFirstShow) {
-        [cell tapToDetailTalk:cell];
-        isFirstShow = NO;
-    }
-    
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
@@ -440,6 +435,17 @@
         }
         self.table.tableFooterView = nil;
         [_noResultView removeFromSuperview];
+        
+        [self.table reloadData];
+
+        if (isFirstShow) {
+            isFirstShow = NO;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                TalkCell* cell = [_table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                [cell tapToDetailTalk:cell];
+            });
+        }
     } else {
         NSString *text;
         NSString *desc;
@@ -478,9 +484,10 @@
         
         _table.tableFooterView = nil;
         [_table addSubview:_noResultView];
+        [self.table reloadData];
     }
     
-    [self.table reloadData];
+    
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
