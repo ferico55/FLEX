@@ -200,7 +200,19 @@
     NSDictionary *userInfo = @{kTKPDDETAIL_DATAINDEXKEY:@(indexPath.row)};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userInfo];
-    [_detailViewController replaceDataSelected:data];
+    
+    UIViewController* containerViewController = (UIViewController*)_delegate;
+    UIViewController* master = containerViewController.splitViewController.viewControllers.firstObject;
+    
+    ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
+    detailVC.data = data;
+    
+    UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
+    detailNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    detailNav.navigationBar.translucent = NO;
+    detailNav.navigationBar.tintColor = [UIColor whiteColor];
+    
+    containerViewController.splitViewController.viewControllers = @[master, detailNav];
 }
 
 #pragma mark - Talk Cell Delegate
