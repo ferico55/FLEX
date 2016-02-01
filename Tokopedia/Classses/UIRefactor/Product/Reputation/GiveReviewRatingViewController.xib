@@ -54,7 +54,6 @@
                                 <constraint firstAttribute="height" constant="21" id="Ich-KC-hMN"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
