@@ -53,17 +53,21 @@
 
 #pragma mark - Actions
 - (IBAction)tapToContinue:(id)sender {
-    GiveReviewDetailViewController *vc = [GiveReviewDetailViewController new];
+    if ([self isSuccessValidateRating]) {
+        GiveReviewDetailViewController *vc = [GiveReviewDetailViewController new];
+        
+        vc.isEdit = _isEdit;
+        vc.qualityRate = _qualityRate;
+        vc.accuracyRate = _accuracyRate;
+        vc.detailReputationReview = _detailReputationReview;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     
-    vc.isEdit = _isEdit;
-    vc.qualityRate = _qualityRate;
-    vc.accuracyRate = _accuracyRate;
-    
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)tapProduct:(id)sender {
-    [_navigate navigateToProductFromViewController:self withData:@{@"product_id":_detailReputationReview.product_id}];
+//    [_navigate navigateToProductFromViewController:self withData:@{@"product_id":_detailReputationReview.product_id}];
 }
 
 - (IBAction)tapQualityStars:(UITapGestureRecognizer *)sender {
@@ -112,7 +116,7 @@
 #pragma clang diagnostic pop
                                       }
                                       failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                          NSLog(@"Failure get image in giveReviewViewController");
+                                          NSLog(@"Failed get image");
                                       }];
     
     if (!_isEdit) {
@@ -191,6 +195,22 @@
                                                                           attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:17.0]}]];
     
     _accuracyLabel.attributedText = mutableString;
+}
+
+- (BOOL)isSuccessValidateRating {
+    if (_isEdit) {
+        
+    } else {
+        if (_accuracyRate == 0 || _qualityRate == 0) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Rating harus diisi"]
+                                                                                     delegate:self];
+            [stickyAlertView show];
+            
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end
