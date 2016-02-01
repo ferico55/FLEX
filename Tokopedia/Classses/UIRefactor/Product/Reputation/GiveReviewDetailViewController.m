@@ -9,6 +9,7 @@
 #import "GiveReviewDetailViewController.h"
 #import "TKPDTextView.h"
 #import "DetailReputationReview.h"
+#import "ReviewSummaryViewController.h"
 
 @interface GiveReviewDetailViewController ()
 
@@ -70,9 +71,27 @@
     }
 }
 
+- (BOOL)isSuccessValidateMessage {
+    if ([_reviewDetailTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length < 30) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Ulasan yang diberikan harus minimal 30 karakter."] delegate:self];
+        [stickyAlertView show];
+        return NO;
+    } else if ([_reviewDetailTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Ulasan harus diisi."] delegate:self];
+        [stickyAlertView show];
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
 #pragma mark - Actions
 - (IBAction)tapToContinue:(id)sender {
-
+    if ([self isSuccessValidateMessage]) {
+        ReviewSummaryViewController *vc = [ReviewSummaryViewController new];
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 @end
