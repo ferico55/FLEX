@@ -48,8 +48,8 @@
                                 <constraint firstAttribute="width" constant="44" id="hoN-4c-lt3"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kwa-AB-Xby">
-                            <rect key="frame" x="60" y="19" width="330" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kwa-AB-Xby">
+                            <rect key="frame" x="60" y="19" width="346" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="Ich-KC-hMN"/>
                             </constraints>
@@ -63,7 +63,7 @@
                         <constraint firstItem="kwa-AB-Xby" firstAttribute="top" secondItem="C7E-tS-stT" secondAttribute="top" constant="19" id="IhK-mx-Pqd"/>
                         <constraint firstItem="kwa-AB-Xby" firstAttribute="leading" secondItem="MKd-yH-GVp" secondAttribute="trailing" constant="8" id="Im7-2s-60n"/>
                         <constraint firstItem="MKd-yH-GVp" firstAttribute="top" secondItem="C7E-tS-stT" secondAttribute="top" constant="8" id="U4P-Mh-JpV"/>
-                        <constraint firstAttribute="trailing" secondItem="kwa-AB-Xby" secondAttribute="trailing" constant="24" id="UFT-Jq-zOM"/>
+                        <constraint firstAttribute="trailing" secondItem="kwa-AB-Xby" secondAttribute="trailing" constant="8" id="UFT-Jq-zOM"/>
                         <constraint firstItem="MKd-yH-GVp" firstAttribute="leading" secondItem="C7E-tS-stT" secondAttribute="leading" constant="8" id="vLw-kJ-OpC"/>
                     </constraints>
                     <connections>
