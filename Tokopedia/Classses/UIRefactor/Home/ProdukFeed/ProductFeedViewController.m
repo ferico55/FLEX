@@ -20,6 +20,7 @@
 
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
+#import "Tokopedia-Swift.h"
 
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
@@ -78,6 +79,7 @@ NoResultDelegate
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
+    ProductDataSource* _productDataSource;
 }
 
 #pragma mark - Initialization
@@ -102,6 +104,9 @@ NoResultDelegate
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
+    _productDataSource = [[ProductDataSource alloc] initWithCollectionView:_collectionView];
+
     
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
@@ -190,19 +195,22 @@ NoResultDelegate
     
     ProductFeedList *product = [_product[indexPath.section] objectAtIndex:indexPath.row];
     [cell setViewModel:product.viewModel];
-    
+
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     //next page if already last cell
-    
-    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
-    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
-    if (indexPath.section == section && indexPath.row == row) {
+//    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
+    NSInteger row = [_collectionView numberOfItemsInSection:0] - 1;
+//    if (indexPath.section == section && indexPath.row == row) {
+    if (indexPath.row == row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
     }
     
-    return cell;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -394,6 +402,7 @@ NoResultDelegate
         }
         
         [_product addObject:feed.data.list];
+        [_productDataSource addProducts: feed.data.list];
         
         [TPAnalytics trackProductImpressions:feed.data.list];
         
