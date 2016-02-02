@@ -26,6 +26,15 @@
 #import "UIActivityViewController+Extensions.h"
 #import "NoResultReusableView.h"
 
+#import "SearchAWS.h"
+#import "SearchAWSProduct.h"
+#import "SearchAWSResult.h"
+
+#import "search.h"
+#import "sortfiltershare.h"
+#import "string_product.h"
+#import "detail.h"
+
 @interface CatalogShopViewController ()
 <
     UITableViewDataSource,
@@ -62,6 +71,9 @@
     NSString *_uriNext;
     NSInteger _page;
     
+    NSInteger _startPerPage;
+    NSInteger _start;
+    
     FilterCatalogViewController *_filterCatalogController;
     
     LoadingView *_loadingView;
@@ -93,9 +105,16 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _page = 2;
+    _networkManager.isUsingHmac = NO;
+    _networkManager.isParameterNotEncrypted = YES;
+    [_networkManager doRequest];
+    
+    _page = 0;
     _uriNext = _catalog.result.paging.uri_next;
     _catalogId = _catalog.result.catalog_info.catalog_id;
+    
+    _startPerPage = 5;
+    _start = 0;
     
     _filterCatalogController = [[FilterCatalogViewController alloc] initWithStyle:UITableViewStyleGrouped];
     _filterCatalogController.catalog = _catalog;
@@ -274,10 +293,12 @@
 #pragma mark - Network manager delegate
 
 - (NSString *)getPath:(int)tag {
-    return API_CATALOG_PATH;
+    //return API_CATALOG_PATH;
+    return @"search/v1/catalog/product";
 }
 
 - (NSDictionary *)getParameter:(int)tag {
+    /*
     NSDictionary *parameters = @{
                                  API_ACTION_KEY             : API_GET_CATALOG_DETAIL_KEY,
                                  API_CATALOG_ID_KEY         : _catalogId?:@"",
@@ -286,10 +307,22 @@
                                  API_FILTER_ORDER_BY_KEY    : _orderBy?:@"",
                                  API_FILTER_PAGE_KEY        : [NSString stringWithFormat:@"%d", _page],
                                  };
+     */
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setObject:@"ios" forKey:@"device"];
+    [parameters setObject:@(_startPerPage) forKey:@"rows"];
+    [parameters setObject:@((_page*_startPerPage)) forKey:@"start"];
+    
+    [parameters setObject:_catalog.result.catalog_info.catalog_id?:@"" forKey:@"ctg_id"];
+    [parameters setObject:_condition?:@"" forKey:API_FILTER_CONDITION_KEY];
+    [parameters setObject:_location?:@"" forKey:API_FILTER_LOCATION_KEY];
+    [parameters setObject:_orderBy?:@"" forKey:API_FILTER_ORDER_BY_KEY];
+    
     return parameters;
 }
 
 - (id)getObjectManager:(int)tag {
+    /*
     _objectManager =  [RKObjectManager sharedClient];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Catalog class]];
@@ -438,11 +471,65 @@
     [_objectManager addResponseDescriptor:response];
 
     return _objectManager;
+     */
+    
+    _objectManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
+    
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
+    
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
+                                                        }];
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+    //product
+    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+    
+    // paging mapping
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
+    
+    //add list relationship
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    RKRelationshipMapping *productsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
+    
+    [resultMapping addPropertyMapping:productsRel];
+    
+    // add page relationship
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:[self getRequestMethod:0]
+                                                                                       pathPattern:[self getPath:0]
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    //add response description to object manager
+    [_objectManager addResponseDescriptor:responseDescriptor];
+    
+    return _objectManager;
 }
 
-- (NSString *)getRequestStatus:(RKMappingResult *)result withTag:(int)tag {
-    Catalog *catalog = [result.dictionary objectForKey:@""];
-    return catalog.status;
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    SearchAWS *list = stat;
+    
+    return list.status;
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
 }
 
 - (void)actionBeforeRequest:(int)tag {
@@ -450,7 +537,8 @@
     [self.activityIndicatorView startAnimating];
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    /*
     BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         [self loadMappingResult:result];
@@ -458,6 +546,51 @@
         [_tableView setTableFooterView:nil];
         [_refreshControl endRefreshing];
     }
+     */
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    SearchAWS *feed = [result objectForKey:@""];
+    
+    if (feed.result.products.count > 0) {
+        if (_page == 1) {
+            [_catalog_shops removeAllObjects];
+        }
+        
+        [_catalog_shops addObject:feed.result.products];
+        
+        [TPAnalytics trackProductImpressions:feed.result.products];
+        
+        _isNoData = NO;
+        _nextPageUri =  feed.result.paging.uri_next;
+        //_page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
+        _page++;
+        
+        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
+            //remove loadingview if there is no more item
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
+        } else {
+            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
+        }
+        
+        if (_page > 1) [self requestPromo];
+        
+    } else {
+        // no data at all
+        _isNoData = YES;
+        [_product removeAllObjects];
+        [_collectionView reloadData];
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        [_collectionView addSubview:_noResultView];
+        //[self setView:_noResultView];
+    }
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+        [_collectionView reloadData];
+    } else  {
+        [_collectionView reloadData];
+    }
+    [_collectionView layoutIfNeeded];
+
 }
 
 - (void)loadMappingResult:(RKMappingResult *)result {
