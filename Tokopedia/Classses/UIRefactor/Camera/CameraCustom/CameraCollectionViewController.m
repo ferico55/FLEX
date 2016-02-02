@@ -324,7 +324,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
             }
         }
     }
-    if (_isAddReviewImage) {
+    if (_isAddReviewImage && _selectedImages.count > 0) {
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
         vc.userInfo = @{@"selected_images":[_selectedImages copy],
                         @"selected_indexpath":arrayIndexPath};

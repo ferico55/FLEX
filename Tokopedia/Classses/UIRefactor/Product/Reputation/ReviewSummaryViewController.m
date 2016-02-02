@@ -11,6 +11,7 @@
 #import "DetailReputationReview.h"
 #import "GeneralAction.h"
 #import "GeneralActionResult.h"
+#import "GiveReviewRatingViewController.h"
 
 @interface ReviewSummaryViewController () <TokopediaNetworkManagerDelegate>
 
@@ -23,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *qualityLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *accuracyStarsArray;
 @property (weak, nonatomic) IBOutlet UILabel *accuracyLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachedImagesViewHeight;
+
 
 @end
 
@@ -40,6 +43,11 @@
                                                                               style:UIBarButtonItemStyleDone
                                                                              target:self
                                                                              action:@selector(tapToSend:)];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ubah"
+                                                                             style:UIBarButtonItemStyleDone
+                                                                            target:self
+                                                                            action:@selector(tapToEdit:)];
     
     [self setData];
     
@@ -91,13 +99,22 @@
     
     _attachedImagesArray = [NSArray sortViewsWithTagInArray:_attachedImagesArray];
     
-    for (int ii = 0; ii < _uploadedImages.count; ii++) {
-        if ([_uploadedImages[ii] isKindOfClass:[UIImageView class]]) {
-            ((UIImageView*)_attachedImagesArray[ii]).image = ((UIImageView*)_uploadedImages[ii]).image;
-            ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
-            
+    if ([self isNoImageUploaded]) {
+//        _attachedImagesView.frame = CGRectMake(_attachedImagesView.frame.origin.x, _attachedImagesView.frame.origin.y, _attachedImagesView.frame.size.width, 0);
+//        _attachedImagesView.hidden = YES;
+//        [_reviewMessageTextView layoutIfNeeded];
+        _attachedImagesViewHeight.constant = 0;
+    } else {
+        for (int ii = 0; ii < _uploadedImages.count; ii++) {
+            if ([_uploadedImages[ii] isKindOfClass:[UIImageView class]]) {
+                ((UIImageView*)_attachedImagesArray[ii]).image = ((UIImageView*)_uploadedImages[ii]).image;
+                ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
+                
+            }
         }
     }
+    
+    
 }
 
 - (void)setQualityLabel {
@@ -170,9 +187,23 @@
     _accuracyLabel.attributedText = mutableString;
 }
 
+- (BOOL)isNoImageUploaded {
+    for (id n in _uploadedImages) {
+        if ([n isKindOfClass:[UIImageView class]]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 #pragma mark - Actions
 - (IBAction)tapToSend:(id)sender {
     [_networkManager doRequest];
+}
+
+- (IBAction)tapToEdit:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Tokopedia Network Manager
