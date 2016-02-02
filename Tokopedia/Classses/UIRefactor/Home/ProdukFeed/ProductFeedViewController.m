@@ -70,7 +70,6 @@ NoResultDelegate
     NSInteger _page;
     NSString *_nextPageUri;
     
-    BOOL _isNoData;
     BOOL _isFailRequest;
     BOOL _isShowRefreshControl;
     
@@ -87,7 +86,6 @@ NoResultDelegate
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isShowRefreshControl = NO;
-        _isNoData = YES;
         _isFailRequest = NO;
     }
     return self;
@@ -117,7 +115,6 @@ NoResultDelegate
     _promoScrollPosition = [NSMutableArray new];
     
     [self initNoResultView];
-    _isNoData = (_product.count > 0);
     _page = 1;
     
     //todo with view
@@ -396,22 +393,22 @@ NoResultDelegate
     if (feed.data.list.count > 0) {
         [_noResultView removeFromSuperview];
         if (_page == 1) {
-            [_product removeAllObjects];
+            _product = feed.data.list;
+            [_productDataSource replaceProductsWith: feed.data.list];
+            
             [_promo removeAllObjects];
             [_firstFooter removeFromSuperview];
+        } else {
+            [_product addObject:feed.data.list];
+            [_productDataSource addProducts: feed.data.list];
         }
-        
-        [_product addObject:feed.data.list];
-        [_productDataSource addProducts: feed.data.list];
         
         [TPAnalytics trackProductImpressions:feed.data.list];
         
-        _isNoData = NO;
         _nextPageUri =  feed.data.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
         if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-            //remove loadingview if there is no more item
             [_flowLayout setFooterReferenceSize:CGSizeZero];
         } else {
             [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
@@ -421,7 +418,6 @@ NoResultDelegate
         
     } else {
         // no data at all
-        _isNoData = YES;
         [_product removeAllObjects];
         [_collectionView reloadData];
         [_flowLayout setFooterReferenceSize:CGSizeZero];

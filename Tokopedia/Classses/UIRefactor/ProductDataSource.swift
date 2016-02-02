@@ -47,6 +47,10 @@ import UIKit
         _collectionView.reloadData()
     }
 
+    func replaceProductsWith(products:Array<ProductFeedList>) {
+        _products = products
+        _collectionView.reloadData()
+    }
 }
 
 /*
