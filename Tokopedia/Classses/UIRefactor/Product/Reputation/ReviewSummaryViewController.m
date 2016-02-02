@@ -100,9 +100,6 @@
     _attachedImagesArray = [NSArray sortViewsWithTagInArray:_attachedImagesArray];
     
     if ([self isNoImageUploaded]) {
-//        _attachedImagesView.frame = CGRectMake(_attachedImagesView.frame.origin.x, _attachedImagesView.frame.origin.y, _attachedImagesView.frame.size.width, 0);
-//        _attachedImagesView.hidden = YES;
-//        [_reviewMessageTextView layoutIfNeeded];
         _attachedImagesViewHeight.constant = 0;
     } else {
         for (int ii = 0; ii < _uploadedImages.count; ii++) {
