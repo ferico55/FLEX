@@ -13083,11 +13083,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/tokopedia/Downloads/FacebookSDKs-iOS-20150910",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang";
@@ -13096,16 +13095,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphoneos",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				LIPO = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/lipo/lipo";
@@ -13139,7 +13134,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang";
@@ -13148,16 +13143,12 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphoneos",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				LIPO = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/lipo/lipo";
