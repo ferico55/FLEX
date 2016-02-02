@@ -455,6 +455,7 @@
 - (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
+        [noResultView removeFromSuperview];
         [self loadMappingResult:result];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
