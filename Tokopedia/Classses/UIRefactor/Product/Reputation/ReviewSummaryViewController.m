@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *productName;
 @property (weak, nonatomic) IBOutlet TKPDTextView *reviewMessageTextView;
 @property (weak, nonatomic) IBOutlet UIView *attachedImagesView;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachedImagesArray;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *qualityStarsArray;
 @property (weak, nonatomic) IBOutlet UILabel *qualityLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *accuracyStarsArray;
@@ -74,13 +75,6 @@
     
     _reviewMessageTextView.text = _reviewMessage;
     
-    if (!_hasAttachedImages) {
-//        CGRect imageRect = _attachedImagesView.frame;
-//        imageRect.size.height = 0;
-//        
-//        _attachedImagesView.frame = imageRect;
-        _attachedImagesView.hidden = YES;
-    }
     
     for (int ii = 0; ii < _qualityStarsArray.count; ii++) {
         UIImageView *temp = [_qualityStarsArray objectAtIndex:ii];
@@ -94,6 +88,16 @@
     
     [self setQualityLabel];
     [self setAccuracyLabel];
+    
+    _attachedImagesArray = [NSArray sortViewsWithTagInArray:_attachedImagesArray];
+    
+    for (int ii = 0; ii < _uploadedImages.count; ii++) {
+        if ([_uploadedImages[ii] isKindOfClass:[UIImageView class]]) {
+            ((UIImageView*)_attachedImagesArray[ii]).image = ((UIImageView*)_uploadedImages[ii]).image;
+            ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
+            
+        }
+    }
 }
 
 - (void)setQualityLabel {
@@ -213,10 +217,16 @@
     [dataMapping addAttributeMappingsFromArray:@[@"feedback_id",
                                                  @"is_success"]];
     
-    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
+    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                 toKeyPath:@"data"
+                                                                               withMapping:dataMapping];
     [statusMapping addPropertyMapping:dataRel];
     
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:[self getPath:0] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodGET
+                                                                                             pathPattern:[self getPath:0]
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
     

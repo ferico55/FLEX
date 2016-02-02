@@ -26,6 +26,7 @@
     
     NSMutableArray *_uploadingImages;
     NSMutableArray *_uploadedImages;
+    NSMutableArray *_attachedImages;
     
     NSOperationQueue *_operationQueue;
     
@@ -70,6 +71,7 @@
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImageURL = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _attachedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
     _isFinishedUploadingImage = YES;
     
@@ -185,7 +187,7 @@
         vc.qualityRate = _qualityRate;
         vc.accuracyRate = _accuracyRate;
         vc.reviewMessage = _reviewMessage;
-//        vc.hasAttachedImages = NO;
+        vc.uploadedImages = _attachedImages;
         
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -336,6 +338,7 @@
             image.hidden = NO;
             image.userInteractionEnabled = YES;
             image.contentMode = UIViewContentModeScaleToFill;
+            [_attachedImages replaceObjectAtIndex:tagView-20 withObject:image];
         }
         
         if (image.tag == tagView + 1) {

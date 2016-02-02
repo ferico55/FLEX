@@ -36,6 +36,11 @@
                 <outletCollection property="accuracyStarsArray" destination="U46-dc-kMr" id="40P-3Z-ZhS"/>
                 <outletCollection property="accuracyStarsArray" destination="0fG-ju-vxm" id="Jr7-Cb-yaV"/>
                 <outletCollection property="accuracyStarsArray" destination="uQF-fs-4Eh" id="kmW-by-m7g"/>
+                <outletCollection property="attachedImagesArray" destination="0q6-My-BHX" id="tRv-qC-Bh4"/>
+                <outletCollection property="attachedImagesArray" destination="Bej-Qd-wrz" id="ABR-eJ-DR9"/>
+                <outletCollection property="attachedImagesArray" destination="gCB-eS-W4x" id="ACu-mW-QCG"/>
+                <outletCollection property="attachedImagesArray" destination="Dtw-Im-i4T" id="iIL-VW-NKE"/>
+                <outletCollection property="attachedImagesArray" destination="yYZ-j2-8ll" id="3ut-RX-CeF"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -81,7 +86,7 @@
                             <rect key="frame" x="8" y="8" width="382" height="80"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="WOy-bU-FH4"/>
+                                <constraint firstAttribute="height" constant="80" id="WOy-bU-FH4"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -157,7 +162,7 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Kualitas" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDz-FD-BTg">
                                     <rect key="frame" x="58" y="44" width="60" height="21"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="S5H-Il-ScO"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="jlN-Sn-QQN"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -240,19 +245,19 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="hKJ-QS-cUe" firstAttribute="firstBaseline" secondItem="VDz-FD-BTg" secondAttribute="firstBaseline" id="65J-8s-ksv"/>
                                 <constraint firstAttribute="height" constant="73" id="85i-3h-WOQ"/>
+                                <constraint firstItem="VDz-FD-BTg" firstAttribute="centerX" secondItem="KIC-IL-jtL" secondAttribute="centerX" id="D21-v2-sS7"/>
                                 <constraint firstItem="dBt-Eq-AP3" firstAttribute="top" secondItem="mYE-Nj-sQI" secondAttribute="top" id="Ei1-Fc-Orl"/>
-                                <constraint firstItem="hKJ-QS-cUe" firstAttribute="bottom" secondItem="dBt-Eq-AP3" secondAttribute="bottom" id="FjA-BF-Qgy"/>
                                 <constraint firstItem="KIC-IL-jtL" firstAttribute="leading" secondItem="mYE-Nj-sQI" secondAttribute="leading" constant="7" id="KmK-lF-NW9"/>
+                                <constraint firstItem="VDz-FD-BTg" firstAttribute="bottom" secondItem="dBt-Eq-AP3" secondAttribute="bottom" id="Mx4-js-VQi"/>
                                 <constraint firstAttribute="bottom" secondItem="dBt-Eq-AP3" secondAttribute="bottom" constant="8" id="NdL-9t-BxY"/>
+                                <constraint firstItem="VDz-FD-BTg" firstAttribute="baseline" secondItem="hKJ-QS-cUe" secondAttribute="baseline" id="PpV-Di-boy"/>
                                 <constraint firstItem="dBt-Eq-AP3" firstAttribute="leading" secondItem="KIC-IL-jtL" secondAttribute="trailing" constant="22" id="Wyo-zZ-DvP"/>
+                                <constraint firstItem="VDz-FD-BTg" firstAttribute="firstBaseline" secondItem="hKJ-QS-cUe" secondAttribute="firstBaseline" id="eQL-l0-akv"/>
                                 <constraint firstItem="IsF-oJ-VI1" firstAttribute="leading" secondItem="dBt-Eq-AP3" secondAttribute="trailing" constant="20" id="iUl-Dt-t7C"/>
                                 <constraint firstItem="hKJ-QS-cUe" firstAttribute="centerX" secondItem="IsF-oJ-VI1" secondAttribute="centerX" id="qWe-2U-sB1"/>
                                 <constraint firstItem="KIC-IL-jtL" firstAttribute="top" secondItem="mYE-Nj-sQI" secondAttribute="top" id="raR-V9-wQw"/>
-                                <constraint firstItem="VDz-FD-BTg" firstAttribute="centerX" secondItem="KIC-IL-jtL" secondAttribute="centerX" id="uyh-N8-gyv"/>
                                 <constraint firstItem="IsF-oJ-VI1" firstAttribute="top" secondItem="mYE-Nj-sQI" secondAttribute="top" id="vVB-ws-dsl"/>
-                                <constraint firstItem="hKJ-QS-cUe" firstAttribute="baseline" secondItem="VDz-FD-BTg" secondAttribute="baseline" id="vsj-MO-xNI"/>
                                 <constraint firstAttribute="trailing" secondItem="IsF-oJ-VI1" secondAttribute="trailing" constant="8" id="xpb-nD-mMM"/>
                                 <constraint firstItem="hKJ-QS-cUe" firstAttribute="top" secondItem="IsF-oJ-VI1" secondAttribute="bottom" constant="14" id="ycQ-qv-aYz"/>
                             </constraints>
@@ -371,7 +376,7 @@
                 <constraint firstAttribute="trailing" secondItem="uLL-AB-LY4" secondAttribute="trailing" id="yv2-BU-2Ex"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-            <point key="canvasLocation" x="596" y="456"/>
+            <point key="canvasLocation" x="685" y="-46"/>
         </view>
     </objects>
     <resources>

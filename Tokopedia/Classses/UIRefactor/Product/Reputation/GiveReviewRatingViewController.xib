@@ -66,9 +66,6 @@
                         <constraint firstAttribute="trailing" secondItem="kwa-AB-Xby" secondAttribute="trailing" constant="8" id="UFT-Jq-zOM"/>
                         <constraint firstItem="MKd-yH-GVp" firstAttribute="leading" secondItem="C7E-tS-stT" secondAttribute="leading" constant="8" id="vLw-kJ-OpC"/>
                     </constraints>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="Z4C-ec-Htz" appends="YES" id="5Pm-mH-rjz"/>
-                    </connections>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wjl-CI-hCG" userLabel="Rating View">
                     <rect key="frame" x="8" y="68" width="398" height="265"/>
@@ -373,11 +370,6 @@
         <tapGestureRecognizer id="Fv1-Ty-PDq">
             <connections>
                 <action selector="tapAccuracyStars:" destination="-1" id="KOk-hW-T2m"/>
-            </connections>
-        </tapGestureRecognizer>
-        <tapGestureRecognizer id="Z4C-ec-Htz">
-            <connections>
-                <action selector="tapProduct:" destination="-1" id="5rj-DF-oTp"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
