@@ -49,6 +49,9 @@
                                                                             target:self
                                                                             action:@selector(tapToEdit:)];
     
+    _qualityStarsArray = [NSArray sortViewsWithTagInArray:_qualityStarsArray];
+    _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
+    
     [self setData];
     
     _networkManager = [TokopediaNetworkManager new];
@@ -117,7 +120,7 @@
 - (void)setQualityLabel {
     NSString *quality = @"";
     NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] initWithString:@"Kualitas:"
-                                                                                      attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:14.0]}];
+                                                                                      attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:11.0]}];
     
     switch (_qualityRate) {
         case 0:
@@ -144,7 +147,7 @@
     
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:quality
-                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:14.0]}]];
+                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:11.0]}]];
     
     _qualityLabel.attributedText = mutableString;
 }
@@ -152,7 +155,7 @@
 - (void)setAccuracyLabel {
     NSString *accuracy = @"";
     NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] initWithString:@"Akurasi:"
-                                                                                      attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:14.0]}];
+                                                                                      attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:11.0]}];
     
     switch (_accuracyRate) {
         case 0:
@@ -179,7 +182,7 @@
     
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:accuracy
-                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:14.0]}]];
+                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:11.0]}]];
     
     _accuracyLabel.attributedText = mutableString;
 }
