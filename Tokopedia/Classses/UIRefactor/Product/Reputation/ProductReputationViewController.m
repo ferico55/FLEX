@@ -361,14 +361,10 @@ static NSInteger userViewHeight = 70;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    if((filterStar == 0 && helpfulReviews.count > 0 && indexPath.section != 0) || (helpfulReviews.count == 0 && indexPath.section != 0)){
-        cell.backgroundColor = [UIColor clearColor];
-        if(indexPath.row == arrList.count-1) {
-            if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
-                [self setLoadingView:YES];
-                [[self getNetworkManager:CTagGetProductReview] doRequest];
-            }
+    if(indexPath.row == arrList.count-1) {
+        if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
+            [self setLoadingView:YES];
+            [[self getNetworkManager:CTagGetProductReview] doRequest];
         }
     }
     if(!animationHasShown && helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
