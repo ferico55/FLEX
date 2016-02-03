@@ -72,6 +72,18 @@
     return self;
 }
 
+- (id)initWithWarningMessages:(NSArray*)messages delegate:(id)delegate {
+    self = [self initWithMessages:messages
+                        textColor:[UIColor blackColor]
+                  backgroundColor:[UIColor colorWithRed:255.0/255.0
+                                                  green:204.0/255.0
+                                                   blue:102.0/255.0
+                                                  alpha:1]
+                         delegate:delegate];
+    return self;
+}
+
+
 -(id)initWithSuccessMessages:(NSArray *)messages delegate:(id)delegate;
 {
     self = [self initWithMessages:messages
