@@ -3,14 +3,13 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductAddCaptionViewController">
             <connections>
-                <outlet property="attachedImageView" destination="DX4-bV-VK4" id="uhE-9g-s2Y"/>
                 <outlet property="deleteIconImageView" destination="11W-vU-MBe" id="1J6-B1-99J"/>
                 <outlet property="imageCaptionTextField" destination="yHm-fj-GEl" id="TIc-bf-ZGe"/>
+                <outlet property="imagesScrollView" destination="l3m-xT-ZNa" id="YdX-rq-RfB"/>
                 <outlet property="imagesView" destination="3UZ-bl-Xdo" id="d9b-oQ-aie"/>
                 <outlet property="table" destination="gE7-hD-qga" id="2gG-Pi-b6o"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -49,7 +48,7 @@
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-4.5" y="266"/>
+            <point key="canvasLocation" x="47.5" y="231"/>
         </view>
         <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="290" id="8S6-ds-lm9">
             <rect key="frame" x="0.0" y="0.0" width="320" height="330"/>
@@ -58,30 +57,39 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DX4-bV-VK4">
+                    <scrollView clipsSubviews="YES" contentMode="scaleAspectFit" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3m-xT-ZNa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
-                    </imageView>
-                    <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="11W-vU-MBe">
-                        <rect key="frame" x="290" y="0.0" width="30" height="30"/>
+                        <subviews>
+                            <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="11W-vU-MBe">
+                                <rect key="frame" x="282" y="8" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Nfa-Xe-j74"/>
+                                    <constraint firstAttribute="width" constant="30" id="kAE-i3-3i3"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="REO-IP-jUX" appends="YES" id="U5Y-md-UVd"/>
+                                </connections>
+                            </imageView>
+                        </subviews>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="Nfa-Xe-j74"/>
-                            <constraint firstAttribute="width" constant="30" id="kAE-i3-3i3"/>
+                            <constraint firstAttribute="bottom" secondItem="11W-vU-MBe" secondAttribute="bottom" constant="291" id="2MP-hb-pkq"/>
+                            <constraint firstItem="11W-vU-MBe" firstAttribute="leading" secondItem="l3m-xT-ZNa" secondAttribute="leading" constant="282" id="ARN-9A-X0h"/>
+                            <constraint firstItem="11W-vU-MBe" firstAttribute="top" secondItem="l3m-xT-ZNa" secondAttribute="top" constant="8" id="VMb-lZ-vgX"/>
+                            <constraint firstAttribute="trailing" secondItem="11W-vU-MBe" secondAttribute="trailing" constant="8" id="kKt-gv-SJf"/>
                         </constraints>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="REO-IP-jUX" appends="YES" id="U5Y-md-UVd"/>
+                            <outlet property="delegate" destination="-1" id="hCS-31-tVO"/>
                         </connections>
-                    </imageView>
+                    </scrollView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="11W-vU-MBe" secondAttribute="trailing" constant="-8" id="63V-rL-7lK"/>
-                    <constraint firstItem="DX4-bV-VK4" firstAttribute="top" secondItem="Yqb-QV-WGq" secondAttribute="top" id="Dg8-WH-WCV"/>
-                    <constraint firstItem="DX4-bV-VK4" firstAttribute="leading" secondItem="Yqb-QV-WGq" secondAttribute="leading" id="Pwh-Nh-mOF"/>
-                    <constraint firstAttribute="topMargin" secondItem="11W-vU-MBe" secondAttribute="top" constant="8" id="Ybk-zz-BCF"/>
-                    <constraint firstAttribute="trailing" secondItem="DX4-bV-VK4" secondAttribute="trailing" id="mdb-nW-65a"/>
-                    <constraint firstAttribute="bottom" secondItem="DX4-bV-VK4" secondAttribute="bottom" id="zvj-Kd-6Kd"/>
+                    <constraint firstItem="l3m-xT-ZNa" firstAttribute="top" secondItem="Yqb-QV-WGq" secondAttribute="top" id="4Rg-ak-5w5"/>
+                    <constraint firstAttribute="bottom" secondItem="l3m-xT-ZNa" secondAttribute="bottom" id="Mpm-3p-FPk"/>
+                    <constraint firstAttribute="trailing" secondItem="l3m-xT-ZNa" secondAttribute="trailing" id="dzW-g8-zgq"/>
+                    <constraint firstItem="l3m-xT-ZNa" firstAttribute="leading" secondItem="Yqb-QV-WGq" secondAttribute="leading" id="g54-Lp-Qr5"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="379" y="173.5"/>
+            <point key="canvasLocation" x="530" y="-36"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="C5J-59-2JQ">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -138,7 +146,7 @@
                     <constraint firstItem="HsA-Qe-uLU" firstAttribute="leading" secondItem="tHY-fD-Vag" secondAttribute="leading" id="x7o-0U-niL"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="569" y="413"/>
+            <point key="canvasLocation" x="530" y="236"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" tag="12" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="60" id="Gb9-gn-EcS">
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
@@ -248,7 +256,7 @@
                     <constraint firstAttribute="trailing" secondItem="3UZ-bl-Xdo" secondAttribute="trailing" id="dKP-Kx-4Ze"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="569" y="527"/>
+            <point key="canvasLocation" x="530" y="366"/>
         </tableViewCell>
         <tapGestureRecognizer id="DLu-C1-eY2">
             <connections>

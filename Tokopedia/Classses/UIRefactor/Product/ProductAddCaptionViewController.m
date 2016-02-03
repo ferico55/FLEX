@@ -14,7 +14,7 @@
 #import "RequestUploadImage.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate> {
+@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate, UIScrollViewDelegate> {
     NavigateViewController *_navigate;
     
     UITextField *_activeTextField;
@@ -28,11 +28,14 @@
     NSMutableArray *_attachedImageURLs;
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
+    NSMutableArray *_attachedImagesCaptions;
     
     UIImageView *_selectedImageIcon;
     UIImageView *_selectedImageView;
     
     BOOL _isFinishedUploadingImage;
+    
+    NSInteger _numberOfUploadedImages;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -40,6 +43,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *attachedImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *deleteIconImageView;
 @property (weak, nonatomic) IBOutlet UITextField *imageCaptionTextField;
+@property (weak, nonatomic) IBOutlet UIScrollView *imagesScrollView;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *attachedImages;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *addCaptionCells;
 
@@ -87,8 +91,11 @@
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImageURLs = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _attachedImagesCaptions = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
     _attachedImages = [NSArray sortViewsWithTagInArray:_attachedImages];
+    
+    _numberOfUploadedImages = 0;
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
     [requestHost configureRestkitGenerateHost];
@@ -232,8 +239,7 @@
     } else {
         if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
-        } else {
-            _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
+        } else {            _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
             [_selectedImageIcon.layer setBorderColor:[[UIColor blueColor] CGColor]];
             [_selectedImageIcon.layer setBorderWidth:2.0];
             
@@ -244,9 +250,30 @@
                 }
             }
             
-            _attachedImageView.image = _selectedImageIcon.image;
+            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+                _imagesScrollView.contentOffset = CGPointMake((sender.view.tag-20) * _imagesScrollView.frame.size.width, 0);
+            } completion:nil];
+            
+//            _attachedImageView.image = _selectedImageIcon.image;
+//            _attachedImageView.tag = sender.view.tag-20;
 
             return;
+        }
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat pageWidth = _imagesScrollView.frame.size.width;
+    int page = floor((_imagesScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    
+    _selectedImageIcon = ((UIImageView*)self.attachedImages[page]);
+    [_selectedImageIcon.layer setBorderColor:[[UIColor blueColor] CGColor]];
+    [_selectedImageIcon.layer setBorderWidth:2.0];
+    
+    for (UIImageView *image in _attachedImages) {
+        if (image.tag != _selectedImageIcon.tag) {
+            [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
+            [image.layer setBorderWidth:0];
         }
     }
 }
@@ -298,8 +325,29 @@
         }
     }
     
+    _numberOfUploadedImages = _numberOfUploadedImages + j;
+    
+    for(int ii = 0; ii < _numberOfUploadedImages; ii++)
+    {
+        CGRect frame;
+        frame.origin.x = _imagesScrollView.frame.size.width * ii;
+        frame.origin.y = 0;
+        frame.size = _imagesScrollView.frame.size;
+        
+        UIImageView *newImageView = [[UIImageView alloc] initWithImage:((UIImageView*)self.attachedImages[ii]).image];
+        newImageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        
+ 
+        UIView *subView = [[UIView alloc] initWithFrame:frame];
+        [subView addSubview:newImageView];
+        [_imagesScrollView addSubview:subView];
+    }
+    
+    _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _numberOfUploadedImages, _imagesScrollView.frame.size.height);
+    
     if (_selectedImageView) {
-        _attachedImageView.image = _selectedImageView.image;
+//        _attachedImageView.image = _selectedImageView.image;
     }
     
 }
@@ -343,7 +391,8 @@
         }
     }
     
-    _attachedImageView.image = imagePhoto;    
+//    _attachedImageView.image = imagePhoto;
+//    _attachedImageView.tag = tagView;
     
     if (imageView != nil) {
         [object setObject:imageView forKey:@"data_selected_image_view"];
@@ -355,6 +404,8 @@
     if (!_isFromGiveReview) {
         [self actionUploadImage:object];
     }
+    
+    
 }
 
 #pragma mark - Request Action Upload Image
@@ -390,6 +441,9 @@
     
     [_uploadingImages removeObject:object];
     _isFinishedUploadingImage = YES;
+    
+    
+    
 }
 
 - (void)failedUploadObject:(id)object {
