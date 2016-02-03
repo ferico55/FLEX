@@ -50,6 +50,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Tambah Gambar";
+    
     _addCaptionCells = [NSArray sortViewsWithTagInArray:_addCaptionCells];
     
     UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
