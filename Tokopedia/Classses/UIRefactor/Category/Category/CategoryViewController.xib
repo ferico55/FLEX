@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ikQ-6Y-5dq">
-                    <rect key="frame" x="0.0" y="2" width="320" height="390"/>
+                    <rect key="frame" x="0.0" y="2" width="320" height="566"/>
                     <animations/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="1" minimumInteritemSpacing="0.0" id="uyH-RR-V9c">
@@ -34,7 +34,7 @@
             <constraints>
                 <constraint firstItem="ikQ-6Y-5dq" firstAttribute="leading" secondItem="qGp-dd-DRY" secondAttribute="leading" id="gIb-Qy-p8S"/>
                 <constraint firstItem="ikQ-6Y-5dq" firstAttribute="top" secondItem="qGp-dd-DRY" secondAttribute="top" constant="2" id="s6P-Gj-apR"/>
-                <constraint firstAttribute="bottom" secondItem="ikQ-6Y-5dq" secondAttribute="bottom" constant="176" id="sch-f5-Iwr"/>
+                <constraint firstAttribute="bottom" secondItem="ikQ-6Y-5dq" secondAttribute="bottom" id="sch-f5-Iwr"/>
                 <constraint firstAttribute="trailing" secondItem="ikQ-6Y-5dq" secondAttribute="trailing" id="xFH-Gy-uHa"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

@@ -127,7 +127,8 @@ CollectionViewSupplementaryDataSource
     [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
-    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
+//    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
+//    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
     [_collectionView addSubview:_firstFooter];
     
@@ -335,7 +336,9 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    _flowLayout.footerReferenceSize = CGSizeMake(self.view.bounds.size.width, 50);
+    [UIView animateWithDuration:1.0 animations:^{
+        _flowLayout.footerReferenceSize = CGSizeMake(self.view.bounds.size.width, 50);
+    }];
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {

@@ -102,7 +102,7 @@ PromoRequestDelegate
     tokopediaNetworkManager = [TokopediaNetworkManager new];
     tokopediaNetworkManager.delegate = self;
     
-    [self setTableInset];
+//    [self setTableInset];
     
     if (_shop.count > 0) {
         _isnodata = NO;
@@ -176,9 +176,9 @@ PromoRequestDelegate
     // Dispose of any resources that can be recreated.
 }
 
-- (void) setTableInset {
-    _table.contentInset = UIEdgeInsetsMake(7, 0, 200, 0);
-}
+//- (void) setTableInset {
+//    _table.contentInset = UIEdgeInsetsMake(7, 0, 200, 0);
+//}
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
