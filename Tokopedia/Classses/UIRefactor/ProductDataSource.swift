@@ -70,6 +70,28 @@ import UIKit
             return UICollectionReusableView()
         }
     }
+    
+    func sizeForItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
+        var numberOfCell: CGFloat
+        var cellHeight: CGFloat
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
+                numberOfCell = 5
+            } else {
+                numberOfCell = 4
+            }
+            cellHeight = 250
+        } else {
+            numberOfCell = 2;
+            cellHeight = 205
+        }
+        
+        let screenWidth = UIScreen.mainScreen().bounds.size.width
+        let cellWidth = screenWidth/numberOfCell - 15
+        
+        return CGSizeMake(cellWidth, cellHeight)
+    }
 }
 
 

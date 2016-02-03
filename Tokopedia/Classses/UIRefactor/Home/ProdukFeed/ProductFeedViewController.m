@@ -72,7 +72,7 @@ CollectionViewSupplementaryDataSource
     NSString *_nextPageUri;
     
     BOOL _isFailRequest;
-    BOOL _isShowRefreshControl;
+//    BOOL _isShowRefreshControl;
     
     UIRefreshControl *_refreshControl;
     
@@ -86,7 +86,6 @@ CollectionViewSupplementaryDataSource
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _isShowRefreshControl = NO;
         _isFailRequest = NO;
     }
     return self;
@@ -233,26 +232,13 @@ CollectionViewSupplementaryDataSource
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger numberOfCell;
-    NSInteger cellHeight;
-    if(IS_IPAD) {
-        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-        if(UIInterfaceOrientationIsLandscape(orientation)) {
-            numberOfCell = 5;
-        } else {
-            numberOfCell = 4;
-        }
-        cellHeight = 250;
-    } else {
-        numberOfCell = 2;
-        cellHeight = 205;
-    }
+/*
+ collectionView.delegate = self
+ collectionView.sizeCalculator = [ProductSizeCalculator new]
+ */
 
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-    
-    return CGSizeMake(cellWidth, cellHeight);
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [_productDataSource sizeForItemAtIndexPath:indexPath];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
@@ -266,7 +252,7 @@ CollectionViewSupplementaryDataSource
     }
     return size;
 }
- 
+
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -389,11 +375,8 @@ CollectionViewSupplementaryDataSource
     } else {
         // no data at all
         [_productDataSource removeAllProducts];
-        
-        
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         [_collectionView addSubview:_noResultView];
-        //[self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -407,16 +390,12 @@ CollectionViewSupplementaryDataSource
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     _flowLayout.footerReferenceSize = CGSizeZero;
-    _isShowRefreshControl = NO;
     [_refreshControl endRefreshing];
-    _isFailRequest = YES;
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
@@ -471,7 +450,7 @@ CollectionViewSupplementaryDataSource
 
 -(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
-    _isShowRefreshControl = YES;
+    
     [_networkManager doRequest];
 }
 
