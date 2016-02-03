@@ -64,6 +64,8 @@ CollectionViewSupplementaryDataSource
 
 @property (strong, nonatomic) PromoRequest *promoRequest;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) UIView *loadingView;
+
 @end
 
 
@@ -114,6 +116,10 @@ CollectionViewSupplementaryDataSource
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
+    _loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _collectionView.frame.size.width, 30)];
+    [_loadingView setBackgroundColor:[UIColor redColor]];
+    [_collectionView addSubview:_loadingView];
+    
     [self initNoResultView];
     _page = 1;
     
@@ -122,13 +128,10 @@ CollectionViewSupplementaryDataSource
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
+    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     
-    [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
-//    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
-//    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
     [_collectionView addSubview:_firstFooter];
     
@@ -336,13 +339,15 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    [UIView animateWithDuration:1.0 animations:^{
-        _flowLayout.footerReferenceSize = CGSizeMake(self.view.bounds.size.width, 50);
-    }];
+    [_loadingView setHidden:NO];
+    CGFloat yPosition = _collectionView.contentSize.height;
+    
+    CGRect frame = CGRectMake(0, yPosition, _collectionView.bounds.size.width, 50);
+    [_loadingView setFrame:frame];
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    _flowLayout.footerReferenceSize = CGSizeZero;
+    [_loadingView setHidden:YES];
     
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
@@ -367,18 +372,12 @@ CollectionViewSupplementaryDataSource
         _nextPageUri =  feed.data.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
-        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-        } else {
-            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-        }
-        
+
         if (_page > 1) [self requestPromo];
         
     } else {
         // no data at all
         [_productDataSource removeAllProducts];
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
         [_collectionView addSubview:_noResultView];
     }
     
@@ -392,7 +391,6 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
-    _flowLayout.footerReferenceSize = CGSizeZero;
     [_refreshControl endRefreshing];
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
@@ -453,13 +451,10 @@ CollectionViewSupplementaryDataSource
 
 -(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
-    
     [_networkManager doRequest];
 }
 
 - (void)registerNib {
-    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:productFeedCellIdentifier];
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
@@ -487,12 +482,6 @@ CollectionViewSupplementaryDataSource
     }
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
-}
-
-#pragma mark - No Request delegate
-- (void)buttonDidTapped:(id)sender{
-    NSDictionary *userInfo = @{@"page" : @5};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
 }
 
 #pragma mark - Promo collection delegate
