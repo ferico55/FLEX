@@ -2032,6 +2032,9 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB0842D51C61A22B009B3463 /* CatalogShopAWS.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0842D41C61A22B009B3463 /* CatalogShopAWS.m */; };
+		BB0842D81C61A2B8009B3463 /* CatalogShopAWSResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0842D71C61A2B8009B3463 /* CatalogShopAWSResult.m */; };
+		BB0842DB1C61A396009B3463 /* CatalogShopAWSProductResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0842DA1C61A396009B3463 /* CatalogShopAWSProductResult.m */; };
 		BB2E2C261C55D18400500D0C /* FavoriteShopRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2E2C251C55D18400500D0C /* FavoriteShopRequest.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -5107,6 +5110,12 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BB0842D31C61A22B009B3463 /* CatalogShopAWS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogShopAWS.h; sourceTree = "<group>"; };
+		BB0842D41C61A22B009B3463 /* CatalogShopAWS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogShopAWS.m; sourceTree = "<group>"; };
+		BB0842D61C61A2B8009B3463 /* CatalogShopAWSResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogShopAWSResult.h; sourceTree = "<group>"; };
+		BB0842D71C61A2B8009B3463 /* CatalogShopAWSResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogShopAWSResult.m; sourceTree = "<group>"; };
+		BB0842D91C61A396009B3463 /* CatalogShopAWSProductResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogShopAWSProductResult.h; sourceTree = "<group>"; };
+		BB0842DA1C61A396009B3463 /* CatalogShopAWSProductResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogShopAWSProductResult.m; sourceTree = "<group>"; };
 		BB2E2C241C55D18400500D0C /* FavoriteShopRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteShopRequest.h; sourceTree = "<group>"; };
 		BB2E2C251C55D18400500D0C /* FavoriteShopRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteShopRequest.m; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -9452,6 +9461,12 @@
 				7A71FD811C4CF81800D00615 /* CatalogList.m */,
 				7A71FD821C4CF81800D00615 /* CatalogResult.h */,
 				7A71FD831C4CF81800D00615 /* CatalogResult.m */,
+				BB0842D31C61A22B009B3463 /* CatalogShopAWS.h */,
+				BB0842D41C61A22B009B3463 /* CatalogShopAWS.m */,
+				BB0842D61C61A2B8009B3463 /* CatalogShopAWSResult.h */,
+				BB0842D71C61A2B8009B3463 /* CatalogShopAWSResult.m */,
+				BB0842D91C61A396009B3463 /* CatalogShopAWSProductResult.h */,
+				BB0842DA1C61A396009B3463 /* CatalogShopAWSProductResult.m */,
 			);
 			path = Catalog;
 			sourceTree = "<group>";
@@ -12215,6 +12230,7 @@
 				7A710D501C4CF81D00D00615 /* ProductListMyShopViewController.m in Sources */,
 				7A710A4F1C4CF81D00D00615 /* FavoriteShopAction.m in Sources */,
 				7A710C681C4CF81D00D00615 /* ScrollViewSimultaneousGesture.m in Sources */,
+				BB0842D81C61A2B8009B3463 /* CatalogShopAWSResult.m in Sources */,
 				7A710DB21C4CF81D00D00615 /* DetailShipmentStatusViewController.m in Sources */,
 				7A710B701C4CF81D00D00615 /* TransactionBuy.m in Sources */,
 				7A7109FE1C4CF81D00D00615 /* SendOTP.m in Sources */,
@@ -12495,6 +12511,7 @@
 				7A710C6C1C4CF81D00D00615 /* TextField.m in Sources */,
 				7A710D161C4CF81D00D00615 /* MyShopShipmentTableViewController.m in Sources */,
 				7A710C521C4CF81D00D00615 /* TKPDTabInboxReviewNavigationController.m in Sources */,
+				BB0842DB1C61A396009B3463 /* CatalogShopAWSProductResult.m in Sources */,
 				7A710A921C4CF81D00D00615 /* InboxTalkList.m in Sources */,
 				7A710D941C4CF81D00D00615 /* SalesNewOrderViewController.m in Sources */,
 				7A710A781C4CF81D00D00615 /* ResolutionAction.m in Sources */,
@@ -12701,6 +12718,7 @@
 				7A710B051C4CF81D00D00615 /* OrderBookingResponse.m in Sources */,
 				7A710B061C4CF81D00D00615 /* OrderCustomer.m in Sources */,
 				7A710CD01C4CF81D00D00615 /* InboxResolutionCenterTabViewController.m in Sources */,
+				BB0842D51C61A22B009B3463 /* CatalogShopAWS.m in Sources */,
 				7A710D711C4CF81D00D00615 /* PromoRequest.m in Sources */,
 				7A710A491C4CF81D00D00615 /* Favorited.m in Sources */,
 				7A710D1A1C4CF81D00D00615 /* NotificationManager.m in Sources */,

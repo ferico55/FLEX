@@ -30,6 +30,10 @@
 #import "SearchAWSProduct.h"
 #import "SearchAWSResult.h"
 
+#import "CatalogShopAWS.h"
+#import "CatalogShopAWSResult.h"
+#import "CatalogShopAWSProductResult.h"
+
 #import "search.h"
 #import "sortfiltershare.h"
 #import "string_product.h"
@@ -91,6 +95,7 @@
     [super viewDidLoad];
     
     _navigator = [NavigateViewController new];
+    _catalog_shops = [[NSMutableArray alloc]init];
  
     self.title = @"Daftar Toko";
     
@@ -110,8 +115,8 @@
     [_networkManager doRequest];
     
     _page = 0;
-    _uriNext = _catalog.result.paging.uri_next;
-    _catalogId = _catalog.result.catalog_info.catalog_id;
+    //_uriNext = _catalog.result.paging.uri_next;
+    //_catalogId = _catalog.result.catalog_info.catalog_id;
     
     _startPerPage = 5;
     _start = 0;
@@ -124,6 +129,7 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
+    
     
     if (_catalog_shops.count == 0) [self initNoResultView];
 }
@@ -146,8 +152,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
-    if (shop.product_list.count > 1) {
+    CatalogShopAWSProductResult *catalogShop = [_catalog_shops objectAtIndex:indexPath.row];
+    if (catalogShop.products.count > 1) {
         return 245;
     } else {
         return 225;
@@ -169,22 +175,23 @@
     
     cell.delegate = self;
     cell.indexPath = indexPath;
-
-    CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
+    
+    CatalogShopAWSProductResult *catalogShop = [_catalog_shops objectAtIndex:indexPath.row];
+    SearchAWSShop *shop = catalogShop.shop;
     cell.shopNameLabel.text = shop.shop_name;
     [cell.btnLocation setTitle:shop.shop_location||![shop.shop_location isEqualToString:@""]?shop.shop_location:@"-" forState:UIControlStateNormal];
     
-    ProductList *product = [shop.product_list objectAtIndex:0];
+    SearchAWSProduct *product = [catalogShop.products objectAtIndex:0];
     cell.productNameLabel.text = product.product_name;
-    cell.productConditionLabel.text = product.product_condition;
+    cell.productConditionLabel.text = product.condition;
     cell.productPriceLabel.text = product.product_price;
     
     cell.buyButton.layer.cornerRadius = 2;
     
-    cell.goldMerchantBadge.hidden = (!shop.is_gold_shop == 1);
+    cell.goldMerchantBadge.hidden = ![shop.shop_gold_shop isEqualToString:@"1"];
     
-    cell.constraintWidthGoldMerchant.constant = (shop.is_gold_shop == 0)?0:20;
-    cell.constraintSpaceLuckyMerchant.constant = (shop.is_gold_shop == 0)?0:2;
+    cell.constraintWidthGoldMerchant.constant = (![shop.shop_gold_shop isEqualToString:@"1"])?0:20;
+    cell.constraintSpaceLuckyMerchant.constant = (![shop.shop_gold_shop isEqualToString:@"1"])?0:2;
     
     UIImageView *thumb = cell.luckyMerchantBadge;
     thumb.image = nil;
@@ -203,9 +210,9 @@
                                            thumb.contentMode = UIViewContentModeScaleAspectFill;
     } failure:nil];
 
-    if (shop.product_list.count > 1) {
+    if (catalogShop.products.count > 1) {
         [cell.seeOtherProducts setTitle:[NSString stringWithFormat:@"Lihat produk lainnya (%@)",
-                                         [NSNumber numberWithInteger:shop.product_list.count]]
+                                         [NSNumber numberWithInteger:catalogShop.products.count]]
                                forState:UIControlStateNormal];
         cell.masking.hidden = YES;
     } else {
@@ -213,7 +220,7 @@
         cell.masking.hidden = NO;
     }
     
-    [SmileyAndMedal generateMedalWithLevel:shop.shop_reputation.shop_badge_level.level
+    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop.shop_reputation.shop_badge_level.level
                                    withSet:shop.shop_reputation.shop_badge_level.set
                                  withImage:cell.stars
                                    isLarge:YES];
@@ -322,190 +329,71 @@
 }
 
 - (id)getObjectManager:(int)tag {
-    /*
-    _objectManager =  [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Catalog class]];
-    [statusMapping addAttributeMappingsFromArray:@[API_STATUS_KEY,]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[API_CATALOG_IMAGE_KEY,]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromArray:@[API_URI_NEXT_KEY]];
-
-    RKObjectMapping *catalogInfoMapping = [RKObjectMapping mappingForClass:[CatalogInfo class]];
-    [catalogInfoMapping addAttributeMappingsFromArray:@[API_CATALOG_NAME_KEY,
-                                                        API_CATALOG_DESCRIPTION_KEY,
-                                                        API_CATALOG_KEY_KEY,
-                                                        API_CATALOG_DEPARTMENT_ID_KEY,
-                                                        API_CATALOG_URL_KEY,
-                                                        API_CATALOG_ID_KEY]];
-    
-    RKObjectMapping *catalogPriceMapping = [RKObjectMapping mappingForClass:[CatalogPrice class]];
-    [catalogPriceMapping addAttributeMappingsFromArray:@[API_PRICE_MIN_KEY,
-                                                         API_PRICE_MAX_KEY]];
-    
-    RKObjectMapping *catalogImageMapping = [RKObjectMapping mappingForClass:[CatalogImages class]];
-    [catalogImageMapping addAttributeMappingsFromArray:@[API_IMAGE_PRIMARY_KEY,
-                                                         API_IMAGE_SRC_KEY,
-                                                         @"image_src_full"]];
-    
-    RKObjectMapping *catalogSpecificationMapping = [RKObjectMapping mappingForClass:[CatalogSpecs class]];
-    [catalogSpecificationMapping addAttributeMappingsFromArray:@[API_SPEC_HEADER_KEY,]];
-    
-    RKObjectMapping *catalogSpecificationChildMapping = [RKObjectMapping mappingForClass:[SpecChilds class]];
-    [catalogSpecificationChildMapping addAttributeMappingsFromArray:@[API_SPEC_VAL_KEY,
-                                                                      API_SPEC_KEY_KEY]];
-    
-    RKObjectMapping *catalogLocationMapping = [RKObjectMapping mappingForClass:[CatalogLocation class]];
-    [catalogLocationMapping addAttributeMappingsFromArray:@[API_LOCATION_NAME_KEY,
-                                                            API_LOCATION_ID_KEY,
-                                                            API_TOTAL_SHOP_KEY]];
-    
-    RKObjectMapping *catalogReviewMapping = [RKObjectMapping mappingForClass:[CatalogReview class]];
-    [catalogReviewMapping addAttributeMappingsFromArray:@[API_REVIEW_FROM_IMAGE_KEY,
-                                                          API_REVIEW_RATING_KEY,
-                                                          API_REVIEW_URL_KEY,
-                                                          API_REVIEW_FROM_URL_KEY,
-                                                          API_REVIEW_FROM_KEY,
-                                                          API_CATALOG_ID_KEY,
-                                                          API_REVIEW_DESCRIPTION_KEY]];
-    
-    RKObjectMapping *catalogMarketPriceMapping = [RKObjectMapping mappingForClass:[CatalogMarketPlace class]];
-    [catalogMarketPriceMapping addAttributeMappingsFromArray:@[API_MAX_PRICE_KEY,
-                                                               API_TIME_KEY,
-                                                               API_NAME_KEY,
-                                                               API_MIN_PRICE_KEY]];
-    
-    RKObjectMapping *catalogShopsMapping = [RKObjectMapping mappingForClass:[CatalogShops class]];
-    [catalogShopsMapping addAttributeMappingsFromArray:@[
-                                                         API_SHOP_ID_NUMBER_KEY,
-                                                         API_SHOP_NAME_KEY,
-                                                         API_SHOP_TOTAL_ADDRESS_KEY,
-                                                         API_SHOP_IMAGE_KEY,
-                                                         API_SHOP_LOCATION_KEY,
-                                                         @"shop_total_product",
-                                                         API_SHOP_RATE_SERVICE_KEY,
-                                                         API_SHOP_RATE_ACCURACY_KEY,
-                                                         API_SHOP_RATE_SPEED_KEY,
-                                                         @"is_gold_shop",
-                                                         @"shop_lucky"
-                                                         ]];
-    
-    RKObjectMapping *productListMapping = [RKObjectMapping mappingForClass:[ProductList class]];
-    [productListMapping addAttributeMappingsFromArray:@[API_PRODUCT_CONDITION_KEY,
-                                                        API_PRODUCT_PRICE_KEY,
-                                                        @"product_id",
-                                                        @"product_name",
-                                                        API_SHOP_NAME_KEY]];
-    
-    RKObjectMapping *shopStatMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
-    [shopStatMapping addAttributeMappingsFromDictionary:@{CToolTip : CToolTip, @"reputation_score": CShopReputationScore}];
-
-    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
-                                                                                  toKeyPath:kTKPD_APIPAGINGKEY
-                                                                                withMapping:pagingMapping]];
-
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_info"
-                                                                                  toKeyPath:@"catalog_info"
-                                                                                withMapping:catalogInfoMapping]];
-    
-    [catalogInfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_PRICE_KEY
-                                                                                       toKeyPath:API_CATALOG_PRICE_KEY
-                                                                                     withMapping:catalogPriceMapping]];
-    
-    [catalogInfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_IMAGE_KEY
-                                                                                       toKeyPath:API_CATALOG_IMAGE_KEY
-                                                                                     withMapping:catalogImageMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_SPECS_KEY
-                                                                                  toKeyPath:API_CATALOG_SPECS_KEY
-                                                                                withMapping:catalogSpecificationMapping]];
-    
-    [catalogSpecificationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_SPEC_CHILDS_KEY
-                                                                                                toKeyPath:API_SPEC_CHILDS_KEY
-                                                                                              withMapping:catalogSpecificationChildMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_LOCATION_KEY
-                                                                                  toKeyPath:API_CATALOG_LOCATION_KEY
-                                                                                withMapping:catalogLocationMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_REVIEW_KEY
-                                                                                  toKeyPath:API_CATALOG_REVIEW_KEY
-                                                                                withMapping:catalogReviewMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_MARKET_PRICE_KEY
-                                                                                  toKeyPath:API_CATALOG_MARKET_PRICE_KEY
-                                                                                withMapping:catalogMarketPriceMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_CATALOG_SHOPS_KEY
-                                                                                  toKeyPath:API_CATALOG_SHOPS_KEY
-                                                                                withMapping:catalogShopsMapping]];
-    
-    [shopStatMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"reputation_badge"
-                                                                                    toKeyPath:CShopBadgeLevel
-                                                                                  withMapping:shopBadgeMapping]];
-    
-    [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation
-                                                                                        toKeyPath:CShopReputation
-                                                                                      withMapping:shopStatMapping]];
-
-    [catalogShopsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_LIST_KEY
-                                                                                        toKeyPath:API_PRODUCT_LIST_KEY
-                                                                                      withMapping:productListMapping]];
-    
-    RKResponseDescriptor *response = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                  method:RKRequestMethodPOST
-                                                                             pathPattern:API_CATALOG_PATH
-                                                                                 keyPath:@""
-                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:response];
-
-    return _objectManager;
-     */
-    
     _objectManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
     
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[CatalogShopAWS class]];
+    //[statusMapping addAttributeMappingsFromArray:@[@"status", @"message_error", @"server_process_time"]];
+    [statusMapping addAttributeMappingsFromDictionary:@{
+                                                        @"message_error":@"status"
                                                         }];
     
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[CatalogShopAWSResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[@"search_url", @"share_url", @"total_record"]];
     
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
-                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
-                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
-                                                        }];
+    RKObjectMapping *catalogProductMapping = [RKObjectMapping mappingForClass:[CatalogShopAWSProductResult class]];
     
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-    //product
-    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+    RKObjectMapping *shopMapping = [RKObjectMapping mappingForClass:[SearchAWSShop class]];
+    [shopMapping addAttributeMappingsFromArray:@[@"shop_id",
+                                                 @"shop_name",
+                                                 @"shop_domain",
+                                                 @"shop_url",
+                                                 @"shop_is_img",
+                                                 @"shop_image",
+                                                 @"shop_image_300",
+                                                 @"shop_description",
+                                                 @"shop_tag_line",
+                                                 @"shop_location",
+                                                 @"shop_total_transaction",
+                                                 @"shop_total_favorite",
+                                                 @"shop_gold_shop",
+                                                 @"shop_is_owner",
+                                                 @"shop_rate_speed",
+                                                 @"shop_rate_accuracy",
+                                                 @"shop_rate_service",
+                                                 @"shop_status",
+                                                 @"shop_lucky",
+                                                 @"reputation_image_uri",
+                                                 @"reputation_score"
+                                                 ]];
     
-    // paging mapping
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
+    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+    [productMapping addAttributeMappingsFromArray:@[@"product_url",
+                                                    @"product_name",
+                                                    @"product_id",
+                                                    @"product_image_full",
+                                                    @"product_image",
+                                                    @"product_price",
+                                                    @"product_wholesale",
+                                                    @"shop_location",
+                                                    @"shop_url",
+                                                    @"shop_gold_status",
+                                                    @"shop_name",
+                                                    @"rate",
+                                                    @"product_sold_count",
+                                                    @"product_review_count",
+                                                    @"product_talk_count",
+                                                    @"is_owner",
+                                                    @"shop_lucky",
+                                                    @"shop_id",
+                                                    @"condition"
+                                                    ]];
     
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *productsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
-    
-    [resultMapping addPropertyMapping:productsRel];
-    
-    // add page relationship
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_products" toKeyPath:@"catalog_products" withMapping:catalogProductMapping]];
+    [catalogProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop" toKeyPath:@"shop" withMapping:shopMapping]];
+    [catalogProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:productMapping]];
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
@@ -547,53 +435,37 @@
         [_refreshControl endRefreshing];
     }
      */
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    SearchAWS *feed = [result objectForKey:@""];
     
-    if (feed.result.products.count > 0) {
-        if (_page == 1) {
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    CatalogShopAWS *shops = [result objectForKey:@""];
+    
+    NSMutableArray *catalogShops = [[NSMutableArray alloc]init];
+    
+    if (shops.result.catalog_products > 0) {
+        if (_page == 0) {
             [_catalog_shops removeAllObjects];
         }
         
-        [_catalog_shops addObject:feed.result.products];
-        
-        [TPAnalytics trackProductImpressions:feed.result.products];
-        
-        _isNoData = NO;
-        _nextPageUri =  feed.result.paging.uri_next;
-        //_page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
+        [_catalog_shops addObject:shops.result.catalog_products];
         _page++;
         
-        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-            //remove loadingview if there is no more item
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-        } else {
-            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-        }
         
-        if (_page > 1) [self requestPromo];
         
     } else {
         // no data at all
-        _isNoData = YES;
-        [_product removeAllObjects];
-        [_collectionView reloadData];
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResultView];
-        //[self setView:_noResultView];
+        
     }
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
-        [_collectionView reloadData];
     } else  {
-        [_collectionView reloadData];
     }
-    [_collectionView layoutIfNeeded];
-
+        [_tableView reloadData];
+    
 }
 
 - (void)loadMappingResult:(RKMappingResult *)result {
+    /*
     if (result && [result isKindOfClass:[RKMappingResult class]]) {
         Catalog *catalog = [result.dictionary objectForKey:@""];
         if (_page == 1) [_catalog_shops removeAllObjects];
@@ -605,6 +477,7 @@
         [_activityIndicatorView stopAnimating];
         [_refreshControl endRefreshing];
     }
+     */
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
