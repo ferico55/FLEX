@@ -49,8 +49,19 @@ import UIKit
     }
     
     func addProducts(products:Array<ProductFeedList>) {
+        let indexPaths = indexPathForInsertions(products)
         _products.appendContentsOf(products)
-        _collectionView.reloadData()
+        _collectionView.insertItemsAtIndexPaths(indexPaths)
+    }
+    
+    func indexPathForInsertions(products: Array<ProductFeedList>) -> [NSIndexPath] {
+        var indexPaths:[NSIndexPath] = []
+        
+        for var index = 0; index < products.count; index++ {
+            indexPaths.append(NSIndexPath(forItem: index + _products.count, inSection: 0))
+        }
+        
+        return indexPaths
     }
 
     func replaceProductsWith(products:Array<ProductFeedList>) {
