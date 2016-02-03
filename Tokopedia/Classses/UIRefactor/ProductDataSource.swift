@@ -9,14 +9,20 @@
 import Foundation
 import UIKit
 
+@objc protocol CollectionViewSupplementaryDataSource {
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView;
+}
+
 @objc class ProductDataSource : NSObject, UICollectionViewDataSource {
     static let productCellIdentifier: String = "ProductCellIdentifier"
     
     var _collectionView: UICollectionView!
     var _products: Array<ProductFeedList>!
+    var _supplementaryDataSource: CollectionViewSupplementaryDataSource!
 //
-    init(collectionView:UICollectionView) {
+    init(collectionView:UICollectionView, supplementaryDataSource: CollectionViewSupplementaryDataSource?) {
         super.init()
+        _supplementaryDataSource = supplementaryDataSource
         _products = Array<ProductFeedList>()
         _collectionView = collectionView
         _collectionView.dataSource = self
@@ -51,7 +57,21 @@ import UIKit
         _products = products
         _collectionView.reloadData()
     }
+    
+    func removeAllProducts() {
+        _products.removeAll()
+        _collectionView.reloadData()
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        if _supplementaryDataSource != nil {
+            return _supplementaryDataSource.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath)
+        } else {
+            return UICollectionReusableView()
+        }
+    }
 }
+
 
 /*
 _dataSource = [ProductDataSource alloc] init]

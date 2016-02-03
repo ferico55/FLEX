@@ -47,7 +47,8 @@ UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
 PromoRequestDelegate,
-NoResultDelegate
+NoResultDelegate,
+CollectionViewSupplementaryDataSource
 >
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -103,7 +104,7 @@ NoResultDelegate
 - (void) viewDidLoad {
     [super viewDidLoad];
     
-    _productDataSource = [[ProductDataSource alloc] initWithCollectionView:_collectionView];
+    _productDataSource = [[ProductDataSource alloc] initWithCollectionView:_collectionView supplementaryDataSource:self];
 
     
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
@@ -177,30 +178,9 @@ NoResultDelegate
                                                object:nil];
 }
 
-#pragma mark - Collection Delegate
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return _product.count;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [[_product objectAtIndex:section] count];
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:productFeedCellIdentifier forIndexPath:indexPath];
-    
-    ProductFeedList *product = [_product[indexPath.section] objectAtIndex:indexPath.row];
-    [cell setViewModel:product.viewModel];
-
-    return cell;
-}
-
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    //next page if already last cell
-//    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
     NSInteger row = [_collectionView numberOfItemsInSection:0] - 1;
-//    if (indexPath.section == section && indexPath.row == row) {
+
     if (indexPath.row == row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
@@ -286,19 +266,7 @@ NoResultDelegate
     }
     return size;
 }
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    CGSize size = CGSizeZero;
-    NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
-    if (section == lastSection) {
-        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
-            size = CGSizeMake(self.view.frame.size.width, 50);
-        }
-    } else if (_product.count == 0 && _page == 1) {
-        size = CGSizeMake(self.view.frame.size.width, 50);
-    }
-    return size;
-}
+ 
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -381,10 +349,12 @@ NoResultDelegate
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    
+    _flowLayout.footerReferenceSize = CGSizeMake(self.view.bounds.size.width, 50);
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    _flowLayout.footerReferenceSize = CGSizeZero;
+    
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
     [_noResultView removeFromSuperview];
@@ -418,8 +388,9 @@ NoResultDelegate
         
     } else {
         // no data at all
-        [_product removeAllObjects];
-        [_collectionView reloadData];
+        [_productDataSource removeAllProducts];
+        
+        
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         [_collectionView addSubview:_noResultView];
         //[self setView:_noResultView];
@@ -435,6 +406,7 @@ NoResultDelegate
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
+    _flowLayout.footerReferenceSize = CGSizeZero;
     _isShowRefreshControl = NO;
     [_refreshControl endRefreshing];
     _isFailRequest = YES;
