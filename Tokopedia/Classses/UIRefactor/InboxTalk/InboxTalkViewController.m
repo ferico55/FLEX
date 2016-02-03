@@ -450,13 +450,15 @@
         
         [self.table reloadData];
 
-        if (isFirstShow) {
-            isFirstShow = NO;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                TalkCell* cell = [_table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                [cell tapToDetailTalk:cell];
-            });
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if (isFirstShow) {
+                isFirstShow = NO;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    TalkCell* cell = [_table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                    [cell tapToDetailTalk:cell];
+                });
+            }
         }
     } else {
         NSString *text;
