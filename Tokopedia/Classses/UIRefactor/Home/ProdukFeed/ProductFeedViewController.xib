@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductFeedViewController">
             <connections>
                 <outlet property="collectionView" destination="tRQ-6E-Haa" id="SJg-f4-a6c"/>
-                <outlet property="firstFooter" destination="ciC-2Y-TwX" id="bbt-lq-NjL"/>
                 <outlet property="flowLayout" destination="0dN-xL-EyT" id="UJR-d6-1CW"/>
                 <outlet property="view" destination="iN0-l3-epB" id="HQd-wJ-JsY"/>
             </connections>
