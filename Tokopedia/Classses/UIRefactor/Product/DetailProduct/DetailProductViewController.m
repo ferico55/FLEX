@@ -2187,7 +2187,10 @@ NoResultDelegate
             [self setOtherProducts];
             [self addImpressionClick];
 
+            //Track in GA
             [TPAnalytics trackProductView:_product.result.product];
+            
+            self.userActivity = [TPSpotlight productDetailActivity:_product.result.product];
             
             _isnodata = NO;
             [_table reloadData];

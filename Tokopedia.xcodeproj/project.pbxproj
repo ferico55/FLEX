@@ -2037,6 +2037,8 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		85FB67F91C62041A00EDCD1D /* TPSpotlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 85FB67F81C62041A00EDCD1D /* TPSpotlight.m */; };
+		85FB67FB1C6209B600EDCD1D /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FB67FA1C6209B600EDCD1D /* CoreSpotlight.framework */; };
 		8917F7DACFE44A03B51AA454 /* RolloutDynamic_05.m in Sources */ = {isa = PBXBuildFile; fileRef = 6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8C25CB72C9504D0289FE6475 /* RolloutDynamic_16.m in Sources */ = {isa = PBXBuildFile; fileRef = A05CDE3AB94D4662AE7303A7 /* RolloutDynamic_16.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8E3B2B29E0054A1D9A285411 /* RolloutDynamic_20.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5132,6 +5134,9 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		85FB67F71C62041A00EDCD1D /* TPSpotlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSpotlight.h; sourceTree = "<group>"; };
+		85FB67F81C62041A00EDCD1D /* TPSpotlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSpotlight.m; sourceTree = "<group>"; };
+		85FB67FA1C6209B600EDCD1D /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_18.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_18.m"; sourceTree = "<group>"; };
 		8E670BDDA5CB41D18FCB051D /* RolloutDynamic_02.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_02.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_02.m"; sourceTree = "<group>"; };
@@ -5174,6 +5179,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85FB67FB1C6209B600EDCD1D /* CoreSpotlight.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -9238,6 +9244,7 @@
 		7A71FD031C4CF81800D00615 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				853DF0F31C61D7B5003A7D36 /* Spotlight */,
 				7A71FD041C4CF81800D00615 /* Analytics */,
 				7A71FD071C4CF81800D00615 /* CacheController */,
 				7A71FD0E1C4CF81800D00615 /* Cocoa */,
@@ -10579,6 +10586,15 @@
 			path = Shipment;
 			sourceTree = "<group>";
 		};
+		853DF0F31C61D7B5003A7D36 /* Spotlight */ = {
+			isa = PBXGroup;
+			children = (
+				85FB67F71C62041A00EDCD1D /* TPSpotlight.h */,
+				85FB67F81C62041A00EDCD1D /* TPSpotlight.m */,
+			);
+			path = Spotlight;
+			sourceTree = "<group>";
+		};
 		85B136FD1C30E697001F1CBC /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -10643,6 +10659,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85FB67FA1C6209B600EDCD1D /* CoreSpotlight.framework */,
 				7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */,
 				7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */,
 				7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */,
@@ -12411,6 +12428,7 @@
 				7A710D031C4CF81D00D00615 /* MyShopEtalaseDetailViewController.m in Sources */,
 				7A710CC91C4CF81D00D00615 /* InboxResolutionCenterComplainCell.m in Sources */,
 				7A710AEE1C4CF81D00D00615 /* PrivacyFormPrivacy.m in Sources */,
+				85FB67F91C62041A00EDCD1D /* TPSpotlight.m in Sources */,
 				7A710CCF1C4CF81D00D00615 /* InboxResolutionCenterObjectMapping.m in Sources */,
 				7A710EB91C4CF81D00D00615 /* CatalogModelView.m in Sources */,
 				7A710A1B1C4CF81D00D00615 /* DepositFormResult.m in Sources */,
