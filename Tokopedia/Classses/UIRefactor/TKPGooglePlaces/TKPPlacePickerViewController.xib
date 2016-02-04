@@ -58,11 +58,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tq3-y5-YOS">
                     <rect key="frame" x="160" y="150" width="280" height="74"/>
                     <subviews>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xf5-Ix-U7Q">
-                            <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
-                            <animations/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="gU1-rc-bpl">
                             <rect key="frame" x="0.0" y="62" width="280" height="32"/>
                             <animations/>
@@ -70,6 +65,11 @@
                                 <constraint firstAttribute="height" constant="32" id="ahK-mP-32z"/>
                             </constraints>
                         </imageView>
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xf5-Ix-U7Q">
+                            <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tandai lokasi Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STy-T0-3SC">
                             <rect key="frame" x="10" y="0.0" width="210" height="64"/>
                             <animations/>
