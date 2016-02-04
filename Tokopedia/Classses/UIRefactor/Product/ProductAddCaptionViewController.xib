@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductAddCaptionViewController">
             <connections>
-                <outlet property="deleteIconImageView" destination="11W-vU-MBe" id="1J6-B1-99J"/>
                 <outlet property="imageCaptionTextField" destination="yHm-fj-GEl" id="TIc-bf-ZGe"/>
                 <outlet property="imagesScrollView" destination="l3m-xT-ZNa" id="YdX-rq-RfB"/>
                 <outlet property="imagesView" destination="3UZ-bl-Xdo" id="d9b-oQ-aie"/>
@@ -59,24 +58,6 @@
                 <subviews>
                     <scrollView clipsSubviews="YES" contentMode="scaleAspectFit" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3m-xT-ZNa">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="329"/>
-                        <subviews>
-                            <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="11W-vU-MBe">
-                                <rect key="frame" x="282" y="8" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Nfa-Xe-j74"/>
-                                    <constraint firstAttribute="width" constant="30" id="kAE-i3-3i3"/>
-                                </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="REO-IP-jUX" appends="YES" id="U5Y-md-UVd"/>
-                                </connections>
-                            </imageView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="11W-vU-MBe" secondAttribute="bottom" constant="291" id="2MP-hb-pkq"/>
-                            <constraint firstItem="11W-vU-MBe" firstAttribute="leading" secondItem="l3m-xT-ZNa" secondAttribute="leading" constant="282" id="ARN-9A-X0h"/>
-                            <constraint firstItem="11W-vU-MBe" firstAttribute="top" secondItem="l3m-xT-ZNa" secondAttribute="top" constant="8" id="VMb-lZ-vgX"/>
-                            <constraint firstAttribute="trailing" secondItem="11W-vU-MBe" secondAttribute="trailing" constant="8" id="kKt-gv-SJf"/>
-                        </constraints>
                         <connections>
                             <outlet property="delegate" destination="-1" id="hCS-31-tVO"/>
                         </connections>
@@ -289,7 +270,4 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
-    <resources>
-        <image name="icon_cancel.png" width="20" height="20"/>
-    </resources>
 </document>

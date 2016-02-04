@@ -13,6 +13,7 @@
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIView+HVDLayout.h"
 
 @interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate, UIScrollViewDelegate> {
     NavigateViewController *_navigate;
@@ -250,14 +251,7 @@
                 }
             }
             
-            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-                _imagesScrollView.contentOffset = CGPointMake((sender.view.tag-20) * _imagesScrollView.frame.size.width, 0);
-            } completion:nil];
-            
-//            _attachedImageView.image = _selectedImageIcon.image;
-//            _attachedImageView.tag = sender.view.tag-20;
-
-            return;
+            [_imagesScrollView setContentOffset:CGPointMake((sender.view.tag-20) * _imagesScrollView.frame.size.width, 0) animated:YES];
         }
     }
 }
@@ -327,28 +321,7 @@
     
     _numberOfUploadedImages = _numberOfUploadedImages + j;
     
-    for(int ii = 0; ii < _numberOfUploadedImages; ii++)
-    {
-        CGRect frame;
-        frame.origin.x = _imagesScrollView.frame.size.width * ii;
-        frame.origin.y = 0;
-        frame.size = _imagesScrollView.frame.size;
-        
-        UIImageView *newImageView = [[UIImageView alloc] initWithImage:((UIImageView*)self.attachedImages[ii]).image];
-        newImageView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        
- 
-        UIView *subView = [[UIView alloc] initWithFrame:frame];
-        [subView addSubview:newImageView];
-        [_imagesScrollView addSubview:subView];
-    }
     
-    _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _numberOfUploadedImages, _imagesScrollView.frame.size.height);
-    
-    if (_selectedImageView) {
-//        _attachedImageView.image = _selectedImageView.image;
-    }
     
 }
 
@@ -442,8 +415,8 @@
     [_uploadingImages removeObject:object];
     _isFinishedUploadingImage = YES;
     
-    
-    
+    [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self setScrollViewImages];
 }
 
 - (void)failedUploadObject:(id)object {
@@ -523,6 +496,37 @@
     [nav setViewControllers:controllers];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
     
+}
+
+#pragma mark - Methods
+- (void)setScrollViewImages {
+    for(int ii = 0; ii < _numberOfUploadedImages; ii++)
+    {
+        CGRect frame;
+        frame.origin.x = _imagesScrollView.frame.size.width * ii;
+        frame.origin.y = 0;
+        frame.size = _imagesScrollView.frame.size;
+        
+        UIImageView *newImageView = [[UIImageView alloc] initWithImage:((UIImageView*)self.attachedImages[ii]).image];
+        newImageView.frame = frame;
+        newImageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        [_imagesScrollView addSubview:newImageView];
+        
+        UIButton *deleteButton = [UIButton new];
+        [deleteButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
+        [deleteButton HVD_setWidth:20.0];
+        [deleteButton HVD_setHeight:20.0];
+        
+        [newImageView addSubview:deleteButton];
+        
+        [deleteButton HVD_pinToTopOfSuperviewWithMargin:8.0];
+        [deleteButton HVD_pinToRightOfSuperviewWithMargin:(newImageView.frame.size.width-newImageView.image.size.width)/2 + 8];
+        
+        NSLog(deleteButton);
+    }
+    
+    _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _numberOfUploadedImages, _imagesScrollView.frame.size.height);
 }
 
 @end
