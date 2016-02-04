@@ -272,6 +272,10 @@
     }
 }
 
+- (IBAction)tapToDeleteImage:(UIButton*)sender {
+    
+}
+
 #pragma mark - Request Generate Host
 - (void)successGenerateHost:(GenerateHost *)generateHost {
     _generateHost = generateHost;
@@ -415,7 +419,7 @@
     [_uploadingImages removeObject:object];
     _isFinishedUploadingImage = YES;
     
-    [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     [self setScrollViewImages];
 }
 
@@ -500,6 +504,8 @@
 
 #pragma mark - Methods
 - (void)setScrollViewImages {
+    [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     for(int ii = 0; ii < _numberOfUploadedImages; ii++)
     {
         CGRect frame;
@@ -511,19 +517,25 @@
         newImageView.frame = frame;
         newImageView.contentMode = UIViewContentModeScaleAspectFit;
         
+        float widthRatio = newImageView.bounds.size.width / newImageView.image.size.width;
+        float heightRatio = newImageView.bounds.size.height / newImageView.image.size.height;
+        float scale = MIN(widthRatio, heightRatio);
+        float imageWidth = scale * newImageView.image.size.width;
+        float imageHeight = scale * newImageView.image.size.height;
+        
         [_imagesScrollView addSubview:newImageView];
         
         UIButton *deleteButton = [UIButton new];
         [deleteButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
         [deleteButton HVD_setWidth:20.0];
         [deleteButton HVD_setHeight:20.0];
+        [deleteButton addTarget:self action:@selector(tapToDeleteImage:) forControlEvents:UIControlEventTouchUpInside];
         
         [newImageView addSubview:deleteButton];
         
-        [deleteButton HVD_pinToTopOfSuperviewWithMargin:8.0];
-        [deleteButton HVD_pinToRightOfSuperviewWithMargin:(newImageView.frame.size.width-newImageView.image.size.width)/2 + 8];
+        [deleteButton HVD_pinToTopOfSuperviewWithMargin:(((newImageView.frame.size.height-imageHeight)/2) + 8)];
+        [deleteButton HVD_pinToRightOfSuperviewWithMargin:(((newImageView.frame.size.width-imageWidth)/2) + 8)];
         
-        NSLog(deleteButton);
     }
     
     _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _numberOfUploadedImages, _imagesScrollView.frame.size.height);
