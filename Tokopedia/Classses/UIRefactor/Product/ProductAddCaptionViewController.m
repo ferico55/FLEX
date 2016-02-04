@@ -32,7 +32,6 @@
     NSMutableArray *_attachedImagesCaptions;
     
     UIImageView *_selectedImageIcon;
-    UIImageView *_selectedImageView;
     
     BOOL _isFinishedUploadingImage;
     
@@ -240,7 +239,8 @@
     } else {
         if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
-        } else {            _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
+        } else {
+            _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
             [_selectedImageIcon.layer setBorderColor:[[UIColor blueColor] CGColor]];
             [_selectedImageIcon.layer setBorderWidth:2.0];
             
@@ -355,7 +355,7 @@
             image.layer.cornerRadius = 5.0;
             image.layer.masksToBounds = YES;
             if (_selectedImageTag == tagView) {
-                _selectedImageView = image;
+                [_imagesScrollView setContentOffset:CGPointMake((tagView - 20) * _imagesScrollView.frame.size.width, 0) animated:YES];
             }
         }
         
@@ -367,9 +367,6 @@
             }
         }
     }
-    
-//    _attachedImageView.image = imagePhoto;
-//    _attachedImageView.tag = tagView;
     
     if (imageView != nil) {
         [object setObject:imageView forKey:@"data_selected_image_view"];
