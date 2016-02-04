@@ -323,7 +323,11 @@ static NSInteger userViewHeight = 70;
         }else{
             if(!isShowingMore && indexPath.row == 1){
                 //"load more" cell
-                return 30;
+                if(helpfulReviews.count > 1){
+                    return 30;
+                }else{
+                    return 0;
+                }
             }else if(isShowingMore && indexPath.row == helpfulReviews.count){
                 return 30;
             }else{
@@ -338,6 +342,7 @@ static NSInteger userViewHeight = 70;
 }
 
 - (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
+    //don't auto calculate cell for performance in iOS 7
     /*
     DetailReputationReview *reputationDetail = arr[indexPath.row];
     UILabel *messageLabel = [[UILabel alloc] init];
