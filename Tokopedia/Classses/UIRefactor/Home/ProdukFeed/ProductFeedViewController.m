@@ -51,7 +51,6 @@ NoResultDelegate,
 CollectionViewSupplementaryDataSource
 >
 
-@property (nonatomic, strong) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -82,6 +81,7 @@ CollectionViewSupplementaryDataSource
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
     ProductDataSource* _productDataSource;
+    UIActivityIndicatorView *_loadingIndicator;
 }
 
 #pragma mark - Initialization
@@ -112,18 +112,16 @@ CollectionViewSupplementaryDataSource
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
     
     //todo with variable
-    _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
-    UIActivityIndicatorView *loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    loadingIndicator.hidesWhenStopped = YES;
-    [loadingIndicator startAnimating];
-    _loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _collectionView.bounds.size.width, 50)];
-    loadingIndicator.center = _loadingView.center;
-    [_loadingView addSubview:loadingIndicator];
+    _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _loadingIndicator.hidesWhenStopped = YES;
+    [_loadingIndicator startAnimating];
+    _loadingIndicator.center = self.view.center;
+
     
-    [_collectionView addSubview:_loadingView];
+    [_collectionView addSubview:_loadingIndicator];
     
     [self initNoResultView];
     _page = 1;
@@ -131,7 +129,7 @@ CollectionViewSupplementaryDataSource
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshProductFeed)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     
@@ -338,15 +336,15 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    [_loadingView setHidden:NO];
+    [_loadingIndicator startAnimating];
     CGFloat yPosition = _collectionView.contentSize.height;
     
     CGRect frame = CGRectMake(0, yPosition, _collectionView.bounds.size.width, 50);
-    [_loadingView setFrame:frame];
+    [_loadingIndicator setFrame:frame];
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    [_loadingView setHidden:YES];
+    [_loadingIndicator stopAnimating];
     
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
@@ -400,9 +398,10 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)userDidLogin:(NSNotification*)notification {
-    [_productDataSource removeAllProducts];
-    [_promo removeAllObjects];
-    [self refreshView:_refreshControl];
+//    [_productDataSource removeAllProducts];
+//    [_promo removeAllObjects];
+//    [self refreshView:_refreshControl];
+    [self refreshProductFeed];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -428,18 +427,11 @@ CollectionViewSupplementaryDataSource
     [_noResultView removeFromSuperview];
 }
 
-#pragma mark - Other Method
-- (IBAction)pressRetryButton:(id)sender {
-    [_networkManager doRequest];
-    _isFailRequest = NO;
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-}
 
--(void)refreshView:(UIRefreshControl*)refresh {
-    _page = 1;
-    [_networkManager doRequest];
-}
+//-(void)refreshView:(UIRefreshControl*)refresh {
+//    _page = 1;
+//    [_networkManager doRequest];
+//}
 
 - (void)registerNib {
     
