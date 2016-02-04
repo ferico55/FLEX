@@ -74,6 +74,10 @@ import UIKit
         _collectionView.reloadData()
     }
     
+    func productAtIndex(index: Int) -> ProductFeedList {
+        return _products[index]
+    }
+    
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if _supplementaryDataSource != nil {
             return _supplementaryDataSource.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath)
@@ -104,17 +108,3 @@ import UIKit
         return CGSizeMake(cellWidth, cellHeight)
     }
 }
-
-
-/*
-_dataSource = [ProductDataSource alloc] init]
-
-[_dataSource addObjects:products]
-
-
-
-
-
-
-_collectionView.dataSource = [ProductDataSource alloc] initWithData:products atCollectionView:collectionView
-*/
