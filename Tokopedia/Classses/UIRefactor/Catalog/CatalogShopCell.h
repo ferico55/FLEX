@@ -45,7 +45,9 @@
 @property (weak, nonatomic) id<CatalogShopDelegate> delegate;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *stars;
+//@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *stars;
+@property (strong, nonatomic) IBOutlet UIView *reputationBadgeView;
+@property (strong, nonatomic) IBOutlet UIImageView *reputationBadge;
 
 
 - (void)setTagContentStar:(int)tag;

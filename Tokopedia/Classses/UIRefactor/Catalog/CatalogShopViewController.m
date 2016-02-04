@@ -131,7 +131,7 @@
     [_tableView addSubview:_refreshControl];
     
     
-    if (_catalog_shops.count == 0) [self initNoResultView];
+    //if (_catalog_shops.count == 0) [self initNoResultView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -183,7 +183,12 @@
     
     SearchAWSProduct *product = [catalogShop.products objectAtIndex:0];
     cell.productNameLabel.text = product.product_name;
-    cell.productConditionLabel.text = product.condition;
+    
+    if([product.condition isEqualToString:@"1"]){
+        cell.productConditionLabel.text = @"Baru";
+    }else{
+        cell.productConditionLabel.text = @"Bekas";
+    }
     cell.productPriceLabel.text = product.product_price;
     
     cell.buyButton.layer.cornerRadius = 2;
@@ -220,12 +225,26 @@
         cell.masking.hidden = NO;
     }
     
+    /*
     [SmileyAndMedal generateMedalWithLevel:catalogShop.shop.shop_reputation.shop_badge_level.level
                                    withSet:shop.shop_reputation.shop_badge_level.set
                                  withImage:cell.stars
                                    isLarge:YES];
     
     [cell setTagContentStar:(int)indexPath.row];
+     */
+    thumb = cell.reputationBadge;
+    thumb.image = nil;
+    [thumb setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.reputation_image_uri]]
+                 placeholderImage:[UIImage imageNamed:@""]
+                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                              thumb.image = image;
+                              thumb.contentMode = UIViewContentModeScaleAspectFit;
+                              thumb.clipsToBounds = YES;
+                          } failure:nil];
+    
+
+    
     
     return cell;
 }
@@ -442,11 +461,12 @@
     NSMutableArray *catalogShops = [[NSMutableArray alloc]init];
     
     if (shops.result.catalog_products > 0) {
+        
         if (_page == 0) {
             [_catalog_shops removeAllObjects];
         }
         
-        [_catalog_shops addObject:shops.result.catalog_products];
+        [_catalog_shops addObjectsFromArray:shops.result.catalog_products];
         _page++;
         
         
@@ -593,35 +613,37 @@
 
 #pragma mark - Cell delegate
 - (void)actionContentStar:(id)sender {
+    /*
     CatalogShops *shop = _catalog_shops[((UIView *)sender).tag];
     NSString *strDesc = [NSString stringWithFormat:@"%@ %@", shop.shop_reputation.shop_reputation_score, CStringPoin];
     [self initPopUp:strDesc withSender:sender withRangeDesc:NSMakeRange(strDesc.length-CStringPoin.length, CStringPoin.length)];
+     */
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
 {
     ShopContainerViewController *controller = [[ShopContainerViewController alloc] init];
-    CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
-    controller.data = @{@"shop_id" : shop.shop_id, @"shop_name" : shop.shop_name};
+    CatalogShopAWSProductResult *catalogShop = [_catalog_shops objectAtIndex:indexPath.row];
+    controller.data = @{@"shop_id" : catalogShop.shop.shop_id, @"shop_name" : catalogShop.shop.shop_name};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath
 {
-    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
+    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] products] objectAtIndex:0];
     [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectBuyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] product_list] objectAtIndex:0];
+    ProductList *product = [[[_catalog_shops objectAtIndex:indexPath.row] products] objectAtIndex:0];
     [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath
 {
     CatalogProductViewController *controller = [CatalogProductViewController new];
-    controller.product_list = [[_catalog_shops objectAtIndex:indexPath.row] product_list];
+    controller.product_list = [[_catalog_shops objectAtIndex:indexPath.row] products];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
