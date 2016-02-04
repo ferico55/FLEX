@@ -351,21 +351,50 @@ enum TypePlacePicker : Int{
     }
     
     func addressString(address:GMSAddress)-> String{
-        var strSnippet : String = " "
+        var strSnippet : String = ""
+        //MARK:: IBR-372 PO Wishes
+        if (address.thoroughfare != nil) {
+            strSnippet = getStreetAddress(address.thoroughfare)
+        }
         
-        if (address.lines.count>0) {
-            strSnippet = address.lines[0] as! String;
-        }
-        else{
-            strSnippet = adjustStrSnippet(address.thoroughfare, strSnippet: strSnippet)
-        }
-        strSnippet = adjustStrSnippet(address.locality, strSnippet: strSnippet)
-        strSnippet = adjustStrSnippet(address.subLocality, strSnippet: strSnippet)
+//        strSnippet = adjustStrSnippet(address.locality, strSnippet: strSnippet)
+//        strSnippet = adjustStrSnippet(address.subLocality, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.administrativeArea, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.postalCode, strSnippet: strSnippet)
         
         return strSnippet
     }
+    
+    func getStreetAddress(street : String)->String{
+        let str = street
+        let streetNumber = str.componentsSeparatedByCharactersInSet(
+            NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+        print(streetNumber)
+        
+        var address = street
+        var hasValue = false
+        
+        // Loops thorugh the street
+        for i in street.characters {
+            let str = String(i)
+            // Checks if the char is a number
+            if (Int(str) != nil){
+                // If it is it appends it to number
+                address = address.stringByReplacingOccurrencesOfString(str, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                // Here we set the hasValue to true, beacause the street number will come in one order
+                // 531 in this case
+                hasValue = true
+            }
+            else{
+                // Lets say that we have runned through 531 and are at the blank char now, that means we have looped through the street number and can end the for iteration
+                if(hasValue){
+                    break
+                }
+            }
+        }
+        return address
+    }
+    
     
     func adjustStrSnippet(address : String?, strSnippet: String) -> String
     {
