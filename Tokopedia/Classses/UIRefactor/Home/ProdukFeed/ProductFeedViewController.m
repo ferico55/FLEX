@@ -404,7 +404,7 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)userDidLogin:(NSNotification*)notification {
-    [_product removeAllObjects];
+    [_productDataSource removeAllProducts];
     [_promo removeAllObjects];
     [self refreshView:_refreshControl];
 }
