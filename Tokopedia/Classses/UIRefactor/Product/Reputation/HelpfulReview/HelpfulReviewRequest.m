@@ -123,11 +123,51 @@
     [detailTotalLikeMapping addAttributeMappingsFromDictionary:@{CTotalLike:CTotalLike,
                                                                  CTotalDislike:CTotalDislike}];
     
+    RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
+    [reviewResponseMapping addAttributeMappingsFromArray:@[CResponseCreateTime,
+                                                           CResponseMessage]];
+    
+    RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
+    [productOwnerMapping addAttributeMappingsFromDictionary:@{CUserLabelID:CUserLabelID,
+                                                              CUserLabel:CUserLabel,
+                                                              CuserID:CuserID,
+                                                              @"user_shop_name":CShopName,
+                                                              @"user_shop_image":CShopImg,
+                                                              CUserImage:CUserImg,
+                                                              CUserName:CFullName,
+                                                              CFullName:CUserName}];
+    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
+    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
+                                                           CReputationBadge,
+                                                           CReputationScore,
+                                                           CScore,
+                                                           CMinBadgeScore]];
+    
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    
+    RKObjectMapping *ratingListMapping = [RKObjectMapping mappingForClass:[RatingList class]];
+    [ratingListMapping addAttributeMappingsFromArray:@[CRatingRatingStarPoint,
+                                                       CRatingTotalRateAccuracyPersen,
+                                                       CRatingRateService,
+                                                       CRatingRatingStarDesc,
+                                                       CRatingRatingFmt,
+                                                       CRatingTotalRatingPersen,
+                                                       CRatingUrlFilterRateAccuracy,
+                                                       CRatingRating,
+                                                       CRatingUrlFilterRating,
+                                                       CRatingRateSpeed,
+                                                       CRatingRateAccuracy,
+                                                       CRatingRateAccuracyFmt,
+                                                       CRatingRatingPoint]];
     
     //add relationship mapping
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation" toKeyPath:@"review_user_reputation" withMapping:reviewReputationMapping]];
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_like_dislike" toKeyPath:@"review_like_dislike" withMapping:detailTotalLikeMapping]];
-    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
+    //[productOwnerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserShopReputation toKeyPath:CUserShopReputation withMapping:shopReputationMapping]];
+    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
     
     //add relationship mapping
     
