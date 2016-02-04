@@ -325,10 +325,15 @@
     [productReputationCell setImageAkurasi:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_accuracy_point:_reviewList.review_rate_accuracy) intValue]];
     [productReputationCell setDescription:[NSString convertHTML:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_message?:@""):(_reviewList.review_message?:@""))]];
     
-    if(_strTotalDisLike != nil) {
+    if(_strTotalDisLike != nil || ![_strTotalDisLike isEqualToString:@""]) {
         [productReputationCell.getBtnLike setTitle:_strTotalLike forState:UIControlStateNormal];
         [productReputationCell.getBtnDisLike setTitle:_strTotalDisLike forState:UIControlStateNormal];
         [self setLikeDislikeActive:_strLikeStatus];
+    }else{
+        [productReputationCell.getBtnLike setTitle:_detailReputaitonReview.review_like_dislike.total_like forState:UIControlStateNormal];
+        [productReputationCell.getBtnDisLike setTitle:_detailReputaitonReview.review_like_dislike.total_dislike forState:UIControlStateNormal];
+        [self setLikeDislikeActive:_strLikeStatus];
+
     }
     
     [productReputationCell layoutSubviews];

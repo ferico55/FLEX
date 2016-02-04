@@ -112,6 +112,22 @@
                                                                         CReviewUserID:CReviewUserID
                                                                         }];
     
+    RKObjectMapping *reviewReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
+    [reviewReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
+                                                             CNoReputation,
+                                                             CNegative,
+                                                             CNeutral,
+                                                             CPositif]];
+    
+    RKObjectMapping *detailTotalLikeMapping = [RKObjectMapping mappingForClass:[DetailTotalLikeDislike class]];
+    [detailTotalLikeMapping addAttributeMappingsFromDictionary:@{CTotalLike:CTotalLike,
+                                                                 CTotalDislike:CTotalDislike}];
+    
+    
+    //add relationship mapping
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation" toKeyPath:@"review_user_reputation" withMapping:reviewReputationMapping]];
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_like_dislike" toKeyPath:@"review_like_dislike" withMapping:detailTotalLikeMapping]];
+    
     
     //add relationship mapping
     
