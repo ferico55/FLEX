@@ -325,7 +325,7 @@
     
     _numberOfUploadedImages = _numberOfUploadedImages + j;
     
-    
+    [self setScrollViewImages];
     
 }
 
@@ -403,9 +403,11 @@
                                  fieldName:@"fileToUpload"
                                    success:^(id imageObject, UploadImage *image) {
                                        [self successUploadObject:object withMappingResult:image];
+                                       
                                    } failure:^(id imageObject, NSError *error) {
                                        [self failedUploadObject:imageObject];
                                    }];
+    
 }
 
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
@@ -420,7 +422,7 @@
     _isFinishedUploadingImage = YES;
     
     
-    [self setScrollViewImages];
+    
 }
 
 - (void)failedUploadObject:(id)object {
