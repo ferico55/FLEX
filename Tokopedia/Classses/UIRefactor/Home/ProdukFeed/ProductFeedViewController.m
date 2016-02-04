@@ -116,8 +116,13 @@ CollectionViewSupplementaryDataSource
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
-    _loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _collectionView.frame.size.width, 30)];
-    [_loadingView setBackgroundColor:[UIColor redColor]];
+    UIActivityIndicatorView *loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    loadingIndicator.hidesWhenStopped = YES;
+    [loadingIndicator startAnimating];
+    _loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _collectionView.bounds.size.width, 50)];
+    loadingIndicator.center = _loadingView.center;
+    [_loadingView addSubview:loadingIndicator];
+    
     [_collectionView addSubview:_loadingView];
     
     [self initNoResultView];
