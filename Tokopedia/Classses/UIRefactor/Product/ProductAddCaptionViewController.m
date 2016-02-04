@@ -241,7 +241,7 @@
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
         } else {
             _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
-            [_selectedImageIcon.layer setBorderColor:[[UIColor blueColor] CGColor]];
+            [_selectedImageIcon.layer setBorderColor:[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]];
             [_selectedImageIcon.layer setBorderWidth:2.0];
             
             for (UIImageView *image in _attachedImages) {
@@ -261,7 +261,7 @@
     int page = floor((_imagesScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     
     _selectedImageIcon = ((UIImageView*)self.attachedImages[page]);
-    [_selectedImageIcon.layer setBorderColor:[[UIColor blueColor] CGColor]];
+    [_selectedImageIcon.layer setBorderColor:[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]];
     [_selectedImageIcon.layer setBorderWidth:2.0];
     
     for (UIImageView *image in _attachedImages) {
@@ -322,11 +322,6 @@
             }
         }
     }
-    
-    _numberOfUploadedImages = _numberOfUploadedImages + j;
-    
-    [self setScrollViewImages];
-    
 }
 
 -(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
@@ -350,12 +345,12 @@
             image.hidden = NO;
             image.alpha = _isFromGiveReview?1.0f:0.5f;
             image.userInteractionEnabled = YES;
-            [image.layer setBorderColor:(_selectedImageTag == tagView)?[[UIColor blueColor] CGColor]:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
+            [image.layer setBorderColor:(_selectedImageTag == tagView)?[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
             [image.layer setBorderWidth:(_selectedImageTag == tagView)?2.0:1.0];
             image.layer.cornerRadius = 5.0;
             image.layer.masksToBounds = YES;
             if (_selectedImageTag == tagView) {
-                [_imagesScrollView setContentOffset:CGPointMake((tagView - 20) * _imagesScrollView.frame.size.width, 0) animated:YES];
+                [_imagesScrollView setContentOffset:CGPointMake((tagView  - 20) * _imagesScrollView.frame.size.width, 0) animated:YES];
             }
         }
         
@@ -404,7 +399,8 @@
                                    } failure:^(id imageObject, NSError *error) {
                                        [self failedUploadObject:imageObject];
                                    }];
-    
+    _numberOfUploadedImages++;
+    [self setScrollViewImages];
 }
 
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
@@ -419,7 +415,6 @@
     _isFinishedUploadingImage = YES;
     
     
-    
 }
 
 - (void)failedUploadObject:(id)object {
@@ -427,8 +422,9 @@
     imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
     
     for (UIImageView *image in _attachedImages) {
-        if (image.tag == image.tag) {
+        if (image.tag == imageView.tag) {
             image.hidden = NO;
+            image.userInteractionEnabled = YES;
         }
     }
     

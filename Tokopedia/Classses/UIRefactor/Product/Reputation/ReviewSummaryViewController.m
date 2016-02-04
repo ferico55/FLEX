@@ -44,10 +44,10 @@
                                                                              target:self
                                                                              action:@selector(tapToSend:)];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ubah"
-                                                                             style:UIBarButtonItemStyleDone
-                                                                            target:self
-                                                                            action:@selector(tapToEdit:)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ubah"
+//                                                                             style:UIBarButtonItemStyleDone
+//                                                                            target:self
+//                                                                            action:@selector(tapToEdit:)];
     
     _qualityStarsArray = [NSArray sortViewsWithTagInArray:_qualityStarsArray];
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
