@@ -29,6 +29,7 @@
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     TokopediaNetworkManager *_networkManagerCC;
     TokopediaNetworkManager *_networkManagerBRIEpay;
+    TokopediaNetworkManager *_networkManagerToppay;
     
     TransactionObjectManager *_objectManager;
     
@@ -150,6 +151,15 @@
     return _networkManagerBRIEpay;
 }
 
+-(TokopediaNetworkManager*)networkManagerToppay{
+    if (!_networkManagerToppay) {
+        _networkManagerToppay = [TokopediaNetworkManager new];
+        _networkManagerToppay.tagRequest = TAG_REQUEST_TOPPAY;
+        _networkManagerToppay.delegate = self;
+    }
+    return _networkManagerToppay;
+}
+
 -(void)doRequestCart
 {
     [[self networkManager] doRequest];
@@ -200,6 +210,11 @@
     [[self networkManagerBRIEpay] doRequest];
 }
 
+-(void)doRequestToppay
+{
+    [[self networkManagerToppay] doRequest];
+}
+
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
@@ -232,6 +247,9 @@
     }
     if (tag == TAG_REQUEST_BRI_EPAY) {
         return [[self objectManager] objectManagerBRIEPay];
+    }
+    if (tag == TAG_REQUEST_TOPPAY) {
+        return [[self objectManager] objectManagerToppay];
     }
     
     return nil;
@@ -273,6 +291,9 @@
     }
     if (tag == TAG_REQUEST_BRI_EPAY) {
         return @"tx-payment-briepay.pl";
+    }
+    if (tag == TAG_REQUEST_TOPPAY) {
+        return @"action/toppay.pl";
     }
     return nil;
 }
@@ -324,6 +345,10 @@
         return action.status;
     }
     if (tag == TAG_REQUEST_BRI_EPAY) {
+        TransactionAction *action = stat;
+        return action.status;
+    }
+    if (tag == TAG_REQUEST_TOPPAY) {
         TransactionAction *action = stat;
         return action.status;
     }
@@ -471,6 +496,23 @@
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
     }
+    if (tag == TAG_REQUEST_TOPPAY) {
+        TransactionAction *action = stat;
+        
+        if (action.result.parameter != nil) {
+            NSArray *successMessages = action.message_status;
+            if (successMessages.count > 0) {
+                [self showStatusMesage:successMessages];
+            }
+            [_delegate requestSuccessToppay:successResult withOperation:operation];
+        }
+        else
+        {
+            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+        }
+    }
+
 }
 
 -(void)showErrorMesage:(NSArray*)errorMessage

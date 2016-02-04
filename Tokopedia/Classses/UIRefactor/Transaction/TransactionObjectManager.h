@@ -24,5 +24,6 @@
 -(RKObjectManager *)objectManagerBCAClickPay;
 -(RKObjectManager *)objectManagerCC;
 -(RKObjectManager *)objectManagerBRIEPay;
+-(RKObjectManager *)objectManagerToppay;
 
 @end

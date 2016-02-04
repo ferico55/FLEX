@@ -14,5 +14,7 @@
 @property (nonatomic) NSInteger is_success;
 @property (strong, nonatomic) NSString *cc_agent;
 @property (strong, nonatomic) LuckyDeal *ld;
+@property (strong, nonatomic) NSDictionary *parameter;
+@property (strong, nonatomic) NSString *redirect_url;
 
 @end
