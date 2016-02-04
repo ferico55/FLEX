@@ -655,6 +655,7 @@ ProductReputationSimpleDelegate>
                                                  kTKPDREVIEW_APIREVIEWCREATETIMEKEY,
                                                  kTKPDREVIEW_APIREVIEWIDKEY,
                                                  CReviewReputationID,
+                                                 @"review_shop_name",
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
