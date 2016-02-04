@@ -606,7 +606,7 @@
                         formatter.maximumFractionDigits = 0;
                         formatter.minimumFractionDigits = 0;
                         
-                        NSString *totalPrice = [[formatter stringFromNumber:total] stringByAppendingString:@",-"];
+                        NSString *totalPrice = [formatter stringFromNumber:total];
                         
                         label.text = totalPrice;
                     }
