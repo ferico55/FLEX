@@ -189,10 +189,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view from its nib.
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    self.view.frame = screenRect;
-    
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _operationSendCommentQueue = [NSOperationQueue new];
@@ -589,7 +585,7 @@
 }
 
 - (void) initTalkInputView {
-    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10 - ((UIViewController*)_masterViewController).view.frame.size.width;
+    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10;
     _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -618,6 +614,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //readjust growing textview width here, because we can't get the correct view controller size in viewDidLoad
+    NSInteger textViewWidth = self.view.frame.size.width - _sendButton.frame.size.width - 10;
+    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, _growingtextview.frame.size.height);
 }
 
 
