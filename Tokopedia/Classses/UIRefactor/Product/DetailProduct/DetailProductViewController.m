@@ -1675,11 +1675,11 @@ NoResultDelegate
         StickyAlertView *stickyAlertView;
         if(_favButton.tag == 17) {//Favorite
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:_product.result.shop_info.shop_url];
         }else {
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:_product.result.shop_info.shop_url];
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:_product.result.shop_info.shop_url];
         
         [stickyAlertView show];
         [self requestFavoriteResult:successResult withOperation:operation];

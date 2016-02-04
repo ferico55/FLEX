@@ -664,7 +664,7 @@ PromoRequestDelegate
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
     if(tag == CTagFavoriteButton) {
 
         [_act stopAnimating];

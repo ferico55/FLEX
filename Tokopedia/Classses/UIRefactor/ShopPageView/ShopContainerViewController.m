@@ -1046,7 +1046,7 @@
         if([[tempArr objectAtIndex:tempArr.count-2] isMemberOfClass:[DetailProductViewController class]]) {
             [((DetailProductViewController *) [tempArr objectAtIndex:tempArr.count-2]) setButtonFav];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFavoriteError:error];

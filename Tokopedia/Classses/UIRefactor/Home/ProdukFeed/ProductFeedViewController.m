@@ -145,8 +145,7 @@ CollectionViewSupplementaryDataSource
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addFavoriteShop:) name:@"addFavoriteShop" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeFavoriteShop:) name:@"removeFavoriteShop" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteShop) name:@"updateFavoriteShop" object:nil];
     //set change orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
@@ -418,11 +417,7 @@ CollectionViewSupplementaryDataSource
     
 }
 
-- (void)addFavoriteShop:(NSNotification*)notification {
-    [self refreshProductFeed];
-}
-
-- (void)removeFavoriteShop:(NSNotification*)notification{
+- (void)updateFavoriteShop {
     [self refreshProductFeed];
 }
 
