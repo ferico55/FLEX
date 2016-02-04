@@ -357,13 +357,10 @@ CollectionViewSupplementaryDataSource
     if (feed.data.list.count > 0) {
         [_noResultView removeFromSuperview];
         if (_page == 1) {
-            _product = feed.data.list;
             [_productDataSource replaceProductsWith: feed.data.list];
-            
             [_promo removeAllObjects];
             [_firstFooter removeFromSuperview];
         } else {
-            [_product addObject:feed.data.list];
             [_productDataSource addProducts: feed.data.list];
         }
         
@@ -421,24 +418,19 @@ CollectionViewSupplementaryDataSource
     
 }
 
-- (void)addFavoriteShop:(NSNotification*)notification{
-    //if([self.view isEqual:_noResultView]){
-    if(_product.count == 0){
-        [_networkManager doRequest];
-    }
-    //self.view = _contentView;
-    [_noResultView removeFromSuperview];
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
+- (void)addFavoriteShop:(NSNotification*)notification {
+    [self refreshProductFeed];
 }
 
 - (void)removeFavoriteShop:(NSNotification*)notification{
+    [self refreshProductFeed];
+}
+
+- (void)refreshProductFeed {
     _page = 1;
-    [_product removeAllObjects];
+    [_productDataSource removeAllProducts];
     [_networkManager doRequest];
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-    
+    [_noResultView removeFromSuperview];
 }
 
 #pragma mark - Other Method
