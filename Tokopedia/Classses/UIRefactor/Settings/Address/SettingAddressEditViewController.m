@@ -391,7 +391,7 @@
     
     _textfieldpostcode.text = address.postalCode;
     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
+    [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;
@@ -600,7 +600,7 @@
                 
                 if (response == nil|| response.results.count == 0) {
                     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_buttonMapLocation setCustomAttributedText:@"Lokasi yang Dituju"];
+                    [_buttonMapLocation setCustomAttributedText:@"Tandai lokasi Anda"];
 
                 } else {
                     GMSAddress *address = [response results][0];

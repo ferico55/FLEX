@@ -1921,7 +1921,7 @@
                        return;
                    }
                    if (response == nil|| response.results.count == 0) {
-                       self.pickupLocationLabel.text = [NSString stringWithFormat:@"Lokasi yang Dituju"];
+                       self.pickupLocationLabel.text = [NSString stringWithFormat:@"Tandai lokasi Anda"];
                    } else {
                        GMSAddress *placemark = [response results][0];
                        self.pickupLocationLabel.text = [self streetNameFromAddress:placemark];
@@ -3110,7 +3110,7 @@
     else
         addressStreet = street;
     
-    self.pickupLocationLabel.text = [locationAddress isEqualToString:@""]?@"Lokasi yang Dituju":locationAddress;
+    self.pickupLocationLabel.text = [locationAddress isEqualToString:@""]?@"Tandai lokasi Anda":locationAddress;
     _shipment.shop_shipping.latitude = latitude;
     _shipment.shop_shipping.longitude = longitude;
 }

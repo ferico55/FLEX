@@ -589,8 +589,8 @@
         }
         
         if (response == nil|| response.results.count == 0) {
-            [_addressLabel setCustomAttributedText:@"Lokasi yang Dituju"];
-            [_addressInfoWindowLabel setCustomAttributedText:@"Lokasi yang Dituju"];
+            [_addressLabel setCustomAttributedText:@"Tandai lokasi Anda"];
+            [_addressInfoWindowLabel setCustomAttributedText:@"Tandai lokasi Anda"];
         } else
         {
             GMSAddress *placemark = [response results][0];

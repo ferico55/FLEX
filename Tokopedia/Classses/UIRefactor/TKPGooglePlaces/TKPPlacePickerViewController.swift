@@ -141,8 +141,8 @@ enum TypePlacePicker : Int{
     
     //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
-        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-        self.mapView.updateAddress("Lokasi yang Dituju")
+        self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+        self.mapView.updateAddress("Tandai lokasi Anda")
     }
     
     func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
@@ -301,8 +301,8 @@ enum TypePlacePicker : Int{
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {
-        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-        self.mapView.updateAddress("Lokasi yang Dituju")
+        self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+        self.mapView.updateAddress("Tandai lokasi Anda")
         geocoder.reverseGeocodeCoordinate(mapView.selectedMarker.position) { (response, error) -> Void in
             if (error != nil){
                 return
@@ -319,8 +319,8 @@ enum TypePlacePicker : Int{
                     self.saveHistory(placemark, addressSuggestions: addressSugestion!)
                 }
             }else {
-                self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-                self.mapView.updateAddress("Lokasi yang Dituju")
+                self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+                self.mapView.updateAddress("Tandai lokasi Anda")
                 self.mapView.selectedMarker = self.mapView.selectedMarker
             }
         }
