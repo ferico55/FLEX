@@ -35,7 +35,7 @@
     
     BOOL _isFinishedUploadingImage;
     
-    NSInteger _numberOfUploadedImages;
+//    NSInteger _numberOfUploadedImages;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -224,6 +224,7 @@
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             case 11: // Tombol "Simpan"
+//                [_userInfo setValue:@(_numberOfUploadedImages) forKey:@"image_total"];
                 [_delegate didDismissController:self withUserInfo:_userInfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
@@ -374,7 +375,8 @@
         [self actionUploadImage:object];
     }
     
-    
+    _numberOfUploadedImages++;
+    [self setScrollViewImages];
 }
 
 #pragma mark - Request Action Upload Image
@@ -399,8 +401,7 @@
                                    } failure:^(id imageObject, NSError *error) {
                                        [self failedUploadObject:imageObject];
                                    }];
-    _numberOfUploadedImages++;
-    [self setScrollViewImages];
+    
 }
 
 - (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {

@@ -22,5 +22,6 @@
 @property (nonatomic, strong) NSDictionary *userInfo;
 @property BOOL isFromGiveReview;
 @property NSInteger selectedImageTag;
+@property int numberOfUploadedImages;
 
 @end
