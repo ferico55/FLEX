@@ -19,7 +19,7 @@
 #import "ProductAddCaptionViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, GenerateHostDelegate, CameraControllerDelegate, RequestUploadImageDelegate, ProductAddCaptionDelegate> {
+@interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, GenerateHostDelegate, CameraControllerDelegate, RequestUploadImageDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     NSMutableArray *_attachedImageURL;
@@ -80,7 +80,7 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
     
-    
+    _reviewDetailTextView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -177,6 +177,15 @@
     return NO;
 }
 
+#pragma mark - Text Field Delegate 
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    _reviewDetailTextView.placeholder = nil;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [_reviewDetailTextView resignFirstResponder];
+    _reviewDetailTextView.placeholder = @"Tulis Ulasan Anda";
+}
 
 #pragma mark - Actions
 - (IBAction)tapToContinue:(id)sender {
