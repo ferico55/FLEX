@@ -15,7 +15,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+HVDLayout.h"
 
-@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate, UIScrollViewDelegate> {
+@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate, UIScrollViewDelegate, UITextFieldDelegate> {
     NavigateViewController *_navigate;
     
     UITextField *_activeTextField;
@@ -34,8 +34,6 @@
     UIImageView *_selectedImageIcon;
     
     BOOL _isFinishedUploadingImage;
-    
-//    NSInteger _numberOfUploadedImages;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -91,11 +89,13 @@
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImageURLs = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-    _attachedImagesCaptions = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _attachedImagesCaptions = [_userInfo objectForKey:@"images-captions"]?:[[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
     _attachedImages = [NSArray sortViewsWithTagInArray:_attachedImages];
     
     _numberOfUploadedImages = 0;
+    
+    _imageCaptionTextField.delegate = self;
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
     [requestHost configureRestkitGenerateHost];
@@ -223,11 +223,14 @@
             case 10: // Tombol "Batal"
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
-            case 11: // Tombol "Simpan"
-//                [_userInfo setValue:@(_numberOfUploadedImages) forKey:@"image_total"];
+            case 11: { // Tombol "Simpan"
+                NSMutableDictionary *tempDict = [_userInfo mutableCopy];
+                [tempDict setObject:_attachedImagesCaptions forKey:@"images-captions"];
+                _userInfo = [NSDictionary dictionaryWithDictionary:tempDict];
                 [_delegate didDismissController:self withUserInfo:_userInfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
+            }
             default:
                 break;
         }
@@ -236,11 +239,12 @@
 
 - (IBAction)gesture:(UITapGestureRecognizer*)sender {
     if (sender.view.tag == 0) {
-        
+        [_activeTextField resignFirstResponder];
     } else {
         if ([self image:((UIImageView*)self.attachedImages[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
             [self didTapImage:((UIImageView*)self.attachedImages[sender.view.tag-20])];
         } else {
+            _selectedImageTag = sender.view.tag - 20;
             _selectedImageIcon = ((UIImageView*)self.attachedImages[sender.view.tag-20]);
             [_selectedImageIcon.layer setBorderColor:[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]];
             [_selectedImageIcon.layer setBorderWidth:2.0];
@@ -253,6 +257,8 @@
             }
             
             [_imagesScrollView setContentOffset:CGPointMake((sender.view.tag-20) * _imagesScrollView.frame.size.width, 0) animated:YES];
+            
+            [_imageCaptionTextField setText:_attachedImagesCaptions[sender.view.tag-20]];
         }
     }
 }
@@ -261,6 +267,7 @@
     CGFloat pageWidth = _imagesScrollView.frame.size.width;
     int page = floor((_imagesScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     
+    _selectedImageTag = page;
     _selectedImageIcon = ((UIImageView*)self.attachedImages[page]);
     [_selectedImageIcon.layer setBorderColor:[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]];
     [_selectedImageIcon.layer setBorderWidth:2.0];
@@ -271,6 +278,8 @@
             [image.layer setBorderWidth:0];
         }
     }
+    
+    [_imageCaptionTextField setText:_attachedImagesCaptions[page]];
 }
 
 - (IBAction)tapToDeleteImage:(UIButton*)sender {
@@ -377,6 +386,23 @@
     
     _numberOfUploadedImages++;
     [self setScrollViewImages];
+}
+
+#pragma mark - Text Field Delegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    _activeTextField = textField;
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    NSString *imageCaption = textField.text;
+    [_attachedImagesCaptions replaceObjectAtIndex:_selectedImageTag withObject:imageCaption];
+    return YES;
 }
 
 #pragma mark - Request Action Upload Image
@@ -536,5 +562,4 @@
     
     _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _numberOfUploadedImages, _imagesScrollView.frame.size.height);
 }
-
 @end

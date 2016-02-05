@@ -47,6 +47,9 @@
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="ojj-46-NUc" appends="YES" id="A1o-PG-pDR"/>
+            </connections>
             <point key="canvasLocation" x="47.5" y="231"/>
         </view>
         <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="290" id="8S6-ds-lm9">
@@ -264,9 +267,9 @@
                 <action selector="gesture:" destination="-1" id="slS-gI-Eji"/>
             </connections>
         </tapGestureRecognizer>
-        <tapGestureRecognizer id="REO-IP-jUX">
+        <tapGestureRecognizer id="ojj-46-NUc">
             <connections>
-                <action selector="gesture:" destination="-1" id="0yO-yh-Ae4"/>
+                <action selector="gesture:" destination="-1" id="pVs-hB-Ozj"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
