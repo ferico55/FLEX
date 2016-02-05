@@ -86,6 +86,7 @@
     _operationQueue = [NSOperationQueue new];
     
     _uploadingImages = [NSMutableArray new];
+    _uploadedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImageURLs = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
@@ -224,9 +225,10 @@
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             case 11: { // Tombol "Simpan"
-                NSMutableDictionary *tempDict = [_userInfo mutableCopy];
-                [tempDict setObject:_attachedImagesCaptions forKey:@"images-captions"];
-                _userInfo = [NSDictionary dictionaryWithDictionary:tempDict];
+                NSMutableDictionary *tempUserInfoDict = [_userInfo mutableCopy];
+                [tempUserInfoDict setObject:_attachedImagesCaptions forKey:@"images-captions"];
+                [tempUserInfoDict setObject:_uploadedImages forKey:@"uploaded-images"];
+                _userInfo = [NSDictionary dictionaryWithDictionary:tempUserInfoDict];
                 [_delegate didDismissController:self withUserInfo:_userInfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
@@ -450,6 +452,7 @@
     
     for (UIImageView *image in _attachedImages) {
         if (image.tag == imageView.tag) {
+            image.image = imageView.image;
             image.hidden = NO;
             image.userInteractionEnabled = YES;
         }
