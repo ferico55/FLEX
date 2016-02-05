@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -51,19 +51,16 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="b9s-Dn-GGl" secondAttribute="bottom" id="6Vk-HY-B4U"/>
                 <constraint firstAttribute="bottom" secondItem="b9s-Dn-GGl" secondAttribute="bottom" id="9Eb-Cp-MwF"/>
                 <constraint firstItem="b9s-Dn-GGl" firstAttribute="top" secondItem="MbX-dX-rBP" secondAttribute="bottom" constant="6" id="KUw-lH-ikt"/>
-                <constraint firstAttribute="trailing" secondItem="b9s-Dn-GGl" secondAttribute="trailing" id="ME9-up-Pew">
-                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                <constraint firstItem="b9s-Dn-GGl" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="ME9-up-Pew">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-70"/>
                 </constraint>
                 <constraint firstItem="b9s-Dn-GGl" firstAttribute="top" secondItem="MbX-dX-rBP" secondAttribute="bottom" id="Tdh-lN-JZY"/>
                 <constraint firstAttribute="trailing" secondItem="MbX-dX-rBP" secondAttribute="trailing" constant="8" id="Uox-E6-KT0">
                     <variation key="heightClass=regular-widthClass=regular" constant="70"/>
                 </constraint>
-                <constraint firstItem="b9s-Dn-GGl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="70" id="WAB-8O-0F0"/>
                 <constraint firstItem="MbX-dX-rBP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Zbp-MF-ShJ"/>
-                <constraint firstAttribute="trailing" secondItem="b9s-Dn-GGl" secondAttribute="trailing" constant="70" id="hpU-g8-A8B"/>
                 <constraint firstItem="MbX-dX-rBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="7" id="jxZ-8h-LXf">
                     <variation key="heightClass=regular-widthClass=regular" constant="70"/>
                 </constraint>
@@ -71,24 +68,20 @@
                     <variation key="heightClass=regular-widthClass=regular" constant="70"/>
                 </constraint>
             </constraints>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="6Vk-HY-B4U"/>
                     <exclude reference="Tdh-lN-JZY"/>
-                    <exclude reference="WAB-8O-0F0"/>
-                    <exclude reference="hpU-g8-A8B"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=regular">
                 <mask key="constraints">
-                    <include reference="6Vk-HY-B4U"/>
-                    <exclude reference="9Eb-Cp-MwF"/>
+                    <include reference="Uox-E6-KT0"/>
                     <exclude reference="KUw-lH-ikt"/>
-                    <exclude reference="ME9-up-Pew"/>
+                    <include reference="ME9-up-Pew"/>
                     <include reference="Tdh-lN-JZY"/>
-                    <include reference="WAB-8O-0F0"/>
-                    <include reference="hpU-g8-A8B"/>
-                    <exclude reference="lqj-43-2Pf"/>
+                    <include reference="lqj-43-2Pf"/>
                 </mask>
             </variation>
             <point key="canvasLocation" x="437" y="325"/>

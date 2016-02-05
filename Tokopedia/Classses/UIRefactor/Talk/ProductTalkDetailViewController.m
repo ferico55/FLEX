@@ -115,7 +115,7 @@
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
-@property (weak, nonatomic) IBOutlet UIView *header;
+@property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *talkCommentButtonLarge;
 
@@ -1511,6 +1511,8 @@
     if (data) {
         _page = 1;
         [_list removeAllObjects];
+        [_table reloadData];
+        
         [self configureRestKit];
         [self loadData];
         [self setHeaderData:data];

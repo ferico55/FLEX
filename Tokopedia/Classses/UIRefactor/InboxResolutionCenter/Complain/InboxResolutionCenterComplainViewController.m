@@ -447,7 +447,9 @@
     }
     
     ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status = 2; //status resolution become read
-     [_tableView reloadData];
+
+    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark - Table View Delegate
