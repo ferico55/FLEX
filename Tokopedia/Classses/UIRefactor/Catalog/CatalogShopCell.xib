@@ -85,10 +85,18 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lo6-qe-3fz">
                                         <rect key="frame" x="68" y="36" width="70" height="17"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vnB-qt-hZy">
+                                            <imageView userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vnB-qt-hZy">
                                                 <rect key="frame" x="0.0" y="0.0" width="70" height="17"/>
                                             </imageView>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="44l-hV-XAg"/>
+                                            <constraint firstItem="vnB-qt-hZy" firstAttribute="leading" secondItem="Lo6-qe-3fz" secondAttribute="leading" id="7Ci-ko-1ZB"/>
+                                            <constraint firstItem="vnB-qt-hZy" firstAttribute="top" secondItem="Lo6-qe-3fz" secondAttribute="top" id="Axg-k0-Tdb"/>
+                                            <constraint firstAttribute="width" constant="70" id="Nvq-dl-4ut"/>
+                                            <constraint firstAttribute="trailing" secondItem="vnB-qt-hZy" secondAttribute="trailing" id="YVd-q2-fk0"/>
+                                            <constraint firstAttribute="bottom" secondItem="vnB-qt-hZy" secondAttribute="bottom" id="hmL-HO-7hT"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -97,12 +105,14 @@
                                     <constraint firstAttribute="trailing" secondItem="XZa-rX-g75" secondAttribute="trailing" constant="10" id="6Rr-es-l6m"/>
                                     <constraint firstItem="3sT-F4-CIm" firstAttribute="leading" secondItem="PXw-WE-AVV" secondAttribute="trailing" constant="2" id="6iA-vl-A6L"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="gtP-EX-b5j" secondAttribute="bottom" constant="9" id="8nd-Ht-BOW"/>
+                                    <constraint firstItem="Lo6-qe-3fz" firstAttribute="top" secondItem="YPx-vr-edZ" secondAttribute="bottom" id="COv-XX-C6W"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="KoK-Sg-dzi"/>
                                     <constraint firstAttribute="height" constant="70" id="LKR-zX-qiE"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="10" id="S7q-Fa-pco"/>
                                     <constraint firstItem="gtP-EX-b5j" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="SdP-UN-Zvl"/>
                                     <constraint firstItem="YPx-vr-edZ" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="cCR-dg-9hZ"/>
                                     <constraint firstAttribute="trailing" secondItem="3sT-F4-CIm" secondAttribute="trailing" constant="10" id="jZl-pP-Eca"/>
+                                    <constraint firstItem="Lo6-qe-3fz" firstAttribute="leading" secondItem="gtP-EX-b5j" secondAttribute="trailing" constant="8" id="jgW-gF-Dkb"/>
                                     <constraint firstAttribute="trailing" secondItem="aAd-Lg-sdc" secondAttribute="trailing" constant="15" id="lUb-aG-HxJ"/>
                                     <constraint firstItem="XZa-rX-g75" firstAttribute="top" secondItem="aAd-Lg-sdc" secondAttribute="bottom" constant="11" id="qwN-Lb-pGE"/>
                                     <constraint firstItem="YPx-vr-edZ" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="top" constant="15" id="rM1-GY-ZmO"/>
@@ -251,7 +261,9 @@
                 <outlet property="productNameLabel" destination="gzI-ib-jqq" id="v5g-E5-1SW"/>
                 <outlet property="productPriceLabel" destination="yaO-Zj-7nA" id="DBg-9n-wgU"/>
                 <outlet property="reputationBadge" destination="vnB-qt-hZy" id="9fg-dc-cZt"/>
+                <outlet property="reputationBadgeLeadingConstraint" destination="7Ci-ko-1ZB" id="jJ4-PN-Xzs"/>
                 <outlet property="reputationBadgeView" destination="Lo6-qe-3fz" id="cKf-iK-0Xa"/>
+                <outlet property="reputationBadgeViewLeadingConstraint" destination="jgW-gF-Dkb" id="ivW-42-8Rw"/>
                 <outlet property="seeOtherProducts" destination="TUy-cG-4oA" id="asQ-u3-DLx"/>
                 <outlet property="shopImageView" destination="gtP-EX-b5j" id="A1D-Y4-CIn"/>
                 <outlet property="shopNameLabel" destination="YPx-vr-edZ" id="RKH-Zc-fhf"/>

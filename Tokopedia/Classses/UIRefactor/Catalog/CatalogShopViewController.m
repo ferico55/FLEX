@@ -38,6 +38,7 @@
 #import "sortfiltershare.h"
 #import "string_product.h"
 #import "detail.h"
+#import "NoResultReusableView.h"
 
 @interface CatalogShopViewController ()
 <
@@ -81,7 +82,7 @@
     FilterCatalogViewController *_filterCatalogController;
     
     LoadingView *_loadingView;
-    NoResultReusableView *noResultView;
+    NoResultReusableView *_noResultView;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -109,7 +110,7 @@
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);    
     _operationQueue = [NSOperationQueue new];
     
-    
+    [self initNoResultView];
     
     _page = 0;
     
@@ -131,7 +132,17 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
-    [self initNoResultView];
+    
+    //if (_catalog_shops.count == 0) [self initNoResultView];
+}
+
+- (void)initNoResultView{
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"no-result.png"
+                                 title:@"Belum ada toko yang menjual produk ini"
+                                  desc:@""
+                              btnTitle:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -225,6 +236,8 @@
         cell.masking.hidden = NO;
     }
     
+    cell.reputationBadgeLeadingConstraint.constant = 0;
+    
     /*
     [SmileyAndMedal generateMedalWithLevel:catalogShop.shop.shop_reputation.shop_badge_level.level
                                    withSet:shop.shop_reputation.shop_badge_level.set
@@ -238,8 +251,19 @@
     [thumb setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.reputation_image_uri]]
                  placeholderImage:[UIImage imageNamed:@""]
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                              thumb.image = image;
-                              thumb.contentMode = UIViewContentModeScaleAspectFit;
+                              //hacks for image that didn't aligned: use UIViewContentModeTopLeft
+                              //another problem arise: size too small/not fit/uncertain
+                              //resize
+                              
+                              CGFloat sizeMultiplier = 1.8;
+                              CGSize newSize = CGSizeMake(image.size.width*sizeMultiplier, image.size.height*sizeMultiplier);
+                              UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+                              [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+                              UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+                              UIGraphicsEndImageContext();
+                              
+                              thumb.image = newImage;
+                              thumb.contentMode = UIViewContentModeTopLeft;
                               thumb.clipsToBounds = YES;
                           } failure:nil];
     
@@ -320,21 +344,10 @@
 #pragma mark - Network manager delegate
 
 - (NSString *)getPath:(int)tag {
-    //return API_CATALOG_PATH;
     return @"search/v1/catalog/product";
 }
 
 - (NSDictionary *)getParameter:(int)tag {
-    /*
-    NSDictionary *parameters = @{
-                                 API_ACTION_KEY             : API_GET_CATALOG_DETAIL_KEY,
-                                 API_CATALOG_ID_KEY         : _catalogId?:@"",
-                                 API_FILTER_CONDITION_KEY   : _condition?:@"",
-                                 API_FILTER_LOCATION_KEY    : _location?:@"",
-                                 API_FILTER_ORDER_BY_KEY    : _orderBy?:@"",
-                                 API_FILTER_PAGE_KEY        : [NSString stringWithFormat:@"%d", _page],
-                                 };
-     */
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setObject:@"ios" forKey:@"device"];
     [parameters setObject:@(_startPerPage) forKey:@"rows"];
@@ -342,8 +355,10 @@
     
     [parameters setObject:_catalog.result.catalog_info.catalog_id?:@"" forKey:@"ctg_id"];
     [parameters setObject:_condition?:@"" forKey:API_FILTER_CONDITION_KEY];
-    [parameters setObject:_location?:@"" forKey:API_FILTER_LOCATION_KEY];
-    [parameters setObject:_orderBy?:@"" forKey:API_FILTER_ORDER_BY_KEY];
+    //[parameters setObject:_location?:@"" forKey:API_FILTER_LOCATION_KEY];
+    //[parameters setObject:_orderBy?:@"" forKey:API_FILTER_ORDER_BY_KEY];
+    [parameters setObject:_location?:@"" forKey:@"floc"];
+    [parameters setObject:_orderBy?:@"" forKey:@"ob"];
     
     return parameters;
 }
@@ -448,45 +463,34 @@
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    /*
-    BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
-        [noResultView removeFromSuperview];
-        [self loadMappingResult:result];
-        [_activityIndicatorView stopAnimating];
-        [_tableView setTableFooterView:nil];
-        [_refreshControl endRefreshing];
-    }
-}
-
-- (void)loadMappingResult:(RKMappingResult *)result {
-    if (result && [result isKindOfClass:[RKMappingResult class]]) {
-        Catalog *catalog = [result.dictionary objectForKey:@""];
-        if (_page == 1) [_catalog_shops removeAllObjects];
-        
-        if(catalog.result.catalog_shops.count > 0) {
-            [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
-        }else{
-            //no data
-            if([_location isEqualToString:@"Semua Lokasi"] && [_condition isEqualToString:@"Semua Kondisi"]){
-                [noResultView setNoResultDesc:@"Toko tidak ditemukan pada katalog ini"];
-            }else{
-                //use filter
-                [noResultView setNoResultDesc:@"Toko tidak ditemukan pada katalog dengan filter ini"];
-            }
-            [_tableView addSubview:noResultView];
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    CatalogShopAWS *shops = [result objectForKey:@""];
+    
+    NSMutableArray *catalogShops = [[NSMutableArray alloc]init];
+    
+    [_noResultView removeFromSuperview];
+    _uriNext = shops.result.paging.uri_next;
+    if (shops.result.catalog_products > 0) {        
+        if (_page == 0) {
+            [_catalog_shops removeAllObjects];
         }
         
-        if (catalog.result.paging.uri_next) _page++;
-        _uriNext = catalog.result.paging.uri_next;
-        [_tableView reloadData];
+        [_catalog_shops addObjectsFromArray:shops.result.catalog_products];
+        
+        
+        
+        
+        if(![_uriNext isEqualToString:@""]){
+            _page++;
+        }
+        
         [_tableView setTableFooterView:nil];
         [_activityIndicatorView stopAnimating];
         
         
     } else {
         // no data at all
-        
+        [_tableView addSubview:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -538,7 +542,7 @@
     
     _catalogId = _catalog.result.catalog_info.catalog_id;
     _orderBy = orderBy;
-    _page = 1;
+    _page = 0;
     
     [_networkManager doRequest];
 }
@@ -557,7 +561,7 @@
     _catalogId = catalog.result.catalog_info.catalog_id;
     _location = location;
     _condition = condition;
-    _page = 1;
+    _page = 0;
     
     [_networkManager doRequest];
 }
@@ -641,22 +645,10 @@
 - (void)tableViewCell:(UITableViewCell *)cell didSelectOtherProductAtIndexPath:(NSIndexPath *)indexPath
 {
     CatalogProductViewController *controller = [CatalogProductViewController new];
-    controller.product_list = [[_catalog_shops objectAtIndex:indexPath.row] products];
+    CatalogShopAWSProductResult *catalogShop = [_catalog_shops objectAtIndex:indexPath.row];
+    controller.product_list = catalogShop.products;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-#pragma mark - No result view
-
-- (void)initNoResultView {
-    noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-    noResultView.delegate = self;
-    [noResultView generateAllElements:@"no-result.png"
-                                title:@"Tidak ada penjual"
-                                 desc:@"Toko tidak ditemukan pada katalog ini"
-                             btnTitle:nil];
-}
-
-- (void)buttonDidTapped:(id)sender {
-}
 
 @end
