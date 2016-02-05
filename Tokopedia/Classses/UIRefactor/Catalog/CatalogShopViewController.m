@@ -108,18 +108,18 @@
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);    
     _operationQueue = [NSOperationQueue new];
     
+    
+    
+    _page = 0;
+    
+    _startPerPage = 5;
+    _start = 0;
+    
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.isUsingHmac = NO;
     _networkManager.isParameterNotEncrypted = YES;
     [_networkManager doRequest];
-    
-    _page = 0;
-    //_uriNext = _catalog.result.paging.uri_next;
-    //_catalogId = _catalog.result.catalog_info.catalog_id;
-    
-    _startPerPage = 5;
-    _start = 0;
     
     _filterCatalogController = [[FilterCatalogViewController alloc] initWithStyle:UITableViewStyleGrouped];
     _filterCatalogController.catalog = _catalog;
@@ -252,9 +252,10 @@
 {
     NSInteger row = _catalog_shops.count - 1;
     if (row == indexPath.row) {
-        if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
+        if (_uriNext != NULL && ![_uriNext isEqualToString:@""] && _uriNext != 0) {
             NSLog(@"%@", NSStringFromSelector(_cmd));
             [_networkManager doRequest];
+            [_tableView setTableFooterView:_loadingView];
         }
     }
 }
@@ -351,10 +352,8 @@
     _objectManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[CatalogShopAWS class]];
-    //[statusMapping addAttributeMappingsFromArray:@[@"status", @"message_error", @"server_process_time"]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        @"message_error":@"status"
-                                                        }];
+    [statusMapping addAttributeMappingsFromArray:@[@"status", @"message_error", @"server_process_time"]];
+    //[statusMapping addAttributeMappingsFromDictionary:@{@"message_error":@"status"}];
     
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[CatalogShopAWSResult class]];
@@ -407,12 +406,16 @@
                                                     @"shop_id",
                                                     @"condition"
                                                     ]];
+    // paging mapping
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
     
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"catalog_products" toKeyPath:@"catalog_products" withMapping:catalogProductMapping]];
     [catalogProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop" toKeyPath:@"shop" withMapping:shopMapping]];
     [catalogProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:productMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping]];
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
@@ -460,15 +463,17 @@
     
     NSMutableArray *catalogShops = [[NSMutableArray alloc]init];
     
-    if (shops.result.catalog_products > 0) {
-        
+    if (shops.result.catalog_products > 0) {        
         if (_page == 0) {
             [_catalog_shops removeAllObjects];
         }
         
         [_catalog_shops addObjectsFromArray:shops.result.catalog_products];
         _page++;
+        _uriNext = shops.result.paging.uri_next;
         
+        [_tableView setTableFooterView:nil];
+        [_activityIndicatorView stopAnimating];
         
         
     } else {
@@ -479,25 +484,10 @@
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
     } else  {
+        
     }
-        [_tableView reloadData];
+    [_tableView reloadData];
     
-}
-
-- (void)loadMappingResult:(RKMappingResult *)result {
-    /*
-    if (result && [result isKindOfClass:[RKMappingResult class]]) {
-        Catalog *catalog = [result.dictionary objectForKey:@""];
-        if (_page == 1) [_catalog_shops removeAllObjects];
-        [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
-        if (catalog.result.paging.uri_next) _page++;
-        _uriNext = catalog.result.paging.uri_next;
-        [_tableView reloadData];
-        [_tableView setTableFooterView:nil];
-        [_activityIndicatorView stopAnimating];
-        [_refreshControl endRefreshing];
-    }
-     */
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
