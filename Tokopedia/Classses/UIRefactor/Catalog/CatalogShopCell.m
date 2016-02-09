@@ -11,7 +11,7 @@
 @implementation CatalogShopCell
 
 - (void)awakeFromNib {
-    [viewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionContentStar:)]];
+    [_reputationBadgeView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionContentStar:)]];
     //[expandViewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noAction:)]];
 }
 
@@ -20,7 +20,7 @@
 }
 
 - (void)actionContentStar:(id)sender {
-    //[_delegate actionContentStar:((UITapGestureRecognizer *) sender).view];
+    [_delegate actionContentStar:((UITapGestureRecognizer *) sender).view];
 }
 
 - (void)noAction:(id)sender {

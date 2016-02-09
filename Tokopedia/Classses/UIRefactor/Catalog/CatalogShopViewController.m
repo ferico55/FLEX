@@ -186,6 +186,7 @@
     
     cell.delegate = self;
     cell.indexPath = indexPath;
+    cell.reputationBadgeView.tag = indexPath.row;
     
     CatalogShopAWSProductResult *catalogShop = [_catalog_shops objectAtIndex:indexPath.row];
     SearchAWSShop *shop = catalogShop.shop;
@@ -615,11 +616,11 @@
 
 #pragma mark - Cell delegate
 - (void)actionContentStar:(id)sender {
-    /*
-    CatalogShops *shop = _catalog_shops[((UIView *)sender).tag];
-    NSString *strDesc = [NSString stringWithFormat:@"%@ %@", shop.shop_reputation.shop_reputation_score, CStringPoin];
+    UIView *gestureSender = (UIView*)sender;
+    CatalogShopAWSProductResult *shop = _catalog_shops[gestureSender.tag];
+    NSString *strDesc = [NSString stringWithFormat:@"%@ %@", shop.shop.reputation_score, CStringPoin];
     [self initPopUp:strDesc withSender:sender withRangeDesc:NSMakeRange(strDesc.length-CStringPoin.length, CStringPoin.length)];
-     */
+    
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
