@@ -176,7 +176,7 @@ enum TypePlacePicker : Int{
         style.lineSpacing = 2
         let font = UIFont(name: "GothamLight", size: 10.0)!
         let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:style]
-        let string = "Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas*"
+        let string = "Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas"
         let attributedString = NSMutableAttributedString(string:string, attributes:attributes)
         self.mapWarningLabel.attributedText = attributedString;
     }
