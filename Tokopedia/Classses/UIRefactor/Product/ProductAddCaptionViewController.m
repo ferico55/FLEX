@@ -293,8 +293,12 @@
     [_imageCaptionTextField setText:_attachedImagesCaptions[page]];
 }
 
-- (IBAction)tapToDeleteImage:(UIButton*)sender {
-    [self deleteImageAtIndex:sender.tag];
+- (IBAction)tapToDeleteImage:(id)sender {
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        [self deleteImageAtIndex:btn.tag];
+    }
+    
 }
 
 #pragma mark - Request Generate Host
@@ -420,8 +424,7 @@
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
-    NSString *imageCaption = textField.text;
-    [_attachedImagesCaptions replaceObjectAtIndex:_selectedImageTag withObject:imageCaption];
+    NSString *imageCaption = textField.text;    [_attachedImagesCaptions replaceObjectAtIndex:_selectedImageTag withObject:imageCaption];
     return YES;
 }
 
@@ -565,6 +568,7 @@
             newImageView = [[UIImageView alloc] initWithImage:((UIImageView*)self.attachedImages[ii]).image];
             newImageView.contentMode = UIViewContentModeScaleAspectFit;
             newImageView.frame = frame;
+            newImageView.userInteractionEnabled = YES;
             
             float widthRatio = newImageView.bounds.size.width / newImageView.image.size.width;
             float heightRatio = newImageView.bounds.size.height / newImageView.image.size.height;
@@ -576,13 +580,16 @@
             
             UIButton *deleteButton = [UIButton new];
             [deleteButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
+            [deleteButton.imageView setContentMode:UIViewContentModeCenter];
             [deleteButton HVD_setWidth:20.0];
             [deleteButton HVD_setHeight:20.0];
-            [deleteButton addTarget:self action:@selector(tapToDeleteImage:) forControlEvents:UIControlEventTouchUpInside];
-            deleteButton.tag = ii;
             
             [newImageView addSubview:deleteButton];
             
+            [deleteButton addTarget:self action:@selector(tapToDeleteImage:) forControlEvents:UIControlEventTouchUpInside];
+            deleteButton.tag = ii;
+            [deleteButton setEnabled:YES];
+            [deleteButton setUserInteractionEnabled:YES];
             [deleteButton HVD_pinToTopOfSuperviewWithMargin:(((newImageView.frame.size.height-imageHeight)/2) + 8)];
             [deleteButton HVD_pinToRightOfSuperviewWithMargin:(((newImageView.frame.size.width-imageWidth)/2) + 8)];
         }
@@ -599,6 +606,8 @@
     NSMutableArray* tempArray = [_attachedImages mutableCopy];
     [tempArray replaceObjectAtIndex:index withObject:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_upload_image.png"]]];
     _attachedImages = tempArray;
+    
+    [_table reloadData];
 }
 
 @end
