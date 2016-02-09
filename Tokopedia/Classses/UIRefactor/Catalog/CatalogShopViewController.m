@@ -94,7 +94,7 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _page = 2;
+    _page = 1;
     _uriNext = _catalog.result.paging.uri_next;
     _catalogId = _catalog.result.catalog_info.catalog_id;
     
@@ -107,8 +107,10 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
+    [_catalog_shops removeAllObjects];
+    [_networkManager doRequest];
+    
     [self initNoResultView];
-    if (_catalog_shops.count == 0) [_tableView addSubview:noResultView];
 }
 
 - (void)didReceiveMemoryWarning {
