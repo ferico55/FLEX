@@ -43,6 +43,7 @@
     BOOL _isShouldRefreshingCart;
     
     NotificationManager *_notifManager;
+    NoResultReusableView *noResultView;
     
     NSURL *_deeplinkUrl;
 }
@@ -77,6 +78,13 @@
     CGRect frame = _noLoginView.frame;
     frame.size.width = screenRect.size.width;
     _noLoginView.frame = frame;
+    
+    noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
+    noResultView.delegate = self;
+    [noResultView generateAllElements:@"Keranjang.png"
+                                title:@"Keranjang belanja Anda kosong"
+                                 desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
+                             btnTitle:@"Ayo mulai belanja!"];
     
     _isShouldRefreshingCart = NO;
     
@@ -509,12 +517,7 @@
 {
     _pageControlView.hidden = isNodata;
     if (isNodata) {
-        NoResultReusableView *noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
-        noResultView.delegate = self;
-        [noResultView generateAllElements:@"Keranjang.png"
-                                     title:@"Keranjang belanja Anda kosong"
-                                     desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
-                                  btnTitle:@"Ayo mulai belanja!"];
+        
         [self.view addSubview:noResultView];
         //self.view = noResultView;
     }
