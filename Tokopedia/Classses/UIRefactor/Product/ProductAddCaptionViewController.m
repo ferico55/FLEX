@@ -585,8 +585,8 @@
             UIButton *deleteButton = [UIButton new];
             [deleteButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
             [deleteButton.imageView setContentMode:UIViewContentModeCenter];
-            [deleteButton HVD_setWidth:20.0];
-            [deleteButton HVD_setHeight:20.0];
+            [deleteButton HVD_setWidth:40.0];
+            [deleteButton HVD_setHeight:40.0];
             
             [newImageView addSubview:deleteButton];
             
@@ -594,8 +594,8 @@
             deleteButton.tag = ii;
             [deleteButton setEnabled:YES];
             [deleteButton setUserInteractionEnabled:YES];
-            [deleteButton HVD_pinToTopOfSuperviewWithMargin:(((newImageView.frame.size.height-imageHeight)/2) + 8)];
-            [deleteButton HVD_pinToRightOfSuperviewWithMargin:(((newImageView.frame.size.width-imageWidth)/2) + 8)];
+            [deleteButton HVD_pinToTopOfSuperviewWithMargin:(((newImageView.frame.size.height-imageHeight)/2))];
+            [deleteButton HVD_pinToRightOfSuperviewWithMargin:(((newImageView.frame.size.width-imageWidth)/2))];
         }
     }
     
