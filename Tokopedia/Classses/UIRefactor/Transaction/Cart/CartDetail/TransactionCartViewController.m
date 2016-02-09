@@ -1630,6 +1630,12 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    // should be phone numbers text field
+    if (textField.tag < 0) {
+        NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        return [newString isNumber];
+    }
+    
     if (textField == _saldoTokopediaAmountTextField) {
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
