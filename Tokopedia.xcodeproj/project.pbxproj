@@ -509,7 +509,6 @@
 		7A710BBF1C4CF81D00D00615 /* WishListObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7101561C4CF81900D00615 /* WishListObject.m */; };
 		7A710BC01C4CF81D00D00615 /* WishListObjectList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7101581C4CF81900D00615 /* WishListObjectList.m */; };
 		7A710BC11C4CF81D00D00615 /* WishListObjectResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71015A1C4CF81900D00615 /* WishListObjectResult.m */; };
-		7A710BC21C4CF81D00D00615 /* Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71015D1C4CF81900D00615 /* Analytics.m */; };
 		7A710BC31C4CF81D00D00615 /* TKPGoogleDistanceMatrixProductStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7101611C4CF81900D00615 /* TKPGoogleDistanceMatrixProductStore.m */; };
 		7A710BC41C4CF81D00D00615 /* TKPGooglePlaceDetailProductStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7101631C4CF81900D00615 /* TKPGooglePlaceDetailProductStore.m */; };
 		7A710BC51C4CF81D00D00615 /* TKPHomeBannerStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7101651C4CF81900D00615 /* TKPHomeBannerStore.m */; };
@@ -2400,8 +2399,6 @@
 		7A7101581C4CF81900D00615 /* WishListObjectList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObjectList.m; sourceTree = "<group>"; };
 		7A7101591C4CF81900D00615 /* WishListObjectResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObjectResult.h; sourceTree = "<group>"; };
 		7A71015A1C4CF81900D00615 /* WishListObjectResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObjectResult.m; sourceTree = "<group>"; };
-		7A71015C1C4CF81900D00615 /* Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analytics.h; sourceTree = "<group>"; };
-		7A71015D1C4CF81900D00615 /* Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analytics.m; sourceTree = "<group>"; };
 		7A71015F1C4CF81900D00615 /* TKPAppFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPAppFlow.h; sourceTree = "<group>"; };
 		7A7101601C4CF81900D00615 /* TKPGoogleDistanceMatrixProductStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPGoogleDistanceMatrixProductStore.h; sourceTree = "<group>"; };
 		7A7101611C4CF81900D00615 /* TKPGoogleDistanceMatrixProductStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPGoogleDistanceMatrixProductStore.m; sourceTree = "<group>"; };
@@ -5862,15 +5859,6 @@
 			path = WishList;
 			sourceTree = "<group>";
 		};
-		7A71015B1C4CF81900D00615 /* Third Party */ = {
-			isa = PBXGroup;
-			children = (
-				7A71015C1C4CF81900D00615 /* Analytics.h */,
-				7A71015D1C4CF81900D00615 /* Analytics.m */,
-			);
-			path = "Third Party";
-			sourceTree = "<group>";
-		};
 		7A71015E1C4CF81900D00615 /* TKPStoreManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -9243,7 +9231,6 @@
 				7A71FD0E1C4CF81800D00615 /* Cocoa */,
 				7A71FD451C4CF81800D00615 /* Encryption */,
 				7A71FD531C4CF81800D00615 /* Object */,
-				7A71015B1C4CF81900D00615 /* Third Party */,
 				7A71015E1C4CF81900D00615 /* TKPStoreManager */,
 				7A71016F1C4CF81900D00615 /* UIRefactor */,
 				7A7106D31C4CF81B00D00615 /* Veritrans */,
@@ -10601,7 +10588,6 @@
 				85B1438B1C30E69F001F1CBC /* stringrestkit.h */,
 				85B1438C1C30E69F001F1CBC /* test.h */,
 				85B1438D1C30E69F001F1CBC /* test.m */,
-				85B1438E1C30E69F001F1CBC /* Third Party */,
 				85B1438F1C30E69F001F1CBC /* Tkpd.h */,
 				85B143901C30E69F001F1CBC /* TkpdImg.h */,
 				85B143911C30E69F001F1CBC /* Tokopedia-Info.plist */,
@@ -10610,13 +10596,6 @@
 				85B143941C30E69F001F1CBC /* Tokopedia.xcworkspace */,
 			);
 			path = Tokopedia;
-			sourceTree = "<group>";
-		};
-		85B1438E1C30E69F001F1CBC /* Third Party */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Third Party";
 			sourceTree = "<group>";
 		};
 		FC36DF7A19B0656400AF74C1 = {
@@ -12295,7 +12274,6 @@
 				7A710B151C4CF81D00D00615 /* SearchAWS.m in Sources */,
 				7A710CF31C4CF81D00D00615 /* InboxTicketSplitViewController.m in Sources */,
 				7A710B281C4CF81D00D00615 /* ShipmentCourier.m in Sources */,
-				7A710BC21C4CF81D00D00615 /* Analytics.m in Sources */,
 				7A710AFF1C4CF81D00D00615 /* ResponseSpeed.m in Sources */,
 				7A710D541C4CF81D00D00615 /* DetailMyReviewReputationViewController.m in Sources */,
 				7A710AFD1C4CF81D00D00615 /* RequestObject.m in Sources */,
