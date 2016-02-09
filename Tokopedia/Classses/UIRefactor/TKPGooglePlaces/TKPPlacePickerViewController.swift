@@ -39,8 +39,9 @@ enum TypePlacePicker : Int{
     @IBOutlet var addressNameLabel: UILabel!
     
     @IBOutlet var infoViewConstraintHeight: NSLayoutConstraint!
-    @IBOutlet var mapViewBotomConstraint: NSLayoutConstraint!
     @IBOutlet var transparantInfoView: UIView!
+    @IBOutlet weak var mapWarningLabel: UILabel!
+    
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
     var type : Int = 0
@@ -67,7 +68,6 @@ enum TypePlacePicker : Int{
     var _previousY:CGFloat!
     var _infoTopConstraint:NSLayoutConstraint!
 
-//    var infoAddressView = InfoAddressView()
     var infoAddress : AddressViewModel!
 
     override func loadView() {
@@ -99,6 +99,7 @@ enum TypePlacePicker : Int{
         initLocationManager()
         adustBehaviorType(type)
         loadHistory()
+        createWarningLabel()
     }
     
     //MARK: - View Action
@@ -117,7 +118,7 @@ enum TypePlacePicker : Int{
     }
     
     @IBAction func tapShowInfoAddress(sender: AnyObject) {
-        if(_infoTopConstraint.constant <= -40){
+        if(_infoTopConstraint.constant <= -60){
             infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
             showInfo()
         }
@@ -169,6 +170,17 @@ enum TypePlacePicker : Int{
     }
 
     //MARK: - Methods
+    
+    func createWarningLabel() -> Void {
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 2
+        let font = UIFont(name: "GothamLight", size: 10.0)!
+        let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:style]
+        let string = "Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas*"
+        let attributedString = NSMutableAttributedString(string:string, attributes:attributes)
+        self.mapWarningLabel.attributedText = attributedString;
+    }
+    
     func adustBehaviorType(type: Int){
         switch type {
         case TypePlacePicker.TypeEditPlace.rawValue :
@@ -212,9 +224,8 @@ enum TypePlacePicker : Int{
                 toItem: self.view,
                 attribute: .Bottom,
                 multiplier: 1.0,
-                constant: -40.0)
+                constant: -60.0)
             self.view .addConstraint(_infoTopConstraint)
-//            mapViewBotomConstraint.constant = abs(_infoTopConstraint.constant)
             mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, abs(_infoTopConstraint.constant), 0.0);
             adjustInfoAddress(infoAddress)
         }
@@ -279,7 +290,7 @@ enum TypePlacePicker : Int{
     
     func hideInfo() -> Void{
         transparantInfoView.hidden = true
-        _infoTopConstraint.constant = -40
+        _infoTopConstraint.constant = -60
         UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
