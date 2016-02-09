@@ -50,7 +50,6 @@ UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
-TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
 PromoRequestDelegate,
 NoResultDelegate,
@@ -87,7 +86,6 @@ FavoriteShopRequestDelegate
     UIRefreshControl *_refreshControl;
     
     __weak RKObjectManager *_objectmanager;
-    TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
     FavoritedShopResult *_favoritedShops;
 }
@@ -151,14 +149,6 @@ FavoriteShopRequestDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addFavoriteShop:) name:@"addFavoriteShop" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeFavoriteShop:) name:@"removeFavoriteShop" object:nil];
     
-    //todo with network
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = ProductFeedTag;
-    _networkManager.isUsingHmac = NO;
-    _networkManager.isParameterNotEncrypted = YES;
-    //[_networkManager doRequest];
-    
     _favoriteShopRequest = [FavoriteShopRequest new];
     _favoriteShopRequest.delegate = self;
     [_favoriteShopRequest requestFavoriteShopListings];
@@ -214,7 +204,6 @@ FavoriteShopRequestDelegate
     if (indexPath.section == section && indexPath.row == row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
-            //[_networkManager doRequest];
             [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         }
     }
@@ -325,154 +314,7 @@ FavoriteShopRequestDelegate
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
-
-#pragma mark - Tokopedia Network Delegate
-- (NSDictionary *)getParameter:(int)tag {
-    //NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:@(_page), kTKPDHOME_APIPAGEKEY, @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
-    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
-    [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:@(_perPage) forKey:@"rows"];
-    [parameter setObject:@((_page*_perPage)+1) forKey:@"start"];
-    
-    return parameter;
-}
-
-- (NSString *)getPath:(int)tag {
-    return @"search/v1/product";
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    SearchAWS *list = stat;
-    
-    return list.status;
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (id)getObjectManager:(int)tag {
-    // initialize RestKit
-    _objectmanager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
-    
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
-                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
-                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
-                                                        }];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-    //product
-    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
-    
-    // paging mapping
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
-    
-    //add list relationship
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *productsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
-    
-    [resultMapping addPropertyMapping:productsRel];
-    
-    // add page relationship
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:[self getRequestMethod:0]
-                                                                                       pathPattern:[self getPath:0]
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    //add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-    return _objectmanager;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    SearchAWS *feed = [result objectForKey:@""];
-    [_noResultView removeFromSuperview];
-    [_firstFooter removeFromSuperview];
-    
-    if (feed.result.products.count > 0) {
-        [_noResultView removeFromSuperview];
-        if (_page == 1) {
-            [_product removeAllObjects];
-            [_promo removeAllObjects];
-            [_firstFooter removeFromSuperview];
-        }
-        
-        [_product addObject:feed.result.products];
-        
-        [TPAnalytics trackProductImpressions:feed.result.products];
-        
-        _isNoData = NO;
-        _nextPageUri =  feed.result.paging.uri_next;
-        //_page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
-        _page++;
-        
-        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-            //remove loadingview if there is no more item
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-        } else {
-            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-        }
-        
-        if (_page > 1) [self requestPromo];
-        
-    } else {
-        // no data at all
-        _isNoData = YES;
-        [_product removeAllObjects];
-        [_collectionView reloadData];
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
-        [_collectionView addSubview:_noResultView];
-        //[self setView:_noResultView];
-    }
-    
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-        [_collectionView reloadData];
-    } else  {
-        [_collectionView reloadData];
-    }
-    [_collectionView layoutIfNeeded];
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    _isShowRefreshControl = NO;
-    [_refreshControl endRefreshing];
-    _isFailRequest = YES;
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
-
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
     [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
@@ -499,7 +341,6 @@ FavoriteShopRequestDelegate
 - (void)addFavoriteShop:(NSNotification*)notification{
     //if([self.view isEqual:_noResultView]){
     if(_product.count == 0){
-        //[_networkManager doRequest];
         [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     }
     //self.view = _contentView;
@@ -511,7 +352,6 @@ FavoriteShopRequestDelegate
 - (void)removeFavoriteShop:(NSNotification*)notification{
     _page = 1;
     [_product removeAllObjects];
-    //[_networkManager doRequest];
     [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
@@ -520,7 +360,6 @@ FavoriteShopRequestDelegate
 
 #pragma mark - Other Method
 - (IBAction)pressRetryButton:(id)sender {
-    //[_networkManager doRequest];
     [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     _isFailRequest = NO;
     [_collectionView reloadData];
@@ -530,7 +369,6 @@ FavoriteShopRequestDelegate
 -(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
     _isShowRefreshControl = YES;
-    //[_networkManager doRequest];
     [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
 }
 
@@ -636,7 +474,6 @@ FavoriteShopRequestDelegate
         
         _isNoData = NO;
         _nextPageUri =  feed.result.paging.uri_next;
-        //_page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         _page++;
         
         if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
