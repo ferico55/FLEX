@@ -13,7 +13,6 @@
 #import "TransactionCartResultViewController.h"
 #import "NotificationManager.h"
 #import "RegisterViewController.h"
-#import "NoResultReusableView.h"
 
 #import "TransactionCartFormMandiriClickPayViewController.h"
 
@@ -29,8 +28,7 @@
     UIPageViewControllerDelegate,
     TransactionCartViewControllerDelegate,
     NotificationManagerDelegate,
-    UIScrollViewDelegate,
-    NoResultDelegate
+    UIScrollViewDelegate
 >
 {
     NSInteger _index;
@@ -43,7 +41,6 @@
     BOOL _isShouldRefreshingCart;
     
     NotificationManager *_notifManager;
-    NoResultReusableView *noResultView;
     
     NSURL *_deeplinkUrl;
 }
@@ -78,13 +75,6 @@
     CGRect frame = _noLoginView.frame;
     frame.size.width = screenRect.size.width;
     _noLoginView.frame = frame;
-    
-    noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
-    noResultView.delegate = self;
-    [noResultView generateAllElements:@"Keranjang.png"
-                                title:@"Keranjang belanja Anda kosong"
-                                 desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
-                             btnTitle:@"Ayo mulai belanja!"];
     
     _isShouldRefreshingCart = NO;
     
@@ -437,10 +427,6 @@
     }
 }
 
-#pragma mark - NoResult Delegate
-- (void)buttonDidTapped:(id)sender{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-}
 
 #pragma mark - Notification Manager
 
@@ -516,23 +502,6 @@
 -(void)isNodata:(BOOL)isNodata
 {
     _pageControlView.hidden = isNodata;
-    if (isNodata) {
-        
-        [self.view addSubview:noResultView];
-        //self.view = noResultView;
-    }
-    else
-    {
-        
-        for (UIView *view in self.view.subviews) {
-            if ([view isKindOfClass:[NoResultReusableView class]]) {
-                [view removeFromSuperview];
-            }
-        }
-         
-        
-        //self.view = self.contentView;
-    }
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
         [self initNotificationManager];
     }
