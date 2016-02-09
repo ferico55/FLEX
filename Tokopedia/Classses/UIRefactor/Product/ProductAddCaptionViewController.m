@@ -403,6 +403,10 @@
     _activeTextField = nil;
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [_activeTextField resignFirstResponder];
+}
+
 #pragma mark - Text Field Delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     _activeTextField = textField;
