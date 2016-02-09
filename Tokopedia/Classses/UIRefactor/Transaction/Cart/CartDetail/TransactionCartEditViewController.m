@@ -212,7 +212,7 @@ replacementString:(NSString*)string
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 20;
     inset.top = _headerView.frame.size.height-12;
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, inset.top, _remarkTextView.frame.size.width, 40)];
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(inset.left, 0, _remarkTextView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
     placeholderLabel.font = [UIFont fontWithName:_remarkTextView.font.fontName size:_remarkTextView.font.pointSize];
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
