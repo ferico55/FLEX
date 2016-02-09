@@ -15,7 +15,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+HVDLayout.h"
 
-@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate, UIScrollViewDelegate, UITextFieldDelegate> {
+@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate, UIScrollViewDelegate, UITextFieldDelegate, TokopediaNetworkManagerDelegate> {
     NavigateViewController *_navigate;
     
     UITextField *_activeTextField;
@@ -34,6 +34,8 @@
     UIImageView *_selectedImageIcon;
     
     BOOL _isFinishedUploadingImage;
+    
+    TokopediaNetworkManager *_networkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -80,6 +82,9 @@
                      selector:@selector(keyboardWillHide:)
                          name:UIKeyboardWillHideNotification
                        object:nil];
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
     
     _generateHost = [GenerateHost new];
     _generatedHost = [GeneratedHost new];
@@ -160,9 +165,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = nil;
+    static NSString *addCaptionCellIdentifier = @"AddCaptionCellIdentifier";
     
-    cell = _addCaptionCells[indexPath.section];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:addCaptionCellIdentifier];
+    
+    if (cell == nil) {
+        cell = _addCaptionCells[indexPath.section];
+    }
     
     return cell;
 }
@@ -217,7 +226,7 @@
 
 #pragma mark - Action
 - (IBAction)tap:(id)sender {
-    [_activeTextField resignFirstResponder];
+    [_imageCaptionTextField resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
@@ -258,7 +267,7 @@
                 }
             }
             
-            [_imagesScrollView setContentOffset:CGPointMake((sender.view.tag-20) * _imagesScrollView.frame.size.width, 0) animated:YES];
+            [_imagesScrollView setContentOffset:CGPointMake((sender.view.tag-20) * _imagesScrollView.frame.size.width, 0) animated:NO];
             
             [_imageCaptionTextField setText:_attachedImagesCaptions[sender.view.tag-20]];
         }
@@ -285,7 +294,7 @@
 }
 
 - (IBAction)tapToDeleteImage:(UIButton*)sender {
-    
+    [self deleteImageAtIndex:sender.tag];
 }
 
 #pragma mark - Request Generate Host
@@ -359,8 +368,6 @@
             image.userInteractionEnabled = YES;
             [image.layer setBorderColor:(_selectedImageTag == tagView)?[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
             [image.layer setBorderWidth:(_selectedImageTag == tagView)?2.0:1.0];
-            image.layer.cornerRadius = 5.0;
-            image.layer.masksToBounds = YES;
             if (_selectedImageTag == tagView) {
                 [_imagesScrollView setContentOffset:CGPointMake((tagView  - 20) * _imagesScrollView.frame.size.width, 0) animated:YES];
             }
@@ -390,6 +397,12 @@
     [self setScrollViewImages];
 }
 
+#pragma mark - Scroll View Delegate
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    [_activeTextField resignFirstResponder];
+    _activeTextField = nil;
+}
+
 #pragma mark - Text Field Delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     _activeTextField = textField;
@@ -402,6 +415,7 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    [textField resignFirstResponder];
     NSString *imageCaption = textField.text;
     [_attachedImagesCaptions replaceObjectAtIndex:_selectedImageTag withObject:imageCaption];
     return YES;
@@ -425,7 +439,6 @@
                                  fieldName:@"fileToUpload"
                                    success:^(id imageObject, UploadImage *image) {
                                        [self successUploadObject:object withMappingResult:image];
-                                       
                                    } failure:^(id imageObject, NSError *error) {
                                        [self failedUploadObject:imageObject];
                                    }];
@@ -447,6 +460,7 @@
 }
 
 - (void)failedUploadObject:(id)object {
+    
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
     
@@ -458,13 +472,11 @@
         }
     }
     
-    imageView.hidden = YES;
-    
     [_uploadingImages removeObject:object];
     NSMutableArray *objectProductPhoto = [NSMutableArray new];
     objectProductPhoto = _uploadedImages;
     for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-        if ([_selectedImagesCameraController[i]isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
+        if ([_selectedImagesCameraController[i] isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
             [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
             [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
             [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
@@ -528,41 +540,61 @@
 }
 
 #pragma mark - Methods
+
 - (void)setScrollViewImages {
     [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    for(int ii = 0; ii < _numberOfUploadedImages; ii++)
-    {
+    for(int ii = 0; ii < _numberOfUploadedImages; ii++) {
         CGRect frame;
         frame.origin.x = _imagesScrollView.frame.size.width * ii;
         frame.origin.y = 0;
         frame.size = _imagesScrollView.frame.size;
         
-        UIImageView *newImageView = [[UIImageView alloc] initWithImage:((UIImageView*)self.attachedImages[ii]).image];
-        newImageView.frame = frame;
-        newImageView.contentMode = UIViewContentModeScaleAspectFit;
+        UIImageView *newImageView;
         
-        float widthRatio = newImageView.bounds.size.width / newImageView.image.size.width;
-        float heightRatio = newImageView.bounds.size.height / newImageView.image.size.height;
-        float scale = MIN(widthRatio, heightRatio);
-        float imageWidth = scale * newImageView.image.size.width;
-        float imageHeight = scale * newImageView.image.size.height;
-        
-        [_imagesScrollView addSubview:newImageView];
-        
-        UIButton *deleteButton = [UIButton new];
-        [deleteButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
-        [deleteButton HVD_setWidth:20.0];
-        [deleteButton HVD_setHeight:20.0];
-        [deleteButton addTarget:self action:@selector(tapToDeleteImage:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [newImageView addSubview:deleteButton];
-        
-        [deleteButton HVD_pinToTopOfSuperviewWithMargin:(((newImageView.frame.size.height-imageHeight)/2) + 8)];
-        [deleteButton HVD_pinToRightOfSuperviewWithMargin:(((newImageView.frame.size.width-imageWidth)/2) + 8)];
-        
+        if ([self image:((UIImageView*)self.attachedImages[ii]).image isEqualTo:[UIImage imageNamed:@"icon_upload_image.png"]]) {
+            newImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"image_not_loading.png"]];
+            newImageView.contentMode = UIViewContentModeCenter;
+            newImageView.frame = frame;
+            [_imagesScrollView addSubview:newImageView];
+        } else {
+            newImageView = [[UIImageView alloc] initWithImage:((UIImageView*)self.attachedImages[ii]).image];
+            newImageView.contentMode = UIViewContentModeScaleAspectFit;
+            newImageView.frame = frame;
+            
+            float widthRatio = newImageView.bounds.size.width / newImageView.image.size.width;
+            float heightRatio = newImageView.bounds.size.height / newImageView.image.size.height;
+            float scale = MIN(widthRatio, heightRatio);
+            float imageWidth = scale * newImageView.image.size.width;
+            float imageHeight = scale * newImageView.image.size.height;
+            
+            [_imagesScrollView addSubview:newImageView];
+            
+            UIButton *deleteButton = [UIButton new];
+            [deleteButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
+            [deleteButton HVD_setWidth:20.0];
+            [deleteButton HVD_setHeight:20.0];
+            [deleteButton addTarget:self action:@selector(tapToDeleteImage:) forControlEvents:UIControlEventTouchUpInside];
+            deleteButton.tag = ii;
+            
+            [newImageView addSubview:deleteButton];
+            
+            [deleteButton HVD_pinToTopOfSuperviewWithMargin:(((newImageView.frame.size.height-imageHeight)/2) + 8)];
+            [deleteButton HVD_pinToRightOfSuperviewWithMargin:(((newImageView.frame.size.width-imageWidth)/2) + 8)];
+        }
     }
     
     _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _numberOfUploadedImages, _imagesScrollView.frame.size.height);
 }
+
+- (void)deleteImageAtIndex:(NSInteger)index {
+    [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
+    [_selectedIndexPathCameraController replaceObjectAtIndex:index withObject:@""];
+    [_uploadedImages replaceObjectAtIndex:index withObject:@""];
+    
+    NSMutableArray* tempArray = [_attachedImages mutableCopy];
+    [tempArray replaceObjectAtIndex:index withObject:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_upload_image.png"]]];
+    _attachedImages = tempArray;
+}
+
 @end
