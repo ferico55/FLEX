@@ -35,6 +35,8 @@
     
     BOOL _isFinishedUploadingImage;
     
+    int _scrollViewPageAmount;
+    
     TokopediaNetworkManager *_networkManager;
 }
 
@@ -100,6 +102,7 @@
     _attachedImages = [NSArray sortViewsWithTagInArray:_attachedImages];
     
     _numberOfUploadedImages = 0;
+    _scrollViewPageAmount = 0;
     
     _imageCaptionTextField.delegate = self;
     
@@ -398,6 +401,7 @@
     }
     
     _numberOfUploadedImages++;
+    _scrollViewPageAmount = (_scrollViewPageAmount>=_numberOfUploadedImages)?_scrollViewPageAmount:_numberOfUploadedImages;
     [self setScrollViewImages];
 }
 
@@ -551,7 +555,7 @@
 - (void)setScrollViewImages {
     [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    for(int ii = 0; ii < _numberOfUploadedImages; ii++) {
+    for(int ii = 0; ii < _scrollViewPageAmount; ii++) {
         CGRect frame;
         frame.origin.x = _imagesScrollView.frame.size.width * ii;
         frame.origin.y = 0;
@@ -595,7 +599,7 @@
         }
     }
     
-    _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _numberOfUploadedImages, _imagesScrollView.frame.size.height);
+    _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _scrollViewPageAmount, _imagesScrollView.frame.size.height);
 }
 
 - (void)deleteImageAtIndex:(NSInteger)index {
