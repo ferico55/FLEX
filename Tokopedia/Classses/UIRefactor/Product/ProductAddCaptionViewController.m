@@ -603,11 +603,15 @@
     [_selectedIndexPathCameraController replaceObjectAtIndex:index withObject:@""];
     [_uploadedImages replaceObjectAtIndex:index withObject:@""];
     
-    NSMutableArray* tempArray = [_attachedImages mutableCopy];
-    [tempArray replaceObjectAtIndex:index withObject:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_upload_image.png"]]];
-    _attachedImages = tempArray;
+    for (UIImageView *image in _attachedImages) {
+        if (image.tag-20 == index) {
+            image.image = [UIImage imageNamed:@"icon_upload_image.png"];
+            image.userInteractionEnabled = YES;
+        }
+    }
     
-    [_table reloadData];
+    [self setScrollViewImages];
+    _numberOfUploadedImages--;
 }
 
 @end
