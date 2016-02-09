@@ -197,7 +197,7 @@ replacementString:(NSString*)string
     
     newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
-    return [newText intValue] < 1000;
+    return [newText isNumber] && [newText intValue] < 1000;
 }
 
 #pragma mark - TextView Delegate
