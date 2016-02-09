@@ -2279,8 +2279,8 @@
     }
 }
 
-- (void)setPos:(ShippingInfoShipments *)shipment {
-    _posIndonesia = shipment;
+- (void)setPosIndonesia:(ShippingInfoShipments *)posIndonesia {
+    _posIndonesia = posIndonesia;
     for (ShippingInfoShipmentPackage *package in _posIndonesia.shipment_package) {
         if ([package.sp_id isEqualToString:@"10"]) { // Pos Kilat Khusus
             _posPackageKhusus = package;
