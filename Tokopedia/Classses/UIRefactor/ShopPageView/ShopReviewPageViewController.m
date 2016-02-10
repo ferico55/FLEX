@@ -62,7 +62,8 @@ ShopPageHeaderDelegate,
 SmileyDelegate,
 UIScrollViewDelegate,
 UIAlertViewDelegate,
-NoResultDelegate>
+NoResultDelegate,
+ProductReputationSimpleDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -565,6 +566,7 @@ NoResultDelegate>
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    /*
     ReviewList *reputationDetail = _list[indexPath.row];
     UILabel *messageLabel = [[UILabel alloc] init];
     
@@ -579,6 +581,8 @@ NoResultDelegate>
     
     CGFloat height = 150 + messageLabel.frame.size.height ;
     return height;
+     */
+    return 200;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -590,8 +594,11 @@ NoResultDelegate>
     ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
     ReviewList *list = _list[indexPath.row];
-    [cell setDelegate:self];
     [cell setShopReputationModelView:list];
+    cell.isHelpful = NO;
+    cell.delegate = self;
+    cell.indexPath = indexPath;
+    [cell.leftBorderView setHidden:YES];
     
     // this is required to load like info to detail, but was deleted
     if (![dictLikeDislike objectForKey:list.review_id]) {
@@ -648,6 +655,7 @@ NoResultDelegate>
                                                  kTKPDREVIEW_APIREVIEWCREATETIMEKEY,
                                                  kTKPDREVIEW_APIREVIEWIDKEY,
                                                  CReviewReputationID,
+                                                 @"review_shop_name",
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
@@ -1417,5 +1425,9 @@ NoResultDelegate>
 
 - (NSString *)getPath {
     return @"action/review.pl";
+}
+
+- (void)showMoreDidTappedInIndexPath:(NSIndexPath*)indexPath{
+    [self redirectToProductDetailReputation:_list[indexPath.row] withIndexPath:indexPath];
 }
 @end
