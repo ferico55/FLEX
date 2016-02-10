@@ -2110,7 +2110,13 @@ NoResultDelegate
                     [barbutton1 setTag:24];
                 }
                 
-                self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
+                if([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                   [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                    self.navigationItem.rightBarButtonItems = nil;
+                } else {
+                    self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
+                }
+                
                 [btnWishList removeFromSuperview];
                 
                 //Set position btn share
@@ -2203,21 +2209,11 @@ NoResultDelegate
                 [self hiddenButtonBuyAndPromo];
             }
             else {
-//                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
-//                    _dinkButton.hidden = NO;
-//                    _buyButton.hidden = YES;
-//                } else {
-//                    _buyButton.hidden = NO;
-//                    _dinkButton.hidden = YES;
-//                }
-                
                 //Check is in warehouse
                 if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
                     [self hiddenButtonBuyAndPromo];
                 }
             }
-            
-            
             
             if(_product.result.shop_info.shop_already_favorited == 1) {
                 _favButton.tag = 17;
