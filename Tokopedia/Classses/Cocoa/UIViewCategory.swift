@@ -45,4 +45,9 @@ extension UIView {
         }
     }
     
+    func removeAllSubviews() {
+        subviews.forEach({view in
+            view.removeFromSuperview();
+        });
+    }
 }

@@ -65,6 +65,7 @@
     FilterCatalogViewController *_filterCatalogController;
     
     LoadingView *_loadingView;
+    NoResultReusableView *noResultView;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -93,7 +94,7 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _page = 2;
+    _page = 1;
     _uriNext = _catalog.result.paging.uri_next;
     _catalogId = _catalog.result.catalog_info.catalog_id;
     
@@ -106,7 +107,10 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
-    if (_catalog_shops.count == 0) [self initNoResultView];
+    [_catalog_shops removeAllObjects];
+    [_networkManager doRequest];
+    
+    [self initNoResultView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -453,6 +457,7 @@
 - (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
+        [noResultView removeFromSuperview];
         [self loadMappingResult:result];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
@@ -464,7 +469,20 @@
     if (result && [result isKindOfClass:[RKMappingResult class]]) {
         Catalog *catalog = [result.dictionary objectForKey:@""];
         if (_page == 1) [_catalog_shops removeAllObjects];
-        [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
+        
+        if(catalog.result.catalog_shops.count > 0) {
+            [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
+        }else{
+            //no data
+            if([_location isEqualToString:@"Semua Lokasi"] && [_condition isEqualToString:@"Semua Kondisi"]){
+                [noResultView setNoResultDesc:@"Toko tidak ditemukan pada katalog ini"];
+            }else{
+                //use filter
+                [noResultView setNoResultDesc:@"Toko tidak ditemukan pada katalog dengan filter ini"];
+            }
+            [_tableView addSubview:noResultView];
+        }
+        
         if (catalog.result.paging.uri_next) _page++;
         _uriNext = catalog.result.paging.uri_next;
         [_tableView reloadData];
@@ -622,17 +640,15 @@
 #pragma mark - No result view
 
 - (void)initNoResultView {
-    NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     noResultView.delegate = self;
     [noResultView generateAllElements:@"no-result.png"
                                 title:@"Tidak ada penjual"
                                  desc:@"Toko tidak ditemukan pada katalog ini"
-                             btnTitle:@"Kembali ke halaman sebelumnya"];
-    [self.tableView addSubview:noResultView];
+                             btnTitle:nil];
 }
 
 - (void)buttonDidTapped:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -10,6 +10,12 @@
 
 @implementation UIViewController (TKPAdditions)
 
+- (void)viewDidLoad{
+#if DEBUG
+    NSLog(@"CLASS NAME: %@", self.class);
+#endif
+}
+
 + (id <TKPAppFlow>)TKP_rootController {
     id rootController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     if ([rootController conformsToProtocol:@protocol(TKPAppFlow)]) {

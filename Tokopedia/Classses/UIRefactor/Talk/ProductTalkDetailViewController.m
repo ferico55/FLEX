@@ -144,10 +144,11 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    _marksOpenedTalksAsRead = NO;
+    
     
     if (self) {
         _isnodata = YES;
+        _marksOpenedTalksAsRead = NO;
         self.title = kTKPDTITLE_TALK;
     }
     
@@ -187,10 +188,6 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view from its nib.
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    self.view.frame = screenRect;
     
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -493,7 +490,11 @@
     } else {
         [_header setHidden:NO];
         if([_userManager isLogin]) {
-            [_talkInputView setHidden:NO];
+            if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+               ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+               ) {
+                [_talkInputView setHidden:NO];
+            }
             [_sendButton setEnabled:NO];
         } else {
             [_talkInputView setHidden:YES];
@@ -584,7 +585,7 @@
 }
 
 - (void) initTalkInputView {
-    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10 - ((UIViewController*)_masterViewController).view.frame.size.width;
+    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10;
     _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -613,6 +614,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //readjust growing textview width here, because we can't get the correct view controller size in viewDidLoad
+    NSInteger textViewWidth = self.view.frame.size.width - _sendButton.frame.size.width - 10;
+    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, _growingtextview.frame.size.height);
 }
 
 
