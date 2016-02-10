@@ -57,6 +57,7 @@
         GiveReviewDetailViewController *vc = [GiveReviewDetailViewController new];
         
         vc.isEdit = _isEdit;
+        vc.detailMyReviewReputation = _detailMyReviewReputation;
         vc.qualityRate = _qualityRate;
         vc.accuracyRate = _accuracyRate;
         vc.detailReputationReview = _detailReputationReview;
@@ -216,8 +217,21 @@
             return NO;
         }
     } else {
-        if (_accuracyRate == 0 || _qualityRate == 0) {
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Rating harus diisi"]
+        if (_accuracyRate == 0 && _qualityRate > 0) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Rating akurasi harus diisi"]
+                                                                                     delegate:self];
+            [stickyAlertView show];
+            
+            return NO;
+        } else if (_accuracyRate > 0 && _qualityRate == 0) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Rating kualitas harus diisi"]
+                                                                                     delegate:self];
+            [stickyAlertView show];
+            
+            return NO;
+        }
+        if (_accuracyRate == 0 && _qualityRate == 0) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Rating kualitas dan akurasi harus diisi"]
                                                                                      delegate:self];
             [stickyAlertView show];
             

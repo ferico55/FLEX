@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@class GeneratedHost, DetailReputationReview, GiveReviewRatingViewController;
+#import "DetailMyReviewReputationViewController.h"
+
+@class GeneratedHost, DetailReputationReview, GiveReviewRatingViewController, DetailMyReviewReputationViewController;
 
 @protocol GiveReviewDetailDelegate <NSObject>
 @optional
@@ -17,6 +19,7 @@
 @interface GiveReviewDetailViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet id<GiveReviewDetailDelegate> delegate;
+@property (nonatomic, weak) DetailMyReviewReputationViewController *detailMyReviewReputation;
 @property (nonatomic, weak) DetailReputationReview *detailReputationReview;
 
 

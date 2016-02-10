@@ -7,16 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-@class GeneratedHost, DetailReputationReview;
+#import "DetailMyReviewReputationViewController.h"
+
+@class GeneratedHost, DetailReputationReview, DetailMyReviewReputationViewController;
 
 @protocol GiveReviewRatingDelegate <NSObject>
-@optional
-- (void)setGenerateHost:(GeneratedHost*)generateHost;
 @end
 
 @interface GiveReviewRatingViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet id<GiveReviewRatingDelegate> delegate;
+@property (nonatomic, weak) DetailMyReviewReputationViewController *detailMyReviewReputation;
 @property (nonatomic, weak) DetailReputationReview *detailReputationReview;
 
 @property BOOL isEdit;

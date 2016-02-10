@@ -197,7 +197,7 @@
         vc.accuracyRate = _accuracyRate;
         vc.reviewMessage = _reviewMessage;
         vc.uploadedImages = _attachedImages;
-        
+        vc.detailMyReviewReputation = _detailMyReviewReputation;
         
         [self.navigationController pushViewController:vc animated:YES];
     }

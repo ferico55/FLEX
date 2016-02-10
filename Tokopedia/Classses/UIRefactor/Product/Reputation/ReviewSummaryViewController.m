@@ -44,11 +44,6 @@
                                                                              target:self
                                                                              action:@selector(tapToSend:)];
     
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ubah"
-//                                                                             style:UIBarButtonItemStyleDone
-//                                                                            target:self
-//                                                                            action:@selector(tapToEdit:)];
-    
     _qualityStarsArray = [NSArray sortViewsWithTagInArray:_qualityStarsArray];
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
     
@@ -56,7 +51,7 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _networkManager.isUsingHmac = YES;
+    _networkManager.isUsingHmac = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -188,8 +183,36 @@
 }
 
 - (BOOL)isNoImageUploaded {
-    for (id n in _uploadedImages) {
-        if ([n isKindOfClass:[UIImageView class]]) {
+    for (id image in _uploadedImages) {
+        if ([image isKindOfClass:[UIImageView class]]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+- (void)sendButtonIsLoading:(BOOL)isProcessing {
+    if (isProcessing) {
+        UIActivityIndicatorView *act = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        act.color = [UIColor whiteColor];
+        [act startAnimating];
+        self.navigationItem.rightBarButtonItem.customView = act;
+    } else {
+        self.navigationItem.rightBarButtonItem.customView = nil;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kirim"
+                                                                                  style:UIBarButtonItemStyleDone
+                                                                                 target:self
+                                                                                 action:@selector(tapToSend:)];
+    }
+}
+
+- (BOOL)isSuccessValidateReview {
+    if (_isEdit) {
+        if ([_reviewMessage isEqualToString:_detailReputationReview.review_message] && [_detailReputationReview.product_accuracy_point intValue] == _accuracyRate && [_detailReputationReview.product_rating_point intValue] == _qualityRate) {
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Tidak ada perubahan ulasan"] delegate:self];
+            [stickyAlertView show];
+            
             return NO;
         }
     }
@@ -199,29 +222,29 @@
 
 #pragma mark - Actions
 - (IBAction)tapToSend:(id)sender {
-    [_networkManager doRequest];
-}
-
-- (IBAction)tapToEdit:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    if ([self isSuccessValidateReview]) {
+        [self sendButtonIsLoading:YES];
+        [_networkManager doRequest];
+    }
 }
 
 #pragma mark - Tokopedia Network Manager
 - (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = @{@"accuracy_rate" : @(_accuracyRate),
-                                @"product_id" : _detailReputationReview.product_id,
-                                @"quality_rate" : @(_qualityRate),
-                                @"reputation_id" : _detailReputationReview.reputation_id,
-                                @"review_message" : [_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]],
-                                @"shop_id" : _detailReputationReview.shop_id,
-                                @"review_id" : _detailReputationReview.review_id?:@""
+    NSDictionary *parameter = @{@"action"           : (_isEdit? @"edit_reputation_review":@"insert_reputation_review"),
+                                @"accuracy_rate"    : @(_accuracyRate),
+                                @"product_id"       : _detailReputationReview.product_id,
+                                @"quality_rate"     : @(_qualityRate),
+                                @"reputation_id"    : _detailReputationReview.reputation_id,
+                                @"review_message"   : [_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]],
+                                @"shop_id"          : _detailReputationReview.shop_id,
+                                @"review_id"        : _detailReputationReview.review_id!=nil?_detailReputationReview.review_id:@""
                                 };
     
     return parameter;
 }
 
 - (NSString *)getPath:(int)tag {
-    return _isEdit?@"/v4/action/reputation/edit_reputation_review.pl":@"/v4/action/reputation/insert_reputation_review.pl";
+    return @"action/reputation.pl";
 }
 
 - (NSString *)getRequestStatus:(id)result withTag:(int)tag {
@@ -233,28 +256,29 @@
 }
 
 - (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
+    return RKRequestMethodPOST;
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager sharedClientHttps];
+    _objectManager = [RKObjectManager sharedClient];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
     [statusMapping addAttributeMappingsFromArray:@[@"status",
-                                                   @"config",
+                                                   @"message_error",
+                                                   @"message_status",
                                                    @"server_process_time"]];
     
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [dataMapping addAttributeMappingsFromArray:@[@"feedback_id",
-                                                 @"is_success"]];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[@"feedback_id",
+                                                   @"is_success"]];
     
-    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                 toKeyPath:@"data"
-                                                                               withMapping:dataMapping];
-    [statusMapping addPropertyMapping:dataRel];
+    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
+                                                                                 toKeyPath:@"result"
+                                                                               withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resultRel];
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodGET
+                                                                                                  method:RKRequestMethodPOST
                                                                                              pathPattern:[self getPath:0]
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -265,11 +289,59 @@
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    GeneralAction *action = [result objectForKey:@""];
     
+    if (action.result.is_success) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[_isEdit? @"Anda telah berhasil mengubah ulasan":@"Anda telah berhasil mengisi ulasan"]
+                                                                         delegate:self];
+        [alert show];
+        
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"d MMMM yyyy, HH:mm";
+        
+        if (_isEdit) {
+            _detailReputationReview.viewModel.review_is_allow_edit = _detailReputationReview.review_is_allow_edit = @"0";
+            _detailReputationReview.viewModel.review_update_time = _detailReputationReview.review_update_time = [formatter stringFromDate:[NSDate new]];
+        } else {
+            _detailReputationReview.viewModel.review_is_allow_edit = _detailReputationReview.review_is_allow_edit = @"1";
+            _detailReputationReview.viewModel.review_update_time = _detailReputationReview.review_update_time = [formatter stringFromDate:[NSDate new]];
+            
+            UserAuthentificationManager *user = [UserAuthentificationManager new];
+            NSDictionary *userData = [user getUserLoginData];
+            _detailReputationReview.review_full_name = [userData objectForKey:@"full_name"]?:@"-";
+            _detailReputationReview.review_user_label = @"Pembeli";
+            if (user.reputation) {
+                _detailReputationReview.review_user_reputation = user.reputation;
+            }
+        }
+        
+        _detailReputationReview.review_id = action.result.feedback_id;
+        _detailReputationReview.viewModel.review_is_skipable = _detailReputationReview.review_is_skipable = @"0";
+        _detailReputationReview.viewModel.review_message = _detailReputationReview.review_message = [_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        _detailReputationReview.viewModel.product_rating_point = _detailReputationReview.product_rating_point = [NSString stringWithFormat:@"%d", _qualityRate];
+        _detailReputationReview.viewModel.product_accuracy_point = _detailReputationReview.product_accuracy_point = [NSString stringWithFormat:@"%d", _accuracyRate];
+        [_detailMyReviewReputation successGiveReview];
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        StickyAlertView *alert;
+        if (action.message_error != nil && action.message_error.count > 0) {
+            alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                          delegate:self];
+        } else {
+            alert = [[StickyAlertView alloc] initWithErrorMessages:@[_isEdit? @"Anda gagal memperbaharui ulasan":@"Anda gagal mengisi ulasan"]
+                                                          delegate:self];
+        }
+        
+        [alert show];
+    }
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
-    
+    [self sendButtonIsLoading:NO];
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[_isEdit? @"Anda gagal memperbaharui ulasan":@"Anda gagal mengisi ulasan"]
+                                                                             delegate:self];
+    [stickyAlertView show];
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
