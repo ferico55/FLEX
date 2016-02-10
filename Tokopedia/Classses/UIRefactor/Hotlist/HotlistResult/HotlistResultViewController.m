@@ -1269,25 +1269,29 @@ HotlistBannerDelegate
 
 #pragma mark - Banner Request Delegate 
 - (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
-    _bannerResult = bannerResult;
+    [self setHeaderData];
+    
     _pagecontrol.hidden = NO;
+    
     _swipegestureleft.enabled = YES;
     _swipegestureright.enabled = YES;
-
-    [self setHeaderData];
-
+    
+    _bannerResult = bannerResult;
+    HotlistBannerQuery *q = _bannerResult.query;
     
     //set query
-    HotlistBannerQuery *q = bannerResult.query;
-    NSDictionary *query = @{@"negative_keyword" : q.negative_keyword?:@"",
-                            @"department_id" : q.sc?:@"",
-                            @"order_by" : q.ob?:@"",
-                            @"terms" : q.terms?:@"",
-                            @"shop_type" : q.fshop?:@"",
-                            @"key" : q.q?:@"",
-                            @"price_min" : q.pmin?:@"",
-                            @"price_max" : q.pmax?:@"",
-                            @"type" : q.type?:@""};
+    NSDictionary *query = @{
+        @"negative_keyword" : q.negative_keyword?:@"",
+        @"department_id" : q.sc?:@"",
+        @"order_by" : q.ob?:@"",
+        @"terms" : q.terms?:@"",
+        @"shop_type" : q.fshop?:@"",
+        @"key" : q.q?:@"",
+        @"price_min" : q.pmin?:@"",
+        @"price_max" : q.pmax?:@"",
+        @"type" : q.type?:@""
+    };
+    
     [_detailfilter addEntriesFromDictionary:query];
     
     _start = @"0";

@@ -390,8 +390,11 @@
 #pragma mark - Cell Delegate
 -(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIViewController* sourceViewController = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?_detailViewController:self;
+    
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
+    [_navigate navigateToInvoiceFromViewController:sourceViewController
+                                    withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
 }
 
 -(void)goToShopOrProfileAtIndexPath:(NSIndexPath *)indexPath

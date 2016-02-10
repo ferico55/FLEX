@@ -43,6 +43,7 @@
 #import "GeneralTableViewController.h"
 
 #import "ListRekeningBank.h"
+#import "NoResultReusableView.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
@@ -66,7 +67,8 @@
     LoadingViewDelegate,
     RequestCartDelegate,
     TransactionCCViewControllerDelegate,
-    GeneralTableViewControllerDelegate
+    GeneralTableViewControllerDelegate,
+    NoResultDelegate
 >
 {
     NSMutableArray *_list;
@@ -144,6 +146,7 @@
     URLCacheConnection *_cacheconnection;
     
     NSString *_cachepath;
+    NoResultReusableView *_noResultView;
     
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -293,6 +296,7 @@
         
         //[_networkManager doRequest];
     }
+    [self initNoResultView];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 8.0;
@@ -340,6 +344,16 @@
     [_cachecontroller initCacheWithDocumentPath:path];
 }
 
+- (void)initNoResultView{
+    //_noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, -30, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"Keranjang.png"
+                                title:@"Keranjang belanja Anda kosong"
+                                 desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
+                             btnTitle:@"Ayo mulai belanja!"];
+
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -1630,6 +1644,12 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    // should be phone numbers text field
+    if (textField.tag < 0) {
+        NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        return [newString isNumber];
+    }
+    
     if (textField == _saldoTokopediaAmountTextField) {
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
@@ -2845,6 +2865,12 @@
     NSArray *list = cart.result.list;
     [_list addObjectsFromArray:list];
     
+    if(list.count >0){
+        [_noResultView removeFromSuperview];
+    }else{
+        [_tableView addSubview:_noResultView];
+    }
+    
     _cart = cart.result;
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
     [_dataInput setObject:_cart.grand_total_without_lp forKey:DATA_CART_GRAND_TOTAL_WO_LP];
@@ -3231,6 +3257,11 @@
         }
     }
     [tracker send:[builder build]];
+}
+
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
 }
 
 @end

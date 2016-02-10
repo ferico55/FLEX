@@ -34,13 +34,13 @@
 
 - (CGSize)getSizeDesc
 {
-    UILabel *tempLbl = [[UILabel alloc] init];
-    tempLbl.font = tvDesc.font;
-    tempLbl.numberOfLines = 0;
-    tempLbl.textColor = tvDesc.textColor;
-    tempLbl.text = tvDesc.text;
-    
-    return [tempLbl sizeThatFits:CGSizeMake(tvDesc.bounds.size.width, 9999)];
+    CGRect sizeOfMessage = [tvDesc.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
+                                                           context:nil];
+    //temporary fix to measure height for distance between desc and date,
+    //if you know better solution, please change this
+    return CGSizeMake(sizeOfMessage.size.width, sizeOfMessage.size.height*0.5);
 }
 
 - (void)updateConstraints
