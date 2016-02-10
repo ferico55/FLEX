@@ -432,6 +432,7 @@
 //    [self.navigationController pushViewController:giveReviewViewController animated:YES];
     
     GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
+    vc.detailMyReviewReputation = self;
     DetailReputationReview *detailReputationReview = arrList[tag];
     
     vc.detailReputationReview = detailReputationReview;

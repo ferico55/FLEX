@@ -323,6 +323,14 @@
         _detailReputationReview.viewModel.product_accuracy_point = _detailReputationReview.product_accuracy_point = [NSString stringWithFormat:@"%d", _accuracyRate];
         [_detailMyReviewReputation successGiveReview];
         [self.navigationController popViewControllerAnimated:YES];
+        
+        NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+        for (UIViewController *aViewController in allViewControllers) {
+            if ([aViewController isKindOfClass:[DetailMyReviewReputationViewController class]]) {
+                [self.navigationController popToViewController:aViewController animated:YES];
+            }
+        }
+        
     } else {
         StickyAlertView *alert;
         if (action.message_error != nil && action.message_error.count > 0) {
