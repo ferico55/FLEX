@@ -98,13 +98,14 @@ typedef NS_ENUM(NSInteger, PickerView) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Biodata Diri";
-    [self initView];
-    [self showSaveButton];
     [self requestGetData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
+    [self initView];
+    [self showSaveButton];
 
     // register for keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -132,9 +133,15 @@ typedef NS_ENUM(NSInteger, PickerView) {
 }
 
 - (void)initView {
-    CGRect frame = self.contentView.frame;
-    frame.size.width = self.view.frame.size.width;
-    self.contentView.frame = frame;
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+
+    CGRect viewFrame = self.view.frame;
+    viewFrame.size.width = screenRect.size.width;
+    self.view.frame = viewFrame;
+    
+    CGRect contentFrame = self.contentView.frame;
+    contentFrame.size.width = screenRect.size.width;
+    self.contentView.frame = contentFrame;
     
     [self.scrollView addSubview:_contentView];
     [self.scrollView setContentSize:_contentView.frame.size];
@@ -429,11 +436,13 @@ typedef NS_ENUM(NSInteger, PickerView) {
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     if([[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+        self.phoneNumberStatusLabel.hidden = NO;
         self.phoneNumberStatusLabel.text = @"Terverifikasi";
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.061 green:0.648 blue:0.275 alpha:1];
         self.verificationPhoneView.hidden = YES;
         self.verificationPhoneViewHeight.constant = 20;
-    }else{
+    } else{
+        self.phoneNumberStatusLabel.hidden = NO;
         self.phoneNumberStatusLabel.text = @"Belum Terverifikasi";
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.882 green:0.296 blue:0.209 alpha:1];
         self.verificationPhoneView.hidden = NO;
