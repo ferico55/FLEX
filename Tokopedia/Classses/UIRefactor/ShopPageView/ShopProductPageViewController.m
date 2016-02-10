@@ -164,6 +164,8 @@ RetryViewDelegate
     BOOL _isFailRequest;
     
     PromoRequest *_promoRequest;
+    
+    NSIndexPath *_orderIndexPath;
 }
 
 #pragma mark - Initialization
@@ -691,13 +693,14 @@ RetryViewDelegate
 }
 
 - (IBAction)tapToSort:(id)sender {
-    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    SortViewController *vc = [SortViewController new];
-    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
-                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-    vc.delegate = self;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    SortViewController *controller = [SortViewController new];
+    controller.sortType = SortProductShopSearch;
+    controller.selectedIndexPath = _orderIndexPath;
+    controller.delegate = self;
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
     self.navigationController.navigationBar.alpha = 0;
+    
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
@@ -711,8 +714,8 @@ RetryViewDelegate
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_detailfilter addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    [_detailfilter setObject:sort forKey:kTKPDDETAIL_APIORERBYKEY];
     [self refreshView:nil];
 }
 
