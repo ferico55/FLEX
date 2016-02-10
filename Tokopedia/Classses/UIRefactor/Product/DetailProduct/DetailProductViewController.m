@@ -2073,7 +2073,7 @@ NoResultDelegate
         }
         
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
-        _formattedProductTitle = _product.result.product.product_name;
+        _formattedProductTitle = [NSString stringWithFormat:@" %@", _product.result.product.product_name];
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
