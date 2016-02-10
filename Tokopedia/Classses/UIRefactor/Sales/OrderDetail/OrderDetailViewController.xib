@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -58,18 +58,18 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderDetailViewController">
             <connections>
                 <outlet property="acceptButton" destination="WTZ-BH-bix" id="Q0A-Uu-hpt"/>
-                <outlet property="addressLabel" destination="3dZ-CP-M6c" id="6Kn-R8-9Na"/>
+                <outlet property="addressLabel" destination="3dZ-CP-M6c" id="xRR-4z-wkL"/>
                 <outlet property="assuranceFeeLabel" destination="055-SE-i09" id="Ls9-wz-Mjt"/>
                 <outlet property="automaticallyRejectedLabel" destination="5c7-2m-n2T" id="FVL-GK-hnR"/>
                 <outlet property="buyerNameLabel" destination="9OM-uF-8bl" id="1rv-fY-2xH"/>
                 <outlet property="buyerProfileImageView" destination="b2T-S1-Ldu" id="fUZ-sX-82l"/>
-                <outlet property="cityLabel" destination="iMv-5r-Cvt" id="9xE-5k-kR4"/>
-                <outlet property="countryLabel" destination="wQG-Sw-wYK" id="QZu-ww-gqq"/>
-                <outlet property="courierAgentLabel" destination="GN4-4l-kqv" id="zfx-Ny-l35"/>
+                <outlet property="cityLabel" destination="iMv-5r-Cvt" id="rC0-5J-3VL"/>
+                <outlet property="countryLabel" destination="wQG-Sw-wYK" id="dxk-Sa-1gg"/>
+                <outlet property="courierAgentLabel" destination="GN4-4l-kqv" id="rQY-lk-6jJ"/>
                 <outlet property="dayLeftLabel" destination="Gpw-Y9-ivF" id="wQ5-zH-hsq"/>
                 <outlet property="detailTransactionView" destination="64T-0y-CQC" id="7wn-Gj-kmM"/>
-                <outlet property="dropshipSenderNameLabel" destination="hcg-Xg-AAH" id="PGr-XL-nTX"/>
-                <outlet property="dropshipSenderPhoneLabel" destination="gwk-gN-t0r" id="QLx-kN-feZ"/>
+                <outlet property="dropshipSenderNameLabel" destination="hcg-Xg-AAH" id="bhB-kH-Dde"/>
+                <outlet property="dropshipSenderPhoneLabel" destination="gwk-gN-t0r" id="8MW-UE-lys"/>
                 <outlet property="dropshipView" destination="sS0-GQ-ltG" id="QhF-5M-1eP"/>
                 <outlet property="dropshipViewHeightConstraint" destination="Tj1-q5-p8W" id="ORn-ao-eGG"/>
                 <outlet property="getCodeButton" destination="KAK-Ys-cBe" id="0Ue-ip-irj"/>
@@ -79,11 +79,11 @@
                 <outlet property="invoiceNumberLabel" destination="Q5n-8Z-LHW" id="fu0-H0-x8y"/>
                 <outlet property="orderFooterView" destination="N7K-ia-t5J" id="pLi-qx-yJc"/>
                 <outlet property="orderHeaderView" destination="UHY-fP-XhB" id="MBA-7Q-RmK"/>
-                <outlet property="phoneNumberLabel" destination="ceH-fr-HCk" id="NGD-1C-5kz"/>
+                <outlet property="phoneNumberLabel" destination="ceH-fr-HCk" id="J9d-mr-QSY"/>
                 <outlet property="pickupLocationAddressLabel" destination="TlW-5y-cVY" id="D1M-0b-XU2"/>
                 <outlet property="pickupLocationHeightConstraint" destination="8Q2-i0-77H" id="21M-Mp-yJp"/>
                 <outlet property="pickupLocationView" destination="HGO-U3-yWI" id="B5y-go-FiK"/>
-                <outlet property="receivePartialOrderLabel" destination="1M2-2i-Dhl" id="K3V-Zn-l9i"/>
+                <outlet property="receivePartialOrderLabel" destination="1M2-2i-Dhl" id="JSb-Dj-4aC"/>
                 <outlet property="receiverNameLabel" destination="1JG-jp-AFS" id="5Y6-f7-5LH"/>
                 <outlet property="rejectButton" destination="V37-yO-ur1" id="uaY-I8-rUj"/>
                 <outlet property="shipmentDestinationLayoutConstraintTop" destination="ACX-pK-LQX" id="aVn-OH-InR"/>
@@ -213,7 +213,7 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TlW-5y-cVY">
+                <label opaque="NO" tag="8" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TlW-5y-cVY">
                     <rect key="frame" x="15" y="80" width="290" height="23"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="xEi-2O-f9b"/>
@@ -221,6 +221,9 @@
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="vqx-YU-uWZ" appends="YES" id="UiC-FW-uHy"/>
+                    </connections>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o75-mG-0MN" userLabel="Horizontal Border">
                     <rect key="frame" x="0.0" y="131" width="320" height="1"/>
@@ -265,14 +268,17 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1JG-jp-AFS">
-                    <rect key="frame" x="14" y="80" width="290" height="21"/>
+                <label opaque="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1JG-jp-AFS" customClass="LabelMenu">
+                    <rect key="frame" x="14" y="80" width="100" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="XLZ-AR-6V5"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="Z1d-Yx-0fV"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="aHm-zD-T5X"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="CBf-j3-35x" appends="YES" id="xNr-jA-b62"/>
+                    </connections>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFI-Rz-98f">
                     <rect key="frame" x="14" y="121" width="290" height="21"/>
@@ -284,7 +290,7 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dZ-CP-M6c" customClass="LabelMenu">
+                <label opaque="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3dZ-CP-M6c" customClass="LabelMenu">
                     <rect key="frame" x="14" y="142" width="290" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="7S7-VS-32e"/>
@@ -292,8 +298,11 @@
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="SOd-dg-H47" appends="YES" id="5h8-lo-tzU"/>
+                    </connections>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMv-5r-Cvt" customClass="LabelMenu">
+                <label opaque="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMv-5r-Cvt" customClass="LabelMenu">
                     <rect key="frame" x="14" y="168" width="290" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="2AQ-O7-uEs"/>
@@ -301,8 +310,11 @@
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="7Y8-Qx-qo2" appends="YES" id="aYE-gi-hyJ"/>
+                    </connections>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQG-Sw-wYK" customClass="LabelMenu">
+                <label opaque="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQG-Sw-wYK" customClass="LabelMenu">
                     <rect key="frame" x="14" y="194" width="290" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="1bH-8C-nuG"/>
@@ -310,6 +322,9 @@
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="eqI-Yt-VDn" appends="YES" id="3L0-s0-iQb"/>
+                    </connections>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No. Telp Penerima" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c41-Wt-7i7">
                     <rect key="frame" x="14" y="233" width="290" height="21"/>
@@ -321,14 +336,17 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceH-fr-HCk" customClass="LabelMenu">
-                    <rect key="frame" x="14" y="255" width="290" height="21"/>
+                <label opaque="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceH-fr-HCk" customClass="LabelMenu">
+                    <rect key="frame" x="14" y="255" width="100" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="FuZ-wT-z5b"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="yJb-F9-mH0"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="HVq-6g-4cK"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="yyx-qz-zGy" appends="YES" id="8Pa-Al-cbj"/>
+                    </connections>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Agen Kurir" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fIO-Ky-eEN">
                     <rect key="frame" x="14" y="292" width="290" height="21"/>
@@ -340,7 +358,7 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GN4-4l-kqv">
+                <label opaque="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GN4-4l-kqv" customClass="LabelMenu">
                     <rect key="frame" x="14" y="314" width="100" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="89n-Hl-u9v"/>
@@ -348,6 +366,9 @@
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="gVH-FD-FKX" appends="YES" id="0uQ-Rv-U2h"/>
+                    </connections>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="026-QA-05V" userLabel="Horizontal Border">
                     <rect key="frame" x="0.0" y="415" width="320" height="1"/>
@@ -383,7 +404,7 @@
                                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcg-Xg-AAH">
+                                <label opaque="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcg-Xg-AAH" customClass="LabelMenu">
                                     <rect key="frame" x="14" y="74" width="290" height="21"/>
                                     <constraints>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="XAR-fu-AOs"/>
@@ -391,6 +412,9 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                     <nil key="highlightedColor"/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="eF3-Dn-4Ju" appends="YES" id="Gy5-5V-KkB"/>
+                                    </connections>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No. Telepon" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raS-eI-6qc">
                                     <rect key="frame" x="14" y="106" width="290" height="21"/>
@@ -402,7 +426,7 @@
                                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwk-gN-t0r">
+                                <label opaque="NO" tag="7" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwk-gN-t0r" customClass="LabelMenu">
                                     <rect key="frame" x="14" y="127" width="290" height="21"/>
                                     <constraints>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="Emy-Ie-Izf"/>
@@ -410,6 +434,9 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                     <nil key="highlightedColor"/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="QLv-5D-HkY" appends="YES" id="YiD-3h-dN7"/>
+                                    </connections>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ejg-fz-XvJ" userLabel="Horizontal Border">
                                     <rect key="frame" x="0.0" y="164" width="320" height="1"/>
@@ -561,14 +588,18 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1M2-2i-Dhl">
-                    <rect key="frame" x="14" y="373" width="290" height="21"/>
+                <label opaque="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1M2-2i-Dhl" customClass="LabelMenu">
+                    <rect key="frame" x="14" y="373" width="50" height="21"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="50" id="07Q-ky-RRO"/>
                         <constraint firstAttribute="height" constant="21" id="frb-Px-1c9"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="gD8-xe-H0O" appends="YES" id="rbr-tV-5Kp"/>
+                    </connections>
                 </label>
                 <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAd-7t-tcO">
                     <rect key="frame" x="119" y="707" width="32" height="32"/>
@@ -633,14 +664,12 @@
                 <constraint firstItem="hgK-hm-NHk" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" id="NkZ-B4-IV6"/>
                 <constraint firstItem="KAK-Ys-cBe" firstAttribute="bottom" secondItem="GN4-4l-kqv" secondAttribute="bottom" id="O5L-Vy-Rp6"/>
                 <constraint firstAttribute="trailing" secondItem="026-QA-05V" secondAttribute="trailing" id="O6X-MT-0Hm"/>
-                <constraint firstAttribute="trailing" secondItem="1M2-2i-Dhl" secondAttribute="trailing" constant="16" id="OQJ-b0-afh"/>
                 <constraint firstItem="pgv-sr-WVI" firstAttribute="top" secondItem="sS0-GQ-ltG" secondAttribute="bottom" constant="33" id="OaB-er-zyW"/>
                 <constraint firstItem="KAK-Ys-cBe" firstAttribute="leading" secondItem="GN4-4l-kqv" secondAttribute="trailing" constant="5" id="OsI-4c-wlQ"/>
                 <constraint firstItem="LFI-Rz-98f" firstAttribute="top" secondItem="1JG-jp-AFS" secondAttribute="bottom" constant="20" id="Oy8-yy-uRD"/>
                 <constraint firstItem="oik-3H-xxu" firstAttribute="top" secondItem="GN4-4l-kqv" secondAttribute="bottom" constant="16" id="REc-hW-CRm"/>
                 <constraint firstItem="sS0-GQ-ltG" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" id="Rf3-ml-l42"/>
                 <constraint firstAttribute="trailing" secondItem="LFI-Rz-98f" secondAttribute="trailing" constant="16" id="S9g-x9-QQB"/>
-                <constraint firstAttribute="trailing" secondItem="ceH-fr-HCk" secondAttribute="trailing" constant="16" id="SHN-4M-FdC"/>
                 <constraint firstItem="iMv-5r-Cvt" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" constant="14" id="SRd-ji-Pva"/>
                 <constraint firstItem="3dZ-CP-M6c" firstAttribute="top" secondItem="LFI-Rz-98f" secondAttribute="bottom" id="UU6-SS-0SW"/>
                 <constraint firstItem="bhW-ta-Unf" firstAttribute="top" secondItem="FJf-nY-1wK" secondAttribute="bottom" constant="9" id="Ueb-vH-POO"/>
@@ -656,7 +685,6 @@
                 <constraint firstItem="3dZ-CP-M6c" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" constant="14" id="b2p-EQ-qI9"/>
                 <constraint firstAttribute="trailing" secondItem="Pcn-CJ-43P" secondAttribute="trailing" constant="16" id="bQh-ky-qGs"/>
                 <constraint firstItem="ceH-fr-HCk" firstAttribute="top" secondItem="c41-Wt-7i7" secondAttribute="bottom" constant="1" id="bhU-qs-m6q"/>
-                <constraint firstAttribute="trailing" secondItem="1JG-jp-AFS" secondAttribute="trailing" constant="16" id="ccS-Wy-Th8"/>
                 <constraint firstItem="BsD-hY-jib" firstAttribute="leading" secondItem="N7K-ia-t5J" secondAttribute="leading" constant="14" id="chM-PK-YT9"/>
                 <constraint firstItem="1JG-jp-AFS" firstAttribute="top" secondItem="Pcn-CJ-43P" secondAttribute="bottom" id="dXu-va-Ok1"/>
                 <constraint firstAttribute="trailing" secondItem="VmI-AM-ueI" secondAttribute="trailing" constant="16" id="di9-8t-WBq"/>
@@ -895,18 +923,78 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="1267" y="289.5"/>
         </view>
-        <tapGestureRecognizer id="Rp7-WS-7fX">
-            <connections>
-                <action selector="tap:" destination="-1" id="fwi-dS-AOP"/>
-                <outlet property="delegate" destination="-1" id="Nad-OS-hzK"/>
-            </connections>
-        </tapGestureRecognizer>
-        <tapGestureRecognizer id="Z2X-qZ-wne">
+        <tapGestureRecognizer id="Z2X-qZ-wne" userLabel="Invoice Tap Gesture Recognizer">
             <connections>
                 <action selector="tap:" destination="-1" id="dMs-p5-vWu"/>
                 <outlet property="delegate" destination="-1" id="0Y6-rW-RPE"/>
             </connections>
         </tapGestureRecognizer>
+        <tapGestureRecognizer id="Rp7-WS-7fX" userLabel="User Tap Gesture Recognizer">
+            <connections>
+                <action selector="tap:" destination="-1" id="fwi-dS-AOP"/>
+                <outlet property="delegate" destination="-1" id="Nad-OS-hzK"/>
+            </connections>
+        </tapGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="CBf-j3-35x" userLabel="Recipient Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="igd-wh-kfh"/>
+                <outlet property="delegate" destination="-1" id="SeB-He-7b1"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="SOd-dg-H47" userLabel="Address Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="myF-Ot-na0"/>
+                <outlet property="delegate" destination="-1" id="4tC-eb-Ec8"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="7Y8-Qx-qo2" userLabel="City Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="iCG-d3-41M"/>
+                <outlet property="delegate" destination="-1" id="Tat-Ji-MiG"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="eqI-Yt-VDn" userLabel="Country Code Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="vY6-w1-HFT"/>
+                <outlet property="delegate" destination="-1" id="LIJ-uv-9Ki"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="yyx-qz-zGy" userLabel="Phone Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="o7i-4N-BA1"/>
+                <outlet property="delegate" destination="-1" id="oF2-JW-FSf"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="gVH-FD-FKX" userLabel="Kurir Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="3cX-3k-1RD"/>
+                <outlet property="delegate" destination="-1" id="baa-TL-al4"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="gD8-xe-H0O" userLabel="Accept Partial Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="BC4-z9-d8e"/>
+                <outlet property="delegate" destination="-1" id="b7p-Z2-VbY"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="eF3-Dn-4Ju" userLabel="Dropshipper Name Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="8tS-pV-3QT"/>
+                <outlet property="delegate" destination="-1" id="m0a-S3-wn1"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="QLv-5D-HkY" userLabel="Dropshipper Phone Number Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="ZTh-aq-6lG"/>
+                <outlet property="delegate" destination="-1" id="onG-Vc-whs"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="vqx-YU-uWZ" userLabel="Pickup Address Long Press Gesture Recognizer">
+            <connections>
+                <action selector="longPress:" destination="-1" id="drt-vs-lAw"/>
+                <outlet property="delegate" destination="-1" id="Oy6-Lo-RWo"/>
+            </connections>
+        </pongPressGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_info_grey_small.png" width="14" height="14"/>

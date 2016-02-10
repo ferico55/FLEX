@@ -27,8 +27,14 @@
 #import "OrderBookingResponse.h"
 #import "AlertShipmentCodeView.h"
 
+#define CTagRecipientName 1
 #define CTagAddress 2
 #define CTagPhone 3
+#define CTagCourier 4
+#define CTagReceivePartialOrder 5
+#define CTagSenderName 6
+#define CTagSenderPhoneNumber 7
+#define CTagPickupAddress 8
 
 typedef enum TagRequest {
     OrderDetailTag
@@ -64,7 +70,7 @@ typedef enum TagRequest {
 @property (weak, nonatomic) IBOutlet UILabel *buyerNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *buyerProfileImageView;
 
-@property (weak, nonatomic) IBOutlet UILabel *receiverNameLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *receiverNameLabel;
 
 @property (weak, nonatomic) IBOutlet LabelMenu *addressLabel;
 @property (weak, nonatomic) IBOutlet LabelMenu *cityLabel;
@@ -72,10 +78,9 @@ typedef enum TagRequest {
 
 @property (weak, nonatomic) IBOutlet LabelMenu *phoneNumberLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *courierAgentLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *courierAgentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *getCodeButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *paymentMethodLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalProductLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *subTotalFeeLabel;
@@ -84,14 +89,14 @@ typedef enum TagRequest {
 @property (weak, nonatomic) IBOutlet UILabel *totalFeeLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *dropshipView;
-@property (weak, nonatomic) IBOutlet UILabel *dropshipSenderNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dropshipSenderPhoneLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *dropshipSenderNameLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *dropshipSenderPhoneLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dropshipViewHeightConstraint;
 
 @property (strong, nonatomic) IBOutlet UIView *detailTransactionView;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDueDateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receivePartialOrderLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *receivePartialOrderLabel;
 @property (weak, nonatomic) IBOutlet UIButton *infoAddFeeButton;
 @property (weak, nonatomic) IBOutlet UILabel *insuranceTextLabel;
 
@@ -126,11 +131,11 @@ typedef enum TagRequest {
     
     [self setBackButton];
     
-    [self addGestureToLabels];
-    
     [self request];
 
     [self setData];
+
+    [self setDelegates];
     
     if ([_delegate isKindOfClass:[SalesNewOrderViewController class]]) {
         [self updateFrameForNewOrder];
@@ -177,30 +182,6 @@ typedef enum TagRequest {
     self.navigationItem.backBarButtonItem = backButton;
 }
 
-- (void)addGestureToLabels {
-    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    
-    _addressLabel.gestureRecognizers = @[recognizer];
-    _addressLabel.userInteractionEnabled = YES;
-    _addressLabel.delegate = self;
-    _addressLabel.tag = CTagAddress;
-
-    _cityLabel.gestureRecognizers = @[recognizer];
-    _cityLabel.userInteractionEnabled = YES;
-    _cityLabel.delegate = self;
-    _cityLabel.tag = CTagAddress;
-    
-    _countryLabel.gestureRecognizers = @[recognizer];
-    _countryLabel.userInteractionEnabled = YES;
-    _countryLabel.delegate = self;
-    _countryLabel.tag = CTagAddress;
-
-    _phoneNumberLabel.gestureRecognizers = @[recognizer];
-    _phoneNumberLabel.userInteractionEnabled = YES;
-    _phoneNumberLabel.delegate = self;
-    _phoneNumberLabel.tag = CTagPhone;
-}
-
 - (void)setData {
     [self setInvoiceData];
     [self setBuyerInformation];
@@ -208,6 +189,18 @@ typedef enum TagRequest {
     [self setPickupData];
     [self setCostData];
     [self setFooterView];
+}
+
+- (void)setDelegates {
+    self.receiverNameLabel.delegate = self;
+    self.addressLabel.delegate = self;
+    self.cityLabel.delegate = self;
+    self.countryLabel.delegate = self;
+    self.phoneNumberLabel.delegate = self;
+    self.courierAgentLabel.delegate = self;
+    self.receivePartialOrderLabel.delegate = self;
+    self.dropshipSenderNameLabel.delegate = self;
+    self.dropshipSenderPhoneLabel.delegate = self;
 }
 
 - (void)setInvoiceData {
@@ -326,8 +319,6 @@ typedef enum TagRequest {
 }
 
 - (void)setCostData {
-    _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
-    
     _totalProductLabel.text = [NSString stringWithFormat:@"%@ Barang (%.3f kg)",
                                [NSNumber numberWithInteger:_transaction.order_detail.detail_quantity],
                                _transaction.order_detail.detail_total_weight];
@@ -619,7 +610,7 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Method
-- (void)longPress:(UILongPressGestureRecognizer *)sender
+- (IBAction)longPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan) {
         UILabel *lbl = (UILabel *)sender.view;
@@ -1011,12 +1002,30 @@ typedef enum TagRequest {
 #pragma mark - LabelMenu Delegate
 - (void)duplicate:(int)tag
 {
-    if(tag == CTagAddress) {
-        [UIPasteboard generalPasteboard].string = [NSString stringWithFormat:@"%@ %@ %@", _addressLabel.text, _cityLabel.text, _countryLabel.text];
+    NSString *copiedText = @"";
+    if (tag == CTagRecipientName) {
+        copiedText = _transaction.order_destination.receiver_name;
+    } else if(tag == CTagAddress) {
+        copiedText = [NSString stringWithFormat:@"%@ %@ %@",
+                      _addressLabel.text,
+                      _cityLabel.text,
+                      _countryLabel.text];
+    } else if(tag == CTagPhone) {
+        copiedText = _phoneNumberLabel.text;
+    } else if (tag == CTagCourier) {
+        copiedText = [NSString stringWithFormat:@"%@ (%@)",
+                      _transaction.order_shipment.shipment_name,
+                      _transaction.order_shipment.shipment_product];
+    } else if (tag == CTagReceivePartialOrder) {
+        copiedText = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
+    } else if (tag == CTagSenderName) {
+        copiedText = _transaction.order_detail.detail_dropship_name;
+    } else if (tag == CTagSenderPhoneNumber) {
+        copiedText = _transaction.order_detail.detail_dropship_telp;
+    } else if (tag == CTagPickupAddress) {
+        copiedText = _transaction.order_shop.address_street;
     }
-    else if(tag == CTagPhone) {
-        [UIPasteboard generalPasteboard].string = _phoneNumberLabel.text;
-    }
+    [UIPasteboard generalPasteboard].string = copiedText;
 }
 
 #pragma mark - Tokopedia Network Delegate
