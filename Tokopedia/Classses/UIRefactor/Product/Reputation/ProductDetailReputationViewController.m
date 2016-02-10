@@ -332,8 +332,10 @@
     }
     
     [productReputationCell layoutSubviews];
-    productReputationCell.contentView.frame = CGRectMake(0, 0, productReputationCell.contentView.bounds.size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom-CPaddingTopBottom);
-    productReputationCell.getViewContent.frame = CGRectMake(productReputationCell.getViewContent.frame.origin.x, 0, productReputationCell.getViewContent.bounds.size.width, productReputationCell.getViewContent.bounds.size.height-CPaddingTopBottom);
+    //productReputationCell.contentView.frame = CGRectMake(0, 0, productReputationCell.contentView.bounds.size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom-CPaddingTopBottom);
+    productReputationCell.contentView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom-CPaddingTopBottom);
+    
+    productReputationCell.getViewContent.frame = CGRectMake(productReputationCell.getViewContent.frame.origin.x, 0, [[UIScreen mainScreen] bounds].size.width, productReputationCell.getViewContent.bounds.size.height-CPaddingTopBottom);
     
     if(isResizeSeparatorProduct)
         [productReputationCell.getViewSeparatorProduct setFrame:CGRectMake(0, productReputationCell.getViewSeparatorProduct.frame.origin.y+productReputationCell.getViewContent.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, productReputationCell.getViewSeparatorProduct.bounds.size.height)];
