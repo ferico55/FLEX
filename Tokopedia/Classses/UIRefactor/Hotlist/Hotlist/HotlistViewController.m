@@ -127,7 +127,7 @@ RetryViewDelegate
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    [self setTableInset];
+//    [self setTableInset];
     
     if (_product.count > 0) {
         _isnodata = NO;

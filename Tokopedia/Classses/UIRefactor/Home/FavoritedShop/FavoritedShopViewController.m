@@ -102,7 +102,7 @@ PromoRequestDelegate
     tokopediaNetworkManager = [TokopediaNetworkManager new];
     tokopediaNetworkManager.delegate = self;
     
-    [self setTableInset];
+//    [self setTableInset];
     
     if (_shop.count > 0) {
         _isnodata = NO;
@@ -176,9 +176,9 @@ PromoRequestDelegate
     // Dispose of any resources that can be recreated.
 }
 
-- (void) setTableInset {
-    _table.contentInset = UIEdgeInsetsMake(7, 0, 200, 0);
-}
+//- (void) setTableInset {
+//    _table.contentInset = UIEdgeInsetsMake(7, 0, 200, 0);
+//}
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -348,7 +348,7 @@ PromoRequestDelegate
     strTempShopID = shopid;
     tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
     [tokopediaNetworkManager doRequest];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
+
 }
 
 -(void) requestfailurefav:(id)error {
@@ -664,7 +664,9 @@ PromoRequestDelegate
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
     if(tag == CTagFavoriteButton) {
+
         [_act stopAnimating];
         _table.tableFooterView = nil;
         [_table reloadData];

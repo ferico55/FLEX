@@ -15,6 +15,7 @@
 -(id)initWithErrorMessages:(NSArray *)messages delegate:(id)delegate;
 -(id)initWithSuccessMessages:(NSArray *)messages delegate:(id)delegate;
 -(id)initWithLoadingMessages:(NSArray *)messages delegate:(id)delegate;
+- (id)initWithWarningMessages:(NSArray*)messages delegate:(id)delegate;
 
 - (void)show;
 - (void)dismiss;

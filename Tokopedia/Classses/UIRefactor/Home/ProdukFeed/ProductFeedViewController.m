@@ -20,6 +20,7 @@
 
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
+#import "Tokopedia-Swift.h"
 
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
@@ -46,10 +47,10 @@ UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
 PromoRequestDelegate,
-NoResultDelegate
+NoResultDelegate,
+CollectionViewSupplementaryDataSource
 >
 
-@property (nonatomic, strong) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -62,6 +63,8 @@ NoResultDelegate
 
 @property (strong, nonatomic) PromoRequest *promoRequest;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) UIView *loadingView;
+
 @end
 
 
@@ -69,23 +72,22 @@ NoResultDelegate
     NSInteger _page;
     NSString *_nextPageUri;
     
-    BOOL _isNoData;
     BOOL _isFailRequest;
-    BOOL _isShowRefreshControl;
+//    BOOL _isShowRefreshControl;
     
     UIRefreshControl *_refreshControl;
     
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
+    ProductDataSource* _productDataSource;
+    UIActivityIndicatorView *_loadingIndicator;
 }
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _isShowRefreshControl = NO;
-        _isNoData = YES;
         _isFailRequest = NO;
     }
     return self;
@@ -103,29 +105,36 @@ NoResultDelegate
 - (void) viewDidLoad {
     [super viewDidLoad];
     
+    _productDataSource = [[ProductDataSource alloc] initWithCollectionView:_collectionView supplementaryDataSource:self];
+
+    
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
     
     //todo with variable
-    _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
+    _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _loadingIndicator.hidesWhenStopped = YES;
+    [_loadingIndicator startAnimating];
+    _loadingIndicator.center = self.view.center;
+
+    
+    [_collectionView addSubview:_loadingIndicator];
+    
     [self initNoResultView];
-    _isNoData = (_product.count > 0);
     _page = 1;
     
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshProductFeed)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
+    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     
-    [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
-    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
     [_collectionView addSubview:_firstFooter];
     
@@ -134,8 +143,7 @@ NoResultDelegate
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addFavoriteShop:) name:@"addFavoriteShop" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeFavoriteShop:) name:@"removeFavoriteShop" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteShop) name:@"updateFavoriteShop" object:nil];
     //set change orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
@@ -175,34 +183,16 @@ NoResultDelegate
                                                object:nil];
 }
 
-#pragma mark - Collection Delegate
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = [_collectionView numberOfItemsInSection:0] - 1;
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return _product.count;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [[_product objectAtIndex:section] count];
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:productFeedCellIdentifier forIndexPath:indexPath];
-    
-    ProductFeedList *product = [_product[indexPath.section] objectAtIndex:indexPath.row];
-    [cell setViewModel:product.viewModel];
-    
-    //next page if already last cell
-    
-    NSInteger section = [self numberOfSectionsInCollectionView:collectionView] - 1;
-    NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
-    if (indexPath.section == section && indexPath.row == row) {
+    if (indexPath.row == row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
     }
     
-    return cell;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -243,31 +233,13 @@ NoResultDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    ProductFeedList *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    ProductFeedList *product = [_productDataSource productAtIndex:indexPath.row];
     [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger numberOfCell;
-    NSInteger cellHeight;
-    if(IS_IPAD) {
-        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-        if(UIInterfaceOrientationIsLandscape(orientation)) {
-            numberOfCell = 5;
-        } else {
-            numberOfCell = 4;
-        }
-        cellHeight = 250;
-    } else {
-        numberOfCell = 2;
-        cellHeight = 205;
-    }
-
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-    
-    return CGSizeMake(cellWidth, cellHeight);
+    return [_productDataSource sizeForItemAtIndexPath:indexPath];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
@@ -282,18 +254,6 @@ NoResultDelegate
     return size;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    CGSize size = CGSizeZero;
-    NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
-    if (section == lastSection) {
-        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
-            size = CGSizeMake(self.view.frame.size.width, 50);
-        }
-    } else if (_product.count == 0 && _page == 1) {
-        size = CGSizeMake(self.view.frame.size.width, 50);
-    }
-    return size;
-}
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -376,10 +336,16 @@ NoResultDelegate
 }
 
 - (void)actionBeforeRequest:(int)tag {
+    [_loadingIndicator startAnimating];
+    CGFloat yPosition = _collectionView.contentSize.height;
     
+    CGRect frame = CGRectMake(0, yPosition, _collectionView.bounds.size.width, 50);
+    [_loadingIndicator setFrame:frame];
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    [_loadingIndicator stopAnimating];
+    
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     ProductFeed *feed = [result objectForKey:@""];
     [_noResultView removeFromSuperview];
@@ -388,36 +354,25 @@ NoResultDelegate
     if (feed.data.list.count > 0) {
         [_noResultView removeFromSuperview];
         if (_page == 1) {
-            [_product removeAllObjects];
+            [_productDataSource replaceProductsWith: feed.data.list];
             [_promo removeAllObjects];
             [_firstFooter removeFromSuperview];
+        } else {
+            [_productDataSource addProducts: feed.data.list];
         }
-        
-        [_product addObject:feed.data.list];
         
         [TPAnalytics trackProductImpressions:feed.data.list];
         
-        _isNoData = NO;
         _nextPageUri =  feed.data.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
         
-        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-            //remove loadingview if there is no more item
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-        } else {
-            [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-        }
-        
+
         if (_page > 1) [self requestPromo];
         
     } else {
         // no data at all
-        _isNoData = YES;
-        [_product removeAllObjects];
-        [_collectionView reloadData];
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        [_productDataSource removeAllProducts];
         [_collectionView addSubview:_noResultView];
-        //[self setView:_noResultView];
     }
     
     if(_refreshControl.isRefreshing) {
@@ -430,16 +385,12 @@ NoResultDelegate
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
-    _isShowRefreshControl = NO;
     [_refreshControl endRefreshing];
-    _isFailRequest = YES;
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
@@ -447,9 +398,10 @@ NoResultDelegate
 }
 
 - (void)userDidLogin:(NSNotification*)notification {
-    [_product removeAllObjects];
-    [_promo removeAllObjects];
-    [self refreshView:_refreshControl];
+//    [_productDataSource removeAllProducts];
+//    [_promo removeAllObjects];
+//    [self refreshView:_refreshControl];
+    [self refreshProductFeed];
 }
 
 - (void)didSwipeHomeTab:(NSNotification*)notification {
@@ -464,43 +416,24 @@ NoResultDelegate
     
 }
 
-- (void)addFavoriteShop:(NSNotification*)notification{
-    //if([self.view isEqual:_noResultView]){
-    if(_product.count == 0){
-        [_networkManager doRequest];
-    }
-    //self.view = _contentView;
+- (void)updateFavoriteShop {
+    [self refreshProductFeed];
+}
+
+- (void)refreshProductFeed {
+    _page = 1;
+    [_productDataSource removeAllProducts];
+    [_networkManager doRequest];
     [_noResultView removeFromSuperview];
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
 }
 
-- (void)removeFavoriteShop:(NSNotification*)notification{
-    _page = 1;
-    [_product removeAllObjects];
-    [_networkManager doRequest];
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-    
-}
 
-#pragma mark - Other Method
-- (IBAction)pressRetryButton:(id)sender {
-    [_networkManager doRequest];
-    _isFailRequest = NO;
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-}
-
--(void)refreshView:(UIRefreshControl*)refresh {
-    _page = 1;
-    _isShowRefreshControl = YES;
-    [_networkManager doRequest];
-}
+//-(void)refreshView:(UIRefreshControl*)refresh {
+//    _page = 1;
+//    [_networkManager doRequest];
+//}
 
 - (void)registerNib {
-    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
-    [_collectionView registerNib:cellNib forCellWithReuseIdentifier:productFeedCellIdentifier];
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
     [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
@@ -528,12 +461,6 @@ NoResultDelegate
     }
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
-}
-
-#pragma mark - No Request delegate
-- (void)buttonDidTapped:(id)sender{
-    NSDictionary *userInfo = @{@"page" : @5};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
 }
 
 #pragma mark - Promo collection delegate
