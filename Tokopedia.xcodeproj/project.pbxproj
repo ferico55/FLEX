@@ -2033,6 +2033,7 @@
 		859067731C6B1409009E0D71 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85905FA71C6B1408009E0D71 /* Tokopedia-Info.plist */; };
 		859067741C6B1409009E0D71 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 85905FA91C6B1409009E0D71 /* Tokopedia.entitlements */; };
 		859067751C6B1409009E0D71 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 85905FAA1C6B1409009E0D71 /* Tokopedia.xcworkspace */; };
+		859067781C6B1F88009E0D71 /* FilterCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859067771C6B1F88009E0D71 /* FilterCategoryViewController.m */; };
 		85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDD1BAFCE4A002F1382 /* Fabric.framework */; };
 		85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDF1BAFD257002F1382 /* StoreKit.framework */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
@@ -5134,6 +5135,8 @@
 		85905FA81C6B1409009E0D71 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		85905FA91C6B1409009E0D71 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		85905FAA1C6B1409009E0D71 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		859067761C6B1F88009E0D71 /* FilterCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterCategoryViewController.h; sourceTree = "<group>"; };
+		859067771C6B1F88009E0D71 /* FilterCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterCategoryViewController.m; sourceTree = "<group>"; };
 		85A18BDD1BAFCE4A002F1382 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		85A18BDF1BAFD257002F1382 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -7624,6 +7627,8 @@
 				859057D61C6B1403009E0D71 /* CategoryViewCell.xib */,
 				859057D71C6B1403009E0D71 /* CategoryViewController.h */,
 				859057D81C6B1403009E0D71 /* CategoryViewController.m */,
+				859067761C6B1F88009E0D71 /* FilterCategoryViewController.h */,
+				859067771C6B1F88009E0D71 /* FilterCategoryViewController.m */,
 				859057D91C6B1403009E0D71 /* CategoryViewController.xib */,
 			);
 			path = Category;
@@ -12848,6 +12853,7 @@
 				859060701C6B1409009E0D71 /* InboxTicket.m in Sources */,
 				859061721C6B1409009E0D71 /* TxOrderConfirmed.m in Sources */,
 				8590645D1C6B1409009E0D71 /* TxOrderConfirmationCostCell.m in Sources */,
+				859067781C6B1F88009E0D71 /* FilterCategoryViewController.m in Sources */,
 				859063B21C6B1409009E0D71 /* SettingBankNameViewController.m in Sources */,
 				859062A01C6B1409009E0D71 /* FilterComplainViewController.m in Sources */,
 				859067721C6B1409009E0D71 /* test.m in Sources */,

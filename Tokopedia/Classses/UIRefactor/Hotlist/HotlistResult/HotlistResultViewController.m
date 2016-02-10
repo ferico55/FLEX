@@ -30,6 +30,7 @@
 
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
+#import "FilterCategoryViewController.h"
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
@@ -381,19 +382,22 @@ HotlistBannerDelegate
             case 11:
             {
                 //CATEGORY
-                CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@(0),
-                            kTKPDCATEGORY_DATAPUSHCOUNTKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0),
-                            kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_detailfilter objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
-                            kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue])?:NO,
-                            kTKPDCATEGORY_DATAINDEXPATHKEY :[_detailfilter objectForKey:kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                            DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
-                            };
-                vc.selectedCategoryID = [[_detailfilter objectForKey:@"selected_id"] integerValue];
-                vc.delegate = self;
+//                CategoryMenuViewController *vc = [CategoryMenuViewController new];
+//                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@(0),
+//                            kTKPDCATEGORY_DATAPUSHCOUNTKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0),
+//                            kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_detailfilter objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
+//                            kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue])?:NO,
+//                            kTKPDCATEGORY_DATAINDEXPATHKEY :[_detailfilter objectForKey:kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+//                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+//                            DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
+//                            };
+//                vc.selectedCategoryID = [[_detailfilter objectForKey:@"selected_id"] integerValue];
+//                vc.delegate = self;
+
+                FilterCategoryViewController *controller = [FilterCategoryViewController new];
                 
-                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
+                navigationController.navigationBar.translucent = NO;
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }
                 break;
