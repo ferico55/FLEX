@@ -1646,9 +1646,7 @@ NoResultDelegate
         [self configureGetOtherProductRestkit];
         [self loadDataOtherProduct];
         [self requestsuccess:successResult withOperation:operation];
-        
-        
-        
+                
         if(isNeedLogin) {
             isNeedLogin = !isNeedLogin;
             if(isDoingWishList) {
@@ -2070,6 +2068,8 @@ NoResultDelegate
             id stats = [result objectForKey:@""];
             _product = stats;
             _product.isDummyProduct = NO;
+            
+            self.userActivity = [TPSpotlight productDetailActivity:_product.result.product];
         }
         
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
@@ -2189,8 +2189,6 @@ NoResultDelegate
 
             //Track in GA
             [TPAnalytics trackProductView:_product.result.product];
-            
-            self.userActivity = [TPSpotlight productDetailActivity:_product.result.product];
             
             _isnodata = NO;
             [_table reloadData];

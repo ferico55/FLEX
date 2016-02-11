@@ -60,6 +60,7 @@
         @"id"       : _product_id?:@"",
         @"price"    : productPrice,
         @"brand"    : _shop_name?:@"",
+        @"url"      : _product_url?:@""
     };
     return productFieldObjects;
 }
