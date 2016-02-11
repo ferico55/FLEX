@@ -320,47 +320,47 @@ typedef enum TagRequest {
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = nil;
+    InboxMessageCell* cell = nil;
     NSString *cellid = kTKPDINBOXMESSAGECELL_IDENTIFIER;
     
     cell = (InboxMessageCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [InboxMessageCell newcell];
-        ((InboxMessageCell*)cell).delegate = self;
-        ((InboxMessageCell*) cell).del = self;
+        cell.delegate = self;
+        cell.del = self;
     }
     
     if (_messages.count > indexPath.row ) {
         InboxMessageList *list = _messages[indexPath.row];
         
-        ((InboxMessageCell*)cell).btnReputasi.tag = indexPath.row;
-        ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
-        ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
-        ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
-        ((InboxMessageCell*)cell).indexpath = indexPath;
+        cell.btnReputasi.tag = indexPath.row;
+        cell.message_title.text = list.user_full_name;
+        cell.message_create_time.text =list.message_create_time;
+        cell.message_reply.text = list.message_reply;
+        cell.indexpath = indexPath;
         
         if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
-            [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            [((InboxMessageCell*)cell).btnReputasi setTitle:@"" forState:UIControlStateNormal];
+            [cell.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell.btnReputasi setTitle:@"" forState:UIControlStateNormal];
         }
         else {
-            [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
+            [cell.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [cell.btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
         }
         
-        [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
+        [cell.message_title setLabelBackground:list.user_label];
         
         if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
             if([list.message_read_status isEqualToString:@"1"]) {
-                ((InboxMessageCell*)cell).is_unread.hidden = YES;
+                cell.is_unread.hidden = YES;
             } else {
-                ((InboxMessageCell*)cell).is_unread.hidden = NO;
+                cell.is_unread.hidden = NO;
             }
         }
         
         
         NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
+        UIImageView *thumb = cell.userimageview;
         thumb = [UIImageView circleimageview:thumb];
         thumb.image = nil;
         [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
