@@ -214,12 +214,6 @@ typedef enum TagRequest {
     
     self.screenName = @"Inbox Message";
     [TPAnalytics trackScreenName:@"Inbox Message"];
-
-    if (!_isrefreshview) {
-        if (_isnodata && _page < 1) {
-            [_networkManager doRequest];
-        }
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -322,97 +316,59 @@ typedef enum TagRequest {
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _messages.count;
-#else
-    return _isnodata ? 0 : _messages.count;
-#endif
-    
+    return _messages.count;
 }
-
-
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        NSString *cellid = kTKPDINBOXMESSAGECELL_IDENTIFIER;
+    NSString *cellid = kTKPDINBOXMESSAGECELL_IDENTIFIER;
+    
+    cell = (InboxMessageCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [InboxMessageCell newcell];
+        ((InboxMessageCell*)cell).delegate = self;
+        ((InboxMessageCell*) cell).del = self;
+    }
+    
+    if (_messages.count > indexPath.row ) {
+        InboxMessageList *list = _messages[indexPath.row];
         
-        cell = (InboxMessageCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [InboxMessageCell newcell];
-            ((InboxMessageCell*)cell).delegate = self;
-            ((InboxMessageCell*) cell).del = self;
+        ((InboxMessageCell*)cell).btnReputasi.tag = indexPath.row;
+        ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
+        ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
+        ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
+        ((InboxMessageCell*)cell).indexpath = indexPath;
+        
+        if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
+            [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [((InboxMessageCell*)cell).btnReputasi setTitle:@"" forState:UIControlStateNormal];
         }
-
-        if (_messages.count > indexPath.row ) {
-            InboxMessageList *list = _messages[indexPath.row];
-            
-            ((InboxMessageCell*)cell).btnReputasi.tag = indexPath.row;
-            ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
-            ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
-            ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
-            ((InboxMessageCell*)cell).indexpath = indexPath;
-            
-            if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
-                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                [((InboxMessageCell*)cell).btnReputasi setTitle:@"" forState:UIControlStateNormal];
+        else {
+            [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+            [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
+        }
+        
+        [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
+        
+        if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
+            if([list.message_read_status isEqualToString:@"1"]) {
+                ((InboxMessageCell*)cell).is_unread.hidden = YES;
+            } else {
+                ((InboxMessageCell*)cell).is_unread.hidden = NO;
             }
-            else {
-                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
-            }
-            
-            //Set user label
-//            if([list.user_label isEqualToString:CPenjual]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagPenjual];
-//            }
-//            else if([list.user_label isEqualToString:CPembeli]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagPembeli];
-//            }
-//            else if([list.user_label isEqualToString:CAdministrator]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagAdministrator];
-//            }
-//            else if([list.user_label isEqualToString:CPengguna]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagPengguna];
-//            }
-//            else {
-//                [((InboxMessageCell*)cell).message_title setColor:-1];//-1 is set to empty string
-//            }
-            [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
-            
-            if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
-                if([list.message_read_status isEqualToString:@"1"]) {
-                    ((InboxMessageCell*)cell).is_unread.hidden = YES;
-                } else {
-                    ((InboxMessageCell*)cell).is_unread.hidden = NO;
-                }
-            }
-            
-
-            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
-            thumb = [UIImageView circleimageview:thumb];
-            thumb.image = nil;
-            [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        }
+        
+        
+        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
+        thumb = [UIImageView circleimageview:thumb];
+        thumb.image = nil;
+        [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
+            [thumb setImage:image];
 #pragma clang diagnostic pop
-            } failure:nil];
-        }
-        
-        return cell;
-    } else {
-        static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
+        } failure:nil];
     }
     
     return cell;
@@ -1080,7 +1036,8 @@ typedef enum TagRequest {
         
         NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:message.result.list to:_messages];
         [_messages addObjectsFromArray: message.result.list];
-        
+        [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+
         if (_messages.count >0) {
             _isnodata = NO;
             _urinext =  message.result.paging.uri_next;
@@ -1107,6 +1064,7 @@ typedef enum TagRequest {
             _table.tableHeaderView = _searchView;
             _table.tableFooterView = _noResultView;
         }
+
         
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
@@ -1114,27 +1072,27 @@ typedef enum TagRequest {
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         
-        [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-        
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-        {
-            if (_messages.count > 0) {
-                NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
-                InboxMessageList *list = _messages[indexpath.row];
-                
-                NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                                       KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                                       KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                                       MESSAGE_INDEX_PATH : indexpath
-                                       };
-                if (![data isEqualToDictionary:_detailViewController.data]) {
-                    [_detailViewController replaceDataSelected:data];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+            {
+                if (_messages.count > 0) {
+                    NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
+                    InboxMessageList *list = _messages[indexpath.row];
+                    
+                    NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                                           KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                                           KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                                           MESSAGE_INDEX_PATH : indexpath
+                                           };
+                    if (![data isEqualToDictionary:_detailViewController.data]) {
+                        [_detailViewController replaceDataSelected:data];
+                    }
+                    [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                } else {
+                    [_detailViewController replaceDataSelected:nil];
                 }
-                [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
-            } else {
-                [_detailViewController replaceDataSelected:nil];
             }
-        }
+        });
     }
 }
 
