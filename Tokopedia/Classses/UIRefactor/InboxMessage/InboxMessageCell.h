@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *is_unread;
 @property (weak, nonatomic) IBOutlet UIView *movingview;
 @property (weak, nonatomic) IBOutlet UIButton *btnReputasi;
+@property BOOL displaysUnreadIndicator;
 
 @property (strong, nonatomic) NSIndexPath *indexpath;
 @end

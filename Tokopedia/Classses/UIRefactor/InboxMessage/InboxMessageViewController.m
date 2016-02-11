@@ -337,11 +337,7 @@ typedef enum TagRequest {
     cell.indexpath = indexPath;
     
     if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
-        if([list.message_read_status isEqualToString:@"1"]) {
-            cell.is_unread.hidden = YES;
-        } else {
-            cell.is_unread.hidden = NO;
-        }
+        cell.displaysUnreadIndicator = YES;
     }
     
     return cell;

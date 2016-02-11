@@ -76,5 +76,11 @@
         [self.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
         [self.btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
     }
+    
+    if([list.message_read_status isEqualToString:@"1"]) {
+        self.is_unread.hidden = YES;
+    } else if (_displaysUnreadIndicator) {
+        self.is_unread.hidden = NO;
+    }
 }
 @end
