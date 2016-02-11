@@ -330,42 +330,40 @@ typedef enum TagRequest {
         cell.del = self;
     }
     
-    if (_messages.count > indexPath.row ) {
-        InboxMessageList *list = _messages[indexPath.row];
-        
-        cell.btnReputasi.tag = indexPath.row;
-        cell.message_title.text = list.user_full_name;
-        cell.message_create_time.text =list.message_create_time;
-        cell.message_reply.text = list.message_reply;
-        cell.indexpath = indexPath;
-        
-        if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
-            [cell.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            [cell.btnReputasi setTitle:@"" forState:UIControlStateNormal];
-        }
-        else {
-            [cell.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-            [cell.btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
-        }
-        
-        [cell.message_title setLabelBackground:list.user_label];
-        
-        if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
-            if([list.message_read_status isEqualToString:@"1"]) {
-                cell.is_unread.hidden = YES;
-            } else {
-                cell.is_unread.hidden = NO;
-            }
-        }
-        
-        NSURL* userImageUrl = [NSURL URLWithString:list.user_image];
-
-        UIImageView *thumb = cell.userimageview;
-        thumb = [UIImageView circleimageview:thumb];
-        thumb.image = nil;
-
-        [thumb setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+    InboxMessageList *list = _messages[indexPath.row];
+    
+    cell.btnReputasi.tag = indexPath.row;
+    cell.message_title.text = list.user_full_name;
+    cell.message_create_time.text =list.message_create_time;
+    cell.message_reply.text = list.message_reply;
+    cell.indexpath = indexPath;
+    
+    if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
+        [cell.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [cell.btnReputasi setTitle:@"" forState:UIControlStateNormal];
     }
+    else {
+        [cell.btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [cell.btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
+    }
+    
+    [cell.message_title setLabelBackground:list.user_label];
+    
+    if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
+        if([list.message_read_status isEqualToString:@"1"]) {
+            cell.is_unread.hidden = YES;
+        } else {
+            cell.is_unread.hidden = NO;
+        }
+    }
+    
+    NSURL* userImageUrl = [NSURL URLWithString:list.user_image];
+    
+    UIImageView *thumb = cell.userimageview;
+    thumb = [UIImageView circleimageview:thumb];
+    thumb.image = nil;
+    
+    [thumb setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
     
     return cell;
 }
