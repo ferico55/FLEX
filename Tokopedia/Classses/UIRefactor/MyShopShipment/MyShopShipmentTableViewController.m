@@ -126,7 +126,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *shipmentJNEExtraFeeTextField;
 @property (weak, nonatomic) IBOutlet UILabel *shipmentJNENotAvailableLabel;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shipmentJNEMoreInfoCell;
-@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *weightCollection;
+
 
 @property (weak, nonatomic) IBOutlet UILabel *shipmentTikiNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shipmentTikiLogoImageView;
@@ -218,6 +218,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *pickupLocationLabel;
 @property (weak, nonatomic) IBOutlet UIView *pickupMapContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *pickupLocationImageView;
+
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *weightCollection;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *notSupportedCellColleciton;
 
 @property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
 
@@ -1243,6 +1246,8 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if([_weightCollection containsObject:cell]) {
         [cell.contentView setBackgroundColor:[UIColor colorWithRed:(255.0/255.0) green:(249/255.0) blue:(196/255.0) alpha:1.0]];
+    } else if ([_notSupportedCellColleciton containsObject:cell]) {
+        [cell.contentView setBackgroundColor:[UIColor colorWithRed:(251.0/255.0) green:(227/255.0) blue:(228/255.0) alpha:1.0]];
     }
 
 }

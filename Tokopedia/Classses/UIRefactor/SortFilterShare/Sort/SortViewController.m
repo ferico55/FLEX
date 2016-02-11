@@ -85,11 +85,11 @@
             break;
 
         case SortCatalogDetailSeach:
-            arrayString = [container stringForKey:@"search_detail_catalog"];
+            arrayString = [container stringForKey:@"search_catalog_detail"];
             break;
 
         case SortProductShopSearch:
-            arrayString = [container stringForKey:@"search_product_search"];
+            arrayString = [container stringForKey:@"search_product_shop"];
             break;
 
         case SortManageProduct:

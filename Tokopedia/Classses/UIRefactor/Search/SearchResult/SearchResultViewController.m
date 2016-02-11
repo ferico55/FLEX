@@ -143,7 +143,7 @@ SpellCheckRequestDelegate
     
     BOOL _isFailRequest;
     
-    NSIndexPath *_orderIndexPath;
+    NSIndexPath *_sortIndexPath;
 }
 
 #pragma mark - Initialization
@@ -581,7 +581,7 @@ SpellCheckRequestDelegate
             // Action Urutkan Button
             SortViewController *controller = [SortViewController new];
             controller.delegate = self;
-            controller.selectedIndexPath = _orderIndexPath;
+            controller.selectedIndexPath = _sortIndexPath;
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
                 controller.sortType = SortProductSearch;
             } else {
@@ -687,6 +687,7 @@ SpellCheckRequestDelegate
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
     [_act startAnimating];
+    _sortIndexPath = indexPath;
 }
 
 #pragma mark - Category notification

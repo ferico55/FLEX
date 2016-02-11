@@ -216,7 +216,7 @@ static NSString const *rows = @"12";
     _cachecontroller = [URLCacheController new];
     _cacheconnection = [URLCacheConnection new];
     _operationQueue = [NSOperationQueue new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, IS_IPAD ? _iPadView.frame.size.height : _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
     _shouldUseHashtag = YES;
 
     _promo = [NSMutableArray new];
@@ -926,7 +926,7 @@ static NSString const *rows = @"12";
         style.alignment = NSTextAlignmentJustified;
         
         NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
                                      NSParagraphStyleAttributeName  : style,
                                      NSForegroundColorAttributeName : IS_IPAD ? [UIColor blackColor] : [UIColor whiteColor],
                                      };
@@ -1173,7 +1173,7 @@ static NSString const *rows = @"12";
     CGSize size = CGSizeZero;
     if (section == 0) {
         if(IS_IPAD) {
-            _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, 309);
+            _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _iPadView.frame.size.height);
         } else {
             _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
         }

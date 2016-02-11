@@ -3107,7 +3107,7 @@
                                             <segue destination="gOX-FI-IgF" kind="push" id="P9R-rf-Ugz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="3cz-yO-V9F" userLabel="6">
+                                    <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="3cz-yO-V9F" userLabel="6">
                                         <rect key="frame" x="0.0" y="1417.5" width="320" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3cz-yO-V9F" id="rcc-gH-IJG">
@@ -3148,7 +3148,7 @@
                                         <animations/>
                                         <color key="backgroundColor" red="1" green="0.97647058823529409" blue="0.76862745098039209" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5pI-Zo-QoK" userLabel="7" customClass="UITableViewCellWeightInfo">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5pI-Zo-QoK" userLabel="7">
                                         <rect key="frame" x="0.0" y="1487.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5pI-Zo-QoK" id="gxh-Jg-lUH">
@@ -5890,6 +5890,16 @@
                         <outletCollection property="weightCollection" destination="J8f-X1-eky" id="Fbf-8G-jqz"/>
                         <outletCollection property="weightCollection" destination="rQb-Th-Qec" id="0F4-QE-uIr"/>
                         <outletCollection property="weightCollection" destination="3fY-4A-8gi" id="jNc-kr-kIH"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="Dt3-yo-UvD" id="Gd6-ZK-aeX"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="5pI-Zo-QoK" id="xeH-h4-lDI"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="dlu-KW-Wxw" id="zRV-QS-j77"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="tv6-ZX-huW" id="LgW-7m-nU7"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="3ah-pt-J29" id="hTA-5r-L1C"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="W0i-MS-msF" id="FZO-vP-e2d"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="Dbh-R0-3Et" id="XnV-rl-0GN"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="cMJ-Jw-gtt" id="g4m-50-Guq"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="JRw-kX-zpV" id="U5e-vM-0nT"/>
+                        <outletCollection property="notSupportedCellColleciton" destination="qzn-1v-GtZ" id="Ugn-x6-bt0"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6t4-Yr-1QR" userLabel="First Responder" sceneMemberID="firstResponder"/>

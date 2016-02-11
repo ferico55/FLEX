@@ -165,7 +165,7 @@ RetryViewDelegate
     
     PromoRequest *_promoRequest;
     
-    NSIndexPath *_orderIndexPath;
+    NSIndexPath *_sortIndexPath;
 }
 
 #pragma mark - Initialization
@@ -702,7 +702,7 @@ RetryViewDelegate
 - (IBAction)tapToSort:(id)sender {
     SortViewController *controller = [SortViewController new];
     controller.sortType = SortProductShopSearch;
-    controller.selectedIndexPath = _orderIndexPath;
+    controller.selectedIndexPath = _sortIndexPath;
     controller.delegate = self;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -724,6 +724,7 @@ RetryViewDelegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     [_detailfilter setObject:sort forKey:kTKPDDETAIL_APIORERBYKEY];
     [self refreshView:nil];
+    _sortIndexPath = indexPath;
 }
 
 #pragma mark - Filter Delegate
