@@ -102,11 +102,11 @@
     if (![[self getUserId] isEqualToString:@"0"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
-//#ifdef DEBUG
-//    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
-//#else
+#ifdef DEBUG
+    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
+#else
     [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
-//#endif
+#endif
     [parameters setValue:@"2" forKey:@"os_type"];
     
     NSString *hash;

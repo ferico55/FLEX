@@ -297,7 +297,7 @@
     NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     
     _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
+    [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
@@ -596,7 +596,7 @@
                         formatter.maximumFractionDigits = 0;
                         formatter.minimumFractionDigits = 0;
                         
-                        NSString *totalPrice = [[formatter stringFromNumber:total] stringByAppendingString:@",-"];
+                        NSString *totalPrice = [formatter stringFromNumber:total];
                         
                         label.text = totalPrice;
                     }
@@ -1179,7 +1179,7 @@
                 
                 if (response == nil|| response.results.count == 0) {
                     _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                    [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
 
                 } else{
                     GMSAddress *placemark = [response results][0];

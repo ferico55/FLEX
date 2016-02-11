@@ -134,9 +134,9 @@
             }
             if (response == nil|| response.results.count == 0) {
                 _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
                 _pinLocationSummaryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_pinLocationSummaryButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                [_pinLocationSummaryButton setCustomAttributedText:@"Tandai lokasi Anda"];
                 
             } else{
                 GMSAddress *placemark = [response results][0];
@@ -977,7 +977,7 @@
     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
     NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     
-    [_pinLocationNameButton.titleLabel setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
+    [_pinLocationNameButton.titleLabel setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
     AddressFormList *addressList = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
     addressList.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     addressList.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
@@ -1441,7 +1441,7 @@
             
             if (response == nil || response.results.count == 0) {
                 _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_pinLocationNameButton setCustomAttributedText:@"Lokasi yang Dituju"];
+                [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
                 _isFinishCalculate = YES;
                 [_tableView reloadData];
                 
