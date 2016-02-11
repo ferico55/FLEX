@@ -556,6 +556,8 @@
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
+    [cell setBackgroundColor:[UIColor clearColor]];
+    
     return cell;
 }
 
