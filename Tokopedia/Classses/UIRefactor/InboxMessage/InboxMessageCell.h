@@ -10,6 +10,7 @@
 #import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 #import "ViewLabelUser.h"
+#import "InboxMessageList.h"
 #define kTKPDINBOXMESSAGECELL_IDENTIFIER @"InboxMessageCellIdentifier"
 @protocol InboxMessageDelegate
 - (void)actionSmile:(id)sender;
@@ -23,6 +24,7 @@
 +(id)newcell;
 - (IBAction)actionSmile:(id)sender;
 
+@property (strong, nonatomic)InboxMessageList* message;
 @property (weak, nonatomic) IBOutlet ViewLabelUser *message_title;
 @property (weak, nonatomic) IBOutlet UILabel *message_create_time;
 @property (weak, nonatomic) IBOutlet UILabel *message_reply;
