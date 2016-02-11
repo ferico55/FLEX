@@ -7,8 +7,6 @@
 //
 
 #import "MyReviewDetailRequest.h"
-#import "DetailMyInboxReputation.h"
-#import "DetailReputationReview.h"
 #import "MyReviewReputation.h"
 #import "MyReviewReputationResult.h"
 #import "ShopBadgeLevel.h"
@@ -17,7 +15,6 @@
 #import "ProductOwner.h"
 #import "ReviewResponse.h"
 #import "SkipReview.h"
-#import "SkipReviewResult.h"
 
 typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     MyReviewDetailRequestGet,
@@ -34,7 +31,7 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     DetailMyInboxReputation *myInboxReputation;
     DetailReputationReview *reputationReview;
     
-    BOOL isAutoRead;
+    NSString *isAutoRead;
     
     __weak RKObjectManager *_objectManager;
 }
@@ -49,7 +46,7 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
 }
 
 #pragma mark - Public Functions
-- (void)requestGetListReputationReviewWithDetail:(DetailMyInboxReputation*)rep autoRead:(BOOL)autoRead {
+- (void)requestGetListReputationReviewWithDetail:(DetailMyInboxReputation*)rep autoRead:(NSString*)autoRead {
     myInboxReputation = rep;
     isAutoRead = autoRead;
     networkManager.tagRequest = MyReviewDetailRequestGet;
@@ -73,7 +70,7 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
         parameter = @{@"action"              : @"get_list_reputation_review",
                       @"reputation_inbox_id" : myInboxReputation.reputation_inbox_id,
                       @"reputation_id"       : myInboxReputation.reputation_id,
-                      @"auto_read"           : @(isAutoRead)
+                      @"auto_read"           : isAutoRead
                       };
     
         return parameter;
