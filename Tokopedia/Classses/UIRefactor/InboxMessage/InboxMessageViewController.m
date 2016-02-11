@@ -604,7 +604,8 @@ typedef enum TagRequest {
             InboxMessageList *list = _messages[indexpath.row];
             
             list.message_read_status = readStatus;
-            [_table reloadData];
+            [_table reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+            [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
 }
