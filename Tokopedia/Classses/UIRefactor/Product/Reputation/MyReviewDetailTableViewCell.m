@@ -10,6 +10,17 @@
 
 @implementation MyReviewDetailTableViewCell
 
+#pragma mark - Factory Methods
++ (id)newCell {
+    NSArray *a = [[NSBundle mainBundle] loadNibNamed:@"MyReviewDetailTableViewCell" owner:nil options:0];
+    for (id o in a) {
+        if ([o isKindOfClass:[self class]]) {
+            return o;
+        }
+    }
+    return nil;
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }

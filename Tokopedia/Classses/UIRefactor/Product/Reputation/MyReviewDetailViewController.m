@@ -10,6 +10,24 @@
 
 @interface MyReviewDetailViewController ()
 
+@property (weak, nonatomic) IBOutlet UITableView *reviewDetailTable;
+
+@property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
+@property (weak, nonatomic) IBOutlet UIView *userInfoView;
+@property (weak, nonatomic) IBOutlet UIView *sellersScoreView;
+@property (weak, nonatomic) IBOutlet UIView *buyersScoreView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *shopImage;
+@property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *shopScoreButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *sellersScoreButton;
+@property (weak, nonatomic) IBOutlet UILabel *isSellersScoreEditedLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *buyersScoreButton;
+@property (weak, nonatomic) IBOutlet UILabel *isBuyersScoreEditedLabel;
+
+
 @end
 
 @implementation MyReviewDetailViewController
