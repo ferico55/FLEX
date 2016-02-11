@@ -1067,6 +1067,7 @@ typedef enum TagRequest {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         InboxMessage *message = [result objectForKey:@""];
         
+        NSInteger startIndex = _messages.count;
         [_messages addObjectsFromArray: message.result.list];
         
         if (_messages.count >0) {
@@ -1101,14 +1102,15 @@ typedef enum TagRequest {
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
-        [_table reloadData];
         
-        if(_iseditmode) {
-            for (NSIndexPath *indexpath in _messages_selected) {
-                [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
-            }
-            
+        NSArray* nextMessages = message.result.list;
+        NSMutableArray* indexPaths = [NSMutableArray new];
+        
+        for (NSInteger counter = 0; counter < nextMessages.count; counter++) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:counter + startIndex inSection:0]];
         }
+        
+        [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
         {
