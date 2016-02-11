@@ -210,7 +210,7 @@ typedef enum TagRequest {
         cellHeight = 250;
     } else {
         numberOfCell = 2;
-        cellHeight = 205;
+        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
     }
     
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;

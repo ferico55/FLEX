@@ -1063,7 +1063,7 @@ HotlistBannerDelegate
     } else {
         if(self.cellType == UITableViewCellTypeTwoColumn) {
             numberOfCell = 2;
-            cellHeight = 205;
+            cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
         } else if(self.cellType == UITableViewCellTypeThreeColumn) {
             numberOfCell = 3;
             cellHeight = [UIScreen mainScreen].bounds.size.width / 3 - 15;

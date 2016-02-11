@@ -98,8 +98,8 @@ import UIKit
             }
             cellHeight = 250
         } else {
-            numberOfCell = 2;
-            cellHeight = 205
+            numberOfCell = 2
+            cellHeight = 205 * (UIScreen.mainScreen().bounds.size.height / 568)
         }
         
         let screenWidth = UIScreen.mainScreen().bounds.size.width
