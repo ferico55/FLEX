@@ -68,9 +68,17 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="giveReviewButton" destination="eW5-MV-x1L" id="IXF-Ds-c5v"/>
+                <outlet property="horizontalBorder" destination="Ikq-Dl-Z8M" id="1mo-0A-e3l"/>
                 <outlet property="productImage" destination="9a4-rA-znc" id="f4D-uF-SAZ"/>
                 <outlet property="productNameLabel" destination="tBH-Bk-LTU" id="rtt-vc-drH"/>
                 <outlet property="qualityStarsView" destination="BNs-Aw-U2F" id="aRE-fj-j9L"/>
+                <outlet property="reviewCommentView" destination="0o5-nB-UvG" id="fX2-d5-HNj"/>
+                <outlet property="reviewDetailView" destination="oSw-IF-x3a" id="Uaj-aF-UaX"/>
+                <outlet property="sellersCommentTextView" destination="Tbu-2Y-rKt" id="xTc-hd-eJg"/>
+                <outlet property="sellersCommentTimestampLabel" destination="wAP-4A-SrB" id="v7q-9Y-78S"/>
+                <outlet property="shopImage" destination="X9m-YG-vA5" id="ow8-5r-jus"/>
+                <outlet property="shopName" destination="4AD-Ig-Unx" id="fDi-Mk-h30"/>
+                <outlet property="shopReputationButton" destination="vQG-Rf-gZB" id="ro6-Bd-xkv"/>
                 <outlet property="skipReviewButton" destination="HL2-wJ-4Sw" id="JJR-7v-FOT"/>
             </connections>
             <point key="canvasLocation" x="104.5" y="108"/>
@@ -223,40 +231,6 @@
                         <rect key="frame" x="0.0" y="223" width="353" height="1"/>
                         <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0o5-nB-UvG">
-                        <rect key="frame" x="0.0" y="224" width="353" height="135"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-YG-vA5">
-                                <rect key="frame" x="8" y="8" width="50" height="50"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Evelyn Shopp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4AD-Ig-Unx">
-                                <rect key="frame" x="66" y="14" width="279" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                                <color key="textColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQG-Rf-gZB">
-                                <rect key="frame" x="66" y="34" width="65" height="22"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                                <state key="normal" image="icon_medal_silver14.png">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Ditunggu next order ya :)" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tbu-2Y-rKt">
-                                <rect key="frame" x="66" y="66" width="279" height="40"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 menit yang lalu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wAP-4A-SrB">
-                                <rect key="frame" x="66" y="114" width="279" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
                 </subviews>
             </tableViewCellContentView>
             <connections>
@@ -370,6 +344,43 @@
                 <action selector="tapToProductDetail:" destination="Pi5-3g-yoj" id="9Rp-NK-UXF"/>
             </connections>
         </tapGestureRecognizer>
+        <view contentMode="scaleToFill" id="0o5-nB-UvG">
+            <rect key="frame" x="0.0" y="0.0" width="345" height="135"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-YG-vA5">
+                    <rect key="frame" x="8" y="8" width="50" height="50"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Evelyn Shopp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4AD-Ig-Unx">
+                    <rect key="frame" x="66" y="14" width="279" height="21"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                    <color key="textColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQG-Rf-gZB">
+                    <rect key="frame" x="66" y="34" width="65" height="22"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                    <state key="normal" image="icon_medal_silver14.png">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Ditunggu next order ya :)" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tbu-2Y-rKt">
+                    <rect key="frame" x="66" y="66" width="279" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2 menit yang lalu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wAP-4A-SrB">
+                    <rect key="frame" x="66" y="114" width="279" height="21"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="511.5" y="307.5"/>
+        </view>
     </objects>
     <resources>
         <image name="icon_arrow_down.png" width="14" height="14"/>

@@ -22,7 +22,10 @@
 }
 
 - (void)awakeFromNib {
-    // Initialization code
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    screenSize.width = screenSize.width - 20;
+    
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *giveReviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *skipReviewButton;
 
+@property (weak, nonatomic) IBOutlet UIView *reviewDetailView;
 @property (weak, nonatomic) IBOutlet UIButton *editReviewButton;
 @property (weak, nonatomic) IBOutlet UITextView *reviewMessageTextView;
 @property (weak, nonatomic) IBOutlet UIView *attachedImagesView;
@@ -44,6 +45,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *accuracyLabel;
 @property (weak, nonatomic) IBOutlet UIView *accuracyStarsView;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *accuracyStarsImagesArray;
+
+@property (weak, nonatomic) IBOutlet UIView *horizontalBorder;
+
+@property (weak, nonatomic) IBOutlet UIView *reviewCommentView;
+@property (weak, nonatomic) IBOutlet UIImageView *shopImage;
+@property (weak, nonatomic) IBOutlet UILabel *shopName;
+@property (weak, nonatomic) IBOutlet UIButton *shopReputationButton;
+@property (weak, nonatomic) IBOutlet UITextView *sellersCommentTextView;
+@property (weak, nonatomic) IBOutlet UILabel *sellersCommentTimestampLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *reviewIsSkippedLabel;
 @property NSIndexPath *indexPath;
