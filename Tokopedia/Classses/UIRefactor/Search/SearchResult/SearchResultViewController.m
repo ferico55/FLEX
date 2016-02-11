@@ -110,6 +110,7 @@ SpellCheckRequestDelegate
 @property ScrollDirection scrollDirection;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
+
 @end
 
 @implementation SearchResultViewController {
@@ -141,6 +142,8 @@ SpellCheckRequestDelegate
     NSString *_suggestion;
     
     BOOL _isFailRequest;
+    
+    NSIndexPath *_orderIndexPath;
 }
 
 #pragma mark - Initialization
@@ -575,26 +578,28 @@ SpellCheckRequestDelegate
     switch (button.tag) {
         case 10:
         {
-            NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             // Action Urutkan Button
-            SortViewController *vc = [SortViewController new];
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
-            else
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
-            vc.delegate = self;
+            SortViewController *controller = [SortViewController new];
+            controller.delegate = self;
+            controller.selectedIndexPath = _orderIndexPath;
+            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+                controller.sortType = SortProductSearch;
+            } else {
+                controller.sortType = SortCatalogSearch;
+            }
+
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
                 [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
             }
+            
             UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
-            vc.screenshotImage = screenshotImage;
+            controller.screenshotImage = screenshotImage;
             
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
+            
             break;
         }
         case 11:
@@ -677,8 +682,8 @@ SpellCheckRequestDelegate
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_params addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    [_params setObject:sort forKey:@"order_by"];
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
     [_act startAnimating];

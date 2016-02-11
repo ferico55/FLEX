@@ -91,7 +91,7 @@ static NSString const *rows = @"12";
     GeneralPhotoProductDelegate,
     PromoCollectionViewDelegate,
     PromoRequestDelegate,
-HotlistBannerDelegate
+    HotlistBannerDelegate
 >
 {
     NSInteger _page;
@@ -140,6 +140,8 @@ HotlistBannerDelegate
     
     HotlistBannerRequest *_bannerRequest;
     BOOL _shouldUseHashtag;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -456,13 +458,12 @@ HotlistBannerDelegate
                 case 10:
                 {
                     // URUTKAN
-                    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    SortViewController *vc = [SortViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
-                                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                    vc.delegate = self;
-                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                    SortViewController *controller = [SortViewController new];
+                    controller.selectedIndexPath = _sortIndexPath;
+                    controller.sortType = SortHotlistDetail;
+                    controller.delegate = self;
+                    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                    [self.navigationController presentViewController:navigation animated:YES completion:nil];
                     break;
                 }
                 case 11:
@@ -1016,9 +1017,9 @@ HotlistBannerDelegate
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    [_detailfilter addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    _sortIndexPath = indexPath;
+    [_detailfilter setObject:sort forKey:kTKPDHOME_APIORDERBYKEY];
     [self refreshView:nil];
 }
 
