@@ -10,9 +10,46 @@ import UIKit
 import Foundation
 import GoogleMaps
 
+
 enum TypePlacePicker : Int{
     case TypeEditPlace
     case TypeShowPlace
+}
+
+@objc class TKPAddressStreet : NSObject {
+    
+    func getStreetAddress(street : String)->String{
+        let str = street
+        let streetNumber = str.componentsSeparatedByCharactersInSet(
+            NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+        print(streetNumber)
+        
+        var address = street
+        var hasValue = false
+        
+        // Loops thorugh the street
+        for i in street.characters {
+            let str = String(i)
+            // Checks if the char is a number
+            if (Int(str) != nil){
+                // If it is it appends it to number
+                address = address.stringByReplacingOccurrencesOfString(str, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                // Here we set the hasValue to true, beacause the street number will come in one order
+                // 531 in this case
+                hasValue = true
+            }
+            else{
+                // Lets say that we have runned through 531 and are at the blank char now, that means we have looped through the street number and can end the for iteration
+                if(hasValue){
+                    break
+                }
+            }
+        }
+        address = address.stringByReplacingOccurrencesOfString("Kav", withString: "")
+        address = address.stringByReplacingOccurrencesOfString("-", withString: "")
+        return address
+    }
+    
 }
 
 @objc protocol TKPPlacePickerDelegate {
@@ -142,8 +179,8 @@ enum TypePlacePicker : Int{
     
     //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
-        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-        self.mapView.updateAddress("Lokasi yang Dituju")
+        self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+        self.mapView.updateAddress("Tandai lokasi Anda")
     }
     
     func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
@@ -312,8 +349,8 @@ enum TypePlacePicker : Int{
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {
-        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-        self.mapView.updateAddress("Lokasi yang Dituju")
+        self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+        self.mapView.updateAddress("Tandai lokasi Anda")
         geocoder.reverseGeocodeCoordinate(mapView.selectedMarker.position) { (response, error) -> Void in
             if (error != nil){
                 return
@@ -330,8 +367,8 @@ enum TypePlacePicker : Int{
                     self.saveHistory(placemark, addressSuggestions: addressSugestion!)
                 }
             }else {
-                self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-                self.mapView.updateAddress("Lokasi yang Dituju")
+                self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+                self.mapView.updateAddress("Tandai lokasi Anda")
                 self.mapView.selectedMarker = self.mapView.selectedMarker
             }
         }
@@ -362,16 +399,11 @@ enum TypePlacePicker : Int{
     }
     
     func addressString(address:GMSAddress)-> String{
-        var strSnippet : String = " "
-        
-        if (address.lines.count>0) {
-            strSnippet = address.lines[0] as! String;
+        var strSnippet : String = ""
+        //MARK:: IBR-372 PO Wishes
+        if (address.thoroughfare != nil) {
+            strSnippet = TKPAddressStreet().getStreetAddress(address.thoroughfare)
         }
-        else{
-            strSnippet = adjustStrSnippet(address.thoroughfare, strSnippet: strSnippet)
-        }
-        strSnippet = adjustStrSnippet(address.locality, strSnippet: strSnippet)
-        strSnippet = adjustStrSnippet(address.subLocality, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.administrativeArea, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.postalCode, strSnippet: strSnippet)
         
@@ -396,13 +428,7 @@ enum TypePlacePicker : Int{
         var documentsPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
         documentsPath += "/history_places.plist"
         
-        var addressString : String = " "
-        if (address.lines.count>0){
-            addressString = address.lines[0] as! String
-        }
-        else{
-            addressString = address.thoroughfare
-        }
+        let addressString : String = TKPAddressStreet().getStreetAddress(address.thoroughfare)
         
         var postalCode : String!
         if (address.postalCode == nil){ postalCode = ""} else{ postalCode = address.postalCode}

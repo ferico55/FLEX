@@ -1483,7 +1483,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
     _grandTotalLabel.text = _cart.grand_total_without_lp_idr;
@@ -2982,7 +2982,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
@@ -3119,7 +3119,7 @@
     
     NSInteger voucher = [voucherResponse.result.data_voucher.voucher_amount integerValue];
     NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
-    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
+    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
     _voucherAmountLabel.text = voucherString;
     _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
     
