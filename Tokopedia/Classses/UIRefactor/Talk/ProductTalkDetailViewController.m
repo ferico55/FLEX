@@ -347,7 +347,7 @@
             } else {
                 if (_auth) {
                     if (list.comment_user_reputation == nil && list.comment_user_id != nil) {
-                        NSString *userId = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+                        NSString *userId = [_userManager getUserId];
                         BOOL usersComment = [list.comment_user_id isEqualToString:userId];
                         if (usersComment) {
                             UserAuthentificationManager *user = [UserAuthentificationManager new];
@@ -898,13 +898,13 @@
                 if(_auth) {
                     
                     TalkCommentList *comment = [TalkCommentList new];
-                    comment.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+                    comment.comment_user_id = [_userManager getUserId];
                     comment.comment_user_name = [_auth objectForKey:@"full_name"];
                     comment.comment_user_image = [_auth objectForKey:@"user_image"];
                     comment.comment_message =_growingtextview.text;
 
                     if ([_auth objectForKey:@"shop_id"]) {
-                        if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:[[_auth objectForKey:@"shop_id"] stringValue]]) {
+                        if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:[_userManager getShopId]]) {
                             comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
                             comment.comment_shop_image = [_auth objectForKey:@"shop_avatar"];
                             comment.comment_is_owner = @"1";
@@ -1079,8 +1079,8 @@
             TalkCommentList *comment = _list[_list.count-1];
             comment.is_just_sent = NO;
             comment.comment_id = commentaction.result.comment_id;
-            comment.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
-
+            comment.comment_user_id = [_userManager getUserId];
+            
             if([dictCell objectForKey:@"-1"]) {
                 [dictCell removeObjectForKey:@"-1"];
             }
