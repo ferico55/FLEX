@@ -31,4 +31,25 @@
     // Configure the view for the selected state
 }
 
+#pragma mark - Actions
+- (IBAction)tapToGiveReview:(UIButton*)sender {
+    [_delegate giveReviewAtIndexPath:_indexPath];
+}
+
+- (IBAction)tapToSkipReview:(UIButton*)sender {
+    [_delegate skipReviewAtIndexPath:_indexPath];
+}
+
+- (IBAction)tapToEditReview:(UIButton*)sender {
+    [_delegate editReviewAtIndexPath:_indexPath];
+}
+
+- (IBAction)tapToViewImages:(UITapGestureRecognizer*)sender {
+    [_delegate goToImageViewerAtIndexPath:_indexPath];
+}
+
+- (IBAction)tapToProductDetail:(UITapGestureRecognizer*)sender {
+    [_delegate goToProductDetailAtIndexPath:_indexPath];
+}
+
 @end

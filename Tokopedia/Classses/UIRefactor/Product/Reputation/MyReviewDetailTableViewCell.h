@@ -14,14 +14,11 @@
 
 #pragma mark - Review Detail Delegate
 @protocol MyReviewDetailTableViewCellDelegate <NSObject>
-@optional
-
 - (void)giveReviewAtIndexPath:(NSIndexPath*)indexPath;
 - (void)skipReviewAtIndexPath:(NSIndexPath*)indexPath;
-- (void)goToProductAtIndexPath:(NSIndexPath*)indexPath;
+- (void)goToProductDetailAtIndexPath:(NSIndexPath*)indexPath;
 - (void)editReviewAtIndexPath:(NSIndexPath*)indexPath;
 - (void)goToImageViewerAtIndexPath:(NSIndexPath*)indexPath;
-
 @end
 
 @interface MyReviewDetailTableViewCell : UITableViewCell
@@ -49,6 +46,7 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *accuracyStarsImagesArray;
 
 @property (weak, nonatomic) IBOutlet UILabel *reviewIsSkippedLabel;
+@property NSIndexPath *indexPath;
 
 + (id)newCell;
 

@@ -12,8 +12,12 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -30,30 +34,39 @@
                 <rect key="frame" x="0.0" y="0.0" width="353" height="111"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nutella Spread 400 gram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBH-Bk-LTU">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nutella Spread 400 gram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBH-Bk-LTU">
                         <rect key="frame" x="66" y="22" width="254" height="21"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="XSf-uM-Nt3" appends="YES" id="6bB-Yl-Yk1"/>
+                        </connections>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9a4-rA-znc">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9a4-rA-znc">
                         <rect key="frame" x="8" y="8" width="50" height="50"/>
                     </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eW5-MV-x1L">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eW5-MV-x1L">
                         <rect key="frame" x="8" y="73" width="337" height="30"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                         <state key="normal" title="Beri Ulasan">
                             <color key="titleColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
+                        <connections>
+                            <action selector="tapToGiveReview:" destination="lG3-rF-TXu" eventType="touchUpInside" id="Ki7-5o-sSk"/>
+                        </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HL2-wJ-4Sw">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HL2-wJ-4Sw">
                         <rect key="frame" x="323" y="0.0" width="30" height="30"/>
                         <state key="normal" image="icon_cancel.png"/>
+                        <connections>
+                            <action selector="tapToSkipReview:" destination="lG3-rF-TXu" eventType="touchUpInside" id="ZQG-E3-cl1"/>
+                        </connections>
                     </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
-                <outlet property="editReviewButton" destination="55w-i5-vdH" id="Wff-df-wjw"/>
                 <outlet property="giveReviewButton" destination="eW5-MV-x1L" id="IXF-Ds-c5v"/>
                 <outlet property="productImage" destination="9a4-rA-znc" id="f4D-uF-SAZ"/>
                 <outlet property="productNameLabel" destination="tBH-Bk-LTU" id="rtt-vc-drH"/>
@@ -62,130 +75,194 @@
             </connections>
             <point key="canvasLocation" x="104.5" y="108"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReviewDetailCellIdentifier" rowHeight="222" id="SAy-ky-Rw2" customClass="MyReviewDetailTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="353" height="222"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReviewDetailCellIdentifier" rowHeight="359" id="SAy-ky-Rw2" customClass="MyReviewDetailTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="353" height="359"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SAy-ky-Rw2" id="OcD-pv-Lpm">
-                <rect key="frame" x="0.0" y="0.0" width="353" height="221"/>
+                <rect key="frame" x="0.0" y="0.0" width="353" height="415"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ziw-Ec-i3i">
-                        <rect key="frame" x="8" y="8" width="50" height="50"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nutella Spread 400 gram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMJ-Cx-OwW">
-                        <rect key="frame" x="66" y="15" width="254" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10 menit yang lalu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-W6-Ul3">
-                        <rect key="frame" x="66" y="36" width="254" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                        <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Produk ori, enak banget! OK" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vVM-jd-2kv">
-                        <rect key="frame" x="8" y="66" width="337" height="50"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ku-jm-Ymy" userLabel="Attached Images View">
-                        <rect key="frame" x="8" y="124" width="337" height="60"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oSw-IF-x3a">
+                        <rect key="frame" x="0.0" y="0.0" width="353" height="223"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oca-kO-AQq" userLabel="1">
-                                <rect key="frame" x="8" y="8" width="44" height="44"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ziw-Ec-i3i">
+                                <rect key="frame" x="8" y="8" width="50" height="50"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3os-ok-JWQ" userLabel="2">
-                                <rect key="frame" x="60" y="8" width="44" height="44"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jO6-9v-oWG" userLabel="3">
-                                <rect key="frame" x="112" y="8" width="44" height="44"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3cA-KB-Fg4" userLabel="4">
-                                <rect key="frame" x="164" y="8" width="44" height="44"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ugf-PL-tg8" userLabel="5">
-                                <rect key="frame" x="216" y="8" width="44" height="44"/>
-                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nutella Spread 400 gram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMJ-Cx-OwW">
+                                <rect key="frame" x="66" y="12" width="254" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="cYU-uq-h4q" appends="YES" id="4aH-Lv-Tsk"/>
+                                </connections>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 menit yang lalu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YrW-W6-Ul3">
+                                <rect key="frame" x="66" y="33" width="254" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Produk ori, enak banget! OK" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vVM-jd-2kv">
+                                <rect key="frame" x="8" y="66" width="337" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX3-EW-hf0" userLabel="Horizontal Border">
+                                <rect key="frame" x="8" y="184" width="337" height="1"/>
+                                <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oAP-3g-qaC">
+                                <rect key="frame" x="8" y="185" width="337" height="38"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kualitas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHM-u4-2Gl">
+                                        <rect key="frame" x="0.0" y="8" width="50" height="21"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BNs-Aw-U2F">
+                                        <rect key="frame" x="53" y="8" width="105" height="21"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="8iR-Sk-PkA" userLabel="1">
+                                                <rect key="frame" x="0.0" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Shg-NF-bIu" userLabel="2">
+                                                <rect key="frame" x="21" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="abJ-S9-a24" userLabel="3">
+                                                <rect key="frame" x="42" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="m7n-oJ-0ai" userLabel="4">
+                                                <rect key="frame" x="63" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rss-k2-kyb" userLabel="5">
+                                                <rect key="frame" x="84" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akurasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMf-e6-Qhk">
+                                        <rect key="frame" x="168" y="8" width="50" height="22"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rkf-It-bXi">
+                                        <rect key="frame" x="220" y="8" width="105" height="21"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="el0-rW-fRf" userLabel="1">
+                                                <rect key="frame" x="0.0" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="pPj-Oo-MuQ" userLabel="2">
+                                                <rect key="frame" x="21" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="UQw-iw-5Wk" userLabel="3">
+                                                <rect key="frame" x="42" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="cg0-jc-nLG" userLabel="4">
+                                                <rect key="frame" x="63" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Yxe-pO-Zge" userLabel="5">
+                                                <rect key="frame" x="84" y="0.0" width="21" height="21"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="55w-i5-vdH">
+                                <rect key="frame" x="323" y="0.0" width="30" height="30"/>
+                                <state key="normal" image="icon_arrow_down.png"/>
+                                <connections>
+                                    <action selector="tapToEditReview:" destination="lG3-rF-TXu" eventType="touchUpInside" id="MCI-hf-aXW"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Ku-jm-Ymy" userLabel="Attached Images View">
+                                <rect key="frame" x="8" y="124" width="337" height="60"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Oca-kO-AQq" userLabel="1">
+                                        <rect key="frame" x="8" y="8" width="44" height="44"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="GK4-p2-roD" appends="YES" id="Va8-c4-Pai"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3os-ok-JWQ" userLabel="2">
+                                        <rect key="frame" x="60" y="8" width="44" height="44"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="DMc-ev-6d7" appends="YES" id="Iv9-FG-Gpf"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jO6-9v-oWG" userLabel="3">
+                                        <rect key="frame" x="112" y="8" width="44" height="44"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="FUW-Ek-6P6" appends="YES" id="BGJ-jS-ky0"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3cA-KB-Fg4" userLabel="4">
+                                        <rect key="frame" x="164" y="8" width="44" height="44"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="vIc-zy-I5H" appends="YES" id="B45-oX-nhd"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ugf-PL-tg8" userLabel="5">
+                                        <rect key="frame" x="216" y="8" width="44" height="44"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="hg1-8a-LaH" appends="YES" id="TH5-Dh-yNc"/>
+                                        </connections>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RX3-EW-hf0" userLabel="Horizontal Border">
-                        <rect key="frame" x="8" y="184" width="337" height="1"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ikq-Dl-Z8M" userLabel="Horizontal Border">
+                        <rect key="frame" x="0.0" y="223" width="353" height="1"/>
                         <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oAP-3g-qaC">
-                        <rect key="frame" x="8" y="184" width="337" height="38"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0o5-nB-UvG">
+                        <rect key="frame" x="0.0" y="224" width="353" height="135"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Kualitas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHM-u4-2Gl">
-                                <rect key="frame" x="0.0" y="8" width="50" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-YG-vA5">
+                                <rect key="frame" x="8" y="8" width="50" height="50"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Evelyn Shopp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4AD-Ig-Unx">
+                                <rect key="frame" x="66" y="14" width="279" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                <color key="textColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BNs-Aw-U2F">
-                                <rect key="frame" x="53" y="8" width="105" height="21"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="8iR-Sk-PkA" userLabel="1">
-                                        <rect key="frame" x="0.0" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Shg-NF-bIu" userLabel="2">
-                                        <rect key="frame" x="21" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="abJ-S9-a24" userLabel="3">
-                                        <rect key="frame" x="42" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="m7n-oJ-0ai" userLabel="4">
-                                        <rect key="frame" x="63" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rss-k2-kyb" userLabel="5">
-                                        <rect key="frame" x="84" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                </subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQG-Rf-gZB">
+                                <rect key="frame" x="66" y="34" width="65" height="22"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <state key="normal" image="icon_medal_silver14.png">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Ditunggu next order ya :)" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tbu-2Y-rKt">
+                                <rect key="frame" x="66" y="66" width="279" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Akurasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMf-e6-Qhk">
-                                <rect key="frame" x="168" y="8" width="50" height="22"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 menit yang lalu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wAP-4A-SrB">
+                                <rect key="frame" x="66" y="114" width="279" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rkf-It-bXi">
-                                <rect key="frame" x="220" y="8" width="105" height="21"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="el0-rW-fRf" userLabel="1">
-                                        <rect key="frame" x="0.0" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="pPj-Oo-MuQ" userLabel="2">
-                                        <rect key="frame" x="21" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="UQw-iw-5Wk" userLabel="3">
-                                        <rect key="frame" x="42" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="cg0-jc-nLG" userLabel="4">
-                                        <rect key="frame" x="63" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Yxe-pO-Zge" userLabel="5">
-                                        <rect key="frame" x="84" y="0.0" width="21" height="21"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="55w-i5-vdH">
-                        <rect key="frame" x="323" y="0.0" width="30" height="30"/>
-                        <state key="normal" image="icon_arrow_down.png"/>
-                    </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="accuracyLabel" destination="ZMf-e6-Qhk" id="mc8-sf-oIJ"/>
                 <outlet property="accuracyStarsView" destination="Rkf-It-bXi" id="IG3-J0-xsM"/>
                 <outlet property="attachedImagesView" destination="4Ku-jm-Ymy" id="r37-BP-t5X"/>
-                <outlet property="editRevewButton" destination="55w-i5-vdH" id="2Ma-BW-mJZ"/>
                 <outlet property="editReviewButton" destination="55w-i5-vdH" id="zUX-Aa-Ow9"/>
                 <outlet property="horizontalBorderView" destination="RX3-EW-hf0" id="6j7-h6-3NH"/>
                 <outlet property="productImage" destination="ziw-Ec-i3i" id="3G3-Fv-U6H"/>
@@ -194,23 +271,23 @@
                 <outlet property="ratingDetailView" destination="oAP-3g-qaC" id="AYT-qT-GwA"/>
                 <outlet property="reviewMessageTextView" destination="vVM-jd-2kv" id="myN-Q0-M9v"/>
                 <outlet property="reviewTimestampLabel" destination="YrW-W6-Ul3" id="W9U-Cm-3tp"/>
-                <outletCollection property="attachedImagesArray" destination="Oca-kO-AQq" id="EXm-jS-Occ"/>
+                <outletCollection property="attachedImagesArray" destination="Ugf-PL-tg8" id="Iqe-eK-07I"/>
                 <outletCollection property="attachedImagesArray" destination="3os-ok-JWQ" id="oqU-mO-aAQ"/>
                 <outletCollection property="attachedImagesArray" destination="jO6-9v-oWG" id="Y53-Em-sEi"/>
+                <outletCollection property="attachedImagesArray" destination="Oca-kO-AQq" id="EXm-jS-Occ"/>
                 <outletCollection property="attachedImagesArray" destination="3cA-KB-Fg4" id="Fbm-sP-S8Z"/>
-                <outletCollection property="attachedImagesArray" destination="Ugf-PL-tg8" id="Iqe-eK-07I"/>
-                <outletCollection property="qualityStarsImagesArray" destination="8iR-Sk-PkA" id="LQ1-iE-h6w"/>
-                <outletCollection property="qualityStarsImagesArray" destination="Shg-NF-bIu" id="Ki2-4z-IgU"/>
-                <outletCollection property="qualityStarsImagesArray" destination="abJ-S9-a24" id="HC5-2e-j8G"/>
-                <outletCollection property="qualityStarsImagesArray" destination="m7n-oJ-0ai" id="wJu-4W-V8j"/>
-                <outletCollection property="qualityStarsImagesArray" destination="Rss-k2-kyb" id="MBb-aC-0cM"/>
                 <outletCollection property="accuracyStarsImagesArray" destination="el0-rW-fRf" id="JmT-2z-05p"/>
-                <outletCollection property="accuracyStarsImagesArray" destination="pPj-Oo-MuQ" id="S8k-eY-hij"/>
-                <outletCollection property="accuracyStarsImagesArray" destination="UQw-iw-5Wk" id="KMd-Pc-jqB"/>
-                <outletCollection property="accuracyStarsImagesArray" destination="cg0-jc-nLG" id="3Ta-iw-DAs"/>
                 <outletCollection property="accuracyStarsImagesArray" destination="Yxe-pO-Zge" id="2hE-cb-n4J"/>
+                <outletCollection property="qualityStarsImagesArray" destination="Rss-k2-kyb" id="MBb-aC-0cM"/>
+                <outletCollection property="qualityStarsImagesArray" destination="Shg-NF-bIu" id="Ki2-4z-IgU"/>
+                <outletCollection property="accuracyStarsImagesArray" destination="UQw-iw-5Wk" id="KMd-Pc-jqB"/>
+                <outletCollection property="accuracyStarsImagesArray" destination="pPj-Oo-MuQ" id="S8k-eY-hij"/>
+                <outletCollection property="qualityStarsImagesArray" destination="m7n-oJ-0ai" id="wJu-4W-V8j"/>
+                <outletCollection property="qualityStarsImagesArray" destination="8iR-Sk-PkA" id="LQ1-iE-h6w"/>
+                <outletCollection property="qualityStarsImagesArray" destination="abJ-S9-a24" id="HC5-2e-j8G"/>
+                <outletCollection property="accuracyStarsImagesArray" destination="cg0-jc-nLG" id="3Ta-iw-DAs"/>
             </connections>
-            <point key="canvasLocation" x="104.5" y="340"/>
+            <point key="canvasLocation" x="104.5" y="420"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SkippedReviewCellIdentifier" rowHeight="112" id="Pi5-3g-yoj" customClass="MyReviewDetailTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="353" height="112"/>
@@ -219,22 +296,25 @@
                 <rect key="frame" x="0.0" y="0.0" width="353" height="111"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bxL-fK-EPt">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bxL-fK-EPt">
                         <rect key="frame" x="8" y="8" width="50" height="50"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nutella Spread 400 gram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dO4-J7-RCV">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nutella Spread 400 gram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dO4-J7-RCV">
                         <rect key="frame" x="66" y="15" width="254" height="21"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="2Cd-RP-jnd" appends="YES" id="Gfk-V6-imo"/>
+                        </connections>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10 menit yang lalu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBg-cE-NYy">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 menit yang lalu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBg-cE-NYy">
                         <rect key="frame" x="66" y="36" width="254" height="21"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anda telah melewati ulasan." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwa-OE-64f">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda telah melewati ulasan." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwa-OE-64f">
                         <rect key="frame" x="8" y="73" width="337" height="21"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -250,10 +330,51 @@
             </connections>
             <point key="canvasLocation" x="511.5" y="108"/>
         </tableViewCell>
+        <tapGestureRecognizer id="GK4-p2-roD">
+            <connections>
+                <action selector="tapToViewImages:" destination="SAy-ky-Rw2" id="vo0-us-HPg"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="DMc-ev-6d7">
+            <connections>
+                <action selector="tapToViewImages:" destination="SAy-ky-Rw2" id="aYG-B9-qmM"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="FUW-Ek-6P6">
+            <connections>
+                <action selector="tapToViewImages:" destination="SAy-ky-Rw2" id="8Y8-C7-MlJ"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="vIc-zy-I5H">
+            <connections>
+                <action selector="tapToViewImages:" destination="SAy-ky-Rw2" id="2rZ-T1-Qdt"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="hg1-8a-LaH">
+            <connections>
+                <action selector="tapToViewImages:" destination="SAy-ky-Rw2" id="tb8-vF-waD"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="XSf-uM-Nt3">
+            <connections>
+                <action selector="tapToProductDetail:" destination="lG3-rF-TXu" id="ht8-iU-PZL"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="cYU-uq-h4q">
+            <connections>
+                <action selector="tapToProductDetail:" destination="SAy-ky-Rw2" id="n4a-EH-yRh"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="2Cd-RP-jnd">
+            <connections>
+                <action selector="tapToProductDetail:" destination="Pi5-3g-yoj" id="9Rp-NK-UXF"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_arrow_down.png" width="14" height="14"/>
         <image name="icon_cancel.png" width="20" height="20"/>
+        <image name="icon_medal_silver14.png" width="14" height="14"/>
         <image name="icon_star.png" width="20" height="20"/>
     </resources>
 </document>
