@@ -2002,17 +2002,8 @@
 
 - (NSString *)streetNameFromAddress:(GMSAddress *)address {
     NSString *strSnippet = @"Tentukan Peta Lokasi";
-    if (address.lines.count > 0) {
-        strSnippet = address.lines[0];
-    } else {
-        if ([address.thoroughfare length] != 0) {
-            if ([strSnippet length] != 0) {
-                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
-            } else {
-                strSnippet = address.thoroughfare;
-            }
-        }
-    }
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    strSnippet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     return strSnippet;
 }
 

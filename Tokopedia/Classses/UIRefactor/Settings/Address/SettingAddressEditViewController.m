@@ -370,26 +370,17 @@
 #pragma mark - Picker Place Delegate
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
-    NSString *addressStreet= @"";
-    if (![suggestion isEqualToString:@""]) {
-        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
-        addressStreet = addressSuggestions[0];
-    }
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     
-    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (addressStreet.length != 0) {
-        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
-    }
-    else
-        addressStreet = street;
+    //MARK :: PO Wishes don't automating fill address
     //if ([_textviewaddress.text isEqualToString:@""]){
-        _textviewaddress.text = addressStreet;
-        _textviewaddress.placeholderLabel.hidden = YES;
+//        _textviewaddress.text = addressStreet;
+//        _textviewaddress.placeholderLabel.hidden = YES;
     //}
     //if ([_textfieldpostcode.text isEqualToString:@""])
-        _textfieldpostcode.text = addressStreet;
-    
-    _textfieldpostcode.text = address.postalCode;
+//        _textfieldpostcode.text = addressStreet;
+//    _textfieldpostcode.text = address.postalCode;
     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
 //    _mapImageView.image = mapImage;
@@ -604,14 +595,8 @@
 
                 } else {
                     GMSAddress *address = [response results][0];
-                    NSString *addressString;
-                    if (address.lines.count>0) {
-                        addressString = address.lines[0];
-                    }
-                    else
-                    {
-                        addressString = address.thoroughfare;
-                    }
+                    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+                    NSString *addressString = [tkpAddressStreet getStreetAddress:address.thoroughfare];
                     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                     [_buttonMapLocation setCustomAttributedText:addressString];
                 }
