@@ -787,6 +787,7 @@
 		62EA15051C6B20EA0039BC07 /* MyReviewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62EA15031C6B20EA0039BC07 /* MyReviewDetailViewController.xib */; };
 		62EA15181C6B37390039BC07 /* MyReviewDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EA15161C6B37390039BC07 /* MyReviewDetailTableViewCell.m */; };
 		62EA15191C6B37390039BC07 /* MyReviewDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62EA15171C6B37390039BC07 /* MyReviewDetailTableViewCell.xib */; };
+		62ECD96C1C6C4C820007E4D5 /* MyReviewDetailRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 62ECD96B1C6C4C820007E4D5 /* MyReviewDetailRequest.m */; };
 		62F200DC1C5B11F5008787A9 /* GiveReviewRatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F200DA1C5B11F5008787A9 /* GiveReviewRatingViewController.m */; };
 		62F200DD1C5B11F5008787A9 /* GiveReviewRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62F200DB1C5B11F5008787A9 /* GiveReviewRatingViewController.xib */; };
 		62F200E11C5B1D91008787A9 /* GiveReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F200DF1C5B1D91008787A9 /* GiveReviewDetailViewController.m */; };
@@ -3360,6 +3361,8 @@
 		62EA15151C6B37390039BC07 /* MyReviewDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailTableViewCell.h; sourceTree = "<group>"; };
 		62EA15161C6B37390039BC07 /* MyReviewDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewDetailTableViewCell.m; sourceTree = "<group>"; };
 		62EA15171C6B37390039BC07 /* MyReviewDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewDetailTableViewCell.xib; sourceTree = "<group>"; };
+		62ECD96A1C6C4C820007E4D5 /* MyReviewDetailRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailRequest.h; sourceTree = "<group>"; };
+		62ECD96B1C6C4C820007E4D5 /* MyReviewDetailRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewDetailRequest.m; sourceTree = "<group>"; };
 		62F200D91C5B11F5008787A9 /* GiveReviewRatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewRatingViewController.h; sourceTree = "<group>"; };
 		62F200DA1C5B11F5008787A9 /* GiveReviewRatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewRatingViewController.m; sourceTree = "<group>"; };
 		62F200DB1C5B11F5008787A9 /* GiveReviewRatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewRatingViewController.xib; sourceTree = "<group>"; };
@@ -6584,6 +6587,8 @@
 				62EA15151C6B37390039BC07 /* MyReviewDetailTableViewCell.h */,
 				62EA15161C6B37390039BC07 /* MyReviewDetailTableViewCell.m */,
 				62EA15171C6B37390039BC07 /* MyReviewDetailTableViewCell.xib */,
+				62ECD96A1C6C4C820007E4D5 /* MyReviewDetailRequest.h */,
+				62ECD96B1C6C4C820007E4D5 /* MyReviewDetailRequest.m */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -12617,6 +12622,7 @@
 				628177111C59FF1C00D8F4AF /* MyShopEtalaseViewController.m in Sources */,
 				628177A01C59FF1D00D8F4AF /* OrderDetailProductInformationCell.m in Sources */,
 				628177641C59FF1D00D8F4AF /* ProductDetailReputationCell.m in Sources */,
+				62ECD96C1C6C4C820007E4D5 /* MyReviewDetailRequest.m in Sources */,
 				628176411C59FF1C00D8F4AF /* ContactUsWebViewController.m in Sources */,
 				7A7109EA1C4CF81D00D00615 /* UIButtonCategory.swift in Sources */,
 				62F200E11C5B1D91008787A9 /* GiveReviewDetailViewController.m in Sources */,
