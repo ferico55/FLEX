@@ -11,6 +11,7 @@
 #import "ProductList.h"
 #import "NavigateViewController.h"
 
+#import "SearchAWSProduct.h"
 #import "detail.h"
 
 @interface CatalogProductViewController () {
@@ -62,18 +63,21 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
-    ProductList *product = [_product_list objectAtIndex:indexPath.row];
+    SearchAWSProduct *product = [_product_list objectAtIndex:indexPath.row];
     cell.productNameLabel.text = product.product_name;
     cell.productPriceLabel.text = product.product_price;
-    cell.productConditionLabel.text = product.product_condition;
-    
+    if([product.condition isEqualToString:@"1"]){
+        cell.productConditionLabel.text = @"Baru";
+    }else if([product.condition isEqualToString:@"2"]){
+        cell.productConditionLabel.text = @"Bekas";
+    }    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ProductList *product = [_product_list objectAtIndex:[indexPath row]];
+    SearchAWSProduct *product = [_product_list objectAtIndex:[indexPath row]];
     
     [_navigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:nil withShopName:product.shop_name];
     

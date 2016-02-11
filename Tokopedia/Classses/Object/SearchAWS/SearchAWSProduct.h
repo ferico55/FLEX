@@ -31,6 +31,9 @@
 @property (nonatomic, strong) NSString *is_owner;
 @property (nonatomic, strong) NSString *shop_lucky;
 
+@property (nonatomic, strong) NSString *shop_id;
+@property (nonatomic, strong) NSString *condition;
+
 //catalog
 @property (nonatomic, strong) NSString *catalog_id;
 @property (nonatomic, strong) NSString *catalog_name;

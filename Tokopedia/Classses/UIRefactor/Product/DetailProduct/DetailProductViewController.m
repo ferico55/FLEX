@@ -69,6 +69,10 @@
 #import "FavoriteShopAction.h"
 #import "Promote.h"
 
+#import "SearchAWS.h"
+#import "SearchAWSProduct.h"
+#import "SearchAWSResult.h"
+
 #import "LoginViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
@@ -119,7 +123,7 @@ NoResultDelegate
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
-    NSMutableArray *_otherProductObj;
+    NSMutableArray<SearchAWSProduct*> *_otherProductObj;
     
     NSMutableArray *_expandedSections;
     CGFloat _descriptionHeight;
@@ -323,6 +327,8 @@ NoResultDelegate
     tokopediaOtherProduct = [TokopediaNetworkManager new];
     tokopediaOtherProduct.delegate = self;
     tokopediaOtherProduct.tagRequest = CTagOtherProduct;
+    tokopediaOtherProduct.isParameterNotEncrypted = YES;
+    tokopediaOtherProduct.isUsingHmac = NO;
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.delegate = self;
@@ -1194,7 +1200,8 @@ NoResultDelegate
                  @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
                  };
     else if(tag == CTagOtherProduct)
-        return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"};
+        return @{@"shop_id" : _product.result.shop_info.shop_id,
+                 @"device" : @"ios"};
     else if(tag == CTagFavorite)
     {
         NSString *strShopID = [[NSString alloc] initWithString:tempShopID?:@"0"];
@@ -1220,6 +1227,28 @@ NoResultDelegate
     return nil;
 }
 
+-(int)getRequestMethod:(int)tag{
+    if(tag == CTagPromote)
+        return RKRequestMethodPOST;
+    else if(tag == CTagTokopediaNetworkManager)
+        return RKRequestMethodPOST;
+    else if(tag == CTagOtherProduct)
+        return RKRequestMethodGET;
+    else if(tag == CTagFavorite)
+        return RKRequestMethodPOST;
+    else if(tag == CTagUnWishList)
+        return RKRequestMethodPOST;
+    else if(tag == CTagWishList)
+        return RKRequestMethodPOST;
+    else if(tag == CTagNoteCanReture)
+        return RKRequestMethodPOST;
+    else if(tag == CTagPriceAlert)
+        return RKRequestMethodPOST;
+    
+    return RKRequestMethodPOST;;
+
+}
+
 - (NSString*)getPath:(int)tag
 {
     if(tag == CTagPromote)
@@ -1227,7 +1256,8 @@ NoResultDelegate
     else if(tag == CTagTokopediaNetworkManager)
         return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
-        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
+        //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
+        return @"search/v1/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -1429,30 +1459,55 @@ NoResultDelegate
     }
     else if(tag == CTagOtherProduct)
     {
-        _objectOtherProductManager = [RKObjectManager sharedClient];
+        //_objectOtherProductManager = [RKObjectManager sharedClient];
+        _objectOtherProductManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
         
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TheOtherProduct class]];
+        
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
                                                             }];
         
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TheOtherProductResult class]];
         
-        RKObjectMapping *otherProductListMapping = [RKObjectMapping mappingForClass:[TheOtherProductList class]];
-        [otherProductListMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY, API_PRODUCT_IMAGE_NO_SQUARE]];
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
         
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                            kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                            @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
+                                                            }];
+        
+        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+        //product
+        [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+        
+        // paging mapping
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
+        
+        //add list relationship
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
         
-        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherProductListMapping];
-        [resultMapping addPropertyMapping:listRel];
         
+        RKRelationshipMapping *productsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
+                                                                                                
+        [resultMapping addPropertyMapping:productsRel];
+        
+        // add page relationship
+        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
+        [resultMapping addPropertyMapping:pageRel];
+        
+        // register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                method:RKRequestMethodPOST
-                                                                                           pathPattern:[self getPath:tag] keyPath:@""
+                                                                                                method:[self getRequestMethod:CTagOtherProduct]
+                                                                                           pathPattern:[self getPath:CTagOtherProduct]
+                                                                                               keyPath:@""
                                                                                            statusCodes:kTkpdIndexSetStatusCodeOK];
         
+        //add response description to object manager
         [_objectOtherProductManager addResponseDescriptor:responseDescriptor];
+        
         return _objectOtherProductManager;
+
     }
     else if(tag == CTagFavorite)
     {
@@ -1644,7 +1699,7 @@ NoResultDelegate
         [_act stopAnimating];
         _buyButton.enabled = YES;
         [self configureGetOtherProductRestkit];
-        [self loadDataOtherProduct];
+        
         [self requestsuccess:successResult withOperation:operation];
         
         
@@ -1965,6 +2020,10 @@ NoResultDelegate
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
+    
+    
+    [self loadDataOtherProduct];
+    
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
@@ -2734,11 +2793,11 @@ NoResultDelegate
     int x = 10;
     for(int i = 0; i< _otherProductObj.count; i++)
     {
-        TheOtherProductList *product = _otherProductObj[i];
+        SearchAWSProduct *product = _otherProductObj[i];
+        
         
         DetailProductOtherView *v = [DetailProductOtherView newview];
         
-//        x += 10 + v.bounds.size.width;
         [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/count)))];
         x += widthOtherProductView+10;
         NSInteger countInt = (int)count;
@@ -2748,31 +2807,23 @@ NoResultDelegate
         [v.act startAnimating];
         v.namelabel.text = product.product_name;
         v.pricelabel.text = product.product_price;
-        //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
         
         UIImageView *thumb = v.thumb;
-        //UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
         
         thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
         
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            //NSLOG(@"thumb: %@", thumb);
             [thumb setImage:image];
             [thumb setContentMode:UIViewContentModeScaleAspectFit];
             [v.act stopAnimating];
-#pragma clang diagnostic pop
-            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
             [thumb setContentMode:UIViewContentModeCenter];
             [v.act stopAnimating];
         }];
+         
         
         [_otherproductscrollview addSubview:v];
         [_otherproductviews addObject:v];
@@ -2795,7 +2846,8 @@ NoResultDelegate
 
 - (void)requestSuccessOtherProduct:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    TheOtherProduct *otherProduct = [result objectForKey:@""];
+    SearchAWS *otherProduct = [result objectForKey:@""];
+    
     BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if(status) {
@@ -2825,8 +2877,8 @@ NoResultDelegate
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TheOtherProduct *otherProduct = stat;
+            SearchAWS *otherProduct = [result objectForKey:@""];
+
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
@@ -2835,7 +2887,7 @@ NoResultDelegate
                 for(int i=0;i<_otherproductviews.count;i++)
                     [[_otherproductviews objectAtIndex:i] removeFromSuperview];
                 [_otherproductviews removeAllObjects];
-                [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
+                [_otherProductObj addObjectsFromArray: otherProduct.result.products];
                 
                 if(_otherProductObj.count == 0) {
                     lblOtherProductTitle.hidden = YES;
