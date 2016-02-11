@@ -56,6 +56,7 @@
         @"name"     : _product_name?:@"",
         @"id"       : _product_id?:@"",
         @"price"    : productPrice?:@"",
+        @"price_format" : _product_price,
         @"quantity" : _product_quantity?:@"",
         @"url"      : _product_url?:@"",
     };

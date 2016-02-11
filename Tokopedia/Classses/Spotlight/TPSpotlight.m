@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, SearchIndexingStatus) {
     //Attribute set
     CSSearchableItemAttributeSet *attributeSet = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:kUTTypeJSON];
     attributeSet.title = productTitle;
-    attributeSet.contentDescription = [productFieldObjects objectForKey:@"price"];
+    attributeSet.contentDescription = [productFieldObjects objectForKey:@"price_format"];
     [activity becomeCurrent];
     
     NSString *uniqueIdentifier = [NSString stringWithFormat:@"product.%@", productId];
