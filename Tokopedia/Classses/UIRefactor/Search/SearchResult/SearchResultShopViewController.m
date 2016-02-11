@@ -81,7 +81,7 @@ static NSString const *rows = @"12";
     LoadingView *loadingView;
     NSTimeInterval _timeinterval;
     
-    NSIndexPath *_orderIndexPath;
+    NSIndexPath *_sortIndexPath;
 }
 
 #pragma mark - Initialization
@@ -455,7 +455,7 @@ static NSString const *rows = @"12";
         {
             // Action Sort Button
             SortViewController *controller = [SortViewController new];
-            controller.selectedIndexPath = _orderIndexPath;
+            controller.selectedIndexPath = _sortIndexPath;
             controller.delegate = self;
             controller.sortType = SortShopSearch;
             
@@ -538,6 +538,7 @@ static NSString const *rows = @"12";
     [self refreshView:nil];
     [_act startAnimating];
     _table.tableFooterView = _footer;
+    _sortIndexPath = indexPath;
 }
 
 -(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
