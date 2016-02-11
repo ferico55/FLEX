@@ -83,8 +83,8 @@
             </connections>
             <point key="canvasLocation" x="104.5" y="108"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReviewDetailCellIdentifier" rowHeight="359" id="SAy-ky-Rw2" customClass="MyReviewDetailTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="353" height="359"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReviewDetailCellIdentifier" rowHeight="224" id="SAy-ky-Rw2" customClass="MyReviewDetailTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="353" height="224"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SAy-ky-Rw2" id="OcD-pv-Lpm">
                 <rect key="frame" x="0.0" y="0.0" width="353" height="415"/>
@@ -224,12 +224,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ikq-Dl-Z8M" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="222" width="353" height="1"/>
+                                <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ikq-Dl-Z8M" userLabel="Horizontal Border">
-                        <rect key="frame" x="0.0" y="223" width="353" height="1"/>
-                        <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                 </subviews>
             </tableViewCellContentView>

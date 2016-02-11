@@ -25,7 +25,11 @@
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     screenSize.width = screenSize.width - 20;
     
-    
+    CGRect frame = _reviewCommentView.frame;
+    frame.size.width = screenSize.width;
+    frame.origin.y = _horizontalBorder.frame.origin.y + _horizontalBorder.frame.size.height;
+    _reviewCommentView.frame = frame;
+    [_reviewDetailView addSubview:_reviewCommentView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
