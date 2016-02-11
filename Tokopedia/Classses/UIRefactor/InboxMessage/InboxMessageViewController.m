@@ -1062,12 +1062,23 @@ typedef enum TagRequest {
     }
 }
 
+- (NSArray<NSIndexPath*>*) indexPathsForInserting:(NSArray*)appendedArray to:(NSArray*)sourceArray {
+    NSMutableArray<NSIndexPath*>* indexPaths = [NSMutableArray new];
+    
+    for (NSInteger counter = 0; counter < appendedArray.count; counter++) {
+        NSInteger row = counter + sourceArray.count;
+        [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+    }
+    
+    return indexPaths;
+}
+
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     if(tag == messageListTag) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         InboxMessage *message = [result objectForKey:@""];
         
-        NSInteger startIndex = _messages.count;
+        NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:message.result.list to:_messages];
         [_messages addObjectsFromArray: message.result.list];
         
         if (_messages.count >0) {
@@ -1102,13 +1113,6 @@ typedef enum TagRequest {
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
-        
-        NSArray* nextMessages = message.result.list;
-        NSMutableArray* indexPaths = [NSMutableArray new];
-        
-        for (NSInteger counter = 0; counter < nextMessages.count; counter++) {
-            [indexPaths addObject:[NSIndexPath indexPathForRow:counter + startIndex inSection:0]];
-        }
         
         [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
         
