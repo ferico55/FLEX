@@ -93,10 +93,6 @@
     frame.size.width = screenWidth;
     _headerView.frame = frame;
     
-    frame = _footerView.frame;
-    frame.size.width = screenWidth;
-    _footerView.frame = frame;
-    
     _operationQueue = [NSOperationQueue new];
     _generatehost = [GenerateHost new];
     
@@ -224,6 +220,11 @@
     inset.left = 15;
     inset.top = _headerView.frame.size.height + 10;
     _messageTextView.textContainerInset = inset;
+    
+    CGRect frame = _footerView.frame;
+    frame.size.width = _messageTextView.frame.size.width;
+    _footerView.frame = frame;
+
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
