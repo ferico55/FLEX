@@ -361,7 +361,7 @@ static NSInteger userViewHeight = 70;
      */
     
     
-    return 150;
+    return 160;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

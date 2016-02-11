@@ -5112,7 +5112,7 @@
 		8590677D1C6B30C1009E0D71 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		859071661C6B30C6009E0D71 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		859071671C6B30C6009E0D71 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		859071681C6B30C6009E0D71 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = "<group>"; };
+		859071681C6B30C6009E0D71 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GTM-NCTWRP"; sourceTree = "<group>"; };
 		859071691C6B30C6009E0D71 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8590716A1C6B30C6009E0D71 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		8590716B1C6B30C6009E0D71 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -13076,7 +13076,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PROVISIONING_PROFILE = "762ba5e6-eef1-4052-8f5b-d752e62ec8be";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -13099,7 +13099,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/tokopedia/Downloads/FacebookSDKs-iOS-20150910",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -13120,8 +13119,6 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				LIPO = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/lipo/lipo";
@@ -13151,7 +13148,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"/Users/tokopedia/Downloads/FacebookSDKs-iOS-20150910",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -13172,8 +13168,6 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Zbar",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/Appsflyer",
-					"/Users/Feizal/Tokopedia/ios-tokopedia/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
 				LIPO = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/lipo/lipo";
