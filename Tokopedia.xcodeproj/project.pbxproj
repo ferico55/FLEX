@@ -1996,6 +1996,7 @@
 		7A353E211C6B1E3400E7669C /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7A3536601C6B1E3300E7669C /* vt-iOSlib-1.0.1.tar.gz */; };
 		7A353E221C6B1E3400E7669C /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A3536611C6B1E3300E7669C /* vt-iOSlib-1.0.1.zip */; };
 		7A353E231C6B1E3400E7669C /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3536641C6B1E3300E7669C /* XYPieChart.m */; };
+		7A354D1A1C6B292E00E7669C /* NSNumberCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A354D191C6B292E00E7669C /* NSNumberCategory.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -5090,6 +5091,7 @@
 		7A3536611C6B1E3300E7669C /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		7A3536631C6B1E3300E7669C /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		7A3536641C6B1E3300E7669C /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		7A354D191C6B292E00E7669C /* NSNumberCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNumberCategory.swift; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -5381,6 +5383,7 @@
 				7A3529CB1C6B1E2E00E7669C /* Utils */,
 				7A3529CE1C6B1E2E00E7669C /* ViewLabelUser.h */,
 				7A3529CF1C6B1E2E00E7669C /* ViewLabelUser.m */,
+				7A354D191C6B292E00E7669C /* NSNumberCategory.swift */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -11981,6 +11984,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A3539251C6B1E3300E7669C /* GeneralTalkCommentCell.m in Sources */,
+				7A354D1A1C6B292E00E7669C /* NSNumberCategory.swift in Sources */,
 				7A3536D91C6B1E3300E7669C /* TheOtherProductList.m in Sources */,
 				7A353A1F1C6B1E3300E7669C /* ChooseProductCell.m in Sources */,
 				7A353A691C6B1E3300E7669C /* SettingAddressViewController.m in Sources */,
