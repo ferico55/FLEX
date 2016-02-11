@@ -358,17 +358,13 @@ typedef enum TagRequest {
             }
         }
         
-        
-        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURL* userImageUrl = [NSURL URLWithString:list.user_image];
+
         UIImageView *thumb = cell.userimageview;
         thumb = [UIImageView circleimageview:thumb];
         thumb.image = nil;
-        [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image];
-#pragma clang diagnostic pop
-        } failure:nil];
+
+        [thumb setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
     }
     
     return cell;
