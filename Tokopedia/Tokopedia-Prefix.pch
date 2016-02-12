@@ -68,4 +68,6 @@
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
 
+    #import "TPSpotlight.h"
+
 #endif
