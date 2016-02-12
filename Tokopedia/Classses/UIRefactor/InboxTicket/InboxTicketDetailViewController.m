@@ -288,7 +288,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     NSString *invoice = _ticketInformation.ticket_invoice_ref_num;
     if (![invoice isEqualToString:@"0"] ) {
+        self.invoiceTitleLabel.hidden = NO;
+        
         self.invoiceNumberLabel.text = invoice;
+        self.invoiceNumberLabel.hidden = NO;
         [self.invoiceNumberLabel sizeToFit];
         
         CGSize invoiceLabelSize = [invoice sizeWithFont:FONT_GOTHAM_BOOK_14
