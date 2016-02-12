@@ -40,10 +40,10 @@ typedef NS_ENUM(NSInteger, SearchIndexingStatus) {
 
     //Activity
     NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:TPActivityType];
-    NSString *productId = productFieldObjects[@"id"];
     NSString *productTitle = productFieldObjects[@"name"];
-    NSString *productURL = productFieldObjects[@"url"];
     NSString *productPic = productFieldObjects[@"pic"];
+    NSString *productURL = productFieldObjects[@"url"];
+    NSString *productDeeplink = productFieldObjects[@"deeplink"];
     activity.title = productTitle;
     activity.userInfo = @{@"id" : productURL};
     activity.keywords = [NSSet setWithArray:@[productTitle]];
@@ -59,9 +59,10 @@ typedef NS_ENUM(NSInteger, SearchIndexingStatus) {
     attributeSet.title = productTitle;
     attributeSet.contentDescription = [productFieldObjects objectForKey:@"price_format"];
     attributeSet.thumbnailData = [NSData dataWithContentsOfURL:[NSURL URLWithString:productPic]];
+    attributeSet.contentURL = [NSURL URLWithString:productURL];
     [activity becomeCurrent];
     
-    CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:productURL
+    CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:productDeeplink
                                                                domainIdentifier:@"product"
                                                                    attributeSet:attributeSet];
     
@@ -73,25 +74,6 @@ typedef NS_ENUM(NSInteger, SearchIndexingStatus) {
     }];
     
     return activity;
-}
-
-+ (UIViewController *)activeController {
-    UIViewController *mainController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    UITabBarController *tabBarController = (UITabBarController *)[mainController presentedViewController];
-    UINavigationController *navigationController = tabBarController.selectedViewController;
-    return [navigationController.viewControllers lastObject];
-}
-
-+ (void)redirectToProduct:(NSString *)productIdentifier {
-    NavigateViewController *navigateController = [NavigateViewController new];
-    UIViewController *activeController = [TPSpotlight activeController];
-    NSString *productId = [productIdentifier stringByReplacingOccurrencesOfString:@"product." withString:@""];
-    [navigateController navigateToProductFromViewController:activeController
-                                                   withName:@""
-                                                  withPrice:@""
-                                                     withId:productId
-                                               withImageurl:@""
-                                               withShopName:@""];
 }
 
 @end
