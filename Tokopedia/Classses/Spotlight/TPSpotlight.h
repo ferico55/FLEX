@@ -12,4 +12,8 @@
 
 + (NSUserActivity *)productDetailActivity:(id)product;
 
++ (void)redirectToProduct:(NSString *)productIdentifier;
+
++ (UIViewController *)activeController;
+
 @end

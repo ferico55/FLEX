@@ -2069,7 +2069,7 @@ NoResultDelegate
             _product = stats;
             _product.isDummyProduct = NO;
             
-            self.userActivity = [TPSpotlight productDetailActivity:_product.result.product];
+            self.userActivity = [TPSpotlight productDetailActivity:_product.result];
         }
         
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";

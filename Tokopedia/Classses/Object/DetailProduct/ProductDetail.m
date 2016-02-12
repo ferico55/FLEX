@@ -53,8 +53,9 @@
     }
 
     NSDictionary *productFieldObjects = @{
-        @"name"     : _product_name?:@"",
         @"id"       : _product_id?:@"",
+        @"name"     : _product_name?:@"",
+        @"pic"      : _product_pic?:@"",
         @"price"    : productPrice?:@"",
         @"price_format" : _product_price,
         @"quantity" : _product_quantity?:@"",
