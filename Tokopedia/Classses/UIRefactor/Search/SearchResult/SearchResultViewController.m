@@ -622,12 +622,13 @@ SpellCheckRequestDelegate
         {
             NSString *title;
             if ([_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]) {
-                title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
-                         [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]];
+                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY];
+            } else if ([_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY]) {
+                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY];
             } else if ([_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
-                title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
-                         [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString]];
+                title = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
             }
+            title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
             NSURL *url = [NSURL URLWithString: _searchObject.result.share_url?:@"www.tokopedia.com"];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                               url:url
