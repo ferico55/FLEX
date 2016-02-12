@@ -5,7 +5,6 @@
 //  Created by Tokopedia on 11/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "CMPopTipView.h"
 #import "InboxMessageViewController.h"
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
@@ -33,7 +32,6 @@
     UITableViewDelegate,
     UISearchBarDelegate,
     SmileyDelegate,
-    CMPopTipViewDelegate,
     InboxMessageDelegate,
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
@@ -73,7 +71,6 @@ typedef enum TagRequest {
     BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL _iseditmode;
-    CMPopTipView *popTipView;
     
     NSInteger _page;
     NSInteger _limit;
@@ -327,14 +324,12 @@ typedef enum TagRequest {
     if (cell == nil) {
         cell = [InboxMessageCell newcell];
         cell.delegate = self;
-        cell.del = self;
     }
     
     InboxMessageList *list = _messages[indexPath.row];
     
     cell.message = list;
-    cell.btnReputasi.tag = indexPath.row;
-    cell.indexpath = indexPath;
+    cell.popTipAnchor = self.view;
     
     if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
         cell.displaysUnreadIndicator = YES;
@@ -1099,47 +1094,4 @@ typedef enum TagRequest {
     _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
 }
 
-
-#pragma mark - ToolTip Delegate
-- (void)dismissAllPopTipViews
-{
-    [popTipView dismissAnimated:YES];
-    popTipView = nil;
-}
-
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
-{
-    [self dismissAllPopTipViews];
-}
-
-
-#pragma mark - Smiley Delegate
-- (void)actionVote:(id)sender {
-    [self dismissAllPopTipViews];
-}
-
-
-#pragma mark - InboxMessage Delegate
-- (void)actionSmile:(id)sender {
-    InboxMessageList *list = _messages[((UIView *) sender).tag];
-
-    if(! (list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"])) {
-        int paddingRightLeftContent = 10;
-        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-        
-        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.user_reputation.neutral withRepSmile:list.user_reputation.positive withRepSad:list.user_reputation.negative withDelegate:self];
-        
-        //Init pop up
-        popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-        popTipView.delegate = self;
-        popTipView.backgroundColor = [UIColor whiteColor];
-        popTipView.animation = CMPopTipAnimationSlide;
-        popTipView.dismissTapAnywhere = YES;
-        popTipView.leftPopUp = YES;
-        
-        UIButton *button = (UIButton *)sender;
-        [popTipView presentPointingAtView:button inView:self.view animated:YES];
-    }
-}
 @end

@@ -7,10 +7,20 @@
 //
 
 #import "InboxMessageCell.h"
+#import "SmileyAndMedal.h"
+#import "CMPopTipView.h"
+
+@interface InboxMessageCell () <
+CMPopTipViewDelegate,
+SmileyDelegate
+>
+
+@end
 
 @implementation InboxMessageCell
 {
     IBOutlet UIView* _selectionMarker;
+    CMPopTipView* popTipView;
 }
 
 + (id)newcell
@@ -50,7 +60,26 @@
 }
 
 - (IBAction)actionSmile:(id)sender {
-    [_del actionSmile:sender];
+    InboxMessageList *list = _message;
+    
+    if(! (list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"])) {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.user_reputation.neutral withRepSmile:list.user_reputation.positive withRepSad:list.user_reputation.negative withDelegate:self];
+        
+        //Init pop up
+        popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        popTipView.delegate = self;
+        popTipView.backgroundColor = [UIColor whiteColor];
+        popTipView.animation = CMPopTipAnimationSlide;
+        popTipView.dismissTapAnywhere = YES;
+        popTipView.leftPopUp = YES;
+        
+        UIButton *button = (UIButton *)sender;
+        [popTipView presentPointingAtView:button inView:_popTipAnchor animated:YES];
+    }
 }
 
 - (void)setMessage:(InboxMessageList *)list {
@@ -82,5 +111,22 @@
     } else if (_displaysUnreadIndicator) {
         self.is_unread.hidden = NO;
     }
+}
+
+#pragma mark - ToolTip Delegate
+- (void)dismissAllPopTipViews
+{
+    [popTipView dismissAnimated:YES];
+    popTipView = nil;
+}
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+    [self dismissAllPopTipViews];
+}
+
+#pragma mark - Smiley Delegate
+- (void)actionVote:(id)sender {
+    [self dismissAllPopTipViews];
 }
 @end

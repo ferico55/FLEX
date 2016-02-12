@@ -19,7 +19,6 @@
 
 @interface InboxMessageCell : MGSwipeTableCell
 @property (strong,nonatomic) NSDictionary *data;
-@property (nonatomic, unsafe_unretained) id<InboxMessageDelegate> del;
 
 +(id)newcell;
 - (IBAction)actionSmile:(id)sender;
@@ -33,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIView *movingview;
 @property (weak, nonatomic) IBOutlet UIButton *btnReputasi;
 @property BOOL displaysUnreadIndicator;
+@property (weak, nonatomic) UIView* popTipAnchor;
 
 @property (strong, nonatomic) NSIndexPath *indexpath;
 @end
