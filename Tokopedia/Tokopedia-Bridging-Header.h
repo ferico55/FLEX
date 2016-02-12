@@ -8,3 +8,4 @@
 #import "ProductFeedList.h"
 #import "ProductCell.h"
 #import "ProductModelView.h"
+#import "SearchAWSProduct.h"

@@ -22,6 +22,12 @@
 #import "PromoRequest.h"
 #import "Tokopedia-Swift.h"
 
+#import "SearchAWS.h"
+#import "SearchAWSResult.h"
+#import "SearchAWSProduct.h"
+
+#import "FavoriteShopRequest.h"
+
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
 static NSInteger const normalHeight = 568;
@@ -48,7 +54,8 @@ TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
 PromoRequestDelegate,
 NoResultDelegate,
-CollectionViewSupplementaryDataSource
+CollectionViewSupplementaryDataSource,
+FavoriteShopRequestDelegate
 >
 
 @property (strong, nonatomic) NSMutableArray *promo;
@@ -63,7 +70,7 @@ CollectionViewSupplementaryDataSource
 
 @property (strong, nonatomic) PromoRequest *promoRequest;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
-@property (strong, nonatomic) UIView *loadingView;
+@property (strong, nonatomic) FavoriteShopRequest *favoriteShopRequest;
 
 @end
 
@@ -82,6 +89,7 @@ CollectionViewSupplementaryDataSource
     NoResultReusableView *_noResultView;
     ProductDataSource* _productDataSource;
     UIActivityIndicatorView *_loadingIndicator;
+    FavoritedShopResult *_favoritedShops;
 }
 
 #pragma mark - Initialization
@@ -115,6 +123,8 @@ CollectionViewSupplementaryDataSource
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
+    _favoritedShops = [[FavoritedShopResult alloc] init];
+    
     _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     _loadingIndicator.hidesWhenStopped = YES;
     [_loadingIndicator startAnimating];
@@ -122,9 +132,10 @@ CollectionViewSupplementaryDataSource
 
     
     [_collectionView addSubview:_loadingIndicator];
+    _collectionView.delegate = self;
     
     [self initNoResultView];
-    _page = 1;
+    _page = 0;
     
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -153,7 +164,11 @@ CollectionViewSupplementaryDataSource
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductFeedTag;
     _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
+    
+    _favoriteShopRequest = [FavoriteShopRequest new];
+    _favoriteShopRequest.delegate = self;
+    [_favoriteShopRequest requestFavoriteShopListings];
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
@@ -185,11 +200,11 @@ CollectionViewSupplementaryDataSource
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = [_collectionView numberOfItemsInSection:0] - 1;
-
+    
     if (indexPath.row == row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
-            [_networkManager doRequest];
+            [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         }
     }
     
@@ -421,9 +436,9 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)refreshProductFeed {
-    _page = 1;
+    _page = 0;
     [_productDataSource removeAllProducts];
-    [_networkManager doRequest];
+    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     [_noResultView removeFromSuperview];
 }
 
@@ -504,5 +519,63 @@ CollectionViewSupplementaryDataSource
 
 - (void)orientationChanged:(NSNotification *)note {
     [_collectionView reloadData];
+}
+
+
+#pragma mark - Favorite Shop Request delegate
+
+-(void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
+    _favoritedShops = favoriteShops;
+    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+}
+
+-(void)didReceiveProductFeed:(SearchAWS *)feed{
+    [_noResultView removeFromSuperview];
+    [_firstFooter removeFromSuperview];
+    
+    if (feed.result.products.count > 0) {
+        [_noResultView removeFromSuperview];
+        if (_page == 0) {
+            [_productDataSource replaceProductsWith: feed.result.products];
+            [_promo removeAllObjects];
+            [_firstFooter removeFromSuperview];
+        }else{
+            [_productDataSource addProducts: feed.result.products];
+        }
+        
+        [TPAnalytics trackProductImpressions:feed.result.products];
+        
+        _nextPageUri =  feed.result.paging.uri_next;
+        _page++;
+        
+        if (_page > 1) [self requestPromo];
+        
+    } else {
+        // no data at all
+        [_productDataSource removeAllProducts];
+        [_collectionView addSubview:_noResultView];
+    }
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
+    [_loadingIndicator stopAnimating];
+    [_loadingIndicator setHidden:YES];
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
+}
+
+-(void)failToRequestFavoriteShopListing{
+    [_refreshControl endRefreshing];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
+}
+
+-(void)failToRequestProductFeed{
+    [_refreshControl endRefreshing];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
 }
 @end

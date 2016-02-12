@@ -17,13 +17,13 @@ import UIKit
     static let productCellIdentifier: String = "ProductCellIdentifier"
     
     var _collectionView: UICollectionView!
-    var _products: Array<ProductFeedList>!
+    var _products: Array<SearchAWSProduct>!
     var _supplementaryDataSource: CollectionViewSupplementaryDataSource!
 //
     init(collectionView:UICollectionView, supplementaryDataSource: CollectionViewSupplementaryDataSource?) {
         super.init()
         _supplementaryDataSource = supplementaryDataSource
-        _products = Array<ProductFeedList>()
+        _products = Array<SearchAWSProduct>()
         _collectionView = collectionView
         _collectionView.dataSource = self
         
@@ -48,13 +48,13 @@ import UIKit
         return cell
     }
     
-    func addProducts(products:Array<ProductFeedList>) {
+    func addProducts(products:Array<SearchAWSProduct>) {
         let indexPaths = indexPathForInsertions(products)
         _products.appendContentsOf(products)
         _collectionView.insertItemsAtIndexPaths(indexPaths)
     }
     
-    func indexPathForInsertions(products: Array<ProductFeedList>) -> [NSIndexPath] {
+    func indexPathForInsertions(products: Array<SearchAWSProduct>) -> [NSIndexPath] {
         var indexPaths:[NSIndexPath] = []
         
         for var index = 0; index < products.count; index++ {
@@ -64,7 +64,7 @@ import UIKit
         return indexPaths
     }
 
-    func replaceProductsWith(products:Array<ProductFeedList>) {
+    func replaceProductsWith(products:Array<SearchAWSProduct>) {
         _products = products
         _collectionView.reloadData()
     }
@@ -74,7 +74,7 @@ import UIKit
         _collectionView.reloadData()
     }
     
-    func productAtIndex(index: Int) -> ProductFeedList {
+    func productAtIndex(index: Int) -> SearchAWSProduct {
         return _products[index]
     }
     
