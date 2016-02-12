@@ -51,7 +51,8 @@
 @property (weak, nonatomic) IBOutlet UIView *reviewCommentView;
 @property (weak, nonatomic) IBOutlet UIImageView *shopImage;
 @property (weak, nonatomic) IBOutlet UILabel *shopName;
-@property (weak, nonatomic) IBOutlet UIButton *shopReputationButton;
+@property (weak, nonatomic) IBOutlet UIView *shopMedalView;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *medalImagesArray;
 @property (weak, nonatomic) IBOutlet UITextView *sellersCommentTextView;
 @property (weak, nonatomic) IBOutlet UILabel *sellersCommentTimestampLabel;
 
@@ -59,5 +60,6 @@
 @property NSIndexPath *indexPath;
 
 + (id)newCell;
+- (void)setMedalWithLevel:(NSString*)level set:(NSString*)set;
 
 @end

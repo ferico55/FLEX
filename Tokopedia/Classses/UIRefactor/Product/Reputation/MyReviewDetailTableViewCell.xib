@@ -14,7 +14,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -77,9 +76,14 @@
                 <outlet property="sellersCommentTextView" destination="Tbu-2Y-rKt" id="xTc-hd-eJg"/>
                 <outlet property="sellersCommentTimestampLabel" destination="wAP-4A-SrB" id="v7q-9Y-78S"/>
                 <outlet property="shopImage" destination="X9m-YG-vA5" id="ow8-5r-jus"/>
+                <outlet property="shopMedalView" destination="Px4-hO-i2X" id="i3I-hx-qh5"/>
                 <outlet property="shopName" destination="4AD-Ig-Unx" id="fDi-Mk-h30"/>
-                <outlet property="shopReputationButton" destination="vQG-Rf-gZB" id="ro6-Bd-xkv"/>
                 <outlet property="skipReviewButton" destination="HL2-wJ-4Sw" id="JJR-7v-FOT"/>
+                <outletCollection property="medalImagesArray" destination="ko6-sZ-7J8" id="phb-RL-fn4"/>
+                <outletCollection property="medalImagesArray" destination="EbZ-bb-Vr8" id="jNQ-ep-DFg"/>
+                <outletCollection property="medalImagesArray" destination="0G4-KG-ol1" id="YlA-Pp-bbo"/>
+                <outletCollection property="medalImagesArray" destination="pxS-24-RuS" id="qMt-Uo-4Ps"/>
+                <outletCollection property="medalImagesArray" destination="S9C-gw-vis" id="AXw-qL-a1y"/>
             </connections>
             <point key="canvasLocation" x="104.5" y="108"/>
         </tableViewCell>
@@ -87,7 +91,7 @@
             <rect key="frame" x="0.0" y="0.0" width="353" height="224"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SAy-ky-Rw2" id="OcD-pv-Lpm">
-                <rect key="frame" x="0.0" y="0.0" width="353" height="415"/>
+                <rect key="frame" x="0.0" y="0.0" width="353" height="223"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oSw-IF-x3a">
@@ -261,7 +265,7 @@
                 <outletCollection property="qualityStarsImagesArray" destination="abJ-S9-a24" id="HC5-2e-j8G"/>
                 <outletCollection property="accuracyStarsImagesArray" destination="cg0-jc-nLG" id="3Ta-iw-DAs"/>
             </connections>
-            <point key="canvasLocation" x="104.5" y="420"/>
+            <point key="canvasLocation" x="104.5" y="324"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SkippedReviewCellIdentifier" rowHeight="112" id="Pi5-3g-yoj" customClass="MyReviewDetailTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="353" height="112"/>
@@ -288,7 +292,7 @@
                         <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda telah melewati ulasan." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwa-OE-64f">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda telah melewati ulasan produk ini." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwa-OE-64f">
                         <rect key="frame" x="8" y="73" width="337" height="21"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -357,13 +361,6 @@
                     <color key="textColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQG-Rf-gZB">
-                    <rect key="frame" x="66" y="34" width="65" height="22"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <state key="normal" image="icon_medal_silver14.png">
-                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Ditunggu next order ya :)" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tbu-2Y-rKt">
                     <rect key="frame" x="66" y="66" width="279" height="40"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -376,16 +373,37 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Px4-hO-i2X">
+                    <rect key="frame" x="66" y="36" width="70" height="14"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_medal_gold14.png" translatesAutoresizingMaskIntoConstraints="NO" id="ko6-sZ-7J8" userLabel="1">
+                            <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_medal_gold14.png" translatesAutoresizingMaskIntoConstraints="NO" id="EbZ-bb-Vr8" userLabel="2">
+                            <rect key="frame" x="14" y="0.0" width="14" height="14"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_medal_gold14.png" translatesAutoresizingMaskIntoConstraints="NO" id="0G4-KG-ol1" userLabel="3">
+                            <rect key="frame" x="28" y="0.0" width="14" height="14"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_medal_gold14.png" translatesAutoresizingMaskIntoConstraints="NO" id="pxS-24-RuS" userLabel="4">
+                            <rect key="frame" x="42" y="0.0" width="14" height="14"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_medal_gold14.png" translatesAutoresizingMaskIntoConstraints="NO" id="S9C-gw-vis" userLabel="5">
+                            <rect key="frame" x="56" y="0.0" width="14" height="14"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="511.5" y="307.5"/>
+            <point key="canvasLocation" x="511.5" y="288.5"/>
         </view>
     </objects>
     <resources>
         <image name="icon_arrow_down.png" width="14" height="14"/>
         <image name="icon_cancel.png" width="20" height="20"/>
-        <image name="icon_medal_silver14.png" width="14" height="14"/>
+        <image name="icon_medal_gold14.png" width="14" height="14"/>
         <image name="icon_star.png" width="20" height="20"/>
     </resources>
 </document>

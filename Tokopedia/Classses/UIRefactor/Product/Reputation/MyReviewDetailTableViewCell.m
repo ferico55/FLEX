@@ -7,6 +7,7 @@
 //
 
 #import "MyReviewDetailTableViewCell.h"
+#import "SmileyAndMedal.h"
 
 @implementation MyReviewDetailTableViewCell
 
@@ -36,6 +37,11 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+#pragma mark - Methods
+- (void)setMedalWithLevel:(NSString*)level set:(NSString*)set {
+    [SmileyAndMedal generateMedalWithLevel:level withSet:set withImage:_medalImagesArray isLarge:YES];
 }
 
 #pragma mark - Actions
