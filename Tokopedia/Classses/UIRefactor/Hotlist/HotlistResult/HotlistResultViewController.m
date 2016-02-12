@@ -904,20 +904,8 @@ static NSString const *rows = @"12";
     if (_bannerResult) {
         NSString *urlstring = _bannerResult.info.cover_img;
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
-        
-        UIImageView *thumb = _hotlistImageView;
-        thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
-        
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image];
-#pragma clang diagnostic pop
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        }];
+        [_imageview setImageWithURL:[NSURL URLWithString:urlstring] placeholderImage:nil];
+        [_hotlistImageView setImageWithURL:[NSURL URLWithString:urlstring] placeholderImage:nil];
     }
     
     if (_bannerResult.info.hotlist_description) {
@@ -1270,6 +1258,7 @@ static NSString const *rows = @"12";
 
 #pragma mark - Banner Request Delegate 
 - (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
+    _bannerResult = bannerResult;
     [self setHeaderData];
     
     _pagecontrol.hidden = NO;
@@ -1277,7 +1266,7 @@ static NSString const *rows = @"12";
     _swipegestureleft.enabled = YES;
     _swipegestureright.enabled = YES;
     
-    _bannerResult = bannerResult;
+
     HotlistBannerQuery *q = _bannerResult.query;
     
     //set query
