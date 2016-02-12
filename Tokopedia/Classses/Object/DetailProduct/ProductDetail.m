@@ -45,20 +45,30 @@
 }
 
 - (NSDictionary *)productFieldObjects {
-    NSString *productPrice;
-    if(_product_price) {
-        NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-        productPrice = [[_product_price componentsSeparatedByCharactersInSet:characterSet]
-                                  componentsJoinedByString: @""];
+    NSDictionary *productFieldObjects;
+    @try {
+        NSString *productPrice;
+        if(_product_price) {
+            NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+            productPrice = [[_product_price componentsSeparatedByCharactersInSet:characterSet]
+                            componentsJoinedByString: @""];
+        }
+        productFieldObjects = @{
+            @"id"       : _product_id?:@"",
+            @"name"     : _product_name?:@"",
+            @"pic"      : _product_pic?:@"",
+            @"price"    : productPrice?:@"",
+            @"price_format" : _product_price,
+            @"quantity" : _product_quantity?:@"",
+            @"url"      : _product_url?:@"",
+        };
     }
-
-    NSDictionary *productFieldObjects = @{
-        @"name"     : _product_name?:@"",
-        @"id"       : _product_id?:@"",
-        @"price"    : productPrice?:@"",
-        @"quantity" : _product_quantity?:@""
-    };
-    return productFieldObjects;
+    @catch (NSException *exception) {
+        productFieldObjects = @{};
+    }
+    @finally {
+        return productFieldObjects;
+    }
 }
 
 @end
