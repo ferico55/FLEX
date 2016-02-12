@@ -761,6 +761,7 @@ static NSString const *rows = @"12";
 -(void)requestprocess:(id)object
 {
     [_noResultView removeFromSuperview];
+    
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -827,20 +828,17 @@ static NSString const *rows = @"12";
                     _filterview.hidden = NO;
                     
                     if ([_start integerValue] > 0) [self requestPromo];
-                    [viewCollection reloadData];
-                    if([_urinext isEqualToString:@""]) {
-                        [flowLayout setFooterReferenceSize:CGSizeZero];
-                    }
+
                 } else {
-                    [flowLayout setFooterReferenceSize:CGSizeZero];
                     [viewCollection addSubview:_noResultView];
-                    [viewCollection reloadData];
-                    [viewCollection layoutIfNeeded];
+                    _urinext = nil;
                 }
             } else {
                 [viewCollection addSubview:_noResultView];
-                [viewCollection reloadData];
+                _urinext = nil;
+
             }
+            [viewCollection reloadData];
         }
     }
     else{
@@ -1114,6 +1112,11 @@ static NSString const *rows = @"12";
                                                               withReuseIdentifier:CTagHeaderIdentifier
                                                                      forIndexPath:indexPath];
             [_header removeFromSuperview];
+            
+            CGRect frame = _noResultView.frame;
+            frame.origin.y = reusableView.frame.size.height;
+            _noResultView.frame = frame;
+            
             if(IS_IPAD) {
                 [reusableView addSubview:_iPadView];
             } else {
