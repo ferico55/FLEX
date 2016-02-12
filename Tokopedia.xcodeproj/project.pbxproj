@@ -13,6 +13,9 @@
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		7A3561AC1C6C9F6B00E7669C /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3561AB1C6C9F6B00E7669C /* SwipeView.m */; };
+		7A3561B01C6CA0A500E7669C /* DigitalGoodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3561AF1C6CA0A500E7669C /* DigitalGoodsDataSource.swift */; };
+		7A3561B31C6D843600E7669C /* UIImageView%2BAFNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3561B21C6D843600E7669C /* UIImageView%2BAFNetworking.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2091,6 +2094,10 @@
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
+		7A3561AA1C6C9F6B00E7669C /* SwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeView.h; sourceTree = "<group>"; };
+		7A3561AB1C6C9F6B00E7669C /* SwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeView.m; sourceTree = "<group>"; };
+		7A3561AF1C6CA0A500E7669C /* DigitalGoodsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalGoodsDataSource.swift; sourceTree = "<group>"; };
+		7A3561B21C6D843600E7669C /* UIImageView%2BAFNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView%2BAFNetworking.swift"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -7252,6 +7259,9 @@
 		8565B3C91C6C30B10025569F /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				7A3561B21C6D843600E7669C /* UIImageView%2BAFNetworking.swift */,
+				7A3561AA1C6C9F6B00E7669C /* SwipeView.h */,
+				7A3561AB1C6C9F6B00E7669C /* SwipeView.m */,
 				8565B3CA1C6C30B10025569F /* iCarousel.h */,
 				8565B3CB1C6C30B10025569F /* iCarousel.m */,
 			);
@@ -7284,6 +7294,7 @@
 		8565B3DD1C6C30B10025569F /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7A3561AF1C6CA0A500E7669C /* DigitalGoodsDataSource.swift */,
 				8565B3DE1C6C30B10025569F /* Activation */,
 				8565B3F71C6C30B10025569F /* Address */,
 				8565B4011C6C30B10025569F /* Alert */,
@@ -12163,6 +12174,7 @@
 				8565BC711C6C30B60025569F /* RKObjectManagerCategory.m in Sources */,
 				8565BE7E1C6C30B60025569F /* AlertRateView.m in Sources */,
 				8565BE581C6C30B60025569F /* LoginViewController.m in Sources */,
+				7A3561B01C6CA0A500E7669C /* DigitalGoodsDataSource.swift in Sources */,
 				8565BD6E1C6C30B60025569F /* AddressFormList.m in Sources */,
 				8565BD361C6C30B60025569F /* TotalLikeDislikePost.m in Sources */,
 				8565BF7D1C6C30B60025569F /* InboxTicketReplyViewController.m in Sources */,
@@ -12379,6 +12391,7 @@
 				8565C4191C6C30B70025569F /* MarqueeLabel.m in Sources */,
 				8565BED01C6C30B60025569F /* ContactUsFormDataManager.m in Sources */,
 				8565C14E1C6C30B70025569F /* ProductThumbCell.m in Sources */,
+				7A3561AC1C6C9F6B00E7669C /* SwipeView.m in Sources */,
 				8565BDD91C6C30B60025569F /* ShopSettingsResult.m in Sources */,
 				8565BF281C6C30B60025569F /* RedirectHandler.m in Sources */,
 				8565BC6C1C6C30B60025569F /* NSString+HTML.m in Sources */,
@@ -12571,6 +12584,7 @@
 				8565BD131C6C30B60025569F /* ResolutionLast.m in Sources */,
 				8565BFD01C6C30B60025569F /* ProductAddEditViewController.m in Sources */,
 				8565BF9B1C6C30B60025569F /* MyShopNoteViewController.m in Sources */,
+				7A3561B31C6D843600E7669C /* UIImageView%2BAFNetworking.swift in Sources */,
 				8565BFD61C6C30B60025569F /* ProductEditWholesaleViewController.m in Sources */,
 				8565C0B61C6C30B60025569F /* FilterLocationViewCell.m in Sources */,
 				8565BF381C6C30B60025569F /* HomeFlowLayout.m in Sources */,
