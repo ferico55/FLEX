@@ -412,7 +412,6 @@ typedef enum TagRequest {
     _userinfo = notification.userInfo;
     
     NSInteger selected_vc = [_userinfo[@"show_check"] integerValue];
-    _isrefreshview = YES;
     
     //show OPTION move to archive + trash
     if(selected_vc == 0 || selected_vc == 1) {
