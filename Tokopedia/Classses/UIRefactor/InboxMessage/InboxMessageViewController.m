@@ -328,6 +328,7 @@ typedef enum TagRequest {
     
     InboxMessageList *list = _messages[indexPath.row];
     
+    cell.indexpath = indexPath;
     cell.message = list;
     cell.popTipAnchor = self.view;
     
