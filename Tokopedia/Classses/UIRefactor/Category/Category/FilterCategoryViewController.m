@@ -10,7 +10,7 @@
 
 #define cellIdentifier @"filterCategoryCell"
 
-@interface FilterCategoryViewController ()
+@interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPath;
@@ -56,6 +56,10 @@
 }
 
 - (void)loadData {
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.delegate = self;
+    [networkManager doRequest];
+    
     NSString *str = @"https://hades.tokopedia.com/v0/categories";
     NSURL *url = [NSURL URLWithString:str];
     NSData *data = [NSData dataWithContentsOfURL:url];
