@@ -235,7 +235,14 @@
 - (void)setDescription:(NSString *)strDescription
 {
     [_delegate initLabelDesc:lblDesc withText:strDescription];
-    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + (isProductCell? imageProduct.frame.origin.y+imageProduct.bounds.size.height : imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom, ([[UIScreen mainScreen] bounds].size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), 0);
+    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x,
+                               CPaddingTopBottom + (isProductCell
+                                                    ?
+                                                    imageProduct.frame.origin.y+imageProduct.bounds.size.height
+                                                    :
+                                                    imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom,
+                               viewContent.frame.size.width,
+                               0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
     tempLblRect.size.height = tempSizeDesc.height;
