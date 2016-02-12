@@ -177,7 +177,6 @@ NSInteger const bannerHeight = 115;
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
             _carouselDataSource.delegate = self;
-            _carouselDataSource.viewType = SliderViewType;
 
             _slider.type = iCarouselTypeLinear;
             _slider.dataSource = _carouselDataSource;
