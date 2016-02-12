@@ -37,7 +37,7 @@ NSInteger const bannerIpadWidth = 350;
     if(IS_IPAD) {
         bannerWidth = bannerIpadWidth;
     } else {
-        bannerWidth = [UIScreen mainScreen].bounds.size.width;
+        bannerWidth = 375;
     }
 
     view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, sliderHeight)];
