@@ -17,31 +17,18 @@
 		7A7109D31C4CF81D00D00615 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD091C4CF81800D00615 /* URLCacheAlert.m */; };
 		7A7109D41C4CF81D00D00615 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD0B1C4CF81800D00615 /* URLCacheConnection.m */; };
 		7A7109D51C4CF81D00D00615 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD0D1C4CF81800D00615 /* URLCacheController.m */; };
-		7A7109D61C4CF81D00D00615 /* ALAsset+Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD101C4CF81800D00615 /* ALAsset+Date.m */; };
 		7A7109D71C4CF81D00D00615 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD121C4CF81800D00615 /* CMPopTipView.m */; };
 		7A7109D81C4CF81D00D00615 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD141C4CF81800D00615 /* DBManager.m */; };
 		7A7109D91C4CF81D00D00615 /* ExpiringCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD161C4CF81800D00615 /* ExpiringCache.m */; };
 		7A7109DA1C4CF81D00D00615 /* LabelMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD181C4CF81800D00615 /* LabelMenu.m */; };
-		7A7109DB1C4CF81D00D00615 /* NSArray+PerformSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD1A1C4CF81800D00615 /* NSArray+PerformSelector.m */; };
-		7A7109DC1C4CF81D00D00615 /* NSArrayCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD1C1C4CF81800D00615 /* NSArrayCategory.m */; };
-		7A7109DD1C4CF81D00D00615 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD1E1C4CF81800D00615 /* NSData+Encryption.m */; };
-		7A7109DE1C4CF81D00D00615 /* NSDictionaryCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD201C4CF81800D00615 /* NSDictionaryCategory.m */; };
 		7A7109DF1C4CF81D00D00615 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD221C4CF81800D00615 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */; };
-		7A7109E01C4CF81D00D00615 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD241C4CF81800D00615 /* NSString+HTML.m */; };
 		7A7109E11C4CF81D00D00615 /* NSStringAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD261C4CF81800D00615 /* NSStringAttribute.m */; };
-		7A7109E21C4CF81D00D00615 /* NSStringCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD281C4CF81800D00615 /* NSStringCategory.m */; };
 		7A7109E31C4CF81D00D00615 /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD2A1C4CF81800D00615 /* NSUserDefaultCategory.m */; };
 		7A7109E41C4CF81D00D00615 /* RequestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD2C1C4CF81800D00615 /* RequestUtils.m */; };
 		7A7109E51C4CF81D00D00615 /* RKObjectManagerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD2E1C4CF81800D00615 /* RKObjectManagerCategory.m */; };
 		7A7109E61C4CF81D00D00615 /* TextMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD301C4CF81800D00615 /* TextMenu.m */; };
 		7A7109E71C4CF81D00D00615 /* TKPDSecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD321C4CF81800D00615 /* TKPDSecureStorage.m */; };
 		7A7109E81C4CF81D00D00615 /* TopAlignedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD351C4CF81800D00615 /* TopAlignedLabel.m */; };
-		7A7109E91C4CF81D00D00615 /* UIActivityViewController+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD371C4CF81800D00615 /* UIActivityViewController+Extensions.m */; };
-		7A7109EA1C4CF81D00D00615 /* UIButtonCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD381C4CF81800D00615 /* UIButtonCategory.swift */; };
-		7A7109EB1C4CF81D00D00615 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD3A1C4CF81800D00615 /* UIImage+ImageEffects.m */; };
-		7A7109EC1C4CF81D00D00615 /* UIKitCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD3C1C4CF81800D00615 /* UIKitCategory.m */; };
-		7A7109ED1C4CF81D00D00615 /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD3E1C4CF81800D00615 /* UITextView+UITextView_Placeholder.m */; };
-		7A7109EE1C4CF81D00D00615 /* UIViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD3F1C4CF81800D00615 /* UIViewCategory.swift */; };
 		7A7109EF1C4CF81D00D00615 /* NavigationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD421C4CF81800D00615 /* NavigationHelper.m */; };
 		7A7109F01C4CF81D00D00615 /* ViewLabelUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD441C4CF81800D00615 /* ViewLabelUser.m */; };
 		7A7109F11C4CF81D00D00615 /* EncodeDecoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A71FD471C4CF81800D00615 /* EncodeDecoderManager.m */; };
@@ -2006,6 +1993,20 @@
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		856227571C6D8C9000036001 /* ALAsset+Date.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227401C6D8C9000036001 /* ALAsset+Date.m */; };
+		856227581C6D8C9000036001 /* NSArray+PerformSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227421C6D8C9000036001 /* NSArray+PerformSelector.m */; };
+		856227591C6D8C9000036001 /* NSArrayCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227441C6D8C9000036001 /* NSArrayCategory.m */; };
+		8562275A1C6D8C9000036001 /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227461C6D8C9000036001 /* NSData+Encryption.m */; };
+		8562275B1C6D8C9000036001 /* NSDictionaryCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227481C6D8C9000036001 /* NSDictionaryCategory.m */; };
+		8562275C1C6D8C9000036001 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 8562274A1C6D8C9000036001 /* NSString+HTML.m */; };
+		8562275D1C6D8C9000036001 /* NSStringCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8562274C1C6D8C9000036001 /* NSStringCategory.m */; };
+		8562275E1C6D8C9000036001 /* UIActivityViewController+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8562274E1C6D8C9000036001 /* UIActivityViewController+Extensions.m */; };
+		8562275F1C6D8C9000036001 /* UIButtonCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8562274F1C6D8C9000036001 /* UIButtonCategory.swift */; };
+		856227601C6D8C9000036001 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227511C6D8C9000036001 /* UIImage+ImageEffects.m */; };
+		856227611C6D8C9000036001 /* UIKitCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227531C6D8C9000036001 /* UIKitCategory.m */; };
+		856227621C6D8C9000036001 /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227551C6D8C9000036001 /* UITextView+UITextView_Placeholder.m */; };
+		856227631C6D8C9000036001 /* UIViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856227561C6D8C9000036001 /* UIViewCategory.swift */; };
+		856227691C6D8CF800036001 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 856227681C6D8CF800036001 /* NSString+URLEncoding.m */; };
 		8565E1DA1B9401E600843388 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1D81B9401E600843388 /* GoogleOpenSource.framework */; };
 		8565E1DB1B9401E600843388 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1D91B9401E600843388 /* GooglePlus.framework */; };
 		8565E1DD1B94048800843388 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1DC1B94048800843388 /* AddressBook.framework */; };
@@ -4404,8 +4405,6 @@
 		7A71FD0B1C4CF81800D00615 /* URLCacheConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheConnection.m; sourceTree = "<group>"; };
 		7A71FD0C1C4CF81800D00615 /* URLCacheController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheController.h; sourceTree = "<group>"; };
 		7A71FD0D1C4CF81800D00615 /* URLCacheController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheController.m; sourceTree = "<group>"; };
-		7A71FD0F1C4CF81800D00615 /* ALAsset+Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+Date.h"; sourceTree = "<group>"; };
-		7A71FD101C4CF81800D00615 /* ALAsset+Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+Date.m"; sourceTree = "<group>"; };
 		7A71FD111C4CF81800D00615 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		7A71FD121C4CF81800D00615 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		7A71FD131C4CF81800D00615 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
@@ -4414,22 +4413,10 @@
 		7A71FD161C4CF81800D00615 /* ExpiringCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpiringCache.m; sourceTree = "<group>"; };
 		7A71FD171C4CF81800D00615 /* LabelMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelMenu.h; sourceTree = "<group>"; };
 		7A71FD181C4CF81800D00615 /* LabelMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelMenu.m; sourceTree = "<group>"; };
-		7A71FD191C4CF81800D00615 /* NSArray+PerformSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PerformSelector.h"; sourceTree = "<group>"; };
-		7A71FD1A1C4CF81800D00615 /* NSArray+PerformSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PerformSelector.m"; sourceTree = "<group>"; };
-		7A71FD1B1C4CF81800D00615 /* NSArrayCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayCategory.h; sourceTree = "<group>"; };
-		7A71FD1C1C4CF81800D00615 /* NSArrayCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayCategory.m; sourceTree = "<group>"; };
-		7A71FD1D1C4CF81800D00615 /* NSData+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Encryption.h"; sourceTree = "<group>"; };
-		7A71FD1E1C4CF81800D00615 /* NSData+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Encryption.m"; sourceTree = "<group>"; };
-		7A71FD1F1C4CF81800D00615 /* NSDictionaryCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryCategory.h; sourceTree = "<group>"; };
-		7A71FD201C4CF81800D00615 /* NSDictionaryCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionaryCategory.m; sourceTree = "<group>"; };
 		7A71FD211C4CF81800D00615 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.h"; sourceTree = "<group>"; };
 		7A71FD221C4CF81800D00615 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.m"; sourceTree = "<group>"; };
-		7A71FD231C4CF81800D00615 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
-		7A71FD241C4CF81800D00615 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		7A71FD251C4CF81800D00615 /* NSStringAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAttribute.h; sourceTree = "<group>"; };
 		7A71FD261C4CF81800D00615 /* NSStringAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAttribute.m; sourceTree = "<group>"; };
-		7A71FD271C4CF81800D00615 /* NSStringCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringCategory.h; sourceTree = "<group>"; };
-		7A71FD281C4CF81800D00615 /* NSStringCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringCategory.m; sourceTree = "<group>"; };
 		7A71FD291C4CF81800D00615 /* NSUserDefaultCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultCategory.h; sourceTree = "<group>"; };
 		7A71FD2A1C4CF81800D00615 /* NSUserDefaultCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultCategory.m; sourceTree = "<group>"; };
 		7A71FD2B1C4CF81800D00615 /* RequestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUtils.h; sourceTree = "<group>"; };
@@ -4443,16 +4430,6 @@
 		7A71FD331C4CF81800D00615 /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A71FD341C4CF81800D00615 /* TopAlignedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopAlignedLabel.h; sourceTree = "<group>"; };
 		7A71FD351C4CF81800D00615 /* TopAlignedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopAlignedLabel.m; sourceTree = "<group>"; };
-		7A71FD361C4CF81800D00615 /* UIActivityViewController+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityViewController+Extensions.h"; sourceTree = "<group>"; };
-		7A71FD371C4CF81800D00615 /* UIActivityViewController+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityViewController+Extensions.m"; sourceTree = "<group>"; };
-		7A71FD381C4CF81800D00615 /* UIButtonCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonCategory.swift; sourceTree = "<group>"; };
-		7A71FD391C4CF81800D00615 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
-		7A71FD3A1C4CF81800D00615 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
-		7A71FD3B1C4CF81800D00615 /* UIKitCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitCategory.h; sourceTree = "<group>"; };
-		7A71FD3C1C4CF81800D00615 /* UIKitCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitCategory.m; sourceTree = "<group>"; };
-		7A71FD3D1C4CF81800D00615 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
-		7A71FD3E1C4CF81800D00615 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
-		7A71FD3F1C4CF81800D00615 /* UIViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewCategory.swift; sourceTree = "<group>"; };
 		7A71FD411C4CF81800D00615 /* NavigationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationHelper.h; sourceTree = "<group>"; };
 		7A71FD421C4CF81800D00615 /* NavigationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationHelper.m; sourceTree = "<group>"; };
 		7A71FD431C4CF81800D00615 /* ViewLabelUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewLabelUser.h; sourceTree = "<group>"; };
@@ -5094,6 +5071,32 @@
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8562273F1C6D8C9000036001 /* ALAsset+Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+Date.h"; sourceTree = "<group>"; };
+		856227401C6D8C9000036001 /* ALAsset+Date.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+Date.m"; sourceTree = "<group>"; };
+		856227411C6D8C9000036001 /* NSArray+PerformSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PerformSelector.h"; sourceTree = "<group>"; };
+		856227421C6D8C9000036001 /* NSArray+PerformSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PerformSelector.m"; sourceTree = "<group>"; };
+		856227431C6D8C9000036001 /* NSArrayCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayCategory.h; sourceTree = "<group>"; };
+		856227441C6D8C9000036001 /* NSArrayCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayCategory.m; sourceTree = "<group>"; };
+		856227451C6D8C9000036001 /* NSData+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Encryption.h"; sourceTree = "<group>"; };
+		856227461C6D8C9000036001 /* NSData+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Encryption.m"; sourceTree = "<group>"; };
+		856227471C6D8C9000036001 /* NSDictionaryCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryCategory.h; sourceTree = "<group>"; };
+		856227481C6D8C9000036001 /* NSDictionaryCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionaryCategory.m; sourceTree = "<group>"; };
+		856227491C6D8C9000036001 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		8562274A1C6D8C9000036001 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		8562274B1C6D8C9000036001 /* NSStringCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringCategory.h; sourceTree = "<group>"; };
+		8562274C1C6D8C9000036001 /* NSStringCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringCategory.m; sourceTree = "<group>"; };
+		8562274D1C6D8C9000036001 /* UIActivityViewController+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityViewController+Extensions.h"; sourceTree = "<group>"; };
+		8562274E1C6D8C9000036001 /* UIActivityViewController+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityViewController+Extensions.m"; sourceTree = "<group>"; };
+		8562274F1C6D8C9000036001 /* UIButtonCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonCategory.swift; sourceTree = "<group>"; };
+		856227501C6D8C9000036001 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		856227511C6D8C9000036001 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		856227521C6D8C9000036001 /* UIKitCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitCategory.h; sourceTree = "<group>"; };
+		856227531C6D8C9000036001 /* UIKitCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitCategory.m; sourceTree = "<group>"; };
+		856227541C6D8C9000036001 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
+		856227551C6D8C9000036001 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
+		856227561C6D8C9000036001 /* UIViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewCategory.swift; sourceTree = "<group>"; };
+		856227671C6D8CF800036001 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		856227681C6D8CF800036001 /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
 		8565E1D81B9401E600843388 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		8565E1D91B9401E600843388 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		8565E1DC1B94048800843388 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -9247,6 +9250,7 @@
 				853DF0F31C61D7B5003A7D36 /* Spotlight */,
 				7A71FD041C4CF81800D00615 /* Analytics */,
 				7A71FD071C4CF81800D00615 /* CacheController */,
+				8562273E1C6D8C1300036001 /* Category */,
 				7A71FD0E1C4CF81800D00615 /* Cocoa */,
 				7A71FD451C4CF81800D00615 /* Encryption */,
 				7A71FD531C4CF81800D00615 /* Object */,
@@ -9283,8 +9287,6 @@
 		7A71FD0E1C4CF81800D00615 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
-				7A71FD0F1C4CF81800D00615 /* ALAsset+Date.h */,
-				7A71FD101C4CF81800D00615 /* ALAsset+Date.m */,
 				7A71FD111C4CF81800D00615 /* CMPopTipView.h */,
 				7A71FD121C4CF81800D00615 /* CMPopTipView.m */,
 				7A71FD131C4CF81800D00615 /* DBManager.h */,
@@ -9293,22 +9295,10 @@
 				7A71FD161C4CF81800D00615 /* ExpiringCache.m */,
 				7A71FD171C4CF81800D00615 /* LabelMenu.h */,
 				7A71FD181C4CF81800D00615 /* LabelMenu.m */,
-				7A71FD191C4CF81800D00615 /* NSArray+PerformSelector.h */,
-				7A71FD1A1C4CF81800D00615 /* NSArray+PerformSelector.m */,
-				7A71FD1B1C4CF81800D00615 /* NSArrayCategory.h */,
-				7A71FD1C1C4CF81800D00615 /* NSArrayCategory.m */,
-				7A71FD1D1C4CF81800D00615 /* NSData+Encryption.h */,
-				7A71FD1E1C4CF81800D00615 /* NSData+Encryption.m */,
-				7A71FD1F1C4CF81800D00615 /* NSDictionaryCategory.h */,
-				7A71FD201C4CF81800D00615 /* NSDictionaryCategory.m */,
 				7A71FD211C4CF81800D00615 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */,
 				7A71FD221C4CF81800D00615 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
-				7A71FD231C4CF81800D00615 /* NSString+HTML.h */,
-				7A71FD241C4CF81800D00615 /* NSString+HTML.m */,
 				7A71FD251C4CF81800D00615 /* NSStringAttribute.h */,
 				7A71FD261C4CF81800D00615 /* NSStringAttribute.m */,
-				7A71FD271C4CF81800D00615 /* NSStringCategory.h */,
-				7A71FD281C4CF81800D00615 /* NSStringCategory.m */,
 				7A71FD291C4CF81800D00615 /* NSUserDefaultCategory.h */,
 				7A71FD2A1C4CF81800D00615 /* NSUserDefaultCategory.m */,
 				7A71FD2B1C4CF81800D00615 /* RequestUtils.h */,
@@ -9322,16 +9312,6 @@
 				7A71FD331C4CF81800D00615 /* Tokopedia-Bridging-Header.h */,
 				7A71FD341C4CF81800D00615 /* TopAlignedLabel.h */,
 				7A71FD351C4CF81800D00615 /* TopAlignedLabel.m */,
-				7A71FD361C4CF81800D00615 /* UIActivityViewController+Extensions.h */,
-				7A71FD371C4CF81800D00615 /* UIActivityViewController+Extensions.m */,
-				7A71FD381C4CF81800D00615 /* UIButtonCategory.swift */,
-				7A71FD391C4CF81800D00615 /* UIImage+ImageEffects.h */,
-				7A71FD3A1C4CF81800D00615 /* UIImage+ImageEffects.m */,
-				7A71FD3B1C4CF81800D00615 /* UIKitCategory.h */,
-				7A71FD3C1C4CF81800D00615 /* UIKitCategory.m */,
-				7A71FD3D1C4CF81800D00615 /* UITextView+UITextView_Placeholder.h */,
-				7A71FD3E1C4CF81800D00615 /* UITextView+UITextView_Placeholder.m */,
-				7A71FD3F1C4CF81800D00615 /* UIViewCategory.swift */,
 				7A71FD401C4CF81800D00615 /* Utils */,
 				7A71FD431C4CF81800D00615 /* ViewLabelUser.h */,
 				7A71FD441C4CF81800D00615 /* ViewLabelUser.m */,
@@ -10593,6 +10573,39 @@
 				85FB67F81C62041A00EDCD1D /* TPSpotlight.m */,
 			);
 			path = Spotlight;
+			sourceTree = "<group>";
+		};
+		8562273E1C6D8C1300036001 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				8562273F1C6D8C9000036001 /* ALAsset+Date.h */,
+				856227401C6D8C9000036001 /* ALAsset+Date.m */,
+				856227411C6D8C9000036001 /* NSArray+PerformSelector.h */,
+				856227421C6D8C9000036001 /* NSArray+PerformSelector.m */,
+				856227431C6D8C9000036001 /* NSArrayCategory.h */,
+				856227441C6D8C9000036001 /* NSArrayCategory.m */,
+				856227451C6D8C9000036001 /* NSData+Encryption.h */,
+				856227461C6D8C9000036001 /* NSData+Encryption.m */,
+				856227471C6D8C9000036001 /* NSDictionaryCategory.h */,
+				856227481C6D8C9000036001 /* NSDictionaryCategory.m */,
+				856227491C6D8C9000036001 /* NSString+HTML.h */,
+				8562274A1C6D8C9000036001 /* NSString+HTML.m */,
+				8562274B1C6D8C9000036001 /* NSStringCategory.h */,
+				8562274C1C6D8C9000036001 /* NSStringCategory.m */,
+				8562274D1C6D8C9000036001 /* UIActivityViewController+Extensions.h */,
+				8562274E1C6D8C9000036001 /* UIActivityViewController+Extensions.m */,
+				8562274F1C6D8C9000036001 /* UIButtonCategory.swift */,
+				856227501C6D8C9000036001 /* UIImage+ImageEffects.h */,
+				856227511C6D8C9000036001 /* UIImage+ImageEffects.m */,
+				856227521C6D8C9000036001 /* UIKitCategory.h */,
+				856227531C6D8C9000036001 /* UIKitCategory.m */,
+				856227541C6D8C9000036001 /* UITextView+UITextView_Placeholder.h */,
+				856227551C6D8C9000036001 /* UITextView+UITextView_Placeholder.m */,
+				856227561C6D8C9000036001 /* UIViewCategory.swift */,
+				856227671C6D8CF800036001 /* NSString+URLEncoding.h */,
+				856227681C6D8CF800036001 /* NSString+URLEncoding.m */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 		85B136FD1C30E697001F1CBC /* Tokopedia */ = {
@@ -12009,6 +12022,7 @@
 				7A710C6F1C4CF81D00D00615 /* DepositFormAccountBankViewController.m in Sources */,
 				7A710A631C4CF81D00D00615 /* HotlistBannerInfo.m in Sources */,
 				7A710BA81C4CF81D00D00615 /* TxOrderPaymentEditForm.m in Sources */,
+				8562275F1C6D8C9000036001 /* UIButtonCategory.swift in Sources */,
 				7A710E6A1C4CF81D00D00615 /* TransactionCartResultPaymentCell.m in Sources */,
 				7A710E3B1C4CF81D00D00615 /* TKPMapView.swift in Sources */,
 				7A710B461C4CF81D00D00615 /* AddProductValidation.m in Sources */,
@@ -12197,6 +12211,7 @@
 				7A7109D41C4CF81D00D00615 /* URLCacheConnection.m in Sources */,
 				7A710C791C4CF81D00D00615 /* DepositSummaryViewController.m in Sources */,
 				7A710EB71C4CF81D00D00615 /* AddressViewModel.m in Sources */,
+				8562275A1C6D8C9000036001 /* NSData+Encryption.m in Sources */,
 				7A710A481C4CF81D00D00615 /* WholesalePrice.m in Sources */,
 				7A710AAA1C4CF81D00D00615 /* TotalLikeDislikePost.m in Sources */,
 				7A710C361C4CF81D00D00615 /* ContactUsPresenter.m in Sources */,
@@ -12256,6 +12271,7 @@
 				7A710ABC1C4CF81D00D00615 /* SkipReview.m in Sources */,
 				7A710D1F1C4CF81D00D00615 /* DepartmentTableViewController.m in Sources */,
 				7A710A341C4CF81D00D00615 /* Rating.m in Sources */,
+				856227631C6D8C9000036001 /* UIViewCategory.swift in Sources */,
 				7A710C771C4CF81D00D00615 /* DepositSummaryCell.m in Sources */,
 				7A710E481C4CF81D00D00615 /* RequestEditAddress.m in Sources */,
 				7A710A581C4CF81D00D00615 /* GoogleDistanceMatrixRow.m in Sources */,
@@ -12322,7 +12338,6 @@
 				7A710A561C4CF81D00D00615 /* GoogleDistanceMatrixElement.m in Sources */,
 				7A710A2D1C4CF81D00D00615 /* CountRatingResult.m in Sources */,
 				7A71118C1C4CF81E00D00615 /* XYPieChart.m in Sources */,
-				7A7109E21C4CF81D00D00615 /* NSStringCategory.m in Sources */,
 				7A710D7E1C4CF81D00D00615 /* ReputationPageViewController.m in Sources */,
 				7A710B421C4CF81D00D00615 /* AddProductPicture.m in Sources */,
 				7A710C961C4CF81D00D00615 /* RequestNotifyLBLM.m in Sources */,
@@ -12334,6 +12349,7 @@
 				7A7109FE1C4CF81D00D00615 /* SendOTP.m in Sources */,
 				7A710C311C4CF81D00D00615 /* ContactUsCategoryCell.m in Sources */,
 				7A710C941C4CF81D00D00615 /* ReportViewController.m in Sources */,
+				856227601C6D8C9000036001 /* UIImage+ImageEffects.m in Sources */,
 				7A710ACE1C4CF81D00D00615 /* ProductTalkCommentAction.m in Sources */,
 				7A710E2E1C4CF81D00D00615 /* SortViewController.m in Sources */,
 				7A710E311C4CF81D00D00615 /* ProductTalkDetailViewController.m in Sources */,
@@ -12353,6 +12369,7 @@
 				7A710B0C1C4CF81D00D00615 /* OrderOrder.m in Sources */,
 				7A710B401C4CF81D00D00615 /* Shop.m in Sources */,
 				7A710A9A1C4CF81D00D00615 /* InboxTicketPaging.m in Sources */,
+				8562275B1C6D8C9000036001 /* NSDictionaryCategory.m in Sources */,
 				7A710B3C1C4CF81D00D00615 /* Owner.m in Sources */,
 				7A710B8E1C4CF81D00D00615 /* Veritrans.m in Sources */,
 				7A710A801C4CF81D00D00615 /* ResolutionCenterDetail.m in Sources */,
@@ -12383,6 +12400,7 @@
 				7A710A901C4CF81D00D00615 /* InboxReviewResult.m in Sources */,
 				7A710C151C4CF81D00D00615 /* CatalogProductCell.m in Sources */,
 				7A710D461C4CF81D00D00615 /* ProductEditImageViewController.m in Sources */,
+				856227571C6D8C9000036001 /* ALAsset+Date.m in Sources */,
 				7A710A2C1C4CF81D00D00615 /* Breadcrumb.m in Sources */,
 				7A710A3F1C4CF81D00D00615 /* Talk.m in Sources */,
 				7A710C8E1C4CF81D00D00615 /* GeneralSingleProductCell.m in Sources */,
@@ -12424,6 +12442,8 @@
 				7A710D2B1C4CF81D00D00615 /* DetailProductInfoCell.m in Sources */,
 				7A710A991C4CF81D00D00615 /* InboxTicketList.m in Sources */,
 				7A710B491C4CF81D00D00615 /* SettingLocationResult.m in Sources */,
+				8562275E1C6D8C9000036001 /* UIActivityViewController+Extensions.m in Sources */,
+				856227581C6D8C9000036001 /* NSArray+PerformSelector.m in Sources */,
 				7A710AAE1C4CF81D00D00615 /* LoyaltyPointMerchant.m in Sources */,
 				7A710D031C4CF81D00D00615 /* MyShopEtalaseDetailViewController.m in Sources */,
 				7A710CC91C4CF81D00D00615 /* InboxResolutionCenterComplainCell.m in Sources */,
@@ -12461,7 +12481,6 @@
 				7A710E111C4CF81D00D00615 /* ShopSettingViewController.m in Sources */,
 				7A710EA21C4CF81D00D00615 /* RequestPayment.m in Sources */,
 				7A710C271C4CF81D00D00615 /* CategoryViewCell.m in Sources */,
-				7A7109EE1C4CF81D00D00615 /* UIViewCategory.swift in Sources */,
 				7A710CF51C4CF81D00D00615 /* InboxTicketViewController.m in Sources */,
 				7A710A351C4CF81D00D00615 /* AdvanceReview.m in Sources */,
 				7A710AE31C4CF81D00D00615 /* AddressFormResult.m in Sources */,
@@ -12493,7 +12512,6 @@
 				7A710BA71C4CF81D00D00615 /* TxOrderPaymentEditBankAccount.m in Sources */,
 				7A710B341C4CF81D00D00615 /* NoteDetailResult.m in Sources */,
 				7A710C451C4CF81D00D00615 /* ContactUsFormInteractor.m in Sources */,
-				7A7109DC1C4CF81D00D00615 /* NSArrayCategory.m in Sources */,
 				7A710D6F1C4CF81D00D00615 /* PromoInfoAlertView.m in Sources */,
 				7A710C9B1C4CF81D00D00615 /* TagManagerHandler.m in Sources */,
 				7A710DE01C4CF81D00D00615 /* SettingNotificationViewController.m in Sources */,
@@ -12508,13 +12526,13 @@
 				7A710AED1C4CF81D00D00615 /* PrivacyForm.m in Sources */,
 				7A710C0E1C4CF81D00D00615 /* RequestUploadImageHelper.m in Sources */,
 				7A710BB31C4CF81D00D00615 /* GenerateHostResult.m in Sources */,
-				7A7109EC1C4CF81D00D00615 /* UIKitCategory.m in Sources */,
 				7A710B6F1C4CF81D00D00615 /* TransactionATCFormResult.m in Sources */,
 				7A710D071C4CF81D00D00615 /* MyShopEtalaseFilterCell.m in Sources */,
 				7A710BB81C4CF81D00D00615 /* UploadImageImage.m in Sources */,
 				7A710BD31C4CF81D00D00615 /* RegisterViewController.m in Sources */,
 				7A710B571C4CF81D00D00615 /* ShippingInfo.m in Sources */,
 				7A710B381C4CF81D00D00615 /* NotesResult.m in Sources */,
+				856227691C6D8CF800036001 /* NSString+URLEncoding.m in Sources */,
 				7A710BDE1C4CF81D00D00615 /* AlertDatePickerView.m in Sources */,
 				7A710BC31C4CF81D00D00615 /* TKPGoogleDistanceMatrixProductStore.m in Sources */,
 				7A710CFB1C4CF81D00D00615 /* WebViewController.m in Sources */,
@@ -12576,6 +12594,7 @@
 				7A710B221C4CF81D00D00615 /* SearchItem.m in Sources */,
 				7A710CB61C4CF81D00D00615 /* HotlistResultAWSViewController.m in Sources */,
 				7A710E651C4CF81D00D00615 /* TransactionCCViewController.m in Sources */,
+				856227611C6D8C9000036001 /* UIKitCategory.m in Sources */,
 				7A710A7C1C4CF81D00D00615 /* InboxResolutionCenterResult.m in Sources */,
 				7A710A461C4CF81D00D00615 /* TheOtherProductList.m in Sources */,
 				7A710E851C4CF81D00D00615 /* TxOrderConfirmationDetailViewController.m in Sources */,
@@ -12584,7 +12603,6 @@
 				7A710BC81C4CF81D00D00615 /* TKPStoreManager.m in Sources */,
 				7A710A651C4CF81D00D00615 /* HotlistBannerResult.m in Sources */,
 				7A710A031C4CF81D00D00615 /* RegisterResult.m in Sources */,
-				7A7109EA1C4CF81D00D00615 /* UIButtonCategory.swift in Sources */,
 				7A710ECB1C4CF81D00D00615 /* VTConfig.m in Sources */,
 				7A710D601C4CF81D00D00615 /* ProductReputationCell.m in Sources */,
 				7A710A8C1C4CF81D00D00615 /* InboxReviewActionResult.m in Sources */,
@@ -12693,6 +12711,7 @@
 				7A710B6C1C4CF81D00D00615 /* TransactionAddressShippingResult.m in Sources */,
 				7A710BF81C4CF81D00D00615 /* StickyAlertView.m in Sources */,
 				7A710BAA1C4CF81D00D00615 /* TxOrderPaymentEditOrder.m in Sources */,
+				8562275C1C6D8C9000036001 /* NSString+HTML.m in Sources */,
 				7A710E5B1C4CF81D00D00615 /* TransactionCartHeaderView.m in Sources */,
 				7A710E411C4CF81D00D00615 /* TokopediaCacheManager.m in Sources */,
 				7A710B611C4CF81D00D00615 /* TrackOrderHistory.m in Sources */,
@@ -12726,7 +12745,6 @@
 				7A710A501C4CF81D00D00615 /* FavoriteShopActionResult.m in Sources */,
 				7A710ADB1C4CF81D00D00615 /* ListFavoriteShop.m in Sources */,
 				7A710E201C4CF81D00D00615 /* FilterConditionCell.m in Sources */,
-				7A7109D61C4CF81D00D00615 /* ALAsset+Date.m in Sources */,
 				7A710B9E1C4CF81D00D00615 /* TxOrderConfirmedDetailPayment.m in Sources */,
 				7A710BD71C4CF81D00D00615 /* AddressViewController.m in Sources */,
 				7A710A9D1C4CF81D00D00615 /* InboxTicketResultDetail.m in Sources */,
@@ -12743,7 +12761,6 @@
 				7A710C2B1C4CF81D00D00615 /* CategoryMenuViewCell.m in Sources */,
 				7A710C031C4CF81D00D00615 /* CameraController.m in Sources */,
 				7A710B771C4CF81D00D00615 /* TransactionCartList.m in Sources */,
-				7A7109DE1C4CF81D00D00615 /* NSDictionaryCategory.m in Sources */,
 				7A710A391C4CF81D00D00615 /* ReviewProductOwner.m in Sources */,
 				7A710B801C4CF81D00D00615 /* TxOrderConfirmation.m in Sources */,
 				7A710BBD1C4CF81D00D00615 /* UploadImageValidation.m in Sources */,
@@ -12768,9 +12785,9 @@
 				7A710AB91C4CF81D00D00615 /* ProductOwner.m in Sources */,
 				7A710B671C4CF81D00D00615 /* LuckyDealWord.m in Sources */,
 				7A710A7F1C4CF81D00D00615 /* ResolutionBy.m in Sources */,
-				7A7109E91C4CF81D00D00615 /* UIActivityViewController+Extensions.m in Sources */,
 				7A710C541C4CF81D00D00615 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				7A710BE21C4CF81D00D00615 /* AlertInfoView.m in Sources */,
+				8562275D1C6D8C9000036001 /* NSStringCategory.m in Sources */,
 				7A710C441C4CF81D00D00615 /* ContactUsFormDataManager.m in Sources */,
 				7A710E051C4CF81D00D00615 /* ShopInfoAddressView.m in Sources */,
 				7A710B591C4CF81D00D00615 /* ShippingInfoShipmentPackage.m in Sources */,
@@ -12778,11 +12795,9 @@
 				7A7111891C4CF81E00D00615 /* EDStarRating.m in Sources */,
 				7A710E2C1C4CF81D00D00615 /* SortCell.m in Sources */,
 				7A710D8E1C4CF81D00D00615 /* OrderRejectExplanationViewController.m in Sources */,
-				7A7109E01C4CF81D00D00615 /* NSString+HTML.m in Sources */,
 				7A710C901C4CF81D00D00615 /* GeneralSwitchCell.m in Sources */,
 				7A710A851C4CF81D00D00615 /* ResolutionDetail.m in Sources */,
 				7A710C7B1C4CF81D00D00615 /* ForgotPasswordViewController.m in Sources */,
-				7A7109DB1C4CF81D00D00615 /* NSArray+PerformSelector.m in Sources */,
 				7A710B361C4CF81D00D00615 /* Notes.m in Sources */,
 				7A710B741C4CF81D00D00615 /* TransactionCalculatePriceResult.m in Sources */,
 				7A710A4A1C4CF81D00D00615 /* FavoritedResult.m in Sources */,
@@ -12798,6 +12813,7 @@
 				7A710C071C4CF81D00D00615 /* CameraAlbumListViewController.m in Sources */,
 				7A710C691C4CF81D00D00615 /* StarsRateView.m in Sources */,
 				85B148771C30E69F001F1CBC /* MainViewController.m in Sources */,
+				856227621C6D8C9000036001 /* UITextView+UITextView_Placeholder.m in Sources */,
 				7A710A3E1C4CF81D00D00615 /* Statistic.m in Sources */,
 				7A710B4E1C4CF81D00D00615 /* City.m in Sources */,
 				7A710CBC1C4CF81D00D00615 /* UIView+HVDLayout.m in Sources */,
@@ -12821,7 +12837,6 @@
 				7A710D1A1C4CF81D00D00615 /* NotificationManager.m in Sources */,
 				7A710A371C4CF81D00D00615 /* Review.m in Sources */,
 				7A710B4B1C4CF81D00D00615 /* SettingPaymentResult.m in Sources */,
-				7A7109EB1C4CF81D00D00615 /* UIImage+ImageEffects.m in Sources */,
 				7A710A0D1C4CF81D00D00615 /* CategoryObj.m in Sources */,
 				7A710CFD1C4CF81D00D00615 /* MyShopAddressDetailViewController.m in Sources */,
 				7A710BEA1C4CF81D00D00615 /* AlertListViewCell.m in Sources */,
@@ -12885,7 +12900,6 @@
 				7A710A331C4CF81D00D00615 /* ProductImages.m in Sources */,
 				7A710A5E1C4CF81D00D00615 /* GooglePlacesDetail.m in Sources */,
 				7A710AAC1C4CF81D00D00615 /* LoyaltyPointBuyer.m in Sources */,
-				7A7109DD1C4CF81D00D00615 /* NSData+Encryption.m in Sources */,
 				7A7109E31C4CF81D00D00615 /* NSUserDefaultCategory.m in Sources */,
 				7A710ADE1C4CF81D00D00615 /* UserInfo.m in Sources */,
 				7A710DD01C4CF81D00D00615 /* SettingAddressExpandedCell.m in Sources */,
@@ -12900,7 +12914,6 @@
 				7A710E7B1C4CF81D00D00615 /* TxOrderStatusViewController.m in Sources */,
 				7A710B8D1C4CF81D00D00615 /* TransactionSummaryResult.m in Sources */,
 				7A710BA51C4CF81D00D00615 /* TxOrderConfirmPaymentFormResult.m in Sources */,
-				7A7109ED1C4CF81D00D00615 /* UITextView+UITextView_Placeholder.m in Sources */,
 				7A710C2D1C4CF81D00D00615 /* CategoryMenuViewController.m in Sources */,
 				7A710AC61C4CF81D00D00615 /* NotifyLBLM.m in Sources */,
 				7A710A641C4CF81D00D00615 /* HotlistBannerQuery.m in Sources */,
@@ -12956,6 +12969,7 @@
 				A057EECF8D204BED8A68681F /* RolloutDynamic_14.m in Sources */,
 				9E7E2D6D104C42C59FBFF513 /* RolloutDynamic_15.m in Sources */,
 				8C25CB72C9504D0289FE6475 /* RolloutDynamic_16.m in Sources */,
+				856227591C6D8C9000036001 /* NSArrayCategory.m in Sources */,
 				14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */,
 				C7F961F230434FC497BE3DDF /* RolloutDynamic_18.m in Sources */,
 				D9C98E17B9A542E18C19C91B /* RolloutDynamic_19.m in Sources */,
