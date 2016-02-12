@@ -11,11 +11,13 @@
 #import "DetailReputationReview.h"
 #import "MyReviewReputationResult.h"
 #import "SkipReviewResult.h"
+#import "SkipReview.h"
 
 @protocol MyReviewDetailRequestDelegate <NSObject>
 
 - (void)didReceiveReviewListing:(MyReviewReputationResult*)myReviews;
 - (void)didSkipReview:(SkipReviewResult*)skippedReview;
+- (void)didFailSkipReview:(SkipReview*)skipReview;
 
 @end
 

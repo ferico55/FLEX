@@ -269,4 +269,13 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     }
 }
 
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    NSDictionary *result = ((RKMappingResult*)errorResult).dictionary;
+    id temp = [result objectForKey:@""];
+    
+    if (tag == MyReviewDetailRequestSkip) {
+        [_delegate didFailSkipReview:(SkipReview*)temp];
+    }
+}
+
 @end
