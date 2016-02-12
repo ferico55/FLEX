@@ -2068,8 +2068,7 @@ NoResultDelegate
             id stats = [result objectForKey:@""];
             _product = stats;
             _product.isDummyProduct = NO;
-            
-            self.userActivity = [TPSpotlight productDetailActivity:_product.result];
+            [self addUserActivity];
         }
         
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
@@ -3213,6 +3212,12 @@ NoResultDelegate
 
 - (void)buttonDidTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)addUserActivity {
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
+        self.userActivity = [TPSpotlight productDetailActivity:_product.result];
+    }
 }
 
 @end
