@@ -64,7 +64,7 @@
         //TODO: KONFIRMASI ORDER PROCESSED
         [self redirectToProcessedOrder];
     } else if (state == STATE_CONFIRM_PACKAGE_RECEIVED) {
-        
+        [self redirectToConfirmPackageArrived];
     }
 }
 
