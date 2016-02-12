@@ -22,9 +22,9 @@
 //#endif
 //#define kTkpdBaseURLString @"http://new.ws-wendy.ndvl/ws"
 //#define kTkpdBaseURLString @"http://new.ex-adreass.ndvl/ws"
-#define kTkpdBaseURLString @"http://new.at-alvin.ndvl/ws"
+//#define kTkpdBaseURLString @"http://new.at-alvin.ndvl/ws"
 //#define kTkpdBaseURLString @"http://new.fp-farissa.ndvl/ws"
-//#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 //#define kTkpdBaseURLHttpsString @"https://ws.tokopedia.com/ws"
 #define kTkpdBaseURLHttpsString @"https://ws-staging.tokopedia.com/ws"
 //#define kTkpdBaseURLHttpsString @"http://new.ws-wendy.ndvl/ws"

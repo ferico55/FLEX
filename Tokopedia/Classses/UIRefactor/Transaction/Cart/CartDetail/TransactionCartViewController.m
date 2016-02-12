@@ -1774,6 +1774,12 @@
     [_requestCart dorequestBRIEPay];
 }
 
+-(void)shouldDoRequestTopPayThx:(NSDictionary *)param
+{
+    _requestCart.param = param?:@{};
+    [_requestCart doRequestToppay];
+}
+
 #pragma mark - Methods
 
 -(void)addArrayObjectTemp
@@ -3174,6 +3180,12 @@
     
     [_act stopAnimating];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+#pragma mark - Request Toppay
+-(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    //TODO::
 }
 
 #pragma mark - Request E-Money

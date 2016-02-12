@@ -207,20 +207,20 @@
         return @"";
     }
     NSString *outString     = [NSString stringWithString:string];
-//    outString                   = [outString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    outString                   = [outString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     // BUG IN stringByAddingPercentEscapesUsingEncoding
     // WE NEED TO DO several OURSELVES
     outString                   = [self replace:outString lookFor:@"&" replaceWith:@"%26"];
     outString                   = [self replace:outString lookFor:@"?" replaceWith:@"%3F"];
     outString                   = [self replace:outString lookFor:@"=" replaceWith:@"%3D"];
-    outString                   = [self replace:outString lookFor:@"+" replaceWith:@"%2B"];
+//    outString                   = [self replace:outString lookFor:@"+" replaceWith:@"%2B"];
     outString                   = [self replace:outString lookFor:@";" replaceWith:@"%3B"];
-    outString                   = [self replace:outString lookFor:@"[" replaceWith:@"%5B"];
-    outString                   = [self replace:outString lookFor:@"]" replaceWith:@"%5D"];
-    outString                   = [self replace:outString lookFor:@":" replaceWith:@"%3A"];
-    outString                   = [self replace:outString lookFor:@" " replaceWith:@"+"];
-    outString                   = [self replace:outString lookFor:@"@" replaceWith:@"%40"];
+//    outString                   = [self replace:outString lookFor:@"[" replaceWith:@"%5B"];
+//    outString                   = [self replace:outString lookFor:@"]" replaceWith:@"%5D"];
+//    outString                   = [self replace:outString lookFor:@":" replaceWith:@"%3A"];
+//    outString                   = [self replace:outString lookFor:@" " replaceWith:@"+"];
+//    outString                   = [self replace:outString lookFor:@"@" replaceWith:@"%40"];
     
     return outString;
 }
@@ -339,19 +339,36 @@
     }
     else
     {
-        if ([request.URL.absoluteString rangeOfString:@"www.tokopedia.com/tx-toppay-thanks.pl"].location != NSNotFound) {
+        if ([request.URL.absoluteString rangeOfString:@"tx-toppay-thanks.pl"].location != NSNotFound) {
+            NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+            
             NSDictionary *param = @{
                                     @"action" : @"get_thanks_data",
-                                    @"tid" : _transactionCode
+                                    @"id": [paramURL objectForKey:@"id"]?:@""
                                     };
-            [_delegate shouldDoRequestTopPay:param];
-            _isBRIEPayRequested = YES;
+            [_delegate shouldDoRequestTopPayThx:param];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             return NO;
         }
     }
     
     return YES;
+}
+
+-(NSDictionary *)dictionaryFromURLString:(NSString *)urlString
+{
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSString * q = [url query];
+    NSArray * pairs = [q componentsSeparatedByString:@"&"];
+    NSMutableDictionary * dictionary = [NSMutableDictionary dictionary];
+    for (NSString * pair in pairs) {
+        NSArray * bits = [pair componentsSeparatedByString:@"="];
+        NSString * key = [[bits objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString * value = [[bits objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [dictionary setObject:value forKey:key];
+    }
+    
+    return [dictionary copy];
 }
 
 -(NSString *)getStringURLMandiriECash

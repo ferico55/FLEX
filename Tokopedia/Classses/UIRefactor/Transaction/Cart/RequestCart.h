@@ -19,6 +19,7 @@
 #define TAG_REQUEST_CC 18
 #define TAG_REQUEST_BRI_EPAY 19
 #define TAG_REQUEST_TOPPAY 20
+#define TAG_REQUEST_TOPPAY_THX 21
 
 @protocol RequestCartDelegate <NSObject>
 @required
@@ -33,6 +34,7 @@
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessToppay:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation;
 
 -(void)actionBeforeRequest:(int)tag;
 -(void)actionAfterFailRequestMaxTries:(int)tag;
@@ -59,5 +61,6 @@
 -(void)doRequestCC;
 -(void)dorequestBRIEPay;
 -(void)doRequestToppay;
+-(void)doRequestToppayThx;
 
 @end
