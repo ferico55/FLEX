@@ -221,9 +221,19 @@
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
-    NSURL *url = userActivity.webpageURL;
-    [DeeplinkController handleURL:url];
-    return YES;
+    NSURL *url;
+    BOOL shouldContinue = NO;
+    if ([userActivity.activityType isEqualToString:@"com.apple.corespotlightitem"]) {
+        NSString *activityIdentifier = [userActivity.userInfo objectForKey:@"kCSSearchableItemActivityIdentifier"];
+        url = [NSURL URLWithString:activityIdentifier];
+    } else {
+        url = userActivity.webpageURL;
+    }
+    if (url) {
+        [DeeplinkController handleURL:url];
+        shouldContinue = YES;
+    }
+    return shouldContinue;
 }
 
 #pragma mark - reset persist data if freshly installed
