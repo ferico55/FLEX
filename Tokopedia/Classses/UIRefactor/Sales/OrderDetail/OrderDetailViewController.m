@@ -73,8 +73,6 @@ typedef enum TagRequest {
 @property (weak, nonatomic) IBOutlet LabelMenu *receiverNameLabel;
 
 @property (weak, nonatomic) IBOutlet LabelMenu *addressLabel;
-@property (weak, nonatomic) IBOutlet LabelMenu *cityLabel;
-@property (weak, nonatomic) IBOutlet LabelMenu *countryLabel;
 
 @property (weak, nonatomic) IBOutlet LabelMenu *phoneNumberLabel;
 
@@ -194,8 +192,6 @@ typedef enum TagRequest {
 - (void)setDelegates {
     self.receiverNameLabel.delegate = self;
     self.addressLabel.delegate = self;
-    self.cityLabel.delegate = self;
-    self.countryLabel.delegate = self;
     self.phoneNumberLabel.delegate = self;
     self.courierAgentLabel.delegate = self;
     self.receivePartialOrderLabel.delegate = self;
@@ -241,22 +237,12 @@ typedef enum TagRequest {
     NSString *address = [_transaction.order_destination.address_street stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     address = [address stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     address = [address stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *addressAttributedString = [[NSAttributedString alloc] initWithString:address
-                                                                                  attributes:attributes];
-    _addressLabel.attributedText = addressAttributedString;
-    _addressLabel.numberOfLines = 0;
-    [_addressLabel sizeToFit];
     
     NSString *city = [NSString stringWithFormat:@"%@\n%@",
                       _transaction.order_destination.address_district,
                       _transaction.order_destination.address_city];
     city = [city stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     city = [city stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *cityAttributedString = [[NSAttributedString alloc] initWithString:city
-                                                                               attributes:attributes];
-    _cityLabel.attributedText = cityAttributedString;
-    _cityLabel.numberOfLines = 0;
-    [_cityLabel sizeToFit];
     
     NSString *country = [NSString stringWithFormat:@"%@, %@, %@",
                          _transaction.order_destination.address_province,
@@ -264,12 +250,13 @@ typedef enum TagRequest {
                          _transaction.order_destination.address_postal];
     country = [country stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     country = [country stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *countryAttributedString = [[NSAttributedString alloc] initWithString:country
-                                                                                  attributes:attributes];
-    _countryLabel.attributedText = countryAttributedString;
-    _countryLabel.numberOfLines = 0;
-    [_countryLabel sizeToFit];
     
+    NSString *completeAddress = [NSString stringWithFormat:@"%@\n%@\n%@", address, city, country];
+    NSAttributedString *addressAttributedString = [[NSAttributedString alloc] initWithString:completeAddress attributes:attributes];
+    _addressLabel.attributedText = addressAttributedString;
+    _addressLabel.numberOfLines = 0;
+    [_addressLabel sizeToFit];
+
     _phoneNumberLabel.text = _transaction.order_destination.receiver_phone;
     
     _courierAgentLabel.text = [NSString stringWithFormat:@"%@ (%@)",
@@ -326,6 +313,7 @@ typedef enum TagRequest {
     _subTotalFeeLabel.text = _transaction.order_detail.detail_product_price_idr;
     _assuranceFeeLabel.text = _transaction.order_detail.detail_insurance_price_idr;
     _insuranceTextLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    [_insuranceTextLabel sizeToFit];
     _assuranceFeeLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?_transaction.order_detail.detail_insurance_price_idr:_transaction.order_detail.detail_total_add_fee_idr;
     _infoAddFeeButton.hidden = ([_transaction.order_detail.detail_additional_fee integerValue]==0);
     
@@ -355,8 +343,6 @@ typedef enum TagRequest {
     CGFloat additionalHeight = 0;
     additionalHeight += _pickupLocationView.frame.size.height;
     additionalHeight += _addressLabel.frame.size.height;
-    additionalHeight += _cityLabel.frame.size.height;
-    additionalHeight += _countryLabel.frame.size.height;
     
     CGFloat heightLeftOvers = 30;
     additionalHeight -= heightLeftOvers;
@@ -1006,10 +992,7 @@ typedef enum TagRequest {
     if (tag == CTagRecipientName) {
         copiedText = _transaction.order_destination.receiver_name;
     } else if(tag == CTagAddress) {
-        copiedText = [NSString stringWithFormat:@"%@ %@ %@",
-                      _addressLabel.text,
-                      _cityLabel.text,
-                      _countryLabel.text];
+        copiedText = _addressLabel.text;
     } else if(tag == CTagPhone) {
         copiedText = _phoneNumberLabel.text;
     } else if (tag == CTagCourier) {
