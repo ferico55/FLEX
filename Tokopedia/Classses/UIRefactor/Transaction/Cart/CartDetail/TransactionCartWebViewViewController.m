@@ -43,7 +43,10 @@
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
+    if ([self isModal]) {
+        self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    }
     
     _isSuccessBCA = NO;
     
@@ -160,6 +163,12 @@
     [_webView loadRequest:request];
 }
 
+- (BOOL)isModal {
+    return self.presentingViewController.presentedViewController == self
+    || (self.navigationController != nil && self.navigationController.presentingViewController.presentedViewController == self.navigationController)
+    || [self.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]];
+}
+
 - (NSString *)getFormDataString:(NSDictionary*)dictionary {
     if( ! dictionary) {
         return nil;
@@ -190,6 +199,9 @@
                     [resultString appendString:kvPair];
                 }
             }
+        } else if ([[dictionary valueForKey: [keys objectAtIndex: i]] isKindOfClass:[NSDictionary class]]) {
+            
+//            [resultString appendString:[self getFormDataString:(NSString*)[dictionary valueForKey: [keys objectAtIndex: i]] isKindOfClass:[NSDictionary class]]]];
         }
         else {
             kvPair = [NSString stringWithFormat:@"%@=%@", encodedKey, encodedValue];
@@ -343,7 +355,12 @@
                                     @"id": [paramURL objectForKey:@"id"]?:@""
                                     };
             [_delegate shouldDoRequestTopPayThx:param];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            if ([self isModal]) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
             return NO;
         }
     }

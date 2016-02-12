@@ -161,15 +161,6 @@
     return _networkManagerToppay;
 }
 
--(TokopediaNetworkManager*)networkManagerToppayThx{
-    if (!_networkManagerToppayThx) {
-        _networkManagerToppayThx = [TokopediaNetworkManager new];
-        _networkManagerToppayThx.tagRequest = TAG_REQUEST_TOPPAY_THX;
-        _networkManagerToppayThx.delegate = self;
-    }
-    return _networkManagerToppayThx;
-}
-
 -(void)doRequestCart
 {
     [[self networkManager] doRequest];
@@ -220,11 +211,6 @@
     [[self networkManagerBRIEpay] doRequest];
 }
 
--(void)doRequestToppayThx
-{
-    [[self networkManagerToppayThx] doRequest];
-}
-
 -(void)doRequestToppay
 {
     [[self networkManagerToppay] doRequest];
@@ -265,9 +251,6 @@
     }
     if (tag == TAG_REQUEST_TOPPAY) {
         return [[self objectManager] objectManagerToppay];
-    }
-    if (tag == TAG_REQUEST_TOPPAY_THX) {
-        return [[self objectManager] objectManagerToppayThx];
     }
     return nil;
 }
@@ -314,9 +297,6 @@
     }
     if (tag == TAG_REQUEST_TOPPAY) {
         return @"action/toppay.pl";
-    }
-    if (tag == TAG_REQUEST_TOPPAY) {
-        return @"tx-toppay.pl";
     }
     return nil;
 }
@@ -372,10 +352,6 @@
         return action.status;
     }
     if (tag == TAG_REQUEST_TOPPAY) {
-        TransactionAction *action = stat;
-        return action.status;
-    }
-    if (tag == TAG_REQUEST_TOPPAY_THX) {
         TransactionAction *action = stat;
         return action.status;
     }
@@ -535,29 +511,13 @@
         }
         else
         {
-            if (action.result.is_success == 1){
-            
-            } else {
-                [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-                [_delegate actionAfterFailRequestMaxTries:tag];
-    
-            }
-        }
-    }
-    if (tag == TAG_REQUEST_TOPPAY_THX) {
-        TransactionAction *action = stat;
-        
-        if (action.result.parameter != nil) {
-            NSArray *successMessages = action.message_status;
-            if (successMessages.count > 0) {
-                [self showStatusMesage:successMessages];
-            }
-            [_delegate requestSuccessToppayThx:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
+//            if (action.result.is_success == 1){
+                [_delegate requestSuccessToppayThx:successResult withOperation:operation];
+//            } else {
+//                [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+//                [_delegate actionAfterFailRequestMaxTries:tag];
+//    
+//            }
         }
     }
 }

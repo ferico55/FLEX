@@ -137,7 +137,6 @@
     
     BOOL _isSelectBankInstallment;
     BOOL _isSelectDurationInstallment;
-    BOOL _isUsingToppay;
     
     TransactionVoucherData *_voucherData;
     
@@ -372,6 +371,9 @@
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
         _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
+        if ([[_data objectForKey:@"show_webview"] integerValue] == 1) {
+            [self replaceViewWithWebView:[_data objectForKey:@"data"]];
+        }
         
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -739,12 +741,12 @@
                 default:
                     if([self isValidInput]) {
                         [self sendingProductDataToGA];
-                        if (_isUsingToppay) {
-                            _requestCart.param = [self paramCheckout];
-                            [_requestCart doRequestToppay];
-                        } else {
+                        if([self isHandlePaymentWithNative]) {
                             _requestCart.param = [self paramCheckout];
                             [_requestCart doRequestCheckout];
+                        } else if ([self isCanUseToppay]) {
+                            _requestCart.param = [self paramCheckout];
+                            [_requestCart doRequestToppay];
                         }
                     }
                 break;
@@ -828,6 +830,26 @@
             [self sendingProductDataToGA];
         }
     }
+}
+
+-(BOOL)isCanUseToppay
+{
+    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    
+    if ([gateway.toppay_flag isEqualToString:@""] && [gateway.toppay_flag isEqualToString:@"0"]) {
+        return NO;
+    } else
+        return YES;
+}
+
+-(BOOL)isHandlePaymentWithNative
+{
+    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    if([[self getGatewayIDNative] containsObject:gateway.gateway]) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (IBAction)tapBankInstallment:(id)sender {
@@ -991,18 +1013,18 @@
 
 -(NSArray *)getGatewayIDNative
 {
-    NSArray *nativeGatewayIDArray = [NSArray arrayWithObjects:
+    NSArray *nativeGatewayIDArray = @[
                                    @(TYPE_GATEWAY_TOKOPEDIA),
-                                   TYPE_GATEWAY_TRANSFER_BANK,
-                                   TYPE_GATEWAY_MANDIRI_CLICK_PAY,
-                                   TYPE_GATEWAY_MANDIRI_E_CASH,
-                                   TYPE_GATEWAY_BCA_CLICK_PAY,
-                                   TYPE_GATEWAY_BCA_KLIK_BCA,
-                                   TYPE_GATEWAY_CC,
-                                   TYPE_GATEWAY_INDOMARET,
-                                   TYPE_GATEWAY_BRI_EPAY,
-                                   TYPE_GATEWAY_INSTALLMENT,
-                                   nil];
+                                   @(TYPE_GATEWAY_TRANSFER_BANK),
+                                   @(TYPE_GATEWAY_MANDIRI_CLICK_PAY),
+                                   @(TYPE_GATEWAY_MANDIRI_E_CASH),
+                                   @(TYPE_GATEWAY_BCA_CLICK_PAY),
+                                   @(TYPE_GATEWAY_BCA_KLIK_BCA),
+                                   @(TYPE_GATEWAY_CC),
+                                   @(TYPE_GATEWAY_INDOMARET),
+                                   @(TYPE_GATEWAY_BRI_EPAY),
+                                   @(TYPE_GATEWAY_INSTALLMENT)
+                                   ];
 
     return nativeGatewayIDArray;
 }
@@ -1417,11 +1439,6 @@
         _saldoTokopediaAmountTextField.text = @"";
         
     }
-    
-//    if (!([gateway.toppay_flag isEqualToString:@""] || [gateway.toppay_flag isEqualToString:@"0"])&& [[self getGatewayIDNative] containsObject:gateway.gateway]) {
-        _isUsingToppay = YES;
-//    } else
-//        _isUsingToppay = NO;
     
     [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
     
@@ -2800,6 +2817,9 @@
         [_alertLoading show];
 
     }
+    else{
+        [_alertLoading show];
+    }
 }
 
 
@@ -3164,28 +3184,39 @@
 -(void)requestSuccessToppay:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    TransactionAction *action = [result objectForKey:@""];
+    TransactionAction *data = [result objectForKey:@""];
     
+//    [_delegate didFinishRequestCheckoutData:@{@"show_webview":@(1),
+//                                              @"data":data}];
+//    _checkoutButton.enabled = YES;
+//    _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
+//    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
     TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-    vc.toppayParam = action.result.parameter;
-    vc.URLString = action.result.redirect_url;
-    vc.gateway = @(-1);
-    
+    vc.toppayParam = data.result.parameter;
+    vc.URLString = data.result.redirect_url;
+    vc.gateway = @([_cart.gateway integerValue]);
     vc.delegate = self;
     
-    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    
-    [_act stopAnimating];
+    [self.navigationController pushViewController:vc animated:YES];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
-#pragma mark - Request Toppay
 -(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
-    //TODO::
+    [self refreshRequestCart];
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+-(void)replaceViewWithWebView:(TransactionAction*)data
+{
+    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+    vc.toppayParam = data.result.parameter;
+    vc.URLString = data.result.redirect_url;
+    vc.gateway = @([_cart.gateway integerValue]);
+    vc.delegate = self;
+    
+    self.view = vc.view;
 }
 
 #pragma mark - Request E-Money

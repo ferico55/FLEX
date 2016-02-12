@@ -19,7 +19,6 @@
 #define TAG_REQUEST_CC 18
 #define TAG_REQUEST_BRI_EPAY 19
 #define TAG_REQUEST_TOPPAY 20
-#define TAG_REQUEST_TOPPAY_THX 21
 
 @protocol RequestCartDelegate <NSObject>
 @required
@@ -61,6 +60,5 @@
 -(void)doRequestCC;
 -(void)dorequestBRIEPay;
 -(void)doRequestToppay;
--(void)doRequestToppayThx;
 
 @end
