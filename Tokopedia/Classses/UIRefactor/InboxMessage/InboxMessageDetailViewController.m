@@ -104,11 +104,9 @@
                                                                      target:self
                                                                      action:@selector(tap:)];
     
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
-//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-//    barButtonItem.tag = 10;
-//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    if (_data) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
+    }
 
     _operationQueue = [NSOperationQueue new];
     _page = 1;
@@ -856,6 +854,8 @@
     
         [self configureRestKit];
         [self loadData];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
     }
     else {
         [_act stopAnimating];

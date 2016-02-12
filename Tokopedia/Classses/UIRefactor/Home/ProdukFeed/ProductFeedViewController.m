@@ -183,17 +183,6 @@ CollectionViewSupplementaryDataSource
                                                object:nil];
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger row = [_collectionView numberOfItemsInSection:0] - 1;
-
-    if (indexPath.row == row) {
-        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
-            _isFailRequest = NO;
-            [_networkManager doRequest];
-        }
-    }
-    
-}
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
@@ -500,9 +489,30 @@ CollectionViewSupplementaryDataSource
         self.scrollDirection = ScrollDirectionDown;
     }
     self.lastContentOffset = scrollView.contentOffset.y;
+    
+    if( scrollView.contentSize.height == 0 ) {
+        return ;
+    }
+    
+    if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+            _isFailRequest = NO;
+            [_networkManager doRequest];
+        }
+    }
 }
 
 - (void)orientationChanged:(NSNotification *)note {
     [_collectionView reloadData];
 }
+
+#pragma mark - UIScrollViewDelegate
+
+static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize, UIEdgeInsets contentInset, CGRect bounds) {
+    CGFloat buffer = CGRectGetHeight(bounds) - contentInset.top - contentInset.bottom;
+    const CGFloat maxVisibleY = (contentOffset.y + bounds.size.height);
+    const CGFloat actualMaxY = (contentSize.height + contentInset.bottom);
+    return ((maxVisibleY + buffer) >= actualMaxY);
+}
+
 @end

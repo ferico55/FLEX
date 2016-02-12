@@ -31,6 +31,7 @@
 #import "NoResultReusableView.h"
 
 #import "TagManagerHandler.h"
+#import "NavigationHelper.h"
 
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
@@ -101,6 +102,8 @@
 
 @implementation InboxResolutionCenterComplainViewController{
     NoResultReusableView *_noResultView;
+    __weak IBOutlet UIButton *btnStatusPemesanan;
+    __weak IBOutlet UIButton *btnDaftarTransaksi;
 }
 
 -(instancetype)init{
@@ -127,6 +130,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        [btnDaftarTransaksi setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnStatusPemesanan setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btnDaftarTransaksi.userInteractionEnabled = btnStatusPemesanan.userInteractionEnabled = NO;
+    }
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
