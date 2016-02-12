@@ -8,3 +8,7 @@
 #import "ProductFeedList.h"
 #import "ProductCell.h"
 #import "ProductModelView.h"
+
+#import "SwipeView.h"
+#import "BannerList.h"
+#import <QuartzCore/QuartzCore.h>
