@@ -497,7 +497,7 @@
         }
     }
     if (tag == TAG_REQUEST_CC)
-    {
+    { 
         TransactionCC *actionCC = stat;
         
         if (actionCC.result.data_credit.cc_agent != nil && ![actionCC.result.data_credit.cc_agent isEqualToString:@"0"] && ![actionCC.result.data_credit.cc_agent isEqualToString:@""]) {
@@ -535,8 +535,13 @@
         }
         else
         {
-            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
+            if (action.result.is_success == 1){
+            
+            } else {
+                [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+                [_delegate actionAfterFailRequestMaxTries:tag];
+    
+            }
         }
     }
     if (tag == TAG_REQUEST_TOPPAY_THX) {

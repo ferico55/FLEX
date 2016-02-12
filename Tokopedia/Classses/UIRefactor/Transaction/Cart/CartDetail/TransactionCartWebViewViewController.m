@@ -142,8 +142,8 @@
         url = [NSURL URLWithString:urlAddress];
     }
     else{
-        //TODO:: USE _URLRequest
-        urlAddress =          @"http://pay-staging.tokopedia.com/v1/payment";
+        //TODO:: USE _URLString
+        urlAddress = _URLString;//@"http://pay-staging.tokopedia.com/v1/payment";
         // DATA TO POST
         if(_toppayParam) {
             NSString *postString                = [self getFormDataString:_toppayParam];
@@ -214,13 +214,9 @@
     outString                   = [self replace:outString lookFor:@"&" replaceWith:@"%26"];
     outString                   = [self replace:outString lookFor:@"?" replaceWith:@"%3F"];
     outString                   = [self replace:outString lookFor:@"=" replaceWith:@"%3D"];
-//    outString                   = [self replace:outString lookFor:@"+" replaceWith:@"%2B"];
     outString                   = [self replace:outString lookFor:@";" replaceWith:@"%3B"];
-//    outString                   = [self replace:outString lookFor:@"[" replaceWith:@"%5B"];
-//    outString                   = [self replace:outString lookFor:@"]" replaceWith:@"%5D"];
-//    outString                   = [self replace:outString lookFor:@":" replaceWith:@"%3A"];
-//    outString                   = [self replace:outString lookFor:@" " replaceWith:@"+"];
-//    outString                   = [self replace:outString lookFor:@"@" replaceWith:@"%40"];
+    outString                   = [self replace:outString lookFor:@"+" replaceWith:@"%2B"];
+    outString                   = [self replace:outString lookFor:@" " replaceWith:@"+"];
     
     return outString;
 }
