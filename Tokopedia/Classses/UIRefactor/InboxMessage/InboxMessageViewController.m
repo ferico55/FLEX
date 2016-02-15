@@ -68,7 +68,6 @@ typedef enum TagRequest {
 
 @implementation InboxMessageViewController
 {
-    BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL _iseditmode;
     
@@ -123,7 +122,6 @@ typedef enum TagRequest {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isrefreshview = NO;
-        _isnodata = YES;
     }
     
     return self;
@@ -176,10 +174,6 @@ typedef enum TagRequest {
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
-    
-    if (_messages.count > 0) {
-        _isnodata = NO;
-    }
     
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     [titleLabel setTitle:@"All" forState:UIControlStateNormal];
@@ -282,7 +276,7 @@ typedef enum TagRequest {
     NSMutableArray *arr = [[NSMutableArray alloc] init];
     NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
     NSUInteger index = 1;
-    
+
     for (item in _messages_selected) {
         
         NSInteger row = [item row];
@@ -299,10 +293,6 @@ typedef enum TagRequest {
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
     [_messages_selected removeAllObjects];
-    if(_messages==nil || _messages.count==0) {
-        _isnodata = YES;
-//        _table.tableFooterView = [self getNoResult];
-    }
     [_table endUpdates];
     
 
@@ -390,10 +380,6 @@ typedef enum TagRequest {
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -1003,12 +989,10 @@ typedef enum TagRequest {
         [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 
         if (_messages.count >0) {
-            _isnodata = NO;
             _urinext =  message.result.paging.uri_next;
             _page = [[_networkManager splitUriToPage:_urinext] integerValue];
             [_noResultView removeFromSuperview];
         } else {
-            _isnodata = YES;
             //_table.tableFooterView = _noResultView;
             NSString *text;
             NSString *currentCategory = [_data objectForKey:@"nav"];
