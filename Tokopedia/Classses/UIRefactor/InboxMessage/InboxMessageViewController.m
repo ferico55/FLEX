@@ -51,8 +51,6 @@
 
 @property (nonatomic, strong) NSMutableArray *messages;
 @property (nonatomic, strong) NSDictionary *userinfo;
-@property (nonatomic, strong) NSMutableArray *messages_selected;
-
 
 @property (weak, nonatomic) IBOutlet UIButton *buttontrash;
 @property (weak, nonatomic) IBOutlet UIButton *buttonarchive;
@@ -151,7 +149,6 @@ typedef enum TagRequest {
     
     /** create new **/
     _messages = [NSMutableArray new];
-    _messages_selected = [NSMutableArray new];
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
     _encodeDecodeManager = [EncodeDecoderManager new];
@@ -277,7 +274,7 @@ typedef enum TagRequest {
     NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
     NSUInteger index = 1;
 
-    for (item in _messages_selected) {
+    for (item in [_table indexPathsForSelectedRows]) {
         
         NSInteger row = [item row];
         [discardedItems addIndex:row];
@@ -291,11 +288,8 @@ typedef enum TagRequest {
     NSString *joinedArr = [arr componentsJoinedByString:@"and"];
     
     [_table beginUpdates];
-    [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
-    [_messages_selected removeAllObjects];
+    [_table deleteRowsAtIndexPaths:[_table indexPathsForSelectedRows] withRowAnimation:UITableViewRowAnimationFade];
     [_table endUpdates];
-    
-
     
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
@@ -337,21 +331,9 @@ typedef enum TagRequest {
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(_iseditmode || _table.isEditing) {
-        if ([_messages_selected containsObject:indexPath]) {
-            [_messages_selected removeObject:indexPath];
-        }
-    }
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if(_iseditmode || _table.isEditing) {
-        if (![_messages_selected containsObject:indexPath]) {
-            [_messages_selected addObject:indexPath];
-        }
     } else {
         NSInteger index = indexPath.row;
         InboxMessageList *list = _messages[index];
@@ -440,7 +422,6 @@ typedef enum TagRequest {
 
         [_table reloadData];
         [self performSelector:@selector(disableEditing) withObject:nil afterDelay:0.05];
-        [_messages_selected removeAllObjects];
     }
 }
 
@@ -530,7 +511,6 @@ typedef enum TagRequest {
     _requestcount = 0;
     _isrefreshview = YES;
     _isrefreshnav = YES;
-    [_messages_selected removeAllObjects];
     
     [_table reloadData];
     /** request data **/
@@ -716,8 +696,6 @@ typedef enum TagRequest {
 -(void) undoactionmessage {
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:[_data objectForKey:@"nav"], @"vc", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
-    
-    [_messages_selected removeAllObjects];
 }
 
 
@@ -737,14 +715,7 @@ typedef enum TagRequest {
 {
     
     if(_iseditmode) {
-        if ([_messages_selected containsObject:indexpath]) {
-            [_messages_selected removeObject:indexpath];
-        }
-        else  {
-            [_messages_selected addObject:indexpath];
-        }
         
-        [_table reloadData];
     } else {
         NSInteger index = indexpath.row;
         InboxMessageList *list = _messages[index];
@@ -793,13 +764,6 @@ typedef enum TagRequest {
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((InboxMessageCell*) cell).indexpath;
         InboxMessageList *list = _messages[indexPath.row];
-        
-        if ([_messages_selected containsObject:indexPath]) {
-            [_messages_selected removeObject:indexPath];
-        }
-        else  {
-            [_messages_selected addObject:indexPath];
-        }
         
         [_datainput setObject:list.message_id forKey:@"message_id"];
 
