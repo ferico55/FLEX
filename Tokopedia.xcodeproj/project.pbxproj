@@ -21,6 +21,10 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		851F907D1C717ABE00BB38E4 /* CategoryResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F907C1C717ABE00BB38E4 /* CategoryResponse.m */; };
+		851F90801C717AD800BB38E4 /* CategoryData.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F907F1C717AD800BB38E4 /* CategoryData.m */; };
+		851F90831C717BED00BB38E4 /* CategoryResponseStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F90821C717BED00BB38E4 /* CategoryResponseStatus.m */; };
+		851F90861C717C9C00BB38E4 /* CategoryDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F90851C717C9C00BB38E4 /* CategoryDetail.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2101,6 +2105,14 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		851F907B1C717ABE00BB38E4 /* CategoryResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryResponse.h; sourceTree = "<group>"; };
+		851F907C1C717ABE00BB38E4 /* CategoryResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResponse.m; sourceTree = "<group>"; };
+		851F907E1C717AD800BB38E4 /* CategoryData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryData.h; sourceTree = "<group>"; };
+		851F907F1C717AD800BB38E4 /* CategoryData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryData.m; sourceTree = "<group>"; };
+		851F90811C717BED00BB38E4 /* CategoryResponseStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryResponseStatus.h; sourceTree = "<group>"; };
+		851F90821C717BED00BB38E4 /* CategoryResponseStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResponseStatus.m; sourceTree = "<group>"; };
+		851F90841C717C9C00BB38E4 /* CategoryDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryDetail.h; sourceTree = "<group>"; };
+		851F90851C717C9C00BB38E4 /* CategoryDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryDetail.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5616,6 +5628,14 @@
 				859053451C6B1402009E0D71 /* CategoryObj.m */,
 				859053461C6B1402009E0D71 /* CategoryResult.h */,
 				859053471C6B1402009E0D71 /* CategoryResult.m */,
+				851F907B1C717ABE00BB38E4 /* CategoryResponse.h */,
+				851F907C1C717ABE00BB38E4 /* CategoryResponse.m */,
+				851F90811C717BED00BB38E4 /* CategoryResponseStatus.h */,
+				851F90821C717BED00BB38E4 /* CategoryResponseStatus.m */,
+				851F907E1C717AD800BB38E4 /* CategoryData.h */,
+				851F907F1C717AD800BB38E4 /* CategoryData.m */,
+				851F90841C717C9C00BB38E4 /* CategoryDetail.h */,
+				851F90851C717C9C00BB38E4 /* CategoryDetail.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -12017,6 +12037,7 @@
 				85905FFA1C6B1409009E0D71 /* Catalog.m in Sources */,
 				859061791C6B1409009E0D71 /* TxOrderConfirmedDetailResult.m in Sources */,
 				859063E91C6B1409009E0D71 /* ShopNotesDetailViewController.m in Sources */,
+				851F90801C717AD800BB38E4 /* CategoryData.m in Sources */,
 				859062541C6B1409009E0D71 /* ForgotPasswordViewController.m in Sources */,
 				85905FAE1C6B1409009E0D71 /* URLCacheConnection.m in Sources */,
 				859060D71C6B1409009E0D71 /* RequestObject.m in Sources */,
@@ -12389,6 +12410,7 @@
 				859061D51C6B1409009E0D71 /* TKPDAlertView.m in Sources */,
 				859061511C6B1409009E0D71 /* TransactionCartList.m in Sources */,
 				859064991C6B1409009E0D71 /* ProductSingleViewCell.m in Sources */,
+				851F90861C717C9C00BB38E4 /* CategoryDetail.m in Sources */,
 				859061751C6B1409009E0D71 /* TxOrderConfirmedDetail.m in Sources */,
 				8590612B1C6B1409009E0D71 /* JNE.m in Sources */,
 				85905FAC1C6B1409009E0D71 /* TPAnalytics.m in Sources */,
@@ -12690,6 +12712,7 @@
 				859060151C6B1409009E0D71 /* ReviewResult.m in Sources */,
 				859062701C6B1409009E0D71 /* GeneralTableViewController.m in Sources */,
 				8590609D1C6B1409009E0D71 /* NotificationSales.m in Sources */,
+				851F907D1C717ABE00BB38E4 /* CategoryResponse.m in Sources */,
 				8590639F1C6B1409009E0D71 /* SearchResultShopCell.m in Sources */,
 				859062421C6B1409009E0D71 /* StarsRateView.m in Sources */,
 				859061421C6B1409009E0D71 /* TransactionAction.m in Sources */,
@@ -12934,6 +12957,7 @@
 				8590618F1C6B1409009E0D71 /* UploadImage.m in Sources */,
 				859061301C6B1409009E0D71 /* ShippingContact.m in Sources */,
 				859060191C6B1409009E0D71 /* Talk.m in Sources */,
+				851F90831C717BED00BB38E4 /* CategoryResponseStatus.m in Sources */,
 				859061091C6B1409009E0D71 /* OpenShopPictureResult.m in Sources */,
 				859062931C6B1409009E0D71 /* TKPDTabHomeViewController.m in Sources */,
 				859061531C6B1409009E0D71 /* TransactionCC.m in Sources */,

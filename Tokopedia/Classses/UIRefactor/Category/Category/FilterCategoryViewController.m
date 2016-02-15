@@ -7,6 +7,7 @@
 //
 
 #import "FilterCategoryViewController.h"
+#import "CategoryResponse.h"
 
 #define cellIdentifier @"filterCategoryCell"
 
@@ -59,14 +60,6 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.delegate = self;
     [networkManager doRequest];
-    
-    NSString *str = @"https://hades.tokopedia.com/v0/categories";
-    NSURL *url = [NSURL URLWithString:str];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    NSError *error = nil;
-    id response = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-    NSArray *categories = [[response objectForKey:@"data"] objectForKey:@"categories"];
-    self.categories = [NSMutableArray arrayWithArray:categories];
 }
 
 #pragma mark - Table view data source
@@ -84,11 +77,10 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    NSDictionary *category = [self.categories objectAtIndex:indexPath.row];
-    NSInteger tree = [[category objectForKey:@"tree"] integerValue];
-    cell.textLabel.text = [category objectForKey:@"name"];
+    CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
+    cell.textLabel.text = category.name;
     cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-    cell.indentationLevel = tree;
+    cell.indentationLevel = [category.tree integerValue];
     if ([self.selectedIndexPath isEqual:indexPath]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
@@ -100,121 +92,128 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    NSDictionary *category = [self.categories objectAtIndex:indexPath.row];
-
-    NSArray *child = [category objectForKey:@"child"];
-    if (child.count > 0) {
-        [self.categories removeObjectsInArray:child];
-    }
+    CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
     
     NSInteger row = indexPath.row + 1;
-    NSRange range = NSMakeRange(row, child.count);
+    NSRange range = NSMakeRange(row, category.child.count);
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-    [self.categories insertObjects:child atIndexes:indexSet];
+    [self.categories insertObjects:category.child atIndexes:indexSet];
+    
+    NSMutableArray *categories = [NSMutableArray new];
+    
+    NSInteger tree = [category.tree integerValue];
+    NSInteger parent = [category.parent integerValue];
+    NSInteger id = [category.categoryId integerValue];
+    
+    if (tree == 1) {
+        for (CategoryDetail *category in self.categories) {
+            if ([category.tree integerValue] > 1 &&
+                [category.parent integerValue] != [category.categoryId integerValue]) {
+                [categories addObject:category];
+            }
+        }
+    } else if (tree == 2) {
+        for (CategoryDetail *category in self.categories) {
+            if ([category.tree integerValue]) {
+                
+            }
+        }
+    } else if (tree == 3) {
+
+    }
+    
+    [self.categories removeObjectsInArray:categories];
     
     self.selectedIndexPath = indexPath;
+    
     [self.tableView reloadData];
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//
-//    if (self.selectedIndexPath) {
-//        UITableViewCell *previousCell = [tableView cellForRowAtIndexPath:self.selectedIndexPath];
-//        previousCell.accessoryType = UITableViewCellAccessoryNone;
-//    }
-//    
-//    UITableViewCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
-//    currentCell.accessoryType = UITableViewCellAccessoryCheckmark;
-//    
-//    NSDictionary *category = [self.categories objectAtIndex:indexPath.row];
-//    NSArray *child = [category objectForKey:@"child"];
-//    // sebelumnya sudah klik kategori
-//    if (self.selectedCategory) {
-//        // klik kategory yg sama
-//        if ([self.selectedCategory isEqual:category]) {
-//            // deselect level 1 atau 2
-//            if (child.count > 0) {
-//                if ([[self.selectedCategory objectForKey:@"id"] isEqualToString:[category objectForKey:@"id"]]) {
-//                    [self showCategories:child afterIndexPath:indexPath];
-//                } else {
-//                    [self hideCategories:child afterIndexPath:indexPath];
-//                }
-//            }
-//            // deselect level 3
-//            else {
-//                // ga usah ngapa2in
-//            }
-//        }
-//        // klik beda category
-//        else {
-//            if (child.count > 0) {
-//                NSString *previousSelectedCategoryId = [self.selectedCategory objectForKey:@"id"];
-//                NSString *selectedParentId = [[category objectForKey:@"parent"] stringValue];
-//                if ([previousSelectedCategoryId isEqualToString:selectedParentId]) {
-//                    [self showCategories:child afterIndexPath:indexPath];
-//                } else {
-//                    [self hideCategories:[self.selectedCategory objectForKey:@"child"] afterIndexPath:self.selectedIndexPath];
-//                    self.selectedCategory = category;
-//                    self.selectedIndexPath = indexPath;
-//                    [self showCategories:child afterIndexPath:indexPath];
-//                }
-//            } else {
-//                
-//            }
-//        }
-//    }
-//    // belum ada kategori yg di klik
-//    else {
-//        // select category di level 1 atau 2
-//        if (child.count > 0) {
-//            [self showCategories:child afterIndexPath:indexPath];
-//        }
-//        // select category terakhir
-//        else {
-//            // ga usah ngapa2in
-//        }
-//    }
-//    self.selectedCategory = category;
-//    self.selectedIndexPath = indexPath;
-//}
+#pragma mark - Tokopedia network
 
-//- (void)showCategories:(NSArray *)categories afterIndexPath:(NSIndexPath *)indexPath {
-//    NSInteger row = indexPath.row + 1;
-//    NSRange range = NSMakeRange(row, categories.count);
-//    // insert objects
-//    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-//    [self.categories insertObjects:categories atIndexes:indexSet];
-//    // insert rows animation
-////    NSArray *indexPathArray = [self indexPathsFromRange:range];
-////    [self.tableView beginUpdates];
-////    [self.tableView insertRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationAutomatic];
-////    [self.tableView endUpdates];
-//    [self.tableView reloadData];
-//}
-//
-//- (void)hideCategories:(NSArray *)categories afterIndexPath:(NSIndexPath *)indexPath {
-//    // remove objects
-//    [self.categories removeObjectsInArray:categories];
-//    // remove rows animations
-////    NSInteger row = indexPath.row + 1;
-////    NSArray *indexPathArray = [self indexPathsFromRange:NSMakeRange(row, categories.count)];
-////    [self.tableView beginUpdates];
-////    [self.tableView deleteRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationAutomatic];
-////    [self.tableView endUpdates];
-//    [self.tableView reloadData];
-//}
-//
-//- (NSArray *)indexPathsFromRange:(NSRange)range {
-//    NSMutableArray *indexArray = [NSMutableArray new];
-//    NSInteger location = range.location;
-//    NSInteger length = range.length;
-//    while (location <= length) {
-//        [indexArray addObject:[NSIndexPath indexPathForRow:location inSection:0]];
-//        location++;
-//    }
-//    return indexArray;
-//}
+- (NSString *)getPath:(int)tag {
+    return @"v0/categories";
+}
+
+- (NSDictionary *)getParameter:(int)tag {
+    return @{};
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
+}
+
+- (id)getObjectManager:(int)tag {
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"https://hades-staging.tokopedia.com/"];
+    
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[CategoryResponse class]];
+
+    RKObjectMapping *responseStatusMapping = [RKObjectMapping mappingForClass:[CategoryResponseStatus class]];
+    [responseStatusMapping addAttributeMappingsFromArray:@[@"error_code", @"message"]];
+    
+    RKObjectMapping *responseDataMapping = [RKObjectMapping mappingForClass:[CategoryData class]];
+
+    NSDictionary *categoryIdMapping = @{@"categoryId" : @"id"};
+    NSArray *categoryAttributeMappings = @[@"name", @"weight", @"parent", @"tree", @"has_catalog", @"identifer", @"url"];
+    
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryIdMapping];
+    [categoryMapping addAttributeMappingsFromArray:categoryAttributeMappings];
+    
+    RKObjectMapping *categoryChildMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryChildMapping addAttributeMappingsFromDictionary:categoryIdMapping];
+    [categoryChildMapping addAttributeMappingsFromArray:categoryAttributeMappings];
+    
+    RKObjectMapping *categoryLastChildMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryLastChildMapping addAttributeMappingsFromDictionary:categoryIdMapping];
+    [categoryLastChildMapping addAttributeMappingsFromArray:categoryAttributeMappings];
+    
+    RKRelationshipMapping *responseStatusRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"status" toKeyPath:@"status" withMapping:responseStatusMapping];
+    [responseMapping addPropertyMapping:responseStatusRelationship];
+
+    RKRelationshipMapping *reponseDataRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:responseDataMapping];
+    [responseMapping addPropertyMapping:reponseDataRelationship];
+
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"categories" toKeyPath:@"categories" withMapping:categoryMapping];
+    [responseDataMapping addPropertyMapping:categoryRelationship];
+
+    RKRelationshipMapping *categoryChildRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:categoryMapping];
+    [categoryMapping addPropertyMapping:categoryChildRelationship];
+
+    RKRelationshipMapping *categoryLastChildRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:categoryMapping];
+    [categoryChildMapping addPropertyMapping:categoryLastChildRelationship];
+    
+    NSString *path = [self getPath:0];
+    NSInteger method = [self getRequestMethod:0];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:method pathPattern:path keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    return objectManager;
+}
+
+- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
+    CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
+    return response.status.message;
+}
+
+- (void)actionBeforeRequest:(int)tag {
+    
+}
+
+- (void)actionAfterRequest:(RKMappingResult *)mappingResult
+             withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
+    self.categories = [response.data.categories mutableCopy];
+    [self.tableView reloadData];
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    
+}
 
 @end
