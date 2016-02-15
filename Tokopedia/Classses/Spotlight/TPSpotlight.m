@@ -65,14 +65,13 @@ typedef NS_ENUM(NSInteger, SearchIndexingStatus) {
     CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:productDeeplink
                                                                domainIdentifier:@"product"
                                                                    attributeSet:attributeSet];
-    
+
     [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item]
                                                    completionHandler:^(NSError * _Nullable error) {
                                                        if (error) {
                                                            NSLog(@"Spotlight index error %@", error);
                                                        }
-    }];
-    
+                                                   }];
     return activity;
 }
 
