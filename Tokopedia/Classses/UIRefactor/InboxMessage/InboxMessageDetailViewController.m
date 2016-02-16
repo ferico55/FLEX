@@ -335,37 +335,16 @@
     }
     
     // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageDetail class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    RKObjectMapping *statusMapping = [InboxMessageDetail mapping];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailResult class]];
     
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
+    RKObjectMapping *pagingMapping = [Paging mapping];
 
     
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 KTKPDMESSAGE_ACTIONKEY,
-                                                 KTKPDMESSAGE_CREATEBYKEY,
-                                                 KTKPDMESSAGE_REPLYKEY,
-                                                 KTKPDMESSAGE_REPLYIDKEY
-                                                 KTKPDMESSAGE_BUTTONSPAMKEY,
-                                                 KTKPDMESSAGE_REPLYTIMEKEY,
-                                                 KTKPDMESSAGE_ISMODKEY,
-                                                 KTKPDMESSAGE_USERIDKEY,
-                                                 KTKPDMESSAGE_USERNAMEKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY,
-                                                 KTKPDMESSAGE_USER_LABEL,
-                                                 KTKPDMESSAGE_USER_LABEL_ID
-                                                 ]];
+    RKObjectMapping *listMapping = [InboxMessageDetailList mapping];
     
-    RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
-    [betweenMapping addAttributeMappingsFromArray:@[
-                                                     KTKPDMESSAGE_USERIDKEY,
-                                                     KTKPDMESSAGE_USERNAMEKEY
-                                                     ]];
+    RKObjectMapping *betweenMapping = [InboxMessageDetailBetween mapping];
     
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];

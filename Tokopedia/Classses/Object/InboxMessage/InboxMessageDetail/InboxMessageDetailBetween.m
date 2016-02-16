@@ -7,7 +7,17 @@
 //
 
 #import "InboxMessageDetailBetween.h"
+#import "inbox.h"
 
 @implementation InboxMessageDetailBetween
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
+    [betweenMapping addAttributeMappingsFromArray:@[
+                                                    KTKPDMESSAGE_USERIDKEY,
+                                                    KTKPDMESSAGE_USERNAMEKEY
+                                                    ]];
+    return betweenMapping;
+}
 
 @end

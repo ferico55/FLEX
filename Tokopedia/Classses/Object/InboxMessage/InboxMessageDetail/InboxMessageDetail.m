@@ -10,4 +10,12 @@
 
 @implementation InboxMessageDetail
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageDetail class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    return statusMapping;
+}
+
 @end
