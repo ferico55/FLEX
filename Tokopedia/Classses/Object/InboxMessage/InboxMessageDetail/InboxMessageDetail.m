@@ -11,11 +11,11 @@
 @implementation InboxMessageDetail
 
 + (RKObjectMapping *)mapping {
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageDetail class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:self];
+    [statusMapping addAttributeMappingsFromDictionary:@{@"status":@"status",
+                                                        @"server_process_time":@"server_process_time"}];
     
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:[InboxMessageDetailResult mapping]];
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[InboxMessageDetailResult mapping]];
     [statusMapping addPropertyMapping:resulRel];
     
     return statusMapping;

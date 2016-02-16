@@ -12,10 +12,10 @@
 @implementation InboxMessageDetailBetween
 
 + (RKObjectMapping *)mapping {
-    RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
+    RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:self];
     [betweenMapping addAttributeMappingsFromArray:@[
-                                                    KTKPDMESSAGE_USERIDKEY,
-                                                    KTKPDMESSAGE_USERNAMEKEY
+                                                    @"user_id",
+                                                    @"user_name"
                                                     ]];
     return betweenMapping;
 }

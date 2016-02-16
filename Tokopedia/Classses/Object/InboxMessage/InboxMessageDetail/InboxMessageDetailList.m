@@ -16,20 +16,20 @@
 }
 
 + (RKObjectMapping *)mapping {
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailList class]];
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:self];
     [listMapping addAttributeMappingsFromArray:@[
-                                                 KTKPDMESSAGE_ACTIONKEY,
-                                                 KTKPDMESSAGE_CREATEBYKEY,
-                                                 KTKPDMESSAGE_REPLYKEY,
-                                                 KTKPDMESSAGE_REPLYIDKEY
-                                                 KTKPDMESSAGE_BUTTONSPAMKEY,
-                                                 KTKPDMESSAGE_REPLYTIMEKEY,
-                                                 KTKPDMESSAGE_ISMODKEY,
-                                                 KTKPDMESSAGE_USERIDKEY,
-                                                 KTKPDMESSAGE_USERNAMEKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY,
-                                                 KTKPDMESSAGE_USER_LABEL,
-                                                 KTKPDMESSAGE_USER_LABEL_ID
+                                                 @"message_action",
+                                                 @"message_create_by",
+                                                 @"message_reply",
+                                                 @"message_reply_id",
+                                                 @"message_button_spam",
+                                                 @"message_reply_time_fmt",
+                                                 @"is_moderator",
+                                                 @"user_id",
+                                                 @"user_name",
+                                                 @"user_image",
+                                                 @"user_label",
+                                                 @"user_label_id"
                                                  ]];
     
     return listMapping;
