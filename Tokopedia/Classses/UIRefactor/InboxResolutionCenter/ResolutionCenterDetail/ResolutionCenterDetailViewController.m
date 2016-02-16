@@ -286,7 +286,10 @@
         {
             NSInteger cellRowHeight = CELL_SYSTEM_HEIGHT;
             ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
-            
+            NSString *string = [NSString convertHTML:[self markConversation:conversation]];
+
+            cellRowHeight += [self findHeightForText:string?:@"" havingWidth:cell.markLabel.frame.size.width andFont:FONT_GOTHAM_BOOK_16].height;
+
             rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
             if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
                 rowHeight = cellRowHeight + deltaHeightCell;
@@ -300,12 +303,7 @@
             
             //Calculate the expected size based on the font and linebreak mode of your label
             NSString *string = [NSString convertHTML:[self markConversation:conversation]];
-            CGSize maximumLabelSize = CGSizeMake(190,9999);
-            CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_12
-                                          constrainedToSize:maximumLabelSize
-                                              lineBreakMode:NSLineBreakByTruncatingTail];
-            
-            cellRowHeight += expectedLabelSize.height;
+            cellRowHeight += [self findHeightForText:string?:@"" havingWidth:320.0f andFont:FONT_GOTHAM_BOOK_16].height;
             
             rowHeight = cellRowHeight + deltaHeightCell;
             if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
@@ -325,6 +323,17 @@
         return rowHeight;
     }
     return UITableViewAutomaticDimension;
+}
+
+
+- (CGSize)findHeightForText:(NSString *)text havingWidth:(CGFloat)widthValue andFont:(UIFont *)font {
+    CGSize size = CGSizeZero;
+    if (text) {
+        //iOS 7
+        CGRect frame = [text boundingRectWithSize:CGSizeMake(widthValue, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:font } context:nil];
+        size = CGSizeMake(frame.size.width, frame.size.height + 1);
+    }
+    return size;
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
