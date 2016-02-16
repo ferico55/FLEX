@@ -111,7 +111,7 @@
 - (IBAction)gesture:(id)sender {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10) {
-        [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
+        [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
     }
     else
     {

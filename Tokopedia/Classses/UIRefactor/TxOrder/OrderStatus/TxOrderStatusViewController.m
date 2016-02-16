@@ -1182,7 +1182,7 @@
 -(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
-    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:order.order_detail.detail_pdf_uri];
+    [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:order.order_detail.detail_pdf_uri];
 }
 
 

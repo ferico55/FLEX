@@ -63,7 +63,7 @@
     NSUInteger *_indexImage;
     NSArray *_imageDescriptions;
 }
--(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
++(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
