@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CategoryResponseStatus.h"
 #import "CategoryData.h"
 #import "CategoryDetail.h"
 
 @interface CategoryResponse : NSObject
 
-@property (nonatomic, strong) CategoryResponseStatus *status;
-@property (nonatomic, strong) CategoryData *data;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) CategoryData *result;
 
 @end

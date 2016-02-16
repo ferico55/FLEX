@@ -23,7 +23,6 @@
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
 		851F907D1C717ABE00BB38E4 /* CategoryResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F907C1C717ABE00BB38E4 /* CategoryResponse.m */; };
 		851F90801C717AD800BB38E4 /* CategoryData.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F907F1C717AD800BB38E4 /* CategoryData.m */; };
-		851F90831C717BED00BB38E4 /* CategoryResponseStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F90821C717BED00BB38E4 /* CategoryResponseStatus.m */; };
 		851F90861C717C9C00BB38E4 /* CategoryDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F90851C717C9C00BB38E4 /* CategoryDetail.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -2109,8 +2108,6 @@
 		851F907C1C717ABE00BB38E4 /* CategoryResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResponse.m; sourceTree = "<group>"; };
 		851F907E1C717AD800BB38E4 /* CategoryData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryData.h; sourceTree = "<group>"; };
 		851F907F1C717AD800BB38E4 /* CategoryData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryData.m; sourceTree = "<group>"; };
-		851F90811C717BED00BB38E4 /* CategoryResponseStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryResponseStatus.h; sourceTree = "<group>"; };
-		851F90821C717BED00BB38E4 /* CategoryResponseStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResponseStatus.m; sourceTree = "<group>"; };
 		851F90841C717C9C00BB38E4 /* CategoryDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryDetail.h; sourceTree = "<group>"; };
 		851F90851C717C9C00BB38E4 /* CategoryDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryDetail.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -5630,8 +5627,6 @@
 				859053471C6B1402009E0D71 /* CategoryResult.m */,
 				851F907B1C717ABE00BB38E4 /* CategoryResponse.h */,
 				851F907C1C717ABE00BB38E4 /* CategoryResponse.m */,
-				851F90811C717BED00BB38E4 /* CategoryResponseStatus.h */,
-				851F90821C717BED00BB38E4 /* CategoryResponseStatus.m */,
 				851F907E1C717AD800BB38E4 /* CategoryData.h */,
 				851F907F1C717AD800BB38E4 /* CategoryData.m */,
 				851F90841C717C9C00BB38E4 /* CategoryDetail.h */,
@@ -12957,7 +12952,6 @@
 				8590618F1C6B1409009E0D71 /* UploadImage.m in Sources */,
 				859061301C6B1409009E0D71 /* ShippingContact.m in Sources */,
 				859060191C6B1409009E0D71 /* Talk.m in Sources */,
-				851F90831C717BED00BB38E4 /* CategoryResponseStatus.m in Sources */,
 				859061091C6B1409009E0D71 /* OpenShopPictureResult.m in Sources */,
 				859062931C6B1409009E0D71 /* TKPDTabHomeViewController.m in Sources */,
 				859061531C6B1409009E0D71 /* TransactionCC.m in Sources */,

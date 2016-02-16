@@ -14,7 +14,7 @@
 @interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *categories;
-@property (strong, nonatomic) NSIndexPath *selectedIndexPath;
+@property (strong, nonatomic) CategoryDetail *selectedCategory;
 
 @end
 
@@ -80,8 +80,9 @@
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
     cell.textLabel.text = category.name;
     cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-    cell.indentationLevel = [category.tree integerValue];
-    if ([self.selectedIndexPath isEqual:indexPath]) {
+    NSInteger level = [category.tree integerValue] - 1;
+    cell.indentationLevel = level * 2;
+    if ([category.categoryId isEqualToString:_selectedCategory.categoryId]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -93,40 +94,58 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
+
+    if ([self.selectedCategory isEqual:category]) {
+        [self deselectCategory:category];
+    } else {
+        [self selectCategory:category];
+    }
     
-    NSInteger row = indexPath.row + 1;
-    NSRange range = NSMakeRange(row, category.child.count);
+    NSInteger index = [self.categories indexOfObject:category];
+    
+    self.selectedCategory = category;
+    
+    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:selectedIndexPath];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    [tableView reloadData];
+}
+
+- (void)selectCategory:(CategoryDetail *)category {
+    NSInteger index = [self.categories indexOfObject:category];
+    NSRange range = NSMakeRange(index + 1, category.child.count);
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
     [self.categories insertObjects:category.child atIndexes:indexSet];
     
+    NSInteger selectedTree = [category.tree integerValue];
+    NSInteger selectedParent = [category.parent integerValue];
+    NSInteger selectedId = [category.categoryId integerValue];
+    
     NSMutableArray *categories = [NSMutableArray new];
-    
-    NSInteger tree = [category.tree integerValue];
-    NSInteger parent = [category.parent integerValue];
-    NSInteger id = [category.categoryId integerValue];
-    
-    if (tree == 1) {
-        for (CategoryDetail *category in self.categories) {
-            if ([category.tree integerValue] > 1 &&
-                [category.parent integerValue] != [category.categoryId integerValue]) {
+    for (CategoryDetail *category in self.categories) {
+        if (selectedTree == 1) {
+            if ([category.tree integerValue] == 2 && [category.parent integerValue] != selectedId) {
+                [categories addObject:category];
+            } else if ([category.tree integerValue] == 3) {
+                [categories addObject:category];
+            }
+        } else if (selectedTree == 2) {
+            if ([category.tree integerValue] == 2 && [category.parent integerValue] != selectedParent) {
+                [categories addObject:category];
+            } else if ([category.tree integerValue] == 3 && [category.parent integerValue] != selectedId) {
                 [categories addObject:category];
             }
         }
-    } else if (tree == 2) {
-        for (CategoryDetail *category in self.categories) {
-            if ([category.tree integerValue]) {
-                
-            }
-        }
-    } else if (tree == 3) {
-
     }
-    
     [self.categories removeObjectsInArray:categories];
+}
+
+- (void)deselectCategory:(CategoryDetail *)category {
+    [self.categories removeObjectsInArray:category.child];
     
-    self.selectedIndexPath = indexPath;
-    
-    [self.tableView reloadData];
 }
 
 #pragma mark - Tokopedia network
@@ -147,13 +166,11 @@
     RKObjectManager *objectManager = [RKObjectManager sharedClient:@"https://hades-staging.tokopedia.com/"];
     
     RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[CategoryResponse class]];
-
-    RKObjectMapping *responseStatusMapping = [RKObjectMapping mappingForClass:[CategoryResponseStatus class]];
-    [responseStatusMapping addAttributeMappingsFromArray:@[@"error_code", @"message"]];
+    [responseMapping addAttributeMappingsFromArray:@[@"status"]];
     
     RKObjectMapping *responseDataMapping = [RKObjectMapping mappingForClass:[CategoryData class]];
 
-    NSDictionary *categoryIdMapping = @{@"categoryId" : @"id"};
+    NSDictionary *categoryIdMapping = @{@"id" : @"categoryId"};
     NSArray *categoryAttributeMappings = @[@"name", @"weight", @"parent", @"tree", @"has_catalog", @"identifer", @"url"];
     
     RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
@@ -167,11 +184,8 @@
     RKObjectMapping *categoryLastChildMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
     [categoryLastChildMapping addAttributeMappingsFromDictionary:categoryIdMapping];
     [categoryLastChildMapping addAttributeMappingsFromArray:categoryAttributeMappings];
-    
-    RKRelationshipMapping *responseStatusRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"status" toKeyPath:@"status" withMapping:responseStatusMapping];
-    [responseMapping addPropertyMapping:responseStatusRelationship];
 
-    RKRelationshipMapping *reponseDataRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:responseDataMapping];
+    RKRelationshipMapping *reponseDataRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:responseDataMapping];
     [responseMapping addPropertyMapping:reponseDataRelationship];
 
     RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"categories" toKeyPath:@"categories" withMapping:categoryMapping];
@@ -194,7 +208,7 @@
 
 - (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
     CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    return response.status.message;
+    return response.status;
 }
 
 - (void)actionBeforeRequest:(int)tag {
@@ -204,7 +218,7 @@
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult
              withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    self.categories = [response.data.categories mutableCopy];
+    self.categories = [response.result.categories mutableCopy];
     [self.tableView reloadData];
 }
 

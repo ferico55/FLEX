@@ -594,7 +594,7 @@ HotlistBannerDelegate
     if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
         baseUrl = @"https://ace.tokopedia.com/";
     } else {
-        baseUrl = @"https://ace-staging.tokopedia.com/";
+        baseUrl = @"https://ace.tokopedia.com/";
     }
     _objectmanager = [RKObjectManager sharedClient:baseUrl];
 #endif
