@@ -55,6 +55,7 @@
 #define CTagSort 1
 #define CTagFilter 2
 
+
 @interface BtnSmiley : UIButton
 @property (nonatomic) int intTag;
 @end
@@ -101,7 +102,7 @@
     _TKPDNavigator = [NavigateViewController new];
     
     page = 1;
-    NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CPriceAlertCell owner:nil options:0];
+    NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:@"PriceAlertCell" owner:nil options:0];
     priceAlertCell = [arrPriceAlert objectAtIndex:0];
     [self.view addSubview:priceAlertCell.getViewContent];
     
@@ -697,7 +698,7 @@
 {
     DetailPriceAlertTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
     if(cell == nil) {
-        NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:CDetailPriceAlertTableViewCell owner:nil options:0];
+        NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:@"DetailPriceAlertTableViewCell" owner:nil options:0];
         cell = [arrPriceAlert objectAtIndex:0];
     }
     

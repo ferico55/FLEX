@@ -18,6 +18,7 @@
 - (NSString*)getPath:(int)tag;
 - (int)getRequestMethod:(int)tag;
 - (id)getObjectManager:(int)tag;
+- (id)getObjectRequest:(int)tag;
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag;
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag;
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag;
@@ -69,6 +70,7 @@
 - (NSString*)splitUriToPage:(NSString*)uri;
 - (RKManagedObjectRequestOperation *)getObjectRequest;
 - (void)requestCancel;
+- (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key;
 
 
 @end

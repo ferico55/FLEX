@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="oT3-uX-NdU" customClass="TKPMapView" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fkE-Vw-s9o">
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="Y27-Hd-N3v">
+                    <rect key="frame" x="0.0" y="64" width="280" height="13"/>
+                    <animations/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_triangle_down_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="Td6-It-2Z2">
+                    <rect key="frame" x="130" y="64" width="20" height="10"/>
+                    <animations/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lye-pE-wzD">
+                    <rect key="frame" x="10" y="0.0" width="260" height="64"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="Ss2-5t-lLR"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="lye-pE-wzD" firstAttribute="top" secondItem="oT3-uX-NdU" secondAttribute="top" id="CAB-BW-E4I"/>
+                <constraint firstAttribute="trailing" secondItem="fkE-Vw-s9o" secondAttribute="trailing" id="SCX-Bt-xrt"/>
+                <constraint firstItem="fkE-Vw-s9o" firstAttribute="leading" secondItem="oT3-uX-NdU" secondAttribute="leading" id="SJG-OL-YVQ"/>
+                <constraint firstAttribute="bottom" secondItem="Td6-It-2Z2" secondAttribute="bottom" constant="6" id="VQK-s9-W3q"/>
+                <constraint firstAttribute="bottom" secondItem="fkE-Vw-s9o" secondAttribute="bottom" constant="16" id="VqS-6Q-YeS"/>
+                <constraint firstAttribute="trailing" secondItem="lye-pE-wzD" secondAttribute="trailing" constant="10" id="eD2-7l-kQF"/>
+                <constraint firstItem="lye-pE-wzD" firstAttribute="leading" secondItem="oT3-uX-NdU" secondAttribute="leading" constant="10" id="lsP-i5-Fx6"/>
+                <constraint firstItem="Td6-It-2Z2" firstAttribute="centerX" secondItem="oT3-uX-NdU" secondAttribute="centerX" id="pXy-qf-QYn"/>
+                <constraint firstItem="fkE-Vw-s9o" firstAttribute="top" secondItem="oT3-uX-NdU" secondAttribute="top" id="u7l-AE-5NP"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="464" y="730"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_triangle_down_white.png" width="20" height="10"/>
+        <image name="tab_btm_shadow.png" width="320" height="32"/>
+    </resources>
+</document>

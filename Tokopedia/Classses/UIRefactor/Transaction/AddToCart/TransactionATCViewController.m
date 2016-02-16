@@ -25,10 +25,15 @@
 #import "SettingAddressEditViewController.h"
 #import "GeneralTableViewController.h"
 #import "TransactionShipmentATCTableViewController.h"
-
+#import "PlacePickerViewController.h"
 #import "TokopediaNetworkManager.h"
-
+#import "NavigateViewController.h"
 #import "Localytics.h"
+#import "Tokopedia-swift.h"
+#import "RequestEditAddress.h"
+#import "RequestAddAddress.h"
+
+@import GoogleMaps;
 
 #define TAG_REQUEST_FORM 10
 #define TAG_REQUEST_ATC 11
@@ -45,6 +50,9 @@
     GeneralTableViewControllerDelegate,
     TransactionShipmentATCTableViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
+    RequestEditAddressDelegate,
+    RequestAddAddressDelegate,
+    TKPPlacePickerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
@@ -78,7 +86,7 @@
     CGRect _containerDefault;
     CGSize _scrollviewContentSize;
 
-    BOOL _productQuantityChanged;
+    BOOL _isFinishRequesting;
     
     ShippingInfoShipmentPackage *_selectedShipmentPackage;
     ShippingInfoShipments *_selectedShipment;
@@ -88,9 +96,19 @@
     TokopediaNetworkManager *_networkManagerCalculate;
     TransactionATCForm *_ATCForm;
     
+    RequestEditAddress *_requestEditAddress;
+    RequestAddAddress *_requestAddAddress;
+    
+    AddressFormList *_selectedAddress;
+    
     NSArray *_shipments;
     NSArray *_autoResi;
+    
+    NSString *_longitude;
+    NSString *_latitude;
+    
 }
+@property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBuyButton;
 
@@ -111,6 +129,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *borderFullAddress;
 @property (weak, nonatomic) IBOutlet UIView *borderAddress;
+@property (weak, nonatomic) IBOutlet UIImageView *mapImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *productQuantityLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *productQuantityStepper;
@@ -119,6 +138,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *productQuantityTextField;
 @property (strong, nonatomic) IBOutlet UIView *messageZeroShipmentView;
 @property (weak, nonatomic) IBOutlet UILabel *messageZeroShipmentLabel;
+@property (strong, nonatomic) IBOutlet UITableViewCell *pinLocationCell;
 
 @end
 
@@ -141,7 +161,7 @@
    
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-    
+
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
@@ -170,10 +190,7 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.tagRequest = TAG_REQUEST_FORM;
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
+    [[self networkManager] doRequest];
     
     _networkManagerATC = [TokopediaNetworkManager new];
     _networkManagerATC.tagRequest = TAG_REQUEST_ATC;
@@ -194,6 +211,18 @@
     
     [_messageZeroShipmentLabel setCustomAttributedText:_messageZeroShipmentLabel.text];
     
+    _tableView.tableFooterView = _footer;
+    [_act startAnimating];
+}
+
+-(TokopediaNetworkManager*)networkManager
+{
+    if (!_networkManager) {
+        _networkManager = [TokopediaNetworkManager new];
+        _networkManager.tagRequest = TAG_REQUEST_FORM;
+        _networkManager.delegate = self;
+    }
+    return _networkManager;
 }
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
@@ -205,7 +234,6 @@
     placeholderLabel.tag = 1;
     [textView addSubview:placeholderLabel];
 }
-
 
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -228,17 +256,56 @@
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    _networkManager.delegate = self;
+    [self networkManager].delegate = self;
 }
+- (IBAction)tapPinLocationButton:(id)sender {
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue]?:0, [_longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+}
+
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
     
     _activeTextField = nil;
     _activeTextView = nil;
+}
+
+-(RequestEditAddress*)requestEditAddress
+{
+    if (!_requestEditAddress) {
+        _requestEditAddress = [RequestEditAddress new];
+        _requestEditAddress.delegate = self;
+    }
+    return _requestEditAddress;
+}
+
+-(RequestAddAddress*)requestAddAddress
+{
+    if (!_requestAddAddress) {
+        _requestAddAddress = [RequestAddAddress new];
+        _requestAddAddress.delegate = self;
+    }
+    return _requestAddAddress;
+}
+
+#pragma mark - Picker Place Delegate
+-(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
+{
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
+    
+    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
+//    _mapImageView.image = mapImage;
+//    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+    _selectedAddress.longitude = _longitude;
+    _selectedAddress.latitude = _latitude;
+    [[self requestEditAddress] doRequestWithAddress:_selectedAddress];
+
 }
 
 #pragma mark - View Action
@@ -269,6 +336,7 @@
         }
     }
 }
+
 
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -302,6 +370,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = nil;
+    [self buyButtonIsLoading:!_isFinishRequesting];
     if (!_isnodata) {
         ShippingInfoShipments *shipment = _selectedShipment;
         ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
@@ -322,6 +391,16 @@
                 switch (indexPath.row) {
                     case TAG_BUTTON_TRANSACTION_ADDRESS:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                        }
                         label.text = address.address_name;
                         _borderFullAddress.hidden = YES;
                         _borderAddress.hidden = NO;
@@ -333,18 +412,62 @@
                         }
                         break;
                     }
+                    case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
+                    {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                        }
+                    }
                     case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                        }
                         label.text = shipment.shipment_name?:@"Pilih";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                        }
                         label.text = shipmentPackage.name?:@"Pilih";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_INSURANCE:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                        }
+                        
                         NSInteger insurance = [self insuranceStatus];
                         if (insurance == 0) {
                             label.text = @"Tidak didukung";
@@ -374,6 +497,17 @@
                 switch (indexPath.row) {
                     case TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryNone];
+                        }
+                        
                         NSString *priceString = _productPrice;
                         NSArray *wholesalePrice = _wholeSales;
                         if (wholesalePrice.count>0) {
@@ -402,16 +536,46 @@
                     }
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryNone];
+                        }
                         label.text = product.product_price;
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPMENT_COST:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryNone];
+                        }
                         label.text = shipmentPackage.price?:@"-";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_TOTAL:
                     {
+                        if (!_isFinishRequesting) {
+                            UIActivityIndicatorView *activityView =
+                            [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                            [activityView startAnimating];
+                            [cell setAccessoryView:activityView];
+                        }
+                        else
+                        {   cell.accessoryView = nil;
+                            [cell setAccessoryType:UITableViewCellAccessoryNone];
+                        }
                         NSString *productPrice = [product.product_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
                         productPrice = [productPrice stringByReplacingOccurrencesOfString:@"." withString:@""];
                         productPrice = [productPrice stringByReplacingOccurrencesOfString:@"," withString:@""];
@@ -432,15 +596,10 @@
                         formatter.maximumFractionDigits = 0;
                         formatter.minimumFractionDigits = 0;
                         
-                        NSString *totalPrice = [[formatter stringFromNumber:total] stringByAppendingString:@",-"];
+                        NSString *totalPrice = [formatter stringFromNumber:total];
                         
                         label.text = totalPrice;
                     }
-                }
-                if (!_productQuantityChanged) {
-                    UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
-                    [indicatorView stopAnimating];
-                    [indicatorView setHidden:YES];
                 }
                 break;
         }
@@ -455,7 +614,7 @@
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    if (indexPath.section == 2 && _productQuantityChanged) {
+    if (indexPath.section == 2 && _isFinishRequesting) {
         //[_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
         //[self calculatePriceWithAction:@""];
     }
@@ -485,6 +644,12 @@
                     return 0;
                 }
                 return 243-50+_addressLabel.frame.size.height;
+            }
+            if ([cell isEqual:_pinLocationCell]) {
+                if ([_selectedShipment.shipment_id integerValue] == 10) {
+                    return 70;
+                }
+                return 0;
             }
             break;
         }
@@ -552,11 +717,17 @@
                 }
                 break;
             }
+            case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
+            {
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue]?:0, [_longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+                break;
+            }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
             {
                 NSMutableArray *shipmentName = [NSMutableArray new];
                 for (ShippingInfoShipments *package in _shipments) {
-                    [shipmentName addObject:package.shipment_name];
+                    [shipmentName addObject:package.shipment_name?:@""];
                 }
                 
                 NSMutableArray *autoResiImage = [NSMutableArray new];
@@ -666,7 +837,8 @@
         NSInteger productID = [product.product_id integerValue];
         
         NSDictionary* param = @{API_ACTION_KEY :ACTION_ADD_TO_CART_FORM,
-                                API_PRODUCT_ID_KEY:@(productID)
+                                API_PRODUCT_ID_KEY:@(productID),
+                                @"address_id": @(_selectedAddress.address_id)?:@""
                                 };
         return param;
     }
@@ -785,9 +957,8 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
+    _isFinishRequesting = NO;
     if (tag == TAG_REQUEST_FORM) {
-        _tableView.tableFooterView = _footer;
-        [_act startAnimating];
         _isRequestFrom = YES;
     }
     if (tag == TAG_REQUEST_ATC) {
@@ -820,6 +991,7 @@
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
+    _isFinishRequesting = YES;
     if (tag == TAG_REQUEST_FORM) {
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
@@ -836,7 +1008,6 @@
     }
     if (tag == TAG_REQUEST_CALCULATE) {
         [self requestSuccessActionCalculate:successResult withOperation:operation];
-        _productQuantityChanged = NO;
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
         [self buyButtonIsLoading:NO];
@@ -935,7 +1106,10 @@
         }
         else{
             AddressFormList *address = _ATCForm.result.form.destination;
+            _selectedAddress = address;
             [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+            _longitude = address.longitude;
+            _latitude = address.latitude;
             
             NSArray *shipments = _ATCForm.result.form.shipment;
             _shipments = shipments;
@@ -946,9 +1120,16 @@
             
             for (ShippingInfoShipments *shipment in _shipments) {
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
+//                NSMutableDictionary *shipmentAutoResiSupported = [NSMutableDictionary new];
+                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                    _selectedShipment = shipment;
+                }
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
+                    }
+                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
+                        _selectedShipmentPackage = package;
                     }
                 }
                 
@@ -966,9 +1147,10 @@
             }
             
             _shipments = shipmentSupporteds;
+//            _autoResi = autoResiDetails;
             
-            _selectedShipment = [shipmentSupporteds firstObject];
-            _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
+            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
             
             ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
             product = _ATCForm.result.form.product_detail;
@@ -990,10 +1172,36 @@
             [self buyButtonIsLoading:NO];
             _buyButton.hidden = NO;
             
+            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
+                if (error != nil){
+                    return;
+                }
+                
+                if (response == nil|| response.results.count == 0) {
+                    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
+
+                } else{
+                    GMSAddress *placemark = [response results][0];
+                    //        [self marker].snippet = [self addressString:placemark];
+                    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
+                }
+            }];
+            
             [_tableView reloadData];
         }
     }
 
+}
+
+
+-(NSString*)addressString:(GMSAddress*)address
+{
+    NSString *strSnippet = @"Pilih lokasi pengiriman";
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    strSnippet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
+    return  strSnippet;
 }
 
 #pragma mark Request Action Add To Cart
@@ -1126,8 +1334,14 @@
             NSMutableArray *shipmentSupporteds = [NSMutableArray new];
             
             for (ShippingInfoShipments *shipment in _shipments) {
+                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                    _selectedShipment = shipment;
+                }
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
+                        _selectedShipmentPackage = package;
+                    }
                     if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                         [shipmentPackages addObject:package];
                     }
@@ -1147,8 +1361,8 @@
             }
             
             _shipments = shipmentSupporteds;
-            _selectedShipment = [shipmentSupporteds firstObject];
-            _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
+            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
             
             for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                 UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
@@ -1159,6 +1373,7 @@
                 label.hidden = NO;
             }
             _tableView.tableHeaderView = (_shipments.count <= 0)?_messageZeroShipmentView:[[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+            
             [_tableView reloadData];
         }
     }
@@ -1265,12 +1480,18 @@
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    if (address.address_id <= 0) {
+        [[self requestAddAddress] doRequestWithAddress:address];
+        return;
+    }
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];
-    
     NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
-    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
+//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
+    _selectedAddress = address;
+    _isFinishRequesting = NO;
+    [self refreshView]; //4645967 //3684833
     [_tableView reloadData];
 }
 
@@ -1292,7 +1513,7 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _productQuantityChanged = YES;
+    _isFinishRequesting = NO;
     
     ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
 
@@ -1359,7 +1580,7 @@ replacementString:(NSString*)string
 #pragma mark - UIStepper method
 
 - (IBAction)changeStepperValue:(UIStepper *)sender {
-    _productQuantityChanged = YES;
+    _isFinishRequesting = NO;
     _productQuantityLabel.text = [NSString stringWithFormat:@"%d", (int)sender.value];
     [_tableView reloadData];
 }
@@ -1394,7 +1615,7 @@ replacementString:(NSString*)string
 
 -(void)refreshView
 {
-    [_networkManager doRequest];
+    [[self networkManager] doRequest];
 }
 
 -(void)setDefaultData:(NSDictionary*)data
@@ -1583,11 +1804,29 @@ replacementString:(NSString*)string
     [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
 }
 
+-(void)requestSuccessEditAddress:(id)successResult withOperation:(RKObjectRequestOperation *)operation
+{
+    _isFinishRequesting = NO;
+    [self refreshView];
+    [_tableView reloadData];
+}
+
+-(void)requestSuccessAddAddress:(AddressFormList *)address
+{
+    _isFinishRequesting = NO;
+    _selectedAddress = address;
+    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+    [self setAddress:address];
+    [self refreshView];
+
+//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
+    [[self networkManager] requestCancel];
+    [self networkManager].delegate = nil;
     _networkManager = nil;
 }
 

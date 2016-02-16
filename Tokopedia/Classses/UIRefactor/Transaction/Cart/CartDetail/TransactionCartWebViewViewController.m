@@ -16,10 +16,12 @@
 #define CLICK_BCA_LOGIN_PAYEMNET_URL @"https://klikpay.klikbca.com/purchasing/purchase.do?action=loginRequest"
 #define CLICK_BCA_SUMMARY_URL @"https://klikpay.klikbca.com/purchasing/payment.do?action=summaryRequest"
 #define CLICK_BCA_VIEW_TRANSACTION @"https://klikpay.klikbca.com/purchasing/payment.do?action=viewTransaction"
+#define BRI_EPAY_CALLBACK_URL @"https://api.tokopedia.com/briPayment?tid"
 
 @interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 {
     BOOL _isSuccessBCA;
+    BOOL _isBRIEPayRequested;
     NSOperationQueue *_operationQueue;
     
     NSInteger requestCount;
@@ -131,6 +133,12 @@
     else
     {
         urlAddress = _URLString;
+        NSString *postString = [NSString stringWithFormat:@"keysTrxEcomm=%@&gateway=%@,token=%@,step=2", _transactionCode,_gateway,_token];
+        NSLog(@"%@", postString);
+        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        [request setHTTPBody:postData];
+        [request setHTTPMethod:@"POST"];
+        
         url = [NSURL URLWithString:urlAddress];
     }
     
@@ -158,7 +166,9 @@
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     [_act startAnimating];
-     NSLog(@"URL %@", webView.request.URL.absoluteString);
+     NSLog(@"URL shouldStartLoadWithRequest: %@", webView.request.URL.absoluteString);
+    NSLog(@"URL shouldStartLoadWithRequest: %@", request.URL.absoluteString);
+
 
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_BCA_CLICK_PAY)
@@ -190,13 +200,7 @@
     else if(gateway == TYPE_GATEWAY_MANDIRI_E_CASH)
     {
         //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
-        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-        NSString *baseURLFull = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
-        NSURL *url = [NSURL URLWithString:baseURLFull];
-        NSURL *root = [NSURL URLWithString:@"/" relativeToURL:url];
-        NSString *baseURL = root.absoluteString;
-        
-        NSString *stringURLEMoney = [NSString stringWithFormat:@"%@ws-new/tx-payment-emoney.pl?id=",baseURL];
+        NSString *stringURLEMoney = [self getStringURLMandiriECash];
             if ([request.URL.absoluteString rangeOfString:stringURLEMoney].location != NSNotFound) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     [_delegate shouldDoRequestEMoney:YES];
@@ -218,17 +222,46 @@
     {
         
     }
+    else if (gateway == TYPE_GATEWAY_BRI_EPAY){
+        if ([request.URL.absoluteString rangeOfString:@"ecommerce/ecommerce_payment"].location != NSNotFound) {
+            self.navigationItem.leftBarButtonItem = nil;
+        }
+        if ([request.URL.absoluteString rangeOfString:BRI_EPAY_CALLBACK_URL].location != NSNotFound) {
+            NSDictionary *param = @{
+                                    @"action" : @"validate_payment",
+                                    @"tid" : _transactionCode
+                                    };
+            if (!_isBRIEPayRequested) {
+                [_delegate shouldDoRequestBRIEPay:param];
+                _isBRIEPayRequested = YES;
+            }
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            return NO;
+        }
+    }
     
     return YES;
 }
 
+-(NSString *)getStringURLMandiriECash
+{
+    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    NSString *baseURLFull = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+    NSURL *url = [NSURL URLWithString:baseURLFull];
+    NSURL *root = [NSURL URLWithString:@"/" relativeToURL:url];
+    NSString *baseURL = root.absoluteString;
+    
+    NSString *stringURLEMoney = [NSString stringWithFormat:@"%@ws-new/tx-payment-emoney.pl?id=",baseURL];
+    
+    return stringURLEMoney;
+}
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [_act stopAnimating];
     NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
     NSLog(@"html String WebView %@", html);
-    NSLog(@"URL %@", webView.request.URL.absoluteString);
+    NSLog(@"URL webViewDidFinishLoad: %@", webView.request.URL.absoluteString);
     
     NSInteger gateway = [_gateway integerValue];
     
@@ -348,6 +381,7 @@
     if (_isSuccessBCA) {
         [_delegate shouldDoRequestBCAClickPay];
     }
+
 }
 
 @end

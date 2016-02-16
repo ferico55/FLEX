@@ -22,9 +22,28 @@
     return [_address_street kv_decodeHTMLCharacterEntities];
 }
 
+- (AddressViewModel *)viewModel {
+    if(_viewModel == nil) {
+        AddressViewModel *tempViewModel = [AddressViewModel new];
+        tempViewModel.receiverName = _receiver_name;
+        tempViewModel.receiverNumber = _receiver_phone;
+        tempViewModel.addressName = _address_name;
+        tempViewModel.addressStreet = _address_street;
+        tempViewModel.addressCity = _address_city?:_city_name;
+        tempViewModel.addressDistrict = _address_district?:_district_name;
+        tempViewModel.addressProvince = _address_province?:_province_name;
+        tempViewModel.addressPostalCode = _address_postal?:_postal_code;
+        tempViewModel.addressCountry = _address_country?:_country_name;
+        tempViewModel.latitude = _latitude;
+        tempViewModel.longitude = _longitude;
+        _viewModel = tempViewModel;
+    }
+    
+    return _viewModel;
+}
 
-// MARK: TKPRootObjectMapping methods
-+ (NSDictionary *)attributeMappingDictionary {
++(NSDictionary *)attributeMappingDictionary
+{
     NSArray *keys = @[@"country_name",
                       @"receiver_name",
                       @"address_name",
@@ -45,16 +64,16 @@
                       @"address_city",
                       @"address_province",
                       @"addr_id",
-                      @"addr_name"
-                      ];
+                      @"addr_name",
+                      @"longitude",
+                      @"latitude"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
-+ (RKObjectMapping *)mapping {
++(RKObjectMapping*)mapping
+{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
-
     return mapping;
 }
-
 @end

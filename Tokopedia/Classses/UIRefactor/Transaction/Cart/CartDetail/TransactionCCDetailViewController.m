@@ -306,7 +306,7 @@
                 vc.cartDetail = _cartSummary;
                 vc.delegate = self;
                 vc.isVeritrans = YES;
-                vc.paymentID = _cartSummary.payment_id;
+                vc.paymentID = _dataCC.payment_id;
 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -337,13 +337,6 @@
     UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *data = [secureStorage keychainDictionary];
-    
-    NSString *baseURL = [data objectForKey:@"AppBaseUrl"]?:@"www.tokopedia.com";
-    
-    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURL];
     
     NSString *CCFirstName=[_dataInput objectForKey:API_CC_FIRST_NAME_KEY]?:@"";
     NSString *CCLastName =[_dataInput objectForKey:API_CC_LAST_NAME_KEY]?:@"";
@@ -399,13 +392,13 @@
                             //@"redirect":@"1",
                             //@"user_id":userID?:@""
                             };
-    [request setURL:[NSURL URLWithString:stringURL]];
-
+    
     [_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+    
     TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
     vc.gateway = _cartSummary.gateway?:@(TYPE_GATEWAY_CC);
     vc.token = _cartSummary.token;
-    vc.URLString = stringURL?:@"";
+    vc.URLString = [self getSprintAsiaURLString]?:@"";
     vc.cartDetail = _cartSummary;
     vc.delegate = self;
     vc.CCParam = param;
@@ -416,6 +409,16 @@
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(NSString*)getSprintAsiaURLString
+{
+    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    NSString *baseURLString = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+    
+    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURLString];
+    
+    return stringURL;
 }
 
 -(NSDictionary *)paramCC

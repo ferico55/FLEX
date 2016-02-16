@@ -79,7 +79,7 @@
 -(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    container.data = @{MORE_SHOP_ID : shopID};
+    container.data = @{MORE_SHOP_ID : shopID?:@""};
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -89,7 +89,7 @@
     UserContainerViewController *container = [UserContainerViewController new];
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     container.data = @{
-                       @"user_id" : userID,
+                       @"user_id" : userID?:@"",
                        @"auth" : [auth getUserLoginData]?:@""
                        };
     
@@ -489,6 +489,31 @@
     }
     
     [alertLucky show];
+}
+
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController
+{
+    TKPPlacePickerViewController *placePicker = [TKPPlacePickerViewController new];
+    placePicker.firstCoordinate = location;
+    placePicker.type = type;
+    placePicker.delegate = viewController;
+    placePicker.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:placePicker animated:YES];
+}
+
++(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController
+{
+    TKPPlacePickerViewController *placePicker = [TKPPlacePickerViewController new];
+    placePicker.firstCoordinate = location;
+    placePicker.type = type;
+    placePicker.delegate = viewController;
+    placePicker.hidesBottomBarWhenPushed = YES;
+    placePicker.infoAddress = infoAddress;
+//    PlacePickerViewController *placePicker = [PlacePickerViewController new];
+//    placePicker.firstCoordinate = location;
+//    placePicker.type = type;
+//    placePicker.delegate = viewController;
+    [viewController.navigationController pushViewController:placePicker animated:YES];
 }
 
 @end

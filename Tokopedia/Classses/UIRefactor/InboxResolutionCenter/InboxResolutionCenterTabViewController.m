@@ -205,6 +205,7 @@
         case 1:
         {
             if(!_myComplainViewController)_myComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _detailViewController.delegate = _myComplainViewController;
             _myComplainViewController.detailViewController = _detailViewController;
             _myComplainViewController.typeComplaint = TypeComplaintMine;
             _myComplainViewController.filterReadIndex = _filterReadIndex;
@@ -216,6 +217,7 @@
             self.navigationItem.rightBarButtonItem = nil;
             
             if(!_buyerComplainViewController)_buyerComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _detailViewController.delegate = _buyerComplainViewController;
             _buyerComplainViewController.detailViewController = _detailViewController;
             _buyerComplainViewController.typeComplaint = TypeComplaintBuyer;
             _buyerComplainViewController.filterReadIndex = _filterReadIndex;

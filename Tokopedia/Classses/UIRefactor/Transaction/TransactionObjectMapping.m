@@ -97,6 +97,7 @@
                                                          kTKPDPROFILESETTING_APIRECEIVERPHONEKEY,
                                                          kTKPDPROFILESETTING_APIPROVINCENAMEKEY,
                                                          API_POSTAL_CODE_CART_KEY,
+                                                        @""
                                                          kTKPDPROFILESETTING_APIADDRESSSTATUSKEY,
                                                          kTKPDPROFILESETTING_APIADDRESSSTREETKEY,
                                                          kTKPDPROFILESETTING_APIDISTRICNAMEKEY,
@@ -107,7 +108,10 @@
                                                         API_ADDRESS_COUNTRY,
                                                     API_ADDRESS_DISTRICT,
                                                     API_ADDRESS_CITY,
-                                                    API_ADDRESS_PROVINCE
+                                                    API_ADDRESS_PROVINCE,
+                                                    @"longitude",
+                                                    @"latitude",
+                                                    @"postal_code"
                                                          ]];
     return addressMapping;
 }
@@ -200,7 +204,9 @@
                                                         @"cashback_idr",
                                                         @"cashback",
                                                         @"lp_amount_idr",
-                                                        @"lp_amount"
+                                                        @"lp_amount",
+                                                        @"bri_website_link",
+                                                        @"transaction_code"
                                                         ]];
     return transactionMapping;
 }

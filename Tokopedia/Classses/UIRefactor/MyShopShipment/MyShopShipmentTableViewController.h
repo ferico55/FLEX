@@ -29,6 +29,7 @@
 - (ShippingInfoShipments *)getCahaya;
 - (ShippingInfoShipments *)getPandu;
 - (ShippingInfoShipments *)getFirst;
+- (ShippingInfoShipments *)getGoJek;
 - (ShippingInfoShipments *)getSiCepat;
 
 - (ShippingInfoShipmentPackage *)getJnePackageYes;
@@ -53,6 +54,8 @@
 
 - (ShippingInfoShipmentPackage *)getFirstPackageRegular;
 
+- (ShippingInfoShipmentPackage *)getGojekPackageGoKilat;
+
 - (ShippingInfoShipmentPackage *)getSiCepatPackageRegular;
 
 - (BOOL)getJneExtraFeeTextField;
@@ -60,5 +63,9 @@
 - (BOOL)getPosMinWeight;
 - (BOOL)getTikiExtraFee;
 - (BOOL)getPosExtraFee;
+
+- (NSString *)getLatitude;
+- (NSString *)getLongitude;
+- (NSString *)getAddress;
 
 @end

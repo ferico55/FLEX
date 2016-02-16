@@ -46,7 +46,6 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 
-
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
@@ -59,7 +58,6 @@
 >
 {
     UITabBarController *_tabBarController;
-    NSMutableDictionary *_auth;
     HomeTabViewController *_swipevc;
     URLCacheController *_cacheController;
     
@@ -220,36 +218,39 @@ typedef enum TagRequest {
                                              forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] }
                                              forState:UIControlStateSelected];
-    
-    /** TAB BAR INDEX 1 **/
-    /** adjust view controllers at tab bar controller **/
-    NSMutableArray *viewcontrollers = [NSMutableArray new];
-    /** create new view controller **/
-    if (!isauth) {
-        // before login
-//        HotlistViewController *v = [HotlistViewController new];
-//        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-//        [viewcontrollers addObject:v];
-        CategoryViewController *controller = [[CategoryViewController alloc] init];
-        controller.data = @{@"auth" : _auth?:@{}};
-        [viewcontrollers addObject:controller];
-    }
-    else{
-        // after login
-        CategoryViewController *controller = [[CategoryViewController alloc] init];
-        controller.data = @{@"auth" : _auth?:@{}};
-        [viewcontrollers addObject:controller];
-        ProductFeedViewController *v1 = [ProductFeedViewController new];
-        [viewcontrollers addObject:v1];
-        HistoryProductViewController *v2 = [HistoryProductViewController new];
-        [viewcontrollers addObject:v2];
-        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
-        [viewcontrollers addObject:v3];
-    }
+//    
+//    /** TAB BAR INDEX 1 **/
+//    /** adjust view controllers at tab bar controller **/
+//    NSMutableArray *viewcontrollers = [NSMutableArray new];
+//    /** create new view controller **/
+//    if (!isauth) {
+//        // before login
+////        HotlistViewController *v = [HotlistViewController new];
+////        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
+////        [viewcontrollers addObject:v];
+//        CategoryViewController *controller = [[CategoryViewController alloc] init];
+//        controller.data = @{@"auth" : _auth?:@{}};
+//        [viewcontrollers addObject:controller];
+//    }
+//    else{
+//        // after login
+//        HotlistViewController *controller = [[HotlistViewController alloc] init];
+//        controller.data = @{@"auth" : _auth?:@{}};
+//        [viewcontrollers addObject:controller];
+//        ProductFeedViewController *v1 = [ProductFeedViewController new];
+//        [viewcontrollers addObject:v1];
+//        HistoryProductViewController *v2 = [HistoryProductViewController new];
+//        [viewcontrollers addObject:v2];
+//        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
+//        [viewcontrollers addObject:v3];
+//    }
     
     _swipevc = [[HomeTabViewController alloc] init];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
     [swipevcNav.navigationBar setTranslucent:NO];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        _swipevc.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     /** TAB BAR INDEX 2 **/
     HotlistViewController *categoryvc = [HotlistViewController new];
@@ -259,7 +260,6 @@ typedef enum TagRequest {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    categoryvc.delegate = self;
     
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];

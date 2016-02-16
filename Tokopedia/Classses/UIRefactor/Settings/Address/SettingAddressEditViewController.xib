@@ -39,14 +39,23 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingAddressEditViewController">
             <connections>
+                <outlet property="buttonMapLocation" destination="X4Q-Nr-mBl" id="lzH-Vu-spo"/>
                 <outlet property="buttoncity" destination="e30-DI-rj1" id="HZO-vo-v4B"/>
                 <outlet property="buttondistrict" destination="TgV-oj-AiH" id="2Hf-J6-ue7"/>
                 <outlet property="buttonprovince" destination="MsL-zG-Jr6" id="nNj-Sb-Eck"/>
+                <outlet property="constraintBottomMapName" destination="bWs-7G-TYO" id="Rte-xV-zsW"/>
+                <outlet property="mapImageView" destination="KJx-9P-Ix9" id="UCA-tR-wvY"/>
+                <outlet property="opsionalLabel" destination="TNB-3o-bsd" id="xbs-eK-poZ"/>
                 <outlet property="table" destination="enW-Bl-Ec8" id="O4H-WK-aj1"/>
                 <outlet property="textfieldaddressname" destination="bzh-Yx-Bav" id="PeY-6y-MbO"/>
                 <outlet property="textfieldpass" destination="TuB-lg-ddb" id="J69-he-qmD"/>
@@ -65,6 +74,7 @@
                 <outletCollection property="section1Cells" destination="7lv-oE-fgz" id="J0J-OO-v1Q"/>
                 <outletCollection property="section2Cells" destination="V1F-GX-vq4" id="Qke-oa-f95"/>
                 <outletCollection property="section3Cells" destination="rtg-k2-tFe" id="tgf-Y2-0Vs"/>
+                <outletCollection property="section1Cells" destination="pra-CU-cPU" id="QfM-F0-bZN"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -618,7 +628,7 @@
             </connections>
             <point key="canvasLocation" x="255" y="462"/>
         </view>
-        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="7lv-oE-fgz">
+        <tableViewCell tag="16" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="7lv-oE-fgz">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7lv-oE-fgz" id="L8V-WV-faZ">
@@ -672,7 +682,7 @@
                 </constraints>
             </tableViewCellContentView>
             <animations/>
-            <point key="canvasLocation" x="-140" y="738"/>
+            <point key="canvasLocation" x="-140" y="568"/>
         </tableViewCell>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="wuO-8G-35p">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -790,7 +800,7 @@
             <animations/>
             <point key="canvasLocation" x="-146" y="66"/>
         </tableViewCell>
-        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="MnA-aZ-ahf">
+        <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="MnA-aZ-ahf">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MnA-aZ-ahf" id="Iqd-AO-7Ri">
@@ -964,7 +974,7 @@
             <animations/>
             <point key="canvasLocation" x="-140" y="1025"/>
         </tableViewCell>
-        <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="6We-Nh-f8B">
+        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="6We-Nh-f8B">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6We-Nh-f8B" id="C7p-4O-F9R">
@@ -1020,7 +1030,7 @@
             <animations/>
             <point key="canvasLocation" x="-140" y="648"/>
         </tableViewCell>
-        <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="02H-Nx-4p0">
+        <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="02H-Nx-4p0">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="02H-Nx-4p0" id="hbv-EC-kXS">
@@ -1074,9 +1084,9 @@
                 </constraints>
             </tableViewCellContentView>
             <animations/>
-            <point key="canvasLocation" x="-140" y="564"/>
+            <point key="canvasLocation" x="-140" y="429"/>
         </tableViewCell>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="130" id="Nkd-N9-hJV">
+        <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="130" id="Nkd-N9-hJV">
             <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Nkd-N9-hJV" id="19Y-Yw-GUQ">
@@ -1086,8 +1096,19 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nOg-76-Rxd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
                         <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="poN-dq-ahR">
+                                <rect key="frame" x="15" y="4" width="110" height="24"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="ZhT-pu-l14"/>
+                                    <constraint firstAttribute="width" constant="110" id="oGh-FN-iN4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qBI-JP-wnk" customClass="TKPDTextView">
-                                <rect key="frame" x="10" y="6" width="300" height="117"/>
+                                <rect key="frame" x="10" y="27" width="300" height="96"/>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
@@ -1100,10 +1121,12 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="qBI-JP-wnk" firstAttribute="top" secondItem="nOg-76-Rxd" secondAttribute="top" constant="6" id="IuX-Ee-AJk"/>
+                            <constraint firstItem="qBI-JP-wnk" firstAttribute="top" secondItem="nOg-76-Rxd" secondAttribute="top" constant="27" id="IuX-Ee-AJk"/>
                             <constraint firstAttribute="bottom" secondItem="qBI-JP-wnk" secondAttribute="bottom" constant="6.5" id="Lv9-5O-eoL"/>
+                            <constraint firstItem="poN-dq-ahR" firstAttribute="leading" secondItem="nOg-76-Rxd" secondAttribute="leading" constant="15" id="P1E-ZY-jbj"/>
                             <constraint firstItem="qBI-JP-wnk" firstAttribute="leading" secondItem="nOg-76-Rxd" secondAttribute="leading" constant="10" id="mwb-cP-HjH"/>
                             <constraint firstAttribute="trailing" secondItem="qBI-JP-wnk" secondAttribute="trailing" constant="10" id="p4a-gE-W4d"/>
+                            <constraint firstItem="poN-dq-ahR" firstAttribute="top" secondItem="nOg-76-Rxd" secondAttribute="top" constant="4" id="zb5-un-nnp"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -1122,7 +1145,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="enW-Bl-Ec8">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="enW-Bl-Ec8">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1184,8 +1207,77 @@
             </variation>
             <point key="canvasLocation" x="452" y="-416"/>
         </view>
+        <tableViewCell clipsSubviews="YES" tag="11" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="pra-CU-cPU">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pra-CU-cPU" id="az9-Pp-dXA">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="69.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_gokil.png" translatesAutoresizingMaskIntoConstraints="NO" id="KJx-9P-Ix9">
+                        <rect key="frame" x="10" y="0.0" width="70" height="70"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="JUE-yQ-6J8"/>
+                            <constraint firstAttribute="height" constant="70" id="eSm-x9-PLE"/>
+                        </constraints>
+                    </imageView>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="HvN-9r-OSu">
+                        <rect key="frame" x="25" y="4" width="40" height="40"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="3S0-uK-uMn"/>
+                            <constraint firstAttribute="width" constant="40" id="EFj-pg-r63"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Opsional)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TNB-3o-bsd">
+                        <rect key="frame" x="98" y="38" width="108" height="19"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18.5" id="M2t-zG-gTW"/>
+                            <constraint firstAttribute="width" constant="108" id="TOl-cp-TDk"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X4Q-Nr-mBl">
+                        <rect key="frame" x="0.0" y="0.0" width="287" height="70"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                        <color key="tintColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <inset key="contentEdgeInsets" minX="93" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="Tentukan Peta Lokasi">
+                            <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="tapMap:" destination="-1" eventType="touchUpInside" id="JFs-tV-rpf"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstItem="TNB-3o-bsd" firstAttribute="leading" secondItem="KJx-9P-Ix9" secondAttribute="trailing" constant="18" id="F9v-pC-e5U"/>
+                    <constraint firstItem="HvN-9r-OSu" firstAttribute="centerX" secondItem="KJx-9P-Ix9" secondAttribute="centerX" id="HWS-4q-XiL"/>
+                    <constraint firstAttribute="bottom" secondItem="TNB-3o-bsd" secondAttribute="bottom" constant="13" id="QRY-oP-ahd"/>
+                    <constraint firstItem="KJx-9P-Ix9" firstAttribute="leading" secondItem="az9-Pp-dXA" secondAttribute="leading" constant="10" id="SKQ-Go-brk"/>
+                    <constraint firstAttribute="bottom" secondItem="X4Q-Nr-mBl" secondAttribute="bottom" id="bWs-7G-TYO"/>
+                    <constraint firstItem="KJx-9P-Ix9" firstAttribute="top" secondItem="az9-Pp-dXA" secondAttribute="top" id="eJT-fF-MT0"/>
+                    <constraint firstAttribute="trailing" secondItem="X4Q-Nr-mBl" secondAttribute="trailing" id="kpj-dG-IWW"/>
+                    <constraint firstItem="X4Q-Nr-mBl" firstAttribute="top" secondItem="az9-Pp-dXA" secondAttribute="top" id="tlY-Oo-vd6"/>
+                    <constraint firstItem="HvN-9r-OSu" firstAttribute="top" secondItem="KJx-9P-Ix9" secondAttribute="top" constant="4" id="vQX-Oh-Whd"/>
+                    <constraint firstItem="X4Q-Nr-mBl" firstAttribute="leading" secondItem="az9-Pp-dXA" secondAttribute="leading" id="zuF-ny-nRi"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <point key="canvasLocation" x="-140" y="801"/>
+        </tableViewCell>
     </objects>
     <resources>
         <image name="ic_arrow_right.png" width="1024" height="1024"/>
+        <image name="icon_pinpoin_toped.png" width="70" height="70"/>
+        <image name="map_gokil.png" width="96" height="96"/>
     </resources>
 </document>

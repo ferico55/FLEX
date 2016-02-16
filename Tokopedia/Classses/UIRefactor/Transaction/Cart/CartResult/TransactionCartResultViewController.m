@@ -62,7 +62,6 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *indomaretNotes;
 @property (weak, nonatomic) IBOutlet UILabel *IndomaretCodeLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *klikBCAImages;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *klikBCAAditionalConstraint;
 @property (strong, nonatomic) IBOutlet UITableViewCell *cashbackCell;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *klikBCAImagesSteps;
 @end
@@ -176,7 +175,8 @@
             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)] ||
             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]||
-            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]||
+            [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BRI_EPAY)]
             ){
             return _paymentStatusView;
         }
@@ -567,7 +567,8 @@
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)] ||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BCA_CLICK_PAY)] ||
              [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CC)]||
-             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]) {
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_INSTALLMENT)]||
+             [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BRI_EPAY)]) {
         
         if([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)]) {
 
@@ -594,6 +595,11 @@
             [TPAnalytics trackScreenName:@"Thank you page - Installment"];
             self.screenName = @"Thank you page - Installment";
 
+        } else if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_BRI_EPAY)]) {
+            
+            [TPAnalytics trackScreenName:@"Thank you page - BRI E-PAY"];
+            self.screenName = @"Thank you page - BRI E-PAY";
+            
         }
         
         NSArray *detailPaymentIfUsingSaldo = @[

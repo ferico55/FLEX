@@ -12,6 +12,7 @@ PODS:
   - GoogleAppIndexing (2.0.1)
   - GoogleInterchangeUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0)
+  - GoogleMaps (1.10.5)
   - GoogleNetworkingUtilities (1.0.0):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleSymbolUtilities (1.0.3)
@@ -40,6 +41,8 @@ PODS:
   - RestKit/ObjectMapping (0.20.3)
   - RestKit/Support (0.20.3):
     - TransitionKit (= 1.1.1)
+  - Reveal-iOS-SDK (1.6.2)
+  - Rollout.io (0.13.0)
   - SOCKit (1.1)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
@@ -47,10 +50,13 @@ PODS:
 DEPENDENCIES:
   - Google/Analytics
   - GoogleAppIndexing
+  - GoogleMaps
   - GoogleTagManager
   - Localytics (~> 3.5.0)
   - NJKWebViewProgress
   - RestKit (~> 0.20.0)
+  - Reveal-iOS-SDK
+  - Rollout.io (~> 0.13.0)
   - TTTAttributedLabel
 
 SPEC CHECKSUMS:
@@ -59,13 +65,16 @@ SPEC CHECKSUMS:
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
   GoogleInterchangeUtilities: d7f7174176fbcf9710f696f1acebad4dbd98ac03
+  GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
   GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
   GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   Localytics: da06c00606839b53978ca093adbca1d8afdeeb3e
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
-  RestKit: ddc3c3a2b6cbe4578c4193d8e0dfe93d79333c3b
+  RestKit: aac0c81c60d30fdd829d627d062f0eea231eb52c
+  Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
+  Rollout.io: f3520810f3e7418e5e16adbdb1fd03d577943e9d
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f

@@ -38,6 +38,8 @@
     return @{
              @"id"   : _product_id?:@"",
              @"name" : _product_name?:@"",
+             @"url"  : _product_url?:@"",
+             @"price" : _product_price?:@""
     };
 }
 

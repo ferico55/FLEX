@@ -1680,16 +1680,16 @@
 }
 
 - (IBAction)gesture:(id)sender {
-    if (![NavigationHelper shouldDoDeepNavigation]) {
-        return;
-    }
-    
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10) {
         [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_resolutionDetail.resolution_order.order_pdf_url];
     }
     else
     {
+        if (![NavigationHelper shouldDoDeepNavigation]) {
+            return;
+        }
+        
         if (_resolutionDetail.resolution_by.by_customer == 1) {
             [_navigate navigateToProfileFromViewController:self withUserID:@""];
         }

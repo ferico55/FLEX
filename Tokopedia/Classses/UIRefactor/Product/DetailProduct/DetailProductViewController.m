@@ -83,6 +83,8 @@
 #import "Localytics.h"
 #import "UIActivityViewController+Extensions.h"
 
+#import "NoResultReusableView.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -110,7 +112,8 @@ MyShopEtalaseFilterViewControllerDelegate,
 RequestMoveToDelegate,
 UIAlertViewDelegate,
 CMPopTipViewDelegate,
-UIAlertViewDelegate
+UIAlertViewDelegate,
+NoResultDelegate
 >
 {
     CMPopTipView *cmPopTitpView;
@@ -610,6 +613,7 @@ UIAlertViewDelegate
                 [_datatalk setObject:_product.result.statistic.product_view_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
                 [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
                 [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
+                [_datatalk setObject:_product.result.product.product_id forKey:TKPD_PRODUCT_ID  ];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
@@ -1642,9 +1646,7 @@ UIAlertViewDelegate
         [self configureGetOtherProductRestkit];
         [self loadDataOtherProduct];
         [self requestsuccess:successResult withOperation:operation];
-        
-        
-        
+                
         if(isNeedLogin) {
             isNeedLogin = !isNeedLogin;
             if(isDoingWishList) {
@@ -1671,11 +1673,11 @@ UIAlertViewDelegate
         StickyAlertView *stickyAlertView;
         if(_favButton.tag == 17) {//Favorite
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessFavoriteShop] delegate:self];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:_product.result.shop_info.shop_url];
         }else {
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:_product.result.shop_info.shop_url];
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:_product.result.shop_info.shop_url];
         
         [stickyAlertView show];
         [self requestFavoriteResult:successResult withOperation:operation];
@@ -1964,17 +1966,14 @@ UIAlertViewDelegate
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-//        if(_product.result == nil) {
-//            NoResultView *temp = [NoResultView new];
-//            [self.view addSubview:temp.view];
-//            temp.view.frame = CGRectMake(0, (self.view.bounds.size.height-temp.view.bounds.size.height)/2.0f, temp.view.bounds.size.width, temp.view.bounds.size.height);
-//            _act.hidden = YES;
-//            [_act stopAnimating];
-//            return;
-//        }
+        
+        if (_product.result == nil) {
+            [self initNoResultView];
+            self.table.hidden = YES;
+            return;
+        }
         
         //Set icon speed
-//        [btnKecepatan setTitle:_product.result.shop_info.respond_speed.speed_level forState:UIControlStateNormal];
         [SmileyAndMedal setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
         [SmileyAndMedal generateMedalWithLevel:_product.result.shop_info.shop_stats.shop_badge_level.level withSet:_product.result.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
         
@@ -1997,20 +1996,15 @@ UIAlertViewDelegate
         if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
             viewContentTokoTutup.hidden = NO;
             lblDescTokoTutup.text = [NSString stringWithFormat:FORMAT_TOKO_TUTUP, _product.result.shop_info.shop_is_closed_until];
+        } else if (_product.result.shop_info.shop_status != nil && [_product.result.shop_info.shop_status isEqualToString:@"3"]) {
+            viewContentTokoTutup.hidden = NO;
+            lblDescTokoTutup.text = @"Toko ini sedang dimoderasi";
         }
         
         //Set shop in warehouse
-        if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE && [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
+        if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE &&
+           [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
             [self unsetWarehouse];
-//        }
-//        else if([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
-//                [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
-//            lblTitleWarehouse.text = CStringTitleBanned;
-//            [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
-//            
-//            float tempHeight = [self calculateHeightLabelDesc:CGSizeMake(lblDescWarehouse.bounds.size.width, 9999) withText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
-//            _header.frame = CGRectMake(0, 0, _table.bounds.size.width, viewTableContentHeader.bounds.size.height + lblDescWarehouse.frame.origin.y + 8 + tempHeight);
-//            _table.tableHeaderView = _header;
         } else if ([_product.result.product.product_status intValue] ==PRODUCT_STATE_WAREHOUSE||
                    [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
             
@@ -2034,8 +2028,7 @@ UIAlertViewDelegate
             [viewContentWarehouse setHidden:NO];
             _table.tableHeaderView = _header;
         }
-        else
-        {
+        else {
             [self unsetWarehouse];
         }
         
@@ -2075,10 +2068,11 @@ UIAlertViewDelegate
             id stats = [result objectForKey:@""];
             _product = stats;
             _product.isDummyProduct = NO;
+            [self addUserActivity];
         }
         
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
-        _formattedProductTitle = _product.result.product.product_name;
+        _formattedProductTitle = [NSString stringWithFormat:@" %@", _product.result.product.product_name];
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
@@ -2115,7 +2109,13 @@ UIAlertViewDelegate
                     [barbutton1 setTag:24];
                 }
                 
-                self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
+                if([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                   [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                    self.navigationItem.rightBarButtonItems = nil;
+                } else {
+                    self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
+                }
+                
                 [btnWishList removeFromSuperview];
                 
                 //Set position btn share
@@ -2192,6 +2192,7 @@ UIAlertViewDelegate
             [self setOtherProducts];
             [self addImpressionClick];
 
+            //Track in GA
             [TPAnalytics trackProductView:_product.result.product];
             
             _isnodata = NO;
@@ -2208,21 +2209,11 @@ UIAlertViewDelegate
                 [self hiddenButtonBuyAndPromo];
             }
             else {
-//                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
-//                    _dinkButton.hidden = NO;
-//                    _buyButton.hidden = YES;
-//                } else {
-//                    _buyButton.hidden = NO;
-//                    _dinkButton.hidden = YES;
-//                }
-                
                 //Check is in warehouse
                 if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
                     [self hiddenButtonBuyAndPromo];
                 }
             }
-            
-            
             
             if(_product.result.shop_info.shop_already_favorited == 1) {
                 _favButton.tag = 17;
@@ -3184,6 +3175,7 @@ UIAlertViewDelegate
 }
 
 #pragma mark - Other Method
+
 - (void)configureGTM {
 //    [TPAnalytics trackUserId];
     
@@ -3207,4 +3199,25 @@ UIAlertViewDelegate
                                  source:source];
     }
 }
+
+- (void)initNoResultView {
+    NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    noResultView.delegate = self;
+    [noResultView generateAllElements:@"icon_no_data_grey.png"
+                                title:@"Produk tidak ditemukan"
+                                 desc:@"Untuk informasi lebih lanjut silakan\nhubungi penjual"
+                             btnTitle:@"Kembali ke halaman sebelumnya"];
+    [self.view addSubview:noResultView];
+}
+
+- (void)buttonDidTapped:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)addUserActivity {
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
+        self.userActivity = [TPSpotlight productDetailActivity:_product.result];
+    }
+}
+
 @end

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
             <string>GothamBook</string>
         </mutableArray>
     </customFonts>
@@ -21,6 +22,10 @@
                 <outlet property="flowLayout" destination="OsW-P4-XGO" id="7HW-4L-yFG"/>
                 <outlet property="hashtagsscrollview" destination="Q9k-15-37M" id="DyX-7G-5S7"/>
                 <outlet property="header" destination="HKl-uZ-hi3" id="crS-Jy-zYR"/>
+                <outlet property="hotlistDescription" destination="paG-jW-UkY" id="EOP-ap-M4d"/>
+                <outlet property="hotlistImageView" destination="nwv-gZ-8hi" id="ccY-Wu-8hH"/>
+                <outlet property="iPadHastags" destination="9Xq-NB-YrI" id="1mI-SJ-qpW"/>
+                <outlet property="iPadView" destination="NXs-ss-sip" id="c1h-bV-PaT"/>
                 <outlet property="imageview" destination="CGm-73-BvT" id="izj-Xe-HPF"/>
                 <outlet property="pagecontrol" destination="wpV-ue-3NP" id="bJZ-oS-Y8a"/>
                 <outlet property="swipegestureleft" destination="pSV-5V-5RB" id="c4J-rH-uJ4"/>
@@ -269,9 +274,6 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="xF3-0f-Irq"/>
                     </constraints>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="fdA-1u-QWh"/>
-                    </connections>
                 </scrollView>
                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CGm-73-BvT">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
@@ -363,6 +365,52 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-231" y="-66"/>
+        </view>
+        <view contentMode="scaleToFill" id="NXs-ss-sip">
+            <rect key="frame" x="0.0" y="0.0" width="726" height="259"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nwv-gZ-8hi">
+                    <rect key="frame" x="8" y="8" width="348" height="188"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="188" id="MNi-Gb-Cso"/>
+                        <constraint firstAttribute="width" constant="348" id="ieu-5Z-w6Q"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="11" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paG-jW-UkY">
+                    <rect key="frame" x="369" y="8" width="342" height="188"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="188" id="ORy-Tg-kol"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Xq-NB-YrI">
+                    <rect key="frame" x="8" y="204" width="710" height="47"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="47" id="5A0-Hq-ElU"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="paG-jW-UkY" firstAttribute="leading" secondItem="nwv-gZ-8hi" secondAttribute="trailing" constant="13" id="ACX-Po-1Xb"/>
+                <constraint firstItem="9Xq-NB-YrI" firstAttribute="leading" secondItem="NXs-ss-sip" secondAttribute="leading" constant="8" id="EKc-3M-TEw"/>
+                <constraint firstItem="nwv-gZ-8hi" firstAttribute="top" secondItem="NXs-ss-sip" secondAttribute="top" constant="8" id="VVa-VC-GNf"/>
+                <constraint firstAttribute="trailing" secondItem="paG-jW-UkY" secondAttribute="trailing" constant="15" id="XlH-Xe-m5G"/>
+                <constraint firstItem="paG-jW-UkY" firstAttribute="top" secondItem="NXs-ss-sip" secondAttribute="top" constant="8" id="bYc-7Q-FBe"/>
+                <constraint firstItem="nwv-gZ-8hi" firstAttribute="leading" secondItem="NXs-ss-sip" secondAttribute="leading" constant="8" id="keH-Pn-96v"/>
+                <constraint firstAttribute="trailing" secondItem="9Xq-NB-YrI" secondAttribute="trailing" constant="8" id="rlV-N0-Ze4"/>
+                <constraint firstItem="9Xq-NB-YrI" firstAttribute="top" secondItem="nwv-gZ-8hi" secondAttribute="bottom" constant="8" id="rw6-10-lv6"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="144" y="-742.5"/>
         </view>
     </objects>
     <resources>

@@ -27,8 +27,14 @@
 #import "OrderBookingResponse.h"
 #import "AlertShipmentCodeView.h"
 
+#define CTagRecipientName 1
 #define CTagAddress 2
 #define CTagPhone 3
+#define CTagCourier 4
+#define CTagReceivePartialOrder 5
+#define CTagSenderName 6
+#define CTagSenderPhoneNumber 7
+#define CTagPickupAddress 8
 
 typedef enum TagRequest {
     OrderDetailTag
@@ -36,21 +42,17 @@ typedef enum TagRequest {
 
 @interface OrderDetailViewController ()
 <
-LabelMenuDelegate,
-UITableViewDataSource,
-UITableViewDelegate,
-ProductQuantityDelegate,
-ChooseProductDelegate,
-RejectExplanationDelegate,
-SubmitShipmentConfirmationDelegate,
-CancelShipmentConfirmationDelegate,
-TokopediaNetworkManagerDelegate,
-ChangeCourierDelegate
+    LabelMenuDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
+    ProductQuantityDelegate,
+    ChooseProductDelegate,
+    RejectExplanationDelegate,
+    SubmitShipmentConfirmationDelegate,
+    CancelShipmentConfirmationDelegate,
+    TokopediaNetworkManagerDelegate,
+    ChangeCourierDelegate
 >
-{
-    NSDictionary *_textAttributes;
-    NavigateViewController *_TKPDNavigator;
-}
 
 @property (weak, nonatomic) IBOutlet UIView *topButtonsView;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
@@ -68,18 +70,15 @@ ChangeCourierDelegate
 @property (weak, nonatomic) IBOutlet UILabel *buyerNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *buyerProfileImageView;
 
-@property (weak, nonatomic) IBOutlet UILabel *receiverNameLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *receiverNameLabel;
 
 @property (weak, nonatomic) IBOutlet LabelMenu *addressLabel;
-@property (weak, nonatomic) IBOutlet LabelMenu *cityLabel;
-@property (weak, nonatomic) IBOutlet LabelMenu *countryLabel;
 
 @property (weak, nonatomic) IBOutlet LabelMenu *phoneNumberLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *courierAgentLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *courierAgentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *getCodeButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *paymentMethodLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalProductLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *subTotalFeeLabel;
@@ -88,71 +87,127 @@ ChangeCourierDelegate
 @property (weak, nonatomic) IBOutlet UILabel *totalFeeLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *dropshipView;
-@property (weak, nonatomic) IBOutlet UILabel *dropshipSenderNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dropshipSenderPhoneLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *dropshipSenderNameLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *dropshipSenderPhoneLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dropshipViewHeightConstraint;
 
 @property (strong, nonatomic) IBOutlet UIView *detailTransactionView;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDueDateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receivePartialOrderLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *receivePartialOrderLabel;
 @property (weak, nonatomic) IBOutlet UIButton *infoAddFeeButton;
 @property (weak, nonatomic) IBOutlet UILabel *insuranceTextLabel;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shipmentDestinationLayoutConstraintTop;
+@property (strong, nonatomic) IBOutlet UIView *pickupLocationView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pickupLocationHeightConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *pickupLocationAddressLabel;
+
 @property (strong, nonatomic) UITapGestureRecognizer *singleTapGestureRecognizer;
+
+@property (strong, nonatomic) NSDictionary *textAttributes;
+
+@property (strong, nonatomic) RKObjectManager *objectManager;
+@property (strong, nonatomic) TokopediaNetworkManager *networkManager;
+@property (strong, nonatomic) AlertShipmentCodeView *alert;
 
 @end
 
-@implementation OrderDetailViewController {
-    __weak RKObjectManager *_objectManager;
-    TokopediaNetworkManager *_networkManager;
-    AlertShipmentCodeView *_alert;
+@implementation OrderDetailViewController
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+
+    self.title = @"Detail Transaksi";
+
+    [self initializeTableView];
+    
+    [self setContentFrame];
+    
+    [self setBackButton];
+    
+    [self request];
+
+    [self setData];
+
+    [self setDelegates];
+    
+    if ([_delegate isKindOfClass:[SalesNewOrderViewController class]]) {
+        [self updateFrameForNewOrder];
+    } else if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]]) {
+        [self updateFrameForShipmentConfirmation];
+    } else if ([_delegate isKindOfClass:[DetailShipmentStatusViewController class]]) {
+        [self updateFrameForShipmentStatus];
+    }
+    
+    CGFloat top = _tableView.contentInset.top;
+    CGFloat left = _tableView.contentInset.left;
+    CGFloat bottom = _tableView.contentInset.bottom + _addressLabel.frame.size.height;
+    CGFloat right = _tableView.contentInset.right;
+
+    _tableView.contentInset = UIEdgeInsetsMake(top, right, bottom, left);
+    _tableView.contentOffset = CGPointMake(0, -66);
 }
 
-
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-    
-    
-    
+    [super viewWillAppear:animated];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Methods
+
+- (void)setContentFrame {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     CGRect frame = _detailTransactionView.frame;
     frame.size.width = screenWidth;
     _detailTransactionView.frame = frame;
-    
-    self.title = @"Detail Transaksi";
-    _TKPDNavigator = [NavigateViewController new];
-    
+}
+
+- (void)setBackButton {
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backButton;
-    
-    _phoneNumberLabel.delegate = _addressLabel.delegate = _cityLabel.delegate = _countryLabel.delegate = self;
-    _addressLabel.tag = _cityLabel.tag = _countryLabel.tag = CTagAddress;
-    _phoneNumberLabel.tag = CTagPhone;
-    [_addressLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    [_cityLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    [_countryLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    [_phoneNumberLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    
-    [_addressLabel setUserInteractionEnabled:YES];
-    [_cityLabel setUserInteractionEnabled:YES];
-    [_countryLabel setUserInteractionEnabled:YES];
-    [_phoneNumberLabel setUserInteractionEnabled:YES];
-    
-    
-    _tableView.tableHeaderView = _orderHeaderView;
-    _tableView.tableFooterView = _orderFooterView;
-    _tableView.contentInset = UIEdgeInsetsMake(66, 0, 44, 0);
-    _tableView.contentOffset = CGPointMake(0, -22);
-    
+}
+
+- (void)setData {
+    [self setInvoiceData];
+    [self setBuyerInformation];
+    [self setReceiverData];
+    [self setPickupData];
+    [self setCostData];
+    [self setFooterView];
+}
+
+- (void)setDelegates {
+    self.receiverNameLabel.delegate = self;
+    self.addressLabel.delegate = self;
+    self.phoneNumberLabel.delegate = self;
+    self.courierAgentLabel.delegate = self;
+    self.receivePartialOrderLabel.delegate = self;
+    self.dropshipSenderNameLabel.delegate = self;
+    self.dropshipSenderPhoneLabel.delegate = self;
+}
+
+- (void)setInvoiceData {
+    _invoiceNumberLabel.text = _transaction.order_detail.detail_invoice;
+    _invoiceDateLabel.text = _transaction.order_payment.payment_verify_date;
+}
+
+- (void)setBuyerInformation {
     UITapGestureRecognizer *buyerNameGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                        action:@selector(tap:)];
-    [_buyerNameLabel addGestureRecognizer:buyerNameGesture];
+    _buyerNameLabel.gestureRecognizers = @[buyerNameGesture];
     _buyerNameLabel.text = _transaction.order_customer.customer_name;
     
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_transaction.order_customer.customer_image]
@@ -167,10 +222,9 @@ ChangeCourierDelegate
                                                _buyerProfileImageView.clipsToBounds = YES;
                                                _buyerProfileImageView.contentMode = UIViewContentModeScaleToFill;
                                            } failure:nil];
-    
-    _invoiceNumberLabel.text = _transaction.order_detail.detail_invoice;
-    _invoiceDateLabel.text = _transaction.order_payment.payment_verify_date;
-    
+}
+
+- (void)setReceiverData {
     _receiverNameLabel.text = _transaction.order_destination.receiver_name;
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -183,22 +237,12 @@ ChangeCourierDelegate
     NSString *address = [_transaction.order_destination.address_street stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     address = [address stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     address = [address stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *addressAttributedString = [[NSAttributedString alloc] initWithString:address
-                                                                                  attributes:attributes];
-    _addressLabel.attributedText = addressAttributedString;
-    _addressLabel.numberOfLines = 0;
-    [_addressLabel sizeToFit];
     
     NSString *city = [NSString stringWithFormat:@"%@\n%@",
                       _transaction.order_destination.address_district,
                       _transaction.order_destination.address_city];
     city = [city stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     city = [city stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *cityAttributedString = [[NSAttributedString alloc] initWithString:city
-                                                                               attributes:attributes];
-    _cityLabel.attributedText = cityAttributedString;
-    _cityLabel.numberOfLines = 0;
-    [_cityLabel sizeToFit];
     
     NSString *country = [NSString stringWithFormat:@"%@, %@, %@",
                          _transaction.order_destination.address_province,
@@ -206,28 +250,62 @@ ChangeCourierDelegate
                          _transaction.order_destination.address_postal];
     country = [country stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     country = [country stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *countryAttributedString = [[NSAttributedString alloc] initWithString:country
-                                                                                  attributes:attributes];
-    _countryLabel.attributedText = countryAttributedString;
-    _countryLabel.numberOfLines = 0;
-    [_countryLabel sizeToFit];
     
+    NSString *completeAddress = [NSString stringWithFormat:@"%@\n%@\n%@", address, city, country];
+    NSAttributedString *addressAttributedString = [[NSAttributedString alloc] initWithString:completeAddress attributes:attributes];
+    _addressLabel.attributedText = addressAttributedString;
+    _addressLabel.numberOfLines = 0;
+    [_addressLabel sizeToFit];
+
     _phoneNumberLabel.text = _transaction.order_destination.receiver_phone;
+    
     _courierAgentLabel.text = [NSString stringWithFormat:@"%@ (%@)",
                                _transaction.order_shipment.shipment_name,
                                _transaction.order_shipment.shipment_product];
     
-    if ([self.delegate isKindOfClass:[ShipmentConfirmationViewController class]] && [self.transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
-        _networkManager = [TokopediaNetworkManager new];
-        _networkManager.delegate = self;
-        _networkManager.tagRequest = OrderDetailTag;
-        _networkManager.maxTries = 5;
-        _networkManager.isUsingHmac = YES;
-        [_networkManager doRequest];
+    _receivePartialOrderLabel.text = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
+}
+
+- (void)setPickupData {
+    // GO-KILAT
+    if (_transaction.order_shipment.shipment_id == 10) {
+        
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 6.0;
+        
+        NSDictionary *attributes = @{
+            NSForegroundColorAttributeName  : [UIColor blackColor],
+            NSFontAttributeName             : [UIFont fontWithName:@"GothamBook" size:13],
+            NSParagraphStyleAttributeName   : style,
+        };
+        
+        CGFloat previousHeight = _pickupLocationAddressLabel.frame.size.height;
+        
+        NSString *address = _transaction.order_shop.address_street;
+        _pickupLocationAddressLabel.attributedText = [[NSAttributedString alloc] initWithString:address attributes:attributes];
+        [_pickupLocationAddressLabel sizeToFit];
+        
+        CGFloat newHeight = _pickupLocationAddressLabel.frame.size.height + 5; // Additional 5 point
+        CGFloat additionalHeight = newHeight - previousHeight;
+        CGFloat newFrameHeight = _pickupLocationView.frame.size.height + additionalHeight;
+        
+        [self.orderFooterView addSubview:_pickupLocationView];
+        self.shipmentDestinationLayoutConstraintTop.constant += newFrameHeight;
+        
+    } else {
+        CGRect frame = self.pickupLocationView.frame;
+        frame.size.height = 0;
+        self.pickupLocationView.frame = frame;
+        self.pickupLocationView.hidden = YES;
+        self.pickupLocationHeightConstraint.constant = 0;
+        
+        CGRect footerFrame = _orderFooterView.frame;
+        footerFrame.size.height -= 10;
+        _orderFooterView.frame = footerFrame;
     }
-    
-    _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
-    
+}
+
+- (void)setCostData {
     _totalProductLabel.text = [NSString stringWithFormat:@"%@ Barang (%.3f kg)",
                                [NSNumber numberWithInteger:_transaction.order_detail.detail_quantity],
                                _transaction.order_detail.detail_total_weight];
@@ -235,166 +313,162 @@ ChangeCourierDelegate
     _subTotalFeeLabel.text = _transaction.order_detail.detail_product_price_idr;
     _assuranceFeeLabel.text = _transaction.order_detail.detail_insurance_price_idr;
     _insuranceTextLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    [_insuranceTextLabel sizeToFit];
     _assuranceFeeLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?_transaction.order_detail.detail_insurance_price_idr:_transaction.order_detail.detail_total_add_fee_idr;
     _infoAddFeeButton.hidden = ([_transaction.order_detail.detail_additional_fee integerValue]==0);
     
     _shipmentFeeLabel.text = _transaction.order_detail.detail_shipping_price_idr;
     _totalFeeLabel.text = _transaction.order_detail.detail_open_amount_idr;
+}
+
+- (void)setDropshipData {
+    _dropshipSenderNameLabel.text = _transaction.order_detail.detail_dropship_name;
+    _dropshipSenderPhoneLabel.text = _transaction.order_detail.detail_dropship_telp;
+}
+
+- (void)request {
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    _networkManager.tagRequest = OrderDetailTag;
+    _networkManager.isUsingHmac = YES;
+    [_networkManager doRequest];
+}
+
+- (void)initializeTableView {
+    _tableView.tableHeaderView = _orderHeaderView;
+    _tableView.contentOffset = CGPointMake(0, -22);
+}
+
+- (void)setFooterView {
+    CGFloat additionalHeight = 0;
+    additionalHeight += _pickupLocationView.frame.size.height;
+    additionalHeight += _addressLabel.frame.size.height;
     
-    _receivePartialOrderLabel.text = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
+    CGFloat heightLeftOvers = 30;
+    additionalHeight -= heightLeftOvers;
     
-    _textAttributes = @{
-                        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
-                        NSParagraphStyleAttributeName  : style,
-                        NSForegroundColorAttributeName : [UIColor blackColor],
-                        };
+    CGRect frame = _orderFooterView.frame;
+    frame.size.height += additionalHeight;
+    _orderFooterView.frame = frame;
     
-    CGFloat additionalHeight = _addressLabel.frame.size.height +
-    _cityLabel.frame.size.height +
-    _countryLabel.frame.size.height;
+    _tableView.tableFooterView = _orderFooterView;
     
-    _tableView.contentInset = UIEdgeInsetsMake(66, 0, additionalHeight, 0);
+    _tableView.contentInset = UIEdgeInsetsMake(66, 0, 20, 0);
+}
+
+- (void)updateFrameForNewOrder {
+    [self setDayLeft:_transaction.order_payment.payment_process_day_left];
     
-    if (_addressLabel.frame.size.height >= 21 || _cityLabel.frame.size.height >= 21 || _countryLabel.frame.size.height >= 21) {
+    if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
+        
+        // Hide dropship view if dropship not available
+        _dropshipView.hidden = YES;
+        _dropshipViewHeightConstraint.constant = 0;
+        
+        // Update table content inset after hide dropship
+        _tableView.contentInset = UIEdgeInsetsMake(66, 0, -_dropshipView.frame.size.height + 44, 0);
+        
+        // Update table height
         CGRect frame = _orderFooterView.frame;
-        frame.size.height += (additionalHeight - 63);
+        frame.size.height -= (_dropshipView.frame.size.height - 15);
         _orderFooterView.frame = frame;
+        
+    } else  {
+        [self setDropshipData];
     }
-    
-    if ([_delegate isKindOfClass:[SalesNewOrderViewController class]]) {
-        
-        [self setDayLeft:_transaction.order_payment.payment_process_day_left];
-        
-        if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
-            
-            // Hide dropship view if dropship not available
-            _dropshipView.hidden = YES;
-            _dropshipViewHeightConstraint.constant = 0;
-            
-            // Update table content inset after hide dropship
-            _tableView.contentInset = UIEdgeInsetsMake(66, 0, -_dropshipView.frame.size.height + 44, 0);
-            
-            // Update table height
-            CGRect frame = _orderFooterView.frame;
-            frame.size.height -= (_dropshipView.frame.size.height-15);
-            _orderFooterView.frame = frame;
-            
-        } else  {
-            _dropshipSenderNameLabel.text = _transaction.order_detail.detail_dropship_name;
-            _dropshipSenderPhoneLabel.text = _transaction.order_detail.detail_dropship_telp;
-        }
-        
-    } else if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]]) {
-        
-        [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
-        
-        if ([_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
-            [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
-            [_acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
-            _acceptButton.tag = 3;
-        } else {
-            [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
-            [_acceptButton setImage:[UIImage imageNamed:@"icon_order_check-01.png"] forState:UIControlStateNormal];
-            _acceptButton.tag = 2;
-        }
-        
-        [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
-        
-        if (_transaction.order_deadline.deadline_shipping_day_left < 0) {
-            _acceptButton.enabled = NO;
-            _acceptButton.layer.opacity = 0.25;
-        }
-        
-        if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
-            
-            // Hide dropship view if dropship not available
-            _dropshipView.hidden = YES;
-            _dropshipViewHeightConstraint.constant = 0;
-            
-            // Add detail transaction view
-            [_orderFooterView addSubview:_detailTransactionView];
-            _transactionDateLabel.text = _transaction.order_detail.detail_order_date;
-            _transactionDueDateLabel.text = _transaction.order_payment.payment_shipping_due_date;
-            
-            // Update table height
-            CGRect frame = _orderFooterView.frame;
-            frame.size.height -= _dropshipView.frame.size.height - 15;
-            _orderFooterView.frame = frame;
-            
-            // Update transaction view position
-            frame = _detailTransactionView.frame;
-            frame.origin.y = _orderFooterView.frame.size.height;
-            _detailTransactionView.frame = frame;
-            
-            // Update table content inset after hide dropship
-            _tableView.contentInset = UIEdgeInsetsMake(66, 0, -_dropshipView.frame.size.height + _detailTransactionView.frame.size.height, 0);
-            
-        } else {
-            
-            _dropshipSenderNameLabel.text = _transaction.order_detail.detail_dropship_name;
-            _dropshipSenderPhoneLabel.text = _transaction.order_detail.detail_dropship_telp;
-            
-            // Add detail transaction view
-            [_orderFooterView addSubview:_detailTransactionView];
-            _transactionDateLabel.text = _transaction.order_detail.detail_order_date;
-            _transactionDueDateLabel.text = _transaction.order_payment.payment_shipping_due_date;
-            
-            // Update transaction view position
-            CGRect frame = _detailTransactionView.frame;
-            frame.origin.y = _orderFooterView.frame.size.height;
-            _detailTransactionView.frame = frame;
-            
-            _tableView.contentInset = UIEdgeInsetsMake(66, 0, _detailTransactionView.frame.size.height, 0);
-        }
-        
-    } else if ([_delegate isKindOfClass:[DetailShipmentStatusViewController class]]) {
-        
-        _topButtonsView.hidden = YES;
-        _tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
-        
-        _dayLeftLabel.hidden = YES;
-        _automaticallyRejectedLabel.hidden = YES;
-        
-        if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
-            
-            // Hide dropship view if dropship not available
-            _dropshipView.hidden = YES;
-            _dropshipViewHeightConstraint.constant = 0;
-            
-            // Update table content inset after hide dropship
-            _tableView.contentInset = UIEdgeInsetsMake(0, 0, -_dropshipView.frame.size.height, 0);
-            
-            // Update table height
-            CGRect frame = _orderFooterView.frame;
-            frame.size.height -= (_dropshipView.frame.size.height-15);
-            _orderFooterView.frame = frame;
-            
-        } else {
-            
-            _dropshipSenderNameLabel.text = _transaction.order_detail.detail_dropship_name;
-            _dropshipSenderPhoneLabel.text = _transaction.order_detail.detail_dropship_telp;
-            
-            _tableView.contentInset = UIEdgeInsetsZero;
-        }
-    }
-    
-    _tableView.contentOffset = CGPointMake(0, -66);
-    _tableView.contentInset = UIEdgeInsetsMake(_tableView.contentInset.top,
-                                               _tableView.contentInset.right,
-                                               _tableView.contentInset.bottom + _addressLabel.frame.size.height,
-                                               _tableView.contentInset.left);
-    
-    
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+- (void)updateFrameForShipmentConfirmation {
+    [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
+    
+    [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
+
+    if (_transaction.order_shipment.shipment_id == 10) {
+        [_acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
+    } else if ([_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+        [_acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
+        [_acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
+        _acceptButton.tag = 3;
+    } else {
+        [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+    }
+    
+    if (_transaction.order_deadline.deadline_shipping_day_left < 0) {
+        _acceptButton.enabled = NO;
+        _acceptButton.layer.opacity = 0.25;
+    }
+    
+    if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
+        
+        // Hide dropship view if dropship not available
+        _dropshipView.hidden = YES;
+        _dropshipViewHeightConstraint.constant = 0;
+        
+        // Add detail transaction view
+        [self addTransactionDetailView];
+        
+        // Update table height
+        CGRect frame = _orderFooterView.frame;
+        frame.size.height -= _dropshipView.frame.size.height;
+        _orderFooterView.frame = frame;
+        
+        // Update transaction view position
+        frame = _detailTransactionView.frame;
+        frame.origin.y = _orderFooterView.frame.size.height;
+        _detailTransactionView.frame = frame;
+        
+        // Update table content inset after hide dropship
+        CGFloat bottom = -_dropshipView.frame.size.height + _detailTransactionView.frame.size.height;
+        _tableView.contentInset = UIEdgeInsetsMake(66, 0, bottom, 0);
+        
+    } else {
+        
+        [self setDropshipData];
+        
+        // Add detail transaction view
+        [self addTransactionDetailView];
+        
+        // Update transaction view position
+        CGRect frame = _detailTransactionView.frame;
+        frame.origin.y = _orderFooterView.frame.size.height;
+        _detailTransactionView.frame = frame;
+        
+        _tableView.contentInset = UIEdgeInsetsMake(66, 0, _detailTransactionView.frame.size.height, 0);
+    }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+- (void)addTransactionDetailView {
+    // Add detail transaction view
+    [_orderFooterView addSubview:_detailTransactionView];
+    _transactionDateLabel.text = _transaction.order_detail.detail_order_date;
+    _transactionDueDateLabel.text = _transaction.order_payment.payment_shipping_due_date;
+}
+
+- (void)updateFrameForShipmentStatus {
+    _topButtonsView.hidden = YES;
+    _tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    
+    _dayLeftLabel.hidden = YES;
+    _automaticallyRejectedLabel.hidden = YES;
+    
+    if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
+        
+        // Hide dropship view if dropship not available
+        _dropshipView.hidden = YES;
+        _dropshipViewHeightConstraint.constant = 0;
+        
+        // Update table content inset after hide dropship
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, -_dropshipView.frame.size.height, 0);
+        
+        // Update table height
+        CGRect frame = _orderFooterView.frame;
+        frame.size.height -= (_dropshipView.frame.size.height - 15);
+        _orderFooterView.frame = frame;
+        
+    } else {
+        [self setDropshipData];
+        _tableView.contentInset = UIEdgeInsetsZero;
+    }
 }
 
 #pragma mark - Table view data source
@@ -504,12 +578,13 @@ ChangeCourierDelegate
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     OrderProduct *product = [_transaction.order_products objectAtIndex:indexPath.section];
-    [_TKPDNavigator navigateToProductFromViewController:self
-                                               withName:product.product_name
-                                              withPrice:product.product_price
-                                                 withId:product.product_id
-                                           withImageurl:nil
-                                           withShopName:nil];
+    
+    [[NavigateViewController new] navigateToProductFromViewController:self
+                                                             withName:product.product_name
+                                                            withPrice:product.product_price
+                                                               withId:product.product_id
+                                                         withImageurl:nil
+                                                         withShopName:nil];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
@@ -521,7 +596,7 @@ ChangeCourierDelegate
 }
 
 #pragma mark - Method
-- (void)longPress:(UILongPressGestureRecognizer *)sender
+- (IBAction)longPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan) {
         UILabel *lbl = (UILabel *)sender.view;
@@ -913,12 +988,27 @@ ChangeCourierDelegate
 #pragma mark - LabelMenu Delegate
 - (void)duplicate:(int)tag
 {
-    if(tag == CTagAddress) {
-        [UIPasteboard generalPasteboard].string = [NSString stringWithFormat:@"%@ %@ %@", _addressLabel.text, _cityLabel.text, _countryLabel.text];
+    NSString *copiedText = @"";
+    if (tag == CTagRecipientName) {
+        copiedText = _transaction.order_destination.receiver_name;
+    } else if(tag == CTagAddress) {
+        copiedText = _addressLabel.text;
+    } else if(tag == CTagPhone) {
+        copiedText = _phoneNumberLabel.text;
+    } else if (tag == CTagCourier) {
+        copiedText = [NSString stringWithFormat:@"%@ (%@)",
+                      _transaction.order_shipment.shipment_name,
+                      _transaction.order_shipment.shipment_product];
+    } else if (tag == CTagReceivePartialOrder) {
+        copiedText = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
+    } else if (tag == CTagSenderName) {
+        copiedText = _transaction.order_detail.detail_dropship_name;
+    } else if (tag == CTagSenderPhoneNumber) {
+        copiedText = _transaction.order_detail.detail_dropship_telp;
+    } else if (tag == CTagPickupAddress) {
+        copiedText = _transaction.order_shop.address_street;
     }
-    else if(tag == CTagPhone) {
-        [UIPasteboard generalPasteboard].string = _phoneNumberLabel.text;
-    }
+    [UIPasteboard generalPasteboard].string = copiedText;
 }
 
 #pragma mark - Tokopedia Network Delegate
@@ -994,52 +1084,57 @@ ChangeCourierDelegate
     
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     OrderBookingResponse *response = [result objectForKey:@""];
-    BOOL status = [response.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
-    if (status) {
-        NSMutableAttributedString *kurir = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)",
-                                                                                              _transaction.order_shipment.shipment_name,
-                                                                                              _transaction.order_shipment.shipment_product]];
-        NSString *code = ((OrderBookingData*)response.data[0]).tiket_code;
+    NSMutableAttributedString *kurir = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)",
+                                                                                          _transaction.order_shipment.shipment_name,
+                                                                                          _transaction.order_shipment.shipment_product]];
+    NSString *code = ((OrderBookingData*)response.data[0]).tiket_code;
+    
+    NSAttributedString *text;
+    
+    _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGetCode:)];
+    _singleTapGestureRecognizer.numberOfTapsRequired = 1;
+    
+    if([code isEqualToString:@"try again"]) {
+//        text = [[NSAttributedString alloc] initWithString:code attributes:@{
+//                                                                            NSForegroundColorAttributeName:[UIColor colorWithRed:(62.0/255.0) green:(170.0/255.0) blue:(36.0/255.0) alpha:(255.0/255.0)],
+//                                                                            NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0]
+//                                                                            }];
         
-        NSAttributedString *text;
+        text = [[NSAttributedString alloc] initWithString:@"Kode sedang diproses..." attributes:@{
+                                                                                                  NSForegroundColorAttributeName:[UIColor blackColor]}];
         
-        _singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGetCode:)];
-        _singleTapGestureRecognizer.numberOfTapsRequired = 1;
+        [_getCodeButton setImage:[UIImage imageNamed:@"icon_pesan_ulang.png"] forState:UIControlStateNormal];
+        [_getCodeButton setHidden:NO];
+        _getCodeButton.enabled = YES;
         
-        if([code isEqualToString:@"try again"]) {
-            text = [[NSAttributedString alloc] initWithString:@"Kode sedang diproses..." attributes:@{
-                                                                                                      NSForegroundColorAttributeName:[UIColor blackColor]}];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [_networkManager doRequest];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                });
-            });
-        } else {
-            text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
-            [_getCodeButton setHidden:YES];
-            _getCodeButton.enabled = NO;
-            
-            [_courierAgentLabel removeGestureRecognizer:_singleTapGestureRecognizer];
-            [_courierAgentLabel setUserInteractionEnabled:NO];
-            _singleTapGestureRecognizer.enabled = NO;
-            [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
-            
-            [self.view layoutSubviews];
-            
-            _alert = [AlertShipmentCodeView newview];
-            [_alert setText:code];
-            [_alert show];
-        }
+        [_courierAgentLabel addGestureRecognizer:_singleTapGestureRecognizer];
+        [_courierAgentLabel setUserInteractionEnabled:YES];
+        _singleTapGestureRecognizer.cancelsTouchesInView = NO;
+        _singleTapGestureRecognizer.enabled = YES;
+    } else {
+        text = [[NSAttributedString alloc] initWithString:code attributes:@{NSForegroundColorAttributeName:[UIColor redColor]}];
+        [_getCodeButton setHidden:YES];
+        _getCodeButton.enabled = NO;
         
-        NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];
+        [_courierAgentLabel removeGestureRecognizer:_singleTapGestureRecognizer];
+        [_courierAgentLabel setUserInteractionEnabled:NO];
+        _singleTapGestureRecognizer.enabled = NO;
+        [_singleTapGestureRecognizer removeTarget:self action:@selector(tapGetCode:)];
         
-        [kurir appendAttributedString:dash];
-        [kurir appendAttributedString:text];
+        [self.view layoutSubviews];
         
-        _courierAgentLabel.attributedText = kurir;
+        _alert = [AlertShipmentCodeView newview];
+        [_alert setText:code];
+        [_alert show];
     }
+    
+    NSAttributedString *dash = [[NSAttributedString alloc] initWithString:@" - "];
+    
+    [kurir appendAttributedString:dash];
+    [kurir appendAttributedString:text];
+    
+    _courierAgentLabel.attributedText = kurir;
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
@@ -1047,9 +1142,7 @@ ChangeCourierDelegate
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Tidak ada koneksi internet"]
-                                                                   delegate:self];
-    [alert show];
+    
 }
 
 @end

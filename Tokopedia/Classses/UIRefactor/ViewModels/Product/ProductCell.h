@@ -14,6 +14,7 @@
 
 - (void)setViewModel:(ProductModelView*)viewModel;
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
+- (void)lalala;
 
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
 @property (strong, nonatomic) IBOutlet UILabel *productPrice;

@@ -43,6 +43,7 @@
 #import "GeneralTableViewController.h"
 
 #import "ListRekeningBank.h"
+#import "NoResultReusableView.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
@@ -66,7 +67,8 @@
     LoadingViewDelegate,
     RequestCartDelegate,
     TransactionCCViewControllerDelegate,
-    GeneralTableViewControllerDelegate
+    GeneralTableViewControllerDelegate,
+    NoResultDelegate
 >
 {
     NSMutableArray *_list;
@@ -144,6 +146,7 @@
     URLCacheConnection *_cacheconnection;
     
     NSString *_cachepath;
+    NoResultReusableView *_noResultView;
     
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -293,6 +296,7 @@
         
         //[_networkManager doRequest];
     }
+    [self initNoResultView];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 8.0;
@@ -340,6 +344,16 @@
     [_cachecontroller initCacheWithDocumentPath:path];
 }
 
+- (void)initNoResultView{
+    //_noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, -30, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"Keranjang.png"
+                                title:@"Keranjang belanja Anda kosong"
+                                 desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
+                             btnTitle:@"Ayo mulai belanja!"];
+
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -799,6 +813,24 @@
                     [self pushToCCInformation];
                 }
                     break;
+                case TYPE_GATEWAY_BRI_EPAY:
+                {
+                    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+                    vc.gateway = _cartSummary.gateway;
+                    vc.token = _cartSummary.token;
+                    vc.URLString = _cartSummary.bri_website_link?:@"";
+                    vc.cartDetail = _cartSummary;
+                    vc.transactionCode = _cartSummary.transaction_code?:@"";
+                    vc.delegate = self;
+                    vc.paymentID = _cartSummary.payment_id;
+                    
+                    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+                    break;
                 default:
                     break;
             }
@@ -951,12 +983,16 @@
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
         [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
         [gatewayImages addObject:gateway.gateway_image?:@""];
+#ifdef DEBUG
+        
+#else
         for (NSString *hiddenGateway in hiddenGatewayArray) {
             if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
                 [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
                 [hiddenGatewayName addObject:gateway.gateway_name];
             }
         }
+#endif
     }
     
     [gatewayImages removeObjectsInArray:hiddenGatewayImage];
@@ -1199,12 +1235,7 @@
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
     }
-    if (voucherCode.length < 11)
-    {
-        isValid = NO;
-        [errorMessages addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];
-    }
-    
+
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
         [alert show];
@@ -1447,7 +1478,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
     _grandTotalLabel.text = _cart.grand_total_without_lp_idr;
@@ -1608,6 +1639,12 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    // should be phone numbers text field
+    if (textField.tag < 0) {
+        NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        return [newString isNumber];
+    }
+    
     if (textField == _saldoTokopediaAmountTextField) {
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
@@ -1728,6 +1765,12 @@
     [_requestCart doRequestBCAClickPay];
 }
 
+-(void)shouldDoRequestBRIEPay:(NSDictionary *)param
+{
+    _requestCart.param = param?:@{};
+    [_requestCart dorequestBRIEPay];
+}
+
 #pragma mark - Methods
 
 -(void)addArrayObjectTemp
@@ -1804,6 +1847,7 @@
     
     _selectedInstallmentBank = nil;
     _selectedInstallmentDuration = nil;
+    _voucherData = nil;
     
     [_tableView reloadData];
 }
@@ -2790,6 +2834,10 @@
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
     }
+    if (tag == TAG_REQUEST_BRI_EPAY) {
+        [_delegate shouldBackToFirstPage];
+        [_act stopAnimating];
+    }
     
     [self endRefreshing];
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
@@ -2811,6 +2859,12 @@
     
     NSArray *list = cart.result.list;
     [_list addObjectsFromArray:list];
+    
+    if(list.count >0){
+        [_noResultView removeFromSuperview];
+    }else{
+        [_tableView addSubview:_noResultView];
+    }
     
     _cart = cart.result;
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
@@ -2923,7 +2977,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
@@ -3060,7 +3114,7 @@
     
     NSInteger voucher = [voucherResponse.result.data_voucher.voucher_amount integerValue];
     NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
-    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
+    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
     _voucherAmountLabel.text = voucherString;
     _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
     
@@ -3084,6 +3138,22 @@
         [_requestCart doRequestCart];
     }
     [_tableView reloadData];
+}
+
+#pragma mark - Request BRI E-Pay
+-(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    TransactionBuyResult *BRIEPay = [TransactionBuyResult new];
+    BRIEPay.transaction = _cartSummary;
+    
+    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BRIEPay?:[TransactionBuyResult new]};
+    [_delegate didFinishRequestBuyData:userInfo?:@{}];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+    
+    [_act stopAnimating];
+    
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 #pragma mark - Request E-Money
@@ -3182,6 +3252,11 @@
         }
     }
     [tracker send:[builder build]];
+}
+
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
 }
 
 @end

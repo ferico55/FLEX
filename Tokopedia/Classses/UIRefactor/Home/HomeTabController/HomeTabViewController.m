@@ -98,9 +98,6 @@
     
 	__weak typeof(self) weakSelf = self;
     _categoryController = [CategoryViewController new];
-    _categoryController.delegate = weakSelf;
-    
-    
     
     _productFeedController = [ProductFeedViewController new];
     _productFeedController.delegate = weakSelf;
@@ -141,6 +138,42 @@
     [self addChildViewController:_categoryController];
     [self.scrollView addSubview:_categoryController.view];
     
+    NSLayoutConstraint *width =[NSLayoutConstraint
+                                constraintWithItem:_categoryController.view
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:0
+                                toItem:self.scrollView
+                                attribute:NSLayoutAttributeWidth
+                                multiplier:1.0
+                                constant:0];
+    NSLayoutConstraint *height =[NSLayoutConstraint
+                                 constraintWithItem:_categoryController.view
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:0
+                                 toItem:self.scrollView
+                                 attribute:NSLayoutAttributeHeight
+                                 multiplier:1.0
+                                 constant:0];
+    NSLayoutConstraint *top = [NSLayoutConstraint
+                               constraintWithItem:_categoryController.view
+                               attribute:NSLayoutAttributeTop
+                               relatedBy:NSLayoutRelationEqual
+                               toItem:self.scrollView
+                               attribute:NSLayoutAttributeTop
+                               multiplier:1.0f
+                               constant:0.f];
+    NSLayoutConstraint *leading = [NSLayoutConstraint
+                                   constraintWithItem:_categoryController.view
+                                   attribute:NSLayoutAttributeLeading
+                                   relatedBy:NSLayoutRelationEqual
+                                   toItem:self.scrollView
+                                   attribute:NSLayoutAttributeLeading
+                                   multiplier:1.0f
+                                   constant:0.f];
+
+    [self.scrollView addConstraints:@[width, height, top, leading]];
+    [_categoryController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
     [_categoryController didMoveToParentViewController:self];
     [self setArrow];
     [self setHeaderBar];
@@ -180,15 +213,15 @@
 }
 
 - (void)setArrow {
-    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
-    CGRect frame = greenArrowImageView.frame;
-    frame.size.width = 13;
-    frame.size.height = 7;
-    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
-    frame.origin.y = 64;
-    greenArrowImageView.frame = frame;
-//    [self.navigationController.navigationBar addSubview:greenArrowImageView];
-    [self.view addSubview:greenArrowImageView];
+//    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
+//    CGRect frame = greenArrowImageView.frame;
+//    frame.size.width = 13;
+//    frame.size.height = 7;
+//    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
+//    frame.origin.y = 64;
+//    greenArrowImageView.frame = frame;
+////    [self.navigationController.navigationBar addSubview:greenArrowImageView];
+//    [self.view addSubview:greenArrowImageView];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -241,6 +274,7 @@
     if(page == 1) {
         CGRect frame = _productFeedController.view.frame;
         frame.origin.x = _scrollView.frame.size.width;
+        frame.size.height = _scrollView.frame.size.height;
         _productFeedController.view.frame = frame;
         
         [self addChildViewController:_productFeedController];
@@ -249,6 +283,7 @@
     } else if(page == 2) {
         CGRect frame = _wishListViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
+        frame.size.height = _scrollView.frame.size.height;
         _wishListViewController.view.frame = frame;
         
         [self addChildViewController:_wishListViewController];
@@ -257,6 +292,7 @@
     } else if(page == 3) {
         CGRect frame = _historyController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
+        frame.size.height = _scrollView.frame.size.height;
         _historyController.view.frame = frame;
         
         [self addChildViewController:_historyController];
@@ -265,6 +301,7 @@
     } else if(page == 4) {
         CGRect frame = _shopViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
+        frame.size.height = _scrollView.frame.size.height;
         _shopViewController.view.frame = frame;
         
         [self addChildViewController:_shopViewController];

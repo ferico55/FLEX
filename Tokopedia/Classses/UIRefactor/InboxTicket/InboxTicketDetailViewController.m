@@ -130,7 +130,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = 1;
-//    [_networkManager doRequest];
+
+    if (self.inboxTicket || self.inboxTicketId) {
+        [_networkManager doRequest];
+    }
 
     _ratingNetworkManager = [TokopediaNetworkManager new];
     _ratingNetworkManager.delegate = self;
@@ -285,7 +288,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     NSString *invoice = _ticketInformation.ticket_invoice_ref_num;
     if (![invoice isEqualToString:@"0"] ) {
+        self.invoiceTitleLabel.hidden = NO;
+        
         self.invoiceNumberLabel.text = invoice;
+        self.invoiceNumberLabel.hidden = NO;
         [self.invoiceNumberLabel sizeToFit];
         
         CGSize invoiceLabelSize = [invoice sizeWithFont:FONT_GOTHAM_BOOK_14
@@ -422,13 +428,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                            API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId
                            };
         } else {
-            if (_inboxTicket != nil)
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_DETAIL,
                            API_TICKET_INBOX_ID_KEY    : _inboxTicket.ticket_inbox_id?:_inboxTicketId,
                            };
-            
-            else dictionary = @{};
         }
     } else {
         

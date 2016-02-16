@@ -22,6 +22,7 @@ tignore file for Xcode4 and Xcode5 Source projects
 #
 #########################
 
+
 #####
 # OS X temporary files that should never be committed
 #
@@ -209,3 +210,7 @@ xcuserdata
 # pull your cahnges to other's repo"
 #
 #*.xccheckout
+
+# Rollout.io cache
+Pods/Rollout.io/.cache/
+Rollout-ios-SDK/auto_generated_code/

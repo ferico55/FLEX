@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 {
     BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
+    IBOutlet UIView* selectedMarker;
+    IBOutlet UILabel *_productNameLabel;
 }
 
 #pragma mark - Initialization
@@ -73,7 +75,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
     [self.middleView addGestureRecognizer:talkGesture];
-    [self.middleView setUserInteractionEnabled:YES];
+    [self.middleView setUserInteractionEnabled:enableDeepNavigation];
     
     CGFloat borderWidth = 0.5f;
     
@@ -83,7 +85,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+    selectedMarker.hidden = !selected;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    selectedMarker.hidden = !highlighted;
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
@@ -124,7 +130,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         [self.productImageView setContentMode:UIViewContentModeCenter];
     }];
     
-    [self.productButton setTitle:modelView.productName forState:UIControlStateNormal];
+    _productNameLabel.text = modelView.productName;
+
     [self.userButton setLabelBackground:modelView.userLabel];
     [self.userButton setText:modelView.userName];
     [self.unreadImageView setHidden:[modelView.readStatus isEqualToString:@"1"] ? NO : YES];
@@ -140,13 +147,17 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
     _isFollowingTalk = talkFollowStatus;
-    if (talkFollowStatus) {
+    [self adjustFollowButton];
+}
+
+- (void)adjustFollowButton {
+    if (_isFollowingTalk) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
         
     } else {
         [_unfollowButton setTitle:@"Ikuti" forState:UIControlStateNormal];
-        [_unfollowButton setImage:[UIImage imageNamed:@"icon_check_grey"] forState:UIControlStateNormal];
+        [_unfollowButton setImage:[UIImage imageNamed:@"icon_order_check"] forState:UIControlStateNormal];
     }
 }
 
@@ -186,7 +197,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         }
     }
     else {
-        ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:_marksOpenedTalkAsRead];
         vc.data = data;
 
         UIViewController *controller = [_delegate getNavigationController:self];
@@ -399,11 +410,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             NSArray *successMessages = [[NSMutableArray alloc] init];
             _isFollowingTalk = !_isFollowingTalk;
             
+            [self adjustFollowButton];
 
 			if (tag == RequestDeleteTalk) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
 
-                NSDictionary *userInfo = @{@"index" : @(_unfollowIndexPath.row)};
+                NSDictionary *userInfo = @{@"index" : @(_deleteIndexPath.row)};
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
                                                                     object:nil
                                                                   userInfo:userInfo];

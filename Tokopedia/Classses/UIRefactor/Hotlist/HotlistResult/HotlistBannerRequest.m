@@ -33,7 +33,7 @@
     [infoMapping addAttributeMappingsFromDictionary:@{@"meta_description" : @"meta_description", @"hotlist_description" : @"hotlist_description", @"cover_img" : @"cover_img"}];
     
     RKObjectMapping *queryMapping = [RKObjectMapping mappingForClass:[HotlistBannerQuery class]];
-    [queryMapping addAttributeMappingsFromDictionary:@{@"q" : @"q", @"sc" : @"sc"}];
+    [queryMapping addAttributeMappingsFromDictionary:@{@"q" : @"q", @"sc" : @"sc", @"pmin" : @"pmin", @"pmax" : @"pmax"}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistBannerResult class]];
     

@@ -30,6 +30,8 @@
 
 #import "ActionOrder.h"
 
+#import "OrderSellerShop.h"
+
 @interface SalesNewOrderViewController ()
 <
     UITableViewDataSource,
@@ -116,14 +118,6 @@
     _orderInProcess = [NSMutableDictionary new];
     _operationQueueAction = [NSOperationQueue new];
     
-    [self configureRestKit];
-    [self request];
-    [self configureActionReskit];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
     self.title = @"Pesanan Baru";
     
@@ -160,6 +154,10 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
+    
+    [self configureRestKit];
+    [self request];
+    [self configureActionReskit];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -577,6 +575,9 @@
 {
     _objectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Order class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -660,6 +661,15 @@
                                                              @"detail_total_add_fee"        : @"detail_total_add_fee",
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];
+    
+    RKObjectMapping *orderShopMapping = [RKObjectMapping mappingForClass:[OrderSellerShop class]];
+    [orderShopMapping addAttributeMappingsFromArray:@[API_SHOP_ADDRESS_STREET,
+                                                     API_SHOP_ADDRESS_DISTRICT,
+                                                     API_SHOP_ADDRESS_CITY,
+                                                     API_SHOP_ADDRESS_PROVINCE,
+                                                     API_SHOP_ADDRESS_COUNTRY,
+                                                     API_SHOP_ADDRESS_POSTAL
+                                                     API_SHOP_SHIPPER_PHONE]];
     
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
@@ -764,6 +774,10 @@
                                                                                 toKeyPath:API_LIST_ORDER_DETAIL
                                                                               withMapping:orderDetailMapping]];
 
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_SHOP
+                                                                                toKeyPath:API_LIST_ORDER_SHOP
+                                                                              withMapping:orderShopMapping]];
+
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DEADLINE
                                                                                 toKeyPath:API_LIST_ORDER_DEADLINE
                                                                               withMapping:orderDeadlineMapping]];
@@ -801,6 +815,9 @@
     if (_request.isExecuting) return;
     
     _requestCount++;
+    
+    self.tableView.tableFooterView = _footerView;
+    [_activityIndicator startAnimating];
 
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
@@ -943,6 +960,7 @@
         
         if (_page == 0) {
             [_activityIndicator stopAnimating];
+            _activityIndicator.hidden = YES;
             _tableView.tableFooterView = nil;
         }
         
@@ -963,6 +981,9 @@
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_actionObjectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,

@@ -92,6 +92,8 @@
     
     SortViewController *_sortViewController;
     ProductListMyShopFilterViewController *_filterViewController;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -194,6 +196,9 @@
     [_networkManager doRequest];
     
     _sortViewController = [SortViewController new];
+    _sortViewController.delegate = self;
+    _sortViewController.sortType = SortManageProduct;
+    
     _filterViewController = [ProductListMyShopFilterViewController new];
 }
 
@@ -350,16 +355,13 @@
         switch (button.tag) {
             case BUTTON_FILTER_TYPE_SORT:
             {
-                NSIndexPath *indexpath = [_dataFilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                
-                _sortViewController.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(KTKPDFILTER_DATATYPESHOPMANAGEPRODUCTKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                _sortViewController.delegate = self;
+                _sortViewController.selectedIndexPath = _sortIndexPath;
                 
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_sortViewController];
                 nav.navigationBar.translucent = NO;
                 
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
+                
                 break;
             }
             case BUTTON_FILTER_TYPE_FILTER:
@@ -872,9 +874,8 @@
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    [_dataFilter addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    [_dataFilter setObject:sort forKey:kTKPDFILTER_APIORDERBYKEY];
     [self refreshView:nil];
 }
 

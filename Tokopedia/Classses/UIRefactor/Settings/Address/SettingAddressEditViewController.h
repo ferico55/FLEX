@@ -26,5 +26,8 @@
 @property (nonatomic, weak) IBOutlet id<SettingAddressEditViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) NSDictionary *data;
+@property UIImage *imageMap;
+@property (nonatomic, strong) NSString *longitude;
+@property (nonatomic, strong) NSString *latitude;
 
 @end

@@ -12,6 +12,7 @@
 #import "Paging.h"
 #import "DepartmentTree.h"
 #import "SearchRedirect.h"
+#import "SearchAWSShop.h"
 
 @interface SearchResult : NSObject
 
@@ -20,6 +21,7 @@
 
 //@property (nonatomic, strong) SearchRedirect *redirect_url;
 @property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray *shops;
 @property (nonatomic, strong) NSArray *listshop;
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *departmenttree;

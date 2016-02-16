@@ -110,6 +110,7 @@ SpellCheckRequestDelegate
 @property ScrollDirection scrollDirection;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
+
 @end
 
 @implementation SearchResultViewController {
@@ -141,6 +142,8 @@ SpellCheckRequestDelegate
     NSString *_suggestion;
     
     BOOL _isFailRequest;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 #pragma mark - Initialization
@@ -206,6 +209,10 @@ SpellCheckRequestDelegate
     [_collectionView setDataSource:self];
     [_firstFooter setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 50)];
     [_collectionView addSubview:_firstFooter];
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+    
     
     [_params setDictionary:_data];
     
@@ -439,47 +446,92 @@ SpellCheckRequestDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    CGSize cellSize = CGSizeMake(0, 0);
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    CGFloat screenWidth = screenRect.size.width;
-    
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        cellCount = 1;
-        heightRatio = 390;
-        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            heightRatio = 370;
+//    CGSize cellSize = CGSizeMake(0, 0);
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    
+//    NSInteger cellCount;
+//    float heightRatio;
+//    float widhtRatio;
+//    float inset;
+//    
+//    CGFloat screenWidth = screenRect.size.width;
+//    
+//    if (self.cellType == UITableViewCellTypeOneColumn) {
+//        cellCount = 1;
+//        heightRatio = 390;
+//        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+//            heightRatio = 370;
+//        }
+//        widhtRatio = 300;
+//        inset = 15;
+//    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+//        cellCount = 2;
+//        heightRatio = 41;
+//        widhtRatio = 29;
+//        inset = 15;
+//    } else {
+//        cellCount = 3;
+//        heightRatio = 1;
+//        widhtRatio = 1;
+//        inset = 14;
+//    }
+//    
+//    CGFloat cellWidth;
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+//        screenWidth = screenRect.size.width/2;
+//        cellWidth = screenWidth/cellCount-inset;
+//    } else {
+//        screenWidth = screenRect.size.width;
+//        cellWidth = screenWidth/cellCount-inset;
+//    }
+//    
+//    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+//    return cellSize;
+    NSInteger numberOfCell;
+    NSInteger cellHeight;
+    if(IS_IPAD) {
+        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+        if(self.cellType == UITableViewCellTypeTwoColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 5;
+            } else {
+                numberOfCell = 4;
+            }
+            cellHeight = 250;
+        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 8;
+            } else {
+                numberOfCell = 6;
+            }
+            cellHeight = 150;
+        } else if(self.cellType == UITableViewCellTypeOneColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 4;
+                cellHeight = 400;
+            } else {
+                numberOfCell = 2;
+                cellHeight = 450;
+            }
+            
         }
-        widhtRatio = 300;
-        inset = 15;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        cellCount = 2;
-        heightRatio = 41;
-        widhtRatio = 29;
-        inset = 15;
     } else {
-        cellCount = 3;
-        heightRatio = 1;
-        widhtRatio = 1;
-        inset = 14;
+        if(self.cellType == UITableViewCellTypeTwoColumn) {
+            numberOfCell = 2;
+            cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
+        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
+            numberOfCell = 3;
+            cellHeight = [UIScreen mainScreen].bounds.size.width / 3 - 15;
+        } else {
+            numberOfCell = 1;
+            cellHeight = [UIScreen mainScreen].bounds.size.width + 100;
+        }
     }
     
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
-    }
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellWidth = screenWidth/numberOfCell - 15;
     
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
+    return CGSizeMake(cellWidth, cellHeight);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
@@ -526,26 +578,28 @@ SpellCheckRequestDelegate
     switch (button.tag) {
         case 10:
         {
-            NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             // Action Urutkan Button
-            SortViewController *vc = [SortViewController new];
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
-            else
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
-            vc.delegate = self;
+            SortViewController *controller = [SortViewController new];
+            controller.delegate = self;
+            controller.selectedIndexPath = _sortIndexPath;
+            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+                controller.sortType = SortProductSearch;
+            } else {
+                controller.sortType = SortCatalogSearch;
+            }
+
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
                 [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
             }
+            
             UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
-            vc.screenshotImage = screenshotImage;
+            controller.screenshotImage = screenshotImage;
             
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
+            
             break;
         }
         case 11:
@@ -568,12 +622,13 @@ SpellCheckRequestDelegate
         {
             NSString *title;
             if ([_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]) {
-                title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
-                         [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]];
+                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY];
+            } else if ([_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY]) {
+                title = [_data objectForKey:kTKPDSEARCH_APIDEPARTMENTNAMEKEY];
             } else if ([_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
-                title = [NSString stringWithFormat:@"Jual %@ | Tokopedia",
-                         [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString]];
+                title = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
             }
+            title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
             NSURL *url = [NSURL URLWithString: _searchObject.result.share_url?:@"www.tokopedia.com"];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                               url:url
@@ -628,17 +683,20 @@ SpellCheckRequestDelegate
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_params addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    [_params setObject:sort forKey:@"order_by"];
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
     [_act startAnimating];
+    _sortIndexPath = indexPath;
 }
 
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification {
     //    [_product removeAllObjects];
     [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"department_id"];
+    [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
+    
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
     
@@ -688,16 +746,16 @@ SpellCheckRequestDelegate
 
 - (id)getObjectManager:(int)tag {
     if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ajax.tokopedia.com/"];
+        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
 #ifdef DEBUG
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
         NSString *baseUrl;
 //        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
         if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
-            baseUrl = @"https://ajax.tokopedia.com/";
+            baseUrl = @"https://ace.tokopedia.com/";
         } else {
-            baseUrl = @"https://ajax-staging.tokopedia.com/";
+            baseUrl = @"https://ace-staging.tokopedia.com/";
         }
         _objectmanager = [RKObjectManager sharedClient:baseUrl];
 #endif
@@ -1009,7 +1067,7 @@ SpellCheckRequestDelegate
 
 - (BOOL) isUsingAnyFilter{
     BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
-    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil;
     BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_min"]] isEqualToString:@"0"];
     BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_max"]] isEqualToString:@"0"];;
     BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
@@ -1102,6 +1160,10 @@ SpellCheckRequestDelegate
         [_noResultView setNoResultButtonTitle:_suggestion];
         [_noResultView hideButton:NO];
     }
+}
+
+- (void)orientationChanged:(NSNotification*)note {
+    [_collectionView reloadData];
 }
 
 @end

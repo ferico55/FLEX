@@ -265,17 +265,20 @@
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", transaction.order_payment.payment_shipping_due_date];
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
-    if ([transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+    
+    if (transaction.order_shipment.shipment_id == 10) {
+        [cell.acceptButton setTitle:@"Pickup" forState:UIControlStateNormal];
+        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_order_check.png"] forState:UIControlStateNormal];
+        cell.acceptButton.tag = 2;
+    } else if ([transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
         [cell.acceptButton setTitle:@"Ubah Kurir" forState:UIControlStateNormal];
         [cell.acceptButton setImage:[UIImage imageNamed:@"icon_truck.png"] forState:UIControlStateNormal];
         cell.acceptButton.tag = 3;
     } else {
         [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
-        [cell.acceptButton setImage:[UIImage imageNamed:@"icon_order_check-01.png"] forState:UIControlStateNormal];
         cell.acceptButton.tag = 2;
     }
     
- 
     return cell;
 }
 
@@ -287,7 +290,6 @@
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
             _tableView.tableFooterView = _footerView;
             [_activityIndicator startAnimating];
-            [self configureRestKit];
             [self request];
         } else {
             _tableView.tableFooterView = nil;
@@ -379,7 +381,10 @@
 - (void)configureRestKit
 {
     _objectManager =  [RKObjectManager sharedClient];
-    
+ 
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Order class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
@@ -464,6 +469,15 @@
                                                              @"detail_total_add_fee"        : @"detail_total_add_fee",
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];
+    
+    RKObjectMapping *orderShopMapping = [RKObjectMapping mappingForClass:[OrderSellerShop class]];
+    [orderShopMapping addAttributeMappingsFromArray:@[API_SHOP_ADDRESS_STREET,
+                                                      API_SHOP_ADDRESS_DISTRICT,
+                                                      API_SHOP_ADDRESS_CITY,
+                                                      API_SHOP_ADDRESS_PROVINCE,
+                                                      API_SHOP_ADDRESS_COUNTRY,
+                                                      API_SHOP_ADDRESS_POSTAL
+                                                      API_SHOP_SHIPPER_PHONE]];
     
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
     [orderDeadlineMapping addAttributeMappingsFromDictionary:@{
@@ -578,6 +592,10 @@
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DETAIL
                                                                                 toKeyPath:API_LIST_ORDER_DETAIL
                                                                               withMapping:orderDetailMapping]];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_SHOP
+                                                                                toKeyPath:API_LIST_ORDER_SHOP
+                                                                              withMapping:orderShopMapping]];
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_ORDER_DEADLINE
                                                                                 toKeyPath:API_LIST_ORDER_DEADLINE
@@ -821,6 +839,9 @@
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_actionObjectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,

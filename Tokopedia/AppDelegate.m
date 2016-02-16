@@ -20,6 +20,8 @@
 #import <Google/Analytics.h>
 #import "NavigateViewController.h"
 #import "DeeplinkController.h"
+#import <GoogleMaps/GoogleMaps.h>
+#import <Rollout/Rollout.h>
 
 @implementation AppDelegate
 
@@ -36,6 +38,12 @@
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
+    
+    #if defined( DEBUG )
+        [Rollout setupWithDebug:YES];
+    #else
+        [Rollout setupWithDebug:NO];
+    #endif
         
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
@@ -50,8 +58,17 @@
         [self configurePushNotificationsInApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+
+        [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
         
         [self preparePersistData];
+        
+        //change app language for google mapp address become indonesia
+        NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+        if (![[languages firstObject] isEqualToString:@"id"]) {
+            [[NSUserDefaults standardUserDefaults] setObject:@[@"id"] forKey:@"AppleLanguages"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     });
     
     //opening URL in background state
@@ -61,7 +78,7 @@
             [DeeplinkController handleURL:url];
         } else {
             //universal search link, only available in iOS 9
-            if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+            if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
                 NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
                 if (userActivityDictionary) {
                     [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
@@ -82,7 +99,7 @@
 }
 
 - (void)configureAppIndexing {
-    if(SYSTEM_VERSION_GREATER_THAN(@"8.0")) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
         [[GSDAppIndexing sharedInstance] registerApp:1001394201];
     }
 }
@@ -204,9 +221,19 @@
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
-    NSURL *url = userActivity.webpageURL;
-    [DeeplinkController handleURL:url];
-    return YES;
+    NSURL *url;
+    BOOL shouldContinue = NO;
+    if ([userActivity.activityType isEqualToString:@"com.apple.corespotlightitem"]) {
+        NSString *activityIdentifier = [userActivity.userInfo objectForKey:@"kCSSearchableItemActivityIdentifier"];
+        url = [NSURL URLWithString:activityIdentifier];
+    } else {
+        url = userActivity.webpageURL;
+    }
+    if (url) {
+        [DeeplinkController handleURL:url];
+        shouldContinue = YES;
+    }
+    return shouldContinue;
 }
 
 #pragma mark - reset persist data if freshly installed

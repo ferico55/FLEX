@@ -20,6 +20,8 @@
 #import "HistoryProduct.h"
 #import "ProductCell.h"
 
+#import "RetryCollectionReusableView.h"
+
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
@@ -31,7 +33,8 @@ UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
-NoResultDelegate
+NoResultDelegate,
+RetryViewDelegate
 >
 
 
@@ -100,6 +103,8 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSeeAProduct:) name:@"didSeeAProduct" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     //todo with view
     [self initNoResultView];
@@ -113,7 +118,7 @@ typedef enum TagRequest {
     [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
-    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
+//    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
@@ -165,6 +170,7 @@ typedef enum TagRequest {
     if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView" forIndexPath:indexPath];
+            ((RetryCollectionReusableView *)reusableView).delegate = self;
         } else {
             reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView" forIndexPath:indexPath];
         }
@@ -179,36 +185,26 @@ typedef enum TagRequest {
     //    [navigateController navigateToProductFromViewController:self withProductID:[NSString stringWithFormat:@"%@", product.product_id]];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    CGSize cellSize = CGSizeMake(0, 0);
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    CGFloat screenWidth = screenRect.size.width;
-    
-    cellCount = 2;
-    heightRatio = 41;
-    widhtRatio = 29;
-    inset = 15;
-    
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger numberOfCell;
+    NSInteger cellHeight;
+    if(IS_IPAD) {
+        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+        if(UIInterfaceOrientationIsLandscape(orientation)) {
+            numberOfCell = 5;
+        } else {
+            numberOfCell = 4;
+        }
+        cellHeight = 250;
     } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
+        numberOfCell = 2;
+        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
     }
     
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellWidth = screenWidth/numberOfCell - 15;
+    
+    return CGSizeMake(cellWidth, cellHeight);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -391,7 +387,7 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Other Method
-- (IBAction)pressRetryButton:(id)sender {
+- (void)pressRetryButton {
     [_networkManager doRequest];
     _isFailRequest = NO;
     [_collectionView reloadData];
@@ -407,6 +403,10 @@ typedef enum TagRequest {
     
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+}
+
+- (void)orientationChanged:(NSNotification *)note {
+    [_collectionView reloadData];
 }
 
 @end

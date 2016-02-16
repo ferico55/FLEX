@@ -22,6 +22,7 @@
 #import "SearchAutoCompleteObject.h"
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
+#import "UIView+HVDLayout.h"
 
 #import "Localytics.h"
 
@@ -90,13 +91,15 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _hotlist = [NSMutableArray new];
     
 
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    [searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
-    [searchBar setOpaque:YES];
-    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
-    [searchBar setTintColor:[UIColor whiteColor]];
-    [[UITextField appearance] setTintColor:[UIColor blueColor]];
-    _searchBar = searchBar;
+//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
+    
+//    [searchBar setOpaque:YES];
+//    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
+//    [searchBar setTintColor:[UIColor whiteColor]];
+//    [[UITextField appearance] setTintColor:[UIColor blueColor]];
+//    _searchBar = searchBar;
+    [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
+    [_searchBar setTintColor:[UIColor whiteColor]];
     [self.view addSubview:_searchBar];
 
     _searchBar.delegate = self;
@@ -121,12 +124,13 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    
     [self.collectionView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
 
     [_domains removeAllObjects];
@@ -190,6 +194,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
 
     [_historyResult addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
+    [_typedHistoryResult addObjectsFromArray:_historyResult];
 }
 
 -(void)clearHistory {
@@ -251,6 +256,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     UICollectionViewCell *cell = nil;
     
     SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+    
     NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
     NSString *domainName = [domain objectForKey:@"title"];
     if([domainName isEqualToString:SearchDomainHistory]) {
@@ -319,7 +325,12 @@ NSString *const SearchDomainHotlist = @"Hotlist";
              NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
              NSString *domainName = [domain objectForKey:@"title"];
              if([domainName isEqualToString:SearchDomainHistory]) {
-                 [self goToResultPage:[_historyResult objectAtIndex:indexPath.row] withAutoComplete:YES];
+                 if (_searchBar.text.length > 0) {
+                     [self goToResultPage:[_typedHistoryResult objectAtIndex:indexPath.row] withAutoComplete:YES];
+                 } else {
+                     NSString *searchText = [_historyResult objectAtIndex:indexPath.row];
+                     [self goToResultPage:searchText withAutoComplete:YES];
+                 }
              }
              
              else if ([domainName isEqualToString:SearchDomainGeneral]) {
@@ -605,6 +616,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+- (void)orientationChanged:(NSNotification*)note {
+    [_collectionView reloadData];
+}
 
 
 @end

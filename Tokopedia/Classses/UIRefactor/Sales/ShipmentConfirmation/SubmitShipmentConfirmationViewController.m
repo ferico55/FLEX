@@ -38,8 +38,12 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet UILabel *headerTextLabel;
+
 @property (strong, nonatomic) IBOutlet UIView *footerView;
-@property (weak, nonatomic) IBOutlet UILabel *footerLabel;
+@property (weak, nonatomic) IBOutlet UILabel *footerTextLabel;
 
 @end
 
@@ -51,26 +55,12 @@
 
     self.title = @"Konfirmasi";
 
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
+    [self setBackButton];
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                     style:UIBarButtonItemStyleBordered
-                                                                    target:self
-                                                                    action:@selector(tap:)];
-    cancelButton.tag = 1;
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                   style:UIBarButtonItemStyleDone
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-    doneButton.tag = 2;
-    self.navigationItem.rightBarButtonItem = doneButton;
+    [self setCancelButton];
 
+    [self setConfirmButton];
+    
     _changeCourier = NO;
 
     for (ShipmentCourier *courier in _shipmentCouriers) {
@@ -89,18 +79,6 @@
     
     _operationQueue = [NSOperationQueue new];
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor grayColor],
-                                 };
-    
-    _footerLabel.attributedText = [[NSAttributedString alloc] initWithString:_footerLabel.text
-                                                                  attributes:attributes];
-    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
                name:UIKeyboardWillShowNotification
@@ -112,6 +90,33 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)setBackButton {
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
+}
+
+- (void)setCancelButton {
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                     style:UIBarButtonItemStyleBordered
+                                                                    target:self
+                                                                    action:@selector(tap:)];
+    cancelButton.tag = 1;
+    self.navigationItem.leftBarButtonItem = cancelButton;
+}
+
+- (void)setConfirmButton {
+    NSString *title = [self isInstantCourier] ? @"Pickup" : @"Selesai";
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:title
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    doneButton.tag = 2;
+    self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 #pragma mark - Table data source
@@ -131,7 +136,9 @@
             rows = 1;
         }
     } else if (section == 1) {
-        rows = 1;
+        if ([self showsReceiptInputText] || _changeCourier) {
+            rows = 1;
+        }
     }
     return rows;
 }
@@ -207,6 +214,19 @@
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
+        
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
+        
+        NSDictionary *attributes = @{
+            NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+            NSParagraphStyleAttributeName  : style,
+            NSForegroundColorAttributeName : [UIColor grayColor],
+        };
+        
+        _footerTextLabel.attributedText = [[NSAttributedString alloc] initWithString:_footerTextLabel.text
+                                                                          attributes:attributes];
+        
         return _footerView;
     } else {
         return nil;
@@ -318,6 +338,12 @@
         if (button.tag == 1) {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
+            
+            if ([self isInstantCourier]) {
+                [self request];
+                return;
+            }
+
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
             if (textField.text.length >= 7 && textField.text.length <= 17) {
@@ -336,13 +362,28 @@
     _changeCourier = [sender isOn];
     
     NSArray *indexPaths = @[
-                            [NSIndexPath indexPathForRow:1 inSection:0],
-                            [NSIndexPath indexPathForRow:2 inSection:0],
-                            ];
+        [NSIndexPath indexPathForRow:1 inSection:0],
+        [NSIndexPath indexPathForRow:2 inSection:0],
+    ];
+
+    NSArray *indexPathsForInstantCourier = @[
+        [NSIndexPath indexPathForRow:1 inSection:0],
+        [NSIndexPath indexPathForRow:2 inSection:0],
+        [NSIndexPath indexPathForRow:0 inSection:1],
+    ];
+    
     if (_changeCourier && [self.tableView numberOfRowsInSection:0] == 1) {
-        [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        if ([self isInstantCourier]) {
+            [_tableView insertRowsAtIndexPaths:indexPathsForInstantCourier withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        }
     } else if (!_changeCourier && [self.tableView numberOfRowsInSection:0] == 3) {
-        [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        if ([self isInstantCourier]) {
+            [_tableView deleteRowsAtIndexPaths:indexPathsForInstantCourier withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        }
     }
 }
 
@@ -352,6 +393,9 @@
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
     
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_actionObjectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
@@ -453,10 +497,13 @@
             [self.delegate successConfirmOrder:self.order];
         }
         
-    } else {
-        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_error);
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
-                                                                       delegate:self];
+    } else if (actionOrder.message_error.count > 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                        message:actionOrder.message_error[0]
+                                                       delegate:self
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil, nil];
+        alert.delegate = self;
         [alert show];
     }
 }
@@ -501,6 +548,24 @@
 
 - (void)keyboardWillHide:(NSNotification *)info {
     self.tableView.contentInset = UIEdgeInsetsZero;
+}
+
+#pragma mark - Methods
+
+- (BOOL)showsReceiptInputText {
+    BOOL shows = YES;
+    if ([self isInstantCourier]) {
+        return NO;
+    }
+    return shows;
+}
+
+- (BOOL)isInstantCourier {
+    if (_order.order_shipment.shipment_id == 10) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 @end

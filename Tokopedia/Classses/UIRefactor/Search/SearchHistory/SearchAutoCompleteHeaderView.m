@@ -19,15 +19,17 @@
         [self addSubview:label];
         [label setFont:[UIFont fontWithName:@"Gotham Medium" size:12.0f]];
         
-        UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width-50, 0, 50, self.frame.size.height)];
+        UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectZero];
         [self addSubview:deleteButton];
         [deleteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [deleteButton.titleLabel setFont:[UIFont fontWithName:@"Gotham Medium" size:11.0f]];
+        [deleteButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         
         _deleteButton = deleteButton;
         _titleLabel = label;
         
-        [_titleLabel HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 10, 5, 50)];        
+        [_titleLabel HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 10, 5, 50)];
+        [_deleteButton HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 50, 5, 10)];
     }
     
     return self;

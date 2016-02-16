@@ -10,7 +10,7 @@
 #import "Paging.h"
 #import "AddressFormList.h"
 
-@interface AddressFormResult : NSObject
+@interface AddressFormResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;
