@@ -851,61 +851,14 @@ typedef enum TagRequest {
 
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
-//        _objectmanager =  [RKObjectManager sharedClient];
-//        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
         if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
             _objectmanager = [RKObjectManager sharedClient];
         } else {
             _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
         }
         
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageResult class]];
-        
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-        
-        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageList class]];
-        [listMapping addAttributeMappingsFromArray:@[
-                                                     KTKPDMESSAGE_IDKEY,
-                                                     KTKPDMESSAGE_USERFULLNAMEKEY,
-                                                     KTKPDMESSAGE_CREATETIMEKEY,
-                                                     KTKPDMESSAGE_READSTATUSKEY,
-                                                     KTKPDMESSAGE_TITLEKEY,
-                                                     KTKPDMESSAGE_USERIDKEY,
-                                                     KTKPDMESSAGE_MESSAGEREPLYKEY,
-                                                     KTKPDMESSAGE_INBOXIDKEY,
-                                                     KTKPDMESSAGE_USERIMAGEKEY,
-                                                     KTKPDMESSAGE_JSONDATAKEY,
-                                                     KTKPDMESSAGE_USER_LABEL,
-                                                     KTKPDMESSAGE_USER_LABEL_ID
-                                                     ]];
-        
-        
-        RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-        [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                     CNoReputation,
-                                                                     CNegative,
-                                                                     CNeutral,
-                                                                     CPositif]];
-        RKRelationshipMapping *userReputationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:reviewUserReputationMapping];
-        [listMapping addPropertyMapping:userReputationRel];
-        
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-        [resultMapping addPropertyMapping:pageRel];
-        
-        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-        [resultMapping addPropertyMapping:listRel];
-        
         //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessage mapping]
                                                                                                       method:RKRequestMethodPOST
                                                                                                  pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
                                                                                                      keyPath:@""
