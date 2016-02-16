@@ -1235,12 +1235,7 @@
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
     }
-    if (voucherCode.length < 11)
-    {
-        isValid = NO;
-        [errorMessages addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];
-    }
-    
+
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
         [alert show];
