@@ -334,41 +334,14 @@
         _objectmanager = [RKObjectManager sharedClient:_messageBaseUrl];
     }
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [InboxMessageDetail mapping];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailResult class]];
-    
-    RKObjectMapping *pagingMapping = [Paging mapping];
-
-    
-    RKObjectMapping *listMapping = [InboxMessageDetailList mapping];
-    
-    RKObjectMapping *betweenMapping = [InboxMessageDetailBetween mapping];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *betweenRel = [RKRelationshipMapping relationshipMappingFromKeyPath:KTKPDMESSAGE_BETWEENCONVERSATIONKEY toKeyPath:KTKPDMESSAGE_BETWEENCONVERSATIONKEY withMapping:betweenMapping];
-    [resultMapping addPropertyMapping:betweenRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageDetail mapping]
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-
 }
 
 
