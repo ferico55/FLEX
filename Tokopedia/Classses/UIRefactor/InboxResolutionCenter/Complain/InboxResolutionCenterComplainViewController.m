@@ -33,10 +33,6 @@
 #import "TagManagerHandler.h"
 #import "NavigationHelper.h"
 
-#define DATA_FILTER_PROCESS_KEY @"filter_process"
-#define DATA_FILTER_READ_KEY @"filter_read"
-#define DATA_FILTER_SORTING_KEY @"filter_sorting"
-
 #define DATA_SELECTED_RESOLUTION_KEY @"selected_resolution"
 #define DATA_SELECTED_INDEXPATH_RESOLUTION_KEY @"seleted_indexpath_resolution"
 
@@ -86,10 +82,14 @@
     NSIndexPath *_selectedDetailIndexPath;
     
     TAGContainer *_gtmContainer;
-    NSArray *_arrayFilterUnread;
-    NSMutableArray *_arrayFilterProcess;
-    NSInteger _filterUnread;
-    NSInteger _filterStatus;
+    
+    NSArray *_arrayFilterRead;
+    NSArray *_arrayFilterProcess;
+    NSArray *_arrayFilterSort;
+    
+    NSInteger _selectedFilterRead;
+    NSInteger _selectedFilterProcess;
+    NSInteger _selectedFilterSort;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -119,8 +119,6 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManagerCancelComplain = [TokopediaNetworkManager new];
     
-    _filterUnread = -1;
-    _filterStatus = -1;
     return self;
 }
 
@@ -178,8 +176,26 @@
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
     
-    _arrayFilterProcess = [NSMutableArray new];
-    [_arrayFilterProcess addObjectsFromArray:ARRAY_FILTER_PROCESS];
+    _arrayFilterRead = [self arrayFilterStringForKey:@"filter_read"]?:@[];
+    _arrayFilterSort = [self arrayFilterStringForKey:@"filter_sort"]?:@[];
+    _arrayFilterProcess = [self arrayFilterStringForKey:@"filter_process"]?:@[];
+
+}
+
+-(NSArray *)arrayFilterStringForKey:(NSString *)key
+{
+    NSMutableArray<NSDictionary*> *tempArrayFilterRead = [NSMutableArray new];
+    NSString *filterReadString = [[self gtmContainer] stringForKey:key];
+    NSArray *filterReadArray = [filterReadString componentsSeparatedByString:@","];
+    for (NSString *filterRead in filterReadArray) {
+        NSArray *filterReadDictionaryArray = [filterRead componentsSeparatedByString:@":"];
+        NSDictionary *filterReadDictionary = @{
+                                               @"filter_name":filterReadDictionaryArray[0],
+                                               @"filter_value":filterReadDictionaryArray[1]
+                                               };
+        [tempArrayFilterRead addObject:filterReadDictionary];
+    }
+    return [tempArrayFilterRead copy];
 }
 
 -(TAGContainer *)gtmContainer
@@ -208,9 +224,9 @@
 
 -(void)setFilterReadIndex:(NSInteger)filterReadIndex
 {
-    [_dataInput setObject:ARRAY_FILTER_UNREAD[filterReadIndex] forKey:DATA_FILTER_READ_KEY];
     if (_filterReadIndex != filterReadIndex) {
         _filterReadIndex = filterReadIndex;
+        _selectedFilterRead = [_arrayFilterRead[_filterReadIndex][@"filter_value"] integerValue];
         [self refreshRequest];
    }
 }
@@ -219,16 +235,23 @@
 {
     UIButton *button = (UIButton*)sender;
     
-    NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-    NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
+    NSString *filterProcess;
+    NSString *filterSort;
     
     if (button.tag == 10) {
         GeneralTableViewController *controller = [GeneralTableViewController new];
         controller.title = @"Urutkan";
         controller.delegate = self;
         controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-        controller.objects = ARRAY_FILTER_SORT;
-        controller.selectedObject = filterSort ?: ARRAY_FILTER_SORT[0];
+        NSMutableArray *objectNames = [NSMutableArray new];
+        for (NSDictionary *filter in _arrayFilterSort) {
+            [objectNames addObject:filter[@"filter_name"]];
+            if ([filter[@"filter_value"] integerValue] == _selectedFilterSort) {
+                filterSort = filter[@"filter_name"];
+            }
+        }
+        controller.objects = [objectNames copy];
+        controller.selectedObject = filterSort ?: objectNames[0];
         [self.navigationController pushViewController:controller animated:YES];
     }
     if (button.tag == 11) {
@@ -236,8 +259,15 @@
         controller.title = @"Filter";
         controller.delegate = self;
         controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-        controller.objects = _arrayFilterProcess;
-        controller.selectedObject = filterProcess?:_arrayFilterProcess[0];
+        NSMutableArray *objectNames = [NSMutableArray new];
+        for (NSDictionary *filter in _arrayFilterProcess) {
+            [objectNames addObject:filter[@"filter_name"]];
+            if ([filter[@"filter_value"] integerValue] == _selectedFilterProcess) {
+                filterProcess = filter[@"filter_name"];
+            }
+        }
+        controller.objects = [objectNames copy];
+        controller.selectedObject = filterProcess?:objectNames[0];
         [self.navigationController pushViewController:controller animated:YES];
     }
     
@@ -257,8 +287,7 @@
     }
 }
 - (IBAction)tapFilterDay:(id)sender {
-    _filterStatus = 3;
-    [_dataInput setObject:_arrayFilterProcess[1] forKey:DATA_FILTER_PROCESS_KEY];
+    _selectedFilterProcess = 3;
     [self refreshRequest];
 }
 
@@ -271,10 +300,18 @@
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 10) {
-        [_dataInput setObject:object forKey:DATA_FILTER_SORTING_KEY];
+        for (NSDictionary *filterSort in _arrayFilterSort) {
+            if ([filterSort[@"filter_name"] isEqual:object]) {
+                _selectedFilterSort = [filterSort[@"filter_value"] integerValue];
+            }
+        }
     }
     if (indexPath.row == 11) {
-        [_dataInput setObject:object forKey:DATA_FILTER_PROCESS_KEY];
+        for (NSDictionary *filterProcess in _arrayFilterProcess) {
+            if ([filterProcess[@"filter_name"] isEqual:object]) {
+                _selectedFilterProcess = [filterProcess[@"filter_value"] integerValue];
+            }
+        }
     }
     
     [self refreshRequest];
@@ -589,43 +626,11 @@
 -(NSDictionary *)getParameter:(int)tag
 {
     if (tag == TAG_REQUEST_LIST) {
-        NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-        NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
-        NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
-        
-        NSString *status = @"";
-        NSString *sortType = @"";
-        
-        if (_filterStatus<0) {
-            if ([filterProcess isEqualToString:_arrayFilterProcess[0]])
-                _filterStatus = 0;
-            else if([filterProcess isEqualToString:_arrayFilterProcess[2]])
-                _filterStatus = 1;
-            else if ([filterProcess isEqualToString:_arrayFilterProcess[3]])
-                _filterStatus = 2;
-            else if ([filterProcess isEqualToString:_arrayFilterProcess[1]])
-                _filterStatus = 3;
-        }
-
-        if (_filterUnread<0) {
-            if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
-                _filterUnread = 0;
-            else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[1]])
-                _filterUnread = 3;
-            else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
-                _filterUnread = 2;
-        }
-        
-        if ([filterSort isEqualToString:ARRAY_FILTER_SORT[0]])
-            sortType = @"2";
-        else if([filterSort isEqualToString:ARRAY_FILTER_SORT[1]])
-            sortType = @"1";
-        
         NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
                                 API_COMPLAIN_TYPE_KEY : @(_typeComplaint),
-                                API_STATUS_KEY : @(_filterStatus),
-                                API_UNREAD_KEY : @(_filterUnread),
-                                API_SORT_KEY :sortType,
+                                API_STATUS_KEY : @(_selectedFilterProcess),
+                                API_UNREAD_KEY : @(_selectedFilterRead),
+                                API_SORT_KEY :@(_selectedFilterSort),
                                 API_PAGE_KEY :@(_page)
                                 };
         return param;
@@ -710,7 +715,6 @@
             [alert show];
         }
         else{
-            [_arrayFilterProcess replaceObjectAtIndex:1 withObject:[NSString stringWithFormat:@"Komplain > %@ hari",order.result.pending_days]];
             if (_page == 1) {
                 [_list removeAllObjects];
             }

@@ -23,6 +23,7 @@
     
     NSInteger _filterReadIndex;
     AlertListFilterView *_filter;
+    NSArray *_arrayFilterRead;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
@@ -47,12 +48,10 @@
     frame.size.width = screenRect.size.width;
     _readOption.frame = frame;
     
+    _arrayFilterRead = [self arrayFilterStringForKey:@"filter_read"];
+    
     _checkListImageViews = [NSArray sortViewsWithTagInArray:_checkListImageViews];
     _filterButtons = [NSArray sortViewsWithTagInArray:_filterButtons];
-    
-    for (int i = 0; i<_filterButtons.count; i++) {
-        [_filterButtons[i] setTitle:ARRAY_FILTER_UNREAD[i] forState:UIControlStateNormal];
-    }
     
     for (UIImageView *image in _checkListImageViews) {
         image.hidden = YES;
@@ -89,7 +88,8 @@
     [self.view bringSubviewToFront:_readOption];
     
     _filterReadIndex = 0;
-    [self setTitleButtonString:ARRAY_FILTER_UNREAD[_filterReadIndex]];
+    
+    [self setTitleButtonString:_arrayFilterRead[_filterReadIndex][@"filter_name"]];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -103,6 +103,24 @@
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
+}
+
+-(NSArray *)arrayFilterStringForKey:(NSString *)key
+{
+    NSMutableArray<NSDictionary*> *tempArrayFilterRead = [NSMutableArray new];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *gtmContainer = appDelegate.container;
+    NSString *filterReadString = [gtmContainer stringForKey:key];
+    NSArray *filterReadArray = [filterReadString componentsSeparatedByString:@","];
+    for (NSString *filterRead in filterReadArray) {
+        NSArray *filterReadDictionaryArray = [filterRead componentsSeparatedByString:@":"];
+        NSDictionary *filterReadDictionary = @{
+                                               @"filter_name":filterReadDictionaryArray[0],
+                                               @"filter_value":filterReadDictionaryArray[1]
+                                               };
+        [tempArrayFilterRead addObject:filterReadDictionary];
+    }
+    return [tempArrayFilterRead copy];
 }
 
 -(IBAction)tapBackButton:(id)sender
@@ -155,7 +173,11 @@
 {
     if (!_filter) {
         _filter = [AlertListFilterView newview];
-        _filter.list = ARRAY_FILTER_UNREAD;
+        NSMutableArray *filterReadNames = [NSMutableArray new];
+        for (NSDictionary *filterRead in _arrayFilterRead) {
+            [filterReadNames addObject:filterRead[@"filter_name"]];
+        }
+        _filter.list = [filterReadNames copy];
         _filter.selectedIndex = _filterReadIndex;
         _filter.delegate = self;
         [_filter show];
@@ -290,7 +312,7 @@
 -(void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (buttonIndex >= 0) {
         _filterReadIndex = buttonIndex;
-        [self setTitleButtonString:ARRAY_FILTER_UNREAD[_filterReadIndex]];
+        [self setTitleButtonString:_arrayFilterRead[_filterReadIndex][@"filter_name"]];
     }
     _filter = nil;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
