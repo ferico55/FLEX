@@ -12,10 +12,10 @@
 @implementation MyReviewDetailTableViewCell
 
 #pragma mark - Factory Methods
-+ (id)newCell {
++ (id)newCellWithIdentifier:(NSString*)identifier {
     NSArray *a = [[NSBundle mainBundle] loadNibNamed:@"MyReviewDetailTableViewCell" owner:nil options:0];
     for (id o in a) {
-        if ([o isKindOfClass:[self class]]) {
+        if ([o isKindOfClass:[self class]] && [[o reuseIdentifier] isEqualToString:identifier]) {
             return o;
         }
     }
@@ -23,6 +23,9 @@
 }
 
 - (void)awakeFromNib {
+    _accuracyStarsImagesArray = [NSArray sortViewsWithTagInArray:_accuracyStarsImagesArray];
+    _qualityStarsImagesArray = [NSArray sortViewsWithTagInArray:_qualityStarsImagesArray];
+    
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     screenSize.width = screenSize.width - 20;
     

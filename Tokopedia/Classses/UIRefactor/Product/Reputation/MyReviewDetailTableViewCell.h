@@ -11,6 +11,7 @@
 #define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
 #define REVIEW_DETAIL_CELL_IDENTIFIER @"ReviewDetailCellIdentifier"
 #define SKIPPED_REVIEW_CELL_IDENTIFIER @"SkippedReviewCellIdentifier"
+#define NO_REVIEW_GIVEN_CELL_IDENTIFIER @"NoReviewGivenCellIdentifier"
 
 #pragma mark - Review Detail Delegate
 @protocol MyReviewDetailTableViewCellDelegate <NSObject>
@@ -59,7 +60,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *reviewIsSkippedLabel;
 @property NSIndexPath *indexPath;
 
-+ (id)newCell;
++ (id)newCellWithIdentifier:(NSString*)identifier;
 - (void)setMedalWithLevel:(NSString*)level set:(NSString*)set;
 
 @end

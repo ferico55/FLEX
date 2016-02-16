@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class DetailMyInboxReputation;
 
 @interface MyReviewDetailViewController : UIViewController
+
+@property (nonatomic, weak) DetailMyInboxReputation *detailMyInboxReputation;
+@property (nonatomic, weak) NSString* autoRead;
+@property int tag;
 
 @end
