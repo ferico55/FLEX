@@ -7,8 +7,10 @@
 //
 
 #import "TKPHomeBannerStore.h"
-#import "Banner.h"
+#import "SliderObject.h"
 #import "TKPStoreManager.h"
+#import "MiniSlideObject.h"
+#import "MiniSlide.h"
 
 NSString static *const TKPAPIPageKey = @"page";
 NSString static *const TKPAPILimitKey = @"per_page";
@@ -26,21 +28,50 @@ NSInteger static const TKPSuccessStatusCode = 200;
 }
 
 
-- (void)fetchBannerWithCompletion:(void (^)(Banner *, NSError *))completion {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Banner mapping] method:RKRequestMethodPOST pathPattern:@"banner.pl" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndex:TKPSuccessStatusCode]];
+- (void)fetchBannerWithCompletion:(void (^)(NSArray<Slide*>*, NSError *))completion {
+//    http://private-e80e2-tkpd.apiary-mock.com/v1/products/search?apple#
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"http://private-e80e2-tkpd.apiary-mock.com/v1"];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[SliderObject mapping] method:RKRequestMethodGET pathPattern:@"products/search" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndex:TKPSuccessStatusCode]];
     [objectManager addResponseDescriptor:responseDescriptor];
 
-    NSDictionary *parameters = [@{@"action" : @"get_banner"} encrypt];
-    RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodPOST path:@"banner.pl" parameters:parameters];
+//    NSDictionary *parameters = @{@"page[size]" : @"25", @"filter[device]" : @"16", @"filter[target]" : @"65535", @"filter[state]" : @"1"};
+    RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodGET path:@"products/search" parameters:nil];
 
     [operation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSDictionary *result = [mappingResult dictionary];
-        Banner *banner = result[@""];
+        SliderObject *banner = result[@""];
+
         if (completion != nil) {
-            completion(banner, nil);
+            completion(banner.data.slides, nil);
         }
 
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        if (completion != nil) {
+            completion(nil, error);
+        }
+    }];
+    
+    [self.storeManager.networkQueue addOperation:operation];
+}
+
+
+- (void)fetchMiniSlideWithCompletion:(void (^)(NSArray<MiniSlide *> *, NSError *))completion {
+    //    http://private-e80e2-tkpd.apiary-mock.com/v1/products/search?apple#
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"http://private-e80e2-tkpd.apiary-mock.com/v1"];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[MiniSlideObject mapping] method:RKRequestMethodGET pathPattern:@"minislide" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndex:TKPSuccessStatusCode]];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    //    NSDictionary *parameters = @{@"page[size]" : @"25", @"filter[device]" : @"16", @"filter[target]" : @"65535", @"filter[state]" : @"1"};
+    RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodGET path:@"minislide" parameters:nil];
+    
+    [operation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSDictionary *result = [mappingResult dictionary];
+        MiniSlideObject *banner = result[@""];
+        
+        if (completion != nil) {
+            completion(banner.data.banners, nil);
+        }
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         if (completion != nil) {
             completion(nil, error);

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDTabHomeViewController.h"
-#import "Banner.h"
 
 @interface CategoryViewController : GAITrackedViewController
 
