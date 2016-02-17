@@ -9,17 +9,28 @@
 #import <UIKit/UIKit.h>
 @class ResolutionCenterDetailViewController;
 
+@protocol ResolutionComplainDelegate <NSObject>
+
+-(void)backToFirstPageWithFilterProcess:(NSInteger)filterProcess;
+
+@end
+
 @interface InboxResolutionCenterComplainViewController : UIViewController
 ;
 @property (nonatomic) NSInteger filterReadIndex;
 @property (nonatomic) NSInteger typeComplaint;
+@property (nonatomic) NSInteger filterProcess;
 
-@property (strong, nonatomic)ResolutionCenterDetailViewController *detailViewController;
+
+@property (strong, nonatomic) id<ResolutionComplainDelegate> delegate;
+@property (strong, nonatomic) ResolutionCenterDetailViewController *detailViewController;
 
 typedef enum {
     TypeComplaintAll = 2,
     TypeComplaintMine = 0,
     TypeComplaintBuyer = 1
 } TypeComplaint;
+
+-(void)refreshRequest;
 
 @end

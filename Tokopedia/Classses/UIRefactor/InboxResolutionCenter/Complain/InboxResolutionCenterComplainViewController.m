@@ -239,6 +239,11 @@
    }
 }
 
+-(void)setFilterProcess:(NSInteger)filterProcess
+{
+    _selectedFilterProcess = filterProcess;
+}
+
 -(IBAction)tap:(id)sender
 {
     UIButton *button = (UIButton*)sender;
@@ -295,8 +300,7 @@
     }
 }
 - (IBAction)tapFilterDay:(id)sender {
-    _selectedFilterProcess = 3;
-    [self refreshRequest];
+    [_delegate backToFirstPageWithFilterProcess:3];
 }
 
 - (void)didReceiveMemoryWarning {

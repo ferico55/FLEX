@@ -11,7 +11,7 @@
 #import "string_inbox_resolution_center.h"
 #import "AlertListFilterView.h"
 
-@interface InboxResolutionCenterTabViewController ()<TKPDAlertViewDelegate, UIPageViewControllerDataSource,UIPageViewControllerDelegate>
+@interface InboxResolutionCenterTabViewController ()<TKPDAlertViewDelegate, UIPageViewControllerDataSource,UIPageViewControllerDelegate, ResolutionComplainDelegate>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -22,6 +22,7 @@
     BOOL _isLogin;
     
     NSInteger _filterReadIndex;
+    NSInteger _filterProcess;
     AlertListFilterView *_filterAlertView;
     NSArray *_arrayFilterRead;
 }
@@ -225,6 +226,8 @@
         {
             if(!_allComplainViewController)_allComplainViewController = [InboxResolutionCenterComplainViewController new];
             _allComplainViewController.detailViewController = _detailViewController;
+            _detailViewController.delegate = _allComplainViewController;
+            _allComplainViewController.delegate = self;
             _allComplainViewController.typeComplaint = TypeComplaintAll;
             _allComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _allComplainViewController;
@@ -234,6 +237,7 @@
         {
             if(!_myComplainViewController)_myComplainViewController = [InboxResolutionCenterComplainViewController new];
             _detailViewController.delegate = _myComplainViewController;
+            _myComplainViewController.delegate = self;
             _myComplainViewController.detailViewController = _detailViewController;
             _myComplainViewController.typeComplaint = TypeComplaintMine;
             _myComplainViewController.filterReadIndex = _filterReadIndex;
@@ -246,6 +250,7 @@
             
             if(!_buyerComplainViewController)_buyerComplainViewController = [InboxResolutionCenterComplainViewController new];
             _detailViewController.delegate = _buyerComplainViewController;
+            _buyerComplainViewController.delegate = self;
             _buyerComplainViewController.detailViewController = _detailViewController;
             _buyerComplainViewController.typeComplaint = TypeComplaintBuyer;
             _buyerComplainViewController.filterReadIndex = _filterReadIndex;
@@ -322,6 +327,18 @@
     }
     _filterAlertView = nil;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+}
+
+-(void)backToFirstPageWithFilterProcess:(NSInteger)filterProcess
+{
+    _filterProcess = filterProcess;
+    
+    _segmentControl.selectedSegmentIndex = 0;
+    _index = 0;
+    _allComplainViewController.filterProcess = _filterProcess;
+    [_allComplainViewController refreshRequest];
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+
 }
 
 @end
