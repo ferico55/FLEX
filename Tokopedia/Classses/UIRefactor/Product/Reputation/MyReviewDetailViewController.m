@@ -102,7 +102,7 @@
     
     
     
-    _reviewDetailTable.tableHeaderView = _tableHeaderView;
+//    _reviewDetailTable.tableHeaderView = _tableHeaderView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -151,41 +151,36 @@
         _theirScoreLabel.text = @"Nilai untuk Pembeli";
     }
     
-    // Set Smiley for Reviewee (Right Side)
-    if ([_detailMyInboxReputation.their_score_image isEqualToString:@"smiley_neutral"]) {
-        [_theirScoreButton setImage:[UIImage imageNamed:@"icon_netral.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.their_score_image isEqualToString:@"smiley_bad"]) {
-        [_theirScoreButton setImage:[UIImage imageNamed:@"icon_sad.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.their_score_image isEqualToString:@"smiley_good"]) {
-        [_theirScoreButton setImage:[UIImage imageNamed:@"icon_smile.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.their_score_image isEqualToString:@"smiley_none"]) {
-        [_theirScoreButton setImage:[UIImage imageNamed:([_detailMyInboxReputation.reputation_progress isEqualToString:@"2"])?@"icon_review_locked.png":@"icon_question_mark_green30.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.their_score_image isEqualToString:@"grey_question_mark"]) {
-        [_theirScoreButton setImage:[UIImage imageNamed:@"icon_question_mark30.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.their_score_image isEqualToString:@"blue_question_mark"]) {
-        [_theirScoreButton setImage:[UIImage imageNamed:@"icon_checklist_grey.png"] forState:UIControlStateNormal];
-    }
+    
+    NSDictionary<NSString*, NSString*>* theirScoreImageNameByType = @{
+                                                            @"smiley_neutral":@"icon_netral.png",
+                                                            @"smiley_bad":@"icon_sad.png",
+                                                            @"smiley_good":@"icon_smile.png",
+                                                            @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark_green30.png",
+                                                            @"grey_question_mark":@"icon_question_mark30.png",
+                                                            @"blue_question_mark":@"icon_checklist_grey.png"
+                                                            };
+    
+    NSDictionary<NSString*, NSString*>* myScoreImageNameByType = @{
+                                                            @"smiley_neutral":@"icon_netral.png",
+                                                            @"smiley_bad":@"icon_sad.png",
+                                                            @"smiley_good":@"icon_smile.png",
+                                                            @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark30.png",
+                                                            @"grey_question_mark":@"icon_question_mark30.png",
+                                                            @"blue_question_mark":@"icon_checklist_grey.png"
+                                                            };
+    
+    UIImage *theirScore = [UIImage imageNamed:[theirScoreImageNameByType objectForKey:_detailMyInboxReputation.their_score_image]];
+    UIImage *myScore = [UIImage imageNamed:[myScoreImageNameByType objectForKey:_detailMyInboxReputation.my_score_image]];
+    [_theirScoreButton setImage:theirScore forState:UIControlStateNormal];
+    [_myScoreButton setImage:myScore forState:UIControlStateNormal];
+
     
     if (![_detailMyInboxReputation.score_edit_time_fmt isEqualToString:@"0"]) {
         _isMyScoreEditedLabel.hidden = NO;
         _isMyScoreEditedLabel.text = @"(edited)";
     } else {
         _isMyScoreEditedLabel.hidden = YES;
-    }
-    
-    // Set Smiley for Reviewer (Left Side)
-    if ([_detailMyInboxReputation.my_score_image isEqualToString:@"smiley_neutral"]) {
-        [_myScoreButton setImage:[UIImage imageNamed:@"icon_netral.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.my_score_image isEqualToString:@"smiley_bad"]) {
-        [_myScoreButton setImage:[UIImage imageNamed:@"icon_sad.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.my_score_image isEqualToString:@"smiley_good"]) {
-        [_myScoreButton setImage:[UIImage imageNamed:@"icon_smile.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.my_score_image isEqualToString:@"smiley_none"]) {
-        [_myScoreButton setImage:[UIImage imageNamed:([_detailMyInboxReputation.reputation_progress isEqualToString:@"2"])?@"icon_review_locked.png":@"icon_question_mark30.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.my_score_image isEqualToString:@"grey_question_mark"]) {
-        [_myScoreButton setImage:[UIImage imageNamed:@"icon_question_mark30.png"] forState:UIControlStateNormal];
-    } else if ([_detailMyInboxReputation.my_score_image isEqualToString:@"blue_question_mark"]) {
-        [_myScoreButton setImage:[UIImage imageNamed:@"icon_checklist_grey.png"] forState:UIControlStateNormal];
     }
 }
 
@@ -240,7 +235,8 @@
             cell.delegate = self;
         }
         
-        cell.reviewMessageTextView.text = currentReview.review_message;
+        cell.reviewMessageLabel.text = currentReview.review_message;
+        [cell.reviewMessageLabel sizeToFit];
         
         for (int ii = 0; ii < cell.qualityStarsImagesArray.count; ii++) {
             UIImageView *temp = cell.qualityStarsImagesArray[ii];
@@ -262,11 +258,18 @@
             cell.reviewCommentView.hidden = NO;
             [cell.shopImage setImageWithURL:[NSURL URLWithString:currentReview.product_owner.shop_img]
                            placeholderImage:[UIImage imageNamed:@"icon_shop_grey.png"]];
+            [cell.shopImage setCornerRadius:cell.shopImage.frame.size.width/2];
+            [cell.shopImage setClipsToBounds:YES];
+            
             cell.shopName.text = currentReview.product_owner.shop_name;
             [cell setMedalWithLevel:currentReview.shop_badge_level.level
                                 set:currentReview.shop_badge_level.set];
-            cell.sellersCommentTextView.text = currentReview.review_response.response_message;
+            cell.theirCommentLabel.text = currentReview.review_response.response_message;
+            [cell.theirCommentLabel sizeToFit];
+
             cell.sellersCommentTimestampLabel.text = currentReview.review_response.response_create_time;
+        } else {
+            cell.reviewCommentView.hidden = YES;
         }
         
     } else if ([currentReview.review_is_skipped isEqualToString:@"1"]) {
@@ -292,25 +295,24 @@
     
     if ([currentReview.review_message isEqualToString:@"0"] || currentReview.review_message == nil) {
         if ([_detailMyInboxReputation.role isEqualToString:@"1"]) {
-            cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:GIVE_REVIEW_CELL_IDENTIFIER];
-            
+            cell = [MyReviewDetailTableViewCell newCellWithIdentifier:GIVE_REVIEW_CELL_IDENTIFIER];
+            height = cell.frame.size.height;
         } else if ([_detailMyInboxReputation.role isEqualToString:@"2"]) {
-            cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:NO_REVIEW_GIVEN_CELL_IDENTIFIER];
-            
+            cell = [MyReviewDetailTableViewCell newCellWithIdentifier:NO_REVIEW_GIVEN_CELL_IDENTIFIER];
+            height = cell.frame.size.height;
         }
         
     } else if (![currentReview.review_message isEqualToString:@"0"] || currentReview.review_message != nil) {
-        cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:REVIEW_DETAIL_CELL_IDENTIFIER];
-        
+        cell = [MyReviewDetailTableViewCell newCellWithIdentifier:REVIEW_DETAIL_CELL_IDENTIFIER];
+        height = cell.frame.size.height;
         if (![currentReview.review_response.response_message isEqualToString:@"0"]) {
-            
+            height = height + cell.reviewCommentView.frame.size.height;
         }
-        
     } else if ([currentReview.review_is_skipped isEqualToString:@"1"]) {
-        cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:SKIPPED_REVIEW_CELL_IDENTIFIER];
-        
+        cell = [MyReviewDetailTableViewCell newCellWithIdentifier:SKIPPED_REVIEW_CELL_IDENTIFIER];
+        height = cell.frame.size.height;
     }
-    return 200;
+    return height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -329,7 +331,7 @@
         [_reviewList addObjectsFromArray:myReviews.list];
     }
     
-    [self setHeaderView];
+//    [self setHeaderView];
     
     [_reviewDetailTable reloadData];
 }
