@@ -33,6 +33,7 @@
     NavigateViewController *_navigator;
     
     UIRefreshControl *_refreshControl;
+    IBOutlet UICollectionView *_collectionView;
     
     BOOL _page;
     BOOL _isRefreshing;
@@ -333,7 +334,7 @@
     
 //    [self setHeaderView];
     
-    [_reviewDetailTable reloadData];
+//    [_reviewDetailTable reloadData];
 }
 
 - (void)didSkipReview:(SkipReviewResult *)skippedReview {
@@ -343,7 +344,7 @@
                                                                      delegate:self];
     [alert show];
     
-    [_reviewDetailTable reloadData];
+//    [_reviewDetailTable reloadData];
     
     [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
                                                             autoRead:_autoRead];
