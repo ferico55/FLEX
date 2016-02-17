@@ -22,7 +22,7 @@
     BOOL _isLogin;
     
     NSInteger _filterReadIndex;
-    AlertListFilterView *_filter;
+    AlertListFilterView *_filterAlertView;
     NSArray *_arrayFilterRead;
 }
 
@@ -110,15 +110,21 @@
     NSMutableArray<NSDictionary*> *tempArrayFilterRead = [NSMutableArray new];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
-    NSString *filterReadString = [gtmContainer stringForKey:key];
-    NSArray *filterReadArray = [filterReadString componentsSeparatedByString:@","];
-    for (NSString *filterRead in filterReadArray) {
-        NSArray *filterReadDictionaryArray = [filterRead componentsSeparatedByString:@":"];
-        NSDictionary *filterReadDictionary = @{
-                                               @"filter_name":filterReadDictionaryArray[0],
-                                               @"filter_value":filterReadDictionaryArray[1]
-                                               };
-        [tempArrayFilterRead addObject:filterReadDictionary];
+    NSDictionary *defaultFilter = @{@"filter_process":@"Dalam Proses:0,Komplain > 10 hari:3,Sudah Selesai:1,Semua:2",
+                                    @"filter_read":@"Semua Status:0,Belum Ditanggapi:3,Belum dibaca:2",
+                                    @"filter_sort":@"Waktu dibuat:2,Perubahan Terbaru:1"
+                                    };
+    NSString *filterString = ([[gtmContainer stringForKey:key]isEqualToString:@""])?defaultFilter[key]:[gtmContainer stringForKey:key];
+    NSArray *filterArray = [filterString componentsSeparatedByString:@","];
+    for (NSString *filter in filterArray) {
+        if (![filter isEqualToString:@""]) {
+            NSArray *filterDictionaryArray = [filter componentsSeparatedByString:@":"];
+            NSDictionary *filterDictionary = @{
+                                                   @"filter_name":filterDictionaryArray[0],
+                                                   @"filter_value":filterDictionaryArray[1]
+                                                   };
+            [tempArrayFilterRead addObject:filterDictionary];
+        }
     }
     return [tempArrayFilterRead copy];
 }
@@ -171,19 +177,19 @@
 
 -(IBAction)tapFilterRead:(id)sender
 {
-    if (!_filter) {
-        _filter = [AlertListFilterView newview];
+    if (!_filterAlertView) {
+        _filterAlertView = [AlertListFilterView newview];
         NSMutableArray *filterReadNames = [NSMutableArray new];
         for (NSDictionary *filterRead in _arrayFilterRead) {
             [filterReadNames addObject:filterRead[@"filter_name"]];
         }
-        _filter.list = [filterReadNames copy];
-        _filter.selectedIndex = _filterReadIndex;
-        _filter.delegate = self;
-        [_filter show];
+        _filterAlertView.list = [filterReadNames copy];
+        _filterAlertView.selectedIndex = _filterReadIndex;
+        _filterAlertView.delegate = self;
+        [_filterAlertView show];
     }else{
-        [_filter dismissWithClickedButtonIndex:-1 animated:YES];
-        _filter =nil;
+        [_filterAlertView dismissWithClickedButtonIndex:-1 animated:YES];
+        _filterAlertView =nil;
     }
 
 }
@@ -314,7 +320,7 @@
         _filterReadIndex = buttonIndex;
         [self setTitleButtonString:_arrayFilterRead[_filterReadIndex][@"filter_name"]];
     }
-    _filter = nil;
+    _filterAlertView = nil;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
 }
 

@@ -185,15 +185,23 @@
 -(NSArray *)arrayFilterStringForKey:(NSString *)key
 {
     NSMutableArray<NSDictionary*> *tempArrayFilterRead = [NSMutableArray new];
-    NSString *filterReadString = [[self gtmContainer] stringForKey:key];
-    NSArray *filterReadArray = [filterReadString componentsSeparatedByString:@","];
-    for (NSString *filterRead in filterReadArray) {
-        NSArray *filterReadDictionaryArray = [filterRead componentsSeparatedByString:@":"];
-        NSDictionary *filterReadDictionary = @{
-                                               @"filter_name":filterReadDictionaryArray[0],
-                                               @"filter_value":filterReadDictionaryArray[1]
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *gtmContainer = appDelegate.container;
+    NSDictionary *defaultFilter = @{@"filter_process":@"Dalam Proses:0,Komplain > 10 hari:3,Sudah Selesai:1,Semua:2",
+                                    @"filter_read":@"Semua Status:0,Belum Ditanggapi:3,Belum dibaca:2",
+                                    @"filter_sort":@"Waktu dibuat:2,Perubahan Terbaru:1"
+                                    };
+    NSString *filterString = ([[gtmContainer stringForKey:key]isEqualToString:@""])?defaultFilter[key]:[gtmContainer stringForKey:key];
+    NSArray *filterArray = [filterString componentsSeparatedByString:@","];
+    for (NSString *filter in filterArray) {
+        if (![filter isEqualToString:@""]) {
+            NSArray *filterDictionaryArray = [filter componentsSeparatedByString:@":"];
+            NSDictionary *filterDictionary = @{
+                                               @"filter_name":filterDictionaryArray[0],
+                                               @"filter_value":filterDictionaryArray[1]
                                                };
-        [tempArrayFilterRead addObject:filterReadDictionary];
+            [tempArrayFilterRead addObject:filterDictionary];
+        }
     }
     return [tempArrayFilterRead copy];
 }
