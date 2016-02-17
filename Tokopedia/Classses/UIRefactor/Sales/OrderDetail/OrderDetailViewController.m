@@ -1056,7 +1056,7 @@ typedef enum TagRequest {
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[OrderBookingResponse class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{@"Status":@"status"}];
+    [statusMapping addAttributeMappingsFromDictionary:@{@"status":@"status"}];
     
     RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[OrderBookingData class]];
     
