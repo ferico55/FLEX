@@ -38,15 +38,7 @@
 
 static NSInteger userViewHeight = 70;
 
-@interface ProductReputationViewController ()<
-TTTAttributedLabelDelegate,
-UIActionSheetDelegate,
-TokopediaNetworkManagerDelegate,
-LoadingViewDelegate,
-LoginViewDelegate,
-ReportViewControllerDelegate,
-HelpfulReviewRequestDelegate,
-ProductReputationSimpleDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -156,6 +148,16 @@ ProductReputationSimpleDelegate>
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self unloadRequesting];
 }
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
 
 #pragma mark - Method View
 - (void)initNavigation {
@@ -1348,6 +1350,24 @@ ProductReputationSimpleDelegate>
                                                        CUriPrevious]];
         
         
+        RKObjectMapping *advreviewMapping = [RKObjectMapping mappingForClass:[AdvanceReview class]];
+        [advreviewMapping addAttributeMappingsFromDictionary:@{CProductRatingPoint:CProductRatingPoint,
+                                                          CProductRateAccuracyPoint:CProductRateAccuracyPoint,
+                                                          CProductPositiveReviewRating:CProductPositiveReviewRating,
+                                                          CProductNetralReviewRating:CProductNetralReviewRating,
+                                                          CProductRatingStarPoint:CProductRatingStarPoint,
+                                                          CProductRatingStarDesc:CProductRatingStarDesc,
+                                                          CProductNegativeReviewRating:CProductNegativeReviewRating,
+                                                          CProductReview:CProductReview,
+                                                          CProductRateAccuracy:CProductRateAccuracy,
+                                                          CProductAccuracyStarDesc:CProductAccuracyStarDesc,
+                                                          CProductRating:CProductRating,
+                                                          CProductNetralReviewRateAccuray:CProductNetralReviewRateAccuray,
+                                                          CProductAccuacyStarRate:CProductAccuacyStarRate,
+                                                          CProductPositiveReviewRateAccuracy:CProductPositiveReviewRateAccuracy,
+                                                          CProductNegativeReviewRateAccuracy:CProductNegativeReviewRateAccuracy
+                                                        }];
+        
         RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
         [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{CReviewUpdateTime:CReviewUpdateTime,
                                                                        CReviewRateAccuracyDesc:CReviewRateAccuracyDesc,
@@ -1423,10 +1443,10 @@ ProductReputationSimpleDelegate>
         [productOwnerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserShopReputation toKeyPath:CUserShopReputation withMapping:shopReputationMapping]];
         [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-        //[resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping]];
-        //[resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAdvanceReview toKeyPath:CAdvanceReview withMapping:advreviewMapping]];
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping]];
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAdvanceReview toKeyPath:CAdvanceReview withMapping:advreviewMapping]];
         
-        //[advreviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductRatingList toKeyPath:CRating_List withMapping:ratingListMapping]];
+        [advreviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductRatingList toKeyPath:CRating_List withMapping:ratingListMapping]];
         
         [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:reviewReputationMapping]];
         [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];

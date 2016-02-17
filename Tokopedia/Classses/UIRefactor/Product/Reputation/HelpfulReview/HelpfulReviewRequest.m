@@ -81,7 +81,6 @@
 - (id)getObjectManager:(int)tag {
     RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
-    
     // setup object mappings
     RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[HelpfulReviewResponse class]];
     [responseMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
