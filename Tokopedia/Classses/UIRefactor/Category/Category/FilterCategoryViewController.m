@@ -8,8 +8,9 @@
 
 #import "FilterCategoryViewController.h"
 #import "CategoryResponse.h"
+#import "FilterCategoryViewCell.h"
 
-#define cellIdentifier @"filterCategoryCell"
+#define cellIdentifier @"filterCategoryViewCell"
 
 @interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate>
 
@@ -73,20 +74,27 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    FilterCategoryViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[FilterCategoryViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
-    cell.textLabel.text = category.name;
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+    cell.categoryNameLabel.text = category.name;
+    
     NSInteger level = [category.tree integerValue] - 1;
     cell.indentationLevel = level * 2;
     if ([category.categoryId isEqualToString:_selectedCategory.categoryId]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.checkmarkImageView.hidden = NO;
     } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.checkmarkImageView.hidden = YES;
     }
+    
+    if (category.child.count > 0) {
+        cell.arrowImageView.hidden = NO;
+    } else {
+        cell.arrowImageView.hidden = YES;
+    }
+    
     return cell;
 }
 
@@ -105,11 +113,11 @@
     
     self.selectedCategory = category;
     
-    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:selectedIndexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+//    [tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    
+//    FilterCategoryViewCell *cell = [tableView cellForRowAtIndexPath:selectedIndexPath];
+//    cell.checkmarkImageView.hidden = NO;
     
     [tableView reloadData];
 }
