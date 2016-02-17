@@ -50,4 +50,32 @@
 - (NSString*)review_message {
     return [_review_message kv_decodeHTMLCharacterEntities];
 }
+
++(RKObjectMapping *)mapping{
+    RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
+    [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{CReviewUpdateTime:CReviewUpdateTime,
+                                                                        CReviewRateAccuracyDesc:CReviewRateAccuracyDesc,
+                                                                        CReviewUserLabelID:CReviewUserLabelID,
+                                                                        CReviewUserName:CReviewUserName,
+                                                                        CReviewRateAccuracy:CReviewRateAccuracy,
+                                                                        CReviewMessage:CReviewMessage,
+                                                                        CReviewRateProductDesc:CReviewRateProductDesc,
+                                                                        CReviewRateSpeedDesc:CReviewRateSpeedDesc,
+                                                                        CReviewShopID:CShopID,
+                                                                        @"review_reputation_id":CReputationID,
+                                                                        CReviewUserImage:CReviewUserImage,
+                                                                        CReviewUserLabel:CReviewUserLabel,
+                                                                        CReviewCreateTime:CReviewCreateTime,
+                                                                        CReviewID:CReviewID,
+                                                                        CReviewRateServiceDesc:CReviewRateServiceDesc,
+                                                                        CReviewRateProduct:CReviewRateProduct,
+                                                                        CReviewRateSpeed:CReviewRateSpeed,
+                                                                        CReviewRateService:CReviewRateService,
+                                                                        CReviewUserID:CReviewUserID
+                                                                        }];
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation" toKeyPath:@"review_user_reputation" withMapping:[ReputationDetail mapping]]];
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response" toKeyPath:@"review_response" withMapping:[ReviewResponse mapping]]];
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_product_owner" toKeyPath:@"review_product_owner" withMapping:[ProductOwner mapping]]];
+    return detailReputationReviewMapping;
+}
 @end

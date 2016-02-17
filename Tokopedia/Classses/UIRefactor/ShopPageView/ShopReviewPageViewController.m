@@ -629,10 +629,11 @@ ProductReputationSimpleDelegate>
     _objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
+    
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Review class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
+    /*
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReviewResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{@"is_owner":@"is_owner"}];
     
@@ -648,6 +649,7 @@ ProductReputationSimpleDelegate>
                                                                CNoReputation:CNoReputation,
                                                                CNeutral:CNeutral,
                                                                CPositif:CPositif}];
+    
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ReviewList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIREVIEWSHOPIDKEY,
@@ -713,9 +715,9 @@ ProductReputationSimpleDelegate>
                                                                                withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
-    
+    */
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[Review mapping]
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:@"shop.pl"
                                                                                                  keyPath:@""

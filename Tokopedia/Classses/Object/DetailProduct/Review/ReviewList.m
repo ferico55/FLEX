@@ -7,6 +7,7 @@
 //
 
 #import "ReviewList.h"
+#import "detail.h"
 
 @implementation ReviewList
 
@@ -34,5 +35,38 @@
     return _viewModel;
 }
 
++ (RKObjectMapping *)mapping{
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ReviewList class]];
+    [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIREVIEWSHOPIDKEY,
+                                                 kTKPDREVIEW_APIREVIEWUSERIMAGEKEY,
+                                                 kTKPDREVIEW_APIREVIEWCREATETIMEKEY,
+                                                 kTKPDREVIEW_APIREVIEWIDKEY,
+                                                 CReviewReputationID,
+                                                 @"review_shop_name",
+                                                 kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
+                                                 kTKPDREVIEW_APIREVIEWMESSAGEKEY,
+                                                 kTKPDREVIEW_APIREVIEWUSERIDKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATEQUALITY,
+                                                 kTKPDREVIEW_APIREVIEWRATESPEEDKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATESERVICEKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATEACCURACYKEY,
+                                                 kTKPDREVIEW_APIPRODUCTNAMEKEY,
+                                                 kTKPDREVIEW_APIPRODUCTIDKEY,
+                                                 kTKPDREVIEW_APIPRODUCTIMAGEKEY,
+                                                 kTKPDREVIEW_APIREVIEWISOWNERKEY,
+                                                 kTKPDREVIEW_APIPRODUCTSTATUSKEY,
+                                                 KTKPDREVIEW_APIREVIEWUSERLABELKEY
+                                                 ]];
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:[ReputationDetail mapping]]];
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response"
+                                                                                toKeyPath:@"review_response"
+                                                                              withMapping:[ReviewResponse mapping]]];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_product_owner"
+                                                                                toKeyPath:@"review_product_owner"
+                                                                              withMapping:[ReviewProductOwner mapping]]];
+    
+    return listMapping;
+}
 
 @end

@@ -57,5 +57,6 @@
 
 @property (nonatomic, strong) NSString *is_helpful;
 
++ (RKObjectMapping*) mapping;
 
 @end

@@ -11,6 +11,8 @@
 #import "AdvanceReview.h"
 #import "ReviewList.h"
 #import "Paging.h"
+#import "DetailReputationReview.h"
+
 #define CPaging @"paging"
 #define CAdvanceReview @"advance_review"
 #define CList @"list"
@@ -20,6 +22,8 @@
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) AdvanceReview *advance_review;
 @property (nonatomic, strong) NSString *is_owner;
-@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray<DetailReputationReview*> *list;
+
++ (RKObjectMapping*) mapping;
 
 @end

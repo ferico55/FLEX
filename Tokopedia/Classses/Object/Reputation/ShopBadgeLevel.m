@@ -9,5 +9,9 @@
 #import "ShopBadgeLevel.h"
 
 @implementation ShopBadgeLevel
-
++ (RKObjectMapping *)mapping{
+    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[@"level", @"set"]];
+    return shopBadgeMapping;
+}
 @end

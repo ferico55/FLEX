@@ -120,4 +120,7 @@
 
 //only used in helpful review, diff implementation, diff ws
 @property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;
+
+
++ (RKObjectMapping*) mapping;
 @end
