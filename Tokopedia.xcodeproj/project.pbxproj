@@ -12,6 +12,8 @@
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		621061D31C7478C300ED82C5 /* MyReviewDetailDataManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 621061D21C7478C300ED82C5 /* MyReviewDetailDataManager.mm */; };
+		626C65A41C7485140060B55F /* DetailReputationReviewComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */; };
 		628175D01C59FF1C00D8F4AF /* CreatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6281706F1C59FF1B00D8F4AF /* CreatePasswordViewController.m */; };
 		628175D11C59FF1C00D8F4AF /* CreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 628170701C59FF1B00D8F4AF /* CreatePasswordViewController.xib */; };
 		628175D21C59FF1C00D8F4AF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 628170731C59FF1B00D8F4AF /* LoginViewController.m */; };
@@ -2123,6 +2125,10 @@
 		45E376221C48985B00112E68 /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
+		621061D11C7478C300ED82C5 /* MyReviewDetailDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailDataManager.h; sourceTree = "<group>"; };
+		621061D21C7478C300ED82C5 /* MyReviewDetailDataManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailDataManager.mm; sourceTree = "<group>"; };
+		626C65A21C7485140060B55F /* DetailReputationReviewComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponent.h; sourceTree = "<group>"; };
+		626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewComponent.mm; sourceTree = "<group>"; };
 		6281706C1C59FF1B00D8F4AF /* activation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activation.h; sourceTree = "<group>"; };
 		6281706E1C59FF1B00D8F4AF /* CreatePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatePasswordViewController.h; sourceTree = "<group>"; };
 		6281706F1C59FF1B00D8F4AF /* CreatePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatePasswordViewController.m; sourceTree = "<group>"; };
@@ -6625,6 +6631,10 @@
 				62EA15171C6B37390039BC07 /* MyReviewDetailTableViewCell.xib */,
 				62ECD96A1C6C4C820007E4D5 /* MyReviewDetailRequest.h */,
 				62ECD96B1C6C4C820007E4D5 /* MyReviewDetailRequest.m */,
+				621061D11C7478C300ED82C5 /* MyReviewDetailDataManager.h */,
+				621061D21C7478C300ED82C5 /* MyReviewDetailDataManager.mm */,
+				626C65A21C7485140060B55F /* DetailReputationReviewComponent.h */,
+				626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -12320,6 +12330,7 @@
 				628177351C59FF1D00D8F4AF /* DetailProductViewController.m in Sources */,
 				7A710AB41C4CF81D00D00615 /* DetailReputationReview.m in Sources */,
 				7A7109D81C4CF81D00D00615 /* DBManager.m in Sources */,
+				621061D31C7478C300ED82C5 /* MyReviewDetailDataManager.mm in Sources */,
 				7A710B0B1C4CF81D00D00615 /* OrderLast.m in Sources */,
 				628177751C59FF1D00D8F4AF /* PromoCollectionReusableView.m in Sources */,
 				628176A71C59FF1C00D8F4AF /* HistoryProductViewController.m in Sources */,
@@ -12904,6 +12915,7 @@
 				628178C11C59FF1D00D8F4AF /* CatalogModelView.m in Sources */,
 				628176E41C59FF1C00D8F4AF /* ResolutionInputReceiptViewController.m in Sources */,
 				7A710A3E1C4CF81D00D00615 /* Statistic.m in Sources */,
+				626C65A41C7485140060B55F /* DetailReputationReviewComponent.mm in Sources */,
 				6281784F1C59FF1D00D8F4AF /* RequestAddAddress.m in Sources */,
 				628176431C59FF1C00D8F4AF /* ContactUsWireframe.m in Sources */,
 				7A710B4E1C4CF81D00D00615 /* City.m in Sources */,

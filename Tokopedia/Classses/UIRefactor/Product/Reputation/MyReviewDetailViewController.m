@@ -15,13 +15,16 @@
 #import "SmileyAndMedal.h"
 #import "UIImageView+AFNetworking.h"
 #import "ViewLabelUser.h"
+#import "MyReviewDetailDataManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
 #define REVIEW_DETAIL_CELL_IDENTIFIER @"ReviewDetailCellIdentifier"
 #define SKIPPED_REVIEW_CELL_IDENTIFIER @"SkippedReviewCellIdentifier"
 
-@interface MyReviewDetailViewController () <UITableViewDataSource, UITableViewDelegate, MyReviewDetailRequestDelegate> {
+@interface MyReviewDetailViewController () <
+UICollectionViewDelegateFlowLayout,
+MyReviewDetailRequestDelegate> {
     TAGContainer *_gtmContainer;
     MyReviewDetailRequest *_myReviewDetailRequest;
     DetailReputationReview *_detailReputationReview;
@@ -34,6 +37,7 @@
     
     UIRefreshControl *_refreshControl;
     IBOutlet UICollectionView *_collectionView;
+    MyReviewDetailDataManager *_dataManager;
     
     BOOL _page;
     BOOL _isRefreshing;
@@ -79,6 +83,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
+    
+    _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView];
+    _collectionView.delegate = self;
     
     _myReviewDetailRequest = [MyReviewDetailRequest new];
     _myReviewDetailRequest.delegate = self;
@@ -327,14 +334,10 @@
     
     if (_page == 0) {
         _isRefreshing = NO;
-        _reviewList = [myReviews.list mutableCopy];
+        [_dataManager replaceReviews:myReviews.list];
     } else {
-        [_reviewList addObjectsFromArray:myReviews.list];
+        [_dataManager addReviews:myReviews.list];
     }
-    
-//    [self setHeaderView];
-    
-//    [_reviewDetailTable reloadData];
 }
 
 - (void)didSkipReview:(SkipReviewResult *)skippedReview {
@@ -368,6 +371,26 @@
     
     _baseActionURL = [_gtmContainer stringForKey:GTMKeyInboxActionReputationBase];
     _postActionURL = [_gtmContainer stringForKey:GTMKeyInboxActionReputationPost];
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return  [_dataManager sizeForItemAtIndexPath:indexPath];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView
+       willDisplayCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [_dataManager announceWillAppearForItemInCell:cell];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView
+  didEndDisplayingCell:(UICollectionViewCell *)cell
+    forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [_dataManager announceDidDisappearForItemInCell:cell];
 }
 
 @end
