@@ -7,7 +7,27 @@
 //
 
 #import "DetailReputationReviewComponent.h"
+#import "DetailReputationReviewHeaderComponent.h"
 #import <ComponentKit/ComponentKit.h>
+
+static CKComponent* messageLabel(NSString* message) {
+    if (![message boolValue]) {
+        return nil;
+    }
+    
+    return [CKInsetComponent
+            newWithInsets:{8,8,8,8}
+            component:
+            [CKLabelComponent
+             newWithLabelAttributes:{
+                 .string = message,
+                 .font = [UIFont fontWithName:@"Gotham Book" size:14],
+                 .maximumNumberOfLines = 0,
+                 .lineSpacing = 0.6
+             }
+             viewAttributes:{}
+             size:{}]];
+}
 
 @implementation DetailReputationReviewComponent
 + (instancetype)newWithReview:(DetailReputationReview*)review {
@@ -37,82 +57,10 @@
                   children:{
                       {
                           //header
-                          [CKInsetComponent
-                           newWithInsets:{8,8,8,8}
-                           component:
-                           [CKStackLayoutComponent
-                            newWithView:{}
-                            size:{}
-                            style:{
-                                .direction = CKStackLayoutDirectionHorizontal,
-                                .spacing = 8
-                            }
-                            children:{
-                                {
-                                    [CKImageComponent
-                                     newWithImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                                     size:{50,50}]
-                                },
-                                {
-                                    [CKStackLayoutComponent
-                                     newWithView:{
-                                         
-                                     }
-                                     size:{}
-                                     style:{
-                                         .direction = CKStackLayoutDirectionVertical,
-                                         .justifyContent = CKStackLayoutJustifyContentCenter,
-                                         .spacing = 3
-                                     }
-                                     children:
-                                     {
-                                         {
-                                             [CKLabelComponent
-                                              newWithLabelAttributes:{
-                                                  .string = review.product_name,
-                                                  .font = [UIFont fontWithName:@"Gotham Medium" size:14],
-                                                  .lineBreakMode = NSLineBreakByTruncatingMiddle,
-                                                  .maximumNumberOfLines = 1
-                                              }
-                                              viewAttributes:{}
-                                              size:{}],
-                                         },
-                                         {
-                                             [CKLabelComponent
-                                              newWithLabelAttributes:{
-                                                  .string = review.review_response.response_create_time,
-                                                  .font = [UIFont fontWithName:@"Gotham Book" size:12],
-                                                  .lineBreakMode = NSLineBreakByTruncatingMiddle,
-                                                  .maximumNumberOfLines = 1,
-                                                  .color = [UIColor colorWithWhite:179.0/255 alpha:1]
-                                              }
-                                              viewAttributes:{}
-                                              size:{}]
-                                         }
-                                     }],
-                                    .flexGrow = YES,
-                                    .flexShrink = YES,
-                                    .alignSelf = CKStackLayoutAlignSelfStretch
-                                },
-                                {
-                                    [CKButtonComponent
-                                     newWithTitles:{}
-                                     titleColors:{}
-                                     images:{
-                                         {UIControlStateNormal, [UIImage imageNamed:@"icon_cancel.png"]}
-                                     }
-                                     backgroundImages:{}
-                                     titleFont:nil
-                                     selected:NO
-                                     enabled:YES
-                                     action:nil
-                                     size:{.height = 30}
-                                     attributes:{
-                                         
-                                     }
-                                     accessibilityConfiguration:{}]
-                                }
-                            }]]
+                          [DetailReputationReviewHeaderComponent newWithReview:review]
+                      },
+                      {
+                          messageLabel(review.review_message)
                       },
                       {
                           [CKButtonComponent
