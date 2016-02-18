@@ -8,6 +8,7 @@
 
 #import "MyReviewDetailDataManager.h"
 #import <ComponentKit/ComponentKit.h>
+#import "DetailReputationReviewComponent.h"
 
 @implementation MyReviewDetailDataManager {
     CKCollectionViewDataSource* _dataSource;
@@ -46,12 +47,7 @@
 }
 
 + (CKComponent *)componentForModel:(DetailReputationReview*)model context:(id<NSObject>)context {
-    return [CKLabelComponent
-            newWithLabelAttributes:{
-                .string = model.product_name
-            }
-            viewAttributes:{}
-            size:{}];
+    return [DetailReputationReviewComponent newWithReview:model];
 }
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
