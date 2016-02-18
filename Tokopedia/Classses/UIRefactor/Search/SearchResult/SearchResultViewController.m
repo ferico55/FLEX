@@ -51,6 +51,8 @@
 #import "NoResultReusableView.h"
 #import "SpellCheckRequest.h"
 
+#import "ImageSearchResponse.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -293,7 +295,7 @@ SpellCheckRequestDelegate
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _networkManager.isParameterNotEncrypted = YES;
+//    _networkManager.isParameterNotEncrypted = YES;
     _networkManager.isUsingHmac = YES;
     [_networkManager doRequest];
     
@@ -341,13 +343,13 @@ SpellCheckRequestDelegate
     NSString *cellid;
     UICollectionViewCell *cell = nil;
     
-    SearchAWSProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
+    ImageSearchProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            [(ProductSingleViewCell*)cell setCatalogViewModel:list.catalogViewModel];
+//            [(ProductSingleViewCell*)cell setCatalogViewModel:list.catalogViewModel];
             ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
         }
         else {
@@ -357,20 +359,20 @@ SpellCheckRequestDelegate
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            [(ProductCell*)cell setCatalogViewModel:list.catalogViewModel];
-        } else {
+//        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+//            [(ProductCell*)cell setCatalogViewModel:list.catalogViewModel];
+//        } else {
             [(ProductCell*)cell setViewModel:list.viewModel];
-        }
+//        }
         
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            [(ProductThumbCell*)cell setCatalogViewModel:list.catalogViewModel];
-        } else {
+//        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+//            [(ProductThumbCell*)cell setCatalogViewModel:list.catalogViewModel];
+//        } else {
             [(ProductThumbCell*)cell setViewModel:list.viewModel];
-        }
+//        }
         
     }
     
@@ -429,15 +431,15 @@ SpellCheckRequestDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    ImageSearchProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        CatalogViewController *vc = [CatalogViewController new];
-        vc.catalogID = product.catalog_id;
-        vc.catalogName = product.catalog_name;
-        vc.catalogPrice = product.catalog_price;
-        vc.hidesBottomBarWhenPushed = YES;
-        
-        [self.navigationController pushViewController:vc animated:YES];
+//        CatalogViewController *vc = [CatalogViewController new];
+//        vc.catalogID = product.catalog_id;
+//        vc.catalogName = product.catalog_name;
+//        vc.catalogPrice = product.catalog_price;
+//        vc.hidesBottomBarWhenPushed = YES;
+//        
+//        [self.navigationController pushViewController:vc animated:YES];
     } else {
         [TPAnalytics trackProductClick:product];
         [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
@@ -712,58 +714,90 @@ SpellCheckRequestDelegate
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
-    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
-    
-    [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:startPerPage forKey:@"rows"];
-    [parameter setObject:@(_start) forKey:@"start"];
-    
-    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
-    [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
-    [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
-    [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
-    [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
-    [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
-    [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
-    [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
-    
-    return parameter;
+    if (YES) {
+        return @{@"image_url" : _image_url};
+    } else {
+        NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
+        
+        [parameter setObject:@"ios" forKey:@"device"];
+        [parameter setObject:startPerPage forKey:@"rows"];
+        [parameter setObject:@(_start) forKey:@"start"];
+        
+        [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
+        [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
+        [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
+        [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
+        [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
+        [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
+        [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
+        [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
+        return parameter;
+    }
 }
 
 - (NSString*)getPath:(int)tag{
     NSString *pathUrl;
-    
-    if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
+    if (YES) {
+        pathUrl = @"/v4/search/snapsearch.pl";
+    } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
         pathUrl = @"search/v1/catalog";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_shop"]) {
         pathUrl = @"search/v1/shop";
     } else {
         pathUrl = @"search/v1/product";
     }
-    
-    return [_searchPostUrl isEqualToString:@""] ? pathUrl : _searchPostUrl;
+    return pathUrl;
+//    return [_searchPostUrl isEqualToString:@""] ? pathUrl : _searchPostUrl;
 }
 
 - (id)getObjectManager:(int)tag {
-    if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
-#ifdef DEBUG
-        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
-        NSString *baseUrl;
-//        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
-        if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
-            baseUrl = @"https://ace.tokopedia.com/";
-        } else {
-            baseUrl = @"https://ace-staging.tokopedia.com/";
-        }
-        _objectmanager = [RKObjectManager sharedClient:baseUrl];
-#endif
-
+    _objectmanager = [RKObjectManager sharedClient:@"https://ws-alpha.tokopedia.com"];
+    if (YES) {
+        [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
     } else {
-        _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
+        [_objectmanager addResponseDescriptor:[self searchResponseDescriptor]];
     }
+    return _objectmanager;
+}
+
+- (RKResponseDescriptor *)imageSearchResponseDescriptor {
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ImageSearchResponse class]];
+    [responseMapping addAttributeMappingsFromArray:@[@"status", @"config"]];
     
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ImageSearchResponseData class]];
+
+    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[ImageSearchProduct class]];
+    [productMapping addAttributeMappingsFromArray:@[@"shop_lucky",
+                                                    @"shop_id",
+                                                    @"shop_gold_status",
+                                                    @"shop_url",
+                                                    @"is_owner",
+                                                    @"rate",
+                                                    @"product_id",
+                                                    @"product_image_full",
+                                                    @"product_talk_count",
+                                                    @"product_image",
+                                                    @"product_price",
+                                                    @"product_sold_count",
+                                                    @"shop_location",
+                                                    @"product_wholesale",
+                                                    @"shop_name",
+                                                    @"product_review_count",
+                                                    @"similarity_rank",
+                                                    @"condition",
+                                                    @"product_name",
+                                                    @"product_url"]];
+
+    [responseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping]];
+    
+    [dataMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"similar_prods" toKeyPath:@"similar_prods" withMapping:productMapping]];
+    
+    RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodGET pathPattern:@"/v4/search/snapsearch.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    return descriptor;
+}
+
+- (RKResponseDescriptor *)searchResponseDescriptor {
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -804,10 +838,7 @@ SpellCheckRequestDelegate
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    //add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-    return _objectmanager;
+    return responseDescriptor;
 }
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag {
@@ -825,10 +856,9 @@ SpellCheckRequestDelegate
     
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    SearchAWS *search = [result objectForKey:@""];
-    _searchObject = search;
+- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+    ImageSearchResponse *search = [successResult.dictionary objectForKey:@""];
+//    _searchObject = search;
     
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
@@ -839,18 +869,18 @@ SpellCheckRequestDelegate
         _isNeedToRemoveAllObject = NO;
     }
     
-    NSString *redirect_url = search.result.redirect_url;
-    if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
-        NSString *departementID = search.result.department_id?:@"";
-        [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-            [_delegate updateTabCategory:departementID];            
-        }
-    }
-    if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
-        
-        
-        NSString *hascatalog = search.result.has_catalog;
+//    NSString *redirect_url = search.result.redirect_url;
+//    if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
+//        NSString *departementID = search.result.department_id?:@"";
+//        [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+//        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
+//            [_delegate updateTabCategory:departementID];            
+//        }
+//    }
+//    if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
+    
+    if (YES) {
+        NSString *hascatalog = @"0";
         
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
             hascatalog = @"1";
@@ -866,30 +896,33 @@ SpellCheckRequestDelegate
             [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
         }
         
+        [_product addObject:search.data.similar_prods];
         
-        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-            if(search.result.products.count > 0) {
-                [_product addObject: search.result.products];
-                [TPAnalytics trackProductImpressions:search.result.products];
-            }
+//        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
+//            if(search.result.products.count > 0) {
+//                [_product addObject: search.result.products];
+//                [TPAnalytics trackProductImpressions:search.result.products];
+//            }
+//
+//        } else {
+//            if(search.result.catalogs.count > 0) {
+//                [_product addObject: search.result.catalogs];                
+//            }
+//
+//        }
+//        
+//        if(_start == 0) {
+//            [_collectionView setContentOffset:CGPointZero animated:YES];
+//            
+//            [_collectionView reloadData];
+////            [_collectionView layoutIfNeeded];
+//        }
+        
+//        if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
+        if (search.data.similar_prods.count > 0) {
 
-        } else {
-            if(search.result.catalogs.count > 0) {
-                [_product addObject: search.result.catalogs];                
-            }
-
-        }
-        
-        if(_start == 0) {
-            [_collectionView setContentOffset:CGPointZero animated:YES];
-            
-            [_collectionView reloadData];
-//            [_collectionView layoutIfNeeded];
-        }
-        
-        if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
             _isnodata = NO;
-            _urinext =  search.result.paging.uri_next;
+//            _urinext =  search.data.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -927,37 +960,37 @@ SpellCheckRequestDelegate
         }
     } else {
         
-        NSURL *url = [NSURL URLWithString:search.result.redirect_url];
-        NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+//        NSURL *url = [NSURL URLWithString:search.result.redirect_url];
+//        NSArray* query = [[url path] componentsSeparatedByString: @"/"];
         
         // Redirect URI to hotlist
-        if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
-            [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
-        }
+//        if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
+//            [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
+//        }
 
         // redirect uri to search category
-        else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-            NSString *departementID = search.result.department_id?:@"";
-            [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-            [_params removeObjectForKey:@"search"];
-            [_networkManager requestCancel];
-
-            if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
-                [self.delegate updateTabCategory:departementID];
-            }
-            
-            [self refreshView:nil];
-            
-            [Localytics triggerInAppMessage:@"Category Result Screen"];
-        }
+//        else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
+//            NSString *departementID = search.result.department_id?:@"";
+//            [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+//            [_params removeObjectForKey:@"search"];
+//            [_networkManager requestCancel];
+//
+//            if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
+//                [self.delegate updateTabCategory:departementID];
+//            }
+//            
+//            [self refreshView:nil];
+//            
+//            [Localytics triggerInAppMessage:@"Category Result Screen"];
+//        }
         
-        else if ([query[1] isEqualToString:@"catalog"]) {
-            [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
-        }
-        
-        else {
-            [Localytics triggerInAppMessage:@"Search Result Screen"];
-        }
+//        else if ([query[1] isEqualToString:@"catalog"]) {
+//            [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
+//        }
+//        
+//        else {
+//            [Localytics triggerInAppMessage:@"Search Result Screen"];
+//        }
     }
 }
 
@@ -1091,10 +1124,10 @@ SpellCheckRequestDelegate
 #pragma mark - Promo collection delegate
 
 - (void)requestPromo {
-    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
-    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
-    _promoRequest.page = _start/[startPerPage integerValue];
-    [_promoRequest requestForProductQuery:search department:departmentId];
+//    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
+//    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
+//    _promoRequest.page = _start/[startPerPage integerValue];
+//    [_promoRequest requestForProductQuery:search department:departmentId];
 }
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {

@@ -23,4 +23,6 @@
 @property (strong,nonatomic) NSDictionary *data;
 @property (nonatomic) BOOL isFromAutoComplete;
 @property (weak, nonatomic) id<SearchResultDelegate> delegate;
+@property (strong, nonatomic) NSString *image_url;
+
 @end
