@@ -33,6 +33,7 @@
 #import "TokopediaNetworkManager.h"
 #import "ProductReputationSimpleCell.h"
 #import "HelpfulReviewRequest.h"
+#import "ReviewRequest.h"
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
@@ -64,6 +65,7 @@ static NSInteger userViewHeight = 70;
     TokopediaNetworkManager *tokopediaNetworkManager;
     
     HelpfulReviewRequest *helpfulReviewRequest;
+    ReviewRequest *reviewRequest;
     BOOL isShowingMore, animationHasShown;
 }
 
@@ -71,6 +73,12 @@ static NSInteger userViewHeight = 70;
     [super viewDidLoad];
     [self configureGTM];
     [self initNavigation];
+    
+    reviewRequest = [[ReviewRequest alloc] init];
+    [reviewRequest requestReviewLikeDislikesWithId:@"12399420" shopId:@"115440"];
+    
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
@@ -750,6 +758,8 @@ static NSInteger userViewHeight = 70;
     navigationController.viewControllers = @[controller];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
+
+//OBJECT MANAGER BUAT LIKEDISLIKE ACTION
 - (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[LikeDislikePost class]];
@@ -852,39 +862,13 @@ static NSInteger userViewHeight = 70;
     [loadingLikeDislike removeObjectForKey:[temp userInfo]];
 }
 - (RKObjectManager *)getObjectManagerTotalLike{
-    // initialize RestKit
     RKObjectManager *tempObjectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[LikeDislike class]];
-    [productMapping addAttributeMappingsFromDictionary:@{CLStatus:CLStatus,
-                                                         CLServerProcessTime:CLServerProcessTime,
-                                                         CLStatus:CLStatus,
-                                                         CLMessageError:CLMessageError}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikeResult class]];
-    RKObjectMapping *totalLikeDislikeMapping = [RKObjectMapping mappingForClass:[TotalLikeDislike class]];
-    [totalLikeDislikeMapping addAttributeMappingsFromArray:@[CLikeStatus,
-                                                             CReviewID]];
-    
-    RKObjectMapping *detailTotalLikeMapping = [RKObjectMapping mappingForClass:[DetailTotalLikeDislike class]];
-    [detailTotalLikeMapping addAttributeMappingsFromDictionary:@{CTotalLike:CTotalLike,
-                                                                 CTotalDislike:CTotalDislike}];
-    
-    
-    
-    //Relation Mapping
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CLikeDislikeReview toKeyPath:CLikeDislikeReview withMapping:totalLikeDislikeMapping]];
-    [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CLResult toKeyPath:CLResult withMapping:resultMapping]];
-    [totalLikeDislikeMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTotalLikeDislike toKeyPath:CTotalLikeDislike withMapping:detailTotalLikeMapping]];
-    // Response Descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LikeDislike mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:[self getPathLikeDislike]
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     [tempObjectManager addResponseDescriptor:responseDescriptor];
-    
     return tempObjectManager;
 }
 - (NSString *)getPathLikeDislike {
