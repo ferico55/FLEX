@@ -8,12 +8,16 @@
 
 #import "DetailReputationReviewComponent.h"
 #import "DetailReputationReviewHeaderComponent.h"
-#import "RatingComponent.h"
+#import "ReviewRatingComponent.h"
 #import "ReviewResponseComponent.h"
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent* messageLabel(NSString* message) {
-    if (![message boolValue]) {
+//    if (![message boolValue]) {
+//        return nil;
+//    }
+    
+    if ([message isEqualToString:@"0"] || message == nil) {
         return nil;
     }
     
@@ -73,72 +77,7 @@ static CKComponent* messageLabel(NSString* message) {
                       .alignSelf = CKStackLayoutAlignSelfCenter
                   },
                   {
-                      [CKInsetComponent
-                       newWithInsets:{0,8,0,8}
-                       component:
-                       [CKStackLayoutComponent
-                        newWithView:{}
-                        size:{.height = 38}
-                        style:{
-                            .direction = CKStackLayoutDirectionHorizontal,
-                            .alignItems = CKStackLayoutAlignItemsStretch
-                        }
-                        children:
-                        {
-                            {
-                                [CKStackLayoutComponent
-                                 newWithView:{}
-                                 size:{}
-                                 style:{
-                                     .direction = CKStackLayoutDirectionHorizontal,
-                                     .alignItems = CKStackLayoutAlignItemsCenter,
-                                     .spacing = 5
-                                 }
-                                 children:
-                                 {
-                                     {
-                                         [CKLabelComponent
-                                          newWithLabelAttributes:{
-                                              .string = @"Kualitas",
-                                              .font = [UIFont fontWithName:@"Gotham Book" size:12]
-                                          }
-                                          viewAttributes:{}
-                                          size:{}]
-                                     },
-                                     {
-                                         [RatingComponent newWithRating:[review.product_rating_point intValue]]
-                                     }
-                                 }],
-                                .flexBasis = CKRelativeDimension::Percent(0.5)
-                            },
-                            {
-                                [CKStackLayoutComponent
-                                 newWithView:{}
-                                 size:{}
-                                 style:{
-                                     .direction = CKStackLayoutDirectionHorizontal,
-                                     .alignItems = CKStackLayoutAlignItemsCenter,
-                                     .justifyContent = CKStackLayoutJustifyContentEnd,
-                                     .spacing = 5
-                                 }
-                                 children:
-                                 {
-                                     {
-                                         [CKLabelComponent
-                                          newWithLabelAttributes:{
-                                              .string = @"Akurasi",
-                                              .font = [UIFont fontWithName:@"Gotham Book" size:12]
-                                          }
-                                          viewAttributes:{}
-                                          size:{}]
-                                     },
-                                     {
-                                         [RatingComponent newWithRating:[review.product_accuracy_point intValue]]
-                                     }
-                                 }],
-                                .flexBasis = CKRelativeDimension::Percent(0.5)
-                            }
-                        }]]
+                      [ReviewRatingComponent newWithReview:review]
                   },
                   {
                       [CKComponent

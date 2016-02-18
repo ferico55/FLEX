@@ -16,6 +16,7 @@
 		626C65A41C7485140060B55F /* DetailReputationReviewComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */; };
 		627F90251C75A04000BB07BB /* RatingComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 627F90241C75A04000BB07BB /* RatingComponent.mm */; };
 		627F90281C75B41500BB07BB /* ReviewResponseComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 627F90271C75B41500BB07BB /* ReviewResponseComponent.mm */; };
+		627F902E1C75D68000BB07BB /* ReviewRatingComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 627F902D1C75D68000BB07BB /* ReviewRatingComponent.mm */; };
 		628175D01C59FF1C00D8F4AF /* CreatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6281706F1C59FF1B00D8F4AF /* CreatePasswordViewController.m */; };
 		628175D11C59FF1C00D8F4AF /* CreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 628170701C59FF1B00D8F4AF /* CreatePasswordViewController.xib */; };
 		628175D21C59FF1C00D8F4AF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 628170731C59FF1B00D8F4AF /* LoginViewController.m */; };
@@ -2136,6 +2137,8 @@
 		627F90241C75A04000BB07BB /* RatingComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RatingComponent.mm; sourceTree = "<group>"; };
 		627F90261C75B41500BB07BB /* ReviewResponseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewResponseComponent.h; sourceTree = "<group>"; };
 		627F90271C75B41500BB07BB /* ReviewResponseComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ReviewResponseComponent.mm; sourceTree = "<group>"; };
+		627F902C1C75D68000BB07BB /* ReviewRatingComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewRatingComponent.h; sourceTree = "<group>"; };
+		627F902D1C75D68000BB07BB /* ReviewRatingComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ReviewRatingComponent.mm; sourceTree = "<group>"; };
 		6281706C1C59FF1B00D8F4AF /* activation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activation.h; sourceTree = "<group>"; };
 		6281706E1C59FF1B00D8F4AF /* CreatePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatePasswordViewController.h; sourceTree = "<group>"; };
 		6281706F1C59FF1B00D8F4AF /* CreatePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatePasswordViewController.m; sourceTree = "<group>"; };
@@ -6650,6 +6653,8 @@
 				627F90241C75A04000BB07BB /* RatingComponent.mm */,
 				627F90261C75B41500BB07BB /* ReviewResponseComponent.h */,
 				627F90271C75B41500BB07BB /* ReviewResponseComponent.mm */,
+				627F902C1C75D68000BB07BB /* ReviewRatingComponent.h */,
+				627F902D1C75D68000BB07BB /* ReviewRatingComponent.mm */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -12219,6 +12224,7 @@
 				7A710AAF1C4CF81D00D00615 /* LoyaltyPointResult.m in Sources */,
 				6281771F1C59FF1C00D8F4AF /* NotificationBarButton.m in Sources */,
 				628178341C59FF1D00D8F4AF /* SortCell.m in Sources */,
+				627F902E1C75D68000BB07BB /* ReviewRatingComponent.mm in Sources */,
 				628178551C59FF1D00D8F4AF /* TransactionShipmentATCTableViewCell.m in Sources */,
 				7A710B3F1C4CF81D00D00615 /* ShipmentPackage.m in Sources */,
 				7A710B321C4CF81D00D00615 /* EtalaseResult.m in Sources */,

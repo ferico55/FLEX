@@ -11,6 +11,10 @@
 @implementation ReviewResponseComponent
 
 + (instancetype)newWithReview:(DetailReputationReview *)review {
+    if ([review.review_response.response_message isEqualToString:@"0"] || review.review_response.response_message == nil) {
+        return nil;
+    }
+    
     return [super newWithComponent:
             [CKInsetComponent
              newWithInsets:{8,8,8,8}
