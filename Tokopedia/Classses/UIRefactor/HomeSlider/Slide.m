@@ -1,22 +1,17 @@
 //
-//  BannerList.m
+//  Slide.m
 //  Tokopedia
 //
-//  Created by Tonito Acen on 10/16/15.
-//  Copyright © 2015 TOKOPEDIA. All rights reserved.
+//  Created by Tonito Acen on 2/17/16.
+//  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "BannerTicker.h"
-#import <RestKit/ObjectMapping/RKObjectMapping.h>
+#import "Slide.h"
 
-NSString *const TKPTickerImage = @"img_uri";
-NSString *const TKPTickerUrl = @"url";
-
-
-@implementation BannerTicker
+@implementation Slide
 
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[TKPTickerImage, TKPTickerUrl];
+    NSArray *keys = @[@"title", @"message", @"image_url", @"redirect_url"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
@@ -25,6 +20,5 @@ NSString *const TKPTickerUrl = @"url";
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     return mapping;
 }
-
 
 @end

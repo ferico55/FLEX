@@ -1,22 +1,17 @@
 //
-//  BannerList.m
+//  MiniSlide.m
 //  Tokopedia
 //
-//  Created by Tonito Acen on 10/16/15.
-//  Copyright © 2015 TOKOPEDIA. All rights reserved.
+//  Created by Tonito Acen on 2/17/16.
+//  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "BannerList.h"
-#import <RestKit/ObjectMapping/RKObjectMapping.h>
+#import "MiniSlide.h"
 
-NSString *const TKPBannerImage = @"img_uri";
-NSString *const TKPBannerUrl = @"url";
-
-
-@implementation BannerList
+@implementation MiniSlide
 
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[TKPBannerImage, TKPBannerUrl];
+    NSArray *keys = @[@"title", @"message", @"image_url", @"redirect_url"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
@@ -25,6 +20,5 @@ NSString *const TKPBannerUrl = @"url";
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     return mapping;
 }
-
 
 @end

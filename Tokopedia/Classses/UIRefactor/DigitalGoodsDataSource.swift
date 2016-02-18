@@ -10,12 +10,12 @@ import Foundation
 
 
 @objc class DigitalGoodsDataSource: NSObject, SwipeViewDataSource {
-    var _goods: Array<BannerList>!
+    var _goods: Array<MiniSlide>!
     var _swipeView: SwipeView!
     let _imageWidth:CGFloat = 200
     let _imageHeight:CGFloat = 100
     
-    init(goods: Array<BannerList>, swipeView: SwipeView) {
+    init(goods: Array<MiniSlide>, swipeView: SwipeView) {
         super.init()
         
         _goods = goods
@@ -31,7 +31,7 @@ import Foundation
         let imageView = UIImageView(frame: CGRect(x: 10,y: 10,width: _imageWidth,height: _imageHeight))
         let good = _goods[index]
         
-        imageView.setImageWithUrl(NSURL(string: good.img_uri)!, placeHolderImage: nil)
+        imageView.setImageWithUrl(NSURL(string: good.image_url)!, placeHolderImage: nil)
         imageView.layer.cornerRadius = 5.0;
         imageView.layer.masksToBounds = true;
         
@@ -41,7 +41,7 @@ import Foundation
         return view
     }
     
-    func goodsAtIndex(index: Int) -> BannerList {
+    func goodsAtIndex(index: Int) -> MiniSlide {
         return _goods[index]
     }
 
