@@ -72,7 +72,7 @@ static NSInteger userViewHeight = 70;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
-    [self initNavigation];    
+    [self initNavigation];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     style = [[NSMutableParagraphStyle alloc] init];
@@ -357,13 +357,6 @@ static NSInteger userViewHeight = 70;
             
             DetailReputationReview *reputationDetail = arrList[indexPath.row];
             [cell setReputationModelView:reputationDetail.viewModel];
-            
-            if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
-                if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
-                    [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
-                    //[self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
-                }
-            }
             return cell;
         }else{
             NSInteger limit = isShowingMore ? helpfulReviews.count : 1;
@@ -380,13 +373,6 @@ static NSInteger userViewHeight = 70;
                 newFrame.size.width = helpfulCell.leftBorderView.frame.size.width;
                 newFrame.size.height = [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews] - userViewHeight;
                 [helpfulCell.leftBorderView setFrame:newFrame];
-                
-                if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
-                    if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
-                        [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
-                        [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
-                    }
-                }
                 return helpfulCell;
             }else{
                 return _helpfulReviewLoadMoreCell;
@@ -400,14 +386,6 @@ static NSInteger userViewHeight = 70;
         
         DetailReputationReview *reputationDetail = arrList[indexPath.row];
         [cell setReputationModelView:reputationDetail.viewModel];
-        
-        if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
-            if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
-                [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
-                [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
-            }
-        }
-
         return cell;
     }
 }
@@ -609,18 +587,6 @@ static NSInteger userViewHeight = 70;
     }
     
     [operationQueueLikeDislike cancelAllOperations];
-}
-- (void)requestLikeStatusAgain:(NSIndexPath *)indexPath {
-    DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    [loadingLikeDislike setObject:detailReputationReview.review_id forKey:detailReputationReview.review_id];
-    [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[detailReputationReview, [NSNumber numberWithInt:(int)indexPath.row]]];
-}
-- (void)updateDataInDetailView:(LikeDislike *)likeDislike {
-    if([[self.navigationController.viewControllers lastObject] isMemberOfClass:[ProductDetailReputationViewController class]]) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [((ProductDetailReputationViewController *) [self.navigationController.viewControllers lastObject]) updateLikeDislike:likeDislike];
-        });
-    }
 }
 - (void)reloadTable {
     [tableContent reloadData];
@@ -868,48 +834,6 @@ static NSInteger userViewHeight = 70;
 }
 - (NSString *)getPathLikeDislike {
     return @"shop.pl";
-}
-- (void)actionGetLikeStatus:(NSArray *)arrayList {
-    if(loadingLikeDislike.count > 10)
-        return;
-    
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        DetailReputationReview *list = (DetailReputationReview *)[arrayList firstObject];
-        NSIndexPath* indexPath = (NSIndexPath*) [arrayList lastObject];
-        RKObjectManager *tempObjectManager = [self getObjectManagerTotalLike];
-        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
-                                kTKPDDETAIL_REVIEWIDS : list.review_id,
-                                kTKPDDETAIL_APISHOPIDKEY : list.shop_id};
-        RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPathLikeDislike] parameters:[param encrypt]];
-
-        
-        NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
-        [loadingLikeDislike setObject:@[tempRequest, indexPath, timerLikeDislike] forKey:list.review_id];
-        
-        
-        [tempRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
-            NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:list.review_id] lastObject];
-            [temporaryTimer invalidate];
-            
-            NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
-            LikeDislike *obj = [result objectForKey:@""];
-            [dictLikeDislike setObject:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]) forKey:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]).review_id];
-            [self performSelectorInBackground:@selector(updateDataInDetailView:) withObject:obj];
-            
-            //Update UI
-            if([loadingLikeDislike objectForKey:list.review_id])
-                [tableContent reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [loadingLikeDislike removeObjectForKey:list.review_id];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:list.review_id] lastObject];
-            [temporaryTimer invalidate];
-            [loadingLikeDislike removeObjectForKey:list.review_id];
-        }];
-        [_operationQueue addOperation:tempRequest];
-    });
 }
 - (ProductReputationCell *)getCell:(UIView *)btn {
     UIView *tempView = btn.superview;

@@ -410,7 +410,7 @@ ReviewRequestDelegate>
     
     UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
     if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
-        [((ProductReputationViewController *) viewController) requestLikeStatusAgain:_indexPathSelected];
+        [reviewRequest requestReviewLikeDislikesWithId:_detailReputaitonReview.review_id shopId:_detailReputaitonReview.shop_id];
     }
 }
 
