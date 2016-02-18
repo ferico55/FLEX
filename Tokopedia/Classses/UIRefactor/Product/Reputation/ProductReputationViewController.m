@@ -67,7 +67,6 @@ static NSInteger userViewHeight = 70;
     BOOL isShowingMore, animationHasShown;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
@@ -131,39 +130,23 @@ static NSInteger userViewHeight = 70;
     
     
 }
-
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     animationHasShown = NO;
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-- (void)dealloc
-{
+- (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self unloadRequesting];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - Method View
 - (void)initNavigation {
     self.title = @"Ulasan";
 }
-
 - (void)setRateStar:(int)tag withAnimate:(BOOL)isAnimate {
     int nRate1, nRate2, nRate3, nRate4, nRate5;
     float totalCount = 0;
@@ -263,8 +246,6 @@ static NSInteger userViewHeight = 70;
     [attributedText setAttributes:subAttrs range:NSMakeRange(lblDescTotalHeaderRating.text.length-strReview.length, strReview.length)];
     [lblDescTotalHeaderRating setAttributedText:attributedText];
 }
-
-
 - (void)initTable {
     //Refresh Control
     refreshControl = [[UIRefreshControl alloc] init];
@@ -275,10 +256,7 @@ static NSInteger userViewHeight = 70;
     tableContent.tableHeaderView = viewHeader;
 }
 
-
-
 #pragma mark - UITableView Delegate and DataSource
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *header;
     if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
@@ -286,7 +264,6 @@ static NSInteger userViewHeight = 70;
     }
     return header;
 }
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footer;
     if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
@@ -294,28 +271,21 @@ static NSInteger userViewHeight = 70;
     }
     return footer;
 }
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
         return 50;
     }
     return 10;
 }
-
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
         return 10;
     }
     return 0;
 }
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return (filterStar == 0 && helpfulReviews.count > 0) ? 2 : 1;
 }
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(filterStar == 0 && helpfulReviews.count > 0){
         if(indexPath.section == 1){
@@ -340,7 +310,6 @@ static NSInteger userViewHeight = 70;
     }
     return 0;
 }
-
 - (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
     //don't auto calculate cell for performance in iOS 7
     /*
@@ -363,9 +332,7 @@ static NSInteger userViewHeight = 70;
     
     return 160;
 }
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
             [self setLoadingView:YES];
@@ -377,7 +344,6 @@ static NSInteger userViewHeight = 70;
         animationHasShown = YES;
     }
 }
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(filterStar == 0 && helpfulReviews.count > 0){
         if(indexPath.section == 1){
@@ -442,14 +408,11 @@ static NSInteger userViewHeight = 70;
         return cell;
     }
 }
-
 - (void)mappingAttribute:(DetailReputationReview *)reputationReview {
     reputationReview.product_rating_point = reputationReview.review_rate_product;
     reputationReview.product_accuracy_point = reputationReview.review_rate_accuracy;
     reputationReview.review_full_name = reputationReview.review_user_name;
-    
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -472,7 +435,6 @@ static NSInteger userViewHeight = 70;
 
     }
 }
-
 - (BOOL) isLastCellInSectionZero:(NSIndexPath *)indexPath{
     if (isShowingMore){
         return indexPath.row == helpfulReviews.count ? YES : NO;
@@ -480,7 +442,6 @@ static NSInteger userViewHeight = 70;
         return indexPath.row == 1 ? YES : NO;
     }
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(filterStar == 0 && helpfulReviews.count > 0){
         if(section==1){
@@ -494,21 +455,16 @@ static NSInteger userViewHeight = 70;
 }
 
 #pragma mark - TTTAttributeLabel Delegate
-- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
-{
+- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point{
     
 }
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url{
     DetailReputationReview *detailReputationReview = arrList[label.tag];
     [self redirectToProductDetailReputation:detailReputationReview withIndexPath:[NSIndexPath indexPathForRow:label.tag inSection:0]];
 }
 
-
 #pragma mark - Action
-- (void)refreshView:(UIRefreshControl*)refresh
-{
+- (void)refreshView:(UIRefreshControl*)refresh{
     [refresh endRefreshing];
     
     [operationQueueLikeDislike cancelAllOperations];
@@ -526,7 +482,6 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (void)actionResetFilter:(id)sender {
     if(filterStar == 0) {
         return;
@@ -576,7 +531,6 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (IBAction)actionFilter6Month:(id)sender {
     [operationQueueLikeDislike cancelAllOperations];
     [_operationQueue cancelAllOperations];
@@ -594,7 +548,6 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (IBAction)actionFilterAllTime:(id)sender {
     [operationQueueLikeDislike cancelAllOperations];
     [_operationQueue cancelAllOperations];
@@ -613,22 +566,7 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (IBAction)actionSegmentedValueChange:(id)sender {
-    /*switch (((UISegmentedControl *) sender).selectedSegmentIndex) {
-        case 0:
-        {
-            [self setRateStar:0 withAnimate:YES];
-        }
-            break;
-        case 1:
-        {
-            [self setRateStar:1 withAnimate:YES];
-        }
-            break;
-    }
-    */
-    
     page = 0;
     strUri = nil;
     [arrList removeAllObjects];
@@ -636,11 +574,9 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
-
 - (IBAction)showMoreTapped:(id)sender {
     if(isShowingMore){
         isShowingMore = NO;
@@ -671,15 +607,11 @@ static NSInteger userViewHeight = 70;
     
     [operationQueueLikeDislike cancelAllOperations];
 }
-
-
 - (void)requestLikeStatusAgain:(NSIndexPath *)indexPath {
     DetailReputationReview *detailReputationReview = arrList[indexPath.row];
     [loadingLikeDislike setObject:detailReputationReview.review_id forKey:detailReputationReview.review_id];
     [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[detailReputationReview, [NSNumber numberWithInt:(int)indexPath.row]]];
 }
-
-
 - (void)updateDataInDetailView:(LikeDislike *)likeDislike {
     if([[self.navigationController.viewControllers lastObject] isMemberOfClass:[ProductDetailReputationViewController class]]) {
         dispatch_async(dispatch_get_main_queue(), ^(void) {
@@ -687,11 +619,9 @@ static NSInteger userViewHeight = 70;
         });
     }
 }
-
 - (void)reloadTable {
     [tableContent reloadData];
 }
-
 - (void)gestureViewStar:(UITapGestureRecognizer *)sender {
     switch (filterStar) {
         case 1:
@@ -785,8 +715,6 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
-
 - (void)redirectToProductDetailReputation:(DetailReputationReview *)detailReputationReview withIndexPath:(NSIndexPath *)indexPath {
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     
@@ -808,7 +736,6 @@ static NSInteger userViewHeight = 70;
 
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
-
 - (void)showLoginView {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -823,7 +750,6 @@ static NSInteger userViewHeight = 70;
     navigationController.viewControllers = @[controller];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
-
 - (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[LikeDislikePost class]];
@@ -856,7 +782,6 @@ static NSInteger userViewHeight = 70;
     
     [objectManager addResponseDescriptor:responseDescriptorStatus];
 }
-
 - (void)doActionLikeDislike:(int)likeDislikeTag withView:(UIView *)btnLike {
     //1 is like
     //2 is dislike
@@ -920,16 +845,13 @@ static NSInteger userViewHeight = 70;
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:detailReputationReview.review_id repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
-
 - (void)timeOutGetLikeDislike:(NSTimer *)temp {
     RKManagedObjectRequestOperation *operation = [[loadingLikeDislike objectForKey:[temp userInfo]] firstObject];
     [operation cancel];
     operation = nil;
     [loadingLikeDislike removeObjectForKey:[temp userInfo]];
 }
-
-- (RKObjectManager *)getObjectManagerTotalLike
-{
+- (RKObjectManager *)getObjectManagerTotalLike{
     // initialize RestKit
     RKObjectManager *tempObjectManager =  [RKObjectManager sharedClient];
     
@@ -961,11 +883,9 @@ static NSInteger userViewHeight = 70;
     
     return tempObjectManager;
 }
-
 - (NSString *)getPathLikeDislike {
     return @"shop.pl";
 }
-
 - (void)actionGetLikeStatus:(NSArray *)arrayList {
     if(loadingLikeDislike.count > 10)
         return;
@@ -1008,7 +928,6 @@ static NSInteger userViewHeight = 70;
         [_operationQueue addOperation:tempRequest];
     });
 }
-
 - (ProductReputationCell *)getCell:(UIView *)btn {
     UIView *tempView = btn.superview;
     while(tempView) {
@@ -1021,7 +940,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (void)setLoadingView:(BOOL)isLoad {
     if(isLoad) {
         tableContent.tableFooterView = viewFooter;
@@ -1032,8 +950,6 @@ static NSInteger userViewHeight = 70;
         tableContent.tableFooterView = nil;
     }
 }
-
-
 - (TokopediaNetworkManager *)getNetworkManager:(int)tag {
     if(tag == CTagGetProductReview) {
         if(tokopediaNetworkManager == nil) {
@@ -1047,13 +963,10 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
-- (void)dismissAllPopTipViews
-{
+- (void)dismissAllPopTipViews{
     [popTipView dismissAnimated:YES];
     popTipView = nil;
 }
-
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
     lblDesc.backgroundColor = [UIColor clearColor];
     lblDesc.textAlignment = NSTextAlignmentLeft;
@@ -1062,7 +975,6 @@ static NSInteger userViewHeight = 70;
     lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
     lblDesc.numberOfLines = 0;
 }
-
 
 #pragma mark - ProductReputation Delegate
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription {
@@ -1094,7 +1006,6 @@ static NSInteger userViewHeight = 70;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
     }
 }
-
 - (void)actionLike:(id)sender {
     if(auth) {
         UIButton *btnLike = (UIButton *)sender;
@@ -1149,14 +1060,12 @@ static NSInteger userViewHeight = 70;
         [self showLoginView];
     }
 }
-
 - (void)requestTimeout:(NSTimer *)timer {
     [loadingLikeDislike removeObjectForKey:[timer userInfo]];
     
     RKObjectRequestOperation *objectReputation = [operationQueueLikeDislike.operations firstObject];
     [objectReputation cancel];
 }
-
 - (void)actionDisLike:(id)sender {
     if(auth) {
         UIButton *btnDislike = (UIButton *)sender;
@@ -1209,24 +1118,12 @@ static NSInteger userViewHeight = 70;
         [self showLoginView];
     }
 }
-
-- (void)actionChat:(id)sender {
-//    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-//    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
-}
-
+- (void)actionChat:(id)sender {}
 - (void)actionMore:(id)sender {
-//    if(auth) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:CStringLapor otherButtonTitles:nil, nil];
         actionSheet.tag = ((UIButton *) sender).tag;
         [actionSheet showInView:self.view];
-//    }
-//    else {
-//        [self showLoginView];
-//    }
 }
-
-
 - (void)animate:(UITableViewCell *)cell {
     [@[cell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
         [cell setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
@@ -1243,7 +1140,6 @@ static NSInteger userViewHeight = 70;
     }];
     
 }
-
 - (void)actionRate:(id)sender {
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
 
@@ -1267,10 +1163,8 @@ static NSInteger userViewHeight = 70;
     }
 }
 
-
 #pragma mark - PopUp
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
-{
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView{
     [self dismissAllPopTipViews];
 }
 
@@ -1293,7 +1187,6 @@ static NSInteger userViewHeight = 70;
         }
     }
 }
-
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
@@ -1320,7 +1213,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (NSString*)getPath:(int)tag {
     if(tag == CTagGetProductReview) {
         return [productPostUrl isEqualToString:@""] ? @"product.pl" : productPostUrl;
@@ -1328,7 +1220,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (id)getObjectManager:(int)tag {
     if(tag == CTagGetProductReview) {
         RKObjectManager *objectManager;
@@ -1350,7 +1241,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*) result).dictionary;
     id stat = [resultDict objectForKey:@""];
@@ -1362,7 +1252,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
@@ -1406,19 +1295,15 @@ static NSInteger userViewHeight = 70;
         }
     }
 }
-
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     if(tag == CTagGetProductReview) {
         
     }
 }
-
 - (void)actionBeforeRequest:(int)tag {
 }
-
 - (void)actionRequestAsync:(int)tag {
 }
-
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == CTagGetProductReview) {
         [self setLoadingView:NO];
@@ -1433,36 +1318,22 @@ static NSInteger userViewHeight = 70;
     }
 }
 
-
 #pragma mark - LoadingView Delegate
-- (void)pressRetryButton
-{
+- (void)pressRetryButton{
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 
 #pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController{
-    
-}
-
-- (void)cancelLoginView {
-    
-}
-
 - (UIViewController *)didReceiveViewController {
     return self;
 }
-
 - (NSDictionary *)getParameter {
     return nil;
 }
-
-
 - (NSString *)getPath {
     return @"action/review.pl";
 }
-
 - (void)userDidLogin:(NSNotification*)notification {
     UIViewController *viewController = [self.navigationController.viewControllers lastObject];
     if([viewController isMemberOfClass:[ProductDetailReputationViewController class]]) {
@@ -1477,7 +1348,6 @@ static NSInteger userViewHeight = 70;
 }
 
 #pragma mark - HelpfulReviewRequestDelegate
-
 - (void) didReceiveHelpfulReview:(NSArray*)helpfulReview{
     [[self getNetworkManager:CTagGetProductReview] doRequest];
     
@@ -1489,7 +1359,6 @@ static NSInteger userViewHeight = 70;
     }
     
 }
-
 - (void)showMoreDidTappedInIndexPath:(NSIndexPath*)indexPath{
     if(filterStar == 0 && helpfulReviews.count > 0){
         if(indexPath.section == 1){
@@ -1507,11 +1376,8 @@ static NSInteger userViewHeight = 70;
     }else{
         DetailReputationReview *detailReputationReview = arrList[indexPath.row];
         [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
-        
     }
-
 }
-
 
 #pragma mark - GTM
 - (void)configureGTM {
