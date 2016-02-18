@@ -37,6 +37,7 @@
 #import "ViewLabelUser.h"
 #import "NavigateViewController.h"
 #import "NavigationHelper.h"
+#import "ReviewRequest.h"
 
 #define CStringLimitText @"Panjang pesan harus lebih besar dari 5 karakter"
 #define CStringSuccessSentComment @"Anda berhasil memberikan komentar"
@@ -45,8 +46,16 @@
 #define CTagComment 2
 #define CTagHapus 3
 
-@interface ProductDetailReputationViewController ()<productReputationDelegate, TokopediaNetworkManagerDelegate, CMPopTipViewDelegate, HPGrowingTextViewDelegate, ProductDetailReputationDelegate, LoginViewDelegate, SmileyDelegate, MGSwipeTableCellDelegate>
-
+@interface ProductDetailReputationViewController ()<
+productReputationDelegate,
+TokopediaNetworkManagerDelegate,
+CMPopTipViewDelegate,
+HPGrowingTextViewDelegate,
+ProductDetailReputationDelegate,
+LoginViewDelegate,
+SmileyDelegate,
+MGSwipeTableCellDelegate,
+ReviewRequestDelegate>
 @end
 
 @implementation ProductDetailReputationViewController {
@@ -60,6 +69,7 @@
     NSString *postActionUrl;
     NavigateViewController *_TKPDNavigator;
 
+    ReviewRequest *reviewRequest;
     
     __block NSTimer *_timer;
     BOOL isSuccessSentMessage, isDeletingMessage;
@@ -125,6 +135,11 @@
         _reviewList.review_response.canDelete = YES;
     }
     
+    reviewRequest = [[ReviewRequest alloc] init];
+    reviewRequest.delegate = self;
+    [reviewRequest requestReviewLikeDislikesWithId:_detailReputaitonReview.review_id shopId:_detailReputaitonReview.shop_id];
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -165,16 +180,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - Method View
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
@@ -1119,16 +1124,7 @@
     }
 }
 
-- (void)setLikeDislikeActive:(NSString *)strStatusLike {
-    if(strStatusLike!=nil && [strStatusLike isEqualToString:@"1"]) {
-        [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
-        [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-    else if(strStatusLike!=nil && [strStatusLike isEqualToString:@"2"]) {
-        [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
-        [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-}
+
 
 - (void)dismissAllPopTipViews
 {
@@ -1576,5 +1572,30 @@
     }
     
     return nil;
+}
+
+#pragma mark - ReviewRequestDelegate
+-(void)didReceiveReviewLikeDislikes:(TotalLikeDislike *)totalLikeDislike{
+    _strTotalLike = totalLikeDislike.total_like_dislike.total_like;
+    _strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
+        
+    if((_detailReputaitonReview!=nil && [totalLikeDislike.review_id isEqualToString:_detailReputaitonReview.review_id]) ||
+       (_reviewList!=nil && [totalLikeDislike.review_id isEqualToString:_reviewList.review_id])) {
+        [productReputationCell setHiddenViewLoad:YES];
+        [productReputationCell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
+        [productReputationCell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like  forState:UIControlStateNormal];
+        
+        [self setLikeDislikeActive:totalLikeDislike.like_status];
+    }
+}
+- (void)setLikeDislikeActive:(NSString *)strStatusLike {
+    if(strStatusLike!=nil && [strStatusLike isEqualToString:@"1"]) {
+        [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
+        [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
+    }
+    else if(strStatusLike!=nil && [strStatusLike isEqualToString:@"2"]) {
+        [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
+        [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
+    }
 }
 @end

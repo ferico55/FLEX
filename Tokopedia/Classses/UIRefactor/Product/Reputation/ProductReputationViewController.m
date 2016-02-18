@@ -72,12 +72,7 @@ static NSInteger userViewHeight = 70;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
-    [self initNavigation];
-    
-    reviewRequest = [[ReviewRequest alloc] init];
-    [reviewRequest requestReviewLikeDislikesWithId:@"12399420" shopId:@"115440"];
-    
-    
+    [self initNavigation];    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     style = [[NSMutableParagraphStyle alloc] init];
@@ -366,7 +361,7 @@ static NSInteger userViewHeight = 70;
             if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
                 if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
                     [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
-                    [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
+                    //[self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
                 }
             }
             return cell;
