@@ -27,7 +27,9 @@
                       @"last_show_accept_admin_button",
                       @"last_show_accept_button",
                       @"last_create_time",
-                      @"last_flag_received"];
+                      @"last_flag_received",
+                      @"last_trouble_string",
+                      @"last_solution_string"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

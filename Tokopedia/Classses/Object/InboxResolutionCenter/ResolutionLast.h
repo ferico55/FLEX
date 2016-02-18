@@ -28,5 +28,8 @@
 @property (nonatomic, strong) NSNumber *last_show_accept_button;
 @property (nonatomic, strong) NSString *last_create_time;
 @property (nonatomic, strong) NSNumber *last_flag_received;
+@property (nonatomic, strong) NSString *last_trouble_string;
+@property (nonatomic, strong) NSString *last_solution_string;
+
 
 @end

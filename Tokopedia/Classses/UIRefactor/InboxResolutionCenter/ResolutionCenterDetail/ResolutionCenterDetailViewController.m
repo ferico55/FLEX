@@ -555,37 +555,37 @@
 
 -(NSString *)trouble
 {
-    NSString *trouble = @"";
-    if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(1)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[0];
-    }
-    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(2)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[1];
-    }
-    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(3)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[2];
-    }
-    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(4)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[3];
-    }
+    NSString *trouble = _resolutionDetail.resolution_last.last_trouble_string?:@"";
+//    if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(1)]) {
+//        trouble = ARRAY_PROBLEM_COMPLAIN[0];
+//    }
+//    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(2)]) {
+//        trouble = ARRAY_PROBLEM_COMPLAIN[1];
+//    }
+//    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(3)]) {
+//        trouble = ARRAY_PROBLEM_COMPLAIN[2];
+//    }
+//    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(4)]) {
+//        trouble = ARRAY_PROBLEM_COMPLAIN[3];
+//    }
     return trouble;
 }
 
 -(NSString*)solution
 {
-    NSString *solution = @"";
-    if ([_resolutionDetail.resolution_last.last_solution isEqual:@(1)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0];
-    }
-    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(2)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[1];
-    }
-    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(3)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[2];
-    }
-    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(4)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[3];
-    }
+    NSString *solution = _resolutionDetail.resolution_last.last_solution_string?:@"";
+//    if ([_resolutionDetail.resolution_last.last_solution isEqual:@(1)]) {
+//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0];
+//    }
+//    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(2)]) {
+//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[1];
+//    }
+//    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(3)]) {
+//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[2];
+//    }
+//    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(4)]) {
+//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[3];
+//    }
     return solution;
 }
 
@@ -670,7 +670,7 @@
         cell = [ResolutionCenterSystemCell newCell];
         cell.delegate = self;
     }
-    [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
+    [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation]; 
     
     if([conversation.show_edit_addr_button integerValue] != 1 && conversation.address)
     {
@@ -1125,26 +1125,26 @@
 -(NSString *)solutionString:(ResolutionConversation*)conversation
 {
     NSInteger lastSolutionType = [conversation.solution integerValue];
-    NSString *solutionString = @"";
-    if (lastSolutionType == SOLUTION_REFUND) {
-        solutionString = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",conversation.refund_amt_idr];
-    }
-    else if (lastSolutionType == SOLUTION_RETUR) {
-        solutionString = [NSString stringWithFormat:@"Tukar barang sesuai pesanan"];
-    }
-    else if (lastSolutionType == SOLUTION_RETUR_REFUND) {
-        solutionString = [NSString stringWithFormat:@"Pengembalian barang dan dana sebesar %@",conversation.refund_amt_idr];
-    }
-    else if (lastSolutionType == SOLUTION_SELLER_WIN) {
-        solutionString = [NSString stringWithFormat:@"Pengembalian dana penuh"];
-    }
-    else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
-        solutionString = [NSString stringWithFormat:@"Kirimkan sisanya"];
-    }
-    else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
-        solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
-    }
-    
+    NSString *solutionString = conversation.solution_string?:@"";
+//    if (lastSolutionType == SOLUTION_REFUND) {
+//        solutionString = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",conversation.refund_amt_idr];
+//    }
+//    else if (lastSolutionType == SOLUTION_RETUR) {
+//        solutionString = [NSString stringWithFormat:@"Tukar barang sesuai pesanan"];
+//    }
+//    else if (lastSolutionType == SOLUTION_RETUR_REFUND) {
+//        solutionString = [NSString stringWithFormat:@"Pengembalian barang dan dana sebesar %@",conversation.refund_amt_idr];
+//    }
+//    else if (lastSolutionType == SOLUTION_SELLER_WIN) {
+//        solutionString = [NSString stringWithFormat:@"Pengembalian dana penuh"];
+//    }
+//    else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
+//        solutionString = [NSString stringWithFormat:@"Kirimkan sisanya"];
+//    }
+//    else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
+//        solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
+//    }
+//    
     return solutionString;
 }
 
@@ -1153,26 +1153,26 @@
     NSString *solutionString = [self solutionString:conversation];
     
     NSInteger troubleType = [conversation.trouble_type integerValue];
-    NSString *troubleString;
-    if (conversation.flag_received) {
-        if (troubleType == TROUBLE_DIFF_DESCRIPTION) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[0];
-        }
-        else if (troubleType == TROUBLE_BROKEN) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[1];
-        }
-        else if (troubleType == TROUBLE_DIFF_QUANTITY) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[2];
-        }
-        else if (troubleType == TROUBLE_DIFF_CARRIER) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[3];
-        }
-        else
-            troubleString = @"";
-    }
-    else{
-        troubleString = @"Produk tidak diterima";
-    }
+    NSString *troubleString = conversation.trouble_string?:@"";
+//    if (conversation.flag_received) {
+//        if (troubleType == TROUBLE_DIFF_DESCRIPTION) {
+//            troubleString = ARRAY_PROBLEM_COMPLAIN[0];
+//        }
+//        else if (troubleType == TROUBLE_BROKEN) {
+//            troubleString = ARRAY_PROBLEM_COMPLAIN[1];
+//        }
+//        else if (troubleType == TROUBLE_DIFF_QUANTITY) {
+//            troubleString = ARRAY_PROBLEM_COMPLAIN[2];
+//        }
+//        else if (troubleType == TROUBLE_DIFF_CARRIER) {
+//            troubleString = ARRAY_PROBLEM_COMPLAIN[3];
+//        }
+//        else
+//            troubleString = @"";
+//    }
+//    else{
+//        troubleString = @"Produk tidak diterima";
+//    }
     
     NSString *returnString;
     if ([troubleString isEqualToString:@""])
@@ -1329,6 +1329,8 @@
                 _addedLastConversation.isAddedConversation = [self isNeedAddList]?YES:NO;
                 _addedLastConversation.trouble_type = @(0);
                 _addedLastConversation.refund_amt_idr = resolution.result.detail.resolution_last.last_refund_amt_idr;
+                _addedLastConversation.solution_string = resolution.result.detail.resolution_last.last_solution_string;
+                _addedLastConversation.trouble_string = resolution.result.detail.resolution_last.last_trouble_string;
                 [_listResolutionConversation addObject:_addedLastConversation];
             }
             

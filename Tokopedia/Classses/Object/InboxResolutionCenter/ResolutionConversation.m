@@ -42,7 +42,9 @@
                       @"view_more",
                       @"isAddedConversation",
                       @"address_edited",
-                      @"show_edit_addr_button"];
+                      @"show_edit_addr_button",
+                      @"trouble_string",
+                      @"solution_string"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

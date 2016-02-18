@@ -46,4 +46,7 @@
 
 @property (nonatomic) BOOL isAddedConversation;
 
+@property (nonatomic, strong) NSString *trouble_string;
+@property (nonatomic, strong) NSString *solution_string;
+
 @end
