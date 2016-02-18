@@ -10,10 +10,11 @@
 #import "iCarousel.h"
 
 @class BannerList;
+@class Slide;
 
 @interface CarouselDataSource : NSObject <iCarouselDataSource, iCarouselDelegate>
 
-- (instancetype)initWithBanner:(NSArray <BannerList*>*)banners;
+- (instancetype)initWithBanner:(NSArray <Slide*>*)banners;
 
 @property(nonatomic, weak) UIViewController *delegate;
 
