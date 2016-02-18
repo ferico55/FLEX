@@ -40,35 +40,60 @@
                    }
                    children:{
                        {
+                           //header
                            [CKStackLayoutComponent
                             newWithView:{}
                             size:{}
                             style:{
-                                .direction = CKStackLayoutDirectionHorizontal
+                                .direction = CKStackLayoutDirectionHorizontal,
+                                .spacing = 8
                             }
                             children:{
                                 {
-                                    //                                   [CKNetworkImageComponent
-                                    //                                    newWithURL:[NSURL URLWithString:review.product_image]
-                                    //                                    imageDownloader:imageDownloader
-                                    //                                    scenePath:nil
-                                    //                                    size:{44,44}
-                                    //                                    options:{
-                                    //                                        .defaultImage = [UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                                    //                                    }
-                                    //                                    attributes:{}]
+                                    [CKImageComponent
+                                     newWithImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                                     size:{44,44}]
                                 },
                                 {
-                                    [CKComponent
+                                    [CKStackLayoutComponent
                                      newWithView:{
-                                         [UILabel class],
+                                         
+                                     }
+                                     size:{}
+                                     style:{
+                                         .direction = CKStackLayoutDirectionVertical,
+                                         .justifyContent = CKStackLayoutJustifyContentCenter,
+                                         .spacing = 3
+                                     }
+                                     children:
+                                     {
                                          {
-                                             {@selector(setText:), review.product_name},
-                                             {@selector(setFont:), [UIFont fontWithName:@"Gotham Medium" size:14.0]},
-                                             {@selector(setLineBreakMode:), NSLineBreakByTruncatingMiddle}
-                                         }}
-                                     size:{.height = 21}],
-                                    .flexGrow = YES
+                                             [CKLabelComponent
+                                              newWithLabelAttributes:{
+                                                  .string = review.product_name,
+                                                  .font = [UIFont fontWithName:@"Gotham Medium" size:14],
+                                                  .lineBreakMode = NSLineBreakByTruncatingMiddle,
+                                                  .maximumNumberOfLines = 1
+                                              }
+                                              viewAttributes:{}
+                                              size:{}],
+                                         },
+                                         {
+                                             [CKLabelComponent
+                                              newWithLabelAttributes:{
+                                                  .string = review.review_response.response_create_time,
+                                                  .font = [UIFont fontWithName:@"Gotham Book" size:12],
+                                                  .lineBreakMode = NSLineBreakByTruncatingMiddle,
+                                                  .maximumNumberOfLines = 1,
+                                                  .color = [UIColor colorWithWhite:179.0/255 alpha:1]
+                                              }
+                                              viewAttributes:{}
+                                              size:{}]
+                                         }
+                                     }],
+                                    .flexGrow = YES,
+                                    .flexShrink = YES,
+                                    .alignSelf = CKStackLayoutAlignSelfStretch
                                 },
                                 {
                                     [CKButtonComponent
