@@ -9,5 +9,9 @@
 #import "DetailTotalLikeDislike.h"
 
 @implementation DetailTotalLikeDislike
-
++ (RKObjectMapping *)mapping{
+    RKObjectMapping *detailTotalLikeMapping = [RKObjectMapping mappingForClass:[DetailTotalLikeDislike class]];
+    [detailTotalLikeMapping addAttributeMappingsFromArray:@[@"total_like", @"total_dislike"]];
+    return detailTotalLikeMapping;
+}
 @end

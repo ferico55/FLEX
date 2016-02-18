@@ -9,5 +9,9 @@
 #import "LikeDislikeResult.h"
 
 @implementation LikeDislikeResult
-
++(RKObjectMapping *)mapping{
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikeResult class]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"like_dislike_review" toKeyPath:@"like_dislike_review" withMapping:[TotalLikeDislike mapping]]];
+    return resultMapping;
+}
 @end

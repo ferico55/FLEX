@@ -19,4 +19,6 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) LikeDislikeResult *result;
+
++ (RKObjectMapping*) mapping;
 @end
