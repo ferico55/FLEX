@@ -1090,23 +1090,6 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-//- (void)doSendComment {
-//    if(_request.isExecuting) return;
-//    _requestCount++;
-//    
-//    NSDictionary *param = @{@"action" : @"add_comment_review", @"review_id" : _review.review_id, @"text_comment" : _commentReview};
-//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[param encrypt]];
-//    
-//    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//        [self requestSuccess:mappingResult withOperation:operation];
-//        
-//    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-//        
-//    }];
-//    
-//    [_operationQueue addOperation:_request];
-//}
-
 - (TokopediaNetworkManager *)getNetworkManager:(int)tag {
     if(tag==CTagComment || tag==CTagHapus) {
         if(tokopediaNetworkManager == nil) {
