@@ -25,10 +25,25 @@
 #import "UIView+HVDLayout.h"
 
 #import "Localytics.h"
+#import "RequestUploadImage.h"
+#import "RequestGenerateHost.h"
 
 NSString *const searchPath = @"search/%@";
 
-@interface SearchViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UICollectionViewDataSource, UICollectionViewDelegate, SearchResultDelegate, NotificationDelegate,NotificationManagerDelegate> {
+@interface SearchViewController ()
+<
+    UISearchBarDelegate,
+    UISearchDisplayDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
+    UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate,
+    SearchResultDelegate,
+    NotificationDelegate,
+    NotificationManagerDelegate,
+    GenerateHostDelegate
+>
+{
 
     NSString *_filter;
     UITextField *_activeTextField;
@@ -49,6 +64,7 @@ NSString *const searchPath = @"search/%@";
     NSMutableArray *_typedHistoryResult;
     NSURL *_deeplinkUrl;
     
+    GeneratedHost *_generatedHost;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -90,22 +106,12 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _general = [NSMutableArray new];
     _hotlist = [NSMutableArray new];
     
-
-//    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    
-//    [searchBar setOpaque:YES];
-//    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
-//    [searchBar setTintColor:[UIColor whiteColor]];
-//    [[UITextField appearance] setTintColor:[UIColor blueColor]];
-//    _searchBar = searchBar;
     [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
     [_searchBar setTintColor:[UIColor whiteColor]];
     [self.view addSubview:_searchBar];
 
     _searchBar.delegate = self;
     
-
-
     _filter = @"search_product";
     
     [self loadHistory];
@@ -114,11 +120,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                                              selector:@selector(clearHistory)
                                                  name:kTKPD_REMOVE_SEARCH_HISTORY
                                                object:nil];
-    
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(didReceiveDeeplinkUrl:)
-//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -136,6 +137,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_domains removeAllObjects];
     [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
     [_collectionView reloadData];
+    
+    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(takePhoto:)];
+    self.navigationItem.leftBarButtonItem = cameraButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -620,5 +624,65 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_collectionView reloadData];
 }
 
+#pragma mark - Image search
+
+- (void)takePhoto:(UIButton *)sender {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self.navigationController presentViewController:picker animated:YES completion:NULL];
+    
+    RequestGenerateHost *generateHost =[RequestGenerateHost new];
+    [generateHost configureRestkitGenerateHost];
+    [generateHost requestGenerateHost];
+    generateHost.delegate = self;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    NSData *imageData = UIImagePNGRepresentation(chosenImage);
+    NSDictionary *data = @{
+        @"data_selected_photo" : @{
+            @"photo" : @{
+                @"cameraimagedata" : imageData,
+                @"cameraimagename" : @"image.png",
+                @"mediatype" : mediaType,
+                @"photo" : chosenImage,
+                @"source_type" : @"1",
+            },
+        },
+    };
+    
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    
+    [uploadImage requestActionUploadObject:data
+                             generatedHost:_generatedHost
+                                    action:@"upload_product_image"
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:@"fileToUpload"
+                                   success:^(id imageObject, UploadImage *image) {
+                                       
+                                       SearchResultViewController *result = [SearchResultViewController new];
+                                       result.image_url = image.result.file_path;
+                                       result.hidesBottomBarWhenPushed = YES;
+                                       result.data =@{@"type":@"search_product"};
+
+                                       [self.navigationController pushViewController:result animated:YES];
+        
+    } failure:^(id imageObject, NSError *error) {
+        
+    }];
+}
+
+-(void)successGenerateHost:(GenerateHost *)generateHost {
+    _generatedHost = generateHost.result.generated_host;
+}
 
 @end
