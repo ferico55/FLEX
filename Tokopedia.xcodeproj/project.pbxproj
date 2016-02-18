@@ -14,6 +14,8 @@
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		621061D31C7478C300ED82C5 /* MyReviewDetailDataManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 621061D21C7478C300ED82C5 /* MyReviewDetailDataManager.mm */; };
 		626C65A41C7485140060B55F /* DetailReputationReviewComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */; };
+		627F90251C75A04000BB07BB /* RatingComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 627F90241C75A04000BB07BB /* RatingComponent.mm */; };
+		627F90281C75B41500BB07BB /* ReviewResponseComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 627F90271C75B41500BB07BB /* ReviewResponseComponent.mm */; };
 		628175D01C59FF1C00D8F4AF /* CreatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6281706F1C59FF1B00D8F4AF /* CreatePasswordViewController.m */; };
 		628175D11C59FF1C00D8F4AF /* CreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 628170701C59FF1B00D8F4AF /* CreatePasswordViewController.xib */; };
 		628175D21C59FF1C00D8F4AF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 628170731C59FF1B00D8F4AF /* LoginViewController.m */; };
@@ -2130,6 +2132,10 @@
 		621061D21C7478C300ED82C5 /* MyReviewDetailDataManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailDataManager.mm; sourceTree = "<group>"; };
 		626C65A21C7485140060B55F /* DetailReputationReviewComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponent.h; sourceTree = "<group>"; };
 		626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewComponent.mm; sourceTree = "<group>"; };
+		627F90231C75A04000BB07BB /* RatingComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatingComponent.h; sourceTree = "<group>"; };
+		627F90241C75A04000BB07BB /* RatingComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RatingComponent.mm; sourceTree = "<group>"; };
+		627F90261C75B41500BB07BB /* ReviewResponseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewResponseComponent.h; sourceTree = "<group>"; };
+		627F90271C75B41500BB07BB /* ReviewResponseComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ReviewResponseComponent.mm; sourceTree = "<group>"; };
 		6281706C1C59FF1B00D8F4AF /* activation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activation.h; sourceTree = "<group>"; };
 		6281706E1C59FF1B00D8F4AF /* CreatePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatePasswordViewController.h; sourceTree = "<group>"; };
 		6281706F1C59FF1B00D8F4AF /* CreatePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatePasswordViewController.m; sourceTree = "<group>"; };
@@ -6640,6 +6646,10 @@
 				626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */,
 				62DF7F091C757C6C00F392CB /* DetailReputationReviewHeaderComponent.h */,
 				62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */,
+				627F90231C75A04000BB07BB /* RatingComponent.h */,
+				627F90241C75A04000BB07BB /* RatingComponent.mm */,
+				627F90261C75B41500BB07BB /* ReviewResponseComponent.h */,
+				627F90271C75B41500BB07BB /* ReviewResponseComponent.mm */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -12221,6 +12231,7 @@
 				7A710B301C4CF81D00D00615 /* Etalase.m in Sources */,
 				628177421C59FF1D00D8F4AF /* ProductReviewDetailViewController.m in Sources */,
 				7A710A431C4CF81D00D00615 /* TalkList.m in Sources */,
+				627F90281C75B41500BB07BB /* ReviewResponseComponent.mm in Sources */,
 				6281774A1C59FF1D00D8F4AF /* ProductAddEditDetailViewController.m in Sources */,
 				7A710BAC1C4CF81D00D00615 /* TxOrderPaymentEditSystemBank.m in Sources */,
 				628178911C59FF1D00D8F4AF /* TxOrderConfirmationProductCell.m in Sources */,
@@ -12579,6 +12590,7 @@
 				628178111C59FF1D00D8F4AF /* ShopInfoShipmentCell.m in Sources */,
 				628178471C59FF1D00D8F4AF /* MaintenanceViewController.m in Sources */,
 				7A710AB31C4CF81D00D00615 /* DetailMyInboxReputation.m in Sources */,
+				627F90251C75A04000BB07BB /* RatingComponent.mm in Sources */,
 				628176FE1C59FF1C00D8F4AF /* MoreViewController.m in Sources */,
 				7A7109EE1C4CF81D00D00615 /* UIViewCategory.swift in Sources */,
 				628176771C59FF1C00D8F4AF /* DepositFormViewController.m in Sources */,
