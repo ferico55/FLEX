@@ -23,7 +23,8 @@
                       @"dispute_deadline",
                       @"dispute_resolution_id",
                       @"dispute_detail_url",
-                      @"dispute_30_days"];
+                      @"dispute_30_days",
+                      @"dispute_split_info"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

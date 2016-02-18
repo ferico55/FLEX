@@ -508,6 +508,15 @@
     if (status) {
         [self requestProcess:object];
     }
+    else
+    {
+        if(address.message_error.count>0) {
+            NSArray *errorMessages = address.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
+                                                                               delegate:self];
+            [alertView show];
+        }
+    }
 }
 
 

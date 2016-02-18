@@ -125,6 +125,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *buyerThumbView;
 @property (weak, nonatomic) IBOutlet UIButton *inputConversation;
 @property (weak, nonatomic) IBOutlet UIView *replayConversationView;
+@property (strong, nonatomic) IBOutlet UIView *headerInfoView;
+@property (strong, nonatomic) IBOutlet UILabel *infoLabel;
 
 @end
 
@@ -299,7 +301,6 @@
         {
             ResolutionCenterDetailCell *cell = (ResolutionCenterDetailCell*)[self cellDetailResolutionAtIndexPath:indexPath];
             NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
-            NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
             
             cellRowHeight = [self calculateHeightForConfiguredSizingCell:cell];
             
@@ -311,7 +312,7 @@
                 rowHeight = cellRowHeight;
             }
             if ([self isShowAttachmentWithButton:conversation]) {
-                rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height;
+                rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height;
             }
         }
         
@@ -1366,11 +1367,35 @@
     _loadMoreButton.enabled = YES;
 }
 
-//-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-//{
-////    _tableView.tableFooterView = nil;
-////    [_act stopAnimating];
-//}
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return _headerInfoView;
+    }
+    return nil;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        if (![_resolutionDetail.resolution_dispute.dispute_split_info isEqualToString:@"0"]) {
+            [_infoLabel setCustomAttributedText:_resolutionDetail.resolution_dispute.dispute_split_info];
+            return [self findHeightForText:_infoLabel.text havingWidth:_infoLabel.frame.size.width andFont:FONT_GOTHAM_BOOK_18].height;
+        }
+        return 0;
+    }
+    return 0;
+}
+
+- (CGSize)findHeightForText:(NSString *)text havingWidth:(CGFloat)widthValue andFont:(UIFont *)font {
+    CGSize size = CGSizeZero;
+    if (text) {
+        //iOS 7
+        CGRect frame = [text boundingRectWithSize:CGSizeMake(widthValue, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:font } context:nil];
+        size = CGSizeMake(frame.size.width, frame.size.height + 1);
+    }
+    return size;
+}
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
