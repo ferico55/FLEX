@@ -19,28 +19,27 @@
     return [super newWithComponent:
             [CKInsetComponent
              newWithView:{}
-             insets:{0, 8, 0, 8}
+             insets:{8, 8, 8, 8}
              component:
-             [CKInsetComponent
-              newWithView:{
-                  [UIView class],
-                  {
-                      {@selector(setBackgroundColor:), [UIColor whiteColor]}
+                 [CKStackLayoutComponent
+                  newWithView:{
+                      [UIView class],
+                      {
+                          {@selector(setBackgroundColor:), [UIColor whiteColor]}
+                      }
                   }
-              }
-              insets:{8, 8, 8, 8}
-              component:{
-                  [CKStackLayoutComponent
-                   newWithView:{}
-                   size:{}
-                   style:{
-                       .direction = CKStackLayoutDirectionVertical,
-                       .alignItems = CKStackLayoutAlignItemsStretch,
-                       .justifyContent = CKStackLayoutJustifyContentCenter
-                   }
-                   children:{
-                       {
-                           //header
+                  size:{}
+                  style:{
+                      .direction = CKStackLayoutDirectionVertical,
+                      .alignItems = CKStackLayoutAlignItemsStretch,
+                      .justifyContent = CKStackLayoutJustifyContentCenter
+                  }
+                  children:{
+                      {
+                          //header
+                          [CKInsetComponent
+                           newWithInsets:{8,8,8,8}
+                           component:
                            [CKStackLayoutComponent
                             newWithView:{}
                             size:{}
@@ -52,7 +51,7 @@
                                 {
                                     [CKImageComponent
                                      newWithImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                                     size:{44,44}]
+                                     size:{50,50}]
                                 },
                                 {
                                     [CKStackLayoutComponent
@@ -113,34 +112,34 @@
                                      }
                                      accessibilityConfiguration:{}]
                                 }
-                            }]
-                       },
-                       {
-                           [CKButtonComponent
-                            newWithTitles:{
-                                {UIControlStateNormal, @"Beri Ulasan"}
-                            }
-                            titleColors:{
-                                {UIControlStateNormal, buttonColor}
-                            }
-                            images:{}
-                            backgroundImages:{}
-                            titleFont:[UIFont fontWithName:@"Gotham Medium" size:14.0]
-                            selected:NO
-                            enabled:YES
-                            action:nil
-                            size:{.height = 30}
-                            attributes:{
-                                {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
-                                {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
-                                {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[buttonColor CGColor]},
-                                {@selector(setClipsToBounds:), YES},
-                                {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
-                            }
-                            accessibilityConfiguration:{}],
-                           .flexGrow = YES
-                       },
-                   }]
-              }]]];
+                            }]]
+                      },
+                      {
+                          [CKButtonComponent
+                           newWithTitles:{
+                               {UIControlStateNormal, @"Beri Ulasan"}
+                           }
+                           titleColors:{
+                               {UIControlStateNormal, buttonColor}
+                           }
+                           images:{}
+                           backgroundImages:{}
+                           titleFont:[UIFont fontWithName:@"Gotham Medium" size:14.0]
+                           selected:NO
+                           enabled:YES
+                           action:nil
+                           size:{.height = 30}
+                           attributes:{
+                               {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
+                               {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
+                               {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[buttonColor CGColor]},
+                               {@selector(setClipsToBounds:), YES},
+                               {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
+                           }
+                           accessibilityConfiguration:{}],
+                          .flexGrow = YES
+                      },
+                  }]
+             ]];
 }
 @end
