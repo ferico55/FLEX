@@ -26,6 +26,29 @@ static CKComponent* timestampLabel(NSString* createTime) {
             size:{}];
 }
 
+static CKComponent* skipButton (DetailReputationReview* review) {
+    if ([review.review_is_skipable isEqualToString:@"1"]) {
+        return [CKButtonComponent
+                newWithTitles:{}
+                titleColors:{}
+                images:{
+                    {UIControlStateNormal, [UIImage imageNamed:@"icon_cancel.png"]}
+                }
+                backgroundImages:{}
+                titleFont:nil
+                selected:NO
+                enabled:YES
+                action:nil
+                size:{.height = 30}
+                attributes:{
+                    
+                }
+                accessibilityConfiguration:{}];
+    }
+    
+    return nil;
+}
+
 @implementation DetailReputationReviewHeaderComponent
 + (instancetype)newWithReview:(DetailReputationReview*)review {
     return [super newWithComponent:
@@ -78,22 +101,7 @@ static CKComponent* timestampLabel(NSString* createTime) {
                       .alignSelf = CKStackLayoutAlignSelfStretch
                   },
                   {
-                      [CKButtonComponent
-                       newWithTitles:{}
-                       titleColors:{}
-                       images:{
-                           {UIControlStateNormal, [UIImage imageNamed:@"icon_cancel.png"]}
-                       }
-                       backgroundImages:{}
-                       titleFont:nil
-                       selected:NO
-                       enabled:YES
-                       action:nil
-                       size:{.height = 30}
-                       attributes:{
-                           
-                       }
-                       accessibilityConfiguration:{}]
+                      skipButton(review)
                   }
               }]]];
 }

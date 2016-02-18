@@ -9,6 +9,10 @@
 #import "DetailReputationReview.h"
 #import <ComponentKit/ComponentKit.h>
 
+@interface DetailReputationReviewContext : NSObject
+@property id<CKNetworkImageDownloading> imageDownloader;
+@end
+
 @interface DetailReputationReviewHeaderComponent : CKCompositeComponent
 + (instancetype)newWithReview:(DetailReputationReview*)review;
 @end

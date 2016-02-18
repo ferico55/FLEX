@@ -35,12 +35,45 @@ static CKComponent* messageLabel(NSString* message) {
              size:{}]];
 }
 
+static CKComponent* giveReviewButton(DetailReputationReview* review) {
+    if ([review.review_message isEqualToString:@"0"] || review.review_message == nil) {
+        return [CKInsetComponent
+                newWithInsets:{8,8,8,8}
+                component:[CKButtonComponent
+                newWithTitles:{
+                    {UIControlStateNormal, @"Beri Ulasan"}
+                }
+                titleColors:{
+                    {UIControlStateNormal, [UIColor colorWithRed:18.0/255
+                                                           green:199.0/255
+                                                            blue:0
+                                                           alpha:1]}
+                }
+                images:{}
+                backgroundImages:{}
+                titleFont:[UIFont fontWithName:@"Gotham Medium" size:14.0]
+                selected:NO
+                enabled:YES
+                action:nil
+                size:{.height = 30}
+                attributes:{
+                    {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
+                    {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
+                    {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:18.0/255
+                                                                                                                green:199.0/255
+                                                                                                                 blue:0
+                                                                                                                alpha:1] CGColor]},
+                    {@selector(setClipsToBounds:), YES},
+                    {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
+                }
+                accessibilityConfiguration:{}]];
+    }
+    
+    return nil;
+}
+
 @implementation DetailReputationReviewComponent
 + (instancetype)newWithReview:(DetailReputationReview*)review {
-    UIColor* buttonColor = [UIColor colorWithRed:18.0/255
-                                           green:199.0/255
-                                            blue:0
-                                           alpha:1];
     
     return [super newWithComponent:
             [CKInsetComponent
@@ -68,6 +101,9 @@ static CKComponent* messageLabel(NSString* message) {
                       messageLabel(review.review_message)
                   },
                   {
+                      giveReviewButton(review)
+                  },
+                  {
                       [CKComponent
                        newWithView:{
                            [UIView class],
@@ -90,31 +126,6 @@ static CKComponent* messageLabel(NSString* message) {
                   {
                       [ReviewResponseComponent newWithReview:review]
                   }
-//                      {
-//                          [CKButtonComponent
-//                           newWithTitles:{
-//                               {UIControlStateNormal, @"Beri Ulasan"}
-//                           }
-//                           titleColors:{
-//                               {UIControlStateNormal, buttonColor}
-//                           }
-//                           images:{}
-//                           backgroundImages:{}
-//                           titleFont:[UIFont fontWithName:@"Gotham Medium" size:14.0]
-//                           selected:NO
-//                           enabled:YES
-//                           action:nil
-//                           size:{.height = 30}
-//                           attributes:{
-//                               {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
-//                               {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
-//                               {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[buttonColor CGColor]},
-//                               {@selector(setClipsToBounds:), YES},
-//                               {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
-//                           }
-//                           accessibilityConfiguration:{}],
-//                          .flexGrow = YES
-//                      },
               }]
              ]];
 }
