@@ -607,7 +607,7 @@
                 if ([order.result.counter_days integerValue] > 0){
                     [self adjustHeaderFilterDaysReso:order.result];
                     _tableView.tableHeaderView = _headerFilterDays;
-                }
+                } else _tableView.tableHeaderView = nil;
                 
                 [_list addObjectsFromArray:order.result.list];
                 _isNodata = NO;
@@ -640,7 +640,9 @@
             }
             else
             {
-                _tableView.tableHeaderView = _headerView;
+                if (_typeComplaint == TypeComplaintMine) {
+                    _tableView.tableHeaderView = _headerView;
+                } else _tableView.tableHeaderView = nil;
                 
                 if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Semua Status"]){
                     [_noResultView setNoResultTitle:@"Tidak ada komplain"];
