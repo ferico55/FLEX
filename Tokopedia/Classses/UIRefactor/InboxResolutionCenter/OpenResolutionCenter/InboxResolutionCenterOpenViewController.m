@@ -975,18 +975,6 @@
     [self.navigationController popToViewController:destinationVC animated:YES];
 }
 
-//TROUBLE_DIFF_DESCRIPTION    => 1,
-//TROUBLE_BROKEN              => 2,
-//TROUBLE_DIFF_QUANTITY       => 3,
-//TROUBLE_DIFF_CARRIER        => 4,
-//TROUBLE_PRODUCT_NOT_RECEIVED=> 5
-//
-//SOLUTION_REFUND         => 1,
-//SOLUTION_RETUR          => 2,
-//SOLUTION_RETUR_REFUND   => 3,
-//SOLUTION_SELLER_WIN     => 4,
-//SOLUTION_SEND_REMAINING => 5
-
 -(NSString *)troubleType
 {
     NSString *troubleType;
