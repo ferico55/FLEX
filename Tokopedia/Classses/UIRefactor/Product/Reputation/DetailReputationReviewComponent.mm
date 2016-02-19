@@ -10,13 +10,10 @@
 #import "DetailReputationReviewHeaderComponent.h"
 #import "ReviewRatingComponent.h"
 #import "ReviewResponseComponent.h"
+#import "AFNetworkingImageDownloader.h"
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent* messageLabel(NSString* message) {
-//    if (![message boolValue]) {
-//        return nil;
-//    }
-    
     if ([message isEqualToString:@"0"] || message == nil) {
         return nil;
     }
@@ -72,8 +69,11 @@ static CKComponent* giveReviewButton(DetailReputationReview* review) {
     return nil;
 }
 
+@implementation DetailReputationReviewContext
+@end
+
 @implementation DetailReputationReviewComponent
-+ (instancetype)newWithReview:(DetailReputationReview*)review {
++ (instancetype)newWithReview:(DetailReputationReview*)review context:(DetailReputationReviewContext*)context{
     
     return [super newWithComponent:
             [CKInsetComponent
@@ -95,7 +95,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review) {
               }
               children:{
                   {
-                      [DetailReputationReviewHeaderComponent newWithReview:review]
+                      [DetailReputationReviewHeaderComponent newWithReview:review imageDownloader:context.imageDownloader]
                   },
                   {
                       messageLabel(review.review_message)

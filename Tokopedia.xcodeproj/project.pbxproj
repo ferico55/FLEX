@@ -788,6 +788,8 @@
 		628178D31C59FF2800D8F4AF /* icon_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178D01C59FF2800D8F4AF /* icon_camera@2x.png */; };
 		628178D41C59FF2800D8F4AF /* icon_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178D11C59FF2800D8F4AF /* icon_camera@3x.png */; };
 		62BB39891C76B27800A7A4E6 /* MedalComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62BB39881C76B27800A7A4E6 /* MedalComponent.mm */; };
+		62BB398C1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62BB398B1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm */; };
+		62BB398F1C76CB3300A7A4E6 /* ImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BB398E1C76CB3300A7A4E6 /* ImageDownloader.m */; };
 		62DF7F0B1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */; };
 		62E3D3671C647D4100FF81F2 /* image_not_loading.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E3D3661C647D4100FF81F2 /* image_not_loading.png */; };
 		62EA15041C6B20EA0039BC07 /* MyReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EA15021C6B20EA0039BC07 /* MyReviewDetailViewController.m */; };
@@ -3391,6 +3393,10 @@
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
 		62BB39871C76B27800A7A4E6 /* MedalComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedalComponent.h; sourceTree = "<group>"; };
 		62BB39881C76B27800A7A4E6 /* MedalComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MedalComponent.mm; sourceTree = "<group>"; };
+		62BB398A1C76C65800A7A4E6 /* AFNetworkingImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingImageDownloader.h; sourceTree = "<group>"; };
+		62BB398B1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFNetworkingImageDownloader.mm; sourceTree = "<group>"; };
+		62BB398D1C76C6CB00A7A4E6 /* ImageDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageDownloader.h; sourceTree = "<group>"; };
+		62BB398E1C76CB3300A7A4E6 /* ImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownloader.m; sourceTree = "<group>"; };
 		62DF7F091C757C6C00F392CB /* DetailReputationReviewHeaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewHeaderComponent.h; sourceTree = "<group>"; };
 		62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewHeaderComponent.mm; sourceTree = "<group>"; };
 		62E3D3661C647D4100FF81F2 /* image_not_loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_not_loading.png; sourceTree = "<group>"; };
@@ -9474,6 +9480,10 @@
 				7A71FD401C4CF81800D00615 /* Utils */,
 				7A71FD431C4CF81800D00615 /* ViewLabelUser.h */,
 				7A71FD441C4CF81800D00615 /* ViewLabelUser.m */,
+				62BB398A1C76C65800A7A4E6 /* AFNetworkingImageDownloader.h */,
+				62BB398B1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm */,
+				62BB398D1C76C6CB00A7A4E6 /* ImageDownloader.h */,
+				62BB398E1C76CB3300A7A4E6 /* ImageDownloader.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -12380,6 +12390,7 @@
 				7A710B5B1C4CF81D00D00615 /* ShopShipping.m in Sources */,
 				7A710AD81C4CF81D00D00615 /* ProfileEditResult.m in Sources */,
 				7A710A721C4CF81D00D00615 /* InboxMessageDetail.m in Sources */,
+				62BB398C1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm in Sources */,
 				7A710B8A1C4CF81D00D00615 /* TransactionSummary.m in Sources */,
 				628175E81C59FF1C00D8F4AF /* AlertInfoView.m in Sources */,
 				7A710AF71C4CF81D00D00615 /* Reputation.m in Sources */,
@@ -12670,6 +12681,7 @@
 				628175DF1C59FF1C00D8F4AF /* RequestAddress.m in Sources */,
 				7A710A141C4CF81D00D00615 /* ContactUsResponse.m in Sources */,
 				628176621C59FF1C00D8F4AF /* BackgroundLayer.m in Sources */,
+				62BB398F1C76CB3300A7A4E6 /* ImageDownloader.m in Sources */,
 				7A710A961C4CF81D00D00615 /* InboxTicket.m in Sources */,
 				6281772F1C59FF1C00D8F4AF /* DetailProductDescriptionCell.m in Sources */,
 				628176BB1C59FF1C00D8F4AF /* HotlistBannerRequest.m in Sources */,

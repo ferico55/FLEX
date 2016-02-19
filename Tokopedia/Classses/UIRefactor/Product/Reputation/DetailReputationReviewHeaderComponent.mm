@@ -50,7 +50,7 @@ static CKComponent* skipButton (DetailReputationReview* review) {
 }
 
 @implementation DetailReputationReviewHeaderComponent
-+ (instancetype)newWithReview:(DetailReputationReview*)review {
++ (instancetype)newWithReview:(DetailReputationReview*)review imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
     return [super newWithComponent:
             [CKInsetComponent
              newWithInsets:{8,8,8,8}
@@ -64,9 +64,15 @@ static CKComponent* skipButton (DetailReputationReview* review) {
               }
               children:{
                   {
-                      [CKImageComponent
-                       newWithImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]
-                       size:{50,50}]
+                      [CKNetworkImageComponent
+                       newWithURL:[NSURL URLWithString:review.product_image]
+                       imageDownloader:imageDownloader
+                       scenePath:nil
+                       size:{50,50}
+                       options:{
+                           .defaultImage = [UIImage imageNamed:@"icon_toped_loading_grey.png"]
+                       }
+                       attributes:{}]
                   },
                   {
                       [CKStackLayoutComponent

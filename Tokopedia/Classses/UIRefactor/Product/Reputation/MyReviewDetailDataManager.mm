@@ -9,6 +9,7 @@
 #import "MyReviewDetailDataManager.h"
 #import <ComponentKit/ComponentKit.h>
 #import "DetailReputationReviewComponent.h"
+#import "AFNetworkingImageDownloader.h"
 
 @implementation MyReviewDetailDataManager {
     CKCollectionViewDataSource* _dataSource;
@@ -17,11 +18,14 @@
 
 - (instancetype)initWithCollectionView:(UICollectionView*)collectionView {
     if (self = [super init]) {
+        DetailReputationReviewContext* context = [DetailReputationReviewContext new];
+        context.imageDownloader = [AFNetworkingImageDownloader new];
+        
         _sizeRangeProvider = [CKComponentFlexibleSizeRangeProvider providerWithFlexibility:CKComponentSizeRangeFlexibleHeight];
         _dataSource = [[CKCollectionViewDataSource alloc] initWithCollectionView:collectionView
                                                      supplementaryViewDataSource:nil
                                                                componentProvider:[self class]
-                                                                         context:nil
+                                                                         context:context
                                                        cellConfigurationFunction:nil];
         
         CKArrayControllerSections sections;
@@ -46,8 +50,8 @@
     
 }
 
-+ (CKComponent *)componentForModel:(DetailReputationReview*)model context:(id<NSObject>)context {
-    return [DetailReputationReviewComponent newWithReview:model];
++ (CKComponent *)componentForModel:(DetailReputationReview*)model context:(DetailReputationReviewContext*)context {
+    return [DetailReputationReviewComponent newWithReview:model context:context];
 }
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
