@@ -12,7 +12,7 @@
 
 @implementation ReviewResponseComponent
 
-+ (instancetype)newWithReview:(DetailReputationReview *)review {
++ (instancetype)newWithReview:(DetailReputationReview *)review imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
     if ([review.review_response.response_message isEqualToString:@"0"] || review.review_response.response_message == nil) {
         return nil;
     }
@@ -30,17 +30,15 @@
                   }
                   children:{
                       {
-                          [CKImageComponent
-                           newWithView:{
-                               [UIImageView class],
-                               {
-                                   {@selector(setImage:), [UIImage imageNamed:@"icon_profile_picture.jpeg"]},
-                                   {@selector(setCornerRadius:), 25},
-                                   {@selector(setClipsToBounds:), YES}
-                               }
-                               
+                          [CKNetworkImageComponent
+                           newWithURL:[NSURL URLWithString:review.product_owner.shop_img]
+                           imageDownloader:imageDownloader
+                           scenePath:nil
+                           size:{50,50}
+                           options:{
+                               .defaultImage = [UIImage imageNamed:@"icon_profile_picture.jpeg"]
                            }
-                           size:{50,50}]
+                           attributes:{}]
                       },
                       {
                           [CKStackLayoutComponent

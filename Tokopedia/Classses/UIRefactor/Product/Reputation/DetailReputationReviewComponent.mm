@@ -124,7 +124,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review) {
                        size:{.height = 1}]
                   },
                   {
-                      [ReviewResponseComponent newWithReview:review]
+                      [ReviewResponseComponent newWithReview:review imageDownloader:context.imageDownloader]
                   }
               }]
              ]];
