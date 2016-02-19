@@ -37,7 +37,7 @@
     [label setCustomAttributedText: _list[indexPath.row]];
     [cell.contentView addSubview:label];
     
-    if (indexPath.row == _selectedIndex) {
+    if ([_list[indexPath.row] isEqual:_selectedObject]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else{
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -105,8 +105,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _selectedIndex = indexPath.row;
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    _selectedObject = _list[indexPath.row];
     [_tableView reloadData];
     [self dismissWithClickedButtonIndex:indexPath.row animated:YES];
 }

@@ -17,9 +17,11 @@
 
 @interface InboxResolutionCenterComplainViewController : UIViewController
 ;
-@property (nonatomic) NSInteger filterReadIndex;
 @property (nonatomic) NSInteger typeComplaint;
+
 @property (nonatomic) NSInteger filterProcess;
+@property (nonatomic) NSInteger filterSort;
+@property (nonatomic) NSInteger filterRead;
 
 
 @property (strong, nonatomic) id<ResolutionComplainDelegate> delegate;

@@ -10,21 +10,24 @@
 #import "InboxResolutionCenterComplainViewController.h"
 #import "string_inbox_resolution_center.h"
 #import "AlertListFilterView.h"
+#import "GeneralTableViewController.h"
 
-@interface InboxResolutionCenterTabViewController ()<TKPDAlertViewDelegate, UIPageViewControllerDataSource,UIPageViewControllerDelegate, ResolutionComplainDelegate>
+@interface InboxResolutionCenterTabViewController ()<TKPDAlertViewDelegate, UIPageViewControllerDataSource,UIPageViewControllerDelegate, ResolutionComplainDelegate, GeneralTableViewControllerDelegate>
 {
     NSInteger _index;
-    NSDictionary *_data;
     InboxResolutionCenterComplainViewController *_myComplainViewController;
     InboxResolutionCenterComplainViewController *_buyerComplainViewController;
     InboxResolutionCenterComplainViewController *_allComplainViewController;
-    NSDictionary *_auth;
-    BOOL _isLogin;
     
-    NSInteger _filterReadIndex;
-    NSInteger _filterProcess;
     AlertListFilterView *_filterAlertView;
+    
     NSArray *_arrayFilterRead;
+    NSArray *_arrayFilterProcess;
+    NSArray *_arrayFilterSort;
+    
+    NSDictionary *_selectedFilterRead;
+    NSDictionary *_selectedFilterProcess;
+    NSDictionary *_selectedFilterSort;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
@@ -33,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
 @property (strong, nonatomic) IBOutlet UIView *readOption;
 @property (weak, nonatomic) IBOutlet UIView *buttonsContainer;
+
+@property (strong, nonatomic) IBOutlet UIButton *buttonFilter;
+@property (strong, nonatomic) IBOutlet UIButton *buttonSort;
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *filterButtons;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *checkListImageViews;
@@ -58,13 +64,9 @@
         image.hidden = YES;
     }
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-        self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    _arrayFilterRead = [self arrayFilterStringForKey:@"filter_read"]?:@[];
+    _arrayFilterSort = [self arrayFilterStringForKey:@"filter_sort"]?:@[];
+    _arrayFilterProcess = [self arrayFilterStringForKey:@"filter_process"]?:@[];
     
     _pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
@@ -88,9 +90,9 @@
     
     [self.view bringSubviewToFront:_readOption];
     
-    _filterReadIndex = 0;
+    _selectedFilterRead = _arrayFilterRead[0];
     
-    [self setTitleButtonString:_arrayFilterRead[_filterReadIndex][@"filter_name"]];
+    [self setTitleButtonString:_selectedFilterRead[@"filter_name"]];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -103,7 +105,6 @@
         
         self.navigationItem.leftBarButtonItem = barButton;
     }
-    
 }
 
 -(NSArray *)arrayFilterStringForKey:(NSString *)key
@@ -112,7 +113,7 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
     NSDictionary *defaultFilter = @{@"filter_process":@"Dalam Proses:0,Komplain > 10 hari:3,Sudah Selesai:1,Semua:2",
-                                    @"filter_read":@"Semua Status:0,Belum Ditanggapi:3,Belum dibaca:2",
+                                    @"filter_read":@"Semua Status:0,Belum Ditanggapi:3,Belum dibaca:1",
                                     @"filter_sort":@"Waktu dibuat:2,Perubahan Terbaru:1"
                                     };
     NSString *filterString = ([[gtmContainer stringForKey:key]isEqualToString:@""])?defaultFilter[key]:[gtmContainer stringForKey:key];
@@ -180,12 +181,8 @@
 {
     if (!_filterAlertView) {
         _filterAlertView = [AlertListFilterView newview];
-        NSMutableArray *filterReadNames = [NSMutableArray new];
-        for (NSDictionary *filterRead in _arrayFilterRead) {
-            [filterReadNames addObject:filterRead[@"filter_name"]];
-        }
-        _filterAlertView.list = [filterReadNames copy];
-        _filterAlertView.selectedIndex = _filterReadIndex;
+        _filterAlertView.list = [self getListFilterNameFromArray:_arrayFilterRead];
+        _filterAlertView.selectedObject = _selectedFilterRead[@"filter_name"];
         _filterAlertView.delegate = self;
         [_filterAlertView show];
     }else{
@@ -218,29 +215,23 @@
 }
 
 #pragma mark - Methods
--(UIViewController*)viewControllerAtIndex:(NSInteger)index
+-(InboxResolutionCenterComplainViewController*)viewControllerAtIndex:(NSInteger)index
 {
-    id childViewController;
+    InboxResolutionCenterComplainViewController *childViewController;
     switch (index) {
         case 0:
         {
             if(!_allComplainViewController)_allComplainViewController = [InboxResolutionCenterComplainViewController new];
-            _allComplainViewController.detailViewController = _detailViewController;
-            _detailViewController.delegate = _allComplainViewController;
-            _allComplainViewController.delegate = self;
+            [self setDataAtViewController:_allComplainViewController];
             _allComplainViewController.typeComplaint = TypeComplaintAll;
-            _allComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _allComplainViewController;
             break;
         }
         case 1:
         {
             if(!_myComplainViewController)_myComplainViewController = [InboxResolutionCenterComplainViewController new];
-            _detailViewController.delegate = _myComplainViewController;
-            _myComplainViewController.delegate = self;
-            _myComplainViewController.detailViewController = _detailViewController;
+            [self setDataAtViewController:_myComplainViewController];
             _myComplainViewController.typeComplaint = TypeComplaintMine;
-            _myComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _myComplainViewController;
             break;
         }
@@ -249,18 +240,25 @@
             self.navigationItem.rightBarButtonItem = nil;
             
             if(!_buyerComplainViewController)_buyerComplainViewController = [InboxResolutionCenterComplainViewController new];
-            _detailViewController.delegate = _buyerComplainViewController;
-            _buyerComplainViewController.delegate = self;
-            _buyerComplainViewController.detailViewController = _detailViewController;
+            [self setDataAtViewController:_buyerComplainViewController];
             _buyerComplainViewController.typeComplaint = TypeComplaintBuyer;
-            _buyerComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _buyerComplainViewController;
             break;
         }
         default:
             break;
     }
-    return (UIViewController*)childViewController;
+    return childViewController;
+}
+
+-(void)setDataAtViewController:(InboxResolutionCenterComplainViewController*)viewController
+{
+    _detailViewController.delegate = viewController;
+    viewController.delegate = self;
+    viewController.filterSort = [_selectedFilterSort[@"filter_value"] integerValue];
+    viewController.filterProcess = [_selectedFilterProcess[@"filter_value"] integerValue];
+    viewController.filterRead = [_selectedFilterRead[@"filter_value"] integerValue];
+    viewController.detailViewController = _detailViewController;
 }
 
 #pragma mark - UIPageViewController Delegate
@@ -322,23 +320,80 @@
 
 -(void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (buttonIndex >= 0) {
-        _filterReadIndex = buttonIndex;
-        [self setTitleButtonString:_arrayFilterRead[_filterReadIndex][@"filter_name"]];
+        [self setTitleButtonString:_arrayFilterRead[buttonIndex][@"filter_name"]];
+        _selectedFilterRead = _arrayFilterRead[buttonIndex];
+        [[self viewControllerAtIndex:_index] refreshRequest];
     }
     _filterAlertView = nil;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
 }
 
 -(void)backToFirstPageWithFilterProcess:(NSInteger)filterProcess
 {
-    _filterProcess = filterProcess;
+    _selectedFilterProcess = _arrayFilterProcess[1];
     
     _segmentControl.selectedSegmentIndex = 0;
     _index = 0;
-    _allComplainViewController.filterProcess = _filterProcess;
+    _allComplainViewController.filterProcess = [_selectedFilterProcess[@"filter_value"] integerValue];
     [_allComplainViewController refreshRequest];
     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
 
 }
+
+-(IBAction)tapSort:(UIButton*)button{
+
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.title = @"Urutkan";
+    controller.delegate = self;
+    controller.senderIndexPath = [NSIndexPath indexPathForRow:10 inSection:0];
+    controller.objects = [self getListFilterNameFromArray:_arrayFilterSort];
+    controller.selectedObject = _selectedFilterSort[@"filter_name"] ?: _arrayFilterSort[0][@"filter_name"];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+-(IBAction)tapFilter:(UIButton*)button
+{
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.title = @"Filter";
+    controller.delegate = self;
+    controller.senderIndexPath = [NSIndexPath indexPathForRow:11 inSection:0];
+    controller.objects = [self getListFilterNameFromArray:_arrayFilterProcess];
+    controller.selectedObject = _selectedFilterProcess[@"filter_name"]?:_arrayFilterProcess[0][@"filter_name"];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+-(NSArray *)getListFilterNameFromArray:(NSArray*)array
+{
+    NSMutableArray *objectNames = [NSMutableArray new];
+    for (NSDictionary *filter in array) {
+        [objectNames addObject:filter[@"filter_name"]];
+    }
+    
+    return [objectNames copy];
+}
+
+#pragma mark - Delegate General View Controller
+-(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 10) {
+        for (NSDictionary *filterSort in _arrayFilterSort) {
+            if ([filterSort[@"filter_name"] isEqual:object]) {
+                _selectedFilterSort = filterSort;
+            }
+        }
+    }
+    if (indexPath.row == 11) {
+        for (NSDictionary *filterProcess in _arrayFilterProcess) {
+            if ([filterProcess[@"filter_name"] isEqual:object]) {
+                _selectedFilterProcess = filterProcess;
+            }
+        }
+    }
+    
+    [[self viewControllerAtIndex:0] refreshRequest];
+    [[self viewControllerAtIndex:1] refreshRequest];
+    [[self viewControllerAtIndex:2] refreshRequest];
+}
+
 
 @end

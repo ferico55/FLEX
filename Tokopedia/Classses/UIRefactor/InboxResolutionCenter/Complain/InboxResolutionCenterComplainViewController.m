@@ -82,14 +82,6 @@
     NSIndexPath *_selectedDetailIndexPath;
     
     TAGContainer *_gtmContainer;
-    
-    NSArray *_arrayFilterRead;
-    NSArray *_arrayFilterProcess;
-    NSArray *_arrayFilterSort;
-    
-    NSInteger _selectedFilterRead;
-    NSInteger _selectedFilterProcess;
-    NSInteger _selectedFilterSort;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -175,35 +167,7 @@
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
-    
-    _arrayFilterRead = [self arrayFilterStringForKey:@"filter_read"]?:@[];
-    _arrayFilterSort = [self arrayFilterStringForKey:@"filter_sort"]?:@[];
-    _arrayFilterProcess = [self arrayFilterStringForKey:@"filter_process"]?:@[];
 
-}
-
--(NSArray *)arrayFilterStringForKey:(NSString *)key
-{
-    NSMutableArray<NSDictionary*> *tempArrayFilterRead = [NSMutableArray new];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    TAGContainer *gtmContainer = appDelegate.container;
-    NSDictionary *defaultFilter = @{@"filter_process":@"Dalam Proses:0,Komplain > 10 hari:3,Sudah Selesai:1,Semua:2",
-                                    @"filter_read":@"Semua Status:0,Belum Ditanggapi:3,Belum dibaca:2",
-                                    @"filter_sort":@"Waktu dibuat:2,Perubahan Terbaru:1"
-                                    };
-    NSString *filterString = ([[gtmContainer stringForKey:key]isEqualToString:@""])?defaultFilter[key]:[gtmContainer stringForKey:key];
-    NSArray *filterArray = [filterString componentsSeparatedByString:@","];
-    for (NSString *filter in filterArray) {
-        if (![filter isEqualToString:@""]) {
-            NSArray *filterDictionaryArray = [filter componentsSeparatedByString:@":"];
-            NSDictionary *filterDictionary = @{
-                                               @"filter_name":filterDictionaryArray[0],
-                                               @"filter_value":filterDictionaryArray[1]
-                                               };
-            [tempArrayFilterRead addObject:filterDictionary];
-        }
-    }
-    return [tempArrayFilterRead copy];
 }
 
 -(TAGContainer *)gtmContainer
@@ -230,60 +194,10 @@
     [self.tableView reloadData];
 }
 
--(void)setFilterReadIndex:(NSInteger)filterReadIndex
-{
-    if (_filterReadIndex != filterReadIndex) {
-        _filterReadIndex = filterReadIndex;
-        _selectedFilterRead = [_arrayFilterRead[_filterReadIndex][@"filter_value"] integerValue];
-        [self refreshRequest];
-   }
-}
-
--(void)setFilterProcess:(NSInteger)filterProcess
-{
-    _selectedFilterProcess = filterProcess;
-}
-
 -(IBAction)tap:(id)sender
 {
     UIButton *button = (UIButton*)sender;
-    
-    NSString *filterProcess;
-    NSString *filterSort;
-    
-    if (button.tag == 10) {
-        GeneralTableViewController *controller = [GeneralTableViewController new];
-        controller.title = @"Urutkan";
-        controller.delegate = self;
-        controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-        NSMutableArray *objectNames = [NSMutableArray new];
-        for (NSDictionary *filter in _arrayFilterSort) {
-            [objectNames addObject:filter[@"filter_name"]];
-            if ([filter[@"filter_value"] integerValue] == _selectedFilterSort) {
-                filterSort = filter[@"filter_name"];
-            }
-        }
-        controller.objects = [objectNames copy];
-        controller.selectedObject = filterSort ?: objectNames[0];
-        [self.navigationController pushViewController:controller animated:YES];
-    }
-    if (button.tag == 11) {
-        GeneralTableViewController *controller = [GeneralTableViewController new];
-        controller.title = @"Filter";
-        controller.delegate = self;
-        controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-        NSMutableArray *objectNames = [NSMutableArray new];
-        for (NSDictionary *filter in _arrayFilterProcess) {
-            [objectNames addObject:filter[@"filter_name"]];
-            if ([filter[@"filter_value"] integerValue] == _selectedFilterProcess) {
-                filterProcess = filter[@"filter_name"];
-            }
-        }
-        controller.objects = [objectNames copy];
-        controller.selectedObject = filterProcess?:objectNames[0];
-        [self.navigationController pushViewController:controller animated:YES];
-    }
-    
+
     if (button.tag == 12) {
         //Status Pemesanan
         TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
@@ -308,26 +222,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Delegate General View Controller
--(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 10) {
-        for (NSDictionary *filterSort in _arrayFilterSort) {
-            if ([filterSort[@"filter_name"] isEqual:object]) {
-                _selectedFilterSort = [filterSort[@"filter_value"] integerValue];
-            }
-        }
-    }
-    if (indexPath.row == 11) {
-        for (NSDictionary *filterProcess in _arrayFilterProcess) {
-            if ([filterProcess[@"filter_name"] isEqual:object]) {
-                _selectedFilterProcess = [filterProcess[@"filter_value"] integerValue];
-            }
-        }
-    }
-    
-    [self refreshRequest];
-}
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -640,9 +534,9 @@
     if (tag == TAG_REQUEST_LIST) {
         NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
                                 API_COMPLAIN_TYPE_KEY : @(_typeComplaint),
-                                API_STATUS_KEY : @(_selectedFilterProcess),
-                                API_UNREAD_KEY : @(_selectedFilterRead),
-                                API_SORT_KEY :@(_selectedFilterSort),
+                                API_STATUS_KEY : @(_filterProcess),
+                                API_UNREAD_KEY : @(_filterRead),
+                                API_SORT_KEY :@(_filterSort),
                                 API_PAGE_KEY :@(_page)
                                 };
         return param;

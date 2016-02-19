@@ -13,6 +13,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property NSArray *list;
-@property NSInteger selectedIndex;
+@property id selectedObject;
 
 @end
