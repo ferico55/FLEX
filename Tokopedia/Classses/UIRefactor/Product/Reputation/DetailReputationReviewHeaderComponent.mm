@@ -50,13 +50,18 @@ static CKComponent* skipButton (DetailReputationReview* review) {
 }
 
 @implementation DetailReputationReviewHeaderComponent
-+ (instancetype)newWithReview:(DetailReputationReview*)review imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
++ (instancetype)newWithReview:(DetailReputationReview*)review tapAction:(SEL)action imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
     return [super newWithComponent:
             [CKInsetComponent
              newWithInsets:{8,8,8,8}
              component:
              [CKStackLayoutComponent
-              newWithView:{}
+              newWithView:{
+                  [UIView class],
+                  {
+                      {CKComponentTapGestureAttribute(action)}
+                  }
+              }
               size:{}
               style:{
                   .direction = CKStackLayoutDirectionHorizontal,

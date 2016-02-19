@@ -27,12 +27,13 @@
     NSString *_role;
 }
 
-- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role {
+- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role delegate:(id<DetailReputationReviewComponentDelegate>)delegate  {
     if (self = [super init]) {
         _role = role;
         
         DetailReputationReviewContext* context = [DetailReputationReviewContext new];
         context.imageDownloader = [AFNetworkingImageDownloader new];
+        context.delegate = delegate;
         
         _sizeRangeProvider = [CKComponentFlexibleSizeRangeProvider providerWithFlexibility:CKComponentSizeRangeFlexibleHeight];
         _dataSource = [[CKCollectionViewDataSource alloc] initWithCollectionView:collectionView

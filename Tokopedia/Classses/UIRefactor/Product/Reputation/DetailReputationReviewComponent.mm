@@ -79,61 +79,75 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
 @implementation DetailReputationReviewContext
 @end
 
-@implementation DetailReputationReviewComponent
+@implementation DetailReputationReviewComponent {
+    __weak id<DetailReputationReviewComponentDelegate> _delegate;
+    DetailReputationReview *_review;
+}
+
+- (void)didTapHeader:(id)sender {
+    [_delegate didTapHeaderWithReview:_review];
+}
+
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role context:(DetailReputationReviewContext*)context{
+    DetailReputationReviewComponent* component = [super newWithComponent:
+                                                  [CKInsetComponent
+                                                   newWithView:{}
+                                                   insets:{8, 8, 8, 8}
+                                                   component:
+                                                   [CKStackLayoutComponent
+                                                    newWithView:{
+                                                        [UIView class],
+                                                        {
+                                                            {@selector(setBackgroundColor:), [UIColor whiteColor]}
+                                                        }
+                                                    }
+                                                    size:{}
+                                                    style:{
+                                                        .direction = CKStackLayoutDirectionVertical,
+                                                        .alignItems = CKStackLayoutAlignItemsStretch,
+                                                        .justifyContent = CKStackLayoutJustifyContentCenter
+                                                    }
+                                                    children:{
+                                                        {
+                                                            [DetailReputationReviewHeaderComponent newWithReview:review
+                                                                                                       tapAction:@selector(didTapHeader:)
+                                                                                                 imageDownloader:context.imageDownloader]
+                                                        },
+                                                        {
+                                                            messageLabel(review, role)
+                                                        },
+                                                        {
+                                                            giveReviewButton(review, role)
+                                                        },
+                                                        {
+                                                            [CKComponent
+                                                             newWithView:{
+                                                                 [UIView class],
+                                                                 {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
+                                                             }
+                                                             size:{.height = 1, .width = CKRelativeDimension::Percent(.95)}],
+                                                            .alignSelf = CKStackLayoutAlignSelfCenter
+                                                        },
+                                                        {
+                                                            [ReviewRatingComponent newWithReview:review]
+                                                        },
+                                                        {
+                                                            [CKComponent
+                                                             newWithView:{
+                                                                 [UIView class],
+                                                                 {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
+                                                             }
+                                                             size:{.height = 1}]
+                                                        },
+                                                        {
+                                                            [ReviewResponseComponent newWithReview:review imageDownloader:context.imageDownloader]
+                                                        }
+                                                    }]
+                                                   ]];
     
-    return [super newWithComponent:
-            [CKInsetComponent
-             newWithView:{}
-             insets:{8, 8, 8, 8}
-             component:
-             [CKStackLayoutComponent
-              newWithView:{
-                  [UIView class],
-                  {
-                      {@selector(setBackgroundColor:), [UIColor whiteColor]}
-                  }
-              }
-              size:{}
-              style:{
-                  .direction = CKStackLayoutDirectionVertical,
-                  .alignItems = CKStackLayoutAlignItemsStretch,
-                  .justifyContent = CKStackLayoutJustifyContentCenter
-              }
-              children:{
-                  {
-                      [DetailReputationReviewHeaderComponent newWithReview:review imageDownloader:context.imageDownloader]
-                  },
-                  {
-                      messageLabel(review, role)
-                  },
-                  {
-                      giveReviewButton(review, role)
-                  },
-                  {
-                      [CKComponent
-                       newWithView:{
-                           [UIView class],
-                           {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
-                       }
-                       size:{.height = 1, .width = CKRelativeDimension::Percent(.95)}],
-                      .alignSelf = CKStackLayoutAlignSelfCenter
-                  },
-                  {
-                      [ReviewRatingComponent newWithReview:review]
-                  },
-                  {
-                      [CKComponent
-                       newWithView:{
-                           [UIView class],
-                           {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
-                       }
-                       size:{.height = 1}]
-                  },
-                  {
-                      [ReviewResponseComponent newWithReview:review imageDownloader:context.imageDownloader]
-                  }
-              }]
-             ]];
+    component->_delegate = context.delegate;
+    component->_review = review;
+    
+    return component;
 }
 @end

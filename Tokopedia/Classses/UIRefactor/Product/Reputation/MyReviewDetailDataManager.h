@@ -8,10 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "DetailReputationReview.h"
+#import "DetailReputationReviewComponentDelegate.h"
 
 @interface MyReviewDetailDataManager : NSObject
 
-- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role;
+- (instancetype)initWithCollectionView:(UICollectionView*)collectionView
+                                  role:(NSString*)role
+                              delegate:(id<DetailReputationReviewComponentDelegate>)delegate;
 - (void)replaceReviews:(NSArray<DetailReputationReview*>*)reviews;
 - (void)addReviews:(NSArray<DetailReputationReview*>*)reviews;
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath*)indexPath;

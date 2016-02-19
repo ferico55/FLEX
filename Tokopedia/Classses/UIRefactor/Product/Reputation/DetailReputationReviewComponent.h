@@ -8,10 +8,12 @@
 
 #import "CKCompositeComponent.h"
 #import "DetailReputationReview.h"
+#import "DetailReputationReviewComponentDelegate.h"
 #import <ComponentKit/ComponentKit.h>
 
 @interface DetailReputationReviewContext : NSObject
 @property id<CKNetworkImageDownloading> imageDownloader;
+@property(weak, nonatomic) id<DetailReputationReviewComponentDelegate> delegate;
 @end
 
 @interface DetailReputationReviewComponent : CKCompositeComponent

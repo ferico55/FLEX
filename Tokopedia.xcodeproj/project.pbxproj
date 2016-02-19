@@ -3397,6 +3397,7 @@
 		62BB398B1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AFNetworkingImageDownloader.mm; sourceTree = "<group>"; };
 		62BB398D1C76C6CB00A7A4E6 /* ImageDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageDownloader.h; sourceTree = "<group>"; };
 		62BB398E1C76CB3300A7A4E6 /* ImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownloader.m; sourceTree = "<group>"; };
+		62BB39901C7717BC00A7A4E6 /* DetailReputationReviewComponentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponentDelegate.h; sourceTree = "<group>"; };
 		62DF7F091C757C6C00F392CB /* DetailReputationReviewHeaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewHeaderComponent.h; sourceTree = "<group>"; };
 		62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewHeaderComponent.mm; sourceTree = "<group>"; };
 		62E3D3661C647D4100FF81F2 /* image_not_loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_not_loading.png; sourceTree = "<group>"; };
@@ -6666,6 +6667,7 @@
 				627F902D1C75D68000BB07BB /* ReviewRatingComponent.mm */,
 				62BB39871C76B27800A7A4E6 /* MedalComponent.h */,
 				62BB39881C76B27800A7A4E6 /* MedalComponent.mm */,
+				62BB39901C7717BC00A7A4E6 /* DetailReputationReviewComponentDelegate.h */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";

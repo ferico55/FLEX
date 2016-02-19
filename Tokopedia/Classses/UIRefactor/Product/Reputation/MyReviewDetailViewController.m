@@ -16,15 +16,21 @@
 #import "UIImageView+AFNetworking.h"
 #import "ViewLabelUser.h"
 #import "MyReviewDetailDataManager.h"
+#import "DetailReputationReviewComponentDelegate.h"
+#import "NavigateViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
 #define REVIEW_DETAIL_CELL_IDENTIFIER @"ReviewDetailCellIdentifier"
 #define SKIPPED_REVIEW_CELL_IDENTIFIER @"SkippedReviewCellIdentifier"
 
-@interface MyReviewDetailViewController () <
-UICollectionViewDelegateFlowLayout,
-MyReviewDetailRequestDelegate> {
+@interface MyReviewDetailViewController ()
+<
+    UICollectionViewDelegateFlowLayout,
+    MyReviewDetailRequestDelegate,
+    DetailReputationReviewComponentDelegate
+>
+{
     TAGContainer *_gtmContainer;
     MyReviewDetailRequest *_myReviewDetailRequest;
     DetailReputationReview *_detailReputationReview;
@@ -84,7 +90,9 @@ MyReviewDetailRequestDelegate> {
     [super viewDidLoad];
     [self configureGTM];
     
-    _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView];
+    _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
+                                                                        role:_detailMyInboxReputation.role
+                                                                    delegate:self];
     _collectionView.delegate = self;
     
     _myReviewDetailRequest = [MyReviewDetailRequest new];
@@ -108,9 +116,9 @@ MyReviewDetailRequestDelegate> {
     _pageTitleView.frame = CGRectMake(0, 0, self.view.bounds.size.width-(72*2), self.navigationController.navigationBar.bounds.size.height);
     self.navigationItem.titleView = _pageTitleView;
     
+    _navigator = [NavigateViewController new];
     
-    
-//    _reviewDetailTable.tableHeaderView = _tableHeaderView;
+    //    _reviewDetailTable.tableHeaderView = _tableHeaderView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -161,28 +169,28 @@ MyReviewDetailRequestDelegate> {
     
     
     NSDictionary<NSString*, NSString*>* theirScoreImageNameByType = @{
-                                                            @"smiley_neutral":@"icon_netral.png",
-                                                            @"smiley_bad":@"icon_sad.png",
-                                                            @"smiley_good":@"icon_smile.png",
-                                                            @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark_green30.png",
-                                                            @"grey_question_mark":@"icon_question_mark30.png",
-                                                            @"blue_question_mark":@"icon_checklist_grey.png"
-                                                            };
+                                                                      @"smiley_neutral":@"icon_netral.png",
+                                                                      @"smiley_bad":@"icon_sad.png",
+                                                                      @"smiley_good":@"icon_smile.png",
+                                                                      @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark_green30.png",
+                                                                      @"grey_question_mark":@"icon_question_mark30.png",
+                                                                      @"blue_question_mark":@"icon_checklist_grey.png"
+                                                                      };
     
     NSDictionary<NSString*, NSString*>* myScoreImageNameByType = @{
-                                                            @"smiley_neutral":@"icon_netral.png",
-                                                            @"smiley_bad":@"icon_sad.png",
-                                                            @"smiley_good":@"icon_smile.png",
-                                                            @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark30.png",
-                                                            @"grey_question_mark":@"icon_question_mark30.png",
-                                                            @"blue_question_mark":@"icon_checklist_grey.png"
-                                                            };
+                                                                   @"smiley_neutral":@"icon_netral.png",
+                                                                   @"smiley_bad":@"icon_sad.png",
+                                                                   @"smiley_good":@"icon_smile.png",
+                                                                   @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark30.png",
+                                                                   @"grey_question_mark":@"icon_question_mark30.png",
+                                                                   @"blue_question_mark":@"icon_checklist_grey.png"
+                                                                   };
     
     UIImage *theirScore = [UIImage imageNamed:[theirScoreImageNameByType objectForKey:_detailMyInboxReputation.their_score_image]];
     UIImage *myScore = [UIImage imageNamed:[myScoreImageNameByType objectForKey:_detailMyInboxReputation.my_score_image]];
     [_theirScoreButton setImage:theirScore forState:UIControlStateNormal];
     [_myScoreButton setImage:myScore forState:UIControlStateNormal];
-
+    
     
     if (![_detailMyInboxReputation.score_edit_time_fmt isEqualToString:@"0"]) {
         _isMyScoreEditedLabel.hidden = NO;
@@ -274,7 +282,7 @@ MyReviewDetailRequestDelegate> {
                                 set:currentReview.shop_badge_level.set];
             cell.theirCommentLabel.text = currentReview.review_response.response_message;
             [cell.theirCommentLabel sizeToFit];
-
+            
             cell.sellersCommentTimestampLabel.text = currentReview.review_response.response_create_time;
         } else {
             cell.reviewCommentView.hidden = YES;
@@ -347,7 +355,7 @@ MyReviewDetailRequestDelegate> {
                                                                      delegate:self];
     [alert show];
     
-//    [_reviewDetailTable reloadData];
+    //    [_reviewDetailTable reloadData];
     
     [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
                                                             autoRead:_autoRead];
@@ -391,6 +399,16 @@ MyReviewDetailRequestDelegate> {
   didEndDisplayingCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
     [_dataManager announceDidDisappearForItemInCell:cell];
+}
+
+#pragma mark - DetailReputationReview Delegate
+- (void)didTapHeaderWithReview:(DetailReputationReview *)review {
+    [_navigator navigateToProductFromViewController:self
+                                           withName:review.product_name
+                                          withPrice:nil
+                                             withId:review.product_id
+                                       withImageurl:review.product_image
+                                       withShopName:review.shop_name];
 }
 
 @end
