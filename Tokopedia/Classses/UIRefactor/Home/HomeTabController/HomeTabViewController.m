@@ -397,6 +397,9 @@
                code == STATE_EDIT_REVIEW ||
                code == STATE_REPLY_REVIEW) {
         [self goToInboxReview];
+    } else if (code == STATE_NEW_RESOLUTION||
+              code == STATE_EDIT_RESOLUTION) {
+        [self goToResolutionCenter];
     }
 }
 
@@ -414,6 +417,11 @@
 
 - (void)goToNewOrder {
     
+}
+
+-(void)goToResolutionCenter
+{
+    [_navigate navigateToInboxResolutionFromViewController:self];
 }
 
 #pragma mark - Child view contoller delegate
