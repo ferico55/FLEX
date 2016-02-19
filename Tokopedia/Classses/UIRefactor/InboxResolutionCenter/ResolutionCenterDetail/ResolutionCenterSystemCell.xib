@@ -283,6 +283,7 @@
                 <outlet property="oneButtonConstraintHeight" destination="x7E-d3-eRw" id="3xK-r1-Mjg"/>
                 <outlet property="oneButtonView" destination="1bS-bT-KeK" id="8Fd-gB-wKr"/>
                 <outlet property="timeDateLabel" destination="XMB-bb-70z" id="zKD-1Y-bnL"/>
+                <outlet property="titleView" destination="ygm-pX-z3l" id="yDY-dR-VZd"/>
                 <outlet property="twoButtonConstraintHeight" destination="P7s-wY-dBd" id="gOC-gq-aXB"/>
                 <outlet property="twoButtonView" destination="bPc-Z7-ZW9" id="mnE-EM-36p"/>
                 <outletCollection property="twoButtons" destination="qZ2-xr-7qX" id="cV9-ny-xLV"/>
