@@ -322,7 +322,7 @@
     if (buttonIndex >= 0) {
         [self setTitleButtonString:_arrayFilterRead[buttonIndex][@"filter_name"]];
         _selectedFilterRead = _arrayFilterRead[buttonIndex];
-        [[self viewControllerAtIndex:_index] refreshRequest];
+         [self refreshChildViewController];
     }
     _filterAlertView = nil;
 }
@@ -334,7 +334,7 @@
     _segmentControl.selectedSegmentIndex = 0;
     _index = 0;
     _allComplainViewController.filterProcess = [_selectedFilterProcess[@"filter_value"] integerValue];
-    [_allComplainViewController refreshRequest];
+     [self refreshChildViewController];
     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
 
 }
@@ -390,10 +390,14 @@
         }
     }
     
+    [self refreshChildViewController];
+}
+
+-(void)refreshChildViewController
+{
     [[self viewControllerAtIndex:0] refreshRequest];
     [[self viewControllerAtIndex:1] refreshRequest];
     [[self viewControllerAtIndex:2] refreshRequest];
 }
-
 
 @end
