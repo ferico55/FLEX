@@ -787,6 +787,7 @@
 		628178D21C59FF2800D8F4AF /* icon_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178CF1C59FF2800D8F4AF /* icon_camera.png */; };
 		628178D31C59FF2800D8F4AF /* icon_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178D01C59FF2800D8F4AF /* icon_camera@2x.png */; };
 		628178D41C59FF2800D8F4AF /* icon_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 628178D11C59FF2800D8F4AF /* icon_camera@3x.png */; };
+		62BB39891C76B27800A7A4E6 /* MedalComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62BB39881C76B27800A7A4E6 /* MedalComponent.mm */; };
 		62DF7F0B1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */; };
 		62E3D3671C647D4100FF81F2 /* image_not_loading.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E3D3661C647D4100FF81F2 /* image_not_loading.png */; };
 		62EA15041C6B20EA0039BC07 /* MyReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EA15021C6B20EA0039BC07 /* MyReviewDetailViewController.m */; };
@@ -3388,6 +3389,8 @@
 		628178D01C59FF2800D8F4AF /* icon_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@2x.png"; sourceTree = "<group>"; };
 		628178D11C59FF2800D8F4AF /* icon_camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_camera@3x.png"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
+		62BB39871C76B27800A7A4E6 /* MedalComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MedalComponent.h; sourceTree = "<group>"; };
+		62BB39881C76B27800A7A4E6 /* MedalComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MedalComponent.mm; sourceTree = "<group>"; };
 		62DF7F091C757C6C00F392CB /* DetailReputationReviewHeaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewHeaderComponent.h; sourceTree = "<group>"; };
 		62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewHeaderComponent.mm; sourceTree = "<group>"; };
 		62E3D3661C647D4100FF81F2 /* image_not_loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_not_loading.png; sourceTree = "<group>"; };
@@ -6655,6 +6658,8 @@
 				627F90271C75B41500BB07BB /* ReviewResponseComponent.mm */,
 				627F902C1C75D68000BB07BB /* ReviewRatingComponent.h */,
 				627F902D1C75D68000BB07BB /* ReviewRatingComponent.mm */,
+				62BB39871C76B27800A7A4E6 /* MedalComponent.h */,
+				62BB39881C76B27800A7A4E6 /* MedalComponent.mm */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -12267,6 +12272,7 @@
 				7A710B141C4CF81D00D00615 /* WarehouseResult.m in Sources */,
 				7A710AE21C4CF81D00D00615 /* AddressFormList.m in Sources */,
 				7A710B091C4CF81D00D00615 /* OrderDetail.m in Sources */,
+				62BB39891C76B27800A7A4E6 /* MedalComponent.mm in Sources */,
 				7A710A081C4CF81D00D00615 /* AddressResult.m in Sources */,
 				7A710B501C4CF81D00D00615 /* Gojek.m in Sources */,
 				85B143951C30E69F001F1CBC /* AppDelegate.m in Sources */,

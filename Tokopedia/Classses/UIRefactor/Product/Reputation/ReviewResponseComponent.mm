@@ -7,6 +7,8 @@
 //
 
 #import "ReviewResponseComponent.h"
+#import "MedalComponent.h"
+#import "ShopBadgeLevel.h"
 
 @implementation ReviewResponseComponent
 
@@ -70,7 +72,7 @@
                                                      {@selector(setClipsToBounds:), YES}
                                                  }
                                              }
-                                             insets:{3,3,3,3}
+                                             insets:{5,4,5,4}
                                              component:{
                                                  [CKLabelComponent
                                                   newWithLabelAttributes:{
@@ -103,6 +105,9 @@
                                             
                                         }
                                     }]
+                               },
+                               {
+                                   [MedalComponent newMedalWithLevel:[review.shop_badge_level.level intValue] set:[review.shop_badge_level.set intValue]]
                                },
                                {
                                    [CKLabelComponent
