@@ -13,39 +13,30 @@
 #import "AFNetworkingImageDownloader.h"
 #import <ComponentKit/ComponentKit.h>
 
-static CKComponent* messageLabel(NSString* message, NSString* role) {
-    if ([message isEqualToString:@"0"] || message == nil) {
-        
-        if ([role isEqualToString:@"2"]) {
-            return [CKInsetComponent
-                    newWithInsets:{8,8,8,8}
-                    component:
-                    [CKLabelComponent
-                     newWithLabelAttributes:{
-                         .string = @"Pembeli belum memberi ulasan",
-                         .font = [UIFont fontWithName:@"Gotham Book" size:14],
-                         .maximumNumberOfLines = 0,
-                         .lineSpacing = 1.0
-                     }
-                     viewAttributes:{}
-                     size:{}]];
-        }
-        
-        return nil;
+static CKComponent* messageLabel(DetailReputationReview* review, NSString* role) {
+    NSString* message = nil;
+    if (!([review.review_message isEqualToString:@"0"] || review.review_message == nil)) {
+        message = review.review_message;
+    } else if ([role isEqualToString:@"2"]) {
+        message = [review.review_is_skipped isEqualToString:@"1"]?@"Pembeli memutuskan untuk tidak mengisi ulasan":@"Pembeli belum memberi ulasan";
     }
     
-    return [CKInsetComponent
-            newWithInsets:{8,8,8,8}
-            component:
-            [CKLabelComponent
-             newWithLabelAttributes:{
-                 .string = message,
-                 .font = [UIFont fontWithName:@"Gotham Book" size:14],
-                 .maximumNumberOfLines = 0,
-                 .lineSpacing = 1.0
-             }
-             viewAttributes:{}
-             size:{}]];
+    if (message == nil) {
+        return nil;
+    } else {
+        return [CKInsetComponent
+                newWithInsets:{8,8,8,8}
+                component:
+                [CKLabelComponent
+                 newWithLabelAttributes:{
+                     .string = message,
+                     .font = [UIFont fontWithName:@"Gotham Book" size:14],
+                     .maximumNumberOfLines = 0,
+                     .lineSpacing = 1.0
+                 }
+                 viewAttributes:{}
+                 size:{}]];
+    }
 }
 
 static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* role) {
@@ -114,7 +105,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                       [DetailReputationReviewHeaderComponent newWithReview:review imageDownloader:context.imageDownloader]
                   },
                   {
-                      messageLabel(review.review_message, role)
+                      messageLabel(review, role)
                   },
                   {
                       giveReviewButton(review, role)
