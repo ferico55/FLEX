@@ -43,34 +43,35 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
     if (([review.review_message isEqualToString:@"0"] || review.review_message == nil) && [role isEqualToString:@"1"]) {
         return [CKInsetComponent
                 newWithInsets:{8,8,8,8}
-                component:[CKButtonComponent
-                newWithTitles:{
-                    {UIControlStateNormal, @"Beri Ulasan"}
-                }
-                titleColors:{
-                    {UIControlStateNormal, [UIColor colorWithRed:18.0/255
-                                                           green:199.0/255
-                                                            blue:0
-                                                           alpha:1]}
-                }
-                images:{}
-                backgroundImages:{}
-                titleFont:[UIFont fontWithName:@"Gotham Medium" size:14.0]
-                selected:NO
-                enabled:YES
-                action:nil
-                size:{.height = 30}
-                attributes:{
-                    {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
-                    {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
-                    {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:18.0/255
-                                                                                                                green:199.0/255
-                                                                                                                 blue:0
-                                                                                                                alpha:1] CGColor]},
-                    {@selector(setClipsToBounds:), YES},
-                    {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
-                }
-                accessibilityConfiguration:{}]];
+                component:
+                [CKButtonComponent
+                 newWithTitles:{
+                     {UIControlStateNormal, @"Beri Ulasan"}
+                 }
+                 titleColors:{
+                     {UIControlStateNormal, [UIColor colorWithRed:18.0/255
+                                                            green:199.0/255
+                                                             blue:0
+                                                            alpha:1]}
+                 }
+                 images:{}
+                 backgroundImages:{}
+                 titleFont:[UIFont fontWithName:@"Gotham Medium" size:14.0]
+                 selected:NO
+                 enabled:YES
+                 action:@selector(didTapToGiveReview:)
+                 size:{.height = 30}
+                 attributes:{
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:18.0/255
+                                                                                                                 green:199.0/255
+                                                                                                                  blue:0
+                                                                                                                 alpha:1] CGColor]},
+                     {@selector(setClipsToBounds:), YES},
+                     {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
+                 }
+                 accessibilityConfiguration:{}]];
     }
     
     return nil;
@@ -86,6 +87,10 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
 
 - (void)didTapHeader:(id)sender {
     [_delegate didTapHeaderWithReview:_review];
+}
+
+- (void)didTapToGiveReview:(id)sender {
+    [_delegate didTapToGiveReview:_review];
 }
 
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role context:(DetailReputationReviewContext*)context{

@@ -10,4 +10,5 @@
 
 @protocol DetailReputationReviewComponentDelegate <NSObject>
 - (void)didTapHeaderWithReview:(DetailReputationReview*)review;
+- (void)didTapToGiveReview:(DetailReputationReview*)review;
 @end

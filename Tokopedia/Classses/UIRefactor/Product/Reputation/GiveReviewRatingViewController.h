@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DetailMyReviewReputationViewController.h"
+#import "MyReviewDetailViewController.h"
 
 @class GeneratedHost, DetailReputationReview, DetailMyReviewReputationViewController;
 
@@ -17,7 +18,7 @@
 @interface GiveReviewRatingViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet id<GiveReviewRatingDelegate> delegate;
-@property (nonatomic, weak) DetailMyReviewReputationViewController *detailMyReviewReputation;
+@property (nonatomic, weak) MyReviewDetailViewController *detailMyReviewReputation;
 @property (nonatomic, weak) DetailReputationReview *detailReputationReview;
 
 @property BOOL isEdit;

@@ -18,6 +18,7 @@
 #import "MyReviewDetailDataManager.h"
 #import "DetailReputationReviewComponentDelegate.h"
 #import "NavigateViewController.h"
+#import "GiveReviewRatingViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
@@ -409,6 +410,15 @@
                                              withId:review.product_id
                                        withImageurl:review.product_image
                                        withShopName:review.shop_name];
+}
+
+- (void)didTapToGiveReview:(DetailReputationReview *)review {
+    GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
+    vc.detailMyReviewReputation = self;
+    vc.detailReputationReview = review;
+//    vc.isEdit = isEdit;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
