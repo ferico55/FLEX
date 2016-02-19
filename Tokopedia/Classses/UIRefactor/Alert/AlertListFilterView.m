@@ -54,23 +54,9 @@
         [_delegate willPresentAlertView:self];
     }
     
-//    CGPoint windowcenter = _window.center;
-    [_window setFrame:CGRectMake(0, 60, ((UIViewController*)_delegate).view.frame.size.width, ((UIViewController*)_delegate).view.frame.size.height)];
+    [_window setFrame:CGRectMake(0,((UIViewController*)_delegate).view.frame.origin.y, ((UIViewController*)_delegate).view.frame.size.width, ((UIViewController*)_delegate).view.frame.size.height)];
     _window.clipsToBounds = YES;
-//    CGRect windowbounds = _window.bounds;
-//    CGSize windowsize = windowbounds.size;
-//    CGPoint selfcenter = windowcenter;
-//    CGRect selfbounds = self.bounds;
-//    CGSize selfsize = selfbounds.size;
-//    CGPoint hidecenter;
-//    
-//    CGFloat delta = windowsize.height - (selfsize.height / 2.0f);
-//    selfcenter.y = delta;
-//    
-//    hidecenter = selfcenter;
-//    hidecenter.y += selfsize.height;
-    
-//    self.center = hidecenter;
+
     self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
     
     if (_background.superview == nil) {	//fix dismiss - show race condition
