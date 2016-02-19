@@ -55,7 +55,7 @@
     }
     
 //    CGPoint windowcenter = _window.center;
-    [_window setFrame:CGRectMake(0, 60, _window.frame.size.width, _window.frame.size.height)];
+    [_window setFrame:CGRectMake(0, 60, ((UIViewController*)_delegate).view.frame.size.width, ((UIViewController*)_delegate).view.frame.size.height)];
     _window.clipsToBounds = YES;
 //    CGRect windowbounds = _window.bounds;
 //    CGSize windowsize = windowbounds.size;
