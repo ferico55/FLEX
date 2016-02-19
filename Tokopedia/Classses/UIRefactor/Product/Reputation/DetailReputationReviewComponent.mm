@@ -13,8 +13,24 @@
 #import "AFNetworkingImageDownloader.h"
 #import <ComponentKit/ComponentKit.h>
 
-static CKComponent* messageLabel(NSString* message) {
+static CKComponent* messageLabel(NSString* message, NSString* role) {
     if ([message isEqualToString:@"0"] || message == nil) {
+        
+        if ([role isEqualToString:@"2"]) {
+            return [CKInsetComponent
+                    newWithInsets:{8,8,8,8}
+                    component:
+                    [CKLabelComponent
+                     newWithLabelAttributes:{
+                         .string = @"Pembeli belum memberi ulasan",
+                         .font = [UIFont fontWithName:@"Gotham Book" size:14],
+                         .maximumNumberOfLines = 0,
+                         .lineSpacing = 1.0
+                     }
+                     viewAttributes:{}
+                     size:{}]];
+        }
+        
         return nil;
     }
     
@@ -26,14 +42,14 @@ static CKComponent* messageLabel(NSString* message) {
                  .string = message,
                  .font = [UIFont fontWithName:@"Gotham Book" size:14],
                  .maximumNumberOfLines = 0,
-                 .lineSpacing = 0.6
+                 .lineSpacing = 1.0
              }
              viewAttributes:{}
              size:{}]];
 }
 
-static CKComponent* giveReviewButton(DetailReputationReview* review) {
-    if ([review.review_message isEqualToString:@"0"] || review.review_message == nil) {
+static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* role) {
+    if (([review.review_message isEqualToString:@"0"] || review.review_message == nil) && [role isEqualToString:@"1"]) {
         return [CKInsetComponent
                 newWithInsets:{8,8,8,8}
                 component:[CKButtonComponent
@@ -73,7 +89,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review) {
 @end
 
 @implementation DetailReputationReviewComponent
-+ (instancetype)newWithReview:(DetailReputationReview*)review context:(DetailReputationReviewContext*)context{
++ (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role context:(DetailReputationReviewContext*)context{
     
     return [super newWithComponent:
             [CKInsetComponent
@@ -98,10 +114,10 @@ static CKComponent* giveReviewButton(DetailReputationReview* review) {
                       [DetailReputationReviewHeaderComponent newWithReview:review imageDownloader:context.imageDownloader]
                   },
                   {
-                      messageLabel(review.review_message)
+                      messageLabel(review.review_message, role)
                   },
                   {
-                      giveReviewButton(review)
+                      giveReviewButton(review, role)
                   },
                   {
                       [CKComponent

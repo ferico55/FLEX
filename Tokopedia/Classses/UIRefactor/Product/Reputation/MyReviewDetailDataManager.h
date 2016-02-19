@@ -11,7 +11,7 @@
 
 @interface MyReviewDetailDataManager : NSObject
 
-- (instancetype)initWithCollectionView:(UICollectionView*)collectionView;
+- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role;
 - (void)replaceReviews:(NSArray<DetailReputationReview*>*)reviews;
 - (void)addReviews:(NSArray<DetailReputationReview*>*)reviews;
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath*)indexPath;

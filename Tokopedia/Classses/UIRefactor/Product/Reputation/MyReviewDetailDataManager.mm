@@ -10,14 +10,27 @@
 #import <ComponentKit/ComponentKit.h>
 #import "DetailReputationReviewComponent.h"
 #import "AFNetworkingImageDownloader.h"
+#import "DetailMyInboxReputation.h"
+
+@interface MyReviewDetailModel : NSObject
+@property DetailReputationReview *review;
+@property NSString *role;
+@end
+
+@implementation MyReviewDetailModel
+
+@end
 
 @implementation MyReviewDetailDataManager {
     CKCollectionViewDataSource* _dataSource;
     CKComponentFlexibleSizeRangeProvider *_sizeRangeProvider;
+    NSString *_role;
 }
 
-- (instancetype)initWithCollectionView:(UICollectionView*)collectionView {
+- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role {
     if (self = [super init]) {
+        _role = role;
+        
         DetailReputationReviewContext* context = [DetailReputationReviewContext new];
         context.imageDownloader = [AFNetworkingImageDownloader new];
         
@@ -38,8 +51,14 @@
 - (void)replaceReviews:(NSArray<DetailReputationReview*>*)reviews {
     CKArrayControllerInputItems items;
     
+    
+    
     for (NSInteger index = 0; index < reviews.count; index++) {
-        items.insert({0, index}, reviews[index]);
+        MyReviewDetailModel* model = [MyReviewDetailModel new];
+        model.review = reviews[index];
+        model.role = _role;
+        
+        items.insert({0, index}, model);
     }
 
     [_dataSource enqueueChangeset:items
@@ -50,8 +69,8 @@
     
 }
 
-+ (CKComponent *)componentForModel:(DetailReputationReview*)model context:(DetailReputationReviewContext*)context {
-    return [DetailReputationReviewComponent newWithReview:model context:context];
++ (CKComponent *)componentForModel:(MyReviewDetailModel*)model context:(DetailReputationReviewContext*)context {
+    return [DetailReputationReviewComponent newWithReview:model.review role:model.role context:context];
 }
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
