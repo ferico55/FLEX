@@ -18,7 +18,7 @@
         stars.push_back({
             [CKImageComponent
              newWithImage:starImage
-             size:{20,20}]
+             size:{15,15}]
         });
     }
     
