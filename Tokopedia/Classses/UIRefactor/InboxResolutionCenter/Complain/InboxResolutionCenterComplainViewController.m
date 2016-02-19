@@ -427,7 +427,7 @@
         lastSolution = @"Minta bantuan penjual cek ke kurir	";
     }
     
-    cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_update_time;
+    cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_create_time;
     cell.invoiceNumberLabel.text = resolution.resolution_order.order_invoice_ref_num;
     [cell.lastStatusLabel setCustomAttributedText:lastSolution];
     cell.disputeStatus = resolution.resolution_dispute.dispute_status;
