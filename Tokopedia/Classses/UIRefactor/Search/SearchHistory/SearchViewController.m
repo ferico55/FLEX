@@ -653,6 +653,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     vc.delegate = self;
     vc.isFromAutoComplete = NO;
     vc.isFromImageSearch = YES;
+    vc.title = @"Image Search";
     vc.hidesBottomBarWhenPushed = YES;
     vc.data =@{@"type":@"search_product"};
     vc.imageQueryInfo = imageQueryInfo;

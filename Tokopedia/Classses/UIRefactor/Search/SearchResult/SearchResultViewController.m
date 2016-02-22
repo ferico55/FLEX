@@ -147,6 +147,9 @@ ImageSearchRequestDelegate
     NSString *_searchFullUrl;
     NSString *_suggestion;
     
+    NSString *_strImageSearchResult;
+    NSInteger allProductsCount;
+    
     BOOL _isFailRequest;
     
     NSIndexPath *_sortIndexPath;
@@ -599,7 +602,10 @@ ImageSearchRequestDelegate
             SortViewController *controller = [SortViewController new];
             controller.delegate = self;
             controller.selectedIndexPath = _sortIndexPath;
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+            if(_isFromImageSearch){
+                //controller.sortType = SortImageSearch;
+                controller.sortType = SortProductSearch;
+            }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
                 controller.sortType = SortProductSearch;
             } else {
                 controller.sortType = SortCatalogSearch;
@@ -703,9 +709,21 @@ ImageSearchRequestDelegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     [_params setObject:sort forKey:@"order_by"];
     _isNeedToRemoveAllObject = YES;
-    [self refreshView:nil];
-    [_act startAnimating];
-    _sortIndexPath = indexPath;
+    
+    if(YES){
+        //image search sort by similarity
+        _product = [_product sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            CGFloat first = (CGFloat)[[(ImageSearchProduct*)a similarity_rank] floatValue];
+            CGFloat second = (CGFloat)[[(ImageSearchProduct*)b similarity_rank] floatValue];
+            return first > second;
+        }];
+    }else{
+        //normal sort
+        [self refreshView:nil];
+        [_act startAnimating];
+        _sortIndexPath = indexPath;
+    }
+    
 }
 
 #pragma mark - Category notification
@@ -732,8 +750,6 @@ ImageSearchRequestDelegate
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:startPerPage forKey:@"rows"];
-    [parameter setObject:@(_start) forKey:@"start"];
     
     [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
     [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
@@ -746,10 +762,14 @@ ImageSearchRequestDelegate
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if(_product != nil && [_product count] > 0){
-            [parameter setObject:[self generateProductIdString] forKey:@"id"];;
+            [parameter setObject:_strImageSearchResult forKey:@"id"];
+            [parameter setObject:@(allProductsCount) forKey:@"rows"];
+            [parameter setObject:@(0) forKey:@"start"];
         }
     }else{
         [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
+        [parameter setObject:startPerPage forKey:@"rows"];
+        [parameter setObject:@(_start) forKey:@"start"];
     }
     return parameter;
 }
@@ -768,7 +788,7 @@ ImageSearchRequestDelegate
 
 - (NSString*)getPath:(int)tag{
     NSString *pathUrl;
-    if (_isFromImageSearch) {
+    if (_isFromImageSearch && ![self isUsingAnyFilter] && ![_params objectForKey:@"order_by"]) {
         pathUrl = @"/v4/search/snapsearch.pl";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
         pathUrl = @"search/v1/catalog";
@@ -782,10 +802,11 @@ ImageSearchRequestDelegate
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectmanager = [RKObjectManager sharedClient:@"https://ws-staging.tokopedia.com"];
-    if (_isFromImageSearch) {
+    if (_isFromImageSearch && ![self isUsingAnyFilter] && ![_params objectForKey:@"order_by"]) {
+        _objectmanager = [RKObjectManager sharedClient:@"https://ws-staging.tokopedia.com"];
         [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
     } else {
+        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
         [_objectmanager addResponseDescriptor:[self searchResponseDescriptor]];
     }
     return _objectmanager;
@@ -888,7 +909,7 @@ ImageSearchRequestDelegate
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    ImageSearchResponse *search = [successResult.dictionary objectForKey:@""];
+    
 //    _searchObject = search;
     
     [_noResultView removeFromSuperview];
@@ -900,67 +921,21 @@ ImageSearchRequestDelegate
         _isNeedToRemoveAllObject = NO;
     }
     
-//    NSString *redirect_url = search.result.redirect_url;
-//    if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
-//        NSString *departementID = search.result.department_id?:@"";
-//        [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-//        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-//            [_delegate updateTabCategory:departementID];            
-//        }
-//    }
-//    if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
-    
-    if (_isFromImageSearch) {
-        NSString *hascatalog = @"0";
+    if (_isFromImageSearch && ![self isUsingAnyFilter] && ![_params objectForKey:@"order_by"]) {
+        ImageSearchResponse *search = [successResult.dictionary objectForKey:@""];
         
-        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            hascatalog = @"1";
-        }
-        
-        //setting is this product has catalog or not
-        if ([hascatalog isEqualToString:@"1"] && hascatalog) {
-            NSDictionary *userInfo = @{@"count":@(3)};
-            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-        }
-        else if ([hascatalog isEqualToString:@"0"] && hascatalog){
-            NSDictionary *userInfo = @{@"count":@(2)};
-            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-        }
-        
-        [_product addObject:search.data.similar_prods];
-        
-//        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-//            if(search.result.products.count > 0) {
-//                [_product addObject: search.result.products];
-//                [TPAnalytics trackProductImpressions:search.result.products];
-//            }
-//
-//        } else {
-//            if(search.result.catalogs.count > 0) {
-//                [_product addObject: search.result.catalogs];                
-//            }
-//
-//        }
-//        
-//        if(_start == 0) {
-//            [_collectionView setContentOffset:CGPointZero animated:YES];
-//            
-//            [_collectionView reloadData];
-////            [_collectionView layoutIfNeeded];
-//        }
-        
-//        if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
-        if (search.data.similar_prods.count > 0) {
-
+        if(search.data.similar_prods.count > 0){
+            [_product addObject:search.data.similar_prods];
+            
+            _strImageSearchResult = [self generateProductIdString];
+            allProductsCount = [[_product firstObject] count];
             _isnodata = NO;
-//            _urinext =  search.data.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
-            //self.view = self.contentView;
             [_noResultView removeFromSuperview];
         } else {
             //no data at all
@@ -971,13 +946,9 @@ ImageSearchRequestDelegate
                 [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
                 [_noResultView hideButton:YES];
             }else{
-                if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
-                    [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
-                }else{
-                    _suggestion = @"";
-                }
+                [_noResultView setNoResultDesc:@"Mohon maaf, gambar serupa tidak dapat ditemukan. Coba foto lagi dari sisi yang berbeda."];
+                [_noResultView hideButton:YES];
             }
-        
             [_collectionView addSubview:_noResultView];
         }
         
@@ -990,38 +961,139 @@ ImageSearchRequestDelegate
             [_collectionView reloadData];
         }
     } else {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        SearchAWS *search = [result objectForKey:@""];
+        _searchObject = search;
         
-//        NSURL *url = [NSURL URLWithString:search.result.redirect_url];
-//        NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+        [_noResultView removeFromSuperview];
+        [_firstFooter removeFromSuperview];
         
-        // Redirect URI to hotlist
-//        if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
-//            [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
-//        }
-
-        // redirect uri to search category
-//        else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-//            NSString *departementID = search.result.department_id?:@"";
-//            [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-//            [_params removeObjectForKey:@"search"];
-//            [_networkManager requestCancel];
-//
-//            if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
-//                [self.delegate updateTabCategory:departementID];
-//            }
-//            
-//            [self refreshView:nil];
-//            
-//            [Localytics triggerInAppMessage:@"Category Result Screen"];
-//        }
+        if(_isNeedToRemoveAllObject) {
+            [_product removeAllObjects];
+            [_promo removeAllObjects];
+            _isNeedToRemoveAllObject = NO;
+        }
         
-//        else if ([query[1] isEqualToString:@"catalog"]) {
-//            [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
-//        }
-//        
-//        else {
-//            [Localytics triggerInAppMessage:@"Search Result Screen"];
-//        }
+        NSString *redirect_url = search.result.redirect_url;
+        if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
+            NSString *departementID = search.result.department_id?:@"";
+            [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+            if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
+                [_delegate updateTabCategory:departementID];
+            }
+        }
+        if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
+            
+            
+            NSString *hascatalog = search.result.has_catalog;
+            
+            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+                hascatalog = @"1";
+            }
+            
+            //setting is this product has catalog or not
+            if ([hascatalog isEqualToString:@"1"] && hascatalog) {
+                NSDictionary *userInfo = @{@"count":@(3)};
+                [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+            }
+            else if ([hascatalog isEqualToString:@"0"] && hascatalog){
+                NSDictionary *userInfo = @{@"count":@(2)};
+                [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+            }
+            
+            
+            if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
+                if(search.result.products.count > 0) {
+                    [_product addObject: search.result.products];
+                    [TPAnalytics trackProductImpressions:search.result.products];
+                }
+                
+            } else {
+                if(search.result.catalogs.count > 0) {
+                    [_product addObject: search.result.catalogs];
+                }
+                
+            }
+            
+            if(_start == 0) {
+                [_collectionView setContentOffset:CGPointZero animated:YES];
+                
+                [_collectionView reloadData];
+                //            [_collectionView layoutIfNeeded];
+            }
+            
+            if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
+                _isnodata = NO;
+                _urinext =  search.result.paging.uri_next;
+                _start = [[self splitUriToPage:_urinext] integerValue];
+                if([_urinext isEqualToString:@""]) {
+                    [_flowLayout setFooterReferenceSize:CGSizeZero];
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
+                //self.view = self.contentView;
+                [_noResultView removeFromSuperview];
+            } else {
+                //no data at all
+                [_flowLayout setFooterReferenceSize:CGSizeZero];
+                
+                if([self isUsingAnyFilter]){
+                    _suggestion = @"";
+                    [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+                    [_noResultView hideButton:YES];
+                }else{
+                    if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
+                        [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+                    }else{
+                        _suggestion = @"";
+                    }
+                }
+                
+                [_collectionView addSubview:_noResultView];
+            }
+            
+            if(_start > 0) [self requestPromo];
+            
+            if(_refreshControl.isRefreshing) {
+                [_refreshControl endRefreshing];
+                [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
+            } else  {
+                [_collectionView reloadData];
+            }
+        } else {
+            
+            NSURL *url = [NSURL URLWithString:search.result.redirect_url];
+            NSArray* query = [[url path] componentsSeparatedByString: @"/"];
+            
+            // Redirect URI to hotlist
+            if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
+                [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
+            }
+            
+            // redirect uri to search category
+            else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
+                NSString *departementID = search.result.department_id?:@"";
+                [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+                [_params removeObjectForKey:@"search"];
+                [_networkManager requestCancel];
+                
+                if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
+                    [self.delegate updateTabCategory:departementID];
+                }
+                
+                [self refreshView:nil];
+                
+                [Localytics triggerInAppMessage:@"Category Result Screen"];
+            }
+            
+            else if ([query[1] isEqualToString:@"catalog"]) {
+                [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
+            }
+            
+            else {
+                [Localytics triggerInAppMessage:@"Search Result Screen"];
+            }
+        }
     }
 }
 
