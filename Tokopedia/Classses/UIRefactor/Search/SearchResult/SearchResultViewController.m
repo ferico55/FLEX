@@ -729,26 +729,41 @@ ImageSearchRequestDelegate
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
-    if (_isFromImageSearch) {
-        return @{@"image_url" : _image_url,
-                 @"bypass_hash" : @1};
-    } else {
-        NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
-        
-        [parameter setObject:@"ios" forKey:@"device"];
-        [parameter setObject:startPerPage forKey:@"rows"];
-        [parameter setObject:@(_start) forKey:@"start"];
-        
-        [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
-        [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
+    
+    [parameter setObject:@"ios" forKey:@"device"];
+    [parameter setObject:startPerPage forKey:@"rows"];
+    [parameter setObject:@(_start) forKey:@"start"];
+    
+    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
+    [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
+    [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
+    [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
+    [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
+    [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
+    [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
+    
+    if(_isFromImageSearch){
+        [parameter setObject:_image_url forKey:@"image_url"];
+        if(_product != nil && [_product count] > 0){
+            [parameter setObject:[self generateProductIdString] forKey:@"id"];;
+        }
+    }else{
         [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
-        [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
-        [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
-        [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
-        [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
-        [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
-        return parameter;
     }
+    return parameter;
+}
+
+- (NSString*)generateProductIdString{
+    NSString* strResult = @"";
+    NSArray *imageSearchProducts = [_product firstObject];
+    for(ImageSearchProduct *prod in imageSearchProducts){
+        strResult = [strResult stringByAppendingString:[NSString stringWithFormat:@"%@,", prod.product_id]];
+    }
+    if([strResult length] > 0){
+        strResult = [strResult substringToIndex:[strResult length] - 1];
+    }
+    return strResult;
 }
 
 - (NSString*)getPath:(int)tag{
@@ -767,7 +782,7 @@ ImageSearchRequestDelegate
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectmanager = [RKObjectManager sharedClient:@"https://ws-alpha.tokopedia.com"];
+    _objectmanager = [RKObjectManager sharedClient:@"https://ws-staging.tokopedia.com"];
     if (_isFromImageSearch) {
         [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
     } else {
