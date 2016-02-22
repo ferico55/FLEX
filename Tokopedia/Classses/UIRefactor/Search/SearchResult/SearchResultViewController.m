@@ -52,6 +52,7 @@
 #import "SpellCheckRequest.h"
 
 #import "ImageSearchResponse.h"
+#import "ImageSearchRequest.h"
 
 #pragma mark - Search Result View Controller
 
@@ -89,7 +90,8 @@ LoadingViewDelegate,
 PromoRequestDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
-SpellCheckRequestDelegate
+SpellCheckRequestDelegate,
+ImageSearchRequestDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -112,6 +114,8 @@ SpellCheckRequestDelegate
 @property ScrollDirection scrollDirection;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
+
+@property (strong, nonatomic) ImageSearchRequest *imageSearchRequest;
 
 @end
 
@@ -146,6 +150,7 @@ SpellCheckRequestDelegate
     BOOL _isFailRequest;
     
     NSIndexPath *_sortIndexPath;
+    
 }
 
 #pragma mark - Initialization
@@ -293,11 +298,21 @@ SpellCheckRequestDelegate
     [self requestPromo];
     self.scrollDirection = ScrollDirectionDown;
     
+    _imageSearchRequest = [[ImageSearchRequest alloc]init];
+    _imageSearchRequest.delegate = self;
+    _imageSearchRequest.view = self.view;
+    
+    
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-//    _networkManager.isParameterNotEncrypted = YES;
+    _networkManager.isParameterNotEncrypted = YES;
     _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    
+    if(_isFromImageSearch){
+        [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
+    }else{
+        [_networkManager doRequest];
+    }
     
     _spellCheckRequest = [SpellCheckRequest new];
     _spellCheckRequest.delegate = self;
@@ -714,8 +729,9 @@ SpellCheckRequestDelegate
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
-    if (YES) {
-        return @{@"image_url" : _image_url};
+    if (_isFromImageSearch) {
+        return @{@"image_url" : _image_url,
+                 @"bypass_hash" : @1};
     } else {
         NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
         
@@ -737,7 +753,7 @@ SpellCheckRequestDelegate
 
 - (NSString*)getPath:(int)tag{
     NSString *pathUrl;
-    if (YES) {
+    if (_isFromImageSearch) {
         pathUrl = @"/v4/search/snapsearch.pl";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
         pathUrl = @"search/v1/catalog";
@@ -752,7 +768,7 @@ SpellCheckRequestDelegate
 
 - (id)getObjectManager:(int)tag {
     _objectmanager = [RKObjectManager sharedClient:@"https://ws-alpha.tokopedia.com"];
-    if (YES) {
+    if (_isFromImageSearch) {
         [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
     } else {
         [_objectmanager addResponseDescriptor:[self searchResponseDescriptor]];
@@ -879,7 +895,7 @@ SpellCheckRequestDelegate
 //    }
 //    if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
     
-    if (YES) {
+    if (_isFromImageSearch) {
         NSString *hascatalog = @"0";
         
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
@@ -1195,8 +1211,16 @@ SpellCheckRequestDelegate
     }
 }
 
+#pragma mark - ImageSearchRequest Delegate
+-(void)didReceiveUploadedImageURL:(NSString *)imageURL{
+    _image_url = imageURL;
+    [_networkManager doRequest];
+}
+
 - (void)orientationChanged:(NSNotification*)note {
     [_collectionView reloadData];
 }
+
+
 
 @end
