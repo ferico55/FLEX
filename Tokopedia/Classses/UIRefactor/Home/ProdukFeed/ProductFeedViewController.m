@@ -515,4 +515,9 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     return ((maxVisibleY + buffer) >= actualMaxY);
 }
 
+#pragma mark - No Request delegate
+- (void)buttonDidTapped:(id)sender{
+    NSDictionary *userInfo = @{@"page" : @5};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
+}
 @end
