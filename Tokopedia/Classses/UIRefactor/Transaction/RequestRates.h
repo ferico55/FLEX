@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RequestRates : NSObject
+@interface RequestRates : NSObject <TokopediaNetworkManagerDelegate>
 
 @end

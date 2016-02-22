@@ -10,4 +10,32 @@
 
 @implementation RequestRates
 
+-(id)getObjectManager:(int)tag{
+    
+}
+
+-(NSDictionary *)getParameter:(int)tag{
+
+}
+
+-(NSString *)getPath:(int)tag{
+
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag{
+
+}
+
+-(void)actionBeforeRequest:(int)tag{
+
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
+
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag{
+
+}
+
 @end

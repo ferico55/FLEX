@@ -10,6 +10,12 @@
 		14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		45BE7D831C7AF23600A89781 /* RequestRates.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BE7D821C7AF23600A89781 /* RequestRates.m */; };
+		45BE7D871C7AF4C100A89781 /* ResponseError.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BE7D861C7AF4C100A89781 /* ResponseError.m */; };
+		45BE7D8A1C7AF4E500A89781 /* RateData.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BE7D891C7AF4E500A89781 /* RateData.m */; };
+		45BE7D8D1C7AF50F00A89781 /* RateAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BE7D8C1C7AF50F00A89781 /* RateAttributes.m */; };
+		45BE7D901C7AF51E00A89781 /* RateProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BE7D8F1C7AF51E00A89781 /* RateProduct.m */; };
+		45BE7D931C7AF59000A89781 /* RateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 45BE7D921C7AF59000A89781 /* RateResponse.m */; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -2094,6 +2100,18 @@
 		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
 		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
+		45BE7D811C7AF23600A89781 /* RequestRates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestRates.h; sourceTree = "<group>"; };
+		45BE7D821C7AF23600A89781 /* RequestRates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestRates.m; sourceTree = "<group>"; };
+		45BE7D851C7AF4C100A89781 /* ResponseError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseError.h; sourceTree = "<group>"; };
+		45BE7D861C7AF4C100A89781 /* ResponseError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseError.m; sourceTree = "<group>"; };
+		45BE7D881C7AF4E500A89781 /* RateData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateData.h; sourceTree = "<group>"; };
+		45BE7D891C7AF4E500A89781 /* RateData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateData.m; sourceTree = "<group>"; };
+		45BE7D8B1C7AF50F00A89781 /* RateAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateAttributes.h; sourceTree = "<group>"; };
+		45BE7D8C1C7AF50F00A89781 /* RateAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateAttributes.m; sourceTree = "<group>"; };
+		45BE7D8E1C7AF51E00A89781 /* RateProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateProduct.h; sourceTree = "<group>"; };
+		45BE7D8F1C7AF51E00A89781 /* RateProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateProduct.m; sourceTree = "<group>"; };
+		45BE7D911C7AF59000A89781 /* RateResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateResponse.h; sourceTree = "<group>"; };
+		45BE7D921C7AF59000A89781 /* RateResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateResponse.m; sourceTree = "<group>"; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
@@ -5289,6 +5307,23 @@
 			name = Rollout;
 			sourceTree = "<group>";
 		};
+		45BE7D841C7AF47000A89781 /* Rates */ = {
+			isa = PBXGroup;
+			children = (
+				45BE7D911C7AF59000A89781 /* RateResponse.h */,
+				45BE7D921C7AF59000A89781 /* RateResponse.m */,
+				45BE7D851C7AF4C100A89781 /* ResponseError.h */,
+				45BE7D861C7AF4C100A89781 /* ResponseError.m */,
+				45BE7D881C7AF4E500A89781 /* RateData.h */,
+				45BE7D891C7AF4E500A89781 /* RateData.m */,
+				45BE7D8B1C7AF50F00A89781 /* RateAttributes.h */,
+				45BE7D8C1C7AF50F00A89781 /* RateAttributes.m */,
+				45BE7D8E1C7AF51E00A89781 /* RateProduct.h */,
+				45BE7D8F1C7AF51E00A89781 /* RateProduct.m */,
+			);
+			path = Rates;
+			sourceTree = "<group>";
+		};
 		53AC970CF2132927344A64C3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -6914,6 +6949,7 @@
 		85623FB21C6DC48300036001 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				45BE7D841C7AF47000A89781 /* Rates */,
 				85623FB31C6DC48300036001 /* ListRekeningBank.h */,
 				85623FB41C6DC48300036001 /* ListRekeningBank.m */,
 				85623FB51C6DC48300036001 /* TransactionAction */,
@@ -9321,6 +9357,8 @@
 				856245791C6DC48600036001 /* TransactionObjectManager.m */,
 				8562457A1C6DC48600036001 /* TransactionObjectMapping.h */,
 				8562457B1C6DC48600036001 /* TransactionObjectMapping.m */,
+				45BE7D811C7AF23600A89781 /* RequestRates.h */,
+				45BE7D821C7AF23600A89781 /* RequestRates.m */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -12287,6 +12325,7 @@
 				85624DE61C6DC48B00036001 /* TxOrderConfirmationViewController.m in Sources */,
 				85624C281C6DC48A00036001 /* InboxResolutionCenterTabViewController.m in Sources */,
 				85624CD61C6DC48A00036001 /* ReputationMyProductViewController.m in Sources */,
+				45BE7D831C7AF23600A89781 /* RequestRates.m in Sources */,
 				85624D711C6DC48A00036001 /* ShopNotesPageViewController.m in Sources */,
 				85624D3E1C6DC48A00036001 /* SettingPasswordViewController.m in Sources */,
 				85624A2A1C6DC48A00036001 /* ProfileEditFormResult.m in Sources */,
@@ -12639,6 +12678,7 @@
 				85624ACA1C6DC48A00036001 /* TransactionCartGateway.m in Sources */,
 				85624A9C1C6DC48A00036001 /* SettingLocation.m in Sources */,
 				85624A841C6DC48A00036001 /* Etalase.m in Sources */,
+				45BE7D8D1C7AF50F00A89781 /* RateAttributes.m in Sources */,
 				85624AB31C6DC48A00036001 /* TrackOrder.m in Sources */,
 				85624A351C6DC48A00036001 /* AddressForm.m in Sources */,
 				85624C361C6DC48A00036001 /* ResolutionInputReceiptViewController.m in Sources */,
@@ -12769,6 +12809,7 @@
 				856249A41C6DC48A00036001 /* FavoriteShopActionResult.m in Sources */,
 				85624DD01C6DC48B00036001 /* TxOrderStatusCell.m in Sources */,
 				85624BA91C6DC48A00036001 /* TKPDTabInboxReviewNavigationController.m in Sources */,
+				45BE7D871C7AF4C100A89781 /* ResponseError.m in Sources */,
 				856249431C6DC48A00036001 /* NavigationHelper.m in Sources */,
 				AEE860FBB64F42208EBDE6B5 /* RolloutDynamic_10.m in Sources */,
 				85624AE21C6DC48A00036001 /* Veritrans.m in Sources */,
@@ -12851,6 +12892,7 @@
 				7AB2E34D1C745A090052FBA8 /* SliderData.m in Sources */,
 				85624AAE1C6DC48A00036001 /* ShippingInfoShipments.m in Sources */,
 				8562499F1C6DC48A00036001 /* ListFavorited.m in Sources */,
+				45BE7D8A1C7AF4E500A89781 /* RateData.m in Sources */,
 				85624A191C6DC48A00036001 /* NotifyData.m in Sources */,
 				85624DBA1C6DC48B00036001 /* TransactionCartWebViewViewController.m in Sources */,
 				85624D7C1C6DC48A00036001 /* FilterConditionCell.m in Sources */,
@@ -12907,6 +12949,7 @@
 				85624A821C6DC48A00036001 /* OpenShopPicture.m in Sources */,
 				856249B91C6DC48A00036001 /* HotlistBannerResult.m in Sources */,
 				85624A161C6DC48A00036001 /* NotificationResult.m in Sources */,
+				45BE7D901C7AF51E00A89781 /* RateProduct.m in Sources */,
 				856249B41C6DC48A00036001 /* HistoryProductList.m in Sources */,
 				85624D9B1C6DC48A00036001 /* TokopediaNetworkManager.m in Sources */,
 				85624A681C6DC48A00036001 /* WarehouseResult.m in Sources */,
@@ -12925,6 +12968,7 @@
 				85624BF41C6DC48A00036001 /* RedirectHandler.m in Sources */,
 				85624A2E1C6DC48A00036001 /* FavoriteShopResult.m in Sources */,
 				856250EB1C6DC48B00036001 /* EDStarRating.m in Sources */,
+				45BE7D931C7AF59000A89781 /* RateResponse.m in Sources */,
 				85624B881C6DC48A00036001 /* ContactUsCategoryCell.m in Sources */,
 				85624D261C6DC48A00036001 /* SpellCheckResponse.m in Sources */,
 				85624D301C6DC48A00036001 /* SettingBankNameCell.m in Sources */,
