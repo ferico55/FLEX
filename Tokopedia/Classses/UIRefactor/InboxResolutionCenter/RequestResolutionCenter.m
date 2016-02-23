@@ -121,7 +121,8 @@
                             @"solution"          :solution?:@"",
                             @"refund_amount"     :refundAmount?:@"",
                             @"flag_received"     :flagReceived?:@"",
-                            @"trouble_type"      :troubleType?:@""
+                            @"trouble_type"      :troubleType?:@"",
+                            @"app_new"           :@"1"              //harus kasi image buat create reso
                             };
     _paramValidation = param;
     
