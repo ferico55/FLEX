@@ -32,6 +32,7 @@
 #import "Tokopedia-swift.h"
 #import "RequestEditAddress.h"
 #import "RequestAddAddress.h"
+#import "RequestRates.h"
 
 @import GoogleMaps;
 
@@ -52,6 +53,7 @@
     TokopediaNetworkManagerDelegate,
     RequestEditAddressDelegate,
     RequestAddAddressDelegate,
+    RequestRatesDelegate,
     TKPPlacePickerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
@@ -98,6 +100,7 @@
     
     RequestEditAddress *_requestEditAddress;
     RequestAddAddress *_requestAddAddress;
+    RequestRates *_requestRates;
     
     AddressFormList *_selectedAddress;
     
@@ -288,6 +291,15 @@
         _requestAddAddress.delegate = self;
     }
     return _requestAddAddress;
+}
+
+-(RequestRates*)requestRates
+{
+    if (!_requestRates) {
+        _requestRates = [RequestRates new];
+        _requestRates.delegate = self;
+    }
+    return _requestRates;
 }
 
 #pragma mark - Picker Place Delegate
