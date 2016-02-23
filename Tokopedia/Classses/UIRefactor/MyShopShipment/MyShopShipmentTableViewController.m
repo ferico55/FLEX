@@ -1219,7 +1219,7 @@
         }
         [NavigateViewController navigateToMap:coordinate type:TypeEditPlace fromViewController:self];
         
-    } else if (indexPath.section == 4 && indexPath.row == 4) {
+    } else if (indexPath.section == 3 && indexPath.row == 4) {
         AlertInfoView *alert = [AlertInfoView newview];
         alert.text = @"Sistem AWB Otomatis";
         alert.detailText = @"Dengan menggunakan Sistem Kode Resi Otomatis, Anda tidak perlu lagi melakukan input nomor resi secara manual. Cukup cetak kode booking dan tunjukkan ke agen JNE yang mendukung, nomor resi akan otomatis masuk ke Tokopedia.";
@@ -1230,7 +1230,7 @@
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
         
-    } else if (indexPath.section == 6 && indexPath.row == 1) {
+    } else if (indexPath.section == 5 && indexPath.row == 1) {
         AlertInfoView *alert = [AlertInfoView newview];
         alert.text = @"Sistem I-Drop";
         alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
@@ -1353,10 +1353,14 @@
     else if ([sender isEqual:_shipmentJNEAWBSwitch]) {
         if (sender.isOn) {
             _shipment.jne.jne_tiket = @"1";
-            [_shipment.auto_resi addObject:_JNE.shipment_id];
+            NSMutableArray *autoResi = [_shipment.auto_resi mutableCopy];
+            [autoResi addObject:_JNE.shipment_id];
+            _shipment.auto_resi = autoResi;
         } else {
             _shipment.jne.jne_tiket = @"0";
-            [_shipment.auto_resi removeObject:_JNE.shipment_id];
+            NSMutableArray *autoResi = [_shipment.auto_resi mutableCopy];
+            [autoResi removeObject:_JNE.shipment_id];
+            _shipment.auto_resi = autoResi;
         }
     }
     else if ([sender isEqual:_shipmentJNEMinimumWeightSwitch]) {
