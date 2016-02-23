@@ -69,6 +69,7 @@
 @property (nonatomic, strong) NSString *reputation_progress;
 @property (nonatomic, strong) NSString *my_score_image;
 @property (nonatomic, strong) NSString *their_score_image;
+@property (nonatomic, strong) NSString *reputation_days_left;
 
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 @property (nonatomic, strong) MyReviewReputationViewModel *viewModel;

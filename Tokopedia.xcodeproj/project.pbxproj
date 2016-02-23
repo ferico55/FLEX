@@ -12,6 +12,8 @@
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		620394B51C7B0C9E00F0DBBF /* InboxReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 620394B31C7B0C9E00F0DBBF /* InboxReviewCell.m */; };
+		620394B61C7B0C9E00F0DBBF /* InboxReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 620394B41C7B0C9E00F0DBBF /* InboxReviewCell.xib */; };
 		621061D31C7478C300ED82C5 /* MyReviewDetailDataManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 621061D21C7478C300ED82C5 /* MyReviewDetailDataManager.mm */; };
 		626C65A41C7485140060B55F /* DetailReputationReviewComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626C65A31C7485140060B55F /* DetailReputationReviewComponent.mm */; };
 		627F90251C75A04000BB07BB /* RatingComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 627F90241C75A04000BB07BB /* RatingComponent.mm */; };
@@ -2132,6 +2134,9 @@
 		45E376221C48985B00112E68 /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
+		620394B21C7B0C9E00F0DBBF /* InboxReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewCell.h; sourceTree = "<group>"; };
+		620394B31C7B0C9E00F0DBBF /* InboxReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewCell.m; sourceTree = "<group>"; };
+		620394B41C7B0C9E00F0DBBF /* InboxReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewCell.xib; sourceTree = "<group>"; };
 		621061D11C7478C300ED82C5 /* MyReviewDetailDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailDataManager.h; sourceTree = "<group>"; };
 		621061D21C7478C300ED82C5 /* MyReviewDetailDataManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailDataManager.mm; sourceTree = "<group>"; };
 		626C65A21C7485140060B55F /* DetailReputationReviewComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponent.h; sourceTree = "<group>"; };
@@ -6668,6 +6673,9 @@
 				62BB39871C76B27800A7A4E6 /* MedalComponent.h */,
 				62BB39881C76B27800A7A4E6 /* MedalComponent.mm */,
 				62BB39901C7717BC00A7A4E6 /* DetailReputationReviewComponentDelegate.h */,
+				620394B21C7B0C9E00F0DBBF /* InboxReviewCell.h */,
+				620394B31C7B0C9E00F0DBBF /* InboxReviewCell.m */,
+				620394B41C7B0C9E00F0DBBF /* InboxReviewCell.xib */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -11581,6 +11589,7 @@
 				628176EB1C59FF1C00D8F4AF /* InboxReviewViewController.xib in Resources */,
 				7A710F851C4CF81D00D00615 /* icon_diskusi_grey_medium@3x.png in Resources */,
 				7A710FD81C4CF81D00D00615 /* icon_medal_diamond_one@3x.png in Resources */,
+				620394B61C7B0C9E00F0DBBF /* InboxReviewCell.xib in Resources */,
 				7A710FB61C4CF81D00D00615 /* icon_lock_grey@2x.png in Resources */,
 				628177AE1C59FF1D00D8F4AF /* ChangeCourierViewController.xib in Resources */,
 				7A710F181C4CF81D00D00615 /* icon_arrow_right_gray.png in Resources */,
@@ -12423,6 +12432,7 @@
 				7A710B481C4CF81D00D00615 /* SettingLocation.m in Sources */,
 				7A710ADC1C4CF81D00D00615 /* ProfileInfo.m in Sources */,
 				6281761A1C59FF1C00D8F4AF /* TKPDPhotoPicker.m in Sources */,
+				620394B51C7B0C9E00F0DBBF /* InboxReviewCell.m in Sources */,
 				6281764A1C59FF1C00D8F4AF /* ContactUsFormDataManager.m in Sources */,
 				7A710B651C4CF81D00D00615 /* LuckyDealAttributes.m in Sources */,
 				7A710A9B1C4CF81D00D00615 /* InboxTicketReply.m in Sources */,

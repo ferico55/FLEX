@@ -34,6 +34,9 @@
 #import "NavigateViewController.h"
 #import "NavigationHelper.h"
 
+#import "InboxReviewCell.h"
+#import "UIImageView+AFNetworking.h"
+
 #define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"
 #define CActionGetInboxReputation @"get_inbox_reputation"
@@ -41,7 +44,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate, InboxReviewCellDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -283,41 +286,72 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MyReviewReputationCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIndetifier];
-    if(cell == nil) {
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MyReviewReputationCell" owner:self options:nil];
+    InboxReviewCell *cell = (InboxReviewCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
+    
+    DetailMyInboxReputation *current = arrList[indexPath.row];
+    
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"InboxReviewCell"
+                                                                 owner:self
+                                                               options:nil];
         cell = [topLevelObjects objectAtIndex:0];
         cell.delegate = self;
-        cell.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
+        cell.indexPath = indexPath;
     }
     
-    cell.getBtnFooter.tag = indexPath.row;
-    cell.getBtnInvoice.tag = indexPath.row;
-    cell.getBtnReview.tag = indexPath.row;
-    cell.getLabelUser.tag = indexPath.row;
-    cell.getImageFlagReview.tag = indexPath.row;
-    cell.getBtnReputation.tag = indexPath.row;
-    DetailMyInboxReputation *tempReputation = arrList[indexPath.row];
-
-    //Check is request give rating or not
-    if(strRequestingInsertReputation!=nil && [strRequestingInsertReputation isEqualToString:tempReputation.reputation_id]) {
-        [cell isLoadInView:YES withView:cell.getBtnReview];
+    [cell.theirUserImage setImageWithURL:[NSURL URLWithString:current.reviewee_picture]
+                        placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]];
+    [cell.theirUserImage setCornerRadius:cell.theirUserImage.frame.size.width/2];
+    [cell.theirUserImage setClipsToBounds:YES];
+    
+    [cell.theirUserName setText:current.reviewee_name];
+    [cell.theirUserName setText:[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
+                       withFont:[UIFont fontWithName:@"GothamMedium" size:13.0]];
+    [cell.theirUserName setLabelBackground:[current.reviewee_role isEqualToString:@"1"]?@"Pembeli":@"Penjual"];
+    
+    [cell.button.layer setBorderColor:[[UIColor colorWithRed:18.0/255
+                                                      green:199.0/255
+                                                       blue:0
+                                                       alpha:1] CGColor]];
+    
+    if([current.role isEqualToString:@"1"]) {//Buyer
+        [SmileyAndMedal generateMedalWithLevel:current.shop_badge_level.level withSet:current.shop_badge_level.set withImage:cell.theirReputation isLarge:NO];
+        [cell.theirReputation setTitle:@"" forState:UIControlStateNormal];
     }
     else {
-        [cell isLoadInView:NO withView:cell.getBtnReview];
+        [cell.theirReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [cell.theirReputation setTitle:[NSString stringWithFormat:@"%@%%", (current.user_reputation==nil? @"0":current.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
     
-    [cell setView:tempReputation.viewModel];
+    NSString *buttonText = nil;
+    
+    if ([current.unassessed_reputation_review intValue] > 0) {
+        buttonText = [NSString stringWithFormat:[current.role isEqualToString:@"1"]?@"Beri nilai dan %d ulasan":@"Beri nilai dan balas %d ulasan", [current.unassessed_reputation_review intValue]];
+    } else {
+        buttonText = @"Lihat Semua";
+    }
+    
+    if ([current.read_status isEqualToString:@"1"]) {
+        [cell.unreadIconImage setHidden:NO];
+    } else {
+        [cell.unreadIconImage setHidden:YES];
+    }
+    
+    if ([current.reputation_days_left intValue] > 0 && [current.reputation_days_left intValue] < 4) {
+        cell.remainingTimeLabel.text = [NSString stringWithFormat:@"%d hari", [current.reputation_days_left intValue]];
+    } else {
+        cell.remainingTimeView.hidden = YES;
+    }
+    
+    cell.timestampLabel.text = current.create_time_fmt;
+    
+    [cell.button setTitle:buttonText forState:UIControlStateNormal];
+    [cell.button.layer setBorderWidth:2.0];
+    [cell.button.layer setCornerRadius:5.0];
+    [cell.button setClipsToBounds:YES];
     
     return cell;
 }
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //TODO: refactor this nasty hack
-    MyReviewReputationCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-    [self actionFooter:cell.getBtnFooter];
-}
-
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
@@ -403,7 +437,8 @@
                                                                  @"their_score_image",
                                                                  CUnaccessedReputationReview,
                                                                  CShowRevieweeSCore,
-                                                                 CRole]];
+                                                                 CRole,
+                                                                 @"reputation_days_left"]];
         RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
         [pagingMapping addAttributeMappingsFromDictionary:@{CUriNext:CUriNext,
                                                             CUriPrevious:CUriPrevious}];
@@ -679,20 +714,40 @@
     [[self getNetworkManager:CTagGetInboxReputation] doRequest];
 }
 
+#pragma mark - Inbox Review Cell Delegate
 
-#pragma mark - MyReviewReputation Delegate
-- (void)actionReputasi:(id)sender {
-    DetailMyInboxReputation *tempReputation = arrList[((UIButton *) sender).tag];
-    
-    if(((UIButton *) sender).titleLabel.text.length == 0) { //Badge
-        NSString *strText = [NSString stringWithFormat:@"%@ %@", tempReputation.reputation_score, CStringPoin];
-        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+- (void)tapToInboxReviewDetailAtIndexPath:(NSIndexPath *)indexPath {
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[indexPath.row];;
+        //Set flag to read -> From unread
+        tempObj.read_status = CValueRead;
+        tempObj.viewModel.read_status = CValueRead;
+        DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
+        detailMyReviewReputationViewController.tag = (int)indexPath.row;
+        detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
+        detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
+        [detailMyReviewReputationViewController onReputationIconTapped:^void() {
+            [self performSelector:@selector(actionFlagReview:) withObject:detailMyReviewReputationViewController];
+        }];
+        
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:detailMyReviewReputationViewController];
+        }
+        else {
+            [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
+        }
     }
-    else {
+}
+
+- (void)tapToReputationDetail:(id)sender atIndexPath:(NSIndexPath *)indexPath {
+    DetailMyInboxReputation *selectedInbox = arrList[indexPath.row];
+    
+    if ([selectedInbox.reviewee_role isEqualToString:@"1"]) {
         int paddingRightLeftContent = 10;
         UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
         SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:tempReputation.user_reputation.neutral withRepSmile:tempReputation.user_reputation.positive withRepSad:tempReputation.user_reputation.negative withDelegate:self];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:selectedInbox.user_reputation.neutral withRepSmile:selectedInbox.user_reputation.positive withRepSad:selectedInbox.user_reputation.negative withDelegate:self];
         
         //Init pop up
         cmPopTitpView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
@@ -704,14 +759,17 @@
         
         UIButton *button = (UIButton *)sender;
         [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+    } else {
+        NSString *strText = [NSString stringWithFormat:@"%@ %@", selectedInbox.reputation_score, CStringPoin];
+        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
     }
 }
 
-- (void)actionLabelUser:(id)sender {
+- (void)tapToUserAtIndexPath:(NSIndexPath *)indexPath {
     if(! isRefreshing) {
         
         
-        DetailMyInboxReputation *tempObj = arrList[((ViewLabelUser *) ((UITapGestureRecognizer *) sender).view).tag];
+        DetailMyInboxReputation *tempObj = arrList[indexPath.row];
         UserContainerViewController *container;
         ShopContainerViewController *containerShop;
         
@@ -742,7 +800,7 @@
             NSDictionary *auth = [secureStorage keychainDictionary];
             
             containerShop.data = @{kTKPDDETAIL_APISHOPIDKEY:tempObj.shop_id,
-                               kTKPD_AUTHKEY:auth?:[NSNull null]};
+                                   kTKPD_AUTHKEY:auth?:[NSNull null]};
             
             if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
                 [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:containerShop];
@@ -753,111 +811,6 @@
         }
     }
 }
-
-- (void)actionReviewRate:(id)sender
-{
-    if(! isRefreshing) {
-        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-        
-        if([tempObj.reputation_progress isEqualToString:@"2"]) {
-            // add some stickey message
-            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf penilaian ini telah dikunci, Anda telah melewati batas waktu penilaian."] delegate:self];
-            [stickyAlertView show];
-        } else {
-            alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
-            alertRateView.tag = ((UIButton *) sender).tag;
-            [alertRateView show];
-        }
-        
-
-    }
-}
-
-- (void)actionInvoice:(id)sender
-{
-    if(! isRefreshing) {
-        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-
-        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            UserAuthentificationManager *auth = [UserAuthentificationManager new];
-            WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
-            NSDictionary *invoiceURLDictionary = [NSDictionary dictionaryFromURLString:tempObj.invoice_uri];
-            NSString *invoicePDF = [invoiceURLDictionary objectForKey:@"pdf"];
-            NSString *invoiceID = [invoiceURLDictionary objectForKey:@"id"];
-            NSString *userID = [auth getUserId];
-            NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@", kTkpdBaseURLString, invoicePDF, invoiceID, userID];
-            VC.urlAddress = invoiceURLforWS?:@"";
-            
-            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:VC];
-        }
-        else {
-            if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-                NavigateViewController *navigate = [NavigateViewController new];
-                [navigate navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
-            }
-        }
-    }
-}
-
-
-
-- (void)actionFlagReview:(id)sender {
-    DetailMyInboxReputation *object = arrList[((UIView *)sender).tag];
-    BOOL loggedInUserIsSeller = [object.role isEqualToString:@"2"];
-
-    NSString *img = object.my_score_image;
-    NSString *opponentRole;
-    NSString *alertString;
-    if(!loggedInUserIsSeller) {
-        //score given to me as buyer role
-        opponentRole = @"Penjual";
-    } else {
-        //score given to me as seller role
-        opponentRole = @"Pembeli";
-    }
-    
-    if([img isEqualToString:@"smiley_neutral"]) {
-        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah cukup puas", opponentRole];
-    } else if([img isEqualToString:@"smiley_bad"]) {
-        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah tidak puas", opponentRole];
-    } else if([img isEqualToString:@"smiley_good"]) {
-        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah puas", opponentRole];
-    } else if([img isEqualToString:@"grey_question_mark"] || [img isEqualToString:@"smiley_none"]) {
-        alertString = [NSString stringWithFormat:@"%@ belum memberikan penilaian untuk Anda", opponentRole];
-    } else if([img isEqualToString:@"blue_question_mark"]) {
-        alertString = [NSString stringWithFormat:@"Penasaran ? \n Isi penilaian untuk %@ dulu ya!", opponentRole];
-    }
-    
-    UIAlertView *alertView;
-    alertView = [[UIAlertView alloc] initWithTitle:@"" message:alertString delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-    [alertView show];
-
-}
-
-- (void)actionFooter:(id)sender {
-    if(! isRefreshing) {
-        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
-        //Set flag to read -> From unread
-        tempObj.read_status = CValueRead;
-        tempObj.viewModel.read_status = CValueRead;
-        DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
-        detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
-        detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
-        detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
-        [detailMyReviewReputationViewController onReputationIconTapped:^void() {
-            [self performSelector:@selector(actionFlagReview:) withObject:detailMyReviewReputationViewController];
-        }];
-
-        
-        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:detailMyReviewReputationViewController];
-        }
-        else {
-            [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
-        }
-    }
-}
-
 
 #pragma mark - AlertRate Delegate
 - (void)closeWindow {
