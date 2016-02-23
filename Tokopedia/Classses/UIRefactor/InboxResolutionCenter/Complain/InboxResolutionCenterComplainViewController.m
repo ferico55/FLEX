@@ -54,7 +54,7 @@
 >
 {
     NavigateViewController *_navigate;
-    NSMutableArray *_list;
+    NSMutableArray<InboxResolutionCenterList*> *_list;
     NSString *_URINext;
     BOOL _isNodata;
     UIRefreshControl *_refreshControl;
@@ -299,7 +299,8 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
-    cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_create_time;
+    cell.invoiceDateLabel.text = _list[indexPath.row].resolution_respond_time;
+    cell.unrespondView.hidden = ([_list[indexPath.row].resolution_respond_status integerValue] != 0);
     cell.invoiceNumberLabel.text = resolution.resolution_order.order_invoice_ref_num;
     [cell.lastStatusLabel setCustomAttributedText:resolution.resolution_last.last_solution_string?:@""];
     cell.disputeStatus = resolution.resolution_dispute.dispute_status;
