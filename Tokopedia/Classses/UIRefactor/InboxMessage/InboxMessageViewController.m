@@ -945,22 +945,30 @@ typedef enum TagRequest {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
             {
+                NSDictionary* data = nil;
+                
                 if (_messages.count > 0) {
                     NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
                     InboxMessageList *list = _messages[indexpath.row];
+                    list.message_read_status = @"1";
                     
-                    NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                                           KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                                           KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                                           MESSAGE_INDEX_PATH : indexpath
-                                           };
-                    if (![data isEqualToDictionary:_detailViewController.data]) {
-                        [_detailViewController replaceDataSelected:data];
-                    }
+                    data = @{
+                              KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                              KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                              KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                              MESSAGE_INDEX_PATH : indexpath
+                              };
+                    
                     [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                } else {
-                    [_detailViewController replaceDataSelected:nil];
                 }
+                
+                InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+                vc.data = data;
+                
+                UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+                navigationController.navigationBar.translucent = NO;
+                
+                [self.splitViewController replaceDetailViewController:navigationController];
             }
         });
     }

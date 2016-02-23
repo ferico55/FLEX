@@ -106,6 +106,12 @@
     
     if (_data) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
+        
+        [_act startAnimating];
+    } else {
+        _messagingview.hidden = YES;
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
     }
 
     _operationQueue = [NSOperationQueue new];
@@ -118,7 +124,6 @@
     
     /** set table footer view (loading act) **/
     _table.tableHeaderView = _header;
-    [_act startAnimating];
     
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
@@ -137,8 +142,10 @@
     
     [self setMessagingView];
     
-    [self configureRestKit];
-    [self loadData];
+    if (_data) {
+        [self configureRestKit];
+        [self loadData];
+    }
 }
 
 -(TAGContainer *)gtmContainer {
