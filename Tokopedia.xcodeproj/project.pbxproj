@@ -13,6 +13,7 @@
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		7A0E45B41C7C32F50043A22F /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0E45B31C7C32F50043A22F /* MoreWrapperViewController.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7AB2E3411C7447660052FBA8 /* SliderObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E3401C7447660052FBA8 /* SliderObject.m */; };
@@ -2098,6 +2099,8 @@
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
+		7A0E45B21C7C32F50043A22F /* MoreWrapperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreWrapperViewController.h; sourceTree = "<group>"; };
+		7A0E45B31C7C32F50043A22F /* MoreWrapperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreWrapperViewController.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7AB2E33F1C7447660052FBA8 /* SliderObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SliderObject.h; path = HomeSlider/SliderObject.h; sourceTree = "<group>"; };
@@ -5350,6 +5353,8 @@
 				856249211C6DC48A00036001 /* Tokopedia-Prefix.pch */,
 				856249221C6DC48A00036001 /* Tokopedia.entitlements */,
 				856249231C6DC48A00036001 /* Tokopedia.xcworkspace */,
+				7A0E45B21C7C32F50043A22F /* MoreWrapperViewController.h */,
+				7A0E45B31C7C32F50043A22F /* MoreWrapperViewController.m */,
 			);
 			path = Tokopedia;
 			sourceTree = "<group>";
@@ -12503,6 +12508,7 @@
 				85624A611C6DC48A00036001 /* OrderPayment.m in Sources */,
 				85624A321C6DC48A00036001 /* UserInfo.m in Sources */,
 				85624CA21C6DC48A00036001 /* ProductEditWholesaleViewController.m in Sources */,
+				7A0E45B41C7C32F50043A22F /* MoreWrapperViewController.m in Sources */,
 				85624A301C6DC48A00036001 /* ProfileInfo.m in Sources */,
 				85624C0C1C6DC48A00036001 /* HotlistViewModel.m in Sources */,
 				85624A641C6DC48A00036001 /* OrderSellerShop.m in Sources */,

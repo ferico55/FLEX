@@ -45,6 +45,7 @@
 
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
+#import "MoreWrapperViewController.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -288,9 +289,12 @@ typedef enum TagRequest {
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
     }
     else{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-        moreNavBar = moreNavController;
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+//        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+//        moreNavBar = moreNavController;
+        
+        MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
+        moreNavBar = [[UINavigationController alloc] initWithRootViewController:controller];
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -533,9 +537,11 @@ typedef enum TagRequest {
         [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
     else{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-        moreNavBar = moreNavController;
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+//        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+//        moreNavBar = moreNavController;
+        
+        
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 
