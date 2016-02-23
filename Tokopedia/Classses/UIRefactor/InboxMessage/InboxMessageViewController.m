@@ -24,7 +24,7 @@
 #import "NoResultReusableView.h"
 #import "TAGDataLayer.h"
 #import "NavigationHelper.h"
-
+#import "Tokopedia-Swift.h"
 
 @interface InboxMessageViewController ()
 <
@@ -346,9 +346,14 @@ typedef enum TagRequest {
 
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
         {
-            if (![data isEqualToDictionary:_detailViewController.data]) {
-                [_detailViewController replaceDataSelected:data];
-            }
+            InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+            list.message_read_status = @"1";
+            vc.data = data;
+            
+            UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+            navigationController.navigationBar.translucent = NO;
+            
+            [self.splitViewController replaceDetailViewController:navigationController];
         }
         else
         {

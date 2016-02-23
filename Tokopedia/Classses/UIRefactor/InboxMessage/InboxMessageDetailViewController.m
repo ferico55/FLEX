@@ -137,13 +137,8 @@
     
     [self setMessagingView];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-    {
-        [self configureRestKit];
-        [self loadData];
-    }
-    
-
+    [self configureRestKit];
+    [self loadData];
 }
 
 -(TAGContainer *)gtmContainer {
