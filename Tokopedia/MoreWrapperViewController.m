@@ -64,9 +64,9 @@
 }
 
 - (void)pushViewController:(id)viewController {
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
+    UIViewController *vc = viewController;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

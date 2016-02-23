@@ -572,7 +572,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.hidesBottomBarWhenPushed = YES;
+    _wrapperViewController.hidesBottomBarWhenPushed = YES;
     UIViewController* wrapperController = _wrapperViewController;
     
     if(indexPath.section == 0 && indexPath.row == 0) {
@@ -781,7 +781,7 @@
         
     }
     
-    self.hidesBottomBarWhenPushed = NO;
+    _wrapperViewController.hidesBottomBarWhenPushed = NO;
 }
 
 -(void)pushIOSFeedback
