@@ -274,6 +274,14 @@
                             <outletCollection property="gestureRecognizers" destination="f77-OD-62t" appends="YES" id="3CC-kX-ruQ"/>
                         </connections>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2H-do-hsn">
+                        <rect key="frame" x="10" y="5" width="5" height="193"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="5" id="WAQ-Hz-nhh"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <animations/>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
@@ -283,6 +291,9 @@
                     <constraint firstItem="5QU-W0-oEF" firstAttribute="leading" secondItem="94h-cI-Em1" secondAttribute="leading" constant="10" id="4wR-cY-z2J"/>
                     <constraint firstItem="XBG-Y8-6Zp" firstAttribute="top" secondItem="5QU-W0-oEF" secondAttribute="bottom" id="BuF-Pi-E7m"/>
                     <constraint firstItem="2EG-ut-MZN" firstAttribute="top" secondItem="94h-cI-Em1" secondAttribute="top" constant="5" id="Ecp-a7-3d0"/>
+                    <constraint firstItem="E2H-do-hsn" firstAttribute="top" secondItem="94h-cI-Em1" secondAttribute="top" constant="5" id="Jly-cj-rio"/>
+                    <constraint firstAttribute="bottom" secondItem="E2H-do-hsn" secondAttribute="bottom" constant="5" id="WKZ-XW-zF1"/>
+                    <constraint firstItem="E2H-do-hsn" firstAttribute="leading" secondItem="94h-cI-Em1" secondAttribute="leading" constant="10" id="Zz1-Pu-bqw"/>
                     <constraint firstAttribute="bottom" secondItem="RMC-KP-Mma" secondAttribute="bottom" constant="4" id="gRJ-3u-H4X"/>
                     <constraint firstItem="5QU-W0-oEF" firstAttribute="top" secondItem="2EG-ut-MZN" secondAttribute="bottom" id="gkn-ph-rtH"/>
                     <constraint firstItem="RMC-KP-Mma" firstAttribute="top" secondItem="94h-cI-Em1" secondAttribute="top" constant="4" id="hHJ-O5-PcT"/>
@@ -306,6 +317,7 @@
                 <outlet property="statusLabel" destination="zGG-vR-15B" id="fAI-xW-G5x"/>
                 <outlet property="unreadBorderView" destination="RMC-KP-Mma" id="Tpi-hl-e5W"/>
                 <outlet property="unreadIconImageView" destination="1hb-65-coD" id="OoR-GM-vxr"/>
+                <outlet property="unrespondView" destination="E2H-do-hsn" id="T2Z-qC-JSK"/>
                 <outlet property="viewLabelUser" destination="h26-la-C3I" id="s5w-dA-w6A"/>
                 <outlet property="warningLabel" destination="8KS-26-HFG" id="xsG-pH-QMe"/>
             </connections>
