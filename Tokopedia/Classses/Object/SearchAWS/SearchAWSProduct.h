@@ -41,6 +41,11 @@
 @property (nonatomic, strong) NSString *catalog_description;
 @property (nonatomic, strong) NSString *catalog_count_product;
 
+//only used in image search
+@property (strong, nonatomic) NSString *shop_id;
+@property (strong, nonatomic) NSString *similarity_rank;
+@property (strong, nonatomic) NSString *condition;
+
 @property (nonatomic, strong) ProductModelView *viewModel;
 @property (nonatomic, strong) CatalogModelView *catalogViewModel;
 

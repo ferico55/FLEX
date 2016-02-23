@@ -19,7 +19,8 @@ typedef NS_ENUM(NSInteger, SortType) {
     SortCatalogDetailSeach,
     SortShopSearch,
     SortProductShopSearch,
-    SortManageProduct
+    SortManageProduct,
+    SortImageSearch
 };
 
 @protocol SortViewControllerDelegate <NSObject>

@@ -138,14 +138,22 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
     [_collectionView reloadData];
     
-    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(takePhoto:)];
-    self.navigationItem.leftBarButtonItem = cameraButton;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
     [self initNotificationManager];
+    
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_auth = [secureStorage keychainDictionary];
+    BOOL _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    if(_isLogin){
+        UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(takePhoto:)];
+        self.navigationItem.leftBarButtonItem = cameraButton;
+    }
     
     [TPAnalytics trackScreenName:@"Search Page"];
     self.screenName = @"Search Page";
@@ -620,6 +628,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+
 - (void)orientationChanged:(NSNotification*)note {
     [_collectionView reloadData];
 }
@@ -632,57 +641,23 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self.navigationController presentViewController:picker animated:YES completion:NULL];
-    
-    RequestGenerateHost *generateHost =[RequestGenerateHost new];
-    [generateHost configureRestkitGenerateHost];
-    [generateHost requestGenerateHost];
-    generateHost.delegate = self;
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker
-didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:NULL];
-
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    NSData *imageData = UIImagePNGRepresentation(chosenImage);
-    NSDictionary *data = @{
-        @"data_selected_photo" : @{
-            @"photo" : @{
-                @"cameraimagedata" : imageData,
-                @"cameraimagename" : @"image.png",
-                @"mediatype" : mediaType,
-                @"photo" : chosenImage,
-                @"source_type" : @"1",
-            },
-        },
-    };
-    
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    
-    [uploadImage requestActionUploadObject:data
-                             generatedHost:_generatedHost
-                                    action:@"upload_product_image"
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:@"fileToUpload"
-                                   success:^(id imageObject, UploadImage *image) {
-                                       
-                                       SearchResultViewController *result = [SearchResultViewController new];
-                                       result.image_url = image.result.file_path;
-                                       result.hidesBottomBarWhenPushed = YES;
-                                       result.data =@{@"type":@"search_product"};
-
-                                       [self.navigationController pushViewController:result animated:YES];
-        
-    } failure:^(id imageObject, NSError *error) {
-        
-    }];
+    [self goToResultPageWithImageQueryData:info];
 }
 
--(void)successGenerateHost:(GenerateHost *)generateHost {
-    _generatedHost = generateHost.result.generated_host;
+- (void)goToResultPageWithImageQueryData:(NSDictionary*)imageQueryInfo{
+    SearchResultViewController *vc = [SearchResultViewController new];
+    vc.delegate = self;
+    vc.isFromAutoComplete = NO;
+    vc.isFromImageSearch = YES;
+    vc.title = @"Image Search";
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.data =@{@"type":@"search_product"};
+    vc.imageQueryInfo = imageQueryInfo;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
