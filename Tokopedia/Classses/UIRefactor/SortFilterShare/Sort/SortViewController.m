@@ -96,6 +96,8 @@
             arrayString = [container stringForKey:@"manage_product"];
             break;
             
+        case SortImageSearch:
+            arrayString = [container stringForKey:@"image_search"];
 
         default:
             break;

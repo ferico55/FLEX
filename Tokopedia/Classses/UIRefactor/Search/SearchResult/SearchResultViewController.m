@@ -98,6 +98,8 @@ ImageSearchRequestDelegate
 
 @property (strong, nonatomic) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
+@property (strong, nonatomic) NSMutableDictionary *similarityDictionary;
+
 @property (nonatomic) UITableViewCellType cellType;
 
 @property (weak, nonatomic) IBOutlet UIView *toolbarView;
@@ -197,6 +199,7 @@ ImageSearchRequestDelegate
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
+    _similarityDictionary = [NSMutableDictionary new];
     
     _params = [NSMutableDictionary new];
     _start = 0;
@@ -361,7 +364,7 @@ ImageSearchRequestDelegate
     NSString *cellid;
     UICollectionViewCell *cell = nil;
     
-    ImageSearchProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
+    SearchAWSProduct *list = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -449,7 +452,7 @@ ImageSearchRequestDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    ImageSearchProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
 //        CatalogViewController *vc = [CatalogViewController new];
 //        vc.catalogID = product.catalog_id;
@@ -603,8 +606,7 @@ ImageSearchRequestDelegate
             controller.delegate = self;
             controller.selectedIndexPath = _sortIndexPath;
             if(_isFromImageSearch){
-                //controller.sortType = SortImageSearch;
-                controller.sortType = SortProductSearch;
+                controller.sortType = SortImageSearch;
             }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
                 controller.sortType = SortProductSearch;
             } else {
@@ -710,14 +712,18 @@ ImageSearchRequestDelegate
     [_params setObject:sort forKey:@"order_by"];
     _isNeedToRemoveAllObject = YES;
     
-    if(YES){
+    if([[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
+        [self restoreSimilarity];
         //image search sort by similarity
-        _product = [_product sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-            CGFloat first = (CGFloat)[[(ImageSearchProduct*)a similarity_rank] floatValue];
-            CGFloat second = (CGFloat)[[(ImageSearchProduct*)b similarity_rank] floatValue];
+        NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
+            CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
             return first > second;
         }];
-    }else{
+        _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
+        [_collectionView reloadData];
+        _sortIndexPath = indexPath;
+    } else {
         //normal sort
         [self refreshView:nil];
         [_act startAnimating];
@@ -761,7 +767,7 @@ ImageSearchRequestDelegate
     
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
-        if(_product != nil && [_product count] > 0){
+        if([_product firstObject] != nil && [[_product firstObject] count] > 0){
             [parameter setObject:_strImageSearchResult forKey:@"id"];
             [parameter setObject:@(allProductsCount) forKey:@"rows"];
             [parameter setObject:@(0) forKey:@"start"];
@@ -776,8 +782,8 @@ ImageSearchRequestDelegate
 
 - (NSString*)generateProductIdString{
     NSString* strResult = @"";
-    NSArray *imageSearchProducts = [_product firstObject];
-    for(ImageSearchProduct *prod in imageSearchProducts){
+    NSMutableArray *products = [_product firstObject];
+    for(SearchAWSProduct *prod in products){
         strResult = [strResult stringByAppendingString:[NSString stringWithFormat:@"%@,", prod.product_id]];
     }
     if([strResult length] > 0){
@@ -818,7 +824,7 @@ ImageSearchRequestDelegate
     
     RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ImageSearchResponseData class]];
 
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[ImageSearchProduct class]];
+    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
     [productMapping addAttributeMappingsFromArray:@[@"shop_lucky",
                                                     @"shop_id",
                                                     @"shop_gold_status",
@@ -908,6 +914,21 @@ ImageSearchRequestDelegate
     
 }
 
+- (void)backupSimilarity{
+    for(SearchAWSProduct *prod in [_product firstObject]){
+        [_similarityDictionary setObject:prod.similarity_rank forKey:prod.product_id];
+    }
+}
+
+- (void)restoreSimilarity{
+    NSMutableArray *products = [_product firstObject];
+    for(int i=0;i<[products count];i++){
+        NSString* productId = ((SearchAWSProduct*)products[i]).product_id;
+        ((SearchAWSProduct*)products[i]).similarity_rank = [_similarityDictionary objectForKey:productId];
+    }
+    _product[0] = products;
+}
+
 - (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     
 //    _searchObject = search;
@@ -926,6 +947,7 @@ ImageSearchRequestDelegate
         
         if(search.data.similar_prods.count > 0){
             [_product addObject:search.data.similar_prods];
+            [self backupSimilarity];
             
             _strImageSearchResult = [self generateProductIdString];
             allProductsCount = [[_product firstObject] count];
@@ -983,8 +1005,6 @@ ImageSearchRequestDelegate
             }
         }
         if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
-            
-            
             NSString *hascatalog = search.result.has_catalog;
             
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
@@ -1010,6 +1030,9 @@ ImageSearchRequestDelegate
                 
             } else {
                 if(search.result.catalogs.count > 0) {
+                    //_product[0] is for products
+                    //so everything is in first index
+                    //you're welcome!
                     [_product addObject: search.result.catalogs];
                 }
                 
@@ -1033,6 +1056,17 @@ ImageSearchRequestDelegate
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
                 //self.view = self.contentView;
                 [_noResultView removeFromSuperview];
+                
+                if(_isFromImageSearch && [_params objectForKey:@"order_by"] && [[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
+                    [self restoreSimilarity];
+                    //image search sort by similarity
+                    NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+                        CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
+                        CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
+                        return first > second;
+                    }];
+                    _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
+                }
             } else {
                 //no data at all
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
