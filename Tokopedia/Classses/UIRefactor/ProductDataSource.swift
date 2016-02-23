@@ -19,7 +19,7 @@ import UIKit
     var _collectionView: UICollectionView!
     var _products: Array<SearchAWSProduct>!
     var _supplementaryDataSource: CollectionViewSupplementaryDataSource!
-//
+
     init(collectionView:UICollectionView, supplementaryDataSource: CollectionViewSupplementaryDataSource?) {
         super.init()
         _supplementaryDataSource = supplementaryDataSource
