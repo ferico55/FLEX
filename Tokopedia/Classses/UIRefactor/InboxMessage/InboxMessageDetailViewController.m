@@ -169,15 +169,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidLayoutSubviews {
+    CGFloat textViewWidth = self.view.bounds.size.width - _buttonsend.frame.size.width - 25;
+    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, 29);
+}
+
 - (void) setMessagingView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40, 45)];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-    {
-        CGRect frame = _growingtextview.frame;
-        frame.size.width = [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40 -_masterViewController.view.frame.size.width;
-        _growingtextview.frame = frame;
-    }
+    _growingtextview = [[HPGrowingTextView alloc] init];
+
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     _growingtextview.layer.borderWidth = 0.5f;
