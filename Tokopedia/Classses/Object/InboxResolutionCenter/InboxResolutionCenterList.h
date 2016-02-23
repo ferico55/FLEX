@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) ResolutionDetail *resolution_detail;
 @property (nonatomic) NSInteger resolution_read_status;
-
+@property (nonatomic, strong) NSString *resolution_respond_time;
+@property (nonatomic, strong) NSString *resolution_respond_status;
 
 @end

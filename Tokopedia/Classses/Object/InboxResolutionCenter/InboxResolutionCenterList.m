@@ -12,7 +12,9 @@
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"resolution_read_status"];
+    NSArray *keys = @[@"resolution_read_status",
+                      @"resolution_respond_status",
+                      @"resolution_respond_time"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
