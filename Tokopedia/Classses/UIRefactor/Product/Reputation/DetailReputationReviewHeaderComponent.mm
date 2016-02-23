@@ -29,20 +29,23 @@ static CKComponent* timestampLabel(NSString* createTime) {
 static CKComponent* skipButton (DetailReputationReview* review) {
     if ([review.review_is_skipable isEqualToString:@"1"]) {
         return [CKButtonComponent
-                newWithTitles:{}
-                titleColors:{}
-                images:{
-                    {UIControlStateNormal, [UIImage imageNamed:@"icon_cancel.png"]}
+                newWithTitles:{
+                    {UIControlStateNormal, @"Lewati"}
                 }
+                titleColors:{
+                    {UIControlStateNormal, [UIColor colorWithRed:18.0/255
+                                                           green:199.0/255
+                                                            blue:0
+                                                           alpha:1]}
+                }
+                images:{}
                 backgroundImages:{}
-                titleFont:nil
+                titleFont:[UIFont fontWithName:@"Gotham Book" size:12.0]
                 selected:NO
                 enabled:YES
                 action:nil
-                size:{.height = 30}
-                attributes:{
-                    
-                }
+                size:{}
+                attributes:{}
                 accessibilityConfiguration:{}];
     }
     
