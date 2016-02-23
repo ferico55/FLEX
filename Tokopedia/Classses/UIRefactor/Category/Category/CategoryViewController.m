@@ -133,30 +133,30 @@ NSInteger const bannerHeight = 115;
     _notifManager.delegate = self;
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
-
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
-
-#pragma mark - Notification delegate
-- (void)reloadNotification{
-    [self initNotificationManager];
-}
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
-- (void)pushViewController:(id)viewController {
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
-}
+//
+//- (void)tapNotificationBar {
+//    [_notifManager tapNotificationBar];
+//}
+//
+//- (void)tapWindowBar {
+//    [_notifManager tapWindowBar];
+//}
+//
+//#pragma mark - Notification delegate
+//- (void)reloadNotification{
+//    [self initNotificationManager];
+//}
+//
+//- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
+//    [notificationManager tapWindowBar];
+//    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+//}
+//
+//- (void)pushViewController:(id)viewController {
+//    self.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:viewController animated:YES];
+//    self.hidesBottomBarWhenPushed = NO;
+//}
 
 #pragma mark - Request Banner 
 - (void)loadBanners {
@@ -217,6 +217,7 @@ NSInteger const bannerHeight = 115;
 - (void)moveToNextSlider {
     [_slider scrollToItemAtIndex:_slider.currentItemIndex+1 duration:1.0];
 }
+
 
 
 @end
