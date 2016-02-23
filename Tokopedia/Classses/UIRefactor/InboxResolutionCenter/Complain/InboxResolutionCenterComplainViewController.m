@@ -252,7 +252,7 @@
     cell.btnReputation.tag = indexPath.row;
     
     if(resolution.resolution_by.by_customer == 1){
-        [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge_object.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
+        [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge.set withImage:cell.btnReputation isLarge:NO];
         [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
     }else {
         if(resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"]) {
