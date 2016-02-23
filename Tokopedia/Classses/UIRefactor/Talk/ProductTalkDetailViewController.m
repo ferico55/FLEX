@@ -609,17 +609,12 @@
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
-
 #pragma mark - Life Cycle
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
+- (void)viewDidLayoutSubviews {
     //readjust growing textview width here, because we can't get the correct view controller size in viewDidLoad
-    NSInteger textViewWidth = self.view.frame.size.width - _sendButton.frame.size.width - 10;
+    NSInteger textViewWidth = self.view.bounds.size.width - _sendButton.frame.size.width - 10;
     _growingtextview.frame = CGRectMake(10, 10, textViewWidth, _growingtextview.frame.size.height);
 }
-
 
 #pragma mark - Request and Mapping
 -(void) cancel {
