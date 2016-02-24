@@ -51,9 +51,9 @@
 }
 
 - (void)setBlurBackground {
-    self.backgroundImageView.image = _image;
+    self.backgroundImageView.image = [_imageQuery objectForKey:UIImagePickerControllerEditedImage];
     
-    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 
     UIVibrancyEffect *vibrancy = [UIVibrancyEffect effectForBlurEffect:blur];
 
@@ -69,9 +69,7 @@
 
 - (void)setSearchButtonStyle {
     self.searchButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.05];
-//    self.searchButton.layer.cornerRadius = 3;
-//    self.searchButton.layer.borderColor = [UIColor whiteColor].CGColor;
-//    self.searchButton.layer.borderWidth = 1;
+    self.searchButton.layer.cornerRadius = 3;
 }
 
 #pragma mark - Table view data source
@@ -124,10 +122,15 @@
     navigation.navigationBar.translucent = NO;
     
     [self presentViewController:navigation animated:YES completion:nil];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 - (IBAction)tapCancelButton:(UIButton *)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    UIImagePickerController *controller = (UIImagePickerController *)[self presentingViewController];
+    [self dismissViewControllerAnimated:YES completion:NULL];
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 @end

@@ -344,9 +344,11 @@ ImageSearchRequestDelegate
 }
 
 - (void)dismissView {
-    UIViewController *vc = [self.navigationController presentingViewController];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    [vc dismissViewControllerAnimated:YES completion:nil];
+    UIViewController *controller = [self.navigationController presentingViewController];
+    UIImagePickerController *cameraController = (UIImagePickerController *)[controller presentingViewController];
+    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+    [cameraController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Properties
@@ -817,12 +819,11 @@ ImageSearchRequestDelegate
         pathUrl = @"search/v1/product";
     }
     return pathUrl;
-//    return [_searchPostUrl isEqualToString:@""] ? pathUrl : _searchPostUrl;
 }
 
 - (id)getObjectManager:(int)tag {
     if (_isFromImageSearch && ![self isUsingAnyFilter] && ![_params objectForKey:@"order_by"]) {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ws-staging.tokopedia.com"];
+        _objectmanager = [RKObjectManager sharedClientHttps];
         [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
     } else {
         _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
@@ -943,9 +944,6 @@ ImageSearchRequestDelegate
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    
-//    _searchObject = search;
-    
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     

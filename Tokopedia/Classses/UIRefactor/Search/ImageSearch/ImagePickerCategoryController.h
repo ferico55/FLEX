@@ -10,7 +10,6 @@
 
 @interface ImagePickerCategoryController : UIViewController
 
-@property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) NSDictionary *imageQuery;
 
 @end

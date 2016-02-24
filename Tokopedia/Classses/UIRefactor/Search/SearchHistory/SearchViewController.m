@@ -664,16 +664,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    [self goToResultPageWithImageQueryData:info];
-}
-
-- (void)goToResultPageWithImageQueryData:(NSDictionary*)imageQueryInfo{
     ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
-    controller.image = [imageQueryInfo objectForKey:UIImagePickerControllerEditedImage];
-    controller.imageQuery = imageQueryInfo;
+    controller.imageQuery = info;
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:controller animated:YES completion:nil];
+    [picker presentViewController:controller animated:YES completion:nil];
 }
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
