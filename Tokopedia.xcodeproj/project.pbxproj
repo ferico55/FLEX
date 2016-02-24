@@ -2065,6 +2065,12 @@
 		BBDA4F541C7ACDCD00C29FF7 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBDA477C1C7ACDCD00C29FF7 /* Tokopedia-Info.plist */; };
 		BBDA4F551C7ACDCD00C29FF7 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BBDA477E1C7ACDCD00C29FF7 /* Tokopedia.entitlements */; };
 		BBDA4F561C7ACDCD00C29FF7 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BBDA477F1C7ACDCD00C29FF7 /* Tokopedia.xcworkspace */; };
+		BBF9E7A11C7D8FBA0016A145 /* camera-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BBF9E79F1C7D8FBA0016A145 /* camera-icon.png */; };
+		BBF9E7A21C7D8FBA0016A145 /* camera-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BBF9E7A01C7D8FBA0016A145 /* camera-icon@2x.png */; };
+		BBF9E7A51C7D9E1E0016A145 /* icon-camera-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = BBF9E7A31C7D9E1E0016A145 /* icon-camera-filled.png */; };
+		BBF9E7A61C7D9E1E0016A145 /* icon-camera-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BBF9E7A41C7D9E1E0016A145 /* icon-camera-filled@2x.png */; };
+		BBF9E7A91C7D9E740016A145 /* icon-search-camera.png in Resources */ = {isa = PBXBuildFile; fileRef = BBF9E7A71C7D9E740016A145 /* icon-search-camera.png */; };
+		BBF9E7AA1C7D9E740016A145 /* icon-search-camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BBF9E7A81C7D9E740016A145 /* icon-search-camera@2x.png */; };
 		C7F961F230434FC497BE3DDF /* RolloutDynamic_18.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		D9C98E17B9A542E18C19C91B /* RolloutDynamic_19.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5185,6 +5191,12 @@
 		BBDA477D1C7ACDCD00C29FF7 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BBDA477E1C7ACDCD00C29FF7 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BBDA477F1C7ACDCD00C29FF7 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BBF9E79F1C7D8FBA0016A145 /* camera-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-icon.png"; sourceTree = "<group>"; };
+		BBF9E7A01C7D8FBA0016A145 /* camera-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-icon@2x.png"; sourceTree = "<group>"; };
+		BBF9E7A31C7D9E1E0016A145 /* icon-camera-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera-filled.png"; sourceTree = "<group>"; };
+		BBF9E7A41C7D9E1E0016A145 /* icon-camera-filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera-filled@2x.png"; sourceTree = "<group>"; };
+		BBF9E7A71C7D9E740016A145 /* icon-search-camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-search-camera.png"; sourceTree = "<group>"; };
+		BBF9E7A81C7D9E740016A145 /* icon-search-camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-search-camera@2x.png"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_20.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_20.m"; sourceTree = "<group>"; };
 		CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_08.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_08.m"; sourceTree = "<group>"; };
@@ -9780,6 +9792,12 @@
 		BBDA44941C7ACDCA00C29FF7 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BBF9E7A71C7D9E740016A145 /* icon-search-camera.png */,
+				BBF9E7A81C7D9E740016A145 /* icon-search-camera@2x.png */,
+				BBF9E7A31C7D9E1E0016A145 /* icon-camera-filled.png */,
+				BBF9E7A41C7D9E1E0016A145 /* icon-camera-filled@2x.png */,
+				BBF9E79F1C7D8FBA0016A145 /* camera-icon.png */,
+				BBF9E7A01C7D8FBA0016A145 /* camera-icon@2x.png */,
 				BBDA44951C7ACDCA00C29FF7 /* badges_gold_merchant.png */,
 				BBDA44961C7ACDCA00C29FF7 /* balloon_read_left.png */,
 				BBDA44971C7ACDCA00C29FF7 /* balloon_read_right.png */,
@@ -10913,6 +10931,7 @@
 				BBDA4F0D1C7ACDCD00C29FF7 /* icon_hotlist_active.png in Resources */,
 				BBDA4ADC1C7ACDCD00C29FF7 /* DetailPriceAlertViewController.xib in Resources */,
 				BBDA4A261C7ACDCD00C29FF7 /* DepositListBankCell.xib in Resources */,
+				BBF9E7AA1C7D9E740016A145 /* icon-search-camera@2x.png in Resources */,
 				BBDA4CAB1C7ACDCD00C29FF7 /* icon_11@2x.png in Resources */,
 				BBDA4EB81C7ACDCD00C29FF7 /* map_gokil.png in Resources */,
 				BBDA4EE31C7ACDCD00C29FF7 /* icon_urutkan@3x.png in Resources */,
@@ -11037,6 +11056,7 @@
 				BBDA4CB01C7ACDCD00C29FF7 /* icon_14.png in Resources */,
 				BBDA4A951C7ACDCD00C29FF7 /* ResolutionInputReceiptViewController.xib in Resources */,
 				BBDA4CD61C7ACDCD00C29FF7 /* default-girl.png in Resources */,
+				BBF9E7A61C7D9E1E0016A145 /* icon-camera-filled@2x.png in Resources */,
 				BBDA4B581C7ACDCD00C29FF7 /* OrderDetailViewController.xib in Resources */,
 				BBDA4AF21C7ACDCD00C29FF7 /* ProductGalleryViewController.xib in Resources */,
 				BBDA4CF21C7ACDCD00C29FF7 /* icon_button_pricealert_active@2x.png in Resources */,
@@ -11095,6 +11115,7 @@
 				BBDA4F4A1C7ACDCD00C29FF7 /* LICENSE in Resources */,
 				BBDA4E7B1C7ACDCD00C29FF7 /* icon_toped_loading_grey.png in Resources */,
 				BBDA4E271C7ACDCD00C29FF7 /* icon_share_white@3x.png in Resources */,
+				BBF9E7A21C7D8FBA0016A145 /* camera-icon@2x.png in Resources */,
 				BBDA4D1D1C7ACDCD00C29FF7 /* icon_4@3x.png in Resources */,
 				BBDA4E1E1C7ACDCD00C29FF7 /* icon_search_active.png in Resources */,
 				BBDA4BD61C7ACDCD00C29FF7 /* ShopPageHeader.xib in Resources */,
@@ -11297,6 +11318,7 @@
 				BBDA4EDC1C7ACDCD00C29FF7 /* thumb_product.png in Resources */,
 				BBDA4D041C7ACDCD00C29FF7 /* icon_cancel.png in Resources */,
 				BBDA4ACD1C7ACDCD00C29FF7 /* MyShopPaymentViewController.xib in Resources */,
+				BBF9E7A91C7D9E740016A145 /* icon-search-camera.png in Resources */,
 				BBDA4A3C1C7ACDCD00C29FF7 /* GeneralProductCollectionViewCell.xib in Resources */,
 				BBDA4D5E1C7ACDCD00C29FF7 /* icon_green.png in Resources */,
 				BBDA4E291C7ACDCD00C29FF7 /* icon_shop@2x.png in Resources */,
@@ -11423,6 +11445,7 @@
 				BBDA4AE51C7ACDCD00C29FF7 /* DetailProductInfoCell.xib in Resources */,
 				BBDA4D1B1C7ACDCD00C29FF7 /* icon_2@3x.png in Resources */,
 				BBDA4D691C7ACDCD00C29FF7 /* icon_idrop_indomaret.png in Resources */,
+				BBF9E7A11C7D8FBA0016A145 /* camera-icon.png in Resources */,
 				BBDA4A121C7ACDCD00C29FF7 /* LoadingView.xib in Resources */,
 				BBDA4BFB1C7ACDCD00C29FF7 /* MaintenanceViewController.xib in Resources */,
 				BBDA4D111C7ACDCD00C29FF7 /* icon_13@3x.png in Resources */,
@@ -11683,6 +11706,7 @@
 				BBDA4A931C7ACDCD00C29FF7 /* ResolutionCenterSystemCell.xib in Resources */,
 				BBDA4D791C7ACDCD00C29FF7 /* icon_lock_grey.png in Resources */,
 				BBDA4A641C7ACDCD00C29FF7 /* HotlistCell.xib in Resources */,
+				BBF9E7A51C7D9E1E0016A145 /* icon-camera-filled.png in Resources */,
 				BBDA4EC41C7ACDCD00C29FF7 /* icon_view@2x.png in Resources */,
 				BBDA4F411C7ACDCD00C29FF7 /* transparent_navigationbar.png in Resources */,
 				BBDA4E921C7ACDCD00C29FF7 /* icon_cart@2x.png in Resources */,
