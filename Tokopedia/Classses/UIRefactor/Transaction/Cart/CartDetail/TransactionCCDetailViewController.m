@@ -307,6 +307,9 @@
                 vc.delegate = self;
                 vc.isVeritrans = YES;
                 vc.paymentID = _dataCC.payment_id;
+                if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
+                    vc.title = _cartSummary.gateway_name?:@"Cicilan Kartu Kredit";
+                } else vc.title = _cartSummary.gateway_name?:@"Kartu Kredit";
 
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                 navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -403,7 +406,10 @@
     vc.delegate = self;
     vc.CCParam = param;
     vc.paymentID = _dataCC.payment_id?:@"";
-
+    if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
+        vc.title = _cartSummary.gateway_name?:@"Cicilan Kartu Kredit";
+    } else vc.title = _cartSummary.gateway_name?:@"Kartu Kredit";
+    
     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;

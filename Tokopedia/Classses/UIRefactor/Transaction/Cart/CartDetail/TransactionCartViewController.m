@@ -790,6 +790,7 @@
                         vc.cartDetail = _cartSummary;
                         vc.delegate = self;
                         vc.paymentID = _cartSummary.payment_id;
+                        vc.title = _cartSummary.gateway_name?:@"BCA KlikPay";
                         
                         UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -823,6 +824,7 @@
                     vc.transactionCode = _cartSummary.transaction_code?:@"";
                     vc.delegate = self;
                     vc.paymentID = _cartSummary.payment_id;
+                    vc.title = _cartSummary.gateway_name?:@"BRI E-Pay";
                     
                     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -3070,6 +3072,7 @@
             vc.emoney_code = cart.result.transaction.emoney_code;
             vc.delegate = self;
             vc.paymentID = cart.result.transaction.payment_id;
+            vc.title = _cartSummary.gateway_name?:@"Mandiri E-Cash";
             
             UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
             navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
