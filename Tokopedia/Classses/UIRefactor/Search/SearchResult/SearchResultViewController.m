@@ -323,6 +323,13 @@ ImageSearchRequestDelegate
     _spellCheckRequest = [SpellCheckRequest new];
     _spellCheckRequest.delegate = self;
     
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Kembali"
+                                                                     style:UIBarButtonItemStyleBordered
+                                                                    target:self
+                                                                    action:@selector(dismissView)];
+    if (self.navigationController.isBeingPresented) {
+        self.navigationItem.leftBarButtonItem = cancelButton;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -334,6 +341,12 @@ ImageSearchRequestDelegate
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [_networkManager requestCancel];
+}
+
+- (void)dismissView {
+    UIViewController *vc = [self.navigationController presentingViewController];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [vc dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Properties

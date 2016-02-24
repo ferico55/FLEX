@@ -21,6 +21,8 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		852DE0B51C7D52A5002D471B /* ImagePickerCategoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DE0B31C7D52A5002D471B /* ImagePickerCategoryController.m */; };
+		852DE0B61C7D52A5002D471B /* ImagePickerCategoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852DE0B41C7D52A5002D471B /* ImagePickerCategoryController.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2112,6 +2114,9 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		852DE0B21C7D52A5002D471B /* ImagePickerCategoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerCategoryController.h; sourceTree = "<group>"; };
+		852DE0B31C7D52A5002D471B /* ImagePickerCategoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerCategoryController.m; sourceTree = "<group>"; };
+		852DE0B41C7D52A5002D471B /* ImagePickerCategoryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImagePickerCategoryController.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5314,6 +5319,16 @@
 				C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		852DE0B11C7D5286002D471B /* ImageSearch */ = {
+			isa = PBXGroup;
+			children = (
+				852DE0B21C7D52A5002D471B /* ImagePickerCategoryController.h */,
+				852DE0B31C7D52A5002D471B /* ImagePickerCategoryController.m */,
+				852DE0B41C7D52A5002D471B /* ImagePickerCategoryController.xib */,
+			);
+			path = ImageSearch;
 			sourceTree = "<group>";
 		};
 		BBDA3A791C7ACDC500C29FF7 /* Tokopedia */ = {
@@ -8879,6 +8894,7 @@
 			isa = PBXGroup;
 			children = (
 				BBDA428B1C7ACDC800C29FF7 /* search.h */,
+				852DE0B11C7D5286002D471B /* ImageSearch */,
 				BBDA428C1C7ACDC800C29FF7 /* SearchHistory */,
 				BBDA429A1C7ACDC800C29FF7 /* SearchRequest */,
 				BBDA429F1C7ACDC800C29FF7 /* SearchResult */,
@@ -11809,6 +11825,7 @@
 				BBDA4D5F1C7ACDCD00C29FF7 /* icon_grid_dua.png in Resources */,
 				BBDA4ED51C7ACDCD00C29FF7 /* person2.png in Resources */,
 				BBDA4E8E1C7ACDCD00C29FF7 /* icon_view.png in Resources */,
+				852DE0B61C7D52A5002D471B /* ImagePickerCategoryController.xib in Resources */,
 				BBDA4E161C7ACDCD00C29FF7 /* icon_sad50@3x.png in Resources */,
 				BBDA4A461C7ACDCD00C29FF7 /* GeneralTalkCommentCell.xib in Resources */,
 				BBDA4E381C7ACDCD00C29FF7 /* icon_shop_unfavorite@2x.png in Resources */,
@@ -12999,6 +13016,7 @@
 				BBDA479B1C7ACDCD00C29FF7 /* RKObjectManagerCategory.m in Sources */,
 				BBDA48871C7ACDCD00C29FF7 /* ProfileEdit.m in Sources */,
 				BBDA4C771C7ACDCD00C29FF7 /* ProductModelView.m in Sources */,
+				852DE0B51C7D52A5002D471B /* ImagePickerCategoryController.m in Sources */,
 				BBDA48661C7ACDCD00C29FF7 /* MyReviewReputation.m in Sources */,
 				8E3B2B29E0054A1D9A285411 /* RolloutDynamic_20.m in Sources */,
 				BBDA48401C7ACDCD00C29FF7 /* InboxReviewResult.m in Sources */,
