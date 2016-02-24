@@ -28,6 +28,8 @@
 #import "RequestUploadImage.h"
 #import "RequestGenerateHost.h"
 
+#import "ImagePickerCategoryController.h"
+
 NSString *const searchPath = @"search/%@";
 
 @interface SearchViewController ()
@@ -147,9 +149,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
     [_domains removeAllObjects];
     [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
-    [_collectionView reloadData];
-    
-    
+    [_collectionView reloadData];    
 }
 
 - (UITextField*)searchSubviewsForTextFieldIn:(UIView*)view
@@ -237,18 +237,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 -(void)clearHistory {
     [_historyResult removeAllObjects];
     [_typedHistoryResult removeAllObjects];
-    
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:destPath]) {
-        NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"history_search" ofType:@"plist"];
-        [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
-    }
-    
     [_historyResult writeToFile:destPath atomically:YES];
-    
     [_collectionView reloadData];
 }
 
@@ -673,20 +664,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    [self goToResultPageWithImageQueryData:info];
-}
-
-- (void)goToResultPageWithImageQueryData:(NSDictionary*)imageQueryInfo{
-    SearchResultViewController *vc = [SearchResultViewController new];
-    vc.delegate = self;
-    vc.isFromAutoComplete = NO;
-    vc.isFromImageSearch = YES;
-    vc.title = @"Image Search";
-    vc.hidesBottomBarWhenPushed = YES;
-    vc.data =@{@"type":@"search_product"};
-    vc.imageQueryInfo = imageQueryInfo;
-    [self.navigationController pushViewController:vc animated:YES];
+    ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
+    controller.imageQuery = info;
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [picker presentViewController:controller animated:YES completion:nil];
 }
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
