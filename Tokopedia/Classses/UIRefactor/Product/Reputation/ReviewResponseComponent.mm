@@ -38,7 +38,10 @@
                            options:{
                                .defaultImage = [UIImage imageNamed:@"icon_profile_picture.jpeg"]
                            }
-                           attributes:{}]
+                           attributes:{
+                               {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 25.0},
+                               {@selector(setClipsToBounds:), YES}
+                           }]
                       },
                       {
                           [CKStackLayoutComponent
