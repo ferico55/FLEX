@@ -108,7 +108,7 @@
     _auth = rootController.auth;
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     if(!_isLogin) {
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
         [[self view] addSubview:_noLoginView];
         [_noLoginView setHidden:NO];
     } else {
