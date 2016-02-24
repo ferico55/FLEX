@@ -13,7 +13,4 @@
 
 @property (strong,nonatomic) NSDictionary *data;
 
-@property (strong, nonatomic) InboxMessageDetailViewController *detailViewController;
-
-
 @end
