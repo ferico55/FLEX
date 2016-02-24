@@ -67,6 +67,8 @@ NSString *const searchPath = @"search/%@";
     NSURL *_deeplinkUrl;
     
     GeneratedHost *_generatedHost;
+    
+    UITapGestureRecognizer *imageSearchGestureRecognizer;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -74,7 +76,9 @@ NSString *const searchPath = @"search/%@";
 
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) NotificationViewController *notificationController;
-
+@property (strong, nonatomic) IBOutlet UIView *iconCamera;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchBarTrailingConstraint;
+@property (strong, nonatomic) IBOutlet UIImageView *cameraImageView;
 
 @end
 
@@ -111,8 +115,15 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
     [_searchBar setTintColor:[UIColor whiteColor]];
     [self.view addSubview:_searchBar];
-
+    
     _searchBar.delegate = self;
+    _searchBar.showsCancelButton = NO;
+    _searchBar.showsBookmarkButton = NO;
+    
+    [_searchBar setImage:[UIImage imageNamed:@"icon-search-camera.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    
+    imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
+    [_cameraImageView addGestureRecognizer:imageSearchGestureRecognizer];
     
     _filter = @"search_product";
     
@@ -141,6 +152,21 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_collectionView reloadData];    
 }
 
+- (UITextField*)searchSubviewsForTextFieldIn:(UIView*)view
+{
+    if ([view isKindOfClass:[UITextField class]]) {
+        return (UITextField*)view;
+    }
+    UITextField *searchedTextField;
+    for (UIView *subview in view.subviews) {
+        searchedTextField = [self searchSubviewsForTextFieldIn:subview];
+        if (searchedTextField) {
+            break;
+        }
+    }
+    return searchedTextField;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
@@ -151,8 +177,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     BOOL _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     
     if(_isLogin){
-        UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(takePhoto:)];
-        self.navigationItem.leftBarButtonItem = cameraButton;
+        _searchBarTrailingConstraint.constant = 44;
     }
     
     [TPAnalytics trackScreenName:@"Search Page"];
@@ -420,6 +445,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:YES];
+    _searchBar.showsBookmarkButton = NO;
+    _searchBarTrailingConstraint.constant = 44;
     [self deActivateSearchBar];
     
     return YES;
@@ -427,6 +454,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
+    _searchBar.showsBookmarkButton = YES;
+    _searchBarTrailingConstraint.constant = 0;
     [self activateSearchBar];
 
     return YES;
@@ -646,5 +675,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.navigationController presentViewController:controller animated:YES completion:nil];
 }
+
+-(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
+    [self takePhoto:nil];
+}
+
 
 @end
