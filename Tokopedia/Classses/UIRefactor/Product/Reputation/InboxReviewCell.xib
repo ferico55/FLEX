@@ -62,12 +62,12 @@
                                 <rect key="frame" x="267" y="58" width="64" height="21"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 hari" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kka-YQ-IEB">
-                                        <rect key="frame" x="22" y="0.0" width="42" height="21"/>
+                                        <rect key="frame" x="19" y="0.0" width="42" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="r0O-dZ-oxt">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_countdown.png" translatesAutoresizingMaskIntoConstraints="NO" id="r0O-dZ-oxt">
                                         <rect key="frame" x="0.0" y="4" width="14" height="14"/>
                                     </imageView>
                                 </subviews>
@@ -157,7 +157,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_clock.png" width="14" height="14"/>
+        <image name="icon_countdown.png" width="30" height="30"/>
         <image name="icon_smile_small.png" width="14" height="14"/>
         <image name="icon_unread.png" width="40" height="40"/>
     </resources>

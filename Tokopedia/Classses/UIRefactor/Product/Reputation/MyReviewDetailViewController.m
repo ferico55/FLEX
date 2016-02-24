@@ -19,6 +19,7 @@
 #import "DetailReputationReviewComponentDelegate.h"
 #import "NavigateViewController.h"
 #import "GiveReviewRatingViewController.h"
+#import "MyReviewDetailHeader.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
@@ -86,6 +87,16 @@
 @end
 
 @implementation MyReviewDetailViewController
+{
+    UIView *_headerView;
+}
+
+- (void)viewDidLayoutSubviews {
+    CGRect frame = _headerView.frame;
+    frame.size.width = self.view.bounds.size.width;
+    _headerView.frame = frame;
+    [_headerView sizeToFit];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -94,7 +105,34 @@
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
                                                                     delegate:self];
+    
     _collectionView.delegate = self;
+    
+    MyReviewDetailHeader *header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation];
+    
+    
+    _headerView = header;
+    CGRect frame = header.frame;
+    frame.size.width = self.view.bounds.size.width;
+    header.frame = frame;
+    [header sizeToFit];
+    
+    
+    frame = header.frame;
+    frame.origin.y = -header.frame.size.height;
+    header.frame = frame;
+
+    [_collectionView addSubview:header];
+    _collectionView.contentInset = UIEdgeInsetsMake(header.frame.size.height, 0, 0, 0);
+    
+//    dispatch_after(3, dispatch_get_main_queue(), ^{
+//        [UIView animateWithDuration:2 animations:^{
+//            _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//        }];
+//
+//    });
+//
+    
     
     _myReviewDetailRequest = [MyReviewDetailRequest new];
     _myReviewDetailRequest.delegate = self;
