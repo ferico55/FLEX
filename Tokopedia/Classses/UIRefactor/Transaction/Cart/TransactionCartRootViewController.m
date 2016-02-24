@@ -103,30 +103,28 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
+    MainViewController *rootController = (MainViewController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    _auth = rootController.auth;
+    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    if(!_isLogin) {
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        [[self view] addSubview:_noLoginView];
+        [_noLoginView setHidden:NO];
+    } else {
+        [_noLoginView setHidden:YES];
+    }
+    
     if (_index == 0) {
-        
-        MainViewController *rootController = (MainViewController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-        _auth = rootController.auth;
-        _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-        
-        if(!_isLogin) {
-            [[self view] addSubview:_noLoginView];
-            [_noLoginView setHidden:NO];
+        if(_isShouldRefreshingCart) {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+            [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
+            _isShouldRefreshingCart = NO;
         } else {
-            
-            if(_isShouldRefreshingCart) {
-                [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-                [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
-                _isShouldRefreshingCart = NO;
-            } else {
-                if (_cartViewController == nil) {
-                    
-                    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-                }
+            if (_cartViewController == nil) {
+                
+                [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
             }
-            
-            [_noLoginView setHidden:YES];
         }
         if (_isLogin && self.navigationController.viewControllers.count<=1) {
             [self initNotificationManager];
