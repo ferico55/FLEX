@@ -328,31 +328,39 @@ typedef enum TagRequest {
     return  UITableViewCellEditingStyleNone;
 }
 
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if(_iseditmode || _table.isEditing) {
     } else {
-        NSInteger index = indexPath.row;
-        InboxMessageList *list = _messages[index];
+        [self showMessageDetailForIndexPath:indexPath];
+    }
+}
 
-        NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+- (void)showMessageDetailForIndexPath:(NSIndexPath *)indexPath {
+    NSInteger index = indexPath.row;
+    InboxMessageList *list = _messages[index];
+
+    NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
                                KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
                                KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
                                MESSAGE_INDEX_PATH : indexPath?:[NSIndexPath indexPathForRow:0 inSection:0]
                                };
 
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    if (!indexPath) {
+        data = nil;
+    }
+
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
         {
             InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
             list.message_read_status = @"1";
             vc.data = data;
-            
+
             UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
             navigationController.navigationBar.translucent = NO;
-            
+
             [self.splitViewController replaceDetailViewController:navigationController];
         }
         else
@@ -362,7 +370,6 @@ typedef enum TagRequest {
             vc.data = data;
             [self.navigationController pushViewController:vc animated:YES];
         }
-    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -749,7 +756,7 @@ typedef enum TagRequest {
 
 -(void) refreshDetailIfCellIsSelected:(UITableViewCell*) cell {
     if (![NavigationHelper shouldDoDeepNavigation] && [_table cellForRowAtIndexPath:[_table indexPathForSelectedRow]] == cell) {
-        [_detailViewController replaceDataSelected:nil];
+        [self showMessageDetailForIndexPath:nil];
     }
 }
 
