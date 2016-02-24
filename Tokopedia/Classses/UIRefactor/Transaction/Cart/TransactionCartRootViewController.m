@@ -72,11 +72,6 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGRect frame = _noLoginView.frame;
-    frame.size.width = screenRect.size.width;
-    _noLoginView.frame = frame;
-    
     _isShouldRefreshingCart = NO;
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
@@ -145,6 +140,9 @@
 {
     [super viewDidAppear:animated];
     
+    CGRect frame = _noLoginView.frame;
+    frame.size = self.view.frame.size;
+    _noLoginView.frame = frame;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
