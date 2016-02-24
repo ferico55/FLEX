@@ -75,18 +75,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FilterCategoryViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
     if (cell == nil) {
         cell = [[FilterCategoryViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
+    
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
     cell.categoryNameLabel.text = category.name;
     
-    NSInteger level = [category.tree integerValue] - 1;
-    cell.indentationLevel = level * 2;
-    if ([category.categoryId isEqualToString:_selectedCategory.categoryId]) {
-        cell.checkmarkImageView.hidden = NO;
-    } else {
-        cell.checkmarkImageView.hidden = YES;
+    NSInteger level = [category.tree integerValue];
+    cell.leftPaddingConstraint.constant = level * 18;
+    
+    if (_selectedCategory) {
+        if ([category.categoryId isEqualToString:_selectedCategory.categoryId]) {
+            cell.checkmarkImageView.hidden = NO;
+        } else {
+            cell.checkmarkImageView.hidden = YES;
+        }        
     }
     
     if (category.child.count > 0) {

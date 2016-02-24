@@ -27,7 +27,9 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-    self.checkmarkImageView.hidden = NO;
+    if (selected) {
+        self.checkmarkImageView.hidden = NO;        
+    }
 }
 
 @end

@@ -20,23 +20,23 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GhO-oG-2pZ">
-                        <rect key="frame" x="15" y="0.0" width="220" height="44"/>
+                        <rect key="frame" x="15" y="0.0" width="230" height="43"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="expand_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="znv-Qa-OSR">
-                        <rect key="frame" x="285" y="12" width="20" height="20"/>
+                        <rect key="frame" x="290" y="14.5" width="15" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="JZ8-5P-h2E"/>
-                            <constraint firstAttribute="width" constant="20" id="TYc-04-aId"/>
+                            <constraint firstAttribute="height" constant="15" id="JZ8-5P-h2E"/>
+                            <constraint firstAttribute="width" constant="15" id="TYc-04-aId"/>
                         </constraints>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_check.png" translatesAutoresizingMaskIntoConstraints="NO" id="7UP-Xq-0rM">
-                        <rect key="frame" x="250" y="12" width="20" height="20"/>
+                        <rect key="frame" x="260" y="14.5" width="15" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="1rD-2P-Z3f"/>
-                            <constraint firstAttribute="height" constant="20" id="I1e-V2-4LB"/>
+                            <constraint firstAttribute="width" constant="15" id="1rD-2P-Z3f"/>
+                            <constraint firstAttribute="height" constant="15" id="I1e-V2-4LB"/>
                         </constraints>
                     </imageView>
                 </subviews>
@@ -55,6 +55,7 @@
                 <outlet property="arrowImageView" destination="znv-Qa-OSR" id="gid-KL-iSE"/>
                 <outlet property="categoryNameLabel" destination="GhO-oG-2pZ" id="PpE-q4-yhC"/>
                 <outlet property="checkmarkImageView" destination="7UP-Xq-0rM" id="XUc-Ov-85k"/>
+                <outlet property="leftPaddingConstraint" destination="v8t-A6-Tlg" id="Ha8-eA-P3A"/>
             </connections>
         </tableViewCell>
     </objects>
