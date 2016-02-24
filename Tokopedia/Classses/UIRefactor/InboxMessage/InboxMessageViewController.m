@@ -339,37 +339,40 @@ typedef enum TagRequest {
 }
 
 - (void)showMessageDetailForIndexPath:(NSIndexPath *)indexPath {
-    NSInteger index = indexPath.row;
-    InboxMessageList *list = _messages[index];
-
-    NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                               KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                               KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                               MESSAGE_INDEX_PATH : indexPath?:[NSIndexPath indexPathForRow:0 inSection:0]
-                               };
-
-    if (!indexPath) {
-        data = nil;
+    if (indexPath) {
+        InboxMessageList *list = _messages[indexPath.row];
+        list.message_read_status = @"1";
     }
 
+    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+    vc.data = [self dataForIndexPath:indexPath];
+
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-        {
-            InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-            list.message_read_status = @"1";
-            vc.data = data;
+    {
+        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        navigationController.navigationBar.translucent = NO;
 
-            UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-            navigationController.navigationBar.translucent = NO;
+        [self.splitViewController replaceDetailViewController:navigationController];
+    }
+    else
+    {
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
 
-            [self.splitViewController replaceDetailViewController:navigationController];
-        }
-        else
-        {
-            InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-            list.message_read_status = @"1";
-            vc.data = data;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+- (NSDictionary *)dataForIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *data = nil;
+
+    if (indexPath) {
+        InboxMessageList *message = _messages[indexPath.row];
+        data = @{
+                KTKPDMESSAGE_IDKEY : message.message_id ?: @"",
+                KTKPDMESSAGE_TITLEKEY : message.message_title ?: @"",
+                KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"] ?: @"",
+                MESSAGE_INDEX_PATH : indexPath
+        };
+    }
+    return data;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -952,30 +955,14 @@ typedef enum TagRequest {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
             {
-                NSDictionary* data = nil;
-                
                 if (_messages.count > 0) {
-                    NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
-                    InboxMessageList *list = _messages[indexpath.row];
-                    list.message_read_status = @"1";
-                    
-                    data = @{
-                              KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                              KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                              KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                              MESSAGE_INDEX_PATH : indexpath
-                              };
-                    
+                    NSIndexPath *indexpath = [_table indexPathForSelectedRow]?:[NSIndexPath indexPathForRow:0 inSection:0];
+
+                    [self showMessageDetailForIndexPath:indexpath];
                     [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                } else {
+                    [self showMessageDetailForIndexPath:nil];
                 }
-                
-                InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-                vc.data = data;
-                
-                UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-                navigationController.navigationBar.translucent = NO;
-                
-                [self.splitViewController replaceDetailViewController:navigationController];
             }
         });
     }
