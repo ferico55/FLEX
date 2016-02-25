@@ -721,8 +721,8 @@
             UIButton *button = (UIButton*)sender;
             switch (button.tag) {
                 case 10:{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Kupon"
-                                                                    message:@"Masukan kode kupon"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Voucher"
+                                                                    message:@"Masukan kode voucher"
                                                                    delegate:self
                                                           cancelButtonTitle:@"Batal"
                                                           otherButtonTitles:@"OK", nil];
@@ -734,8 +734,8 @@
                 case 11:
                 {
                     AlertInfoView *alertInfo = [AlertInfoView newview];
-                    alertInfo.text = @"Info Kode Kupon Tokopedia";
-                    alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai kupon tidak dapat dikembalikan";
+                    alertInfo.text = @"Info Kode Voucher Tokopedia";
+                    alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai voucher tidak dapat dikembalikan";
                     [alertInfo show];
                 }
                 case 12:
