@@ -49,14 +49,11 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                      {UIControlStateNormal, @"Beri Ulasan"}
                  }
                  titleColors:{
-                     {UIControlStateNormal, [UIColor colorWithRed:18.0/255
-                                                            green:199.0/255
-                                                             blue:0
-                                                            alpha:1]}
+                     {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
                  }
                  images:{}
                  backgroundImages:{}
-                 titleFont:[UIFont fontWithName:@"Gotham Medium" size:14.0]
+                 titleFont:[UIFont fontWithName:@"Gotham Book" size:14.0]
                  selected:NO
                  enabled:YES
                  action:@selector(didTapToGiveReview:)
@@ -64,10 +61,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                  attributes:{
                      {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
                      {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
-                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:18.0/255
-                                                                                                                 green:199.0/255
-                                                                                                                  blue:0
-                                                                                                                 alpha:1] CGColor]},
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0] CGColor]},
                      {@selector(setClipsToBounds:), YES},
                      {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
                  }
@@ -75,6 +69,51 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
     }
     
     return nil;
+}
+
+static CKComponent *giveResponseButton(DetailReputationReview *review, NSString *role) {
+    if (![review.review_message isEqualToString:@"0"] && (review.review_response.response_message == nil || [review.review_response.response_message isEqualToString:@"0"]) && [role isEqualToString:@"2"]) {
+        return [CKInsetComponent
+                newWithInsets:{8,8,8,8}
+                component:
+                [CKButtonComponent
+                 newWithTitles:{
+                     {UIControlStateNormal, @"Balas Ulasan"}
+                 }
+                 titleColors:{
+                     {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
+                 }
+                 images:{}
+                 backgroundImages:{}
+                 titleFont:[UIFont fontWithName:@"Gotham Book" size:14.0]
+                 selected:NO
+                 enabled:YES
+                 action:nil
+                 size:{.height = 30}
+                 attributes:{
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0] CGColor]},
+                     {@selector(setClipsToBounds:), YES},
+                     {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
+                 }
+                 accessibilityConfiguration:{}]];
+    }
+    
+    return nil;
+}
+
+static CKComponent *horizontalBorder (DetailReputationReview *review) {
+    if ([review.review_message isEqualToString:@"0"] || review.review_message == nil) {
+        return nil;
+    }
+    
+    return [CKComponent
+            newWithView:{
+                [UIView class],
+                {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
+            }
+            size:{.height = 1, .width = CKRelativeDimension::Percent(.95)}];
 }
 
 @implementation DetailReputationReviewContext
@@ -97,7 +136,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
     DetailReputationReviewComponent* component = [super newWithComponent:
                                                   [CKInsetComponent
                                                    newWithView:{}
-                                                   insets:{8, 8, 8, 8}
+                                                   insets:{8, 8, 0, 8}
                                                    component:
                                                    [CKStackLayoutComponent
                                                     newWithView:{
@@ -125,12 +164,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                                                             giveReviewButton(review, role)
                                                         },
                                                         {
-                                                            [CKComponent
-                                                             newWithView:{
-                                                                 [UIView class],
-                                                                 {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
-                                                             }
-                                                             size:{.height = 1, .width = CKRelativeDimension::Percent(.95)}],
+                                                            horizontalBorder(review),
                                                             .alignSelf = CKStackLayoutAlignSelfCenter
                                                         },
                                                         {
@@ -146,6 +180,9 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                                                         },
                                                         {
                                                             [ReviewResponseComponent newWithReview:review imageDownloader:context.imageDownloader]
+                                                        },
+                                                        {
+                                                            giveResponseButton(review, role)
                                                         }
                                                     }]
                                                    ]];
