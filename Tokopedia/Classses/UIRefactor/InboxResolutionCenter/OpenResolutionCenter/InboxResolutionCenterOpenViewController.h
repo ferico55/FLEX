@@ -23,7 +23,7 @@
 
 @protocol SyncroDelegate <NSObject>
 @optional
-- (void)syncroImages:(NSArray*)images message:(NSString*)message;
+- (void)syncroImages:(NSArray*)images message:(NSString*)message refundAmount:(NSString*)refundAmount;
 @end
 
 

@@ -236,7 +236,7 @@
     [super viewWillDisappear:animated];
     self.title = @"";
     
-    [_syncroDelegate syncroImages:[_photos copy] message:_noteTextView.text];
+    [_syncroDelegate syncroImages:[_photos copy] message:_noteTextView.text refundAmount:_totalRefundTextField.text];
 }
 
 -(void)updateDataSolution:(NSString *)selectedSolution refundAmount:(NSString *)refund remark:(NSString *)note
@@ -927,9 +927,10 @@
     return NO;
 }
 
--(void)syncroImages:(NSArray *)images message:(NSString *)message
+-(void)syncroImages:(NSArray *)images message:(NSString *)message refundAmount:(NSString *)refundAmount
 {
-    _noteTextView.text = message;
+    _noteTextView.text = message?:@"";
+    _totalRefund = refundAmount?:@"";
 }
 
 -(void)goToSecondPage
