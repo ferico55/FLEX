@@ -195,6 +195,7 @@
                 _cartViewController = [TransactionCartViewController new];
             }
 
+            _cartViewController.isLogin = _isLogin;
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
@@ -218,11 +219,14 @@
             if (_isLogin && self.navigationController.viewControllers.count<=1) {
                 [self initNotificationManager];
             }
-            else
-            {
-                self.navigationItem.rightBarButtonItem = nil;
+            
+            if (self.navigationController.viewControllers.count>1){
                 self.navigationItem.titleView = nil;
                 self.navigationItem.title = @"Keranjang Belanja";
+            }
+            
+            if (!_isLogin) {
+                self.navigationItem.rightBarButtonItem = nil;
             }
 
             _isShouldRefreshingCart = NO;
