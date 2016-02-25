@@ -311,8 +311,7 @@ typedef enum TagRequest {
     }
     
     InboxMessageList *list = _messages[indexPath.row];
-    
-    cell.indexpath = indexPath;
+
     cell.message = list;
     cell.popTipAnchor = self.view;
     
@@ -770,14 +769,13 @@ typedef enum TagRequest {
     
     swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
-    
-    
+
     if (direction == MGSwipeDirectionRightToLeft) {
         expansionSettings.fillOnTrigger = YES;
         expansionSettings.threshold = 1.1;
         
         CGFloat padding = 15;
-        NSIndexPath *indexPath = ((InboxMessageCell*) cell).indexpath;
+        NSIndexPath *indexPath = [_table indexPathForCell:cell];
         InboxMessageList *list = _messages[indexPath.row];
         
         [_datainput setObject:list.message_id forKey:@"message_id"];
