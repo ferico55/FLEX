@@ -44,7 +44,7 @@ THE SOFTWARE.
 			<string>Copyright 2014 AppsFlyer Ltd. All rights reserved.
 </string>
 			<key>Title</key>
-			<string>AppsFlyerFramework</string>
+			<string>AppsFlyer-SDK</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

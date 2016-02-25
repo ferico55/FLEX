@@ -2117,6 +2117,7 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		852488251C7EB5D3000A2E6D /* AppsFlyer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppsFlyer.framework; path = Pods/AppsFlyerFramework/AppsFlyer.framework; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5198,6 +5199,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */,
+				7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -5214,8 +5217,6 @@
 				7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */,
 				8565E1DF1B9404B000843388 /* AssetsLibrary.framework in Frameworks */,
 				8565E1DD1B94048800843388 /* AddressBook.framework in Frameworks */,
-				7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */,
-				7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */,
 				853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */,
 				853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */,
 				853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */,
@@ -10682,6 +10683,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				852488251C7EB5D3000A2E6D /* AppsFlyer.framework */,
 				7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */,
 				7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */,
 				7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */,
@@ -13131,6 +13133,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/AppsFlyerFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -13180,6 +13183,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/AppsFlyerFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
