@@ -241,7 +241,8 @@ FavoriteShopRequestDelegate
 - (void)refreshProductFeed {
     _page = 0;
     [_productDataSource removeAllProducts];
-    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+    //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+    [_favoriteShopRequest requestFavoriteShopListings];
     [_noResultView removeFromSuperview];
 }
 
@@ -338,14 +339,19 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 
 -(void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
     _favoritedShops = favoriteShops;
-    [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+    if(_favoritedShops.list.count > 0){
+        [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+    }else{
+        [_loadingIndicator setHidden:YES];
+        [_collectionView addSubview:_noResultView];
+    }
 }
 
 -(void)didReceiveProductFeed:(SearchAWS *)feed{
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
-    if (feed.result.products.count > 0) {
+    if (_favoritedShops.list.count > 0 && feed.result.products.count > 0) {
         [_noResultView removeFromSuperview];
         if (_page == 0) {
             [_productDataSource replaceProductsWith: feed.result.products];
@@ -364,8 +370,10 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         
     } else {
         // no data at all
-        [_productDataSource removeAllProducts];
-        [_collectionView addSubview:_noResultView];
+        if(_page == 0){
+            [_productDataSource removeAllProducts];
+            [_collectionView addSubview:_noResultView];
+        }
     }
     
     if(_refreshControl.isRefreshing) {
@@ -389,5 +397,11 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
     [stickyView show];
+}
+
+#pragma mark - No Request delegate
+- (void)buttonDidTapped:(id)sender{
+    NSDictionary *userInfo = @{@"page" : @5};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
 }
 @end

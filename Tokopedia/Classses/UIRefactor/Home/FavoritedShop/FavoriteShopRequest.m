@@ -23,11 +23,13 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 
 @implementation FavoriteShopRequest{
     TokopediaNetworkManager *networkManager;
+    TokopediaNetworkManager *productFeedNetworkManager;
     NSString* shopId;
     NSString* adKey;
     NSInteger page;
     FavoritedShopResult* favShops;
     __weak RKObjectManager *_objectmanager;
+    __weak RKObjectManager *_productFeedObjectManager;
 }
 
 - (id)init{
@@ -35,6 +37,9 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     if(self){
         networkManager = [TokopediaNetworkManager new];
         networkManager.delegate = self;
+        
+        productFeedNetworkManager = [TokopediaNetworkManager new];
+        productFeedNetworkManager.delegate = self;
     }
     return self;
 }
@@ -61,12 +66,15 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 -(void)requestProductFeedWithFavoriteShopList:(FavoritedShopResult*)favoriteShopResult withPage:(NSInteger)p{
     favShops = favoriteShopResult;
     page = p;
-    networkManager.tagRequest = FavoriteShopRequestGetProductFeed;
-    [networkManager doRequest];
+    //networkManager.tagRequest = FavoriteShopRequestGetProductFeed;
+    
+    productFeedNetworkManager.tagRequest = FavoriteShopRequestGetProductFeed;
+    [productFeedNetworkManager doRequest];
 }
 
 -(void)cancelAllOperation{
     [_objectmanager.operationQueue cancelAllOperations];
+    [_productFeedObjectManager.operationQueue cancelAllOperations];
 }
 
 #pragma mark Tokopedia Network Manager Delegate
@@ -112,8 +120,10 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
         networkManager.isUsingHmac = YES;
         return RKRequestMethodGET;
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        networkManager.isUsingHmac = NO;
-        networkManager.isParameterNotEncrypted = YES;
+        //networkManager.isUsingHmac = NO;
+        //networkManager.isParameterNotEncrypted = YES;
+        productFeedNetworkManager.isUsingHmac = NO;
+        productFeedNetworkManager.isParameterNotEncrypted = YES;
         return RKRequestMethodGET;
     }
     return RKRequestMethodGET;
@@ -198,7 +208,8 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
         
         return _objectmanager;
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        _objectmanager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
+        //_objectmanager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
+        _productFeedObjectManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
         
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -240,9 +251,10 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
                                                                                            statusCodes:kTkpdIndexSetStatusCodeOK];
         
         //add response description to object manager
-        [_objectmanager addResponseDescriptor:responseDescriptor];
+        //[_objectmanager addResponseDescriptor:responseDescriptor];
+        [_productFeedObjectManager addResponseDescriptor:responseDescriptor];
         
-        return _objectmanager;
+        return _productFeedObjectManager;
 
     }
     return nil;
@@ -291,10 +303,12 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
 //return string with format: shop_id_0, shop_id_1, shop_id_2, dst
 -(NSMutableString*) generateShopString{
     NSMutableString* result = [NSMutableString string];
-    for (FavoritedShopList* shop in favShops.list) {
-        [result appendFormat:@"%@,",shop.shop_id];
+    if(favShops.list.count){
+        for (FavoritedShopList* shop in favShops.list) {
+            [result appendFormat:@"%@,",shop.shop_id];
+        }
+        [result deleteCharactersInRange:NSMakeRange([result length]-1, 1)];
     }
-    [result deleteCharactersInRange:NSMakeRange([result length]-1, 1)];
     return result;
 }
 
