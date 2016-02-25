@@ -290,8 +290,10 @@
         [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        if (_isLogin) {
+            _requestCart.param = @{@"lp_flag":@"1"};
+            [_requestCart doRequestCart];
+        }
         _paymentMethodView.hidden = YES;
         
         //[_networkManager doRequest];
@@ -719,8 +721,8 @@
             UIButton *button = (UIButton*)sender;
             switch (button.tag) {
                 case 10:{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Kupon"
-                                                                    message:@"Masukan kode kupon"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Voucher"
+                                                                    message:@"Masukan kode voucher"
                                                                    delegate:self
                                                           cancelButtonTitle:@"Batal"
                                                           otherButtonTitles:@"OK", nil];
@@ -732,8 +734,8 @@
                 case 11:
                 {
                     AlertInfoView *alertInfo = [AlertInfoView newview];
-                    alertInfo.text = @"Info Kode Kupon Tokopedia";
-                    alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai kupon tidak dapat dikembalikan";
+                    alertInfo.text = @"Info Kode Voucher Tokopedia";
+                    alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai voucher tidak dapat dikembalikan";
                     [alertInfo show];
                 }
                 case 12:
@@ -790,6 +792,7 @@
                         vc.cartDetail = _cartSummary;
                         vc.delegate = self;
                         vc.paymentID = _cartSummary.payment_id;
+                        vc.title = _cartSummary.gateway_name?:@"BCA KlikPay";
                         
                         UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -823,6 +826,7 @@
                     vc.transactionCode = _cartSummary.transaction_code?:@"";
                     vc.delegate = self;
                     vc.paymentID = _cartSummary.payment_id;
+                    vc.title = _cartSummary.gateway_name?:@"BRI E-Pay";
                     
                     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -3070,6 +3074,7 @@
             vc.emoney_code = cart.result.transaction.emoney_code;
             vc.delegate = self;
             vc.paymentID = cart.result.transaction.payment_id;
+            vc.title = _cartSummary.gateway_name?:@"Mandiri E-Cash";
             
             UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
             navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];

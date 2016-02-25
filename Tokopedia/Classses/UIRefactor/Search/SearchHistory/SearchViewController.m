@@ -99,7 +99,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 //    [[UITextField appearance] setTintColor:[UIColor blueColor]];
 //    _searchBar = searchBar;
     [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
-    [_searchBar setTintColor:[UIColor whiteColor]];
+//    [_searchBar setTintColor:[UIColor whiteColor]];
     [self.view addSubview:_searchBar];
 
     _searchBar.delegate = self;
