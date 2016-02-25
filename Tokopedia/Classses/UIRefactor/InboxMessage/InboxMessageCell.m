@@ -19,7 +19,6 @@ SmileyDelegate
 
 @implementation InboxMessageCell
 {
-    IBOutlet UIView* _selectionMarker;
     CMPopTipView* popTipView;
 }
 
@@ -28,7 +27,6 @@ SmileyDelegate
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"InboxMessageCell" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
-//            ((InboxMessageCell *) o).message_title.inboxMessageCell = o;
             return o;
         }
     }
@@ -39,15 +37,17 @@ SmileyDelegate
 #pragma mark - Initialization
 
 - (void)awakeFromNib {
-    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    
     if (self.isEditing) {
         [super setSelected:selected animated:animated];
     } else {
-        _selectionMarker.hidden = !selected;
+        if (selected) {
+            self.contentView.backgroundColor = [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1];
+        } else {
+            self.contentView.backgroundColor = [UIColor clearColor];
+        }
     }
 }
 
@@ -55,7 +55,11 @@ SmileyDelegate
     if (self.isEditing) {
         [super setHighlighted:highlighted animated:animated];
     } else {
-        _selectionMarker.hidden = !highlighted;
+       if (highlighted) {
+           self.contentView.backgroundColor = [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1];
+       } else {
+           self.contentView.backgroundColor = [UIColor clearColor];
+       }
     }
 }
 
