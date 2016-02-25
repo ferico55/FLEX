@@ -8,6 +8,7 @@
 
 #import "ImagePickerCategoryController.h"
 #import "SearchResultViewController.h"
+#import "UIImage+ImageEffects.h"
 
 @interface ImagePickerCategoryController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -51,24 +52,12 @@
 }
 
 - (void)setBlurBackground {
-    self.backgroundImageView.image = [_imageQuery objectForKey:UIImagePickerControllerEditedImage];
-    
-    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-
-    UIVibrancyEffect *vibrancy = [UIVibrancyEffect effectForBlurEffect:blur];
-
-    UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithEffect:blur];
-    effectView.frame = self.view.frame;
-    
-    UIVisualEffectView *vibrantView = [[UIVisualEffectView alloc]initWithEffect:vibrancy];
-    vibrantView.frame = self.view.frame;
-    
-    [self.backgroundImageView addSubview:effectView];
-    [self.backgroundImageView addSubview:vibrantView];
+    UIImage *image = [_imageQuery objectForKey:UIImagePickerControllerEditedImage];
+    self.backgroundImageView.image = [image applyLightEffect];
 }
 
 - (void)setSearchButtonStyle {
-    self.searchButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.05];
+    self.searchButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
     self.searchButton.layer.cornerRadius = 3;
 }
 
@@ -90,7 +79,7 @@
     cell.textLabel.text = self.categories[indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.05];
+    cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.separatorInset = UIEdgeInsetsZero;
     cell.tintColor = [UIColor whiteColor];
@@ -117,7 +106,8 @@
     controller.hidesBottomBarWhenPushed = YES;
     controller.data = @{@"type":@"search_product"};
     controller.imageQueryInfo = _imageQuery;
-    
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     navigation.navigationBar.translucent = NO;
     
@@ -127,10 +117,7 @@
 }
 
 - (IBAction)tapCancelButton:(UIButton *)sender {
-    UIImagePickerController *controller = (UIImagePickerController *)[self presentingViewController];
     [self dismissViewControllerAnimated:YES completion:NULL];
-    [controller dismissViewControllerAnimated:YES completion:NULL];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 @end
