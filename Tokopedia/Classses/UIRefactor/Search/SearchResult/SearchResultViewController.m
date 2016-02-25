@@ -344,11 +344,12 @@ ImageSearchRequestDelegate
 }
 
 - (void)dismissView {
-    UIViewController *controller = [self.navigationController presentingViewController];
-    UIImagePickerController *cameraController = (UIImagePickerController *)[controller presentingViewController];
-    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-    [controller dismissViewControllerAnimated:YES completion:NULL];
-    [cameraController dismissViewControllerAnimated:YES completion:NULL];
+//    UIViewController *controller = [self.navigationController presentingViewController];
+//    UIImagePickerController *cameraController = (UIImagePickerController *)[controller presentingViewController];
+//    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+//    [controller dismissViewControllerAnimated:YES completion:NULL];
+//    [cameraController dismissViewControllerAnimated:YES completion:NULL];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DISMISS_ALL_CONTROLLERS" object:nil];
 }
 
 #pragma mark - Properties
