@@ -290,8 +290,10 @@
         [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        if (_isLogin) {
+            _requestCart.param = @{@"lp_flag":@"1"};
+            [_requestCart doRequestCart];
+        }
         _paymentMethodView.hidden = YES;
         
         //[_networkManager doRequest];
