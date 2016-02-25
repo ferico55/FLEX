@@ -316,8 +316,16 @@ ImageSearchRequestDelegate
     
     if(_isFromImageSearch){
         [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
+        [_fourButtonsToolbar setHidden:YES];
+        [_threeButtonsToolbar setHidden:NO];
+        [_fourButtonsToolbar setUserInteractionEnabled:NO];
+        [_threeButtonsToolbar setUserInteractionEnabled:YES];
     }else{
         [_networkManager doRequest];
+        [_fourButtonsToolbar setHidden:NO];
+        [_threeButtonsToolbar setHidden:YES];
+        [_fourButtonsToolbar setUserInteractionEnabled:YES];
+        [_threeButtonsToolbar setUserInteractionEnabled:NO];
     }
     
     _spellCheckRequest = [SpellCheckRequest new];

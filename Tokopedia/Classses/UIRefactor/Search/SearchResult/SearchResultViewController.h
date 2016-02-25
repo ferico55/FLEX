@@ -26,5 +26,7 @@
 @property (nonatomic) BOOL isFromImageSearch;
 @property (nonatomic) BOOL isFromAutoComplete;
 @property (weak, nonatomic) id<SearchResultDelegate> delegate;
+@property (strong, nonatomic) IBOutlet UIView *fourButtonsToolbar;
+@property (strong, nonatomic) IBOutlet UIView *threeButtonsToolbar;
 
 @end
