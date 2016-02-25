@@ -7,6 +7,7 @@
 //
 
 #import "RequestRates.h"
+#import "TkpdHMAC.h"
 
 @implementation RequestRates {
     TAGContainer *_gtmContainer;
@@ -15,7 +16,7 @@
     TokopediaNetworkManager *_networkManager;
     
     NSString *_baseuUrl;
-    NSString *_postUrl;
+    NSString *_pathUrl;
     
     NSDictionary *_param;
     
@@ -27,11 +28,16 @@
     [self configureGTM];
     
     NSString *name = [[names valueForKey:@"description"] componentsJoinedByString:@","];
+    time_t unixTime = (time_t) [[NSDate date] timeIntervalSince1970];
+    TkpdHMAC *hmac = [TkpdHMAC new];
+    NSString *token = [NSString stringWithFormat:@"Tokopedia+Kero:%@",[hmac getTokenRatesPath:_pathUrl withUnixTime:unixTime]];
     
     _param = @{@"names"         :name?:@"",
                @"origin"        : origin?:@"",
                @"destination"   :@"",
-               @"weight"        :@""
+               @"weight"        :@"",
+               @"ut"            :@(unixTime),
+               @"token"         :token
                };
     
     [[self networkManager] doRequest];
@@ -74,7 +80,7 @@
 }
 
 -(NSString *)getPath:(int)tag {
-    return _postUrl;
+    return _pathUrl;
 }
 
 -(NSString *)getRequestStatus:(RKMappingResult*)result withTag:(int)tag {
@@ -123,7 +129,7 @@
     
     //TODO::BASE & POST URL
     _baseuUrl = @"http://private-8f030-kero.apiary-mock.com";//[_gtmContainer stringForKey:@"base_url"]?:@"https://clover.tokopedia.com";
-    _postUrl = @"rates/v1";//[_gtmContainer stringForKey:@"post_url"]?:@"notify/v1";
+    _pathUrl = @"rates/v1";//[_gtmContainer stringForKey:@"post_url"]?:@"notify/v1";
 }
 
 @end

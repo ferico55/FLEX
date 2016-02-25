@@ -23,6 +23,26 @@
     return self;
 }
 
+- (NSString *)getTokenRatesPath:(NSString*)path withUnixTime:(time_t)unixTime{
+    NSString *output;
+    NSString *secret = @"Keroppi";
+    
+    //set request method
+    [self setSecret:secret];
+    
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%ld\n%@", @"GET", @"", @"", unixTime, path];
+    
+    const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    output = [self base64forData:HMAC];
+    
+    return output;
+}
+
 - (NSString *)generateSignatureWithMethod:(NSString*)method tkpdPath:(NSString*)path parameter:(NSDictionary*)parameter{
     NSString *output;
     NSString *secret = @"web_service_v4";
