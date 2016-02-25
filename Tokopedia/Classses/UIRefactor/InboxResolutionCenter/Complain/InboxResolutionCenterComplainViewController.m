@@ -31,6 +31,7 @@
 #import "NoResultReusableView.h"
 
 #import "TagManagerHandler.h"
+#import "NavigationHelper.h"
 
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
@@ -101,6 +102,8 @@
 
 @implementation InboxResolutionCenterComplainViewController{
     NoResultReusableView *_noResultView;
+    __weak IBOutlet UIButton *btnStatusPemesanan;
+    __weak IBOutlet UIButton *btnDaftarTransaksi;
 }
 
 -(instancetype)init{
@@ -127,6 +130,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        [btnDaftarTransaksi setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnStatusPemesanan setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btnDaftarTransaksi.userInteractionEnabled = btnStatusPemesanan.userInteractionEnabled = NO;
+    }
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -390,8 +400,11 @@
 #pragma mark - Cell Delegate
 -(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIViewController* sourceViewController = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?_detailViewController:self;
+    
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
+    [_navigate navigateToInvoiceFromViewController:sourceViewController
+                                    withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
 }
 
 -(void)goToShopOrProfileAtIndexPath:(NSIndexPath *)indexPath
@@ -433,8 +446,10 @@
     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         if (![resolution isEqual:_detailViewController.resolution]) {
+            _detailViewController.delegate = self;
             [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
         }
+        
     }
     else
     {
@@ -767,6 +782,19 @@
             [alert show];
             [_allObjectCancelComplain removeObject:_objectCancelComplain];
             [[NSNotificationCenter defaultCenter] postNotificationName:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME object:nil];
+            _selectedDetailIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                NSIndexPath *indexPath = _selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+                if (indexPath.row < _list.count) {
+                    InboxResolutionCenterList *resolution = _list[indexPath.row];
+                    NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+                    if (![resolution isEqual:_detailViewController.resolution]) {
+                        [_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                        _detailViewController.delegate = self;
+                        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                    }
+                }
+            }
         }
         else
         {

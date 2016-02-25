@@ -164,6 +164,8 @@ RetryViewDelegate
     BOOL _isFailRequest;
     
     PromoRequest *_promoRequest;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 #pragma mark - Initialization
@@ -433,44 +435,51 @@ RetryViewDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    CGSize cellSize = CGSizeMake(0, 0);
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    CGFloat screenWidth = screenRect.size.width;
-    
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        cellCount = 1;
-        heightRatio = 390;
-        widhtRatio = 300;
-        inset = 15;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        cellCount = 2;
-        heightRatio = 41;
-        widhtRatio = 29;
-        inset = 15;
+    NSInteger numberOfCell;
+    NSInteger cellHeight;
+    if(IS_IPAD) {
+        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+        if(self.cellType == UITableViewCellTypeTwoColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 5;
+            } else {
+                numberOfCell = 4;
+            }
+            cellHeight = 250;
+        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 8;
+            } else {
+                numberOfCell = 6;
+            }
+            cellHeight = 150;
+        } else if(self.cellType == UITableViewCellTypeOneColumn) {
+            if(UIInterfaceOrientationIsLandscape(orientation)) {
+                numberOfCell = 4;
+                cellHeight = 400;
+            } else {
+                numberOfCell = 2;
+                cellHeight = 450;
+            }
+            
+        }
     } else {
-        cellCount = 3;
-        heightRatio = 1;
-        widhtRatio = 1;
-        inset = 14;
+        if(self.cellType == UITableViewCellTypeTwoColumn) {
+            numberOfCell = 2;
+            cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
+        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
+            numberOfCell = 3;
+            cellHeight = [UIScreen mainScreen].bounds.size.width / 3 - 15;
+        } else {
+            numberOfCell = 1;
+            cellHeight = [UIScreen mainScreen].bounds.size.width + 100;
+        }
     }
     
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
-    }
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat cellWidth = screenWidth/numberOfCell - 15;
     
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
+    return CGSizeMake(cellWidth, cellHeight);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -691,13 +700,14 @@ RetryViewDelegate
 }
 
 - (IBAction)tapToSort:(id)sender {
-    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    SortViewController *vc = [SortViewController new];
-    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
-                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-    vc.delegate = self;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    SortViewController *controller = [SortViewController new];
+    controller.sortType = SortProductShopSearch;
+    controller.selectedIndexPath = _sortIndexPath;
+    controller.delegate = self;
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
     self.navigationController.navigationBar.alpha = 0;
+    
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
@@ -711,9 +721,10 @@ RetryViewDelegate
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_detailfilter addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    [_detailfilter setObject:sort forKey:kTKPDDETAIL_APIORERBYKEY];
     [self refreshView:nil];
+    _sortIndexPath = indexPath;
 }
 
 #pragma mark - Filter Delegate

@@ -12,7 +12,7 @@
 #import "CatalogShopViewController.h"
 #import "CatalogShopCell.h"
 #import "UserAuthentificationManager.h"
-#import "GeneralTableViewController.h"
+#import "SortViewController.h"
 #import "FilterCatalogViewController.h"
 #import "CatalogProductViewController.h"
 #import "DetailProductViewController.h"
@@ -44,7 +44,7 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    GeneralTableViewControllerDelegate,
+    SortViewControllerDelegate,
     FilterCatalogDelegate,
     CatalogShopDelegate,
     CMPopTipViewDelegate,
@@ -82,7 +82,9 @@
     FilterCatalogViewController *_filterCatalogController;
     
     LoadingView *_loadingView;
-    NoResultReusableView *_noResultView;
+    NoResultReusableView *noResultView;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -119,9 +121,8 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _networkManager.isUsingHmac = NO;
-    _networkManager.isParameterNotEncrypted = YES;
-    [_networkManager doRequest];
+    _uriNext = _catalog.result.paging.uri_next;
+    _catalogId = _catalog.result.catalog_info.catalog_id;
     
     _filterCatalogController = [[FilterCatalogViewController alloc] initWithStyle:UITableViewStyleGrouped];
     _filterCatalogController.catalog = _catalog;
@@ -132,8 +133,10 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
+    [_catalog_shops removeAllObjects];
+    [_networkManager doRequest];
     
-    //if (_catalog_shops.count == 0) [self initNoResultView];
+    [self initNoResultView];
 }
 
 - (void)initNoResultView{
@@ -294,29 +297,10 @@
         UIButton *button = (UIButton *)sender;
         if (button.tag == 1) {
             
-            GeneralTableViewController *controller = [GeneralTableViewController new];
-            controller.title = @"Urutkan";
+            SortViewController *controller = [SortViewController new];
+            controller.sortType = SortCatalogDetailSeach;
+            controller.selectedIndexPath = _sortIndexPath;
             controller.delegate = self;
-            controller.objects = @[
-                                   @"Produk Terjual",
-                                   @"Penilaian",
-                                   @"Harga - Dari yang Terendah",
-                                   @"Harga - Dari yang Tertinggi",
-                                   ];
-            
-            NSString *selectedObject = @"Produk Terjual";
-            if ([_orderBy isEqualToString:@"1"]) {
-                selectedObject = @"Produk Terjual";
-            } else if ([_orderBy isEqualToString:@"2"]) {
-                selectedObject = @"Penilaian";
-            } else if ([_orderBy isEqualToString:@"3"]) {
-                selectedObject = @"Harga - Dari yang Terendah";
-            } else if ([_orderBy isEqualToString:@"4"]) {
-                selectedObject = @"Harga - Dari yang Tertinggi";
-            }
-            
-            controller.selectedObject = selectedObject;
-            controller.isPresentedViewController = YES;
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             navigationController.navigationBar.translucent = NO;
@@ -524,25 +508,18 @@
 
 #pragma mark - General table delegate
 
-- (void)didSelectObject:(id)object
-{
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    _sortIndexPath = indexPath;
+    
     [_catalog_shops removeAllObjects];
+    
     [_tableView reloadData];
     [_tableView setTableFooterView:_footerView];
+    
     [_activityIndicatorView startAnimating];
-    NSString *orderBy;
-    if ([object isEqualToString:@"Produk Terjual"]) {
-        orderBy = @"1";
-    } else if ([object isEqualToString:@"Penilaian"]) {
-        orderBy = @"2";
-    } else if ([object isEqualToString:@"Harga - Dari yang Terendah"]) {
-        orderBy = @"3";
-    } else if ([object isEqualToString:@"Harga - Dari yang Tertinggi"]) {        
-        orderBy = @"4";
-    }
     
     _catalogId = _catalog.result.catalog_info.catalog_id;
-    _orderBy = orderBy;
+	_orderBy = sort;
     _page = 0;
     
     [_networkManager doRequest];

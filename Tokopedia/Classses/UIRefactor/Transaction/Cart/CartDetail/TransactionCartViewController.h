@@ -35,6 +35,8 @@
 @property (strong,nonatomic,setter=setData:) NSDictionary *data;
 @property NSArray *listSummary;
 
+@property BOOL isLogin;
+
 -(void)refreshRequestCart;
 
 @end

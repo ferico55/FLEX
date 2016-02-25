@@ -91,7 +91,7 @@ static NSString const *rows = @"12";
     GeneralPhotoProductDelegate,
     PromoCollectionViewDelegate,
     PromoRequestDelegate,
-HotlistBannerDelegate
+    HotlistBannerDelegate
 >
 {
     NSInteger _page;
@@ -140,6 +140,8 @@ HotlistBannerDelegate
     
     HotlistBannerRequest *_bannerRequest;
     BOOL _shouldUseHashtag;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -214,7 +216,7 @@ HotlistBannerDelegate
     _cachecontroller = [URLCacheController new];
     _cacheconnection = [URLCacheConnection new];
     _operationQueue = [NSOperationQueue new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, IS_IPAD ? _iPadView.frame.size.height : _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
     _shouldUseHashtag = YES;
 
     _promo = [NSMutableArray new];
@@ -456,13 +458,12 @@ HotlistBannerDelegate
                 case 10:
                 {
                     // URUTKAN
-                    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    SortViewController *vc = [SortViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
-                                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                    vc.delegate = self;
-                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                    SortViewController *controller = [SortViewController new];
+                    controller.selectedIndexPath = _sortIndexPath;
+                    controller.sortType = SortHotlistDetail;
+                    controller.delegate = self;
+                    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                    [self.navigationController presentViewController:navigation animated:YES completion:nil];
                     break;
                 }
                 case 11:
@@ -760,6 +761,7 @@ HotlistBannerDelegate
 -(void)requestprocess:(id)object
 {
     [_noResultView removeFromSuperview];
+    
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -826,20 +828,17 @@ HotlistBannerDelegate
                     _filterview.hidden = NO;
                     
                     if ([_start integerValue] > 0) [self requestPromo];
-                    [viewCollection reloadData];
-                    if([_urinext isEqualToString:@""]) {
-                        [flowLayout setFooterReferenceSize:CGSizeZero];
-                    }
+
                 } else {
-                    [flowLayout setFooterReferenceSize:CGSizeZero];
                     [viewCollection addSubview:_noResultView];
-                    [viewCollection reloadData];
-                    [viewCollection layoutIfNeeded];
+                    _urinext = nil;
                 }
             } else {
                 [viewCollection addSubview:_noResultView];
-                [viewCollection reloadData];
+                _urinext = nil;
+
             }
+            [viewCollection reloadData];
         }
     }
     else{
@@ -903,20 +902,8 @@ HotlistBannerDelegate
     if (_bannerResult) {
         NSString *urlstring = _bannerResult.info.cover_img;
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
-        
-        UIImageView *thumb = _hotlistImageView;
-        thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
-        
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image];
-#pragma clang diagnostic pop
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        }];
+        [_imageview setImageWithURL:[NSURL URLWithString:urlstring] placeholderImage:nil];
+        [_hotlistImageView setImageWithURL:[NSURL URLWithString:urlstring] placeholderImage:nil];
     }
     
     if (_bannerResult.info.hotlist_description) {
@@ -925,7 +912,7 @@ HotlistBannerDelegate
         style.alignment = NSTextAlignmentJustified;
         
         NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
                                      NSParagraphStyleAttributeName  : style,
                                      NSForegroundColorAttributeName : IS_IPAD ? [UIColor blackColor] : [UIColor whiteColor],
                                      };
@@ -1016,9 +1003,9 @@ HotlistBannerDelegate
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    [_detailfilter addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    _sortIndexPath = indexPath;
+    [_detailfilter setObject:sort forKey:kTKPDHOME_APIORDERBYKEY];
     [self refreshView:nil];
 }
 
@@ -1063,7 +1050,7 @@ HotlistBannerDelegate
     } else {
         if(self.cellType == UITableViewCellTypeTwoColumn) {
             numberOfCell = 2;
-            cellHeight = 205;
+            cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
         } else if(self.cellType == UITableViewCellTypeThreeColumn) {
             numberOfCell = 3;
             cellHeight = [UIScreen mainScreen].bounds.size.width / 3 - 15;
@@ -1125,6 +1112,11 @@ HotlistBannerDelegate
                                                               withReuseIdentifier:CTagHeaderIdentifier
                                                                      forIndexPath:indexPath];
             [_header removeFromSuperview];
+            
+            CGRect frame = _noResultView.frame;
+            frame.origin.y = reusableView.frame.size.height;
+            _noResultView.frame = frame;
+            
             if(IS_IPAD) {
                 [reusableView addSubview:_iPadView];
             } else {
@@ -1172,7 +1164,7 @@ HotlistBannerDelegate
     CGSize size = CGSizeZero;
     if (section == 0) {
         if(IS_IPAD) {
-            _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, 309);
+            _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _iPadView.frame.size.height);
         } else {
             _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
         }
@@ -1270,24 +1262,29 @@ HotlistBannerDelegate
 #pragma mark - Banner Request Delegate 
 - (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
     _bannerResult = bannerResult;
+    [self setHeaderData];
+    
     _pagecontrol.hidden = NO;
+    
     _swipegestureleft.enabled = YES;
     _swipegestureright.enabled = YES;
+    
 
-    [self setHeaderData];
-
+    HotlistBannerQuery *q = _bannerResult.query;
     
     //set query
-    HotlistBannerQuery *q = bannerResult.query;
-    NSDictionary *query = @{@"negative_keyword" : q.negative_keyword?:@"",
-                            @"department_id" : q.sc?:@"",
-                            @"order_by" : q.ob?:@"",
-                            @"terms" : q.terms?:@"",
-                            @"shop_type" : q.fshop?:@"",
-                            @"key" : q.q?:@"",
-                            @"price_min" : q.pmin?:@"",
-                            @"price_max" : q.pmax?:@"",
-                            @"type" : q.type?:@""};
+    NSDictionary *query = @{
+        @"negative_keyword" : q.negative_keyword?:@"",
+        @"department_id" : q.sc?:@"",
+        @"order_by" : q.ob?:@"",
+        @"terms" : q.terms?:@"",
+        @"shop_type" : q.fshop?:@"",
+        @"key" : q.q?:@"",
+        @"price_min" : q.pmin?:@"",
+        @"price_max" : q.pmax?:@"",
+        @"type" : q.type?:@""
+    };
+    
     [_detailfilter addEntriesFromDictionary:query];
     
     _start = @"0";

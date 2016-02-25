@@ -631,7 +631,7 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETDEFAULTADDRESSKEY,
-                            kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]?:@0
+                            kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]?:@0,
                             };
     
     _requestActionSetDefault = [_objectmanagerActionSetDefault appropriateObjectRequestOperationWithObject:self
@@ -1057,47 +1057,9 @@
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
-
-    if (![searchBar.text isEqualToString:@""]) {
-        [_list removeAllObjects];
-        [_list addObjectsFromArray:_listTemp];
-        
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchBar.text];
-        NSMutableArray *listName = [NSMutableArray new];
-        NSMutableArray *listReceiver = [NSMutableArray new];
-        for (AddressFormList *address in _list) {
-            [listName addObject: address.address_name];
-            [listReceiver addObject:address.receiver_name];
-        }
-        
-        listName = [[listName filteredArrayUsingPredicate:resultPredicate] mutableCopy];
-        listReceiver = [[listReceiver filteredArrayUsingPredicate:resultPredicate] mutableCopy];
-        NSMutableArray *listFiltered = [NSMutableArray new];
-        for (AddressFormList *address in _list) {
-            for (NSString *name in listName) {
-                if ([address.address_name isEqualToString:name] && ![listFiltered containsObject:address]) {
-                    [listFiltered addObject:address];
-                }
-            }
-            for (NSString *receiver in listReceiver) {
-                if ([address.receiver_name isEqualToString:receiver] && ![listFiltered containsObject:address]) {
-                    [listFiltered addObject:address];
-                }
-            }
-        }
-        [_list removeAllObjects];
-        [_list addObjectsFromArray:listFiltered];
-    }
-    else
-    {
-        [_list removeAllObjects];
-        [_list addObjectsFromArray:_listTemp];
-    }
-    
     _searchKeyword = searchBar.text;
     
-    [_table reloadData];
-    
+    [self refreshView:nil];
     return YES;
 }
 
@@ -1215,7 +1177,7 @@
                                 kTKPDPROFILE_APIPAGEKEY : @(_page),
                                 kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
                                 kTKPD_USERIDKEY : @(userID),
-                                API_QUERY_KEY : query
+                 API_QUERY_KEY : _searchKeyword?:@""
                                 };
     }
     
@@ -1232,7 +1194,7 @@
     requestObject.page = [NSString stringWithFormat:@"%zd", _page];
     requestObject.per_page = [NSString stringWithFormat:@"%zd",kTKPDPROFILESETTINGADDRESS_LIMITPAGE];
     requestObject.user_id = userID;
-    requestObject.query = query;
+    requestObject.query = query?:@"";
     
     return requestObject;
 }

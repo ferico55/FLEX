@@ -32,4 +32,6 @@
 @property (nonatomic, strong) NSArray *product_images;
 @property (nonatomic, strong) Info *info;
 
+- (NSDictionary *)productFieldObjects;
+
 @end

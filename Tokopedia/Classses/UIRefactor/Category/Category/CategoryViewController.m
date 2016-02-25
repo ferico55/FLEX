@@ -14,16 +14,18 @@
 #import "TKPHomeBannerStore.h"
 #import "TKPStoreManager.h"
 #import "iCarousel.h"
+#import "SwipeView.h"
 #import "CarouselDataSource.h"
 #import "WebViewController.h"
 #import "CategoryDataSource.h"
+#import "Tokopedia-Swift.h"
 
 NSInteger const bannerHeight = 115;
 
-@interface CategoryViewController () <NotificationManagerDelegate, iCarouselDelegate> {
+@interface CategoryViewController () <NotificationManagerDelegate, iCarouselDelegate, SwipeViewDelegate> {
     NotificationManager *_notifManager;
     
-    Banner *_banner;
+    NSArray<Slide*>* _banner;
     UIActivityIndicatorView *loadIndicator;
 }
 
@@ -31,9 +33,11 @@ NSInteger const bannerHeight = 115;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
 @property (nonatomic, strong) iCarousel *slider;
+@property (nonatomic, strong) SwipeView *digitalGoodsSwipeView;
 @property (nonatomic, strong) UIImageView *bannerView;
 @property (nonatomic, strong) UIView *sliderView;
 @property (nonatomic, strong) CarouselDataSource *carouselDataSource;
+@property (nonatomic, strong) DigitalGoodsDataSource *digitalGoodsDataSource;
 @property (nonatomic, strong) CategoryDataSource *categoryDataSource;
 
 
@@ -75,7 +79,7 @@ NSInteger const bannerHeight = 115;
     [_collectionView setDelegate:_categoryDataSource];
 
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.headerReferenceSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 175);
+    flowLayout.headerReferenceSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 290);
     [_collectionView setCollectionViewLayout:flowLayout];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
@@ -158,70 +162,56 @@ NSInteger const bannerHeight = 115;
 - (void)loadBanners {
     TKPHomeBannerStore *bannersStore = [[[[self class] TKP_rootController] storeManager] homeBannerStore];
     __weak typeof(self) wself = self;
+    //prevent double slider
+
+
+    NSInteger sliderHeight = 175;
     
-    [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
+    [bannersStore fetchBannerWithCompletion:^(NSArray<Slide*>* banner, NSError *error) {
         if (wself != nil) {
+            [_slider removeFromSuperview];
             [loadIndicator stopAnimating];
             
-            NSInteger sliderHeight = 175;
             _banner = banner;
-            //prevent double slider
-            if(_slider) {
-                [_slider removeFromSuperview];                
-            }
-            
-            //remove banner if ipad
-//            BOOL bannerExists = ![_banner.result.ticker.img_uri isEqualToString:@""] && !IS_IPAD;
-            BOOL bannerExists = false;
-            
-            if(bannerExists) {
-                [self setBanner:_banner.result.ticker.img_uri];
-                sliderHeight += bannerHeight;
-            }
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
-            _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
+            _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner];
             _carouselDataSource.delegate = self;
-
 
             _slider.type = iCarouselTypeLinear;
             _slider.dataSource = _carouselDataSource;
             _slider.delegate = _carouselDataSource;
-
             _slider.decelerationRate = 0.5;
-//            if (bannerExists) _slider.contentOffset = CGSizeMake(0, -(bannerHeight/2));
 
-
-            [self.collectionView addSubview:_slider];
+            [_collectionView addSubview:_slider];
             [_collectionView bringSubviewToFront:_slider];
-
+        }
+    }];
+    
+    [bannersStore fetchMiniSlideWithCompletion:^(NSArray<MiniSlide*>*slide, NSError* error) {
+        if(wself != nil) {
+            [_digitalGoodsSwipeView removeFromSuperview];
+            
+            _digitalGoodsSwipeView = [[SwipeView alloc] initWithFrame:CGRectMake(0, sliderHeight+5, [UIScreen mainScreen].bounds.size.width, 120)];
+            _digitalGoodsDataSource = [[DigitalGoodsDataSource alloc] initWithGoods:slide swipeView:_digitalGoodsSwipeView];
+            
+            _digitalGoodsSwipeView.dataSource = _digitalGoodsDataSource;
+            _digitalGoodsSwipeView.delegate = self;
+            _digitalGoodsSwipeView.clipsToBounds = YES;
+            _digitalGoodsSwipeView.truncateFinalPage = YES;
+            _digitalGoodsSwipeView.decelerationRate = 0.5;
+            
+            [_collectionView addSubview:_digitalGoodsSwipeView];
         }
     }];
 }
 
-- (void)setBanner:(NSString*)bannerURL {
-    if(_bannerView) {
-        [_bannerView removeFromSuperview];
-    }
-    _bannerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -bannerHeight, [UIScreen mainScreen].bounds.size.width, bannerHeight)];
-    [_bannerView setBackgroundColor:[UIColor whiteColor]];
-    [_bannerView setImageWithURL:[NSURL URLWithString:bannerURL] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-    [_bannerView setContentMode:UIViewContentModeScaleAspectFit];
+- (void)swipeView:(SwipeView *)swipeView didSelectItemAtIndex:(NSInteger)index {
+    MiniSlide *good = [_digitalGoodsDataSource goodsAtIndex:index];
+    WebViewController *webview = [[WebViewController alloc] init];
+    webview.strTitle = @"Tokopedia";
+    webview.strURL = good.redirect_url;
     
-    UITapGestureRecognizer *tapBanner = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapBanner)];
-    [_bannerView addGestureRecognizer:tapBanner];
-    [_bannerView setUserInteractionEnabled:YES];
-    
-    [self.collectionView addSubview:_bannerView];
-}
-
-- (void)didTapBanner {
-    if(_banner) {
-        WebViewController *webView = [[WebViewController alloc] init];
-        webView.strTitle = @"Promo";
-        webView.strURL = _banner.result.ticker.url;
-        
-        [self.navigationController pushViewController:webView animated:YES];
-    }
+    [self.navigationController pushViewController:webview animated:YES];
 }
 
 - (void)moveToNextSlider {

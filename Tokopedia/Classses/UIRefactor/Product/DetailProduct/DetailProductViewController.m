@@ -1701,9 +1701,7 @@ NoResultDelegate
         [self configureGetOtherProductRestkit];
         
         [self requestsuccess:successResult withOperation:operation];
-        
-        
-        
+                
         if(isNeedLogin) {
             isNeedLogin = !isNeedLogin;
             if(isDoingWishList) {
@@ -2129,10 +2127,11 @@ NoResultDelegate
             id stats = [result objectForKey:@""];
             _product = stats;
             _product.isDummyProduct = NO;
+            [self addUserActivity];
         }
         
         _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
-        _formattedProductTitle = _product.result.product.product_name;
+        _formattedProductTitle = [NSString stringWithFormat:@" %@", _product.result.product.product_name];
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
@@ -2169,7 +2168,13 @@ NoResultDelegate
                     [barbutton1 setTag:24];
                 }
                 
-                self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
+                if([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                   [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                    self.navigationItem.rightBarButtonItems = nil;
+                } else {
+                    self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
+                }
+                
                 [btnWishList removeFromSuperview];
                 
                 //Set position btn share
@@ -2246,6 +2251,7 @@ NoResultDelegate
             [self setOtherProducts];
             [self addImpressionClick];
 
+            //Track in GA
             [TPAnalytics trackProductView:_product.result.product];
             
             _isnodata = NO;
@@ -2262,21 +2268,11 @@ NoResultDelegate
                 [self hiddenButtonBuyAndPromo];
             }
             else {
-//                if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
-//                    _dinkButton.hidden = NO;
-//                    _buyButton.hidden = YES;
-//                } else {
-//                    _buyButton.hidden = NO;
-//                    _dinkButton.hidden = YES;
-//                }
-                
                 //Check is in warehouse
                 if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
                     [self hiddenButtonBuyAndPromo];
                 }
             }
-            
-            
             
             if(_product.result.shop_info.shop_already_favorited == 1) {
                 _favButton.tag = 17;
@@ -3268,6 +3264,12 @@ NoResultDelegate
 
 - (void)buttonDidTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)addUserActivity {
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
+        self.userActivity = [TPSpotlight productDetailActivity:_product.result];
+    }
 }
 
 @end

@@ -8,4 +8,7 @@
 #import "ProductFeedList.h"
 #import "ProductCell.h"
 #import "ProductModelView.h"
-#import "SearchAWSProduct.h"
+
+#import "SwipeView.h"
+#import "MiniSlide.h"
+#import <QuartzCore/QuartzCore.h>

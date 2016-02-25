@@ -74,8 +74,9 @@
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
 #define kTKPDSEARCH_APIDEPARTMENTIDKEY @"department_id"
-#define kTKPDSEARCH_APIDEPARTEMENTTITLEKEY @"department_title"
 #define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
+#define kTKPDSEARCH_APIDEPARTEMENTTITLEKEY @"department_title"
+#define kTKPDSEARCH_APIDEPARTMENTNAMEKEY @"department_name"
 
 #define kTKPDSEARCH_APIDEPARTMENT_1 @"department_1"
 #define kTKPDSEARCH_APIDEPARTMENT_2 @"department_2"

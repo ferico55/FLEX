@@ -80,6 +80,8 @@ static NSString const *rows = @"12";
     
     LoadingView *loadingView;
     NSTimeInterval _timeinterval;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 #pragma mark - Initialization
@@ -452,12 +454,12 @@ static NSString const *rows = @"12";
         case 10:
         {
             // Action Sort Button
-            NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            SortViewController *vc = [SortViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
-                        kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:@0};
-            vc.delegate = self;
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+            SortViewController *controller = [SortViewController new];
+            controller.selectedIndexPath = _sortIndexPath;
+            controller.delegate = self;
+            controller.sortType = SortShopSearch;
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
             break;
@@ -531,12 +533,17 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    [_params addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    [_params setObject:sort forKey:kTKPDSEARCH_APIORDERBYKEY];
     [self refreshView:nil];
     [_act startAnimating];
     _table.tableFooterView = _footer;
+    _sortIndexPath = indexPath;
+}
+
+-(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    [_params addEntriesFromDictionary:userInfo];
 }
 
 #pragma mark - Filter Delegate

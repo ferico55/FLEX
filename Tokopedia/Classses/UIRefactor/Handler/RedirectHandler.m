@@ -15,11 +15,11 @@
 #import "InboxReviewViewController.h"
 #import "TKPDTabInboxReviewNavigationController.h"
 #import "SalesNewOrderViewController.h"
+#import "TxOrderStatusViewController.h"
 
 #import "NotificationState.h"
 
 #import "NavigateViewController.h"
-
 
 @implementation RedirectHandler
 {
@@ -50,10 +50,21 @@
         [self redirectToMessage];
     } else if(state == STATE_NEW_TALK) {
         [self redirectToTalk];
-    } else if(state == STATE_NEW_REPSYS || state == STATE_NEW_REVIEW || state == STATE_EDIT_REPSYS || state == STATE_EDIT_REVIEW || state == STATE_REPLY_REVIEW) {
+    } else if(state == STATE_NEW_REPSYS ||
+              state == STATE_NEW_REVIEW ||
+              state == STATE_EDIT_REPSYS ||
+              state == STATE_EDIT_REVIEW ||
+              state == STATE_REPLY_REVIEW) {
         [self redirectToReview];
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
+    } else if (state == STATE_PURCHASE_REJECTED) {
+        [self redirectToRejectedOrder];
+    } else if (state == STATE_PURCHASE_PROCESS_PARTIAL) {
+        //TODO: KONFIRMASI ORDER PROCESSED
+        [self redirectToProcessedOrder];
+    } else if (state == STATE_CONFIRM_PACKAGE_RECEIVED) {
+        [self redirectToConfirmPackageArrived];
     }
 }
 
@@ -83,7 +94,32 @@
     controller.hidesBottomBarWhenPushed = YES;
     
     [nav.navigationController pushViewController:controller animated:YES];
-    
+}
+
+- (void)redirectToRejectedOrder {
+    _navigationController = (UINavigationController*)_delegate;
+    TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
+    controller.action = @"get_tx_order_list";
+    controller.isCanceledPayment = YES;
+    controller.viewControllerTitle = @"Pesanan Dibatalkan";
+    [_navigationController.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)redirectToProcessedOrder {
+    _navigationController = (UINavigationController*)_delegate;
+    TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
+    controller.action = @"get_tx_order_status";
+    controller.viewControllerTitle = @"Status Pemesanan";
+    [_navigationController.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)redirectToConfirmPackageArrived {
+    //TODO: KONFIRMASI TELAH DIKIRIM
+    _navigationController = (UINavigationController*)_delegate;
+    TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
+    controller.action = @"get_tx_order_deliver";
+    controller.viewControllerTitle = @"Konfirmasi Penerimaan";
+    [_navigationController.navigationController pushViewController:controller animated:YES];
 }
 
 @end

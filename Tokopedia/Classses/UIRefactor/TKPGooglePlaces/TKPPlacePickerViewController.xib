@@ -13,7 +13,12 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamLight.ttf">
+            <string>GothamLight</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -27,6 +32,7 @@
                 <outlet property="infoViewConstraintHeight" destination="88i-7z-Ejt" id="rLL-NM-gGr"/>
                 <outlet property="locationView" destination="tq3-y5-YOS" id="yIP-k0-UuJ"/>
                 <outlet property="mapView" destination="wrD-rD-Jjn" id="WWd-PZ-b5M"/>
+                <outlet property="mapWarningLabel" destination="Fi4-ZV-BFR" id="C2h-kc-Fis"/>
                 <outlet property="pinPointImageView" destination="vxt-Bn-wWg" id="BhG-DM-LbD"/>
                 <outlet property="receiverNameLabel" destination="tbQ-wr-Aej" id="1fW-J8-OJa"/>
                 <outlet property="receiverNumberLabel" destination="wef-Tu-0dr" id="Jkt-CA-fbg"/>
@@ -63,7 +69,7 @@
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="gU1-rc-bpl">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="gU1-rc-bpl">
                             <rect key="frame" x="-160" y="-150" width="320" height="32"/>
                             <animations/>
                         </imageView>
@@ -130,28 +136,20 @@
                         <outletCollection property="gestureRecognizers" destination="CVp-Ca-VXr" appends="YES" id="QPF-am-6ay"/>
                     </connections>
                 </view>
-                <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZaL-vy-Hga">
-                    <rect key="frame" x="0.0" y="364" width="600" height="236"/>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZaL-vy-Hga">
+                    <rect key="frame" x="0.0" y="324" width="600" height="276"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Alamat Kantor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="moC-Bm-Mzo">
-                            <rect key="frame" x="15" y="0.0" width="545" height="40"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat Kantor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="moC-Bm-Mzo">
+                            <rect key="frame" x="15" y="10" width="545" height="20"/>
                             <animations/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="kmq-Le-8fX"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="kmq-Le-8fX"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9A3-3j-agu">
-                            <rect key="frame" x="0.0" y="40" width="600" height="1"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="wDr-bs-175"/>
-                            </constraints>
-                        </view>
-                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="icon_arrow_down.png" translatesAutoresizingMaskIntoConstraints="NO" id="3H3-8N-MDv">
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_down.png" translatesAutoresizingMaskIntoConstraints="NO" id="3H3-8N-MDv">
                             <rect key="frame" x="560" y="0.0" width="40" height="40"/>
                             <animations/>
                             <constraints>
@@ -159,8 +157,26 @@
                                 <constraint firstAttribute="width" constant="40" id="mf7-VE-Cvk"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4QJ-0K-71G">
-                            <rect key="frame" x="15" y="49" width="118" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas*" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fi4-ZV-BFR">
+                            <rect key="frame" x="15" y="31" width="545" height="21"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="T51-vn-za2"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="10"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9A3-3j-agu">
+                            <rect key="frame" x="0.0" y="60" width="600" height="1"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="wDr-bs-175"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4QJ-0K-71G">
+                            <rect key="frame" x="15" y="77" width="118" height="21"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="sod-ww-XUG"/>
@@ -170,8 +186,8 @@
                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbQ-wr-Aej">
-                            <rect key="frame" x="15" y="72" width="570" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbQ-wr-Aej">
+                            <rect key="frame" x="15" y="100" width="570" height="21"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="32d-pV-DDP"/>
@@ -179,8 +195,8 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Alamat :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIZ-8b-fld">
-                            <rect key="frame" x="15" y="107" width="107" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIZ-8b-fld">
+                            <rect key="frame" x="15" y="135" width="107" height="21"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="107" id="5Q7-kK-ZAN"/>
@@ -190,8 +206,8 @@
                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="9dZ-KQ-oc1">
-                            <rect key="frame" x="15" y="130" width="570" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="9dZ-KQ-oc1">
+                            <rect key="frame" x="15" y="158" width="570" height="21"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="UnM-8R-9ar"/>
@@ -199,8 +215,8 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Telepon Penerima:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eE-CE-F5G">
-                            <rect key="frame" x="15" y="172" width="130" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Telepon Penerima:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eE-CE-F5G">
+                            <rect key="frame" x="15" y="200" width="130" height="21"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="C1b-Zr-kso"/>
@@ -210,8 +226,8 @@
                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wef-Tu-0dr">
-                            <rect key="frame" x="15" y="195" width="570" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wef-Tu-0dr">
+                            <rect key="frame" x="15" y="223" width="570" height="21"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="8cn-3R-LBV"/>
@@ -219,7 +235,7 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHk-CY-Fjd">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHk-CY-Fjd">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
                             <animations/>
                             <constraints>
@@ -237,13 +253,13 @@
                         <constraint firstItem="moC-Bm-Mzo" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="1sZ-iO-jZN"/>
                         <constraint firstItem="0eE-CE-F5G" firstAttribute="top" secondItem="9dZ-KQ-oc1" secondAttribute="bottom" constant="21" id="2Xh-NB-xNN"/>
                         <constraint firstItem="mHk-CY-Fjd" firstAttribute="top" secondItem="ZaL-vy-Hga" secondAttribute="top" id="2nU-bQ-5Gs"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="236" id="88i-7z-Ejt"/>
-                        <constraint firstItem="9A3-3j-agu" firstAttribute="top" secondItem="3H3-8N-MDv" secondAttribute="bottom" id="8E2-c2-EfZ"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="276" id="88i-7z-Ejt"/>
+                        <constraint firstItem="9A3-3j-agu" firstAttribute="top" secondItem="3H3-8N-MDv" secondAttribute="bottom" constant="20" id="8E2-c2-EfZ"/>
                         <constraint firstItem="gIZ-8b-fld" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="BAf-SO-GOQ"/>
                         <constraint firstAttribute="trailing" secondItem="9dZ-KQ-oc1" secondAttribute="trailing" constant="15" id="BEK-jt-oI5"/>
                         <constraint firstItem="3H3-8N-MDv" firstAttribute="leading" secondItem="moC-Bm-Mzo" secondAttribute="trailing" id="D7h-L0-uKy"/>
                         <constraint firstItem="4QJ-0K-71G" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="IdU-YS-L7w"/>
-                        <constraint firstItem="moC-Bm-Mzo" firstAttribute="top" secondItem="ZaL-vy-Hga" secondAttribute="top" id="KgG-ie-uY5"/>
+                        <constraint firstAttribute="trailing" secondItem="Fi4-ZV-BFR" secondAttribute="trailing" constant="40" id="JYL-2h-xlM"/>
                         <constraint firstItem="9dZ-KQ-oc1" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="Ntr-q2-jZt"/>
                         <constraint firstItem="9dZ-KQ-oc1" firstAttribute="top" secondItem="gIZ-8b-fld" secondAttribute="bottom" constant="2" id="R4O-Qv-gmj"/>
                         <constraint firstItem="wef-Tu-0dr" firstAttribute="top" secondItem="0eE-CE-F5G" secondAttribute="bottom" constant="2" id="UJC-M5-bsV"/>
@@ -253,13 +269,16 @@
                         <constraint firstItem="9A3-3j-agu" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" id="fIc-el-eSC"/>
                         <constraint firstItem="tbQ-wr-Aej" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="faG-Np-RL3"/>
                         <constraint firstAttribute="trailing" secondItem="wef-Tu-0dr" secondAttribute="trailing" constant="15" id="gg4-Bz-ql6"/>
+                        <constraint firstItem="moC-Bm-Mzo" firstAttribute="centerY" secondItem="3H3-8N-MDv" secondAttribute="centerY" id="iMP-oV-RYf"/>
                         <constraint firstAttribute="trailing" secondItem="mHk-CY-Fjd" secondAttribute="trailing" id="jK9-2b-mYK"/>
                         <constraint firstItem="3H3-8N-MDv" firstAttribute="top" secondItem="ZaL-vy-Hga" secondAttribute="top" id="mI4-U4-mr8"/>
-                        <constraint firstItem="4QJ-0K-71G" firstAttribute="top" secondItem="9A3-3j-agu" secondAttribute="bottom" constant="8" id="nOX-ls-6Bp"/>
+                        <constraint firstItem="Fi4-ZV-BFR" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="n9E-I4-cmN"/>
+                        <constraint firstItem="4QJ-0K-71G" firstAttribute="top" secondItem="9A3-3j-agu" secondAttribute="bottom" constant="16" id="nOX-ls-6Bp"/>
                         <constraint firstItem="wef-Tu-0dr" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" constant="15" id="oxl-kn-iVy"/>
                         <constraint firstItem="gIZ-8b-fld" firstAttribute="top" secondItem="tbQ-wr-Aej" secondAttribute="bottom" constant="14" id="q8b-Gc-plY"/>
                         <constraint firstAttribute="trailing" secondItem="9A3-3j-agu" secondAttribute="trailing" id="rQw-fB-9yA"/>
                         <constraint firstItem="tbQ-wr-Aej" firstAttribute="top" secondItem="4QJ-0K-71G" secondAttribute="bottom" constant="2" id="rcL-4N-T9n"/>
+                        <constraint firstItem="Fi4-ZV-BFR" firstAttribute="top" secondItem="moC-Bm-Mzo" secondAttribute="bottom" constant="1" id="soV-oO-hUz"/>
                         <constraint firstItem="mHk-CY-Fjd" firstAttribute="leading" secondItem="ZaL-vy-Hga" secondAttribute="leading" id="w2U-gA-SP3"/>
                     </constraints>
                     <connections>
