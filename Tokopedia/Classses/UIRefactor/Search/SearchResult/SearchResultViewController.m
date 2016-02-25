@@ -344,12 +344,9 @@ ImageSearchRequestDelegate
 }
 
 - (void)dismissView {
-//    UIViewController *controller = [self.navigationController presentingViewController];
-//    UIImagePickerController *cameraController = (UIImagePickerController *)[controller presentingViewController];
-//    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-//    [controller dismissViewControllerAnimated:YES completion:NULL];
-//    [cameraController dismissViewControllerAnimated:YES completion:NULL];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"DISMISS_ALL_CONTROLLERS" object:nil];
+    UIViewController *controller = [self.navigationController presentingViewController];
+    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+    [controller dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Properties
@@ -386,7 +383,7 @@ ImageSearchRequestDelegate
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-//            [(ProductSingleViewCell*)cell setCatalogViewModel:list.catalogViewModel];
+            [(ProductSingleViewCell*)cell setCatalogViewModel:list.catalogViewModel];
             ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
         }
         else {
@@ -396,21 +393,20 @@ ImageSearchRequestDelegate
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-//        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-//            [(ProductCell*)cell setCatalogViewModel:list.catalogViewModel];
-//        } else {
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            [(ProductCell*)cell setCatalogViewModel:list.catalogViewModel];
+        } else {
             [(ProductCell*)cell setViewModel:list.viewModel];
-//        }
+        }
         
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
-//        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-//            [(ProductThumbCell*)cell setCatalogViewModel:list.catalogViewModel];
-//        } else {
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            [(ProductThumbCell*)cell setCatalogViewModel:list.catalogViewModel];
+        } else {
             [(ProductThumbCell*)cell setViewModel:list.viewModel];
-//        }
-        
+        }
     }
     
     //next page if already last cell
@@ -470,13 +466,12 @@ ImageSearchRequestDelegate
     NavigateViewController *navigateController = [NavigateViewController new];
     SearchAWSProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-//        CatalogViewController *vc = [CatalogViewController new];
-//        vc.catalogID = product.catalog_id;
-//        vc.catalogName = product.catalog_name;
-//        vc.catalogPrice = product.catalog_price;
-//        vc.hidesBottomBarWhenPushed = YES;
-//        
-//        [self.navigationController pushViewController:vc animated:YES];
+        CatalogViewController *vc = [CatalogViewController new];
+        vc.catalogID = product.catalog_id;
+        vc.catalogName = product.catalog_name;
+        vc.catalogPrice = product.catalog_price;
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         [TPAnalytics trackProductClick:product];
         [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
@@ -484,48 +479,6 @@ ImageSearchRequestDelegate
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-//    CGSize cellSize = CGSizeMake(0, 0);
-//    CGRect screenRect = [[UIScreen mainScreen] bounds];
-//    
-//    NSInteger cellCount;
-//    float heightRatio;
-//    float widhtRatio;
-//    float inset;
-//    
-//    CGFloat screenWidth = screenRect.size.width;
-//    
-//    if (self.cellType == UITableViewCellTypeOneColumn) {
-//        cellCount = 1;
-//        heightRatio = 390;
-//        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-//            heightRatio = 370;
-//        }
-//        widhtRatio = 300;
-//        inset = 15;
-//    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-//        cellCount = 2;
-//        heightRatio = 41;
-//        widhtRatio = 29;
-//        inset = 15;
-//    } else {
-//        cellCount = 3;
-//        heightRatio = 1;
-//        widhtRatio = 1;
-//        inset = 14;
-//    }
-//    
-//    CGFloat cellWidth;
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-//        screenWidth = screenRect.size.width/2;
-//        cellWidth = screenWidth/cellCount-inset;
-//    } else {
-//        screenWidth = screenRect.size.width;
-//        cellWidth = screenWidth/cellCount-inset;
-//    }
-//    
-//    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-//    return cellSize;
     NSInteger numberOfCell;
     NSInteger cellHeight;
     if(IS_IPAD) {
