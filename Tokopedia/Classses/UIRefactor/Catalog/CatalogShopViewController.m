@@ -82,7 +82,7 @@
     FilterCatalogViewController *_filterCatalogController;
     
     LoadingView *_loadingView;
-    NoResultReusableView *noResultView;
+    NoResultReusableView *_noResultView;
     
     NSIndexPath *_sortIndexPath;
 }
@@ -121,6 +121,9 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
+    _networkManager.isUsingHmac = YES;
+    _networkManager.isParameterNotEncrypted = YES;
+    
     _uriNext = _catalog.result.paging.uri_next;
     _catalogId = _catalog.result.catalog_info.catalog_id;
     

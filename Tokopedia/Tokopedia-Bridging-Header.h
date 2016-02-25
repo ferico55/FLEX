@@ -6,6 +6,7 @@
 #import "string.h"
 #import "AddressViewModel.h"
 #import "ProductFeedList.h"
+#import "SearchAWSProduct.h"
 #import "ProductCell.h"
 #import "ProductModelView.h"
 
