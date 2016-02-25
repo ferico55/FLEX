@@ -268,13 +268,17 @@ typedef enum TagRequest {
 }
 
 - (void) messageaction:(id)action{
+    [self messageaction:action indexPaths:[_table indexPathsForSelectedRows]];
+}
+
+- (void)messageaction:(id)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
     NSIndexPath *item;
     
     NSMutableArray *arr = [[NSMutableArray alloc] init];
     NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
     NSUInteger index = 1;
-
-    for (item in [_table indexPathsForSelectedRows]) {
+    
+    for (item in indexPaths) {
         
         NSInteger row = [item row];
         [discardedItems addIndex:row];
@@ -288,7 +292,7 @@ typedef enum TagRequest {
     NSString *joinedArr = [arr componentsJoinedByString:@"and"];
     
     [_table beginUpdates];
-    [_table deleteRowsAtIndexPaths:[_table indexPathsForSelectedRows] withRowAnimation:UITableViewRowAnimationFade];
+    [_table deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     [_table endUpdates];
     
     [self configureactionrestkit];
@@ -782,13 +786,13 @@ typedef enum TagRequest {
 
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
-            [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE];
+            [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE indexPaths:@[indexPath]];
             _navthatwillrefresh = @"trash";
             return YES;
         }];
         MGSwipeButton * archive = [MGSwipeButton buttonWithTitle:@"Arsipkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
-            [self messageaction:KTKPDMESSAGE_ACTIONARCHIVEMESSAGE];
+            [self messageaction:KTKPDMESSAGE_ACTIONARCHIVEMESSAGE indexPaths:@[indexPath]];
             _navthatwillrefresh = @"archive";
             return YES;
         }];
@@ -796,10 +800,10 @@ typedef enum TagRequest {
         MGSwipeButton * backtoinbox = [MGSwipeButton buttonWithTitle:@"Inbox" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
             if([_messageNavigationFlag isEqualToString:@"inbox-message-archive"]) {
-                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE indexPaths:@[indexPath]];
                 _navthatwillrefresh = @"inbox-sent";
             } else {
-                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE indexPaths:@[indexPath]];
                 _navthatwillrefresh = @"inbox-archive-sent";
             }
             return YES;
@@ -807,7 +811,7 @@ typedef enum TagRequest {
         
         MGSwipeButton * deleteforever = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
-            [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE];
+            [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE indexPaths:@[indexPath]];
             return YES;
         }];
 
