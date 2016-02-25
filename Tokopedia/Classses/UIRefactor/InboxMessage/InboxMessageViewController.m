@@ -304,7 +304,7 @@ typedef enum TagRequest {
     InboxMessageCell* cell = nil;
     NSString *cellid = kTKPDINBOXMESSAGECELL_IDENTIFIER;
     
-    cell = (InboxMessageCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    cell = [tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [InboxMessageCell newcell];
         cell.delegate = self;
@@ -312,12 +312,12 @@ typedef enum TagRequest {
     
     InboxMessageList *list = _messages[indexPath.row];
 
-    cell.message = list;
-    cell.popTipAnchor = self.view;
-    
     if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
         cell.displaysUnreadIndicator = YES;
     }
+    
+    cell.message = list;
+    cell.popTipAnchor = self.view;
     
     return cell;
 }
