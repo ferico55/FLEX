@@ -122,10 +122,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _searchBar.showsCancelButton = NO;
     _searchBar.showsBookmarkButton = NO;
     
-    [_searchBar setImage:[UIImage imageNamed:@"icon-search-camera.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
     
     imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
-    [_cameraImageView addGestureRecognizer:imageSearchGestureRecognizer];
+    [_iconCamera addGestureRecognizer:imageSearchGestureRecognizer];
     
     _filter = @"search_product";
     
@@ -660,14 +660,16 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _imagePicker.delegate = self;
     _imagePicker.allowsEditing = YES;
     _imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    _imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.navigationController presentViewController:_imagePicker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
     ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
     controller.imageQuery = info;
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [_imagePicker presentViewController:controller animated:YES completion:nil];
+    [self.navigationController presentViewController:controller animated:YES completion:nil];
 }
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
