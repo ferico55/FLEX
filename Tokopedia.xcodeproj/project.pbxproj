@@ -2010,7 +2010,6 @@
 		856250DE1C6DC48B00036001 /* wishlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 856248F01C6DC48A00036001 /* wishlist.png */; };
 		856250DF1C6DC48B00036001 /* wishlist@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856248F11C6DC48A00036001 /* wishlist@2x.png */; };
 		856250E01C6DC48B00036001 /* wishlist@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856248F21C6DC48A00036001 /* wishlist@3x.png */; };
-		856250E11C6DC48B00036001 /* libAppsFlyerLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 856248F61C6DC48A00036001 /* libAppsFlyerLib.a */; };
 		856250E21C6DC48B00036001 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 856248FE1C6DC48A00036001 /* HPGrowingTextView.m */; };
 		856250E31C6DC48B00036001 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 856249001C6DC48A00036001 /* HPTextViewInternal.m */; };
 		856250E41C6DC48B00036001 /* libAdIdAccess.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 856249011C6DC48A00036001 /* libAdIdAccess.a */; };
@@ -2118,6 +2117,7 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		852488251C7EB5D3000A2E6D /* AppsFlyer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppsFlyer.framework; path = Pods/AppsFlyerFramework/AppsFlyer.framework; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5101,8 +5101,6 @@
 		856248F01C6DC48A00036001 /* wishlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wishlist.png; sourceTree = "<group>"; };
 		856248F11C6DC48A00036001 /* wishlist@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wishlist@2x.png"; sourceTree = "<group>"; };
 		856248F21C6DC48A00036001 /* wishlist@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wishlist@3x.png"; sourceTree = "<group>"; };
-		856248F51C6DC48A00036001 /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
-		856248F61C6DC48A00036001 /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
 		856248F81C6DC48A00036001 /* TAGContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainer.h; sourceTree = "<group>"; };
 		856248F91C6DC48A00036001 /* TAGContainerOpener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainerOpener.h; sourceTree = "<group>"; };
 		856248FA1C6DC48A00036001 /* TAGDataLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGDataLayer.h; sourceTree = "<group>"; };
@@ -5201,6 +5199,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */,
+				7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */,
 				85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */,
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
@@ -5213,13 +5213,10 @@
 				7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */,
 				8565E1E31B9404C600843388 /* CoreMotion.framework in Frameworks */,
 				8565E1E11B9404BF00843388 /* CoreLocation.framework in Frameworks */,
-				856250E11C6DC48B00036001 /* libAppsFlyerLib.a in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
 				7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */,
 				8565E1DF1B9404B000843388 /* AssetsLibrary.framework in Frameworks */,
 				8565E1DD1B94048800843388 /* AddressBook.framework in Frameworks */,
-				7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */,
-				7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */,
 				853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */,
 				853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */,
 				853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */,
@@ -10578,7 +10575,6 @@
 		856248F31C6DC48A00036001 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				856248F41C6DC48A00036001 /* Appsflyer */,
 				856248F71C6DC48A00036001 /* GoogleTM */,
 				856248FD1C6DC48A00036001 /* HPGrowingTextView.h */,
 				856248FE1C6DC48A00036001 /* HPGrowingTextView.m */,
@@ -10593,15 +10589,6 @@
 				856249131C6DC48A00036001 /* XYPieChart */,
 			);
 			path = Libraries;
-			sourceTree = "<group>";
-		};
-		856248F41C6DC48A00036001 /* Appsflyer */ = {
-			isa = PBXGroup;
-			children = (
-				856248F51C6DC48A00036001 /* AppsFlyerTracker.h */,
-				856248F61C6DC48A00036001 /* libAppsFlyerLib.a */,
-			);
-			path = Appsflyer;
 			sourceTree = "<group>";
 		};
 		856248F71C6DC48A00036001 /* GoogleTM */ = {
@@ -10696,6 +10683,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				852488251C7EB5D3000A2E6D /* AppsFlyer.framework */,
 				7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */,
 				7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */,
 				7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */,
@@ -13145,6 +13133,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/AppsFlyerFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
@@ -13194,6 +13183,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods/AppsFlyerFramework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
