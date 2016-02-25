@@ -59,7 +59,7 @@
     self.view.frame = [UIScreen mainScreen].bounds;
     
     self.splitViewController = [[UISplitViewController alloc] init];
-    self.splitViewController.delegate = leftViewController;
+    self.splitViewController.delegate = self;
     self.splitViewController.viewControllers = @[rightNav, leftNav];
     
     if ([self.splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {
@@ -84,5 +84,9 @@
 
 }
 
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
 
 @end
