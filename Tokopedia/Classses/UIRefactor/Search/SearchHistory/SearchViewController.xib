@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -60,7 +60,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="paW-a2-BGG">
                     <rect key="frame" x="600" y="0.0" width="0.0" height="44"/>
                     <subviews>
-                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-camera-filled.png" translatesAutoresizingMaskIntoConstraints="NO" id="ipL-Mx-fD9">
+                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="ipL-Mx-fD9">
                             <rect key="frame" x="-39" y="9" width="25" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="25" id="7El-Od-3YG"/>
@@ -97,6 +97,6 @@
     </objects>
     <resources>
         <image name="NavBar" width="320" height="64"/>
-        <image name="icon-camera-filled.png" width="50" height="40"/>
+        <image name="camera.png" width="40" height="36"/>
     </resources>
 </document>

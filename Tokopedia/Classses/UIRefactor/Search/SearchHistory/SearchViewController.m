@@ -69,6 +69,8 @@ NSString *const searchPath = @"search/%@";
     GeneratedHost *_generatedHost;
     
     UITapGestureRecognizer *imageSearchGestureRecognizer;
+    
+    UIImagePickerController *_imagePicker;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -120,27 +122,25 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _searchBar.showsCancelButton = NO;
     _searchBar.showsBookmarkButton = NO;
     
-    [_searchBar setImage:[UIImage imageNamed:@"icon-search-camera.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
     
     imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
-    [_cameraImageView addGestureRecognizer:imageSearchGestureRecognizer];
+    [_iconCamera addGestureRecognizer:imageSearchGestureRecognizer];
     
     _filter = @"search_product";
     
     [self loadHistory];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(clearHistory)
-                                                 name:kTKPD_REMOVE_SEARCH_HISTORY
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
-    
+
+    NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
+    [notification addObserver:self selector:@selector(clearHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
+    [notification addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
+    [notification addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [notification addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [notification addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+    [notification addObserver:self selector:@selector(dismissModelViewController) name:@"DISMISS_ALL_CONTROLLERS" object:nil];
+
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
@@ -656,23 +656,29 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 #pragma mark - Image search
 
 - (void)takePhoto:(UIButton *)sender {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    [self.navigationController presentViewController:picker animated:YES completion:NULL];
+    _imagePicker = [[UIImagePickerController alloc] init];
+    _imagePicker.delegate = self;
+    _imagePicker.allowsEditing = YES;
+    _imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    _imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.navigationController presentViewController:_imagePicker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
     ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
     controller.imageQuery = info;
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [picker presentViewController:controller animated:YES completion:nil];
+    [self.navigationController presentViewController:controller animated:YES completion:nil];
 }
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
     [self takePhoto:nil];
 }
 
+- (void)dismissModelViewController {
+    [self.navigationController.presentedViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+    [self.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

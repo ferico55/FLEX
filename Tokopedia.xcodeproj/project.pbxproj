@@ -21,6 +21,10 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		8524882A1C7EFCB4000A2E6D /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 852488281C7EFCB4000A2E6D /* camera.png */; };
+		8524882B1C7EFCB4000A2E6D /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 852488291C7EFCB4000A2E6D /* camera@2x.png */; };
+		8524882E1C7EFFE7000A2E6D /* camera-grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524882C1C7EFFE7000A2E6D /* camera-grey.png */; };
+		8524882F1C7EFFE7000A2E6D /* camera-grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524882D1C7EFFE7000A2E6D /* camera-grey@2x.png */; };
 		852DEDC91C7DB14C002D471B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DE0B91C7DB143002D471B /* AppDelegate.m */; };
 		852DEDCA1C7DB14C002D471B /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DE0BD1C7DB143002D471B /* TPAnalytics.m */; };
 		852DEDCB1C7DB14C002D471B /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DE0C01C7DB143002D471B /* URLCacheAlert.m */; };
@@ -2120,6 +2124,10 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		852488281C7EFCB4000A2E6D /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		852488291C7EFCB4000A2E6D /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		8524882C1C7EFFE7000A2E6D /* camera-grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-grey.png"; sourceTree = "<group>"; };
+		8524882D1C7EFFE7000A2E6D /* camera-grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-grey@2x.png"; sourceTree = "<group>"; };
 		852DE0B81C7DB143002D471B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		852DE0B91C7DB143002D471B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		852DE0BC1C7DB143002D471B /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -9809,6 +9817,10 @@
 		852DEAD61C7DB148002D471B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8524882C1C7EFFE7000A2E6D /* camera-grey.png */,
+				8524882D1C7EFFE7000A2E6D /* camera-grey@2x.png */,
+				852488281C7EFCB4000A2E6D /* camera.png */,
+				852488291C7EFCB4000A2E6D /* camera@2x.png */,
 				852DEAD71C7DB148002D471B /* badges_gold_merchant.png */,
 				852DEAD81C7DB148002D471B /* balloon_read_left.png */,
 				852DEAD91C7DB148002D471B /* balloon_read_right.png */,
@@ -11345,6 +11357,7 @@
 				852DF2B41C7DB14C002D471B /* ProfileFavoriteShopViewController.xib in Resources */,
 				852DF4561C7DB14C002D471B /* icon_questionmark_grey@3x.png in Resources */,
 				852DF30A1C7DB14C002D471B /* icon_2.png in Resources */,
+				8524882B1C7EFCB4000A2E6D /* camera@2x.png in Resources */,
 				852DF4A41C7DB14C002D471B /* icon_speed_bad_large@2x.png in Resources */,
 				852DF5361C7DB14C002D471B /* icon_cart@3x.png in Resources */,
 				852DF52A1C7DB14C002D471B /* product-feed@2x.png in Resources */,
@@ -11370,6 +11383,7 @@
 				852DF08B1C7DB14C002D471B /* GeneralSingleProductCell.xib in Resources */,
 				852DF1B31C7DB14C002D471B /* SubmitShipmentConfirmationViewController.xib in Resources */,
 				852DF48A1C7DB14C002D471B /* icon_signin.png in Resources */,
+				8524882E1C7EFFE7000A2E6D /* camera-grey.png in Resources */,
 				852DF45C1C7DB14C002D471B /* icon_retur@2x.png in Resources */,
 				852DF01B1C7DB14C002D471B /* CatalogViewController.xib in Resources */,
 				852DF1491C7DB14C002D471B /* ProductEditImageViewController.xib in Resources */,
@@ -11448,6 +11462,7 @@
 				852DF5A51C7DB14C002D471B /* Tokopedia-Info.plist in Resources */,
 				852DF4B11C7DB14C002D471B /* icon_speed_grey_large@3x.png in Resources */,
 				852DF2F31C7DB14C002D471B /* icon_0@2x.png in Resources */,
+				8524882F1C7EFFE7000A2E6D /* camera-grey@2x.png in Resources */,
 				852DF3771C7DB14C002D471B /* icon_category_list_white.png in Resources */,
 				852DF1081C7DB14C002D471B /* MyShopEtalaseEditViewController.xib in Resources */,
 				852DEFF81C7DB14C002D471B /* StickyAlertView.xib in Resources */,
@@ -11641,6 +11656,7 @@
 				852DF3321C7DB14C002D471B /* icon_arrow_up.png in Resources */,
 				852DF42A1C7DB14C002D471B /* icon_neutral_smile@2x.png in Resources */,
 				852DF4131C7DB14C002D471B /* icon_netral@3x.png in Resources */,
+				8524882A1C7EFCB4000A2E6D /* camera.png in Resources */,
 				852DF3D71C7DB14C002D471B /* icon_maintenance_grey@2x.png in Resources */,
 				852DF2021C7DB14C002D471B /* ShopFavoritedCell.xib in Resources */,
 				852DF3271C7DB14C002D471B /* icon-search-camera.png in Resources */,
