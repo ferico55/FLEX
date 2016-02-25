@@ -3430,6 +3430,7 @@
 		62E68BA31C7D6BB700440574 /* icon_smile_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_smile_grey.png; sourceTree = "<group>"; };
 		62E68BA41C7D6BB700440574 /* icon_smile_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_smile_grey@2x.png"; sourceTree = "<group>"; };
 		62E68BA51C7D6BB700440574 /* icon_smile_grey@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_smile_grey@3x.png"; sourceTree = "<group>"; };
+		62E68BAF1C7DC4FE00440574 /* MyReviewDetailHeaderDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailHeaderDelegate.h; sourceTree = "<group>"; };
 		62EA15011C6B20EA0039BC07 /* MyReviewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailViewController.h; sourceTree = "<group>"; };
 		62EA15021C6B20EA0039BC07 /* MyReviewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewDetailViewController.m; sourceTree = "<group>"; };
 		62EA15031C6B20EA0039BC07 /* MyReviewDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewDetailViewController.xib; sourceTree = "<group>"; };
@@ -6704,6 +6705,7 @@
 				627B9EA91C7C58BD007DAB7A /* MyReviewDetailHeader.mm */,
 				627B9EAB1C7C6302007DAB7A /* MyReviewDetailHeaderSmileyComponent.h */,
 				627B9EAC1C7C6302007DAB7A /* MyReviewDetailHeaderSmileyComponent.mm */,
+				62E68BAF1C7DC4FE00440574 /* MyReviewDetailHeaderDelegate.h */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";

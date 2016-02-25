@@ -33,10 +33,7 @@ static CKComponent* skipButton (DetailReputationReview* review) {
                     {UIControlStateNormal, @"Lewati"}
                 }
                 titleColors:{
-                    {UIControlStateNormal, [UIColor colorWithRed:18.0/255
-                                                           green:199.0/255
-                                                            blue:0
-                                                           alpha:1]}
+                    {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
                 }
                 images:{}
                 backgroundImages:{}

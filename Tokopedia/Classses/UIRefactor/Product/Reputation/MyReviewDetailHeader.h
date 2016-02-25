@@ -10,9 +10,11 @@
 #import <ComponentKit/CKComponentHostingView.h>
 #import <ComponentKit/CKNetworkImageDownloading.h>
 #import "DetailMyInboxReputation.h"
+#import "MyReviewDetailHeaderDelegate.h"
 
 @interface MyReviewDetailContext : NSObject
 @property id<CKNetworkImageDownloading> imageDownloader;
+@property (weak, nonatomic) id<MyReviewDetailHeaderDelegate> delegate;
 @end
 
 @interface MyReviewDetailHeader : CKComponentHostingView

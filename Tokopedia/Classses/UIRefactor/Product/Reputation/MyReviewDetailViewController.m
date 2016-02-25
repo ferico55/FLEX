@@ -123,7 +123,7 @@
     header.frame = frame;
 
     [_collectionView addSubview:header];
-    _collectionView.contentInset = UIEdgeInsetsMake(header.frame.size.height, 0, 0, 0);
+    _collectionView.contentInset = UIEdgeInsetsMake(header.frame.size.height, 0, 8, 0);
     
 //    dispatch_after(3, dispatch_get_main_queue(), ^{
 //        [UIView animateWithDuration:2 animations:^{

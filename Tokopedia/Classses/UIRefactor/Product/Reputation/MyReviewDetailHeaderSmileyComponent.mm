@@ -30,7 +30,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
         score = [inbox.buyer_score integerValue];
     }
     
-    if ([inbox.reputation_progress isEqualToString:@"2"]) {
+    if ([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"]) {
         return [CKStackLayoutComponent
                 newWithView:{}
                 size:{}
@@ -347,7 +347,12 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
                 newWithView:{
                     [UIView class],
                     {
-                        
+                        {
+                            {@selector(setBackgroundColor:),[UIColor colorWithRed:255.0/255
+                                                                         green:209.0/255
+                                                                          blue:209.0/255
+                                                                         alpha:1]}
+                        }
                     }
                 }
                 size:{}
@@ -389,12 +394,15 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
                                       .string = timeLeft,
                                       .font = [UIFont fontWithName:@"Gotham Book" size:14.0]
                                   }
-                                  viewAttributes:{}
+                                  viewAttributes:{
+                                      {@selector(setBackgroundColor:), [UIColor clearColor]}
+                                  }
                                   size:{}],
                                  
                              }
                          }],
-                        .alignSelf = CKStackLayoutAlignSelfCenter
+                        .alignSelf = CKStackLayoutAlignSelfCenter,
+                        .spacingAfter = 8
                     }
                 }];
     } else {
@@ -454,7 +462,8 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                          },
                          {
                              [CKImageComponent
-                              newWithImage:[UIImage imageNamed:[myScoreImageNameByType objectForKey:inbox.my_score_image]] size:{.height = 20}]
+                              newWithImage:[UIImage imageNamed:[myScoreImageNameByType objectForKey:inbox.my_score_image]]
+                              size:{([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"])?24.7:20,20}]
                          },
                          {
                              editedLabel(inbox)
@@ -524,7 +533,8 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                  },
                  {
                      remainingTimeLeft(inbox),
-                     .alignSelf = CKStackLayoutAlignSelfStretch
+                     .alignSelf = CKStackLayoutAlignSelfStretch,
+                     .spacingAfter = -8
                  },
                  {
                      myScore(inbox),
