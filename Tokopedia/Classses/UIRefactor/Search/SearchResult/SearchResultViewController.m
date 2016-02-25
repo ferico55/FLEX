@@ -352,9 +352,7 @@ ImageSearchRequestDelegate
 }
 
 - (void)dismissView {
-    UIViewController *controller = [self.navigationController presentingViewController];
-    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-    [controller dismissViewControllerAnimated:YES completion:NULL];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DISMISS_ALL_CONTROLLERS" object:self];
 }
 
 #pragma mark - Properties
@@ -490,30 +488,29 @@ ImageSearchRequestDelegate
     NSInteger numberOfCell;
     NSInteger cellHeight;
     if(IS_IPAD) {
-        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+        UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
         if(self.cellType == UITableViewCellTypeTwoColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
+            if(UIDeviceOrientationIsLandscape(orientation)) {
                 numberOfCell = 5;
             } else {
                 numberOfCell = 4;
             }
             cellHeight = 250;
         } else if(self.cellType == UITableViewCellTypeThreeColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
+            if(UIDeviceOrientationIsLandscape(orientation)) {
                 numberOfCell = 8;
             } else {
                 numberOfCell = 6;
             }
             cellHeight = 150;
         } else if(self.cellType == UITableViewCellTypeOneColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
+            if(UIDeviceOrientationIsLandscape(orientation)) {
                 numberOfCell = 4;
                 cellHeight = 400;
             } else {
                 numberOfCell = 2;
                 cellHeight = 450;
-            }
-            
+            }            
         }
     } else {
         if(self.cellType == UITableViewCellTypeTwoColumn) {

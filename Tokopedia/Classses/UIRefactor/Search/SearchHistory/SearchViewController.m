@@ -139,8 +139,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [notification addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [notification addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [notification addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
-    [notification addObserver:self selector:@selector(dismissCameraPicker) name:@"DISMISS_ALL_CONTROLLERS" object:nil];
-    
+    [notification addObserver:self selector:@selector(dismissModelViewController) name:@"DISMISS_ALL_CONTROLLERS" object:nil];
+
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
@@ -676,8 +676,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self takePhoto:nil];
 }
 
-- (void)dismissCameraPicker {
-    [[self presentedViewController] dismissViewControllerAnimated:YES completion:NULL];
+- (void)dismissModelViewController {
+    [self.navigationController.presentedViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+    [self.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
