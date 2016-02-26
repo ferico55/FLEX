@@ -1322,7 +1322,6 @@
 		852DF2D71C7DB14C002D471B /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DEAC01C7DB148002D471B /* VTTransactionDetails.m */; };
 		852DF2D81C7DB14C002D471B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 852DEAC11C7DB148002D471B /* InfoPlist.strings */; };
 		852DF2D91C7DB14C002D471B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 852DEAC31C7DB148002D471B /* GoogleService-Info.plist */; };
-		852DF2DA1C7DB14C002D471B /* GTM-NCTWRP in Resources */ = {isa = PBXBuildFile; fileRef = 852DEAC41C7DB148002D471B /* GTM-NCTWRP */; };
 		852DF2DB1C7DB14C002D471B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 852DEAC51C7DB148002D471B /* Images.xcassets */; };
 		852DF2DC1C7DB14C002D471B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852DEAC61C7DB148002D471B /* LaunchScreen.xib */; };
 		852DF2DD1C7DB14C002D471B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DEAC71C7DB148002D471B /* main.m */; };
@@ -2112,6 +2111,7 @@
 		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
 		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
+		4553DAF21C7FF478007964F6 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = SOURCE_ROOT; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
@@ -4435,7 +4435,6 @@
 		852DEAC01C7DB148002D471B /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
 		852DEAC21C7DB148002D471B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		852DEAC31C7DB148002D471B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		852DEAC41C7DB148002D471B /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = "<group>"; };
 		852DEAC51C7DB148002D471B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		852DEAC61C7DB148002D471B /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		852DEAC71C7DB148002D471B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -5349,7 +5348,7 @@
 				852DE0BA1C7DB143002D471B /* Classses */,
 				852DEAC11C7DB148002D471B /* InfoPlist.strings */,
 				852DEAC31C7DB148002D471B /* GoogleService-Info.plist */,
-				852DEAC41C7DB148002D471B /* GTM-NCTWRP */,
+				4553DAF21C7FF478007964F6 /* GTM-NCTWRP */,
 				852DEAC51C7DB148002D471B /* Images.xcassets */,
 				852DEAC61C7DB148002D471B /* LaunchScreen.xib */,
 				852DEAC71C7DB148002D471B /* main.m */,
@@ -11458,7 +11457,6 @@
 				852DF1B91C7DB14C002D471B /* DetailShipmentStatusViewController.xib in Resources */,
 				852DF5A11C7DB14C002D471B /* vt-iOSlib-1.0.1.tar.gz in Resources */,
 				852DF3291C7DB14C002D471B /* icon_arrow_down.png in Resources */,
-				852DF2DA1C7DB14C002D471B /* GTM-NCTWRP in Resources */,
 				852DF5A51C7DB14C002D471B /* Tokopedia-Info.plist in Resources */,
 				852DF4B11C7DB14C002D471B /* icon_speed_grey_large@3x.png in Resources */,
 				852DF2F31C7DB14C002D471B /* icon_0@2x.png in Resources */,
