@@ -458,7 +458,7 @@
     
     [_noResultView removeFromSuperview];
     _uriNext = shops.result.paging.uri_next;
-    if (shops.result.catalog_products > 0) {        
+    if (shops.result.catalog_products.count > 0) {
         if (_page == 0) {
             [_catalog_shops removeAllObjects];
         }
@@ -478,6 +478,7 @@
         
     } else {
         // no data at all
+        [_loadingView setHidden:YES];
         [_tableView addSubview:_noResultView];
     }
     
