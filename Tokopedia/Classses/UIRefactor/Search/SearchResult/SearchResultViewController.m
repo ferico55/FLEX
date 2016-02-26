@@ -358,6 +358,10 @@ ImageSearchRequestDelegate
 #pragma mark - Properties
 - (void)setData:(NSDictionary *)data {
     _data = data;
+    
+    if (_data) {
+        [_params setObject:data[@"department_id"] forKey:@"department_id"];
+    }
 }
 
 #pragma mark - Memory Management

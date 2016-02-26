@@ -19,7 +19,9 @@
 
 @end
 
-@implementation ImagePickerCategoryController
+@implementation ImagePickerCategoryController{
+    NSDictionary *_selectedCategory;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -91,14 +93,24 @@
 
 #pragma mark - Table view delegate
 
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    _selectedCategory = _categories[indexPath.row];
+    NSIndexPath *oldIndex = [self.tableView indexPathForSelectedRow];
+    [self.tableView cellForRowAtIndexPath:oldIndex].accessoryType = UITableViewCellAccessoryNone;
+    [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+    return indexPath;
+}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (cell.accessoryType == UITableViewCellAccessoryNone) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//    if (cell.accessoryType == UITableViewCellAccessoryNone) {
+//        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//        _selectedCategory = _categories[indexPath.row];
+//    } else {
+//        cell.accessoryType = UITableViewCellAccessoryNone;
+//    }
 }
 
 - (IBAction)didTapSearchButton:(UIButton *)sender {
@@ -107,7 +119,8 @@
     controller.isFromImageSearch = YES;
     controller.title = @"Image Search";
     controller.hidesBottomBarWhenPushed = YES;
-    controller.data = @{@"type":@"search_product"};
+    controller.data = @{@"type":@"search_product",
+                        @"department_id":_selectedCategory[@"id"]};
     controller.imageQueryInfo = _imageQuery;
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 
