@@ -3421,6 +3421,7 @@
 		62BB39901C7717BC00A7A4E6 /* DetailReputationReviewComponentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponentDelegate.h; sourceTree = "<group>"; };
 		62DF7F091C757C6C00F392CB /* DetailReputationReviewHeaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewHeaderComponent.h; sourceTree = "<group>"; };
 		62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewHeaderComponent.mm; sourceTree = "<group>"; };
+		62E0962A1C7FFF1400B7B656 /* MyReviewDetailHeaderSmileyDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailHeaderSmileyDelegate.h; sourceTree = "<group>"; };
 		62E3D3661C647D4100FF81F2 /* image_not_loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_not_loading.png; sourceTree = "<group>"; };
 		62E4E33A1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailHeaderComponent.h; sourceTree = "<group>"; };
 		62E4E33B1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailHeaderComponent.mm; sourceTree = "<group>"; };
@@ -6711,6 +6712,7 @@
 				62E68BAF1C7DC4FE00440574 /* MyReviewDetailHeaderDelegate.h */,
 				62E4E33A1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.h */,
 				62E4E33B1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.mm */,
+				62E0962A1C7FFF1400B7B656 /* MyReviewDetailHeaderSmileyDelegate.h */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";

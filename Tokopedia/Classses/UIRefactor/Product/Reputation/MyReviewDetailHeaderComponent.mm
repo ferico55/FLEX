@@ -108,14 +108,6 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox) {
     [_delegate didTapRevieweeReputation:sender role:_inbox.role];
 }
 
-- (void)didTapScore {
-    
-}
-
-- (void)didTapMyScore {
-    [_delegate didTapReviewerScore:_inbox];
-}
-
 + (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox context:(MyReviewDetailContext*)context {
     MyReviewDetailHeaderComponent *header = [super newWithComponent:[CKStackLayoutComponent
                                     newWithView:{
@@ -195,7 +187,7 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox) {
                                             revieweeReputation(inbox)
                                         },
                                         {
-                                            [MyReviewDetailHeaderSmileyComponent newWithInbox:inbox],
+                                            [MyReviewDetailHeaderSmileyComponent newWithInbox:inbox context:context],
                                             .spacingAfter = 8
                                         }
                                     }]];

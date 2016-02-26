@@ -422,14 +422,17 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
     ;
 }
 
-@implementation MyReviewDetailHeaderSmileyComponent
-
-- (void)getMyScore {
-    
+@implementation MyReviewDetailHeaderSmileyComponent {
+    __weak id<MyReviewDetailHeaderSmileyDelegate> _delegate;
+    DetailMyInboxReputation *_inbox;
 }
 
-+ (instancetype)newWithInbox:(DetailMyInboxReputation *)inbox {
-    return [super newWithComponent:
+- (void)getMyScore {
+    [_delegate didTapReviewerScore:_inbox];
+}
+
++ (instancetype)newWithInbox:(DetailMyInboxReputation *)inbox context:(MyReviewDetailContext *)context {
+    MyReviewDetailHeaderSmileyComponent *smiley = [super newWithComponent:
             [CKStackLayoutComponent
              newWithView:{
                  [UIView class],
@@ -490,6 +493,11 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                      .alignSelf = CKStackLayoutAlignSelfStretch
                  }
              }]];
+    
+    smiley->_delegate = context.smileyDelegate;
+    smiley->_inbox = inbox;
+    
+    return smiley;
 }
 
 @end

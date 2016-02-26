@@ -7,10 +7,11 @@
 //
 
 #import "DetailMyInboxReputation.h"
+#import "MyReviewDetailHeader.h"
 #import <ComponentKit/ComponentKit.h>
 
 @interface MyReviewDetailHeaderSmileyComponent : CKCompositeComponent
 
-+ (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox;
++ (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox context:(MyReviewDetailContext*)context;
 
 @end

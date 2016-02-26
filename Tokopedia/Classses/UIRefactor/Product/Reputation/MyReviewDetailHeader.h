@@ -11,12 +11,14 @@
 #import <ComponentKit/CKNetworkImageDownloading.h>
 #import "DetailMyInboxReputation.h"
 #import "MyReviewDetailHeaderDelegate.h"
+#import "MyReviewDetailHeaderSmileyDelegate.h"
 
 @interface MyReviewDetailContext : NSObject
 @property id<CKNetworkImageDownloading> imageDownloader;
 @property (weak, nonatomic) id<MyReviewDetailHeaderDelegate> delegate;
+@property (weak, nonatomic) id<MyReviewDetailHeaderSmileyDelegate> smileyDelegate;
 @end
 
 @interface MyReviewDetailHeader : CKComponentHostingView
-- (instancetype)initWithInboxDetail:(DetailMyInboxReputation*)inbox delegate:(id<MyReviewDetailHeaderDelegate>)delegate;
+- (instancetype)initWithInboxDetail:(DetailMyInboxReputation*)inbox delegate:(id<MyReviewDetailHeaderDelegate>)delegate smileyDelegate:(id<MyReviewDetailHeaderSmileyDelegate>)smileyDelegate;
 @end

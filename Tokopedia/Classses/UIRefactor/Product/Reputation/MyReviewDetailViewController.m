@@ -18,6 +18,7 @@
 #import "MyReviewDetailDataManager.h"
 #import "DetailReputationReviewComponentDelegate.h"
 #import "MyReviewDetailHeaderDelegate.h"
+#import "MyReviewDetailHeaderSmileyDelegate.h"
 #import "NavigateViewController.h"
 #import "GiveReviewRatingViewController.h"
 #import "MyReviewDetailHeader.h"
@@ -33,7 +34,8 @@
     UICollectionViewDelegateFlowLayout,
     MyReviewDetailRequestDelegate,
     DetailReputationReviewComponentDelegate,
-    MyReviewDetailHeaderDelegate
+    MyReviewDetailHeaderDelegate,
+    MyReviewDetailHeaderSmileyDelegate
 >
 {
     TAGContainer *_gtmContainer;
@@ -114,7 +116,8 @@
     _collectionView.delegate = self;
     
     MyReviewDetailHeader *header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
-                                                                            delegate:self];
+                                                                            delegate:self
+                                                                      smileyDelegate:self];
     
     _headerView = header;
     CGRect frame = header.frame;
@@ -291,26 +294,24 @@
 //    }
 }
 
-- (void)didTapReviewerScore:(DetailMyInboxReputation *)inbox {
-    UIAlertView* alert;
+#pragma mark - Smiley Delegate
+- (void)didTapReviewerScore:(DetailMyInboxReputation*)inbox {
     
-    if ([inbox.my_score_image isEqualToString:@"grey_question_mark"]) {
-        alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"Pembeli belum memberi nilai untuk Anda"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    } else if ([inbox.my_score_image isEqualToString:@"blue_question_mark"]) {
-        alert = [[UIAlertView alloc] initWithTitle:nil
-                                           message:@"Beri nilai Pembeli untuk melihat nilai Anda"
-                                          delegate:self
-                                 cancelButtonTitle:@"OK"
-                                 otherButtonTitles:nil];
-        [alert show];
-    } else {
-        
-    }
+    NSDictionary<NSString*, NSString*>* myScoreMessageByType = @{
+                                                                   @"smiley_neutral":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Netral\"":@"Nilai dari Pembeli: \"Netral\"",
+                                                                   @"smiley_bad":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Tidak Puas\"":@"Nilai dari Pembeli : \"Tidak Puas\"",
+                                                                   @"smiley_good":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Puas\"":@"Nilai dari Pembeli: \"Puas\"",
+                                                                   @"smiley_none":[inbox.role isEqualToString:@"1"]?@"Penjual telah melewati batas waktu penilaian":@"Pembeli telah melewati batas waktu penilaian",
+                                                                   @"grey_question_mark":[inbox.role isEqualToString:@"1"]?@"Penjual belum memberi nilai untuk Anda":@"Pembeli belum memberi nilai untuk Anda",
+                                                                   @"blue_question_mark":[inbox.role isEqualToString:@"1"]?@"Beri nilai Penjual untuk melihat nilai Anda":@"Beri nilai Pembeli untuk melihat nilai Anda"
+                                                                   };
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                      message:[myScoreMessageByType objectForKey:inbox.my_score_image]
+                                     delegate:self
+                            cancelButtonTitle:@"OK"
+                            otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Methods

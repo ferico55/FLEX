@@ -21,7 +21,7 @@
     DetailMyInboxReputation *_inbox;
 }
 
-- (instancetype)initWithInboxDetail:(DetailMyInboxReputation *)inbox delegate:(id<MyReviewDetailHeaderDelegate>)delegate {
+- (instancetype)initWithInboxDetail:(DetailMyInboxReputation *)inbox delegate:(id<MyReviewDetailHeaderDelegate>)delegate smileyDelegate:(id<MyReviewDetailHeaderSmileyDelegate>)smileyDelegate {
     CKComponentFlexibleSizeRangeProvider* provider = [CKComponentFlexibleSizeRangeProvider providerWithFlexibility:CKComponentSizeRangeFlexibleHeight];
     
     if (self = [super initWithComponentProvider:[MyReviewDetailHeader class] sizeRangeProvider:provider]) {
@@ -29,6 +29,7 @@
         MyReviewDetailContext* context = [MyReviewDetailContext new];
         context.imageDownloader = [AFNetworkingImageDownloader new];
         context.delegate = delegate;
+        context.smileyDelegate = smileyDelegate;
         
         [self updateModel:inbox mode:CKUpdateModeSynchronous];
         [self updateContext:context mode:CKUpdateModeSynchronous];
