@@ -7,6 +7,7 @@
 //
 
 #import "MyReviewDetailHeaderSmileyComponent.h"
+#import "MyReviewDetailHeaderComponent.h"
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent* editedLabel(DetailMyInboxReputation *inbox) {
@@ -30,298 +31,237 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
         score = [inbox.buyer_score integerValue];
     }
     
+    CKStackLayoutComponent *smileyLocked = [CKStackLayoutComponent
+                                            newWithView:{
+                                                [UIView class],
+                                                {
+                                                    {CKComponentTapGestureAttribute(@selector(action))}
+                                                }
+                                            }
+                                            size:{}
+                                            style:{
+                                                .direction = CKStackLayoutDirectionVertical,
+                                                .alignItems = CKStackLayoutAlignItemsCenter,
+                                                .spacing = 16
+                                            }
+                                            children:{
+                                                {
+                                                    [CKImageComponent
+                                                     newWithImage:[UIImage imageNamed:@"icon_review_locked.png"]
+                                                     size:{37,30}]
+                                                },
+                                                {
+                                                    [CKLabelComponent
+                                                     newWithLabelAttributes:{
+                                                         .string = @"Terkunci",
+                                                         .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                     }
+                                                     viewAttributes:{}
+                                                     size:{}]
+                                                }
+                                            }];
+    
+    CKStackLayoutComponent *smileySadGrey = [CKStackLayoutComponent
+                                             newWithView:{
+                                                 [UIView class],
+                                                 {
+                                                     {CKComponentTapGestureAttribute(@selector(action))}
+                                                 }
+                                             }
+                                             size:{.width = 65.5, .height = 57}
+                                             style:{
+                                                 .direction = CKStackLayoutDirectionVertical,
+                                                 .alignItems = CKStackLayoutAlignItemsCenter,
+                                                 .spacing = 16
+                                             }
+                                             children:{
+                                                 {
+                                                     [CKImageComponent
+                                                      newWithImage:[UIImage imageNamed:@"icon_sad_grey.png"] size:{30,30}]
+                                                 },
+                                                 {
+                                                     [CKLabelComponent
+                                                      newWithLabelAttributes:{
+                                                          .string = @"Tidak Puas",
+                                                          .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
+                                                      }
+                                                      viewAttributes:{}
+                                                      size:{}]
+                                                 }
+                                             }];
+    
+    CKStackLayoutComponent *smileySad = [CKStackLayoutComponent
+                                         newWithView:{
+                                             [UIView class],
+                                             {
+                                                 {CKComponentTapGestureAttribute(@selector(action))}
+                                             }
+                                         }
+                                         size:{.width = 65.5, .height = 57}
+                                         style:{
+                                             .direction = CKStackLayoutDirectionVertical,
+                                             .alignItems = CKStackLayoutAlignItemsCenter,
+                                             .spacing = 16
+                                         }
+                                         children:{
+                                             {
+                                                 [CKImageComponent
+                                                  newWithImage:[UIImage imageNamed:@"icon_sad.png"] size:{30,30}]
+                                             },
+                                             {
+                                                 [CKLabelComponent
+                                                  newWithLabelAttributes:{
+                                                      .string = @"Tidak Puas",
+                                                      .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                  }
+                                                  viewAttributes:{}
+                                                  size:{}]
+                                             }
+                                         }];
+    
+    CKStackLayoutComponent *smileyNeutralGrey = [CKStackLayoutComponent
+                                                 newWithView:{
+                                                     [UIView class],
+                                                     {
+                                                         {CKComponentTapGestureAttribute(@selector(action))}
+                                                     }
+                                                 }
+                                                 size:{.width = 65.5, .height = 57}
+                                                 style:{
+                                                     .direction = CKStackLayoutDirectionVertical,
+                                                     .alignItems = CKStackLayoutAlignItemsCenter,
+                                                     .spacing = 16
+                                                 }
+                                                 children:{
+                                                     {
+                                                         [CKImageComponent
+                                                          newWithImage:[UIImage imageNamed:@"icon_neutral_grey.png"] size:{30,30}]
+                                                     },
+                                                     {
+                                                         [CKLabelComponent
+                                                          newWithLabelAttributes:{
+                                                              .string = @"Netral",
+                                                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
+                                                          }
+                                                          viewAttributes:{}
+                                                          size:{}]
+                                                     }
+                                                 }];
+    
+    CKStackLayoutComponent *smileyNeutral = [CKStackLayoutComponent
+                                             newWithView:{
+                                                 [UIView class],
+                                                 {
+                                                     {CKComponentTapGestureAttribute(@selector(action))}
+                                                 }
+                                             }
+                                             size:{.width = 65.5, .height = 57}
+                                             style:{
+                                                 .direction = CKStackLayoutDirectionVertical,
+                                                 .alignItems = CKStackLayoutAlignItemsCenter,
+                                                 .spacing = 16
+                                             }
+                                             children:{
+                                                 {
+                                                     [CKImageComponent
+                                                      newWithImage:[UIImage imageNamed:@"icon_netral.png"] size:{30,30}]
+                                                 },
+                                                 {
+                                                     [CKLabelComponent
+                                                      newWithLabelAttributes:{
+                                                          .string = @"Netral",
+                                                          .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                      }
+                                                      viewAttributes:{}
+                                                      size:{}]
+                                                 }
+                                             }];
+    
+    CKStackLayoutComponent *smileySmileGrey = [CKStackLayoutComponent
+                                               newWithView:{
+                                                   [UIView class],
+                                                   {
+                                                       {CKComponentTapGestureAttribute(@selector(action))}
+                                                   }
+                                               }
+                                               size:{.width = 65.5, .height = 57}
+                                               style:{
+                                                   .direction = CKStackLayoutDirectionVertical,
+                                                   .alignItems = CKStackLayoutAlignItemsCenter,
+                                                   .spacing = 16
+                                               }
+                                               children:{
+                                                   {
+                                                       [CKImageComponent
+                                                        newWithImage:[UIImage imageNamed:@"icon_smile_grey.png"] size:{30,30}]
+                                                   },
+                                                   {
+                                                       [CKLabelComponent
+                                                        newWithLabelAttributes:{
+                                                            .string = @"Puas",
+                                                            .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
+                                                        }
+                                                        viewAttributes:{}
+                                                        size:{}]
+                                                   }
+                                               }];
+    
+    CKStackLayoutComponent *smileySmile = [CKStackLayoutComponent
+                                           newWithView:{
+                                               [UIView class],
+                                               {
+                                                   {CKComponentTapGestureAttribute(@selector(action))}
+                                               }
+                                           }
+                                           size:{}
+                                           style:{
+                                               .direction = CKStackLayoutDirectionVertical,
+                                               .alignItems = CKStackLayoutAlignItemsCenter,
+                                               .spacing = 16
+                                           }
+                                           children:{
+                                               {
+                                                   [CKImageComponent
+                                                    newWithImage:[UIImage imageNamed:@"icon_smile.png"] size:{30,30}]
+                                               },
+                                               {
+                                                   [CKLabelComponent
+                                                    newWithLabelAttributes:{
+                                                        .string = @"Puas",
+                                                        .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                    }
+                                                    viewAttributes:{}
+                                                    size:{}]
+                                               }
+                                           }];
+    
+    
     if ([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"]) {
-        return [CKStackLayoutComponent
-                newWithView:{}
-                size:{}
-                style:{
-                    .direction = CKStackLayoutDirectionVertical,
-                    .alignItems = CKStackLayoutAlignItemsCenter,
-                    .spacing = 16
-                }
-                children:{
-                    {
-                        [CKImageComponent
-                         newWithImage:[UIImage imageNamed:@"icon_review_locked.png"]
-                         size:{37,30}]
-                    },
-                    {
-                        [CKLabelComponent
-                         newWithLabelAttributes:{
-                             .string = @"Terkunci",
-                             .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
-                         }
-                         viewAttributes:{}
-                         size:{}]
-                    }
-                }];
+        return smileyLocked;
     }
     
     switch (score) {
         case -1: {
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_sad.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Tidak Puas",
-                              .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_neutral_grey.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Netral",
-                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_smile_grey.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Puas",
-                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
+            smileys.push_back({smileySad});
+            smileys.push_back({smileyNeutralGrey});
+            smileys.push_back({smileySmileGrey});
         }
             break;
         case 0: {
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_sad_grey.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Tidak Puas",
-                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_neutral_grey.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Netral",
-                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_smile_grey.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Puas",
-                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
+            smileys.push_back({smileySadGrey});
+            smileys.push_back({smileyNeutralGrey});
+            smileys.push_back({smileySmileGrey});
         }
-            
             break;
         case 1: {
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_sad_grey.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Tidak Puas",
-                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_netral.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Netral",
-                              .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{.width = 65.5, .height = 57}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_smile_grey.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Puas",
-                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
+            smileys.push_back({smileySadGrey});
+            smileys.push_back({smileyNeutral});
+            smileys.push_back({smileySmileGrey});
         }
-            
             break;
         case 2: {
-            smileys.push_back({
-                [CKStackLayoutComponent
-                 newWithView:{}
-                 size:{}
-                 style:{
-                     .direction = CKStackLayoutDirectionVertical,
-                     .alignItems = CKStackLayoutAlignItemsCenter,
-                     .spacing = 16
-                 }
-                 children:{
-                     {
-                         [CKImageComponent
-                          newWithImage:[UIImage imageNamed:@"icon_smile.png"] size:{30,30}]
-                     },
-                     {
-                         [CKLabelComponent
-                          newWithLabelAttributes:{
-                              .string = @"Puas",
-                              .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
-                          }
-                          viewAttributes:{}
-                          size:{}]
-                     }
-                 }]
-            });
+            smileys.push_back({smileySmile});
         }
-            
             break;
         default:
             break;
@@ -349,9 +289,9 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
                     {
                         {
                             {@selector(setBackgroundColor:),[UIColor colorWithRed:255.0/255
-                                                                         green:209.0/255
-                                                                          blue:209.0/255
-                                                                         alpha:1]}
+                                                                            green:209.0/255
+                                                                             blue:209.0/255
+                                                                            alpha:1]}
                         }
                     }
                 }
@@ -417,11 +357,16 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                                                                    @"smiley_good":@"icon_smile.png",
                                                                    @"smiley_none":[inbox.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark30.png",
                                                                    @"grey_question_mark":@"icon_question_mark30.png",
-                                                                   @"blue_question_mark":@"icon_checklist_grey.png"
+                                                                   @"blue_question_mark":@"icon_checklist.png"
                                                                    };
     
     return [CKStackLayoutComponent
-            newWithView:{}
+            newWithView:{
+                [UIView class],
+                {
+                    {CKComponentTapGestureAttribute(@selector(getMyScore))}
+                }
+            }
             size:{}
             style:{
                 .direction = CKStackLayoutDirectionVertical,
@@ -478,6 +423,10 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
 }
 
 @implementation MyReviewDetailHeaderSmileyComponent
+
+- (void)getMyScore {
+    
+}
 
 + (instancetype)newWithInbox:(DetailMyInboxReputation *)inbox {
     return [super newWithComponent:

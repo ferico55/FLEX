@@ -17,9 +17,11 @@
 #import "ViewLabelUser.h"
 #import "MyReviewDetailDataManager.h"
 #import "DetailReputationReviewComponentDelegate.h"
+#import "MyReviewDetailHeaderDelegate.h"
 #import "NavigateViewController.h"
 #import "GiveReviewRatingViewController.h"
 #import "MyReviewDetailHeader.h"
+#import "CMPopTipView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
@@ -30,7 +32,8 @@
 <
     UICollectionViewDelegateFlowLayout,
     MyReviewDetailRequestDelegate,
-    DetailReputationReviewComponentDelegate
+    DetailReputationReviewComponentDelegate,
+    MyReviewDetailHeaderDelegate
 >
 {
     TAGContainer *_gtmContainer;
@@ -46,6 +49,8 @@
     UIRefreshControl *_refreshControl;
     IBOutlet UICollectionView *_collectionView;
     MyReviewDetailDataManager *_dataManager;
+    
+    CMPopTipView *_cmPopTipView;
     
     BOOL _page;
     BOOL _isRefreshing;
@@ -108,8 +113,8 @@
     
     _collectionView.delegate = self;
     
-    MyReviewDetailHeader *header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation];
-    
+    MyReviewDetailHeader *header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
+                                                                            delegate:self];
     
     _headerView = header;
     CGRect frame = header.frame;
@@ -156,222 +161,11 @@
     self.navigationItem.titleView = _pageTitleView;
     
     _navigator = [NavigateViewController new];
-    
-    //    _reviewDetailTable.tableHeaderView = _tableHeaderView;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Methods
-- (void)setHeaderView {
-    // Set Reviewee Image
-    [_userImageView setImageWithURL:[NSURL URLWithString:_detailMyInboxReputation.reviewee_picture]
-                   placeholderImage:[UIImage imageNamed:@"icon_profile_picture.png"]];
-    [_userImageView setCornerRadius:_userImageView.frame.size.width/2];
-    [_userImageView setClipsToBounds:YES];
-    
-    
-    // Set Reviewee Name
-    [_revieweeNameViewLabel setText:_detailMyInboxReputation.reviewee_name];
-    [_revieweeNameViewLabel setText:[UIColor colorWithRed:18/255.0f green:199/255.0f blue:0 alpha:1.0f]
-                           withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
-    [_revieweeNameViewLabel setLabelBackground:[_detailMyInboxReputation.reviewee_role isEqualToString:@"1"]?@"Pembeli":@"Penjual"];
-    _revieweeNameViewLabel.center = CGPointMake(CGRectGetMidX(_userInfoView.bounds), _revieweeNameViewLabel.center.y);
-    
-    // Set Reviewee Reputation Score
-    // 1: Reviewee is Buyer
-    // 2: Reviewee is Seller
-    if([_detailMyInboxReputation.role isEqualToString:@"1"]) {
-        [SmileyAndMedal generateMedalWithLevel:_detailMyInboxReputation.shop_badge_level.level
-                                       withSet:_detailMyInboxReputation.shop_badge_level.set
-                                     withImage:_reputationScoreButton
-                                       isLarge:NO];
-        [_reputationScoreButton setTitle:@""
-                                forState:UIControlStateNormal];
-    } else {
-        [_reputationScoreButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small"
-                                                                                                          ofType:@"png"]]
-                                forState:UIControlStateNormal];
-        [_reputationScoreButton setTitle:[NSString stringWithFormat:@"%@%%", (_detailMyInboxReputation.user_reputation==nil? @"0":_detailMyInboxReputation.user_reputation.positive_percentage)]
-                                forState:UIControlStateNormal];
-    }
-    
-    // Set Label for Reviewee
-    if ([_detailMyInboxReputation.role isEqualToString:@"1"]) {
-        _theirScoreLabel.text = @"Nilai untuk Penjual";
-    } else {
-        _theirScoreLabel.text = @"Nilai untuk Pembeli";
-    }
-    
-    
-    NSDictionary<NSString*, NSString*>* theirScoreImageNameByType = @{
-                                                                      @"smiley_neutral":@"icon_netral.png",
-                                                                      @"smiley_bad":@"icon_sad.png",
-                                                                      @"smiley_good":@"icon_smile.png",
-                                                                      @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark_green30.png",
-                                                                      @"grey_question_mark":@"icon_question_mark30.png",
-                                                                      @"blue_question_mark":@"icon_checklist_grey.png"
-                                                                      };
-    
-    NSDictionary<NSString*, NSString*>* myScoreImageNameByType = @{
-                                                                   @"smiley_neutral":@"icon_netral.png",
-                                                                   @"smiley_bad":@"icon_sad.png",
-                                                                   @"smiley_good":@"icon_smile.png",
-                                                                   @"smiley_none":[_detailMyInboxReputation.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark30.png",
-                                                                   @"grey_question_mark":@"icon_question_mark30.png",
-                                                                   @"blue_question_mark":@"icon_checklist_grey.png"
-                                                                   };
-    
-    UIImage *theirScore = [UIImage imageNamed:[theirScoreImageNameByType objectForKey:_detailMyInboxReputation.their_score_image]];
-    UIImage *myScore = [UIImage imageNamed:[myScoreImageNameByType objectForKey:_detailMyInboxReputation.my_score_image]];
-    [_theirScoreButton setImage:theirScore forState:UIControlStateNormal];
-    [_myScoreButton setImage:myScore forState:UIControlStateNormal];
-    
-    
-    if (![_detailMyInboxReputation.score_edit_time_fmt isEqualToString:@"0"]) {
-        _isMyScoreEditedLabel.hidden = NO;
-        _isMyScoreEditedLabel.text = @"(edited)";
-    } else {
-        _isMyScoreEditedLabel.hidden = YES;
-    }
-}
-
-#pragma mark - Action
-
-
-#pragma mark - Table View Delegate and Data Source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MyReviewDetailTableViewCell *cell = nil;
-    DetailReputationReview *currentReview = _reviewList[indexPath.row];
-    
-    if ([currentReview.review_message isEqualToString:@"0"] || currentReview.review_message == nil) {
-        if ([_detailMyInboxReputation.role isEqualToString:@"1"]) {
-            cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:GIVE_REVIEW_CELL_IDENTIFIER];
-            
-            if (cell == nil) {
-                cell = [MyReviewDetailTableViewCell newCellWithIdentifier:GIVE_REVIEW_CELL_IDENTIFIER];
-                cell.delegate = self;
-            }
-            
-            [cell.giveReviewButton.layer setBorderColor:[[UIColor colorWithRed:18.0/255
-                                                                         green:199.0/255
-                                                                          blue:0
-                                                                         alpha:1] CGColor]];
-            [cell.giveReviewButton.layer setBorderWidth:2.0];
-            [cell.giveReviewButton.layer setCornerRadius:5.0];
-            [cell.giveReviewButton setClipsToBounds:YES];
-            
-            if ([currentReview.review_is_skipable isEqualToString:@"1"]) {
-                [cell.skipReviewButton setHidden:NO];
-            } else {
-                [cell.skipReviewButton setHidden:YES];
-            }
-        } else if ([_detailMyInboxReputation.role isEqualToString:@"2"]) {
-            cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:NO_REVIEW_GIVEN_CELL_IDENTIFIER];
-            
-            if (cell == nil) {
-                cell = [MyReviewDetailTableViewCell newCellWithIdentifier:NO_REVIEW_GIVEN_CELL_IDENTIFIER];
-                cell.delegate = self;
-            }
-        }
-        
-    } else if (![currentReview.review_message isEqualToString:@"0"] || currentReview.review_message != nil) {
-        cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:REVIEW_DETAIL_CELL_IDENTIFIER];
-        
-        if (cell == nil) {
-            cell = [MyReviewDetailTableViewCell newCellWithIdentifier:REVIEW_DETAIL_CELL_IDENTIFIER];
-            cell.delegate = self;
-        }
-        
-        cell.reviewMessageLabel.text = currentReview.review_message;
-        [cell.reviewMessageLabel sizeToFit];
-        
-        for (int ii = 0; ii < cell.qualityStarsImagesArray.count; ii++) {
-            UIImageView *temp = cell.qualityStarsImagesArray[ii];
-            temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < [currentReview.product_rating_point intValue])?@"icon_star_active":@"icon_star") ofType:@"png"]];
-        }
-        
-        for (int ii = 0; ii < cell.accuracyStarsImagesArray.count; ii++) {
-            UIImageView *temp = cell.accuracyStarsImagesArray[ii];
-            temp.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:((ii < [currentReview.product_accuracy_point intValue])?@"icon_star_active":@"icon_star") ofType:@"png"]];
-        }
-        
-        if ([currentReview.review_is_allow_edit isEqualToString:@"1"]) {
-            [cell.editReviewButton setHidden:NO];
-        } else {
-            [cell.editReviewButton setHidden:YES];
-        }
-        
-        if (![currentReview.review_response.response_message isEqualToString:@"0"]) {
-            cell.reviewCommentView.hidden = NO;
-            [cell.shopImage setImageWithURL:[NSURL URLWithString:currentReview.product_owner.shop_img]
-                           placeholderImage:[UIImage imageNamed:@"icon_shop_grey.png"]];
-            [cell.shopImage setCornerRadius:cell.shopImage.frame.size.width/2];
-            [cell.shopImage setClipsToBounds:YES];
-            
-            cell.shopName.text = currentReview.product_owner.shop_name;
-            [cell setMedalWithLevel:currentReview.shop_badge_level.level
-                                set:currentReview.shop_badge_level.set];
-            cell.theirCommentLabel.text = currentReview.review_response.response_message;
-            [cell.theirCommentLabel sizeToFit];
-            
-            cell.sellersCommentTimestampLabel.text = currentReview.review_response.response_create_time;
-        } else {
-            cell.reviewCommentView.hidden = YES;
-        }
-        
-    } else if ([currentReview.review_is_skipped isEqualToString:@"1"]) {
-        cell = (MyReviewDetailTableViewCell*)[tableView dequeueReusableCellWithIdentifier:SKIPPED_REVIEW_CELL_IDENTIFIER];
-        
-        if (cell == nil) {
-            cell = [MyReviewDetailTableViewCell newCellWithIdentifier:SKIPPED_REVIEW_CELL_IDENTIFIER];
-            cell.delegate = self;
-        }
-    }
-    
-    [cell.productImage setImageWithURL:[NSURL URLWithString:currentReview.product_image]
-                      placeholderImage:[UIImage imageNamed:@"image_toped_loading_grey.png"]];
-    cell.productNameLabel.text = currentReview.product_name;
-    
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DetailReputationReview *currentReview = _reviewList[indexPath.row];
-    MyReviewDetailTableViewCell *cell;
-    int height = 0;
-    
-    if ([currentReview.review_message isEqualToString:@"0"] || currentReview.review_message == nil) {
-        if ([_detailMyInboxReputation.role isEqualToString:@"1"]) {
-            cell = [MyReviewDetailTableViewCell newCellWithIdentifier:GIVE_REVIEW_CELL_IDENTIFIER];
-            height = cell.frame.size.height;
-        } else if ([_detailMyInboxReputation.role isEqualToString:@"2"]) {
-            cell = [MyReviewDetailTableViewCell newCellWithIdentifier:NO_REVIEW_GIVEN_CELL_IDENTIFIER];
-            height = cell.frame.size.height;
-        }
-        
-    } else if (![currentReview.review_message isEqualToString:@"0"] || currentReview.review_message != nil) {
-        cell = [MyReviewDetailTableViewCell newCellWithIdentifier:REVIEW_DETAIL_CELL_IDENTIFIER];
-        height = cell.frame.size.height;
-        if (![currentReview.review_response.response_message isEqualToString:@"0"]) {
-            height = height + cell.reviewCommentView.frame.size.height;
-        }
-    } else if ([currentReview.review_is_skipped isEqualToString:@"1"]) {
-        cell = [MyReviewDetailTableViewCell newCellWithIdentifier:SKIPPED_REVIEW_CELL_IDENTIFIER];
-        height = cell.frame.size.height;
-    }
-    return height;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _reviewList.count;
 }
 
 #pragma mark - My Review Detail Request Delegate
@@ -440,7 +234,7 @@
     [_dataManager announceDidDisappearForItemInCell:cell];
 }
 
-#pragma mark - DetailReputationReview Delegate
+#pragma mark - Reputation Detail Cells Delegate
 - (void)didTapHeaderWithReview:(DetailReputationReview *)review {
     [_navigator navigateToProductFromViewController:self
                                            withName:review.product_name
@@ -457,6 +251,100 @@
 //    vc.isEdit = isEdit;
     
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Header Delegate
+- (void)didTapRevieweeNameWithID:(NSString *)revieweeID {
+    if ([_detailMyInboxReputation.role isEqualToString:@"2"]) {
+        [_navigator navigateToProfileFromViewController:self withUserID:revieweeID];
+    } else {
+        [_navigator navigateToShopFromViewController:self withShopID:revieweeID];
+    }
+}
+
+- (void)didTapRevieweeReputation:(id)sender role:(NSString *)role {
+//    if ([role isEqualToString:@"1"]) {
+//        int paddingRightLeftContent = 10;
+//        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+//        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+//        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
+//                                 andPadding:paddingRightLeftContent
+//                       withReputationNetral:_detailMyInboxReputation.user_reputation.neutral
+//                               withRepSmile:_detailMyInboxReputation.user_reputation.positive
+//                                 withRepSad:_detailMyInboxReputation.user_reputation.negative
+//                               withDelegate:self];
+//        
+//        //Init pop up
+//        _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+//        _cmPopTipView.delegate = self;
+//        _cmPopTipView.backgroundColor = [UIColor whiteColor];
+//        _cmPopTipView.animation = CMPopTipAnimationSlide;
+//        _cmPopTipView.dismissTapAnywhere = YES;
+//        _cmPopTipView.leftPopUp = YES;
+//        
+//        [_cmPopTipView presentPointingAtView:sender
+//                                      inView:self.view
+//                                    animated:YES];
+//    } else {
+//        NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
+//        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+//    }
+}
+
+- (void)didTapReviewerScore:(DetailMyInboxReputation *)inbox {
+    UIAlertView* alert;
+    
+    if ([inbox.my_score_image isEqualToString:@"grey_question_mark"]) {
+        alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"Pembeli belum memberi nilai untuk Anda"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    } else if ([inbox.my_score_image isEqualToString:@"blue_question_mark"]) {
+        alert = [[UIAlertView alloc] initWithTitle:nil
+                                           message:@"Beri nilai Pembeli untuk melihat nilai Anda"
+                                          delegate:self
+                                 cancelButtonTitle:@"OK"
+                                 otherButtonTitles:nil];
+        [alert show];
+    } else {
+        
+    }
+}
+
+#pragma mark - Methods
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+{
+    UILabel *lblShow = [[UILabel alloc] init];
+    CGFloat fontSize = 13;
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
+    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:strText attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    [lblShow setAttributedText:attributedText];
+    
+    
+    CGSize tempSize = [lblShow sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, 9999)];
+    lblShow.frame = CGRectMake(0, 0, tempSize.width, tempSize.height);
+    lblShow.backgroundColor = [UIColor clearColor];
+    
+    //Init pop up
+    _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:lblShow];
+    _cmPopTipView.delegate = self;
+    _cmPopTipView.backgroundColor = [UIColor blackColor];
+    _cmPopTipView.animation = CMPopTipAnimationSlide;
+    _cmPopTipView.dismissTapAnywhere = YES;
+    _cmPopTipView.leftPopUp = YES;
+    
+    UIButton *button = (UIButton *)sender;
+    [_cmPopTipView presentPointingAtView:button
+                                  inView:self.view
+                                animated:YES];
 }
 
 @end

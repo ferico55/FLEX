@@ -18,5 +18,5 @@
 @end
 
 @interface MyReviewDetailHeader : CKComponentHostingView
-- (instancetype)initWithInboxDetail:(DetailMyInboxReputation*)inbox;
+- (instancetype)initWithInboxDetail:(DetailMyInboxReputation*)inbox delegate:(id<MyReviewDetailHeaderDelegate>)delegate;
 @end

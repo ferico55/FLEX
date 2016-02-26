@@ -9,11 +9,11 @@
 #import "DetailMyInboxReputation.h"
 
 @protocol MyReviewDetailHeaderDelegate <NSObject>
-- (void)didTapRevieweeName:(NSString*)name;
-- (void)didTapRevieweeReputation:(NSString*)role;
+- (void)didTapRevieweeNameWithID:(NSString*)revieweeID;
+- (void)didTapRevieweeReputation:(id)sender role:(NSString*)role;
 - (void)didTapNotSatisfiedSmiley;
 - (void)didTapNeutralSmiley;
 - (void)didTapSatisfiedSmiley;
 - (void)didTapLockedSmiley;
-- (void)didTapReviewerScore;
+- (void)didTapReviewerScore:(DetailMyInboxReputation*)inbox;
 @end
