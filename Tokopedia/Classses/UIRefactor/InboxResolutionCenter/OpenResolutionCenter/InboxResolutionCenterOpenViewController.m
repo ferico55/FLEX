@@ -236,7 +236,9 @@
     [super viewWillDisappear:animated];
     self.title = @"";
     
-    [_syncroDelegate syncroImages:[_photos copy] message:_noteTextView.text refundAmount:_totalRefundTextField.text];
+    if ([_syncroDelegate respondsToSelector:@selector(syncroImages:message:refundAmount:)]) {
+        [_syncroDelegate syncroImages:[_photos copy]?:@[] message:_noteTextView.text?:@"" refundAmount:_totalRefundTextField.text?:@""];
+    }
 }
 
 -(void)updateDataSolution:(NSString *)selectedSolution refundAmount:(NSString *)refund remark:(NSString *)note
