@@ -2809,17 +2809,21 @@ NoResultDelegate
         UIImageView *thumb = v.thumb;
         
         thumb.image = nil;
-        
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            //NSLOG(@"thumb: %@", thumb);
             [thumb setImage:image];
             [thumb setContentMode:UIViewContentModeScaleAspectFit];
             [v.act stopAnimating];
+#pragma clang diagnostic pop
+            
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
             [thumb setContentMode:UIViewContentModeCenter];
             [v.act stopAnimating];
         }];
-         
+        
         
         [_otherproductscrollview addSubview:v];
         [_otherproductviews addObject:v];
