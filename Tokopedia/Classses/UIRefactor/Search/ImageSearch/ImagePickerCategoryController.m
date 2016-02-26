@@ -28,23 +28,26 @@
     
     [self setSearchButtonStyle];
     
-    self.categories = @[
-                        @"Aksesoris",
-                        @"Aksesoris Rambut",
-                        @"Baju Korea",
-                        @"Baju Muslim",
-                        @"Barang Couple",
-                        @"Batik",
-                        @"Fashion & Aksesoris Lainnya",
-                        @"Jam Tangan",
-                        @"Kaos",
-                        @"Pakaian Anak Laki-Laki",
-                        @"Pakaian Anak Perempuan",
-                        @"Pakaian Pria",
-                        @"Pakaian Wanita",
-                        @"Sepatu", @"Perhiasan",
-                        @"Tas Pria & Wanita",
-                        ];
+    self.categories = [self getCategories];
+}
+
+-(NSArray *)getCategories{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *gtmContainer = appDelegate.container;
+    
+    NSString *categoryString = [gtmContainer stringForKey:@"image_search_categories"]?:@"Aksesoris:91,Aksesoris Rambut:1228,Baju Korea:84,Baju Muslim:86,Barang Couple:85,Batik:88,Fashion & Aksesoris Lainnya:1128,Jam Tangan:93,Kaos:87,Pakaian Anak Laki-Laki:83,Pakaian Anak Perempuan:82,Pakaian Pria:81,Pakaian Wanita:80,Sepatu:90,Perhiasan:92,Tas Pria & Wanita:89";
+    
+    NSArray *arrayFromGTM = [[NSMutableArray alloc] initWithArray:[categoryString componentsSeparatedByString:@","]];
+    NSMutableArray *arrayCategory = [NSMutableArray new];
+    for (NSString *category in arrayFromGTM) {
+        NSArray *tempArray= [[NSMutableArray alloc] initWithArray:[category componentsSeparatedByString:@":"]];
+        NSDictionary *categoryDictionary = @{@"title":tempArray[0],
+                                             @"id":tempArray[1]
+                                             };
+        [arrayCategory addObject:categoryDictionary];
+    }
+    
+    return [arrayCategory copy];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,7 +79,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"categories"];
     }
-    cell.textLabel.text = self.categories[indexPath.row];
+    cell.textLabel.text = self.categories[indexPath.row][@"title"];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
     cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
