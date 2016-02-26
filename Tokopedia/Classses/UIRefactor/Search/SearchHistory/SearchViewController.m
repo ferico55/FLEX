@@ -120,8 +120,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     _searchBar.delegate = self;
     _searchBar.showsCancelButton = NO;
-    _searchBar.showsBookmarkButton = NO;
     
+    _searchBar.showsBookmarkButton = NO;
+
     [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
     
     imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
@@ -152,6 +153,15 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_collectionView reloadData];    
 }
 
+-(BOOL)isEnableImageSearch{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *gtmContainer = appDelegate.container;
+    
+    NSString *enableImageSearchString = [gtmContainer stringForKey:@"enable_image_search"]?:@"0";
+    
+    return [enableImageSearchString isEqualToString:@"1"];
+}
+
 - (UITextField*)searchSubviewsForTextFieldIn:(UIView*)view
 {
     if ([view isKindOfClass:[UITextField class]]) {
@@ -176,9 +186,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     NSDictionary *_auth = [secureStorage keychainDictionary];
     BOOL _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     
-    if(_isLogin){
+    if(_isLogin && [self isEnableImageSearch])
         _searchBarTrailingConstraint.constant = 44;
-    }
+    else _searchBarTrailingConstraint.constant = 0;
     
     [TPAnalytics trackScreenName:@"Search Page"];
     self.screenName = @"Search Page";
@@ -446,7 +456,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:YES];
     _searchBar.showsBookmarkButton = NO;
-    _searchBarTrailingConstraint.constant = 44;
+
+    if ([self isEnableImageSearch])
+        _searchBarTrailingConstraint.constant = 44;
+    else _searchBarTrailingConstraint.constant = 0;
+    
     [self deActivateSearchBar];
     
     return YES;
@@ -454,8 +468,9 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
-    _searchBar.showsBookmarkButton = YES;
+    _searchBar.showsBookmarkButton = ([self isEnableImageSearch]);
     _searchBarTrailingConstraint.constant = 0;
+    
     [self activateSearchBar];
 
     return YES;

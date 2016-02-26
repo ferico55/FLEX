@@ -358,6 +358,10 @@ ImageSearchRequestDelegate
 #pragma mark - Properties
 - (void)setData:(NSDictionary *)data {
     _data = data;
+    
+    if (_data) {
+        [_params setObject:data[@"department_id"] forKey:@"department_id"];
+    }
 }
 
 #pragma mark - Memory Management
@@ -768,7 +772,7 @@ ImageSearchRequestDelegate
 
 - (NSString*)getPath:(int)tag{
     NSString *pathUrl;
-    if (_isFromImageSearch && ![self isUsingAnyFilter] && ![_params objectForKey:@"order_by"]) {
+    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && !([_params objectForKey:@"order_by"])) {
         pathUrl = @"/v4/search/snapsearch.pl";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
         pathUrl = @"search/v1/catalog";
@@ -781,7 +785,7 @@ ImageSearchRequestDelegate
 }
 
 - (id)getObjectManager:(int)tag {
-    if (_isFromImageSearch && ![self isUsingAnyFilter] && ![_params objectForKey:@"order_by"]) {
+    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
         _objectmanager = [RKObjectManager sharedClientHttps];
         [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
     } else {
@@ -912,7 +916,7 @@ ImageSearchRequestDelegate
         _isNeedToRemoveAllObject = NO;
     }
     
-    if (_isFromImageSearch && ![self isUsingAnyFilter] && ![_params objectForKey:@"order_by"]) {
+    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
         ImageSearchResponse *search = [successResult.dictionary objectForKey:@""];
         
         if(search.data.similar_prods.count > 0){
@@ -1213,6 +1217,15 @@ ImageSearchRequestDelegate
     BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
     
     return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
+}
+
+- (BOOL) isUsingAnyFilterExceptCategory{
+    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_min"]] isEqualToString:@"0"];
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_max"]] isEqualToString:@"0"];;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
+    
+    return  ( isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
 
 

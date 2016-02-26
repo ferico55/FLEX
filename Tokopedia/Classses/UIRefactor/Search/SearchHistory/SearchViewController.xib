@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchViewController">
@@ -25,6 +25,7 @@
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="hji-HG-v1X">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                            <animations/>
                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="VGw-v9-qcW">
                                 <size key="itemSize" width="50" height="50"/>
@@ -38,6 +39,7 @@
                             </connections>
                         </collectionView>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="hji-HG-v1X" secondAttribute="bottom" id="9Hx-hc-2rL"/>
@@ -46,8 +48,9 @@
                         <constraint firstItem="hji-HG-v1X" firstAttribute="top" secondItem="UGu-Sr-Afb" secondAttribute="top" id="fQC-c3-Vo9"/>
                     </constraints>
                 </view>
-                <searchBar contentMode="scaleToFill" placeholder="Cari produk / toko" showsCancelButton="YES" translucent="NO" backgroundImage="NavBar" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
+                <searchBar contentMode="scaleToFill" placeholder="Cari produk / toko" translucent="NO" backgroundImage="NavBar" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="BpI-NQ-T71"/>
                     </constraints>
@@ -62,12 +65,14 @@
                     <subviews>
                         <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="ipL-Mx-fD9">
                             <rect key="frame" x="-39" y="9" width="25" height="25"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="25" id="7El-Od-3YG"/>
                                 <constraint firstAttribute="height" constant="25" id="qmx-hB-v1W"/>
                             </constraints>
                         </imageView>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ipL-Mx-fD9" secondAttribute="trailing" constant="14" id="6RN-gG-yEh"/>
@@ -76,6 +81,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
