@@ -31,6 +31,7 @@
     [self setSearchButtonStyle];
     
     self.categories = [self getCategories];
+    self.tableView.allowsMultipleSelection = NO;
 }
 
 -(NSArray *)getCategories{
@@ -88,21 +89,24 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.separatorInset = UIEdgeInsetsZero;
     cell.tintColor = [UIColor whiteColor];
+    
+    if ([_categories[indexPath.row] isEqual:_selectedCategory]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
     return cell;
 }
 
 #pragma mark - Table view delegate
-
--(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath   *)indexPath
+{
     _selectedCategory = _categories[indexPath.row];
-    NSIndexPath *oldIndex = [self.tableView indexPathForSelectedRow];
-    [self.tableView cellForRowAtIndexPath:oldIndex].accessoryType = UITableViewCellAccessoryNone;
-    [self.tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-    return indexPath;
+    [_tableView reloadData];
 }
 
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 //    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 //    if (cell.accessoryType == UITableViewCellAccessoryNone) {
@@ -111,7 +115,7 @@
 //    } else {
 //        cell.accessoryType = UITableViewCellAccessoryNone;
 //    }
-}
+//}
 
 - (IBAction)didTapSearchButton:(UIButton *)sender {
     SearchResultViewController *controller = [SearchResultViewController new];
