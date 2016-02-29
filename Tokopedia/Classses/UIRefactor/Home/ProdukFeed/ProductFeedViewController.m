@@ -71,6 +71,7 @@ FavoriteShopRequestDelegate
 @property (strong, nonatomic) PromoRequest *promoRequest;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) FavoriteShopRequest *favoriteShopRequest;
+@property (strong, nonatomic) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 @end
 
@@ -80,6 +81,7 @@ FavoriteShopRequestDelegate
     NSString *_nextPageUri;
     
     BOOL _isFailRequest;
+    BOOL _isRequestingProductFeed;
 //    BOOL _isShowRefreshControl;
     
     UIRefreshControl *_refreshControl;
@@ -147,6 +149,7 @@ FavoriteShopRequestDelegate
     [_collectionView setAlwaysBounceVertical:YES];
     [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
     [_collectionView addSubview:_firstFooter];
+    [_firstFooter setHidden:NO];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
@@ -168,6 +171,7 @@ FavoriteShopRequestDelegate
     
     [self registerNib];
     self.contentView = self.view;
+    _isRequestingProductFeed = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -239,11 +243,15 @@ FavoriteShopRequestDelegate
 }
 
 - (void)refreshProductFeed {
-    _page = 0;
-    [_productDataSource removeAllProducts];
-    //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
-    [_favoriteShopRequest requestFavoriteShopListings];
-    [_noResultView removeFromSuperview];
+    
+    //[_productDataSource removeAllProducts];
+    if(!_isRequestingProductFeed){
+        _page = 0;
+        _isRequestingProductFeed = YES;
+        //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+        [_favoriteShopRequest requestFavoriteShopListings];
+        [_noResultView removeFromSuperview];
+    }
 }
 
 - (void)registerNib {
@@ -256,6 +264,42 @@ FavoriteShopRequestDelegate
     
     UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
     [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
+}
+
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    UICollectionReusableView *reusableView = nil;
+    if (kind == UICollectionElementKindSectionHeader) {
+        if (_promo.count >= indexPath.section && indexPath.section > 0) {
+            if ([_promo objectAtIndex:indexPath.section]) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = PromoCollectionViewCellTypeNormal;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                }
+            } else {
+                reusableView = nil;
+            }
+        } else {
+            reusableView = nil;
+        }
+    } else if (kind == UICollectionElementKindSectionFooter) {
+        if(_isFailRequest) {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"RetryView"
+                                                                     forIndexPath:indexPath];
+        } else {
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"FooterView"
+                                                                     forIndexPath:indexPath];
+        }
+    }
+    return reusableView;
 }
 
 #pragma mark - Promo request delegate
@@ -323,6 +367,7 @@ FavoriteShopRequestDelegate
     }
     
     if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
+        [_collectionViewFlowLayout setFooterReferenceSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 45)];
         [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     }
 }
@@ -339,6 +384,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 
 -(void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
     _favoritedShops = favoriteShops;
+    _isFailRequest = NO;
     if(_favoritedShops.list.count > 0){
         [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     }else{
@@ -349,14 +395,13 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 
 -(void)didReceiveProductFeed:(SearchAWS *)feed{
     [_noResultView removeFromSuperview];
-    [_firstFooter removeFromSuperview];
+    _isFailRequest = NO;
+    [_firstFooter setHidden:YES];
     
     if (_favoritedShops.list.count > 0 && feed.result.products.count > 0) {
-        [_noResultView removeFromSuperview];
         if (_page == 0) {
             [_productDataSource replaceProductsWith: feed.result.products];
             [_promo removeAllObjects];
-            [_firstFooter removeFromSuperview];
         }else{
             [_productDataSource addProducts: feed.result.products];
         }
@@ -373,6 +418,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         if(_page == 0){
             [_productDataSource removeAllProducts];
             [_collectionView addSubview:_noResultView];
+            [_collectionViewFlowLayout setFooterReferenceSize:CGSizeZero];
         }
     }
     
@@ -383,6 +429,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     [_loadingIndicator setHidden:YES];
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
+    _isRequestingProductFeed = NO;
 }
 
 -(void)failToRequestFavoriteShopListing{
@@ -390,6 +437,8 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
     [stickyView show];
+    _isFailRequest = YES;
+    _isRequestingProductFeed = NO;
 }
 
 -(void)failToRequestProductFeed{
@@ -397,6 +446,8 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
     [stickyView show];
+    _isFailRequest = YES;
+    _isRequestingProductFeed = NO;
 }
 
 #pragma mark - No Request delegate

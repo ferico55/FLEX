@@ -30,6 +30,11 @@ import UIKit
         let cellNib = UINib.init(nibName: "ProductCell", bundle: nil)
         _collectionView.registerNib(cellNib, forCellWithReuseIdentifier: ProductDataSource.productCellIdentifier)
         
+        let footerNib = UINib.init(nibName: "FooterCollectionReusableView", bundle: nil)
+        _collectionView.registerNib(footerNib, forCellWithReuseIdentifier: "FooterView")
+        
+        let retryNib = UINib.init(nibName: "RetryCollectionReusableView", bundle: nil)
+        _collectionView.registerNib(retryNib, forCellWithReuseIdentifier: "RetryView")
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -51,7 +56,8 @@ import UIKit
     func addProducts(products:Array<SearchAWSProduct>) {
         let indexPaths = indexPathForInsertions(products)
         _products.appendContentsOf(products)
-        _collectionView.insertItemsAtIndexPaths(indexPaths)
+        //_collectionView.insertItemsAtIndexPaths(indexPaths)
+        _collectionView.reloadData()
     }
     
     func indexPathForInsertions(products: Array<SearchAWSProduct>) -> [NSIndexPath] {
