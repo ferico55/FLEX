@@ -76,7 +76,6 @@
     NSURL *url;
     
     if (gateway == TYPE_GATEWAY_BCA_CLICK_PAY) {
-        self. title = @"KlikPay BCA";
         urlAddress =_BCAParam.bca_url;
         
         NSString *clickPayCode = _BCAParam.bca_code?:@"";
@@ -114,6 +113,7 @@
         url = [NSURL URLWithString:urlAddress];
     }
     else if ((gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT) && !_isVeritrans) {
+        
         urlAddress = _URLString;
         
         NSDictionary *paramEncrypt = [_CCParam encrypt];
