@@ -88,11 +88,11 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
--(Breadcrumb*)getLastProductAddCategory
+-(CategoryDetail *)getLastProductAddCategory
 {
-    Breadcrumb *category = [Breadcrumb new];
-    category.department_id = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
-    category.department_name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
+    CategoryDetail *category = [CategoryDetail new];
+    category.categoryId = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
+    category.name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
     return category;
 }
 

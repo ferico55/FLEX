@@ -7,7 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CategoryDetail.h"
+
+@protocol FilterCategoryViewDelegate <NSObject>
+
+- (void)didSelectCategory:(CategoryDetail *)category;
+
+@end
 
 @interface FilterCategoryViewController : UITableViewController
+
+@property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
+@property (weak, nonatomic) CategoryDetail *selectedCategory;
 
 @end

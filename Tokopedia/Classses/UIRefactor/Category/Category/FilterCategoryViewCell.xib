@@ -25,7 +25,7 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="expand_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="znv-Qa-OSR">
+                    <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="expand_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="znv-Qa-OSR">
                         <rect key="frame" x="290" y="14.5" width="15" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="JZ8-5P-h2E"/>

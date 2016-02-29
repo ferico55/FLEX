@@ -15,7 +15,6 @@
 @interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *categories;
-@property (strong, nonatomic) CategoryDetail *selectedCategory;
 
 @end
 
@@ -54,6 +53,9 @@
 }
 
 - (void)didTapDoneButton {
+    if ([self.delegate respondsToSelector:@selector(didSelectCategory:)]) {
+        [self.delegate didSelectCategory:self.selectedCategory];
+    }
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -103,27 +105,27 @@
     return cell;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (self.categories.count > 0) {
+        return nil;
+    }
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicatorView.center = view.center;
+    [indicatorView startAnimating];
+    [view addSubview:indicatorView];
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
-
     if ([self.selectedCategory isEqual:category]) {
         [self deselectCategory:category];
     } else {
         [self selectCategory:category];
     }
-    
-    NSInteger index = [self.categories indexOfObject:category];
-    
     self.selectedCategory = category;
-    
-//    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
-//    [tableView scrollToRowAtIndexPath:selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    
-//    FilterCategoryViewCell *cell = [tableView cellForRowAtIndexPath:selectedIndexPath];
-//    cell.checkmarkImageView.hidden = NO;
-    
     [tableView reloadData];
 }
 
@@ -158,7 +160,6 @@
 
 - (void)deselectCategory:(CategoryDetail *)category {
     [self.categories removeObjectsInArray:category.child];
-    
 }
 
 #pragma mark - Tokopedia network
@@ -231,7 +232,23 @@
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult
              withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    self.categories = [response.result.categories mutableCopy];
+    NSMutableArray *parentCategories = [response.result.categories mutableCopy];
+    NSMutableArray *categories = [NSMutableArray arrayWithArray:parentCategories];
+    for (CategoryDetail *category in parentCategories) {
+        for (CategoryDetail *childCategory in category.child) {
+            for (CategoryDetail *lastCategory in childCategory.child) {
+                if ([self.selectedCategory.categoryId isEqualToString:lastCategory.categoryId]) {
+                    NSInteger location = [parentCategories indexOfObject:category] + 1;
+                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
+                    [categories insertObjects:category.child atIndexes:indexSet];
+                    location = [categories indexOfObject:childCategory] + 1;
+                    indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, childCategory.child.count)];
+                    [categories insertObjects:childCategory.child atIndexes:indexSet];
+                }
+            }
+        }
+    }
+    self.categories = categories;
     [self.tableView reloadData];
 }
 
