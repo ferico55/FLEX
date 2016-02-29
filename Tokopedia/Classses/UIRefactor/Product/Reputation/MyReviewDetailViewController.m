@@ -159,6 +159,9 @@
     
     _invoiceTitleLabel.text = _detailMyInboxReputation.invoice_ref_num;
     _pageTitleView.frame = CGRectMake(0, 0, self.view.bounds.size.width-(72*2), self.navigationController.navigationBar.bounds.size.height);
+    _pageTitleView.userInteractionEnabled = YES;
+    [_pageTitleView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(tapToInvoice)]];
     self.navigationItem.titleView = _pageTitleView;
     
     _navigator = [NavigateViewController new];
@@ -233,6 +236,12 @@
   didEndDisplayingCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
     [_dataManager announceDidDisappearForItemInCell:cell];
+}
+
+#pragma mark - Actions
+- (void)tapToInvoice {
+    [_navigator navigateToInvoiceFromViewController:self
+                                     withInvoiceURL:_detailMyInboxReputation.invoice_uri];
 }
 
 #pragma mark - Reputation Detail Cells Delegate
