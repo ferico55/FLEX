@@ -527,15 +527,11 @@
 -(void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath
 {
     ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-    if(conversation.action_by == ACTION_BY_BUYER)
+    if(conversation.action_by == ACTION_BY_BUYER || conversation.action_by == ACTION_BY_SELLER)
     {
         //profile
         NSArray *query = [[[NSURL URLWithString:conversation.user_url] path] componentsSeparatedByString: @"/"];
         [_navigate navigateToProfileFromViewController:self withUserID:[query objectAtIndex:2]?:@""];
-    }
-    else if(conversation.action_by == ACTION_BY_SELLER)
-    {
-        [_navigate navigateToProfileFromViewController:self withUserID:@""];
     }
     else if(conversation.action_by == ACTION_BY_TOKOPEDIA)
     {
