@@ -61,7 +61,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                  attributes:{
                      {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
                      {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
-                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0] CGColor]},
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:60/255.0 green:179/255.0 blue:57/255.0 alpha:1.0] CGColor]},
                      {@selector(setClipsToBounds:), YES},
                      {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
                  }
@@ -71,7 +71,11 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
     return nil;
 }
 
-static CKComponent *giveResponseButton(DetailReputationReview *review, NSString *role) {
+static CKComponent *giveResponseButton(DetailReputationReview *review, NSString *role, BOOL isDetail) {
+    if (isDetail) {
+        return nil;
+    }
+    
     if (![review.review_message isEqualToString:@"0"] && (review.review_response.response_message == nil || [review.review_response.response_message isEqualToString:@"0"]) && [role isEqualToString:@"2"]) {
         return [CKInsetComponent
                 newWithInsets:{8,8,8,8}
@@ -88,12 +92,12 @@ static CKComponent *giveResponseButton(DetailReputationReview *review, NSString 
                  titleFont:[UIFont fontWithName:@"Gotham Book" size:14.0]
                  selected:NO
                  enabled:YES
-                 action:nil
+                 action:@selector(didTapToGiveResponse:)
                  size:{.height = 30}
                  attributes:{
                      {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 2.0},
                      {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
-                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0] CGColor]},
+                     {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:60/255.0 green:179/255.0 blue:57/255.0 alpha:1.0] CGColor]},
                      {@selector(setClipsToBounds:), YES},
                      {@selector(setContentHorizontalAlignment:), UIControlContentHorizontalAlignmentCenter}
                  }
@@ -132,11 +136,22 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
     [_delegate didTapToGiveReview:_review];
 }
 
-+ (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role context:(DetailReputationReviewContext*)context{
+- (void)didTapToGiveResponse:(id)sender {
+    [_delegate didTapToGiveResponse:_review];
+}
+
++ (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context {
+    UIEdgeInsets insets;
+    if (isDetail) {
+        insets = {0, 16, 0, 16};
+    } else {
+        insets = {8, 8, 0, 8};
+    }
+    
     DetailReputationReviewComponent* component = [super newWithComponent:
                                                   [CKInsetComponent
                                                    newWithView:{}
-                                                   insets:{8, 8, 0, 8}
+                                                   insets:insets
                                                    component:
                                                    [CKStackLayoutComponent
                                                     newWithView:{
@@ -182,7 +197,7 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
                                                             [ReviewResponseComponent newWithReview:review imageDownloader:context.imageDownloader]
                                                         },
                                                         {
-                                                            giveResponseButton(review, role)
+                                                            giveResponseButton(review, role, isDetail)
                                                         }
                                                     }]
                                                    ]];

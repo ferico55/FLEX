@@ -81,7 +81,7 @@
                                 <rect key="frame" x="8" y="87" width="323" height="30"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                 <state key="normal" title="Beri nilai dan 2 ulasan">
-                                    <color key="titleColor" red="0.27058823529411763" green="0.48627450980392156" blue="0.062745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.23529411764705882" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="tapToInboxReviewDetail:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="24g-uz-cE9"/>

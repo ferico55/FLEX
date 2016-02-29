@@ -15,7 +15,7 @@ static CKComponent* editedLabel(DetailMyInboxReputation *inbox) {
             newWithLabelAttributes:{
                 .string = @"(diubah)",
                 .font = [UIFont fontWithName:@"Gotham Book" size:12.0],
-                .color = [UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]
+                .color = [UIColor colorWithWhite:177.0/255 alpha:1.0]
             }
             viewAttributes:{}
             size:{}];

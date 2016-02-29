@@ -23,6 +23,7 @@
 #import "GiveReviewRatingViewController.h"
 #import "MyReviewDetailHeader.h"
 #import "CMPopTipView.h"
+#import "GiveReviewResponseViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
@@ -56,10 +57,6 @@
     
     BOOL _page;
     BOOL _isRefreshing;
-    BOOL _isUserCanGiveReview;
-    BOOL _isUserHasGiveReview;
-    BOOL _isSellerHasGiveComment;
-    BOOL _isUserSkipReview;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *reviewDetailTable;
@@ -111,6 +108,7 @@
     
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
+                                                                    isDetail:NO
                                                                     delegate:self];
     
     _collectionView.delegate = self;
@@ -251,7 +249,6 @@
     GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
     vc.detailMyReviewReputation = self;
     vc.detailReputationReview = review;
-//    vc.isEdit = isEdit;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -292,6 +289,14 @@
 //        NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
 //        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
 //    }
+}
+
+- (void)didTapToGiveResponse:(DetailReputationReview *)review {
+    GiveReviewResponseViewController *vc = [GiveReviewResponseViewController new];
+    vc.inbox = _detailMyInboxReputation;
+    vc.review = review;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Smiley Delegate

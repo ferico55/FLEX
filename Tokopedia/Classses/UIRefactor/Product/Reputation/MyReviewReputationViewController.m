@@ -309,7 +309,7 @@
                        withFont:[UIFont fontWithName:@"GothamMedium" size:13.0]];
     [cell.theirUserName setLabelBackground:[current.reviewee_role isEqualToString:@"1"]?@"Pembeli":@"Penjual"];
     
-    [cell.button.layer setBorderColor:[[UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0] CGColor]];
+    [cell.button.layer setBorderColor:[[UIColor colorWithRed:60/255.0 green:179/255.0 blue:57/255.0 alpha:1.0] CGColor]];
     
     if([current.role isEqualToString:@"1"]) {//Buyer
         [SmileyAndMedal generateMedalWithLevel:current.shop_badge_level.level withSet:current.shop_badge_level.set withImage:cell.theirReputation isLarge:NO];

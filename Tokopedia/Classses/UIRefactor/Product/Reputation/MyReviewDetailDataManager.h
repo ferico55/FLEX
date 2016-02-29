@@ -14,6 +14,7 @@
 
 - (instancetype)initWithCollectionView:(UICollectionView*)collectionView
                                   role:(NSString*)role
+                              isDetail:(BOOL)role
                               delegate:(id<DetailReputationReviewComponentDelegate>)delegate;
 - (void)replaceReviews:(NSArray<DetailReputationReview*>*)reviews;
 - (void)addReviews:(NSArray<DetailReputationReview*>*)reviews;

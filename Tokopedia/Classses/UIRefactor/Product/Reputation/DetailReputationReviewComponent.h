@@ -17,5 +17,5 @@
 @end
 
 @interface DetailReputationReviewComponent : CKCompositeComponent
-+ (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role context:(DetailReputationReviewContext*)context;
++ (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context;
 @end

@@ -15,6 +15,7 @@
 @interface MyReviewDetailModel : NSObject
 @property DetailReputationReview *review;
 @property NSString *role;
+@property BOOL isDetail;
 @end
 
 @implementation MyReviewDetailModel
@@ -25,11 +26,13 @@
     CKCollectionViewDataSource* _dataSource;
     CKComponentFlexibleSizeRangeProvider *_sizeRangeProvider;
     NSString *_role;
+    BOOL _isDetail;
 }
 
-- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role delegate:(id<DetailReputationReviewComponentDelegate>)delegate  {
+- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role isDetail:(BOOL)isDetail delegate:(id<DetailReputationReviewComponentDelegate>)delegate  {
     if (self = [super init]) {
         _role = role;
+        _isDetail = isDetail;
         
         DetailReputationReviewContext* context = [DetailReputationReviewContext new];
         context.imageDownloader = [AFNetworkingImageDownloader new];
@@ -58,7 +61,7 @@
         MyReviewDetailModel* model = [MyReviewDetailModel new];
         model.review = reviews[index];
         model.role = _role;
-        
+        model.isDetail = _isDetail;
         items.insert({0, index}, model);
     }
 
@@ -71,7 +74,7 @@
 }
 
 + (CKComponent *)componentForModel:(MyReviewDetailModel*)model context:(DetailReputationReviewContext*)context {
-    return [DetailReputationReviewComponent newWithReview:model.review role:model.role context:context];
+    return [DetailReputationReviewComponent newWithReview:model.review role:model.role isDetail:model.isDetail context:context];
 }
 
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
