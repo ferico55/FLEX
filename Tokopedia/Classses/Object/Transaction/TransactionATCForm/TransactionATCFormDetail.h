@@ -11,7 +11,7 @@
 #import "AddressFormList.h"
 #import "ShippingInfoShipments.h"
 
-@interface TransactionATCFormDetail : NSObject
+@interface TransactionATCFormDetail : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *available_count;
 @property (nonatomic, strong) ProductDetail *product_detail;

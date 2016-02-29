@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TransactionATCFormResult.h"
 
-@interface TransactionATCForm : NSObject
+@interface TransactionATCForm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;

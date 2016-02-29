@@ -1054,47 +1054,7 @@
 {
     RKObjectManager *objectManagerFormATC = [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionATCForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionATCFormResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"auto_resi":@"auto_resi"}];
-    
-    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TransactionATCFormDetail class]];
-    [formMapping addAttributeMappingsFromDictionary:@{API_AVAILABLE_COUNT_KEY:API_AVAILABLE_COUNT_KEY}];
-    
-    RKObjectMapping *rpxMapping = [RKObjectMapping mappingForClass:[RPX class]];
-    [rpxMapping addAttributeMappingsFromDictionary:@{@"indomaret_logo":@"indomaret_logo"}];
-    
-    TransactionObjectMapping *mapping = [TransactionObjectMapping new];
-    RKObjectMapping *productMapping = [mapping productMapping];
-    RKObjectMapping *AddressMapping = [mapping addressMapping];
-    RKObjectMapping *shipmentsMapping = [mapping shipmentsMapping];
-    RKObjectMapping *shipmentspackageMapping = [mapping shipmentPackageMapping];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY toKeyPath:API_FORM_KEY withMapping:formMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"rpx" toKeyPath:@"rpx" withMapping:rpxMapping]];
-    
-    [formMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_DETAIL_KEY toKeyPath:API_PRODUCT_DETAIL_KEY withMapping:productMapping]];
-    
-    [formMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DESTINATION_KEY toKeyPath:API_DESTINATION_KEY withMapping:AddressMapping]];
-    
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY withMapping:shipmentsMapping];
-    [formMapping addPropertyMapping:shipmentRel];
-    
-    RKRelationshipMapping *shipmentpackageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY withMapping:shipmentspackageMapping];
-    [shipmentsMapping addPropertyMapping:shipmentpackageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_CART_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[TransactionATCForm mapping] method:RKRequestMethodPOST pathPattern:API_TRANSACTION_CART_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectManagerFormATC addResponseDescriptor:responseDescriptor];
     

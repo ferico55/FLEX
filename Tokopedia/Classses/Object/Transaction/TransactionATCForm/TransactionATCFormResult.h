@@ -10,7 +10,7 @@
 #import "TransactionATCFormDetail.h"
 #import "RPX.h"
 
-@interface TransactionATCFormResult : NSObject
+@interface TransactionATCFormResult : NSObject <TKPObjectMapping>
 
 @property(nonatomic,strong) TransactionATCFormDetail *form;
 @property(nonatomic,strong) RPX *rpx;
