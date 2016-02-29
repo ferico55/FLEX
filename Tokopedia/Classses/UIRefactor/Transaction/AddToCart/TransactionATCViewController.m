@@ -1161,12 +1161,20 @@
                 }
             }];
             
+            NSString *destination = [NSString stringWithFormat:@"%ld|%@-%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
+            NSString *origin = [NSString stringWithFormat:@"%ld|%@-%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
+            NSString *weight = [NSString stringWithFormat:@"%@%@",_ATCForm.result.form.product_detail.product_weight,_ATCForm.result.form.product_detail.product_weight_unit_name];
+            
+            [[self requestRates] doRequestWithNames:_ATCForm.result.form.shipment origin:origin destination:destination weight:weight];
+            
             [_tableView reloadData];
         }
     }
-
 }
 
+-(void)successRequestRates:(RateData *)data{
+       
+}
 
 -(NSString*)addressString:(GMSAddress*)address
 {
@@ -1180,22 +1188,8 @@
 -(RKObjectManager*)objectManagerATC
 {
     RKObjectManager *objectManagerActionATC = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{API_IS_SUCCESS_KEY:API_IS_SUCCESS_KEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_ACTION_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[TransactionAction mapping] method:RKRequestMethodPOST pathPattern:API_ACTION_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectManagerActionATC addResponseDescriptor:responseDescriptor];
     

@@ -20,6 +20,6 @@
 
 @property (strong, nonatomic) id<RequestRatesDelegate> delegate;
 
--(void)doRequest;
+-(void)doRequestWithNames:(NSArray *)names origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight;
 
 @end
