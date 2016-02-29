@@ -1201,7 +1201,9 @@ NoResultDelegate
                  };
     else if(tag == CTagOtherProduct)
         return @{@"shop_id" : _product.result.shop_info.shop_id,
-                 @"device" : @"ios"};
+                 @"device" : @"ios",
+                 @"-id" : _product.result.product.product_id
+                 };
     else if(tag == CTagFavorite)
     {
         NSString *strShopID = [[NSString alloc] initWithString:tempShopID?:@"0"];
@@ -2383,7 +2385,7 @@ NoResultDelegate
 #pragma mark - View Delegate
 - (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
 {
-    OtherProduct *product = _otherProductObj[index];
+    SearchAWSProduct *product = _otherProductObj[index];
     if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
         [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.result.shop_info.shop_name];
     }
