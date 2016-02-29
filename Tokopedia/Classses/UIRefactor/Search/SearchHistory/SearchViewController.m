@@ -69,8 +69,6 @@ NSString *const searchPath = @"search/%@";
     GeneratedHost *_generatedHost;
     
     UITapGestureRecognizer *imageSearchGestureRecognizer;
-    
-    UIImagePickerController *_imagePicker;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -121,8 +119,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _searchBar.delegate = self;
     _searchBar.showsCancelButton = NO;
     
-    _searchBar.showsBookmarkButton = NO;
-
     [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
     
     imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
@@ -140,7 +136,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [notification addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [notification addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [notification addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
-    [notification addObserver:self selector:@selector(dismissModelViewController) name:@"DISMISS_ALL_CONTROLLERS" object:nil];
 
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
@@ -154,6 +149,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 }
 
 -(BOOL)isEnableImageSearch{
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    if (!auth.isLogin) {
+        return NO;
+    }
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
     
@@ -181,14 +180,15 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [super viewWillAppear:animated];
 
     [self initNotificationManager];
+
+    [self.searchBar resignFirstResponder];
+    [self.searchBar setShowsBookmarkButton:NO];
     
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    BOOL _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-    
-    if(_isLogin && [self isEnableImageSearch])
+    if([self isEnableImageSearch]) {
         _searchBarTrailingConstraint.constant = 44;
-    else _searchBarTrailingConstraint.constant = 0;
+    } else {
+        _searchBarTrailingConstraint.constant = 0;
+    }
     
     [TPAnalytics trackScreenName:@"Search Page"];
     self.screenName = @"Search Page";
@@ -455,14 +455,13 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:YES];
-    _searchBar.showsBookmarkButton = NO;
-
-    if ([self isEnableImageSearch])
+    [searchBar setShowsBookmarkButton:NO];
+    if ([self isEnableImageSearch]) {
         _searchBarTrailingConstraint.constant = 44;
-    else _searchBarTrailingConstraint.constant = 0;
-    
+    } else {
+        _searchBarTrailingConstraint.constant = 0;
+    }
     [self deActivateSearchBar];
-    
     return YES;
 }
 
@@ -470,9 +469,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [searchBar setShowsCancelButton:YES animated:YES];
     _searchBar.showsBookmarkButton = ([self isEnableImageSearch]);
     _searchBarTrailingConstraint.constant = 0;
-    
     [self activateSearchBar];
-
     return YES;
 }
 
@@ -671,29 +668,25 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 #pragma mark - Image search
 
 - (void)takePhoto:(UIButton *)sender {
-    _imagePicker = [[UIImagePickerController alloc] init];
-    _imagePicker.delegate = self;
-    _imagePicker.allowsEditing = YES;
-    _imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    _imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:_imagePicker animated:YES completion:NULL];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.navigationController presentViewController:imagePicker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
-    controller.imageQuery = info;
-    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController presentViewController:controller animated:YES completion:nil];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
+        controller.imageQuery = info;
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.navigationController presentViewController:controller animated:YES completion:nil];
+    }];
 }
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
     [self takePhoto:nil];
-}
-
-- (void)dismissModelViewController {
-    [self.navigationController.presentedViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
-    [self.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -94,8 +94,6 @@ SpellCheckRequestDelegate,
 ImageSearchRequestDelegate
 >
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-
 @property (strong, nonatomic) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
 @property (strong, nonatomic) NSMutableDictionary *similarityDictionary;
@@ -114,10 +112,11 @@ ImageSearchRequestDelegate
 
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 
 @property (strong, nonatomic) ImageSearchRequest *imageSearchRequest;
+
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *imageSearchToolbarButtons;
 
 @end
 
@@ -277,8 +276,6 @@ ImageSearchRequestDelegate
                                forState:UIControlStateNormal];
     }
     
-    self.contentView = self.view;
-    
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
@@ -337,7 +334,7 @@ ImageSearchRequestDelegate
                                                                     action:@selector(dismissView)];
     if (self.navigationController.isBeingPresented) {
         self.navigationItem.leftBarButtonItem = cancelButton;
-    }
+    }    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -352,7 +349,7 @@ ImageSearchRequestDelegate
 }
 
 - (void)dismissView {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"DISMISS_ALL_CONTROLLERS" object:self];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Properties
@@ -682,7 +679,6 @@ ImageSearchRequestDelegate
     [_params addEntriesFromDictionary:userInfo];
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
-    [_act startAnimating];
 }
 
 #pragma mark - Sort Delegate
@@ -704,7 +700,6 @@ ImageSearchRequestDelegate
     } else {
         //normal sort
         [self refreshView:nil];
-        [_act startAnimating];
         _sortIndexPath = indexPath;
     }
     
@@ -718,8 +713,6 @@ ImageSearchRequestDelegate
     
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
-    
-    [_act startAnimating];
 }
 
 #pragma mark - LoadingView Delegate
@@ -732,9 +725,7 @@ ImageSearchRequestDelegate
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
-    
     [parameter setObject:@"ios" forKey:@"device"];
-    
     [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
     [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
     [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
@@ -742,7 +733,6 @@ ImageSearchRequestDelegate
     [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
     [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
-    
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if([_product firstObject] != nil && [[_product firstObject] count] > 0){
@@ -750,7 +740,7 @@ ImageSearchRequestDelegate
             [parameter setObject:@(allProductsCount) forKey:@"rows"];
             [parameter setObject:@(0) forKey:@"start"];
         }
-    }else{
+    } else {
         [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
         [parameter setObject:startPerPage forKey:@"rows"];
         [parameter setObject:@(_start) forKey:@"start"];
@@ -933,6 +923,9 @@ ImageSearchRequestDelegate
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
             [_noResultView removeFromSuperview];
+            
+            [self.imageSearchToolbarButtons makeObjectsPerformSelector:@selector(setEnabled:) withObject:@(YES)];
+            
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -1028,7 +1021,6 @@ ImageSearchRequestDelegate
                 }
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
-                //self.view = self.contentView;
                 [_noResultView removeFromSuperview];
                 
                 if(_isFromImageSearch && [_params objectForKey:@"order_by"] && [[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
@@ -1183,7 +1175,6 @@ ImageSearchRequestDelegate
 
 - (void) buttonDidTapped:(id)sender{
     [_params setObject:_suggestion forKey:@"search"];
-    //self.view = self.contentView;
     [_noResultView removeFromSuperview];
     
     NSDictionary *newData = @{

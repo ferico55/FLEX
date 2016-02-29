@@ -8,7 +8,7 @@
 
 #import "ImagePickerCategoryController.h"
 #import "SearchResultViewController.h"
-#import "UIImage+ImageEffects.h"
+#import "UIImageEffects.h"
 
 @interface ImagePickerCategoryController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -25,11 +25,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self setBlurBackground];
-    
     [self setSearchButtonStyle];
-    
     self.categories = [self getCategories];
     self.tableView.allowsMultipleSelection = NO;
 }
@@ -59,7 +56,7 @@
 
 - (void)setBlurBackground {
     UIImage *image = [_imageQuery objectForKey:UIImagePickerControllerEditedImage];
-    self.backgroundImageView.image = [image applyLightEffect];
+    self.backgroundImageView.image = [UIImageEffects imageByApplyingDarkEffectToImage:image];
 }
 
 - (void)setSearchButtonStyle {
@@ -75,6 +72,20 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.categories.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (IS_IPAD) {
+        return 25;
+    }
+    return 1.0f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (IS_IPAD) {
+        return tableView.sectionFooterHeight;
+    }
+    return 1.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -106,18 +117,10 @@
     [_tableView reloadData];
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//    if (cell.accessoryType == UITableViewCellAccessoryNone) {
-//        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-//        _selectedCategory = _categories[indexPath.row];
-//    } else {
-//        cell.accessoryType = UITableViewCellAccessoryNone;
-//    }
-//}
-
 - (IBAction)didTapSearchButton:(UIButton *)sender {
+    if (!_selectedCategory) {
+        return;
+    }
     SearchResultViewController *controller = [SearchResultViewController new];
     controller.isFromAutoComplete = NO;
     controller.isFromImageSearch = YES;
