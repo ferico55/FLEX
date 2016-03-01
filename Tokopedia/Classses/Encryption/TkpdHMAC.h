@@ -29,6 +29,6 @@
 - (NSString *)getTkpdPath;
 - (NSString *)getSecret;
 
-- (NSString *)getTokenRatesPath:(NSString*)path withUnixTime:(time_t)unixTime;
+- (NSString *)generateTokenRatesPath:(NSString*)path withUnixTime:(NSString*)unixTime;
 
 @end
