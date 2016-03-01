@@ -113,4 +113,8 @@ import UIKit
         
         return CGSizeMake(cellWidth, cellHeight)
     }
+    
+    func isProductFeedEmpty() -> Bool{
+        return _products.isEmpty;
+    }
 }

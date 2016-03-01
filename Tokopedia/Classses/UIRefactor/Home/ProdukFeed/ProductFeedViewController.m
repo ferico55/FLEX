@@ -239,18 +239,21 @@ FavoriteShopRequestDelegate
 }
 
 - (void)updateFavoriteShop {
+    _isRequestingProductFeed = NO;
     [self refreshProductFeed];
 }
 
 - (void)refreshProductFeed {
     
-    //[_productDataSource removeAllProducts];
+    [_productDataSource removeAllProducts];
+    [_collectionViewFlowLayout setFooterReferenceSize:CGSizeZero];
+    [_firstFooter removeFromSuperview];
+    [_noResultView removeFromSuperview];
     if(!_isRequestingProductFeed){
         _page = 0;
         _isRequestingProductFeed = YES;
         //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         [_favoriteShopRequest requestFavoriteShopListings];
-        [_noResultView removeFromSuperview];
     }
 }
 
@@ -269,7 +272,7 @@ FavoriteShopRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (_promo.count >= indexPath.section && indexPath.section > 0) {
+        if (_promo.count >= indexPath.section && indexPath.section > 0 ) {
             if ([_promo objectAtIndex:indexPath.section]) {
                 reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                   withReuseIdentifier:@"PromoCollectionReusableView"
@@ -294,12 +297,20 @@ FavoriteShopRequestDelegate
                                                               withReuseIdentifier:@"RetryView"
                                                                      forIndexPath:indexPath];
         } else {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                                              withReuseIdentifier:@"FooterView"
-                                                                     forIndexPath:indexPath];
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                                  withReuseIdentifier:@"FooterView"
+                                                                         forIndexPath:indexPath];
+            
         }
     }
     return reusableView;
+}
+
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
+    if([_productDataSource isProductFeedEmpty] || _nextPageUri == nil || [_nextPageUri isEqualToString:@""]){
+        return CGSizeZero;
+    }
+    return CGSizeMake(collectionView.bounds.size.width, 45.0f);
 }
 
 #pragma mark - Promo request delegate
@@ -388,15 +399,21 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     if(_favoritedShops.list.count > 0){
         [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     }else{
-        [_loadingIndicator setHidden:YES];
+        [_loadingIndicator stopAnimating];
+        [_noResultView removeFromSuperview];
+        [_firstFooter removeFromSuperview];
+        [_productDataSource removeAllProducts];
         [_collectionView addSubview:_noResultView];
+        [_collectionView layoutIfNeeded];
+        _isRequestingProductFeed = NO;
     }
 }
 
 -(void)didReceiveProductFeed:(SearchAWS *)feed{
     [_noResultView removeFromSuperview];
+    [_firstFooter removeFromSuperview];
+    [_refreshControl setHidden:YES];
     _isFailRequest = NO;
-    [_firstFooter setHidden:YES];
     
     if (_favoritedShops.list.count > 0 && feed.result.products.count > 0) {
         if (_page == 0) {
@@ -418,7 +435,6 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         if(_page == 0){
             [_productDataSource removeAllProducts];
             [_collectionView addSubview:_noResultView];
-            [_collectionViewFlowLayout setFooterReferenceSize:CGSizeZero];
         }
     }
     
@@ -426,7 +442,6 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         [_refreshControl endRefreshing];
     }
     [_loadingIndicator stopAnimating];
-    [_loadingIndicator setHidden:YES];
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
     _isRequestingProductFeed = NO;
