@@ -726,30 +726,6 @@ typedef enum TagRequest {
     _networkManager = nil;
 }
 
-
-
-#pragma mark - InboxMessageCell Delegate
--(void)InboxMessageCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    
-    if(_iseditmode) {
-        
-    } else {
-        NSInteger index = indexpath.row;
-        InboxMessageList *list = _messages[index];
-        InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-        list.message_read_status = @"1";
-        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
-                    KTKPDMESSAGE_TITLEKEY : list.message_title,
-                    KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
-                    MESSAGE_INDEX_PATH : indexpath
-                    };
-        [_table reloadData];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    
-}
-
 #pragma mark - Swipe Delegate
 -(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
 {
