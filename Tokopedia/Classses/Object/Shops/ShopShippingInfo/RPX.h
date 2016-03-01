@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RPX : NSObject
+@interface RPX : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger whitelisted_idrop;
 @property (nonatomic) NSString *indomaret_logo;
