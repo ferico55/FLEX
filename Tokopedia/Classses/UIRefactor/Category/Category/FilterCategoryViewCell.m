@@ -25,10 +25,34 @@
 
 }
 
+- (void)showCheckmark {
+    self.checkmarkImageView.hidden = NO;
+}
+
+- (void)hideCheckmark {
+    self.checkmarkImageView.hidden = YES;
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     if (selected) {
         self.checkmarkImageView.hidden = NO;        
+    }
+}
+
+- (void)showArrow {
+    self.arrowImageView.hidden = NO;
+}
+
+- (void)hideArrow {
+    self.arrowImageView.hidden = YES;
+}
+
+- (void)setArrowDirection:(ArrowDirection)direction {
+    if (direction == ArrowDirectionUp) {
+        self.arrowImageView.image = [UIImage imageNamed:@"collapse_arrow.png"];
+    } else if (direction == ArrowDirectionDown) {
+        self.arrowImageView.image = [UIImage imageNamed:@"expand_arrow.png"];
     }
 }
 

@@ -20,4 +20,7 @@
 @property (strong, nonatomic) NSString *url;
 @property (strong, nonatomic) NSArray *child;
 
+@property BOOL isExpanded;
+@property BOOL hasChildCategories;
+
 @end

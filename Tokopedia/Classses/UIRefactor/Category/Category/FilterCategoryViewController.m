@@ -46,6 +46,20 @@
 - (void)setDoneButton {
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone target:self action:@selector(didTapDoneButton)];
     self.navigationItem.rightBarButtonItem = doneButton;
+    [self updateDoneButtonAppearance];
+}
+
+- (void)updateDoneButtonAppearance {
+    UIBarButtonItem *doneButton = self.navigationItem.rightBarButtonItem;
+    if (!self.allowAnyCategorySelected) {
+        if (self.selectedCategory.hasChildCategories || self.selectedCategory == nil) {
+            doneButton.enabled = NO;
+            doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+        } else {
+            doneButton.enabled = YES;
+            doneButton.tintColor = [UIColor whiteColor];
+        }
+    }
 }
 
 - (void)didTapCancelButton {
@@ -86,20 +100,29 @@
     cell.categoryNameLabel.text = category.name;
     
     NSInteger level = [category.tree integerValue];
-    cell.leftPaddingConstraint.constant = level * 18;
+    cell.leftPaddingConstraint.constant = level * 18; // 18 -> left padding
     
-    if (_selectedCategory) {
-        if ([category.categoryId isEqualToString:_selectedCategory.categoryId]) {
-            cell.checkmarkImageView.hidden = NO;
+    if (self.allowAnyCategorySelected) {
+        if ([category isEqual:_selectedCategory]) {
+            [cell showCheckmark];
         } else {
-            cell.checkmarkImageView.hidden = YES;
-        }        
+            [cell hideCheckmark];
+        }
+    } else {
+        // Selected category is last category
+        if (!category.hasChildCategories && [category isEqual:_selectedCategory]) {
+            [cell showCheckmark];
+        } else {
+            [cell hideCheckmark];
+        }
     }
     
     if (category.child.count > 0) {
-        cell.arrowImageView.hidden = NO;
+        [cell showArrow];
+        ArrowDirection direction = category.isExpanded ? ArrowDirectionUp : ArrowDirectionDown;
+        [cell setArrowDirection:direction];
     } else {
-        cell.arrowImageView.hidden = YES;
+        [cell hideArrow];
     }
     
     return cell;
@@ -120,16 +143,28 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
-    if ([self.selectedCategory isEqual:category]) {
-        [self deselectCategory:category];
+    if (self.allowAnyCategorySelected) {
+        if ([category isEqual:_selectedCategory]) {
+            [self deselectCategory:category];
+        } else {
+            [self selectCategory:category];
+        }
+        self.selectedCategory = category;
     } else {
-        [self selectCategory:category];
+        if (category.isExpanded) {
+            [self deselectCategory:category];
+        } else {
+            [self selectCategory:category];
+        }
+        self.selectedCategory = category;
+        [self updateDoneButtonAppearance];
     }
-    self.selectedCategory = category;
     [tableView reloadData];
 }
 
 - (void)selectCategory:(CategoryDetail *)category {
+    category.isExpanded = YES;
+    
     NSInteger index = [self.categories indexOfObject:category];
     NSRange range = NSMakeRange(index + 1, category.child.count);
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
@@ -159,6 +194,7 @@
 }
 
 - (void)deselectCategory:(CategoryDetail *)category {
+    category.isExpanded = NO;
     [self.categories removeObjectsInArray:category.child];
 }
 
@@ -237,7 +273,9 @@
     for (CategoryDetail *category in parentCategories) {
         for (CategoryDetail *childCategory in category.child) {
             for (CategoryDetail *lastCategory in childCategory.child) {
-                if ([self.selectedCategory.categoryId isEqualToString:lastCategory.categoryId]) {
+                if ([self.selectedCategory isEqual:lastCategory]) {
+                    category.isExpanded = YES;
+                    childCategory.isExpanded = YES;
                     NSInteger location = [parentCategories indexOfObject:category] + 1;
                     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
                     [categories insertObjects:category.child atIndexes:indexSet];

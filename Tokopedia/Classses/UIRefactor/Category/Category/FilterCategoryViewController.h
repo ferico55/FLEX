@@ -19,5 +19,6 @@
 
 @property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
 @property (weak, nonatomic) CategoryDetail *selectedCategory;
+@property BOOL allowAnyCategorySelected;
 
 @end

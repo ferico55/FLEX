@@ -10,9 +10,21 @@
 
 @interface FilterCategoryViewCell : UITableViewCell
 
+typedef NS_ENUM(NSUInteger, ArrowDirection) {
+    ArrowDirectionUp,
+    ArrowDirectionDown,
+};
+
 @property (weak, nonatomic) IBOutlet UILabel *categoryNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *checkmarkImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftPaddingConstraint;
+
+- (void)showCheckmark;
+- (void)hideCheckmark;
+
+- (void)showArrow;
+- (void)hideArrow;
+- (void)setArrowDirection:(ArrowDirection)direction;
 
 @end

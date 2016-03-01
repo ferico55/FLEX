@@ -90,10 +90,14 @@
 
 -(CategoryDetail *)getLastProductAddCategory
 {
-    CategoryDetail *category = [CategoryDetail new];
-    category.categoryId = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
-    category.name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
-    return category;
+    if ([_auth objectForKey:LAST_CATEGORY_NAME]) {
+        CategoryDetail *category = [CategoryDetail new];
+        category.categoryId = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"0";
+        category.name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
+        return category;
+    } else {
+        return nil;
+    }
 }
 
 - (NSDictionary *)autoAddParameter:(id)params

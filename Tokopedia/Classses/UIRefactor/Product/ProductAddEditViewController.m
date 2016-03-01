@@ -252,7 +252,9 @@
     {
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         CategoryDetail *lastCategory = [auth getLastProductAddCategory];
-        [_dataInput setObject:lastCategory forKey:DATA_CATEGORY_KEY];
+        if (lastCategory) {
+            [_dataInput setObject:lastCategory forKey:DATA_CATEGORY_KEY];
+        }
     }
     
     RequestGenerateHost *generateHost =[RequestGenerateHost new];
@@ -837,11 +839,15 @@
         return param;
     }
     if (tag == TAG_REQUEST_LIST_CATALOG) {
-        CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY]?:[CategoryDetail new];
-        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY: ACTION_GET_CATALOG,
-                                @"product_name":_productNameTextField.text?:@"",
-                                @"product_department_id": category.categoryId?:@""
-                                };
+        NSString *categoryId = @"";
+        if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
+            categoryId = [[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId];
+        }
+        NSDictionary *param = @{
+            kTKPDDETAIL_APIACTIONKEY    : ACTION_GET_CATALOG,
+            @"product_name"             : _productNameTextField.text?:@"",
+            @"product_department_id"    : categoryId,
+        };
         return param;
     }
     return nil;
@@ -1425,7 +1431,7 @@
 
 - (void)didSelectCategory:(CategoryDetail *)category {
     [_dataInput setObject:category forKey:DATA_CATEGORY_KEY];
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY] integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         [secureStorage setKeychainWithValue:category.categoryId withKey:LAST_CATEGORY_VALUE];
@@ -1896,9 +1902,10 @@
         
         NSString *serverID = result.server_id?:_generateHost.result.generated_host.server_id?:@"0";
 
-        NSArray *breadcrumbs = result.breadcrumb?:@[];
-        CategoryDetail *category = [breadcrumbs lastObject]?:[CategoryDetail new];
-        [_dataInput setObject:category forKey:DATA_CATEGORY_KEY];
+        if (result.breadcrumb.count > 0) {
+            CategoryDetail *category = [result.breadcrumb lastObject];
+            [_dataInput setObject:category forKey:DATA_CATEGORY_KEY];
+        }
         
         NSString *priceCurencyID = result.product.product_currency_id?:@"1";
         NSString *price = result.product.product_price?:@"";
@@ -1964,13 +1971,16 @@
     BOOL isValidImage = nImage!=0;
     
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductDetail new];
-    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY]?:[CategoryDetail new];
     NSString *productName = product.product_name;
     NSString *productPrice = product.product_price;
     NSString *productPriceCurrencyID = product.product_currency_id;
     NSString *productWeight = product.product_weight;
     NSString *productWeightUnitID = product.product_weight_unit;
-    NSInteger departmentID = [category.categoryId integerValue];
+
+    NSInteger departmentID = 0;
+    if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
+        departmentID = [[[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId] integerValue];
+    }
     
     BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
     BOOL isPriceCurrencyUSD = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD);
