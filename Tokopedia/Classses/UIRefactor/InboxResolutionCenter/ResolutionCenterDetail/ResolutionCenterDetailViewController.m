@@ -552,36 +552,14 @@
 -(NSString *)trouble
 {
     NSString *trouble = _resolutionDetail.resolution_last.last_trouble_string?:@"";
-//    if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(1)]) {
-//        trouble = ARRAY_PROBLEM_COMPLAIN[0];
-//    }
-//    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(2)]) {
-//        trouble = ARRAY_PROBLEM_COMPLAIN[1];
-//    }
-//    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(3)]) {
-//        trouble = ARRAY_PROBLEM_COMPLAIN[2];
-//    }
-//    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(4)]) {
-//        trouble = ARRAY_PROBLEM_COMPLAIN[3];
-//    }
+
     return trouble;
 }
 
 -(NSString*)solution
 {
     NSString *solution = _resolutionDetail.resolution_last.last_solution_string?:@"";
-//    if ([_resolutionDetail.resolution_last.last_solution isEqual:@(1)]) {
-//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0];
-//    }
-//    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(2)]) {
-//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[1];
-//    }
-//    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(3)]) {
-//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[2];
-//    }
-//    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(4)]) {
-//        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[3];
-//    }
+
     return solution;
 }
 
