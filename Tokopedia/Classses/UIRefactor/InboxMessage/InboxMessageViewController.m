@@ -581,23 +581,9 @@ typedef enum TagRequest {
 
 -(void) configureactionrestkit {
     _objectmanagerarchive =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    
+
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageAction mapping]
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL
                                                                                                  keyPath:@""
@@ -858,6 +844,7 @@ typedef enum TagRequest {
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
         [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+        
         return _objectmanager;
     }
     
