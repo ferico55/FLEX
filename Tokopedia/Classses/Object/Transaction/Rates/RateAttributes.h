@@ -19,5 +19,6 @@
 @property (nonatomic, strong) NSString *destination_name;
 @property (nonatomic, strong) NSString *weight;
 @property (nonatomic, strong) NSArray *products;
+@property (nonatomic, strong) NSString *auto_resi_image;
 
 @end
