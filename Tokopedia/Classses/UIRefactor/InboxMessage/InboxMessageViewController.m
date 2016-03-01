@@ -698,7 +698,7 @@ typedef enum TagRequest {
 }
 
 -(void) undoactionmessage {
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:[_data objectForKey:@"nav"], @"vc", nil];
+    NSDictionary *dict = @{@"vc" : _data[@"nav"]};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
 }
 
@@ -879,7 +879,7 @@ typedef enum TagRequest {
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     if(tag == messageListTag) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        InboxMessage *message = [result objectForKey:@""];
+        InboxMessage *message = result[@""];
         
         NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:message.result.list to:_messages];
         [_messages addObjectsFromArray: message.result.list];
@@ -892,7 +892,7 @@ typedef enum TagRequest {
         } else {
             //_table.tableFooterView = _noResultView;
             NSString *text;
-            NSString *currentCategory = [_data objectForKey:@"nav"];
+            NSString *currentCategory = _data[@"nav"];
             
             if(_keyword != nil && ![_keyword isEqualToString:@""]){
                 text = [NSString stringWithFormat:@"Pesan dengan keyword \"%@\" tidak ditemukan.", _keyword];
