@@ -90,8 +90,8 @@
 
     BOOL _isFinishRequesting;
     
-    ShippingInfoShipmentPackage *_selectedShipmentPackage;
-    ShippingInfoShipments *_selectedShipment;
+    RateProduct *_selectedShipmentPackage;
+    RateAttributes *_selectedShipment;
     
     TokopediaNetworkManager *_networkManager;
     TokopediaNetworkManager *_networkManagerATC;
@@ -104,7 +104,7 @@
     
     AddressFormList *_selectedAddress;
     
-    NSArray *_shipments;
+    NSArray<RateAttributes*> *_shipments;
     NSArray *_autoResi;
     
     NSString *_longitude;
@@ -384,8 +384,8 @@
     UITableViewCell *cell = nil;
     [self buyButtonIsLoading:!_isFinishRequesting];
     if (!_isnodata) {
-        ShippingInfoShipments *shipment = _selectedShipment;
-        ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
+        RateAttributes *shipment = _selectedShipment;
+        RateProduct *shipmentPackage = _selectedShipmentPackage;
         AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
         
         [self setAddress:address];
@@ -449,7 +449,7 @@
                         {   cell.accessoryView = nil;
                             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
                         }
-                        label.text = shipment.shipment_name?:@"Pilih";
+                        label.text = shipment.shipper_name?:@"Pilih";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
@@ -464,7 +464,7 @@
                         {   cell.accessoryView = nil;
                             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
                         }
-                        label.text = shipmentPackage.name?:@"Pilih";
+                        label.text = shipmentPackage.shipper_product_name?:@"Pilih";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_INSURANCE:
@@ -573,6 +573,7 @@
                         {   cell.accessoryView = nil;
                             [cell setAccessoryType:UITableViewCellAccessoryNone];
                         }
+                        //TODO::
                         label.text = shipmentPackage.price?:@"-";
                         break;
                     }
@@ -658,7 +659,7 @@
                 return 243-50+_addressLabel.frame.size.height;
             }
             if ([cell isEqual:_pinLocationCell]) {
-                if ([_selectedShipment.shipment_id integerValue] == 10) {
+                if ([_selectedShipment.shipper_id integerValue] == 10) {
                     return 70;
                 }
                 return 0;
@@ -738,12 +739,12 @@
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
             {
                 NSMutableArray *shipmentName = [NSMutableArray new];
-                for (ShippingInfoShipments *package in _shipments) {
-                    [shipmentName addObject:package.shipment_name?:@""];
+                for (RateAttributes *package in _shipments) {
+                    [shipmentName addObject:package.shipper_name?:@""];
                 }
                 
                 NSMutableArray *autoResiImage = [NSMutableArray new];
-                for (ShippingInfoShipments *package in _shipments) {
+                for (RateAttributes *package in _shipments) {
                     if (package.auto_resi_image != nil) {
                         [autoResiImage addObject:package.auto_resi_image];
                     }
@@ -751,7 +752,7 @@
                 
                 TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
                 vc.title = @"Kurir Pengiriman";
-                vc.selectedObject = _selectedShipment.shipment_name;
+                vc.selectedObject = _selectedShipment.shipper_name;
                 vc.objects = shipmentName;
                 vc.objectImages = autoResiImage;
                 vc.senderIndexPath = indexPath;
@@ -765,12 +766,12 @@
                 NSMutableArray *shipmentPackages = [NSMutableArray new];
                 NSMutableArray *shipmentPackagesName = [NSMutableArray new];
                 
-                for (ShippingInfoShipments *shipment in _shipments) {
-                    if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
-                        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                for (RateAttributes *shipment in _shipments) {
+                    if ([shipment.shipper_name isEqualToString:_selectedShipment.shipper_name]) {
+                        for (RateProduct *package in shipment.products) {
                             if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
                                 [shipmentPackages addObject:package];
-                                [shipmentPackagesName addObject:package.name];
+                                [shipmentPackagesName addObject:package.shipper_product_name];
                             }
                         }
                         break;
@@ -779,7 +780,7 @@
                 
                 GeneralTableViewController *vc = [GeneralTableViewController new];
                 vc.title = @"Paket Pengiriman";
-                vc.selectedObject = _selectedShipmentPackage.name;
+                vc.selectedObject = _selectedShipmentPackage.shipper_product_name;
                 vc.objects = shipmentPackagesName;
                 vc.senderIndexPath = indexPath;
                 vc.delegate = self;
@@ -856,16 +857,16 @@
     }
     if (tag == TAG_REQUEST_ATC) {
         NSDictionary *userinfo = _dataInput;
-        ShippingInfoShipments *shipment = _selectedShipment;
-        ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
+        RateAttributes *shipment = _selectedShipment;
+        RateProduct *shipmentPackage = _selectedShipmentPackage;
         AddressFormList *address = [userinfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
         ProductDetail *product = [userinfo objectForKey:DATA_DETAIL_PRODUCT_KEY];
         
         NSInteger productID = [ product.product_id integerValue];
         NSInteger quantity = [_productQuantityTextField.text integerValue];
         NSInteger insuranceID = [product.product_insurance integerValue];
-        NSInteger shippingID = [shipment.shipment_id integerValue];
-        NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
+        NSInteger shippingID = [shipment.shipper_id integerValue];
+        NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
         NSString *remark = [userinfo objectForKey:API_NOTES_KEY];
         
         NSInteger addressID = (address.address_id==0)?-1:address.address_id;
@@ -908,10 +909,10 @@
         NSInteger productID = [product.product_id integerValue];
         NSInteger quantity = [_productQuantityTextField.text integerValue];
         NSInteger insuranceID = [[userinfo objectForKey:API_INSURANCE_KEY]integerValue];
-        ShippingInfoShipments *shipment = _selectedShipment;
-        NSInteger shippingID = [shipment.shipment_id integerValue];
-        ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
-        NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
+        RateAttributes *shipment = _selectedShipment;
+        NSInteger shippingID = [shipment.shipper_id integerValue];
+        RateProduct *shipmentPackage = _selectedShipmentPackage;
+        NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
         NSString *weight = product.product_weight?:@"0";
         
         AddressFormList *address = [userinfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
@@ -1083,47 +1084,6 @@
             _longitude = address.longitude;
             _latitude = address.latitude;
             
-            NSArray *shipments = _ATCForm.result.form.shipment;
-            _shipments = shipments;
-            [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
-
-            
-            NSMutableArray *shipmentSupporteds = [NSMutableArray new];
-            
-            for (ShippingInfoShipments *shipment in _shipments) {
-                NSMutableArray *shipmentPackages = [NSMutableArray new];
-//                NSMutableDictionary *shipmentAutoResiSupported = [NSMutableDictionary new];
-                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
-                    _selectedShipment = shipment;
-                }
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
-                        [shipmentPackages addObject:package];
-                    }
-                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
-                        _selectedShipmentPackage = package;
-                    }
-                }
-                
-                if ([_ATCForm.result.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
-                    shipment.auto_resi_image = _ATCForm.result.rpx.indomaret_logo;
-                } else {
-                    shipment.auto_resi_image = @"";
-                }
-                
-                if (shipmentPackages.count>0) {
-                    shipment.shipment_package = shipmentPackages;
-                    [shipmentSupporteds addObject:shipment];
-                }
-                
-            }
-            
-            _shipments = shipmentSupporteds;
-//            _autoResi = autoResiDetails;
-            
-            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
-            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
-            
             ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
             product = _ATCForm.result.form.product_detail;
             _productQuantityStepper.value = [product.product_min_order integerValue]?:1;
@@ -1161,11 +1121,17 @@
                 }
             }];
             
-            NSString *destination = [NSString stringWithFormat:@"%ld|%@-%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
-            NSString *origin = [NSString stringWithFormat:@"%ld|%@-%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
+            NSString *destination = @"2264|55262|-6.1898386,106.79889969999999";//[NSString stringWithFormat:@"%ld|%@|%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
+            NSString *origin = @"5573|11410|-6.181630381254824,106.86388221583255";//[NSString stringWithFormat:@"%ld|%@|%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
             NSString *weight = [NSString stringWithFormat:@"%@%@",_ATCForm.result.form.product_detail.product_weight,_ATCForm.result.form.product_detail.product_weight_unit_name];
             
-            [[self requestRates] doRequestWithNames:_ATCForm.result.form.shipment origin:origin destination:destination weight:weight];
+            NSMutableArray *names = [NSMutableArray new];
+            for (ShippingInfoShipments *shipment in _ATCForm.result.form.shipment) {
+                [names addObject:shipment.shipment_name];
+            }
+            
+            
+            [[self requestRates] doRequestWithNames:[names copy] origin:origin destination:destination weight:weight];
             
             [_tableView reloadData];
         }
@@ -1173,7 +1139,14 @@
 }
 
 -(void)successRequestRates:(RateData *)data{
-       
+    _shipments = data.attributes;
+    
+    if (_shipments.count > 0) {
+        _selectedShipment = _selectedShipment?:_shipments[0];
+        if (_selectedShipment.products.count > 0) {
+            _selectedShipmentPackage = _selectedShipmentPackage?:_selectedShipment.products[0];
+        }
+    }
 }
 
 -(NSString*)addressString:(GMSAddress*)address
@@ -1297,39 +1270,15 @@
             NSArray *shipments = calculate.result.shipment;
             _shipments = shipments;
             
-            NSMutableArray *shipmentSupporteds = [NSMutableArray new];
-            
             for (ShippingInfoShipments *shipment in _shipments) {
-                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
-                    _selectedShipment = shipment;
-                }
-                NSMutableArray *shipmentPackages = [NSMutableArray new];
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
-                        _selectedShipmentPackage = package;
-                    }
-                    if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
-                        [shipmentPackages addObject:package];
-                    }
-                }
                 
                 if ([_ATCForm.result.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
                     shipment.auto_resi_image = _ATCForm.result.rpx.indomaret_logo;
                 } else {
                     shipment.auto_resi_image = @"";
                 }
-                
-                if (shipmentPackages.count>0) {
-                    shipment.shipment_package = shipmentPackages;
-                    [shipmentSupporteds addObject:shipment];
-                }
-                
             }
-            
-            _shipments = shipmentSupporteds;
-            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
-            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
-            
+
             for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                 UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
                 [indicatorView stopAnimating];
@@ -1348,43 +1297,25 @@
 #pragma mark - Transaction Shipment Delegate
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
-    ShippingInfoShipments *shipmentObject;
+    RateAttributes *shipmentObject;
 
     if (indexPath.row == TAG_BUTTON_TRANSACTION_SHIPPING_AGENT) {
         
-        for (ShippingInfoShipments *package in _shipments) {
-            if ([package.shipment_name isEqualToString:(NSString*)object]) {
+        for (RateAttributes *package in _shipments) {
+            if ([package.shipper_name isEqualToString:(NSString*)object]) {
                 shipmentObject = package;
                 break;
             }
         }
-        NSMutableArray *availablePackage = [NSMutableArray new];
-        
-        for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-            if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
-                [availablePackage addObject:package];
-            }
-        }
-        if (availablePackage.count==0) {
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipmentObject.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        else
-        {
-            _selectedShipment = shipmentObject;
-            for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
-                if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
-                    _selectedShipmentPackage = package;
-                }
-            }
-        }
+        _selectedShipment = shipmentObject;
+        _selectedShipmentPackage = _selectedShipment.products[0];
     }
     else if (indexPath.row == TAG_BUTTON_TRANSACTION_SERVICE_TYPE)
     {
-        for (ShippingInfoShipments *shipment in _shipments) {
-            if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:(NSString*)object]) {
+        for (RateAttributes *shipment in _shipments) {
+            if ([shipment.shipper_name isEqualToString:_selectedShipment.shipper_name]) {
+                for (RateProduct *package in shipment.products) {
+                    if ([package.shipper_product_name isEqualToString:(NSString*)object]) {
                         _selectedShipmentPackage = package;
                         break;
                     }
@@ -1454,10 +1385,9 @@
     [self setAddress:address];
     NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
-//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
     _selectedAddress = address;
     _isFinishRequesting = NO;
-    [self refreshView]; //4645967 //3684833
+    [self refreshView];
     [_tableView reloadData];
 }
 
@@ -1598,10 +1528,8 @@ replacementString:(NSString*)string
             ProductImages *productImage = productImages[0];
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:productImage.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
-            UIImageView *thumb = _productThumbImageView;
-            thumb.image = nil;
-            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                [thumb setImage:image animated:YES];
+            [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [_productThumbImageView setImage:image animated:YES];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             }];
         }
@@ -1651,8 +1579,8 @@ replacementString:(NSString*)string
     }
     else
     {
-        ShippingInfoShipments *shipment = _selectedShipment;
-        NSInteger shippingID = [shipment.shipment_id integerValue];
+        RateAttributes *shipment = _selectedShipment;
+        NSInteger shippingID = [shipment.shipper_id integerValue];
         
         if (shippingID == 0)
         {
@@ -1705,10 +1633,10 @@ replacementString:(NSString*)string
     /* Untuk auto insurance*/
     NSInteger insurance = 2;
     
-    ShippingInfoShipments *shipment = _selectedShipment;
-    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
+    RateAttributes *shipment = _selectedShipment;
+    RateProduct *shipmentPackage = _selectedShipmentPackage;
     
-    NSInteger shipmentID = [shipment.shipment_id integerValue];
+    NSInteger shipmentID = [shipment.shipper_id integerValue];
     NSInteger ongkir = [[formatter numberFromString:shipmentPackage.price] integerValue];
     
     if (shipmentID == 1) {
@@ -1750,7 +1678,7 @@ replacementString:(NSString*)string
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
     NSInteger totalPrice = [productPrice integerValue] * [self.productQuantityTextField.text integerValue];
-    NSString *total = [NSString stringWithFormat:@"%d", totalPrice];
+    NSString *total = [NSString stringWithFormat:@"%zd", totalPrice];
     NSString *productQuantity = _productQuantityTextField.text;
     
     NSDictionary *attributes = @{
@@ -1784,8 +1712,6 @@ replacementString:(NSString*)string
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];
     [self refreshView];
-
-//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
 }
 
 #pragma mark - Memory Management
