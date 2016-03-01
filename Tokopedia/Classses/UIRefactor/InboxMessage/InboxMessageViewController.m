@@ -381,10 +381,10 @@ typedef enum TagRequest {
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (![_urinext isEqualToString:@"0"] && _urinext != nil) {
             [_networkManager doRequest];
         } else {
-            _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
+            _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
             [_act stopAnimating];
         }
     }
