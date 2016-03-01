@@ -97,9 +97,7 @@ typedef enum TagRequest {
     
     
     TAGContainer *_gtmContainer;
-    
-    BOOL _isrefreshnav;    
-    
+
     __weak RKObjectManager *_objectmanager;
     __weak RKObjectManager *_objectmanagerarchive;
     __weak RKManagedObjectRequestOperation *_request;
@@ -475,7 +473,7 @@ typedef enum TagRequest {
 
 -(void) reloadVc:(NSNotification*)notification {
 
-    if([[_data objectForKey:@"nav"] isEqualToString:notification.userInfo[@"vc"]] && !_isrefreshnav) {
+    if([[_data objectForKey:@"nav"] isEqualToString:notification.userInfo[@"vc"]] && !_refreshControl.isRefreshing) {
         [_messages removeAllObjects];
         _page = 1;
         [_table reloadData];
@@ -528,8 +526,7 @@ typedef enum TagRequest {
     _searchbar.text = @"";
     _requestcount = 0;
     _isrefreshview = YES;
-    _isrefreshnav = YES;
-    
+
     [_table reloadData];
     /** request data **/
     [_networkManager doRequest];
@@ -614,7 +611,6 @@ typedef enum TagRequest {
         
         [_table reloadData];
         _isrefreshview = NO;
-        _isrefreshnav = NO;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -647,8 +643,7 @@ typedef enum TagRequest {
     if(status) {
         //if success
         if([inboxmessageaction.result.is_success isEqualToString:@"1"]) {
-            _isrefreshnav = NO;
-            
+
             if([_navthatwillrefresh isEqualToString:@"inbox-archive-sent"]) {
                 [self reloadInbox];
                 [self reloadArchive];
