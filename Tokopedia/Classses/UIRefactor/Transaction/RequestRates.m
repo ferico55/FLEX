@@ -28,19 +28,28 @@
     [self configureGTM];
     
     NSString *name = [[names valueForKey:@"description"] componentsJoinedByString:@","];
-    time_t unixTime = (time_t) [[NSDate date] timeIntervalSince1970];
+    NSString *unixTime = [self GetCurrentTimeStamp];
     TkpdHMAC *hmac = [TkpdHMAC new];
-    NSString *token = [NSString stringWithFormat:@"Tokopedia+Kero:%@",[hmac getTokenRatesPath:_pathUrl withUnixTime:unixTime]];
+    NSString *token = [NSString stringWithFormat:@"Tokopedia+Kero:%@",[hmac generateTokenRatesPath:_pathUrl withUnixTime:unixTime]];
     
     _param = @{@"names"         :name?:@"",
-               @"origin"        : origin?:@"",
-               @"destination"   :@"",
-               @"weight"        :@"",
-               @"ut"            :@(unixTime),
+               @"origin"        :origin?:@"",
+               @"destination"   :destination?:@"",
+               @"weight"        :@"1kg",
+               @"ut"            :unixTime,
                @"token"         :token
                };
     
     [[self networkManager] doRequest];
+}
+
+- (NSString*)GetCurrentTimeStamp
+{
+    NSInteger unixTime = ([[NSDate date] timeIntervalSince1970]);
+    
+    NSString *strTimeStamp = [NSString stringWithFormat:@"%zd",unixTime];
+    NSLog(@"The Timestamp is = %@",strTimeStamp);
+    return strTimeStamp;
 }
 
 -(TokopediaNetworkManager *)networkManager {
@@ -128,7 +137,7 @@
     _gtmContainer = appDelegate.container;
     
     //TODO::BASE & POST URL
-    _baseuUrl = @"http://private-8f030-kero.apiary-mock.com";//[_gtmContainer stringForKey:@"base_url"]?:@"https://clover.tokopedia.com";
+    _baseuUrl = @"https://kero-staging.tokopedia.com";//[_gtmContainer stringForKey:@"base_url"]?:@"https://clover.tokopedia.com";
     _pathUrl = @"rates/v1";//[_gtmContainer stringForKey:@"post_url"]?:@"notify/v1";
 }
 
