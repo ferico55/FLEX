@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-@class ShopReputation;
+#import "ShopReputation.h"
 
 #define CShopReputation @"shop_reputation"
 
-@interface ResolutionShop : NSObject
+@interface ResolutionShop : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *shop_image;
 @property (nonatomic, strong) NSString *shop_name;

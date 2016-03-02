@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ResolutionActionResult : NSObject
+@interface ResolutionActionResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger is_success;
 

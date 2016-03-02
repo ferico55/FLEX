@@ -196,14 +196,18 @@ typedef enum {
 #define COLOR_SELLER [UIColor colorWithRed:18.f/255.f green:199.f/255.f blue:0.f/255.f alpha:1]
 #define COLOR_TOKOPEDIA [UIColor colorWithRed:117.f/255.f green:117.f/255.f blue:117.f/255.f alpha:1]
 
+#define COLOR_BLUE_DEFAULT [UIColor colorWithRed:0.f/255.f green:122.f/255.f blue:255.f/255.f alpha:1]
+#define COLOR_PENDING_AMOUNT [UIColor colorWithRed:255.f/255.f green:85.f/255.f blue:0.f/255.f alpha:1]
+
+
 #define ERRORMESSAGE_NULL_REMARK @"Alasan harus diisi."
 #define ERRORMESSAGE_NULL_REFUND @"Jumlah Pengembalian harus diisi."
 #define ERRORMESSAGE_NULL_MESSAGE @"Pesan diskusi harus diisi"
 
 #define ERRORMESSAGE_INVALID_REFUND @"Nominal maksimal pengembalian dana adalah %@."
 
-#define ARRAY_FILTER_PROCESS @[@"Dalam Proses",@"Sudah Selesai",@"Semua"]
-#define ARRAY_FILTER_UNREAD @[@"Semua Status",@"Belum dibaca",@"Sudah dibaca"]
+#define ARRAY_FILTER_PROCESS @[@"Dalam Proses",@"Komplain > 10 hari",@"Sudah Selesai",@"Semua"]
+#define ARRAY_FILTER_UNREAD @[@"Semua Status",@"Belum Ditanggapi",@"Belum dibaca"]
 #define ARRAY_FILTER_SORT @[@"Waktu dibuat",@"Perubahan Terbaru"]
 
 #define ARRAY_PROBLEM_COMPLAIN @[@"Barang tidak sesuai deskripsi", @"Barang rusak", @"Barang tidak lengkap", @"Agen kurir yang digunakan tidak sesuai permintaan"]
