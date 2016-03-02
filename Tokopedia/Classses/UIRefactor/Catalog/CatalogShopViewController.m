@@ -479,6 +479,7 @@
     } else {
         // no data at all
         [_loadingView setHidden:YES];
+        [_footerView setHidden:YES];
         [_tableView addSubview:_noResultView];
     }
     
