@@ -385,8 +385,9 @@
     }
     
     ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status = 2; //status resolution become read
-
-    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+    cell.unreadBorderView.hidden = YES;
+    cell.unreadIconImageView.hidden = YES;
     [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
