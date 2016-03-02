@@ -318,7 +318,7 @@ FavoriteShopRequestDelegate
 -(void)pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
     [_favoriteShopRequest requestActionButtonFavoriteShop:strTempShopID withAdKey:_selectedPromoShop.ad_key];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
 }
 
 
