@@ -43,7 +43,7 @@
 @property (weak, nonatomic) IBOutlet UIView *inboxtrashview;
 
 
-@property (nonatomic, strong) NSMutableArray *messages;
+@property (nonatomic, strong) NSMutableArray<InboxMessageList*> *messages;
 @property (nonatomic, strong) NSDictionary *userinfo;
 
 @property (weak, nonatomic) IBOutlet UIButton *buttontrash;
@@ -864,9 +864,7 @@ typedef enum TagRequest {
         _urinext =  message.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
 
-        NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:message.result.list to:_messages];
-        [_messages addObjectsFromArray: message.result.list];
-        [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self addMessages:message.result.list];
 
         if (_messages.count >0) {
             [_noResultView removeFromSuperview];
@@ -914,11 +912,11 @@ typedef enum TagRequest {
     }
 }
 
-//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-//    if(tag == messageListTag) {
-//        
-//    }
-//}
+- (void)addMessages:(NSArray<InboxMessageList*> *)messages {
+    NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:messages to:_messages];
+    [_messages addObjectsFromArray:messages];
+    [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == messageListTag) {
