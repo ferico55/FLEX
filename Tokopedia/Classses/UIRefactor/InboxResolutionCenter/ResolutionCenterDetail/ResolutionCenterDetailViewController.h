@@ -16,6 +16,7 @@
 @required
 - (void)shouldCancelComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
 - (void)finishComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
+- (void)didResponseComplain:(NSIndexPath*)indexPath;
 @end
 
 @interface ResolutionCenterDetailViewController : UIViewController

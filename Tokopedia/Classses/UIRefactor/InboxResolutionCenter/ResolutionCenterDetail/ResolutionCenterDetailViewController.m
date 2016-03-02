@@ -1444,7 +1444,7 @@
         if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
-            
+            [_delegate didResponseComplain:_indexPath];
             [self refreshRequest];
             
 //            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
@@ -1637,6 +1637,7 @@
 
 -(void)didSuccessReplay
 {
+    [_delegate didResponseComplain:_indexPath];
     [self refreshRequest];
 }
 
