@@ -365,16 +365,19 @@ typedef enum TagRequest {
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        if (![_urinext isEqualToString:@"0"] && _urinext != nil) {
+    NSInteger lastRow = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
+    if (lastRow == indexPath.row) {
+        if ([self hasMoreMessages]) {
             [self fetchInboxMessages];
         } else {
-            _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+            _table.tableFooterView = nil;
             [_act stopAnimating];
         }
     }
+}
+
+- (BOOL)hasMoreMessages {
+    return ![_urinext isEqualToString:@"0"] && _urinext != nil;
 }
 
 
