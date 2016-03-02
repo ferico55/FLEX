@@ -278,6 +278,8 @@
                  onFailure:(void (^)(NSError *))errorCallback {
     if(_objectRequest.isExecuting) return;
     
+    __weak typeof(self) weakSelf = self;
+    
     _requestCount ++;
 
     _objectManager  = [RKObjectManager sharedClient:baseUrl];
@@ -356,12 +358,11 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
         
-        __unsafe_unretained typeof(self) weakSelf = self;
         NSInteger requestCountMax = _maxTries?:kTKPDREQUESTCOUNTMAX;
         if(_requestCount < requestCountMax) {
             //cancelled request
             if(error.code == -999) {
-                [weakSelf requestWithBaseUrl:baseUrl
+                [self requestWithBaseUrl:baseUrl
                                         path:path
                                       method:method
                                    parameter:parameter
@@ -380,7 +381,6 @@
     [_operationQueue addOperation:_objectRequest];
     NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
 
-    __unsafe_unretained typeof(self) weakSelf = self;
     _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:1.0 block:^(NSTimer* timer) {
         [weakSelf requestCancel];
     } repeats:NO];
