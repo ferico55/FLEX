@@ -10,7 +10,7 @@
 
 #import "InboxResolutionCenterResult.h"
 
-@interface InboxResolutionCenter : NSObject
+@interface InboxResolutionCenter : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;

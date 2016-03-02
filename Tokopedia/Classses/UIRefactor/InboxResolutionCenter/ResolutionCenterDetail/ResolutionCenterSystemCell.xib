@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -23,7 +23,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="141"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="n2J-xt-ejl" id="Hgy-bS-eh8">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="140.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygm-pX-z3l" userLabel="Invoice View">
@@ -31,6 +31,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gm-Kw-IFm" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="jRi-tw-Fq9"/>
@@ -38,13 +39,15 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgp-OR-ALK" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="50" width="300" height="1"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Hv6-MZ-09O"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4 bulan yang lalu" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMB-bb-70z">
-                                <rect key="frame" x="10" y="20" width="145" height="12"/>
+                                <rect key="frame" x="10" y="20" width="190" height="12"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="dgT-6E-Hw6"/>
                                 </constraints>
@@ -54,6 +57,7 @@
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tokopedia" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68e-hd-Cmy">
                                 <rect key="frame" x="210" y="16" width="80" height="20"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="NnP-J5-PT2"/>
@@ -64,6 +68,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tgp-OR-ALK" secondAttribute="trailing" id="0G2-BM-XXX"/>
@@ -73,7 +78,7 @@
                             <constraint firstItem="7gm-Kw-IFm" firstAttribute="top" secondItem="ygm-pX-z3l" secondAttribute="top" id="Own-aq-v3q"/>
                             <constraint firstItem="XMB-bb-70z" firstAttribute="leading" secondItem="ygm-pX-z3l" secondAttribute="leading" constant="10" id="Rhz-Zu-0rU"/>
                             <constraint firstAttribute="trailing" secondItem="68e-hd-Cmy" secondAttribute="trailing" constant="10" id="TGF-jx-18W"/>
-                            <constraint firstItem="68e-hd-Cmy" firstAttribute="leading" secondItem="XMB-bb-70z" secondAttribute="trailing" constant="55" id="XrH-dx-VQl"/>
+                            <constraint firstItem="68e-hd-Cmy" firstAttribute="leading" secondItem="XMB-bb-70z" secondAttribute="trailing" constant="10" id="XrH-dx-VQl"/>
                             <constraint firstItem="7gm-Kw-IFm" firstAttribute="leading" secondItem="ygm-pX-z3l" secondAttribute="leading" id="arf-Mw-D1r"/>
                             <constraint firstItem="tgp-OR-ALK" firstAttribute="leading" secondItem="ygm-pX-z3l" secondAttribute="leading" id="giw-x5-jn4"/>
                             <constraint firstAttribute="bottom" secondItem="tgp-OR-ALK" secondAttribute="bottom" id="rY5-xz-Bc7"/>
@@ -85,6 +90,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tokopedia telah memberikan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RcK-9c-QIG">
                                 <rect key="frame" x="10" y="8" width="280" height="18"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="FPC-tu-dif"/>
                                 </constraints>
@@ -94,12 +100,14 @@
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S5q-tm-Jaq" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="34" width="300" height="1"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="cbw-Eq-tWk"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
@@ -117,7 +125,8 @@
                         <rect key="frame" x="10" y="91" width="300" height="44"/>
                         <subviews>
                             <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qZ2-xr-7qX">
-                                <rect key="frame" x="0.0" y="0.0" width="149" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="149.5" height="44"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="w1U-C4-HSg"/>
                                 </constraints>
@@ -139,20 +148,23 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kzh-lE-NpB" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="43" width="300" height="1"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="ilu-v8-Dke"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bdA-8j-uB6" userLabel="Vertical Border">
-                                <rect key="frame" x="149" y="11" width="1" height="23"/>
+                                <rect key="frame" x="149.5" y="11" width="1" height="23"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" id="S0f-9A-ARP"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfn-qp-emB">
-                                <rect key="frame" x="150" y="0.0" width="150" height="44"/>
+                                <rect key="frame" x="150.5" y="0.0" width="149.5" height="44"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="yqC-No-iLK"/>
                                 </constraints>
@@ -173,6 +185,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="qZ2-xr-7qX" firstAttribute="top" secondItem="bPc-Z7-ZW9" secondAttribute="top" id="0jt-d7-3b4"/>
@@ -197,6 +210,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34K-jv-MPL" userLabel="Horizontal Border">
                                 <rect key="frame" x="0.0" y="43" width="300" height="1"/>
+                                <animations/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="dRG-YQ-hgO"/>
@@ -204,6 +218,7 @@
                             </view>
                             <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHh-7s-bCL">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="9Ea-Kl-47F"/>
                                     <constraint firstAttribute="height" constant="44" id="Rmb-bw-UJq"/>
@@ -225,6 +240,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UHh-7s-bCL" firstAttribute="leading" secondItem="1bS-bT-KeK" secondAttribute="leading" id="2xG-k6-qkr"/>
@@ -238,6 +254,7 @@
                         </constraints>
                     </view>
                 </subviews>
+                <animations/>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="1bS-bT-KeK" firstAttribute="top" secondItem="65T-Th-yiP" secondAttribute="bottom" id="CDu-gR-ifq"/>
@@ -256,6 +273,7 @@
                     <constraint firstAttribute="trailing" secondItem="bPc-Z7-ZW9" secondAttribute="trailing" constant="10" id="rV7-WK-6Zz"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="buyerSellerLabel" destination="68e-hd-Cmy" id="bMX-nP-TAm"/>
@@ -265,6 +283,7 @@
                 <outlet property="oneButtonConstraintHeight" destination="x7E-d3-eRw" id="3xK-r1-Mjg"/>
                 <outlet property="oneButtonView" destination="1bS-bT-KeK" id="8Fd-gB-wKr"/>
                 <outlet property="timeDateLabel" destination="XMB-bb-70z" id="zKD-1Y-bnL"/>
+                <outlet property="titleView" destination="ygm-pX-z3l" id="yDY-dR-VZd"/>
                 <outlet property="twoButtonConstraintHeight" destination="P7s-wY-dBd" id="gOC-gq-aXB"/>
                 <outlet property="twoButtonView" destination="bPc-Z7-ZW9" id="mnE-EM-36p"/>
                 <outletCollection property="twoButtons" destination="qZ2-xr-7qX" id="cV9-ny-xLV"/>
