@@ -333,17 +333,22 @@
         
         NSDictionary* resultDict = mappingResult.dictionary;
         NSObject* mappedResult = [resultDict objectForKey:@""];
+        
+        if ([mappedResult respondsToSelector:@selector(status)]) {
         NSString* status = [mappedResult performSelector:@selector(status)];
         
-        if([status isEqualToString:@"OK"]) {
+            if([status isEqualToString:@"OK"]) {
+                successCallback(mappingResult, operation);
+            } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
+                
+            } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
+                [self requestMaintenance];
+            } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
+                NSLog(@"xxxxxxxxx REQUEST DENIED xxxxxxxxx");
+                [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
+            }
+        } else {
             successCallback(mappingResult, operation);
-        } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
-            
-        } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
-            [self requestMaintenance];
-        } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
-            NSLog(@"xxxxxxxxx REQUEST DENIED xxxxxxxxx");
-            [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
         }
         
         [_requestTimer invalidate];
