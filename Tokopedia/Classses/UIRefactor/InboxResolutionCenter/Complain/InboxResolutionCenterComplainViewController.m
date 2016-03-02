@@ -92,6 +92,7 @@
 @property (strong, nonatomic) IBOutlet UIView *headerFilterDays;
 @property (strong, nonatomic) IBOutlet UILabel *labelFilterDaysCount;
 @property (strong, nonatomic) IBOutlet UILabel *labelPendingAmount;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *redirectButton;
 
 @end
 
@@ -168,6 +169,8 @@
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
 
+    [_redirectButton makeObjectsPerformSelector:@selector(setEnabled:) withObject:@((![NavigationHelper shouldDoDeepNavigation]))];
+
 }
 
 -(TAGContainer *)gtmContainer
@@ -196,21 +199,19 @@
 
 -(IBAction)tap:(UIButton*)button
 {
-    if ([NavigationHelper shouldDoDeepNavigation]) {
-        if (button.tag == 12) {
-            //Status Pemesanan
-            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-            vc.action = @"get_tx_order_status";
-            vc.viewControllerTitle = @"Status Pemesanan";
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        if (button.tag == 13) {
-            //Daftar Transaksi
-            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-            vc.action = @"get_tx_order_list";
-            vc.viewControllerTitle = @"Daftar Transaksi";
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+    if (button.tag == 12) {
+        //Status Pemesanan
+        TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+        vc.action = @"get_tx_order_status";
+        vc.viewControllerTitle = @"Status Pemesanan";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (button.tag == 13) {
+        //Daftar Transaksi
+        TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+        vc.action = @"get_tx_order_list";
+        vc.viewControllerTitle = @"Daftar Transaksi";
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 - (IBAction)tapFilterDay:(id)sender {
