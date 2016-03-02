@@ -252,11 +252,11 @@ typedef enum TagRequest {
     }
 }
 
-- (void) messageaction:(id)action{
+- (void) messageaction:(NSString*)action{
     [self messageaction:action indexPaths:[_table indexPathsForSelectedRows]];
 }
 
-- (void)messageaction:(id)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
+- (void)messageaction:(NSString*)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
     NSIndexPath *item;
     
     NSMutableArray *arr = [[NSMutableArray alloc] init];
@@ -577,14 +577,13 @@ typedef enum TagRequest {
     [_objectmanagerarchive addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void) doactionmessage:(id)data withAction:(id)action{
-    NSString *deleted_json_info = data;
-    
+- (void) doactionmessage:(NSString*)data withAction:(NSString*)action{
+
     if (_requestarchive.isExecuting) return;
     
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:action,
-                            KTKPDMESSAGE_DATAELEMENTKEY : deleted_json_info,
+                            KTKPDMESSAGE_DATAELEMENTKEY : data,
                             };
     
     _requestarchivecount ++;
