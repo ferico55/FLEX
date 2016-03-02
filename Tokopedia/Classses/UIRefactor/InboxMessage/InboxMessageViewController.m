@@ -855,10 +855,9 @@ typedef enum TagRequest {
     return indexPaths;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+- (void)actionAfterRequest:(RKMappingResult*)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     if(tag == messageListTag) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        InboxMessage *message = result[@""];
+        InboxMessage *message = successResult.dictionary[@""];
 
         _urinext =  message.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
@@ -875,11 +874,8 @@ typedef enum TagRequest {
             _table.tableFooterView = _noResultView;
         }
 
-        
-        if(_refreshControl.isRefreshing) {
-            [_refreshControl endRefreshing];
-        }
-        
+        [_refreshControl endRefreshing];
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         
         dispatch_async(dispatch_get_main_queue(), ^{
