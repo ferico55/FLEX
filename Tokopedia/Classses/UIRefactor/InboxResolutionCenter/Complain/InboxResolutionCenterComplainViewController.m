@@ -385,11 +385,18 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     
-    ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status = 2; //status resolution become read
+    _list[indexPath.row].resolution_read_status = 2; //status resolution become read
     InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
     cell.unreadBorderView.hidden = YES;
     cell.unreadIconImageView.hidden = YES;
+
     [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+-(void)didResponseComplain:(NSIndexPath*)indexPath {
+    InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+    _list[indexPath.row].resolution_respond_status = @"2";
+    cell.unrespondView.hidden = YES;
 }
 
 #pragma mark - Table View Delegate
