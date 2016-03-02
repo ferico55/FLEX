@@ -178,7 +178,25 @@ typedef enum TagRequest {
 }
 
 - (void)fetchInboxMessages {
-    [_networkManager doRequest];
+    NSDictionary* param =@{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
+            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+            kTKPDHOME_APIPAGEKEY:@(_page),
+            KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
+            KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
+            KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
+    };
+
+    [_networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                   path:KTKPDMESSAGE_PATHURL
+                                 method:RKRequestMethodPOST
+                              parameter:param
+                                mapping:[InboxMessage mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self actionAfterRequest:successResult withOperation:operation withTag:messageListTag];
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  [self actionAfterFailRequestMaxTries:messageListTag];
+                              }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
