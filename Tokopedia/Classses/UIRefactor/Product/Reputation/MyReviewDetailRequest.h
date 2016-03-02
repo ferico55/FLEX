@@ -12,18 +12,21 @@
 #import "MyReviewReputationResult.h"
 #import "SkipReviewResult.h"
 #import "SkipReview.h"
+#import "ResponseCommentResult.h"
 
 @protocol MyReviewDetailRequestDelegate <NSObject>
 
 - (void)didReceiveReviewListing:(MyReviewReputationResult*)myReviews;
 - (void)didSkipReview:(SkipReviewResult*)skippedReview;
 - (void)didFailSkipReview:(SkipReview*)skipReview;
+- (void)didDeleteReputationReviewResponse:(ResponseCommentResult*)response;
 
 @end
 
 @interface MyReviewDetailRequest : NSObject
 - (void)requestGetListReputationReviewWithDetail:(DetailMyInboxReputation*)rep autoRead:(NSString*)autoRead;
 - (void)requestSkipReviewWithDetail:(DetailReputationReview*)rep;
+- (void)requestDeleteReputationReviewResponse:(DetailReputationReview*)review;
 - (void)cancelAllOperations;
 
 @property (weak, nonatomic) id<MyReviewDetailRequestDelegate> delegate;

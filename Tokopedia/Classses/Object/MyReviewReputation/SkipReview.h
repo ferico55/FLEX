@@ -21,4 +21,5 @@
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) SkipReviewResult *result;
+@property (nonatomic, strong) SkipReviewResult *data;
 @end

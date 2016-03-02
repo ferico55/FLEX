@@ -21,4 +21,5 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) ResponseCommentResult *result;
+@property (nonatomic, strong) ResponseCommentResult *data;
 @end

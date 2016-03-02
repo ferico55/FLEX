@@ -24,6 +24,7 @@
 #import "MyReviewDetailHeader.h"
 #import "CMPopTipView.h"
 #import "GiveReviewResponseViewController.h"
+#import "ReportViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface MyReviewDetailViewController ()
@@ -33,12 +34,14 @@
     DetailReputationReviewComponentDelegate,
     MyReviewDetailHeaderDelegate,
     MyReviewDetailHeaderSmileyDelegate,
-    UIActionSheetDelegate
+    UIActionSheetDelegate,
+    ReportViewControllerDelegate
 >
 {
     TAGContainer *_gtmContainer;
     MyReviewDetailRequest *_myReviewDetailRequest;
     DetailReputationReview *_detailReputationReview;
+    DetailReputationReview *_selectedReview;
     
     NSMutableArray *_reviewList;
     
@@ -183,6 +186,19 @@
     [alert show];
 }
 
+- (void)didDeleteReputationReviewResponse:(ResponseCommentResult *)response {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil menghapus komentar"]
+                                                                     delegate:self];
+    [alert show];
+    
+    [_collectionView reloadData];
+    
+    int unassessedReputationReview = [_detailMyInboxReputation.unassessed_reputation_review intValue];
+    unassessedReputationReview++;
+    
+    _detailMyInboxReputation.unassessed_reputation_review = [NSString stringWithFormat:@"%d", unassessedReputationReview];
+}
+
 #pragma mark - GTM
 - (void)configureGTM {
     [TPAnalytics trackUserId];
@@ -225,7 +241,22 @@
 
 #pragma mark - Action Sheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
+    if (actionSheet.tag == 100) {
+        GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
+        vc.detailMyReviewReputation = self;
+        vc.detailReputationReview = _selectedReview;
+        vc.isEdit = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (actionSheet.tag == 200) {
+        ReportViewController *vc = [ReportViewController new];
+        vc.delegate = self;
+        vc.strProductID = _selectedReview.product_id;
+        vc.strShopID = _selectedReview.shop_id;
+        vc.strReviewID = _selectedReview.review_id;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [_myReviewDetailRequest requestDeleteReputationReviewResponse:_selectedReview];
+    }
 }
 
 #pragma mark - Reputation Detail Cells Delegate
@@ -242,11 +273,15 @@
     GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
     vc.detailMyReviewReputation = self;
     vc.detailReputationReview = review;
+    vc.isEdit = NO;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didTapToSkipReview:(DetailReputationReview *)review {
+    _selectedReview = review;
+    
+    
     [_myReviewDetailRequest requestSkipReviewWithDetail:review];
 }
 
@@ -256,6 +291,8 @@
                                                     cancelButtonTitle:@"Batal"
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:@"Ubah", nil];
+    _selectedReview = review;
+    actionSheet.tag = 100;
     
     [actionSheet showInView:self.view];
 }
@@ -266,6 +303,8 @@
                                                     cancelButtonTitle:@"Batal"
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:@"Lapor", nil];
+    _selectedReview = review;
+    actionSheet.tag = 200;
     
     [actionSheet showInView:self.view];
 }
@@ -276,6 +315,8 @@
                                                     cancelButtonTitle:@"Batal"
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:@"Hapus", nil];
+    _selectedReview = review;
+    actionSheet.tag = 300;
     
     [actionSheet showInView:self.view];
 }
@@ -390,6 +431,19 @@
                                           cancelButtonTitle:@"Ya"
                                           otherButtonTitles:@"Tidak", nil];
     [alert show];
+}
+
+#pragma mark - Report View Delegate
+- (NSDictionary *)getParameter {
+    return nil;
+}
+
+- (NSString *)getPath {
+    return @"action/review.pl";
+}
+
+- (UIViewController *)didReceiveViewController {
+    return self;
 }
 
 #pragma mark - Methods
