@@ -35,7 +35,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                             newWithView:{
                                                 [UIView class],
                                                 {
-                                                    {CKComponentTapGestureAttribute(@selector(action))}
+                                                    {CKComponentTapGestureAttribute(@selector(didTapLockedSmiley))}
                                                 }
                                             }
                                             size:{}
@@ -65,7 +65,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                              newWithView:{
                                                  [UIView class],
                                                  {
-                                                     {CKComponentTapGestureAttribute(@selector(action))}
+                                                     {CKComponentTapGestureAttribute(@selector(didTapNotSatisfiedSmiley))}
                                                  }
                                              }
                                              size:{.width = 65.5, .height = 57}
@@ -91,12 +91,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                              }];
     
     CKStackLayoutComponent *smileySad = [CKStackLayoutComponent
-                                         newWithView:{
-                                             [UIView class],
-                                             {
-                                                 {CKComponentTapGestureAttribute(@selector(action))}
-                                             }
-                                         }
+                                         newWithView:{}
                                          size:{.width = 65.5, .height = 57}
                                          style:{
                                              .direction = CKStackLayoutDirectionVertical,
@@ -123,7 +118,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                  newWithView:{
                                                      [UIView class],
                                                      {
-                                                         {CKComponentTapGestureAttribute(@selector(action))}
+                                                         {CKComponentTapGestureAttribute(@selector(didTapNeutralSmiley))}
                                                      }
                                                  }
                                                  size:{.width = 65.5, .height = 57}
@@ -149,12 +144,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                  }];
     
     CKStackLayoutComponent *smileyNeutral = [CKStackLayoutComponent
-                                             newWithView:{
-                                                 [UIView class],
-                                                 {
-                                                     {CKComponentTapGestureAttribute(@selector(action))}
-                                                 }
-                                             }
+                                             newWithView:{}
                                              size:{.width = 65.5, .height = 57}
                                              style:{
                                                  .direction = CKStackLayoutDirectionVertical,
@@ -181,7 +171,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                newWithView:{
                                                    [UIView class],
                                                    {
-                                                       {CKComponentTapGestureAttribute(@selector(action))}
+                                                       {CKComponentTapGestureAttribute(@selector(didTapSatisfiedSmiley))}
                                                    }
                                                }
                                                size:{.width = 65.5, .height = 57}
@@ -207,12 +197,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                }];
     
     CKStackLayoutComponent *smileySmile = [CKStackLayoutComponent
-                                           newWithView:{
-                                               [UIView class],
-                                               {
-                                                   {CKComponentTapGestureAttribute(@selector(action))}
-                                               }
-                                           }
+                                           newWithView:{}
                                            size:{}
                                            style:{
                                                .direction = CKStackLayoutDirectionVertical,
@@ -429,6 +414,22 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
 
 - (void)getMyScore {
     [_delegate didTapReviewerScore:_inbox];
+}
+
+- (void)didTapLockedSmiley {
+    [_delegate didTapLockedSmiley];
+}
+
+- (void)didTapNotSatisfiedSmiley {
+    [_delegate didTapNotSatisfiedSmiley];
+}
+
+- (void)didTapSatisfiedSmiley {
+    [_delegate didTapSatisfiedSmiley];
+}
+
+- (void)didTapNeutralSmiley {
+    [_delegate didTapNeutralSmiley];
 }
 
 + (instancetype)newWithInbox:(DetailMyInboxReputation *)inbox context:(MyReviewDetailContext *)context {

@@ -10,5 +10,8 @@
 #import "DetailReputationReview.h"
 
 @interface ReviewResponseComponent : CKCompositeComponent
-+ (instancetype)newWithReview:(DetailReputationReview*)review imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader;
++ (instancetype)newWithReview:(DetailReputationReview*)review
+              imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
+                         role:(NSString*)role
+                       action:(SEL)action;
 @end

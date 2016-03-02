@@ -26,94 +26,113 @@ static CKComponent* timestampLabel(NSString* createTime) {
             size:{}];
 }
 
-static CKComponent* skipButton (DetailReputationReview* review) {
-    if ([review.review_is_skipable isEqualToString:@"1"]) {
+static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSString *role) {
+    if ([role isEqualToString:@"1"]) {
+        if (![review.review_is_allow_edit isEqualToString:@"1"]) {
+            return nil;
+        }
+        
         return [CKButtonComponent
-                newWithTitles:{
-                    {UIControlStateNormal, @"Lewati"}
+                newWithTitles:{}
+                titleColors:{}
+                images:{
+                    {UIControlStateNormal, [UIImage imageNamed:@"icon_arrow_down.png"]}
                 }
-                titleColors:{
-                    {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
-                }
-                images:{}
                 backgroundImages:{}
-                titleFont:[UIFont fontWithName:@"Gotham Book" size:12.0]
+                titleFont:nil
                 selected:NO
                 enabled:YES
-                action:nil
-                size:{}
+                action:buttonAction
+                size:{.height = 14, .width = 14}
+                attributes:{}
+                accessibilityConfiguration:{}];
+    } else {
+        if ([review.review_message isEqualToString:@"0"]) {
+            return nil;
+        }
+        return [CKButtonComponent
+                newWithTitles:{}
+                titleColors:{}
+                images:{
+                    {UIControlStateNormal, [UIImage imageNamed:@"icon_arrow_down.png"]}
+                }
+                backgroundImages:{}
+                titleFont:nil
+                selected:NO
+                enabled:YES
+                action:buttonAction
+                size:{.height = 14, .width = 14}
                 attributes:{}
                 accessibilityConfiguration:{}];
     }
-    
-    return nil;
 }
 
 @implementation DetailReputationReviewHeaderComponent
-+ (instancetype)newWithReview:(DetailReputationReview*)review tapAction:(SEL)action imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
+
++ (instancetype)newWithReview:(DetailReputationReview*)review
+                         role:(NSString*)role
+           tapToProductAction:(SEL)action
+              tapButtonAction:(SEL)buttonAction
+              imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
     return [super newWithComponent:
-            [CKInsetComponent
-             newWithInsets:{8,8,8,8}
-             component:
-             [CKStackLayoutComponent
-              newWithView:{
-                  [UIView class],
-                  {
-                      {CKComponentTapGestureAttribute(action)}
-                  }
-              }
-              size:{}
-              style:{
-                  .direction = CKStackLayoutDirectionHorizontal,
-                  .spacing = 8
-              }
-              children:{
-                  {
-                      [CKNetworkImageComponent
-                       newWithURL:[NSURL URLWithString:review.product_image]
-                       imageDownloader:imageDownloader
-                       scenePath:nil
-                       size:{50,50}
-                       options:{
-                           .defaultImage = [UIImage imageNamed:@"icon_toped_loading_grey.png"]
-                       }
-                       attributes:{}]
-                  },
-                  {
-                      [CKStackLayoutComponent
-                       newWithView:{
-                           
-                       }
-                       size:{}
-                       style:{
-                           .direction = CKStackLayoutDirectionVertical,
-                           .justifyContent = CKStackLayoutJustifyContentCenter,
-                           .spacing = 5
-                       }
-                       children:
-                       {
-                           {
-                               [CKLabelComponent
-                                newWithLabelAttributes:{
-                                    .string = review.product_name,
-                                    .font = [UIFont fontWithName:@"Gotham Medium" size:14],
-                                    .lineBreakMode = NSLineBreakByTruncatingMiddle,
-                                    .maximumNumberOfLines = 1
-                                }
-                                viewAttributes:{}
-                                size:{}],
-                           },
-                           {
-                               timestampLabel(review.review_response.response_create_time)
-                           }
-                       }],
-                      .flexGrow = YES,
-                      .flexShrink = YES,
-                      .alignSelf = CKStackLayoutAlignSelfStretch
-                  },
-                  {
-                      skipButton(review)
-                  }
-              }]]];
+            [CKStackLayoutComponent
+             newWithView:{}
+             size:{}
+             style:{
+                 .direction = CKStackLayoutDirectionHorizontal,
+                 .spacing = 8
+             }
+             children:{
+                 {
+                     [CKNetworkImageComponent
+                      newWithURL:[NSURL URLWithString:review.product_image]
+                      imageDownloader:imageDownloader
+                      scenePath:nil
+                      size:{50,50}
+                      options:{
+                          .defaultImage = [UIImage imageNamed:@"icon_toped_loading_grey.png"]
+                      }
+                      attributes:{}]
+                 },
+                 {
+                     [CKStackLayoutComponent
+                      newWithView:{
+                          [UIView class],
+                          {
+                              {CKComponentTapGestureAttribute(action)}
+                          }
+                      }
+                      size:{}
+                      style:{
+                          .direction = CKStackLayoutDirectionVertical,
+                          .justifyContent = CKStackLayoutJustifyContentCenter,
+                          .spacing = 5
+                      }
+                      children:
+                      {
+                          {
+                              [CKLabelComponent
+                               newWithLabelAttributes:{
+                                   .string = review.product_name,
+                                   .font = [UIFont fontWithName:@"Gotham Medium" size:14],
+                                   .lineBreakMode = NSLineBreakByTruncatingMiddle,
+                                   .maximumNumberOfLines = 1
+                               }
+                               viewAttributes:{}
+                               size:{}],
+                          },
+                          {
+                              timestampLabel(review.review_response.response_create_time)
+                          }
+                      }],
+                     .flexGrow = YES,
+                     .flexShrink = YES,
+                     .alignSelf = CKStackLayoutAlignSelfStretch
+                 },
+                 {
+                     button(review, buttonAction, role),
+                     .alignSelf = CKStackLayoutAlignSelfStart
+                 }
+             }]];
 }
 @end

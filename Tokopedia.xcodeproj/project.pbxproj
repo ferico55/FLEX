@@ -794,9 +794,9 @@
 		62BB39891C76B27800A7A4E6 /* MedalComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62BB39881C76B27800A7A4E6 /* MedalComponent.mm */; };
 		62BB398C1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62BB398B1C76C65800A7A4E6 /* AFNetworkingImageDownloader.mm */; };
 		62BB398F1C76CB3300A7A4E6 /* ImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BB398E1C76CB3300A7A4E6 /* ImageDownloader.m */; };
-		62C632B71C80149500BF9942 /* GiveReviewResponseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C632B51C80149500BF9942 /* GiveReviewResponseViewController.m */; };
-		62C632B81C80149500BF9942 /* GiveReviewResponseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C632B61C80149500BF9942 /* GiveReviewResponseViewController.xib */; };
 		62DF7F0B1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */; };
+		62E3967C1C855700006A0A17 /* GiveReviewResponseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E3967A1C855700006A0A17 /* GiveReviewResponseViewController.m */; };
+		62E3967D1C855700006A0A17 /* GiveReviewResponseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62E3967B1C855700006A0A17 /* GiveReviewResponseViewController.xib */; };
 		62E3D3671C647D4100FF81F2 /* image_not_loading.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E3D3661C647D4100FF81F2 /* image_not_loading.png */; };
 		62E4E33C1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62E4E33B1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.mm */; };
 		62E68BA61C7D6BB700440574 /* icon_neutral_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 62E68B9D1C7D6BB700440574 /* icon_neutral_grey.png */; };
@@ -3421,12 +3421,12 @@
 		62BB398D1C76C6CB00A7A4E6 /* ImageDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageDownloader.h; sourceTree = "<group>"; };
 		62BB398E1C76CB3300A7A4E6 /* ImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownloader.m; sourceTree = "<group>"; };
 		62BB39901C7717BC00A7A4E6 /* DetailReputationReviewComponentDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponentDelegate.h; sourceTree = "<group>"; };
-		62C632B41C80149500BF9942 /* GiveReviewResponseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewResponseViewController.h; sourceTree = "<group>"; };
-		62C632B51C80149500BF9942 /* GiveReviewResponseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewResponseViewController.m; sourceTree = "<group>"; };
-		62C632B61C80149500BF9942 /* GiveReviewResponseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewResponseViewController.xib; sourceTree = "<group>"; };
 		62DF7F091C757C6C00F392CB /* DetailReputationReviewHeaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewHeaderComponent.h; sourceTree = "<group>"; };
 		62DF7F0A1C757C6C00F392CB /* DetailReputationReviewHeaderComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewHeaderComponent.mm; sourceTree = "<group>"; };
 		62E0962A1C7FFF1400B7B656 /* MyReviewDetailHeaderSmileyDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailHeaderSmileyDelegate.h; sourceTree = "<group>"; };
+		62E396791C855700006A0A17 /* GiveReviewResponseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewResponseViewController.h; sourceTree = "<group>"; };
+		62E3967A1C855700006A0A17 /* GiveReviewResponseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewResponseViewController.m; sourceTree = "<group>"; };
+		62E3967B1C855700006A0A17 /* GiveReviewResponseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewResponseViewController.xib; sourceTree = "<group>"; };
 		62E3D3661C647D4100FF81F2 /* image_not_loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_not_loading.png; sourceTree = "<group>"; };
 		62E4E33A1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailHeaderComponent.h; sourceTree = "<group>"; };
 		62E4E33B1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailHeaderComponent.mm; sourceTree = "<group>"; };
@@ -6718,9 +6718,9 @@
 				62E4E33A1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.h */,
 				62E4E33B1C7EF43D00EDBFAD /* MyReviewDetailHeaderComponent.mm */,
 				62E0962A1C7FFF1400B7B656 /* MyReviewDetailHeaderSmileyDelegate.h */,
-				62C632B41C80149500BF9942 /* GiveReviewResponseViewController.h */,
-				62C632B51C80149500BF9942 /* GiveReviewResponseViewController.m */,
-				62C632B61C80149500BF9942 /* GiveReviewResponseViewController.xib */,
+				62E396791C855700006A0A17 /* GiveReviewResponseViewController.h */,
+				62E3967A1C855700006A0A17 /* GiveReviewResponseViewController.m */,
+				62E3967B1C855700006A0A17 /* GiveReviewResponseViewController.xib */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -11249,7 +11249,7 @@
 				7A7110FB1C4CF81D00D00615 /* icon_location_28px.png in Resources */,
 				7A710F141C4CF81D00D00615 /* icon_arrow_down.png in Resources */,
 				7A7110391C4CF81D00D00615 /* icon_problem_shopper@2x.png in Resources */,
-				62C632B81C80149500BF9942 /* GiveReviewResponseViewController.xib in Resources */,
+				62E3967D1C855700006A0A17 /* GiveReviewResponseViewController.xib in Resources */,
 				628175DA1C59FF1C00D8F4AF /* RegisterViewController.xib in Resources */,
 				7A710FC71C4CF81D00D00615 /* icon_medal14@3x.png in Resources */,
 				6281773A1C59FF1D00D8F4AF /* DetailProductWholesaleTableCell.xib in Resources */,
@@ -12453,7 +12453,7 @@
 				7A710A841C4CF81D00D00615 /* ResolutionCustomer.m in Sources */,
 				7A710A3C1C4CF81D00D00615 /* ShopInfo.m in Sources */,
 				6281771C1C59FF1C00D8F4AF /* MyShopShipmentTableViewController.m in Sources */,
-				62C632B71C80149500BF9942 /* GiveReviewResponseViewController.m in Sources */,
+				62E3967C1C855700006A0A17 /* GiveReviewResponseViewController.m in Sources */,
 				6281766D1C59FF1C00D8F4AF /* RateView.m in Sources */,
 				7A710AF01C4CF81D00D00615 /* PromoProduct.m in Sources */,
 				7A710A101C4CF81D00D00615 /* ContactUsActionResult.m in Sources */,

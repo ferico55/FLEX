@@ -13,6 +13,30 @@
 #import "AFNetworkingImageDownloader.h"
 #import <ComponentKit/ComponentKit.h>
 
+static CKComponent* skipButton (DetailReputationReview* review) {
+    if ([review.review_is_skipable isEqualToString:@"1"]) {
+        return [CKButtonComponent
+                newWithTitles:{
+                    {UIControlStateNormal, @"Lewati"}
+                }
+                titleColors:{
+                    {UIControlStateNormal, [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]}
+                }
+                images:{}
+                backgroundImages:{}
+                titleFont:[UIFont fontWithName:@"Gotham Book" size:12.0]
+                selected:NO
+                enabled:YES
+                action:@selector(didTapToSkipReview:)
+                size:{}
+                attributes:{}
+                accessibilityConfiguration:{}];
+    }
+    
+    return nil;
+}
+
+
 static CKComponent* messageLabel(DetailReputationReview* review, NSString* role) {
     NSString* message = nil;
     if (!([review.review_message isEqualToString:@"0"] || review.review_message == nil)) {
@@ -126,10 +150,11 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
 @implementation DetailReputationReviewComponent {
     __weak id<DetailReputationReviewComponentDelegate> _delegate;
     DetailReputationReview *_review;
+    NSString *_role;
 }
 
 - (void)didTapHeader:(id)sender {
-    [_delegate didTapHeaderWithReview:_review];
+    [_delegate didTapProductWithReview:_review];
 }
 
 - (void)didTapToGiveReview:(id)sender {
@@ -140,10 +165,27 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
     [_delegate didTapToGiveResponse:_review];
 }
 
+- (void)didTapToSkipReview:(id)sender {
+    [_delegate didTapToSkipReview:_review];
+}
+
+- (void)didTapButton:(id)sender {
+    if ([_role isEqualToString:@"2"]) {
+        [_delegate didTapToReportReview:_review];
+    } else {
+        [_delegate didTapToEditReview:_review];
+    }
+}
+
+- (void)didTapToDeleteResponse:(id)sender {
+    [_delegate didTapToDeleteResponse:_review];
+}
+
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context {
+    
     UIEdgeInsets insets;
     if (isDetail) {
-        insets = {0, 16, 0, 16};
+        insets = {0, 8, 0, 8};
     } else {
         insets = {8, 8, 0, 8};
     }
@@ -168,9 +210,31 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
                                                     }
                                                     children:{
                                                         {
-                                                            [DetailReputationReviewHeaderComponent newWithReview:review
-                                                                                                       tapAction:@selector(didTapHeader:)
-                                                                                                 imageDownloader:context.imageDownloader]
+                                                            [CKInsetComponent
+                                                             newWithInsets:{8,8,8,8}
+                                                             component:
+                                                             [CKStackLayoutComponent
+                                                              newWithView:{}
+                                                              size:{}
+                                                              style:{
+                                                                  .direction = CKStackLayoutDirectionHorizontal,
+                                                                  .spacing = 8
+                                                              }
+                                                              children:{
+                                                                  {
+                                                                      [DetailReputationReviewHeaderComponent newWithReview:review
+                                                                                                                      role:(NSString*)role
+                                                                                                        tapToProductAction:@selector(didTapHeader:)
+                                                                                                           tapButtonAction:@selector(didTapButton:)
+                                                                                                           imageDownloader:context.imageDownloader],
+                                                                      .flexGrow = YES,
+                                                                      .flexShrink = YES,
+                                                                      .alignSelf = CKStackLayoutAlignSelfStretch
+                                                                  },
+                                                                  {
+                                                                      skipButton(review)
+                                                                  }
+                                                              }]]
                                                         },
                                                         {
                                                             messageLabel(review, role)
@@ -194,7 +258,10 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
                                                              size:{.height = 1}]
                                                         },
                                                         {
-                                                            [ReviewResponseComponent newWithReview:review imageDownloader:context.imageDownloader]
+                                                            [ReviewResponseComponent newWithReview:review
+                                                                                   imageDownloader:context.imageDownloader
+                                                                                              role:role
+                                                                                            action:@selector(didTapToDeleteResponse:)]
                                                         },
                                                         {
                                                             giveResponseButton(review, role, isDetail)
@@ -204,6 +271,7 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
     
     component->_delegate = context.delegate;
     component->_review = review;
+    component->_role = role;
     
     return component;
 }

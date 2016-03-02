@@ -26,17 +26,14 @@
 #import "GiveReviewResponseViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define GIVE_REVIEW_CELL_IDENTIFIER @"GiveReviewCellIdentifier"
-#define REVIEW_DETAIL_CELL_IDENTIFIER @"ReviewDetailCellIdentifier"
-#define SKIPPED_REVIEW_CELL_IDENTIFIER @"SkippedReviewCellIdentifier"
-
 @interface MyReviewDetailViewController ()
 <
     UICollectionViewDelegateFlowLayout,
     MyReviewDetailRequestDelegate,
     DetailReputationReviewComponentDelegate,
     MyReviewDetailHeaderDelegate,
-    MyReviewDetailHeaderSmileyDelegate
+    MyReviewDetailHeaderSmileyDelegate,
+    UIActionSheetDelegate
 >
 {
     TAGContainer *_gtmContainer;
@@ -59,29 +56,8 @@
     BOOL _isRefreshing;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *reviewDetailTable;
-
-@property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
-@property (strong, nonatomic) IBOutlet UIView *remainingTimeView;
 @property (strong, nonatomic) IBOutlet UIView *pageTitleView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
-
-@property (weak, nonatomic) IBOutlet UIView *userInfoView;
-@property (weak, nonatomic) IBOutlet UILabel *remainingTimeLabel;
-@property (weak, nonatomic) IBOutlet UIView *theirScoreView;
-@property (weak, nonatomic) IBOutlet UIView *myScoreView;
-
-@property (weak, nonatomic) IBOutlet UIImageView *userImageView;
-@property (weak, nonatomic) IBOutlet ViewLabelUser *revieweeNameViewLabel;
-@property (weak, nonatomic) IBOutlet UIButton *reputationScoreButton;
-
-@property (weak, nonatomic) IBOutlet UILabel *myScoreLabel;
-@property (weak, nonatomic) IBOutlet UIButton *myScoreButton;
-@property (weak, nonatomic) IBOutlet UILabel *isMyScoreEditedLabel;
-
-@property (weak, nonatomic) IBOutlet UILabel *theirScoreLabel;
-@property (weak, nonatomic) IBOutlet UIButton *theirScoreButton;
-@property (weak, nonatomic) IBOutlet UILabel *isTheirScoreEditedLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *reviewTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *invoiceTitleLabel;
@@ -192,7 +168,10 @@
                                                                      delegate:self];
     [alert show];
     
-    //    [_reviewDetailTable reloadData];
+    [_reviewList removeAllObjects];
+    [_collectionView reloadData];
+    
+    _detailMyInboxReputation.unassessed_reputation_review = [NSString stringWithFormat:@"%d", [_detailMyInboxReputation.unassessed_reputation_review intValue]-1];
     
     [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
                                                             autoRead:_autoRead];
@@ -223,7 +202,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return  [_dataManager sizeForItemAtIndexPath:indexPath];
+    return [_dataManager sizeForItemAtIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -244,8 +223,13 @@
                                      withInvoiceURL:_detailMyInboxReputation.invoice_uri];
 }
 
+#pragma mark - Action Sheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+}
+
 #pragma mark - Reputation Detail Cells Delegate
-- (void)didTapHeaderWithReview:(DetailReputationReview *)review {
+- (void)didTapProductWithReview:(DetailReputationReview *)review{
     [_navigator navigateToProductFromViewController:self
                                            withName:review.product_name
                                           withPrice:nil
@@ -260,6 +244,40 @@
     vc.detailReputationReview = review;
     
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)didTapToSkipReview:(DetailReputationReview *)review {
+    [_myReviewDetailRequest requestSkipReviewWithDetail:review];
+}
+
+- (void)didTapToEditReview:(DetailReputationReview *)review {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Batal"
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Ubah", nil];
+    
+    [actionSheet showInView:self.view];
+}
+
+- (void)didTapToReportReview:(DetailReputationReview *)review {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Batal"
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Lapor", nil];
+    
+    [actionSheet showInView:self.view];
+}
+
+- (void)didTapToDeleteResponse:(DetailReputationReview *)review {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Batal"
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Hapus", nil];
+    
+    [actionSheet showInView:self.view];
 }
 
 #pragma mark - Header Delegate
@@ -325,6 +343,52 @@
                                      delegate:self
                             cancelButtonTitle:@"OK"
                             otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void)didTapLockedSmiley {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Anda telah melewati batas waktu penilaian."
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+
+}
+
+- (void)didTapNotSatisfiedSmiley {
+    if ([_detailMyInboxReputation.their_score_image isEqualToString:@"smiley_neutral"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"Maaf, Anda tidak bisa melakukan penurunan nilai"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"Apakah Anda yakin memberi nilai Tidak Puas?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Ya"
+                                              otherButtonTitles:@"Tidak", nil];
+        [alert show];
+    }
+}
+
+- (void)didTapNeutralSmiley {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Apakah Anda yakin memberi nilai Netral?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ya"
+                                          otherButtonTitles:@"Tidak", nil];
+    [alert show];
+}
+
+- (void)didTapSatisfiedSmiley {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Apakah Anda yakin memberi nilai Puas?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ya"
+                                          otherButtonTitles:@"Tidak", nil];
     [alert show];
 }
 

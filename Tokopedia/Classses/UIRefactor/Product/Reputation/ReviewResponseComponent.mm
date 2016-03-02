@@ -10,9 +10,33 @@
 #import "MedalComponent.h"
 #import "ShopBadgeLevel.h"
 
+static CKComponent *deleteButton (NSString *role, SEL action) {
+    if ([role isEqualToString:@"2"]) {
+        return [CKButtonComponent
+                newWithTitles:{}
+                titleColors:{}
+                images:{
+                    {UIControlStateNormal, [UIImage imageNamed:@"icon_arrow_down.png"]}
+                }
+                backgroundImages:{}
+                titleFont:nil
+                selected:NO
+                enabled:YES
+                action:action
+                size:{.height = 14, .width = 14}
+                attributes:{}
+                accessibilityConfiguration:{}];
+    }
+    
+    return nil;
+}
+
 @implementation ReviewResponseComponent
 
-+ (instancetype)newWithReview:(DetailReputationReview *)review imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
++ (instancetype)newWithReview:(DetailReputationReview *)review
+              imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
+                         role:(NSString *)role
+                       action:(SEL)action {
     if ([review.review_response.response_message isEqualToString:@"0"] || review.review_response.response_message == nil) {
         return nil;
     }
@@ -133,6 +157,9 @@
                                }
                            }],
                           .flexShrink = YES
+                      },
+                      {
+                          deleteButton(role, action)
                       }
                   }]}]];
 }

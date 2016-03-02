@@ -9,7 +9,11 @@
 #import "DetailReputationReview.h"
 
 @protocol DetailReputationReviewComponentDelegate <NSObject>
-- (void)didTapHeaderWithReview:(DetailReputationReview*)review;
+- (void)didTapProductWithReview:(DetailReputationReview*)review;
 - (void)didTapToGiveReview:(DetailReputationReview*)review;
 - (void)didTapToGiveResponse:(DetailReputationReview*)review;
+- (void)didTapToSkipReview:(DetailReputationReview*)review;
+- (void)didTapToEditReview:(DetailReputationReview*)review;
+- (void)didTapToReportReview:(DetailReputationReview*)review;
+- (void)didTapToDeleteResponse:(DetailReputationReview*)review;
 @end
