@@ -1130,9 +1130,10 @@
                 [names addObject:shipment.shipment_name];
             }
             
-            
-            [[self requestRates] doRequestWithNames:[names copy] origin:origin destination:destination weight:weight];
-            
+            [RequestRates doRequestWithNames:[names copy] origin:origin destination:destination weight:weight onSuccess:^(RateData *rateData) {
+                [self successRequestRates:rateData];
+            } onFailure:nil];
+                        
             [_tableView reloadData];
         }
     }

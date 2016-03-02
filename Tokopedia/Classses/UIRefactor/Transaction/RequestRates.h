@@ -9,17 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "RateResponse.h"
 
-@protocol RequestRatesDelegate <NSObject>
 
--(void)successRequestRates:(RateData*)data;
+@interface RequestRates : NSObject
 
-@end
-
-
-@interface RequestRates : NSObject <TokopediaNetworkManagerDelegate>
-
-@property (strong, nonatomic) id<RequestRatesDelegate> delegate;
-
--(void)doRequestWithNames:(NSArray *)names origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight;
++(void)doRequestWithNames:(NSArray *)names origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error;
 
 @end
