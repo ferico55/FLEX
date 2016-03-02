@@ -427,8 +427,21 @@
             }
             else
             {
-                frame = CGRectMake((self.bounds.size.width - _itemSize.width * _itemsPerPage)/2.0f,
-                                   0.0f, _itemSize.width * _itemsPerPage, self.bounds.size.height);
+                
+                /*
+                    tonito add this
+                    to accomodate swipeview to center
+                 */
+                if(_isCenteredChild) {
+                    frame = CGRectMake((self.bounds.size.width - _itemSize.width * _numberOfItems)/2.0f,
+                                       0.0f, _itemSize.width * _itemsPerPage, self.bounds.size.height);
+                    
+                } else {
+
+                
+                    frame = CGRectMake((self.bounds.size.width - _itemSize.width * _itemsPerPage)/2.0f,
+                                       0.0f, _itemSize.width * _itemsPerPage, self.bounds.size.height);
+                }
                 contentSize.width = _itemSize.width * _numberOfItems;
             }
             break;
