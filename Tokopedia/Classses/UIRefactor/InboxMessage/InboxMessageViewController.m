@@ -48,13 +48,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttontrash;
 @property (weak, nonatomic) IBOutlet UIButton *buttonarchive;
 
-
-typedef enum TagRequest {
-    messageListTag,
-    messageActionTag
-} TagRequest;
-
-
 @end
 
 @implementation InboxMessageViewController
@@ -76,9 +69,6 @@ typedef enum TagRequest {
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
-    
-    NSString *_inboxMessageBaseUrl;
-    NSString *_inboxMessagePostUrl;
 
     TAGContainer *_gtmContainer;
 
@@ -877,12 +867,6 @@ typedef enum TagRequest {
 - (void)configureGTM {
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
     [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    _inboxMessageBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageBase];
-    _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
 }
 
 @end
