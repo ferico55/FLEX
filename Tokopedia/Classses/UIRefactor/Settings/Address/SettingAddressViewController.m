@@ -143,7 +143,7 @@
     _addNewAddressView.frame = frame;
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
         _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                               style:UIBarButtonItemStylePlain
                                                              target:(self)
@@ -254,7 +254,7 @@
         if (indexPath.row == 0) {
             NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
             
-            if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+            if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
                 static NSString *CellIdentifier = GENERAL_CHECKMARK_CELL_IDENTIFIER;
                 
                 cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -396,7 +396,7 @@
 {
     BOOL isdefault;
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
          AddressFormList *address = _list[indexPath.section];
         [_datainput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
         [_table reloadData];
@@ -507,6 +507,15 @@
     
     if (status) {
         [self requestProcess:object];
+    }
+    else
+    {
+        if(address.message_error.count>0) {
+            NSArray *errorMessages = address.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
+                                                                               delegate:self];
+            [alertView show];
+        }
     }
 }
 
@@ -883,7 +892,7 @@
             {
                 //add new address
                 NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-                NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
+                NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
                 SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
                 vc.data = @{kTKPD_AUTHKEY: _auth,
                             kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
@@ -905,7 +914,7 @@
         if (button.tag == 1) {
             //add new address
             NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-            NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
+            NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
             SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
             vc.data = @{kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
                         };
@@ -1083,7 +1092,9 @@
 #pragma mark - Add / Edit Address Delegate
 -(void)SettingAddressEditViewController:(SettingAddressEditViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    [_delegate SettingAddressViewController:self withUserInfo:userInfo];
+    if (_delegate && [_delegate respondsToSelector:@selector(SettingAddressViewController:withUserInfo:)]) {
+        [_delegate SettingAddressViewController:self withUserInfo:userInfo];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

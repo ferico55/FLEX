@@ -537,7 +537,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)syncroImages:(NSArray *)images message:(NSString *)message
+-(void)syncroImages:(NSArray *)images message:(NSString *)message refundAmount:(NSString *)refundAmount
 {
     [_uploadedPhotos removeAllObjects];
     [_uploadedPhotos addObjectsFromArray:images];

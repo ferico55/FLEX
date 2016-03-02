@@ -14,7 +14,7 @@
 #define CNeutral @"neutral"
 #define CNoReputation @"no_reputation"
 
-@interface ReputationDetail : NSObject
+@interface ReputationDetailCopy : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *positive_percentage;
 @property (nonatomic, strong) NSString *negative;
