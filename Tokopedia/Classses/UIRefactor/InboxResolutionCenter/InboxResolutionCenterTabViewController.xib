@@ -98,10 +98,10 @@
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="XJl-74-qnB">
-                                    <variation key="widthClass=compact" constant="22"/>
+                                    <variation key="widthClass=compact" constant="30"/>
                                 </constraint>
                                 <constraint firstAttribute="width" constant="18" id="xkH-fk-tKk">
-                                    <variation key="widthClass=compact" constant="22"/>
+                                    <variation key="widthClass=compact" constant="30"/>
                                 </constraint>
                             </constraints>
                         </imageView>
@@ -110,10 +110,10 @@
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="18" id="2WR-FQ-Px6">
-                                    <variation key="widthClass=compact" constant="22"/>
+                                    <variation key="widthClass=compact" constant="30"/>
                                 </constraint>
                                 <constraint firstAttribute="width" constant="18" id="3PI-3k-ygN">
-                                    <variation key="widthClass=compact" constant="22"/>
+                                    <variation key="widthClass=compact" constant="30"/>
                                 </constraint>
                             </constraints>
                         </imageView>
