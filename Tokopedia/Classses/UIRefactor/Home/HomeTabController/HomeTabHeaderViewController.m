@@ -8,6 +8,7 @@
 
 #import "HomeTabHeaderViewController.h"
 #import "UserAuthentificationManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface HomeTabHeaderViewController () <UIScrollViewDelegate> {
     CGFloat _totalOffset;

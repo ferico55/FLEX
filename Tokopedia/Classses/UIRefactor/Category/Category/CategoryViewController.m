@@ -25,7 +25,7 @@ NSInteger const bannerHeight = 115;
 @interface CategoryViewController () <NotificationManagerDelegate, iCarouselDelegate, SwipeViewDelegate> {
     NotificationManager *_notifManager;
     
-    Banner *_banner;
+    NSArray<Slide*>* _banner;
     UIActivityIndicatorView *loadIndicator;
 }
 
@@ -163,19 +163,18 @@ NSInteger const bannerHeight = 115;
     TKPHomeBannerStore *bannersStore = [[[[self class] TKP_rootController] storeManager] homeBannerStore];
     __weak typeof(self) wself = self;
     //prevent double slider
-    [_slider removeFromSuperview];
-    [_digitalGoodsSwipeView removeFromSuperview];
+
+
+    NSInteger sliderHeight = 175;
     
-    [bannersStore fetchBannerWithCompletion:^(Banner *banner, NSError *error) {
+    [bannersStore fetchBannerWithCompletion:^(NSArray<Slide*>* banner, NSError *error) {
         if (wself != nil) {
+            [_slider removeFromSuperview];
             [loadIndicator stopAnimating];
             
-            NSInteger sliderHeight = 175;
             _banner = banner;
-            
-
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
-            _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.result.banner];
+            _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner];
             _carouselDataSource.delegate = self;
 
             _slider.type = iCarouselTypeLinear;
@@ -185,27 +184,32 @@ NSInteger const bannerHeight = 115;
 
             [_collectionView addSubview:_slider];
             [_collectionView bringSubviewToFront:_slider];
+        }
+    }];
+    
+    [bannersStore fetchMiniSlideWithCompletion:^(NSArray<MiniSlide*>*slide, NSError* error) {
+        if(wself != nil) {
+            [_digitalGoodsSwipeView removeFromSuperview];
             
             _digitalGoodsSwipeView = [[SwipeView alloc] initWithFrame:CGRectMake(0, sliderHeight+5, [UIScreen mainScreen].bounds.size.width, 120)];
-            _digitalGoodsDataSource = [[DigitalGoodsDataSource alloc] initWithGoods:banner.result.banner swipeView:_digitalGoodsSwipeView];
+            _digitalGoodsDataSource = [[DigitalGoodsDataSource alloc] initWithGoods:slide swipeView:_digitalGoodsSwipeView];
             
             _digitalGoodsSwipeView.dataSource = _digitalGoodsDataSource;
             _digitalGoodsSwipeView.delegate = self;
             _digitalGoodsSwipeView.clipsToBounds = YES;
             _digitalGoodsSwipeView.truncateFinalPage = YES;
             _digitalGoodsSwipeView.decelerationRate = 0.5;
-
+            
             [_collectionView addSubview:_digitalGoodsSwipeView];
-
         }
     }];
 }
 
 - (void)swipeView:(SwipeView *)swipeView didSelectItemAtIndex:(NSInteger)index {
-    BannerList *good = [_digitalGoodsDataSource goodsAtIndex:index];
+    MiniSlide *good = [_digitalGoodsDataSource goodsAtIndex:index];
     WebViewController *webview = [[WebViewController alloc] init];
     webview.strTitle = @"Tokopedia";
-    webview.strURL = good.url;
+    webview.strURL = good.redirect_url;
     
     [self.navigationController pushViewController:webview animated:YES];
 }
