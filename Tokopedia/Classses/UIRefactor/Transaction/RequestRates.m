@@ -43,7 +43,30 @@
         
         RateResponse *response= stat;
         success(response.data);
-    } onFailure:nil];
+    } onFailure:^(NSError *errorResult) {
+
+        NSArray *errors;
+        
+        if(errorResult.code == -1011) {
+            NSString *JSON = [[error userInfo] valueForKey:NSLocalizedRecoverySuggestionErrorKey] ;
+            NSError *aerror = nil;
+            NSDictionary *errorFromWs = [NSJSONSerialization JSONObjectWithData: [JSON dataUsingEncoding:NSUTF8StringEncoding]
+                                                                        options: NSJSONReadingMutableContainers
+                                                                          error: &aerror];
+            if (errorFromWs && !aerror) {
+                errors = [errorFromWs[@"errors"] valueForKeyPath:@"@distinctUnionOfObjects.title"];
+            } else
+                errors = @[@"Mohon maaf, terjadi kendala pada server"];
+        } else if (errorResult.code==-1009) {
+            errors = @[@"Tidak ada koneksi internet"];
+        } else {
+            errors = @[errorResult.localizedDescription];
+        }
+        
+        
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+        [alert show];
+    }];
 }
 
 @end
