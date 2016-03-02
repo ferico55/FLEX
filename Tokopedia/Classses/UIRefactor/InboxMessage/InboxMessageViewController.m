@@ -30,7 +30,6 @@
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
     TKPDTabInboxMessageNavigationControllerDelegate,
-    TokopediaNetworkManagerDelegate,
     LoadingViewDelegate
 >
 
@@ -135,9 +134,7 @@ typedef enum TagRequest {
     _userManager = [UserAuthentificationManager new];
 
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = messageListTag;
-    
+
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
@@ -178,6 +175,8 @@ typedef enum TagRequest {
 }
 
 - (void)fetchInboxMessages {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
+
     NSDictionary* param =@{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
             kTKPDHOME_APIPAGEKEY:@(_page),
@@ -791,75 +790,6 @@ typedef enum TagRequest {
         }
     }
     return nil;
-}
-
-#pragma mark - Tokopedia Network Manager 
-- (NSDictionary *)getParameter:(int)tag {
-    if(tag == messageListTag) {
-        NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
-                                kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                                kTKPDHOME_APIPAGEKEY:@(_page),
-                                KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
-                                KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
-                                };
-        return param;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getPath:(int)tag {
-    if(tag == messageListTag) {
-        return [_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    if(tag == messageListTag) {
-        NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-        id stat = [resultDict objectForKey:@""];
-        InboxMessage *list = stat;
-        
-        return list.status;
-    }
-    
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag {
-    if(tag == messageListTag) {
-        _objectmanager = [RKObjectManager sharedClient];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessage mapping]
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-        
-        return _objectmanager;
-    }
-    
-    return nil;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
-    if(tag == messageListTag) {
-        if (_navthatwillrefresh || !_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        } else {
-            _table.tableFooterView = nil;
-            [_act stopAnimating];
-        }
-
-    }
 }
 
 - (NSArray<NSIndexPath*>*) indexPathsForInserting:(NSArray*)appendedArray to:(NSArray*)sourceArray {
