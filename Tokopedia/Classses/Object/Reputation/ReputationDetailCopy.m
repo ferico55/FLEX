@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ReputationDetail.h"
+#import "ReputationDetailCopy.h"
 
-@implementation ReputationDetail
+@implementation ReputationDetailCopy
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {

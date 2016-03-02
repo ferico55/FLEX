@@ -1,22 +1,19 @@
 //
-//  ReputationDetail.m
+//  InboxResolutionPendingAmount.m
 //  Tokopedia
 //
-//  Created by Tonito Acen on 3/19/15.
+//  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ReputationDetail.h"
+#import "InboxResolutionPendingAmount.h"
 
-@implementation ReputationDetail
+@implementation InboxResolutionPendingAmount
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"positive_percentage",
-                      @"negative",
-                      @"positive",
-                      @"neutral",
-                      @"no_reputation"];
+    NSArray *keys = @[@"total_amt_idr",
+                      @"total_amt"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

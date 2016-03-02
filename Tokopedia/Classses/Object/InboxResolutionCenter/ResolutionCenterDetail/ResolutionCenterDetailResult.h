@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 
 #import "ResolutionDetailConversation.h"
+#import "ResolutionConversation.h"
 
-@interface ResolutionCenterDetailResult : NSObject
+@interface ResolutionCenterDetailResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) ResolutionDetailConversation *detail;
 @property (nonatomic, strong) NSArray *resolution_conversation;
