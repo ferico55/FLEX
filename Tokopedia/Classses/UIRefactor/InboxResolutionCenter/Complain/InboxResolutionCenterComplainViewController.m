@@ -194,23 +194,23 @@
     [self.tableView reloadData];
 }
 
--(IBAction)tap:(id)sender
+-(IBAction)tap:(UIButton*)button
 {
-    UIButton *button = (UIButton*)sender;
-
-    if (button.tag == 12) {
-        //Status Pemesanan
-        TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-        vc.action = @"get_tx_order_status";
-        vc.viewControllerTitle = @"Status Pemesanan";
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    if (button.tag == 13) {
-        //Daftar Transaksi
-        TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-        vc.action = @"get_tx_order_list";
-        vc.viewControllerTitle = @"Daftar Transaksi";
-        [self.navigationController pushViewController:vc animated:YES];
+    if ([NavigationHelper shouldDoDeepNavigation]) {
+        if (button.tag == 12) {
+            //Status Pemesanan
+            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.action = @"get_tx_order_status";
+            vc.viewControllerTitle = @"Status Pemesanan";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        if (button.tag == 13) {
+            //Daftar Transaksi
+            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.action = @"get_tx_order_list";
+            vc.viewControllerTitle = @"Daftar Transaksi";
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 - (IBAction)tapFilterDay:(id)sender {
