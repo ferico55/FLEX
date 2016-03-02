@@ -12,7 +12,7 @@ import Foundation
 @objc class DigitalGoodsDataSource: NSObject, SwipeViewDataSource {
     var _goods: Array<MiniSlide>!
     var _swipeView: SwipeView!
-    let _imageWidth:CGFloat = 200
+    let _imageWidth:CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 320 : 200
     let _imageHeight:CGFloat = 100
     
     init(goods: Array<MiniSlide>, swipeView: SwipeView) {
@@ -35,11 +35,12 @@ import Foundation
         imageView.layer.cornerRadius = 5.0;
         imageView.layer.masksToBounds = true;
         
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: imageView.frame.size.width + imageView.frame.origin.x, height: _swipeView.frame.size.height+10))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: imageView.frame.size.width + imageView.frame.origin.x, height: _swipeView.frame.size.height))
         view.addSubview(imageView)
     
         return view
     }
+    
     
     func goodsAtIndex(index: Int) -> MiniSlide {
         return _goods[index]
