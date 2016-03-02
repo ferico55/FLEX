@@ -190,7 +190,11 @@ typedef enum TagRequest {
     
     // GTM
     [self configureGTM];
-    
+
+    [self fetchInboxMessages];
+}
+
+- (void)fetchInboxMessages {
     [_networkManager doRequest];
 }
 
@@ -382,7 +386,7 @@ typedef enum TagRequest {
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
         if (![_urinext isEqualToString:@"0"] && _urinext != nil) {
-            [_networkManager doRequest];
+            [self fetchInboxMessages];
         } else {
             _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
             [_act stopAnimating];
@@ -466,7 +470,7 @@ typedef enum TagRequest {
     [_table reloadData];
     _table.tableFooterView = _footer;
     _page = 1;
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
     
     [_table reloadData];
 }
@@ -479,7 +483,7 @@ typedef enum TagRequest {
         [_table reloadData];
         _table.tableFooterView = _footer;
         
-        [_networkManager doRequest];
+        [self fetchInboxMessages];
     }
 }
 
@@ -529,7 +533,7 @@ typedef enum TagRequest {
 
     [_table reloadData];
     /** request data **/
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
 }
 
 
@@ -553,12 +557,13 @@ typedef enum TagRequest {
     [searchBar resignFirstResponder];
     
     _searchbar.text = nil;
-    _keyword = _searchbar.text;
+    _keyword = @"";
     _page = 1;
     
     [_messages removeAllObjects];
+    [_table reloadData];
 
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
@@ -947,7 +952,7 @@ typedef enum TagRequest {
 - (void)pressRetryButton {
     _table.tableFooterView = _footer;
     [_act startAnimating];
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
 }
 
 
