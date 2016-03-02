@@ -191,10 +191,10 @@ typedef enum TagRequest {
                               parameter:param
                                 mapping:[InboxMessage mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self actionAfterRequest:successResult withOperation:operation withTag:messageListTag];
+                                  [self onReceiveMessages:successResult.dictionary[@""]];
                               }
                               onFailure:^(NSError *errorResult) {
-                                  [self actionAfterFailRequestMaxTries:messageListTag];
+                                  [self failedLoadingMessages];
                               }];
 }
 
@@ -803,43 +803,39 @@ typedef enum TagRequest {
     return indexPaths;
 }
 
-- (void)actionAfterRequest:(RKMappingResult*)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    if(tag == messageListTag) {
-        InboxMessage *message = successResult.dictionary[@""];
+- (void)onReceiveMessages:(InboxMessage *)message {
+    _urinext =  message.result.paging.uri_next;
+    _page = [[_networkManager splitUriToPage:_urinext] integerValue];
 
-        _urinext =  message.result.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+    [self addMessages:message.result.list];
 
-        [self addMessages:message.result.list];
+    if (_messages.count >0) {
+        [_noResultView removeFromSuperview];
+    } else {
+        NSString *currentCategory = _data[@"nav"];
 
-        if (_messages.count >0) {
-            [_noResultView removeFromSuperview];
-        } else {
-            NSString *currentCategory = _data[@"nav"];
-
-            [_noResultView setNoResultTitle:[self noMessageInfoFromCategory:currentCategory]];
-            _table.tableHeaderView = _searchView;
-            _table.tableFooterView = _noResultView;
-        }
-
-        [_refreshControl endRefreshing];
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-            {
-                if (_messages.count > 0) {
-                    NSIndexPath *indexpath = [_table indexPathForSelectedRow]?:[NSIndexPath indexPathForRow:0 inSection:0];
-
-                    [self showMessageDetailForIndexPath:indexpath];
-                    [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                } else {
-                    [self showMessageDetailForIndexPath:nil];
-                }
-            }
-        });
+        [_noResultView setNoResultTitle:[self noMessageInfoFromCategory:currentCategory]];
+        _table.tableHeaderView = _searchView;
+        _table.tableFooterView = _noResultView;
     }
+
+    [_refreshControl endRefreshing];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            if (_messages.count > 0) {
+                NSIndexPath *indexpath = [_table indexPathForSelectedRow]?:[NSIndexPath indexPathForRow:0 inSection:0];
+
+                [self showMessageDetailForIndexPath:indexpath];
+                [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            } else {
+                [self showMessageDetailForIndexPath:nil];
+            }
+        }
+    });
 }
 
 - (NSString *)noMessageInfoFromCategory:(NSString *)currentCategory {
@@ -864,13 +860,10 @@ typedef enum TagRequest {
     [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    if(tag == messageListTag) {
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        _table.tableFooterView = _loadingView.view;
-
-    }
+- (void)failedLoadingMessages {
+    _isrefreshview = NO;
+    [_refreshControl endRefreshing];
+    _table.tableFooterView = _loadingView.view;
 }
 
 #pragma mark - Retry Delegate
