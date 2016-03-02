@@ -880,14 +880,15 @@ typedef enum TagRequest {
     if(tag == messageListTag) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         InboxMessage *message = result[@""];
-        
+
+        _urinext =  message.result.paging.uri_next;
+        _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+
         NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:message.result.list to:_messages];
         [_messages addObjectsFromArray: message.result.list];
         [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 
         if (_messages.count >0) {
-            _urinext =  message.result.paging.uri_next;
-            _page = [[_networkManager splitUriToPage:_urinext] integerValue];
             [_noResultView removeFromSuperview];
         } else {
             //_table.tableFooterView = _noResultView;
