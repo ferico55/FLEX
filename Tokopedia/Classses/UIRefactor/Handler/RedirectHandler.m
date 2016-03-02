@@ -59,7 +59,13 @@
     } else if(state == STATE_NEW_ORDER) {
         [self redirectToNewOrder];
     } else if (state == STATE_NEW_RESOLUTION||
-              state == STATE_EDIT_RESOLUTION) {
+               state == STATE_EDIT_RESOLUTION ||
+               state == STATE_RESCENTER_SELLER_REPLY ||
+               state == STATE_RESCENTER_BUYER_REPLY ||
+               state == STATE_RESCENTER_SELLER_AGREE ||
+               state == STATE_RESCENTER_BUYER_AGREE  ||
+               state == STATE_RESCENTER_ADMIN_SELLER_REPLY ||
+               state == STATE_RESCENTER_ADMIN_BUYER_REPLY ) {
   	     [self redirectToResolution];
 	} else if (state == STATE_PURCHASE_REJECTED) {
         [self redirectToRejectedOrder];
@@ -88,6 +94,7 @@
 
 -(void)redirectToResolution{
     _navigationController = (UINavigationController*)_delegate;
+    _navigationController.hidesBottomBarWhenPushed = YES;
     [[self navigate]navigateToInboxResolutionFromViewController:_navigationController];
 }
 
