@@ -25,6 +25,7 @@
 #import "CMPopTipView.h"
 #import "GiveReviewResponseViewController.h"
 #import "ReportViewController.h"
+#import "RequestLDExtension.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface MyReviewDetailViewController ()
@@ -35,18 +36,24 @@
     MyReviewDetailHeaderDelegate,
     MyReviewDetailHeaderSmileyDelegate,
     UIActionSheetDelegate,
-    ReportViewControllerDelegate
+    ReportViewControllerDelegate,
+    UIAlertViewDelegate,
+    requestLDExttensionDelegate
 >
 {
     TAGContainer *_gtmContainer;
     MyReviewDetailRequest *_myReviewDetailRequest;
     DetailReputationReview *_detailReputationReview;
     DetailReputationReview *_selectedReview;
+    DetailMyInboxReputation *_selectedInbox;
+    
+    MyReviewDetailHeader *_header;
     
     NSMutableArray *_reviewList;
     
     NSString *_baseURL, *_baseActionURL;
     NSString *_postURL, *_postActionURL;
+    NSString *_score;
     NavigateViewController *_navigator;
     
     UIRefreshControl *_refreshControl;
@@ -55,8 +62,12 @@
     
     CMPopTipView *_cmPopTipView;
     
+    RequestLDExtension *_request;
+    
     BOOL _page;
     BOOL _isRefreshing;
+    BOOL _isRefreshView;
+    
 }
 
 @property (strong, nonatomic) IBOutlet UIView *pageTitleView;
@@ -85,39 +96,27 @@
     [super viewDidLoad];
     [self configureGTM];
     
+    _isRefreshView = NO;
+    
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
                                                                     isDetail:NO
                                                                     delegate:self];
     
-    _collectionView.delegate = self;
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self
+                        action:@selector(refreshData)
+              forControlEvents:UIControlEventValueChanged];
+    [_collectionView addSubview:_refreshControl];
     
-    MyReviewDetailHeader *header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
+    _collectionView.delegate = self;
+    _collectionView.alwaysBounceVertical = YES;
+    
+    _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
                                                                             delegate:self
                                                                       smileyDelegate:self];
     
-    _headerView = header;
-    CGRect frame = header.frame;
-    frame.size.width = self.view.bounds.size.width;
-    header.frame = frame;
-    [header sizeToFit];
-    
-    
-    frame = header.frame;
-    frame.origin.y = -header.frame.size.height;
-    header.frame = frame;
-
-    [_collectionView addSubview:header];
-    _collectionView.contentInset = UIEdgeInsetsMake(header.frame.size.height, 0, 8, 0);
-    
-//    dispatch_after(3, dispatch_get_main_queue(), ^{
-//        [UIView animateWithDuration:2 animations:^{
-//            _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//        }];
-//
-//    });
-//
-    
+    [self setHeaderPosition];
     
     _myReviewDetailRequest = [MyReviewDetailRequest new];
     _myReviewDetailRequest.delegate = self;
@@ -153,13 +152,15 @@
 
 #pragma mark - My Review Detail Request Delegate
 - (void)didReceiveReviewListing:(MyReviewReputationResult *)myReviews {
-    
+    [_refreshControl endRefreshing];
     [_reviewList removeAllObjects];
     
     if (_page == 0) {
         _isRefreshing = NO;
+        [_dataManager removeAllReviews];
         [_dataManager replaceReviews:myReviews.list];
     } else {
+        [_dataManager removeAllReviews];
         [_dataManager addReviews:myReviews.list];
     }
 }
@@ -197,6 +198,38 @@
     unassessedReputationReview++;
     
     _detailMyInboxReputation.unassessed_reputation_review = [NSString stringWithFormat:@"%d", unassessedReputationReview];
+}
+
+- (void)didInsertReputation:(GeneralAction *)action {
+    NSDateFormatter *date = [NSDateFormatter new];
+    date.dateFormat = @"d MMMM yyyy, HH:mm";
+    if ([action.data.is_success isEqualToString:@"1"]) {
+        if (![action.data.ld.url isEqualToString:@""] && action.data.ld.url) {
+            _request = [RequestLDExtension new];
+            _request.luckyDeal = action.data.ld;
+            _request.delegate = self;
+            [_request doRequestMemberExtendURLString:action.data.ld.url];
+        }
+        
+        if ([_selectedInbox.role isEqualToString:@"2"]) {
+            if (_selectedInbox.buyer_score != nil && ![_selectedInbox.buyer_score isEqualToString:@""]) {
+                _selectedInbox.score_edit_time_fmt = [date stringFromDate:[NSDate date]];
+            }
+            
+            _selectedInbox.buyer_score = _score;
+        } else {
+            if (_selectedInbox.seller_score != nil && ![_selectedInbox.seller_score isEqualToString:@""]) {
+                _selectedInbox.score_edit_time_fmt = [date stringFromDate:[NSDate date]];
+            }
+            
+            _selectedInbox.seller_score = _score;
+        }
+            
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                       delegate:self];
+        [alert show];
+    }
 }
 
 #pragma mark - GTM
@@ -397,7 +430,8 @@
 
 }
 
-- (void)didTapNotSatisfiedSmiley {
+- (void)didTapNotSatisfiedSmiley:(DetailMyInboxReputation*)inbox {
+    _selectedInbox = inbox;
     if ([_detailMyInboxReputation.their_score_image isEqualToString:@"smiley_neutral"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:@"Maaf, Anda tidak bisa melakukan penurunan nilai"
@@ -411,25 +445,30 @@
                                                        delegate:self
                                               cancelButtonTitle:@"Ya"
                                               otherButtonTitles:@"Tidak", nil];
+        _score = @"-1";
         [alert show];
     }
 }
 
-- (void)didTapNeutralSmiley {
+- (void)didTapNeutralSmiley:(DetailMyInboxReputation*)inbox {
+    _selectedInbox = inbox;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:@"Apakah Anda yakin memberi nilai Netral?"
                                                    delegate:self
                                           cancelButtonTitle:@"Ya"
                                           otherButtonTitles:@"Tidak", nil];
+    _score = @"1";
     [alert show];
 }
 
-- (void)didTapSatisfiedSmiley {
+- (void)didTapSatisfiedSmiley:(DetailMyInboxReputation*)inbox {
+    _selectedInbox = inbox;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:@"Apakah Anda yakin memberi nilai Puas?"
                                                    delegate:self
                                           cancelButtonTitle:@"Ya"
                                           otherButtonTitles:@"Tidak", nil];
+    _score = @"2";
     [alert show];
 }
 
@@ -446,7 +485,36 @@
     return self;
 }
 
+#pragma mark - Alert View Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        [_myReviewDetailRequest requestInsertReputation:_selectedInbox withScore:_score];
+    }
+    
+}
+
+#pragma mark - Lucky Deal Delegate
+- (void)showPopUpLuckyDeal:(LuckyDealWord *)words {
+    [_navigator popUpLuckyDeal:words];
+}
+
 #pragma mark - Methods
+- (void)setHeaderPosition {
+    _headerView = _header;
+    CGRect frame = _header.frame;
+    frame.size.width = self.view.bounds.size.width;
+    _header.frame = frame;
+    [_header sizeToFit];
+    
+    
+    frame = _header.frame;
+    frame.origin.y = -_header.frame.size.height;
+    _header.frame = frame;
+    
+    [_collectionView addSubview:_header];
+    _collectionView.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 8, 0);
+}
+
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
@@ -478,6 +546,17 @@
     [_cmPopTipView presentPointingAtView:button
                                   inView:self.view
                                 animated:YES];
+}
+
+- (void)refreshData {
+    [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
+                                                            autoRead:_autoRead];
+    
+    _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
+                                             delegate:self
+                                       smileyDelegate:self];
+    
+//    [self setHeaderPosition];
 }
 
 @end

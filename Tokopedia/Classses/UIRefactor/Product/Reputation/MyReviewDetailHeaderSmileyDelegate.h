@@ -7,9 +7,9 @@
 //
 
 @protocol MyReviewDetailHeaderSmileyDelegate <NSObject>
-- (void)didTapNotSatisfiedSmiley;
-- (void)didTapNeutralSmiley;
-- (void)didTapSatisfiedSmiley;
+- (void)didTapNotSatisfiedSmiley:(DetailMyInboxReputation*)inbox;
+- (void)didTapNeutralSmiley:(DetailMyInboxReputation*)inbox;
+- (void)didTapSatisfiedSmiley:(DetailMyInboxReputation*)inbox;
 - (void)didTapLockedSmiley;
 - (void)didTapReviewerScore:(DetailMyInboxReputation*)inbox;
 @end

@@ -27,6 +27,7 @@
     CKComponentFlexibleSizeRangeProvider *_sizeRangeProvider;
     NSString *_role;
     BOOL _isDetail;
+    NSArray<DetailReputationReview*>* _reviews;
 }
 
 - (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role isDetail:(BOOL)isDetail delegate:(id<DetailReputationReviewComponentDelegate>)delegate  {
@@ -54,8 +55,7 @@
 
 - (void)replaceReviews:(NSArray<DetailReputationReview*>*)reviews {
     CKArrayControllerInputItems items;
-    
-    
+    _reviews = reviews;
     
     for (NSInteger index = 0; index < reviews.count; index++) {
         MyReviewDetailModel* model = [MyReviewDetailModel new];
@@ -70,6 +70,17 @@
 }
 
 - (void)addReviews:(NSArray<DetailReputationReview*>*)reviews {
+    
+}
+
+- (void)removeAllReviews {
+    CKArrayControllerInputItems items;
+    for (NSInteger index = 0; index < _reviews.count; index++) {
+        items.remove({0, index});
+    }
+    
+    [_dataSource enqueueChangeset:items
+                  constrainedSize:[_sizeRangeProvider sizeRangeForBoundingSize:_dataSource.collectionView.bounds.size]];
     
 }
 

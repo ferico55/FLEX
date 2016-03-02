@@ -18,6 +18,7 @@
                               delegate:(id<DetailReputationReviewComponentDelegate>)delegate;
 - (void)replaceReviews:(NSArray<DetailReputationReview*>*)reviews;
 - (void)addReviews:(NSArray<DetailReputationReview*>*)reviews;
+- (void)removeAllReviews;
 - (CGSize)sizeForItemAtIndexPath:(NSIndexPath*)indexPath;
 - (void)announceWillAppearForItemInCell:(UICollectionViewCell*)cell;
 - (void)announceDidDisappearForItemInCell:(UICollectionViewCell*)cell;

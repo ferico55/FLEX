@@ -421,15 +421,15 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
 }
 
 - (void)didTapNotSatisfiedSmiley {
-    [_delegate didTapNotSatisfiedSmiley];
+    [_delegate didTapNotSatisfiedSmiley:_inbox];
 }
 
 - (void)didTapSatisfiedSmiley {
-    [_delegate didTapSatisfiedSmiley];
+    [_delegate didTapSatisfiedSmiley:_inbox];
 }
 
 - (void)didTapNeutralSmiley {
-    [_delegate didTapNeutralSmiley];
+    [_delegate didTapNeutralSmiley:_inbox];
 }
 
 + (instancetype)newWithInbox:(DetailMyInboxReputation *)inbox context:(MyReviewDetailContext *)context {

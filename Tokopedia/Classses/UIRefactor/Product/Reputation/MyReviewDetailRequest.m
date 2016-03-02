@@ -17,12 +17,15 @@
 #import "SkipReview.h"
 #import "ResponseComment.h"
 #import "ResponseCommentResult.h"
-
+#import "GeneralAction.h"
+#import "GeneralActionResult.h"
+#import "LuckyDeal.h"
 
 typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     MyReviewDetailRequestGet,
     MyReviewDetailRequestSkip,
-    DeleteReputationReviewResponse
+    DeleteReputationReviewResponse,
+    InsertReputation
 };
 
 @interface MyReviewDetailRequest()<TokopediaNetworkManagerDelegate>
@@ -36,6 +39,7 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     DetailReputationReview *reputationReview;
     
     NSString *isAutoRead;
+    NSString *reputationScore;
     
     __weak RKObjectManager *_objectManager;
 }
@@ -71,6 +75,14 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     [networkManager doRequest];
 }
 
+- (void)requestInsertReputation:(DetailMyInboxReputation *)inbox withScore:(NSString *)score {
+    myInboxReputation = inbox;
+    reputationScore = score;
+    networkManager.isUsingHmac = YES;
+    networkManager.tagRequest = InsertReputation;
+    [networkManager doRequest];
+}
+
 - (void)cancelAllOperations {
     [_objectManager.operationQueue cancelAllOperations];
 }
@@ -100,6 +112,13 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
                       };
         
         return parameter;
+    } else if (tag == InsertReputation) {
+        parameter = @{@"buyer_seller"        : myInboxReputation.role,
+                      @"reputation_id"       : myInboxReputation.reputation_id,
+                      @"reputation_score"    : reputationScore,
+                      };
+        
+        return parameter;
     }
     
     return nil;
@@ -112,6 +131,8 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
         return @"/v4/action/reputation/skip_reputation_review.pl";
     } else if (tag == DeleteReputationReviewResponse) {
         return @"/v4/action/reputation/delete_reputation_review_response.pl";
+    } else if (tag == InsertReputation) {
+        return @"/v4/action/reputation/insert_reputation.pl";
     }
     
     return nil;
@@ -124,6 +145,8 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
         return RKRequestMethodPOST;
     } else if (tag == DeleteReputationReviewResponse) {
         return RKRequestMethodPOST;
+    } else if (tag == InsertReputation) {
+        return RKRequestMethodGET;
     }
     
     return 0;
@@ -317,6 +340,34 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
         [_objectManager addResponseDescriptor:responseDescriptorStatus];
         
         return _objectManager;
+    } else if (tag == InsertReputation) {
+        _objectManager = [RKObjectManager sharedClientHttps];
+        
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+        [statusMapping addAttributeMappingsFromArray:@[@"status",
+                                                       @"message_error",
+                                                       @"server_process_time"]];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+        [resultMapping addAttributeMappingsFromArray:@[@"is_success"]];
+        
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ld"
+                                                                                      toKeyPath:@"ld"
+                                                                                    withMapping:[LuckyDeal mapping]]];
+        
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                      toKeyPath:@"data"
+                                                                                    withMapping:resultMapping]];
+        
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodGET
+                                                                                                 pathPattern:[self getPath:tag]
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return _objectManager;
     }
     
     return nil;
@@ -332,6 +383,8 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
         return ((SkipReview*)stat).status;
     } else if (tag == DeleteReputationReviewResponse) {
         return ((ResponseComment*)stat).status;
+    } else if (tag == InsertReputation) {
+        return ((GeneralAction*)stat).status;
     }
     
     return nil;
@@ -347,6 +400,8 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
         [_delegate didSkipReview:((SkipReview*)temp).data];
     } else if (tag == DeleteReputationReviewResponse) {
         [_delegate didDeleteReputationReviewResponse:((ResponseComment*)temp).data];
+    } else if (tag == InsertReputation) {
+        [_delegate didInsertReputation:(GeneralAction*)temp];
     }
 }
 
