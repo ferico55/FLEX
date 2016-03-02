@@ -134,6 +134,7 @@
 -(IBAction)tapBackButton:(id)sender
 {
     [_splitVC.navigationController popViewControllerAnimated:YES];
+    [_filterAlertView dismissWithClickedButtonIndex:0 animated:NO];
 }
 
 
@@ -152,6 +153,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [_filterAlertView dismissWithClickedButtonIndex:0 animated:NO];
     self.title = nil;
 }
 
