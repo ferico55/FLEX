@@ -1223,6 +1223,10 @@
     }
     else if (alertView.tag == TAG_ALERT_COMPLAIN)
     {
+        if (buttonIndex == 2) {
+            return;
+        }
+        
         TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_COMPLAIN_KEY];
         InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
         vc.controllerTitle = @"Buka Komplain";
@@ -1447,7 +1451,7 @@
 
 -(void)showAlertViewOpenComplain
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Buka Komplain" message:@"Apakah Anda sudah menerima barang yang dipesan?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Tidak Terima", @"Terima", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Buka Komplain" message:@"Apakah Anda sudah menerima barang yang dipesan?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Tidak Terima", @"Terima", @"Batal", nil];
     alert.tag = TAG_ALERT_COMPLAIN;
     [alert show];
 }

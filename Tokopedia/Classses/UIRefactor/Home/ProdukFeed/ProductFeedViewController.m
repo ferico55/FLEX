@@ -325,11 +325,11 @@ CollectionViewSupplementaryDataSource
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    [_loadingIndicator startAnimating];
     CGFloat yPosition = _collectionView.contentSize.height;
     
-    CGRect frame = CGRectMake(0, yPosition, _collectionView.bounds.size.width, 50);
+    CGRect frame = CGRectMake(0, yPosition, [UIScreen mainScreen].bounds.size.width, 50);
     [_loadingIndicator setFrame:frame];
+    [_loadingIndicator startAnimating];
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
@@ -515,4 +515,9 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     return ((maxVisibleY + buffer) >= actualMaxY);
 }
 
+#pragma mark - No Request delegate
+- (void)buttonDidTapped:(id)sender{
+    NSDictionary *userInfo = @{@"page" : @5};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
+}
 @end

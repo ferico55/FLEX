@@ -236,7 +236,9 @@
     [super viewWillDisappear:animated];
     self.title = @"";
     
-    [_syncroDelegate syncroImages:[_photos copy] message:_noteTextView.text];
+    if ([_syncroDelegate respondsToSelector:@selector(syncroImages:message:refundAmount:)]) {
+        [_syncroDelegate syncroImages:[_photos copy]?:@[] message:_noteTextView.text?:@"" refundAmount:_totalRefundTextField.text?:@""];
+    }
 }
 
 -(void)updateDataSolution:(NSString *)selectedSolution refundAmount:(NSString *)refund remark:(NSString *)note
@@ -927,9 +929,10 @@
     return NO;
 }
 
--(void)syncroImages:(NSArray *)images message:(NSString *)message
+-(void)syncroImages:(NSArray *)images message:(NSString *)message refundAmount:(NSString *)refundAmount
 {
-    _noteTextView.text = message;
+    _noteTextView.text = message?:@"";
+    _totalRefund = refundAmount?:@"";
 }
 
 -(void)goToSecondPage
@@ -974,18 +977,6 @@
     }
     [self.navigationController popToViewController:destinationVC animated:YES];
 }
-
-//TROUBLE_DIFF_DESCRIPTION    => 1,
-//TROUBLE_BROKEN              => 2,
-//TROUBLE_DIFF_QUANTITY       => 3,
-//TROUBLE_DIFF_CARRIER        => 4,
-//TROUBLE_PRODUCT_NOT_RECEIVED=> 5
-//
-//SOLUTION_REFUND         => 1,
-//SOLUTION_RETUR          => 2,
-//SOLUTION_RETUR_REFUND   => 3,
-//SOLUTION_SELLER_WIN     => 4,
-//SOLUTION_SEND_REMAINING => 5
 
 -(NSString *)troubleType
 {

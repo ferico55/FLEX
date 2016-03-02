@@ -7,7 +7,7 @@
 //
 
 #import "CarouselDataSource.h"
-#import "BannerList.h"
+#import "Slide.h"
 #import "WebViewController.h"
 
 NSInteger const sliderHeight = 175;
@@ -17,7 +17,7 @@ NSInteger const bannerIpadWidth = 350;
     NSArray *_banners;
 }
 
-- (instancetype)initWithBanner:(NSArray<BannerList *> *)banners {
+- (instancetype)initWithBanner:(NSArray<Slide *> *)banners {
     self = [super init];
     if(!self) {
         return nil;
@@ -41,8 +41,8 @@ NSInteger const bannerIpadWidth = 350;
     }
 
     view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, sliderHeight)];
-    BannerList *banner = _banners[index];
-    [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.img_uri] placeholderImage:nil];
+    Slide *banner = _banners[index];
+    [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.image_url] placeholderImage:nil];
     
     
     return view;
@@ -64,11 +64,11 @@ NSInteger const bannerIpadWidth = 350;
 
 #pragma mark - delegate
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
-    BannerList *banner = _banners[index];
+    Slide *banner = _banners[index];
 
     WebViewController *webViewController = [WebViewController new];
     webViewController.strTitle = @"Promo";
-    webViewController.strURL = banner.url;
+    webViewController.strURL = banner.redirect_url;
 
     if(_delegate != nil) {
         [((UIViewController*)_delegate).navigationController pushViewController:webViewController animated:YES];

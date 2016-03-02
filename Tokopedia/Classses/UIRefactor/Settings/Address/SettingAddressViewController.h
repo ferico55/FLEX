@@ -20,7 +20,6 @@
 
 
 @property (nonatomic, weak) IBOutlet id<SettingAddressViewControllerDelegate> delegate;
-
 @property(strong, nonatomic) NSDictionary *data;
 @property (nonatomic, strong) NSMutableArray *list;
 

@@ -10,4 +10,22 @@
 
 
 @implementation ShopReputation
+
+// MARK: TKPRootObjectMapping methods
++ (NSDictionary *)attributeMappingDictionary {
+    NSArray *keys = @[@"tooltip",
+                      @"reputation_score",
+                      @"score",
+                      @"min_badge_score"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"reputation_badge_object" toKeyPath:@"reputation_badge_object" withMapping:[ShopBadgeLevel mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"reputation_badge" toKeyPath:@"reputation_badge" withMapping:[ShopBadgeLevel mapping]]];
+    return mapping;
+}
+
 @end
