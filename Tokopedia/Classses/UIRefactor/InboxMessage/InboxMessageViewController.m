@@ -11,18 +11,12 @@
 #import "inbox.h"
 #import "string_home.h"
 #import "string_inbox_message.h"
-#import "string_home.h"
 #import "InboxMessageCell.h"
 #import "InboxMessageDetailViewController.h"
-#import "ReputationDetail.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-#import "UserAuthentificationManager.h"
-#import "EncodeDecoderManager.h"
 #import "SmileyAndMedal.h"
-#import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "NoResultReusableView.h"
-#import "TAGDataLayer.h"
 #import "NavigationHelper.h"
 #import "Tokopedia-Swift.h"
 
@@ -70,20 +64,13 @@ typedef enum TagRequest {
     BOOL _iseditmode;
     
     NSInteger _page;
-    NSInteger _limit;
-    NSInteger _viewposition;
-    
-    //NSMutableArray *_hotlist;
-    NSMutableDictionary *_paging;
-    
+
     /** url to the next page **/
     NSString *_urinext;
-    NSMutableDictionary *_datainput;
-    
+
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
     NSInteger _requestarchivecount;
-    NSInteger _requesttrashcount;
     NSTimer *_timer;
     UISearchBar *_searchbar;
     NSString *_keyword;
@@ -93,20 +80,17 @@ typedef enum TagRequest {
     
     NSString *_inboxMessageBaseUrl;
     NSString *_inboxMessagePostUrl;
-    NSString *_inboxMessageFullUrl;
-    
-    
+
     TAGContainer *_gtmContainer;
 
     __weak RKObjectManager *_objectmanager;
     __weak RKObjectManager *_objectmanagerarchive;
     __weak RKManagedObjectRequestOperation *_request;
     __weak RKManagedObjectRequestOperation *_requestarchive;
-    __weak RKManagedObjectRequestOperation *_requesttrash;
     NSOperationQueue *_operationQueue;
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
-    EncodeDecoderManager *_encodeDecodeManager;
+
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
 }
@@ -149,8 +133,7 @@ typedef enum TagRequest {
     _messages = [NSMutableArray new];
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
-    _encodeDecodeManager = [EncodeDecoderManager new];
-    
+
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = messageListTag;
@@ -743,8 +726,6 @@ typedef enum TagRequest {
         CGFloat padding = 15;
         NSIndexPath *indexPath = [_table indexPathForCell:cell];
         InboxMessageList *list = _messages[indexPath.row];
-        
-        [_datainput setObject:list.message_id forKey:@"message_id"];
 
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
