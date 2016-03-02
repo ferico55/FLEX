@@ -373,7 +373,6 @@
       
         [_table reloadData];
         _isrefreshview = NO;
-        _buttonsend.enabled = YES;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -565,7 +564,7 @@
             case 11: {
                 NSString *message = [_growingtextview.text stringByTrimmingCharactersInSet:
                                      [NSCharacterSet whitespaceCharacterSet]];
-                if(message.length > 5 || ![message isEqualToString:@""]) {
+                if(message.length > 5) {
                     NSInteger lastindexpathrow = [_messages count];
                     
                     InboxMessageDetailList *sendmessage = [InboxMessageDetailList new];
@@ -784,7 +783,7 @@
                           [NSCharacterSet whitespaceCharacterSet]];
     if([message length] < 5 || [message isEqualToString:@""]) {
         _buttonsend.enabled = NO;
-        
+
     } else {
         _buttonsend.enabled = YES;
     }
