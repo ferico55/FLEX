@@ -869,22 +869,9 @@ typedef enum TagRequest {
         if (_messages.count >0) {
             [_noResultView removeFromSuperview];
         } else {
-            //_table.tableFooterView = _noResultView;
-            NSString *text;
             NSString *currentCategory = _data[@"nav"];
-            
-            if(_keyword != nil && ![_keyword isEqualToString:@""]){
-                text = [NSString stringWithFormat:@"Pesan dengan keyword \"%@\" tidak ditemukan.", _keyword];
-            }else if([currentCategory isEqualToString:@"inbox-message"]){
-                text = @"Belum ada pesan";
-            }else if([currentCategory isEqualToString:@"inbox-message-sent"]){
-                text = @"Belum ada pesan terkirim";
-            }else if([currentCategory isEqualToString:@"inbox-message-archive"]){
-                text = @"Belum ada pesan diarsipkan";
-            }else if([currentCategory isEqualToString:@"inbox-message-trash"]){
-                text = @"Belum ada pesan dihapus";
-            }
-            [_noResultView setNoResultTitle:text];
+
+            [_noResultView setNoResultTitle:[self noMessageInfoFromCategory:currentCategory]];
             _table.tableHeaderView = _searchView;
             _table.tableFooterView = _noResultView;
         }
@@ -910,6 +897,22 @@ typedef enum TagRequest {
             }
         });
     }
+}
+
+- (NSString *)noMessageInfoFromCategory:(NSString *)currentCategory {
+    NSString *text;
+    if(_keyword != nil && ![_keyword isEqualToString:@""]){
+                text = [NSString stringWithFormat:@"Pesan dengan keyword \"%@\" tidak ditemukan.", _keyword];
+            }else if([currentCategory isEqualToString:@"inbox-message"]){
+                text = @"Belum ada pesan";
+            }else if([currentCategory isEqualToString:@"inbox-message-sent"]){
+                text = @"Belum ada pesan terkirim";
+            }else if([currentCategory isEqualToString:@"inbox-message-archive"]){
+                text = @"Belum ada pesan diarsipkan";
+            }else if([currentCategory isEqualToString:@"inbox-message-trash"]){
+                text = @"Belum ada pesan dihapus";
+            }
+    return text;
 }
 
 - (void)addMessages:(NSArray<InboxMessageList*> *)messages {
