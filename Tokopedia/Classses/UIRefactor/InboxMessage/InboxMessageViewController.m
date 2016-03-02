@@ -813,16 +813,12 @@ typedef enum TagRequest {
 
 - (id)getObjectManager:(int)tag {
     if(tag == messageListTag) {
-        if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
-            _objectmanager = [RKObjectManager sharedClient];
-        } else {
-            _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
-        }
+        _objectmanager = [RKObjectManager sharedClient];
         
         //register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessage mapping]
                                                                                                       method:RKRequestMethodPOST
-                                                                                                 pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
+                                                                                                 pathPattern:KTKPDMESSAGE_PATHURL
                                                                                                      keyPath:@""
                                                                                                  statusCodes:kTkpdIndexSetStatusCodeOK];
         
