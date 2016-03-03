@@ -92,6 +92,7 @@
 @property (strong, nonatomic) IBOutlet UIView *headerFilterDays;
 @property (strong, nonatomic) IBOutlet UILabel *labelFilterDaysCount;
 @property (strong, nonatomic) IBOutlet UILabel *labelPendingAmount;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *redirectButton;
 
 @end
 
@@ -168,6 +169,8 @@
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
 
+    [_redirectButton makeObjectsPerformSelector:@selector(setEnabled:) withObject:@((![NavigationHelper shouldDoDeepNavigation]))];
+
 }
 
 -(TAGContainer *)gtmContainer
@@ -194,10 +197,8 @@
     [self.tableView reloadData];
 }
 
--(IBAction)tap:(id)sender
+-(IBAction)tap:(UIButton*)button
 {
-    UIButton *button = (UIButton*)sender;
-
     if (button.tag == 12) {
         //Status Pemesanan
         TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
@@ -335,7 +336,7 @@
     UIViewController* sourceViewController = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?_detailViewController:self;
     
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    [_navigate navigateToInvoiceFromViewController:sourceViewController
+    [NavigateViewController navigateToInvoiceFromViewController:sourceViewController
                                     withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
 }
 
@@ -384,10 +385,18 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     
-    ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status = 2; //status resolution become read
+    _list[indexPath.row].resolution_read_status = 2; //status resolution become read
+    InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+    cell.unreadBorderView.hidden = YES;
+    cell.unreadIconImageView.hidden = YES;
 
-    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+-(void)didResponseComplain:(NSIndexPath*)indexPath {
+    InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+    _list[indexPath.row].resolution_respond_status = @"2";
+    cell.unrespondView.hidden = YES;
 }
 
 #pragma mark - Table View Delegate

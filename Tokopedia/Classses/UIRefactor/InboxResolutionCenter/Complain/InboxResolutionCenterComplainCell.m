@@ -42,16 +42,22 @@
 }
 
 - (IBAction)actionReputation:(id)sender {
-    [_delegate actionReputation:sender];
+    if ([NavigationHelper shouldDoDeepNavigation]) {
+        [_delegate actionReputation:sender];
+    }
 }
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    _selectionMarker.hidden = !selected;
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        _selectionMarker.hidden = !selected;
+    }
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    _selectionMarker.hidden = !highlighted;
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        _selectionMarker.hidden = !highlighted;
+    }
 }
 
 -(void)setDisputeStatus:(NSString *)disputeStatus

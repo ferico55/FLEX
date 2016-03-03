@@ -278,8 +278,6 @@
                  onFailure:(void (^)(NSError *))errorCallback {
     if(_objectRequest.isExecuting) return;
     
-    __weak typeof(self) weakSelf = self;
-    
     _requestCount ++;
 
     _objectManager  = [RKObjectManager sharedClient:baseUrl];
@@ -381,7 +379,8 @@
     [_operationQueue addOperation:_objectRequest];
     NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
 
-    _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:1.0 block:^(NSTimer* timer) {
+    __weak typeof(self) weakSelf = self;
+    _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:timeInterval block:^(NSTimer* timer) {
         [weakSelf requestCancel];
     } repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];

@@ -31,7 +31,7 @@
     UITableViewCell* cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID"];
 
 
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width-20, cell.frame.size.height)];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, tableView.frame.size.width-20, cell.frame.size.height)];
     label.font = FONT_GOTHAM_BOOK_13;
     label.textAlignment = NSTextAlignmentCenter;
     [label setCustomAttributedText: _list[indexPath.row]];
