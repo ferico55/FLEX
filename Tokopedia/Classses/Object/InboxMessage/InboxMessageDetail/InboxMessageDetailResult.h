@@ -18,4 +18,6 @@
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *conversation_between;
 
++ (RKObjectMapping*)mapping;
+
 @end

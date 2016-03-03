@@ -66,7 +66,7 @@
     [super viewDidLoad];
     [self initNotificationCenter];
     
-    _scrollView.contentSize = CGSizeMake(([[UIScreen mainScreen]bounds].size.width/3)*6, self.scrollView.frame.size.height);
+    _scrollView.contentSize = CGSizeMake(([[UIScreen mainScreen]bounds].size.width/2)*6, self.view.frame.size.height);
     
     _scrollView.delegate = self;
     _scrollView.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
