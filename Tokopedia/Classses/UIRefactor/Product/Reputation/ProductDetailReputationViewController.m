@@ -54,8 +54,7 @@ HPGrowingTextViewDelegate,
 ProductDetailReputationDelegate,
 LoginViewDelegate,
 SmileyDelegate,
-MGSwipeTableCellDelegate,
-ReviewRequestDelegate>
+MGSwipeTableCellDelegate>
 @end
 
 @implementation ProductDetailReputationViewController {
@@ -136,9 +135,23 @@ ReviewRequestDelegate>
     }
     
     reviewRequest = [[ReviewRequest alloc] init];
-    reviewRequest.delegate = self;
-    [reviewRequest requestReviewLikeDislikesWithId:_detailReputaitonReview.review_id shopId:_detailReputaitonReview.shop_id];
-    
+    [reviewRequest requestReviewLikeDislikesWithId:_detailReputaitonReview.review_id
+                                            shopId:_detailReputaitonReview.shop_id
+                                         onSuccess:^(TotalLikeDislike *totalLikeDislike) {
+                                             _strTotalLike = totalLikeDislike.total_like_dislike.total_like;
+                                             _strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
+                                             
+                                             if((_detailReputaitonReview!=nil && [totalLikeDislike.review_id isEqualToString:_detailReputaitonReview.review_id]) ||
+                                                (_reviewList!=nil && [totalLikeDislike.review_id isEqualToString:_reviewList.review_id])) {
+                                                 [productReputationCell setHiddenViewLoad:YES];
+                                                 [productReputationCell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                 [productReputationCell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like  forState:UIControlStateNormal];
+                                                 
+                                                 [self setLikeDislikeActive:totalLikeDislike.like_status];
+                                             }
+                                         } onFailure:^(NSError *errorResult) {
+                                             
+                                         }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -410,7 +423,23 @@ ReviewRequestDelegate>
     
     UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
     if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
-        [reviewRequest requestReviewLikeDislikesWithId:_detailReputaitonReview.review_id shopId:_detailReputaitonReview.shop_id];
+        [reviewRequest requestReviewLikeDislikesWithId:_detailReputaitonReview.review_id
+                                                shopId:_detailReputaitonReview.shop_id
+                                             onSuccess:^(TotalLikeDislike *totalLikeDislike) {
+                                                 _strTotalLike = totalLikeDislike.total_like_dislike.total_like;
+                                                 _strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
+                                                 
+                                                 if((_detailReputaitonReview!=nil && [totalLikeDislike.review_id isEqualToString:_detailReputaitonReview.review_id]) ||
+                                                    (_reviewList!=nil && [totalLikeDislike.review_id isEqualToString:_reviewList.review_id])) {
+                                                     [productReputationCell setHiddenViewLoad:YES];
+                                                     [productReputationCell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                     [productReputationCell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like  forState:UIControlStateNormal];
+                                                     
+                                                     [self setLikeDislikeActive:totalLikeDislike.like_status];
+                                                 }
+                                             } onFailure:^(NSError *errorResult) {
+                                                 
+                                             }];
     }
 }
 

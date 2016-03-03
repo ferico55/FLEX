@@ -10,14 +10,9 @@
 #import "DetailReputationReview.h"
 #import "TotalLikeDislike.h"
 
-@protocol ReviewRequestDelegate <NSObject>
-- (void) didReceiveReviewLikeDislikes:(TotalLikeDislike*)totalLikeDislike;
-- (void) didReceiveProductReview:(DetailReputationReview*)detailReputationReview;
-@end
-
-
 @interface ReviewRequest : NSObject
--(void)requestReviewLikeDislikesWithId:(NSString*)reviewId shopId:(NSString*)shopId;
-
-@property (weak, nonatomic) id<ReviewRequestDelegate> delegate;
+- (void) requestReviewLikeDislikesWithId:(NSString *)reviewId
+                                  shopId:(NSString *)shopId
+                               onSuccess:(void(^)(TotalLikeDislike* totalLikeDislike))successCallback
+                               onFailure:(void(^)(NSError* errorResult)) errorCallback;
 @end
