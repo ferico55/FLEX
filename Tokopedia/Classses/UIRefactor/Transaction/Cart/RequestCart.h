@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TransactionCart.h"
+
+
 #define TAG_REQUEST_CART 10
 #define TAG_REQUEST_CANCEL_CART 11
 #define TAG_REQUEST_CHECKOUT 12
@@ -18,6 +21,7 @@
 #define TAG_REQUEST_BCA_CLICK_PAY 17
 #define TAG_REQUEST_CC 18
 #define TAG_REQUEST_BRI_EPAY 19
+#define TAG_REQUEST_TOPPAY 20
 
 @protocol RequestCartDelegate <NSObject>
 @required
@@ -31,6 +35,8 @@
 -(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessToppay:(id)object withOperation:(RKObjectRequestOperation *)operation;
+-(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation;
 
 -(void)actionBeforeRequest:(int)tag;
 -(void)actionAfterFailRequestMaxTries:(int)tag;
@@ -56,5 +62,8 @@
 -(void)doRequestBCAClickPay;
 -(void)doRequestCC;
 -(void)dorequestBRIEPay;
+-(void)doRequestToppay;
+
++(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error;
 
 @end

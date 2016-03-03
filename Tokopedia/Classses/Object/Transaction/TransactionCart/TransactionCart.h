@@ -10,7 +10,7 @@
 
 #import "TransactionCartResult.h"
 
-@interface TransactionCart : NSObject
+@interface TransactionCart : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;

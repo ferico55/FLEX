@@ -291,8 +291,7 @@
         [_tableView addSubview:_refreshControl];
         
         if (_isLogin) {
-            _requestCart.param = @{@"lp_flag":@"1"};
-            [_requestCart doRequestCart];
+            [self requestCartData];
         }
         _paymentMethodView.hidden = YES;
         
@@ -387,6 +386,9 @@
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
         _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
+        if ([[_data objectForKey:@"show_webview"] integerValue] == 1) {
+            [self replaceViewWithWebView:[_data objectForKey:@"data"]];
+        }
         
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -754,8 +756,13 @@
                 default:
                     if([self isValidInput]) {
                         [self sendingProductDataToGA];
-                        _requestCart.param = [self paramCheckout];
-                        [_requestCart doRequestCheckout];
+                        if([self isHandlePaymentWithNative]) {
+                            _requestCart.param = [self paramCheckout];
+                            [_requestCart doRequestCheckout];
+                        } else if ([self isCanUseToppay]) {
+                            _requestCart.param = [self paramCheckout];
+                            [_requestCart doRequestToppay];
+                        }
                     }
                 break;
             }
@@ -795,7 +802,6 @@
                         vc.title = _cartSummary.gateway_name?:@"BCA KlikPay";
                         
                         UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
                         navigationController.navigationBar.translucent = NO;
                         navigationController.navigationBar.tintColor = [UIColor whiteColor];
                         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -841,6 +847,26 @@
             [self sendingProductDataToGA];
         }
     }
+}
+
+-(BOOL)isCanUseToppay
+{
+    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    
+    if ([gateway.toppay_flag isEqualToString:@""] && [gateway.toppay_flag isEqualToString:@"0"]) {
+        return NO;
+    } else
+        return YES;
+}
+
+-(BOOL)isHandlePaymentWithNative
+{
+    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    if([[self getGatewayIDNative] containsObject:gateway.gateway]) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (IBAction)tapBankInstallment:(id)sender {
@@ -987,16 +1013,6 @@
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
         [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
         [gatewayImages addObject:gateway.gateway_image?:@""];
-#ifdef DEBUG
-        
-#else
-        for (NSString *hiddenGateway in hiddenGatewayArray) {
-            if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
-                [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
-                [hiddenGatewayName addObject:gateway.gateway_name];
-            }
-        }
-#endif
     }
     
     [gatewayImages removeObjectsInArray:hiddenGatewayImage];
@@ -1010,6 +1026,24 @@
     vc.delegate = self;
     vc.title = @"Metode Pembayaran";
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(NSArray *)getGatewayIDNative
+{
+    NSArray *nativeGatewayIDArray = @[
+                                   @(TYPE_GATEWAY_TOKOPEDIA),
+                                   @(TYPE_GATEWAY_TRANSFER_BANK),
+                                   @(TYPE_GATEWAY_MANDIRI_CLICK_PAY),
+                                   @(TYPE_GATEWAY_MANDIRI_E_CASH),
+                                   @(TYPE_GATEWAY_BCA_CLICK_PAY),
+                                   @(TYPE_GATEWAY_BCA_KLIK_BCA),
+                                   @(TYPE_GATEWAY_CC),
+                                   @(TYPE_GATEWAY_INDOMARET),
+                                   @(TYPE_GATEWAY_BRI_EPAY),
+                                   @(TYPE_GATEWAY_INSTALLMENT)
+                                   ];
+
+    return nativeGatewayIDArray;
 }
 
 #pragma mark - GTM
@@ -1033,8 +1067,7 @@
         
         [self adjustDropshipperListParam];
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        [self requestCartData];
         
     }
 }
@@ -1048,8 +1081,7 @@
         [_dataInput setObject:@(index) forKey:DATA_INDEX_KEY];
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
         
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        [self requestCartData];
         
         _refreshFromShipment = YES;
     }
@@ -1775,6 +1807,12 @@
     [_requestCart dorequestBRIEPay];
 }
 
+-(void)shouldDoRequestTopPayThx:(NSDictionary *)param
+{
+    _requestCart.param = param?:@{};
+    [_requestCart doRequestToppay];
+}
+
 #pragma mark - Methods
 
 -(void)addArrayObjectTemp
@@ -1810,8 +1848,7 @@
         [_act stopAnimating];
     }
     
-    _requestCart.param = @{@"lp_flag":@"1"};
-    [_requestCart doRequestCart];
+    [self requestCartData];
     _paymentMethodView.hidden = YES;
 }
 
@@ -1860,13 +1897,53 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
-         [_requestCart doRequestCart];
+        [self requestCartData];
     }
     else
     {
         _popFromShipment = YES;
     }
+}
+
+-(void)requestCartData{
+    [RequestCart fetchCartData:^(TransactionCartResult *data) {
+        
+        [self endRefreshing];
+        [_act stopAnimating];
+        _isLoadingRequest = NO;
+        
+        [_list removeAllObjects];
+        
+        NSArray *list = data.list;
+        [_list addObjectsFromArray:list];
+        
+        if(list.count >0){
+            [_noResultView removeFromSuperview];
+        }else{
+            [_tableView addSubview:_noResultView];
+        }
+        
+        _cart = data;
+        [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
+        [_dataInput setObject:_cart.grand_total_without_lp forKey:DATA_CART_GRAND_TOTAL_WO_LP];
+        [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_W_LP];
+        
+        [self adjustAfterUpdateList];
+        
+        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
+        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
+        
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        
+    } error:^(NSError *error) {
+        
+        [self endRefreshing];
+        [_act stopAnimating];
+        _paymentMethodView.hidden = YES;
+        _isLoadingRequest = NO;
+        if (!_refreshFromShipment)_tableView.tableFooterView =_loadingView.view;
+    }];
+    
 }
 
 -(void)swipeView:(UIView*)view{
@@ -2654,7 +2731,8 @@
                                       API_PARTIAL_STRING_KEY :partialString,
                                       API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
                                       API_DEPOSIT_AMT_KEY:usedSaldo,
-                                      @"lp_flag":@"1"
+                                      @"lp_flag":@"1",
+                                      @"action": @"get_parameter"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
@@ -2794,6 +2872,9 @@
         [_alertLoading show];
 
     }
+    else{
+        [_alertLoading show];
+    }
 }
 
 
@@ -2847,42 +2928,6 @@
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
-#pragma mark - Request Cart
-
--(void)requestSuccessCart:(id)successResult withOperation:(RKObjectRequestOperation*)operation
-{
-    [self endRefreshing];
-    [_act stopAnimating];
-    _isLoadingRequest = NO;
-    
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionCart *cart = stat;
-            
-    [_list removeAllObjects];
-    
-    NSArray *list = cart.result.list;
-    [_list addObjectsFromArray:list];
-    
-    if(list.count >0){
-        [_noResultView removeFromSuperview];
-    }else{
-        [_tableView addSubview:_noResultView];
-    }
-    
-    _cart = cart.result;
-    [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
-    [_dataInput setObject:_cart.grand_total_without_lp forKey:DATA_CART_GRAND_TOTAL_WO_LP];
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_W_LP];
-    
-    [self adjustAfterUpdateList];
-    
-    NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
-    [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
-    
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-}
 
 -(void)adjustAfterUpdateList
 {
@@ -3139,8 +3184,7 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        [self requestCartData];
     }
     [_tableView reloadData];
 }
@@ -3159,6 +3203,45 @@
     [_act stopAnimating];
     
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+#pragma mark - Request Toppay
+-(void)requestSuccessToppay:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    TransactionAction *data = [result objectForKey:@""];
+    
+//    [_delegate didFinishRequestCheckoutData:@{@"show_webview":@(1),
+//                                              @"data":data}];
+//    _checkoutButton.enabled = YES;
+//    _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
+//    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
+    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+    vc.toppayQueryString = data.result.query_string;
+    vc.URLString = data.result.redirect_url;
+    vc.gateway = @([_cart.gateway integerValue]);
+    vc.delegate = self;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+-(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    [self refreshRequestCart];
+    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+-(void)replaceViewWithWebView:(TransactionAction*)data
+{
+    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+    vc.toppayQueryString = data.result.query_string;
+    vc.URLString = data.result.redirect_url;
+    vc.gateway = @([_cart.gateway integerValue]);
+    vc.delegate = self;
+    
+    self.view = vc.view;
 }
 
 #pragma mark - Request E-Money

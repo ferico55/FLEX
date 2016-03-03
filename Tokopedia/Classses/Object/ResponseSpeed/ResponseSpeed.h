@@ -16,7 +16,7 @@
 #define CCount @"count"
 
 
-@interface ResponseSpeed : NSObject
+@interface ResponseSpeed : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) NSDictionary *one_day;
 @property (nonatomic, strong) NSDictionary *two_days;
 @property (nonatomic, strong) NSDictionary *three_days;

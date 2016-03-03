@@ -9,5 +9,22 @@
 #import "CountRatingResult.h"
 
 @implementation CountRatingResult
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"count_score_good",
+                      @"count_score_bad",
+                      @"count_score_neutral"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end
