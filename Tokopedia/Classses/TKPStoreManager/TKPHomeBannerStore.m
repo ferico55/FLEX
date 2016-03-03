@@ -60,7 +60,7 @@ NSInteger static const TKPSuccessStatusCode = 200;
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[MiniSlideObject mapping] method:RKRequestMethodGET pathPattern:@"banners" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 299)]];
     [objectManager addResponseDescriptor:responseDescriptor];
     
-    NSDictionary *parameters = @{@"page[size]" : @"25", @"filter[device]" : @"16", @"filter[target]" : @"65535", @"filter[state]" : @"1"};
+    NSDictionary *parameters = @{@"page[size]" : @"25", @"filter[device]" : IS_IPAD ? @"32" : @"16", @"filter[target]" : @"65535", @"filter[state]" : @"1"};
     RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodGET path:@"banners" parameters:[parameters autoParameters]];
     
     [operation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

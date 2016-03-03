@@ -104,10 +104,10 @@
 
 #pragma mark - flow layout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     if(IS_IPAD) {
-        return CGSizeMake(118, 135);
+        return CGSizeMake((screenWidth/5)-10, 135);
     } else {
-        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
         CGFloat cellWidth = screenWidth/3 - 8;
         
         return CGSizeMake(cellWidth, 130);
@@ -117,16 +117,5 @@
     
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(5, 5, 5, 5);
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
-}
 
 @end

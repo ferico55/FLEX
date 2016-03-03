@@ -79,8 +79,9 @@ NSInteger const bannerHeight = 115;
     [_collectionView setDelegate:_categoryDataSource];
 
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.headerReferenceSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 290);
+    flowLayout.headerReferenceSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, IS_IPAD ? 340 : 290);
     [_collectionView setCollectionViewLayout:flowLayout];
+    [_collectionView setBackgroundColor:[UIColor whiteColor]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNotification) name:@"reloadNotification" object:nil];
     
@@ -134,29 +135,6 @@ NSInteger const bannerHeight = 115;
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
-
-#pragma mark - Notification delegate
-- (void)reloadNotification{
-    [self initNotificationManager];
-}
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
-- (void)pushViewController:(id)viewController {
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
-}
 
 #pragma mark - Request Banner 
 - (void)loadBanners {
@@ -165,7 +143,8 @@ NSInteger const bannerHeight = 115;
     //prevent double slider
 
 
-    NSInteger sliderHeight = 175;
+    NSInteger sliderHeight = IS_IPAD ? 225 : 175;
+    UIColor* backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
     
     [bannersStore fetchBannerWithCompletion:^(NSArray<Slide*>* banner, NSError *error) {
         if (wself != nil) {
@@ -174,6 +153,7 @@ NSInteger const bannerHeight = 115;
             
             _banner = banner;
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
+            _slider.backgroundColor = backgroundColor;
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner];
             _carouselDataSource.delegate = self;
 
@@ -191,7 +171,8 @@ NSInteger const bannerHeight = 115;
         if(wself != nil) {
             [_digitalGoodsSwipeView removeFromSuperview];
             
-            _digitalGoodsSwipeView = [[SwipeView alloc] initWithFrame:CGRectMake(0, sliderHeight+5, [UIScreen mainScreen].bounds.size.width, 120)];
+            _digitalGoodsSwipeView = [[SwipeView alloc] initWithFrame:CGRectMake(0, sliderHeight, [UIScreen mainScreen].bounds.size.width, 120)];
+            _digitalGoodsSwipeView.backgroundColor = backgroundColor;
             _digitalGoodsDataSource = [[DigitalGoodsDataSource alloc] initWithGoods:slide swipeView:_digitalGoodsSwipeView];
             
             _digitalGoodsSwipeView.dataSource = _digitalGoodsDataSource;
@@ -199,7 +180,12 @@ NSInteger const bannerHeight = 115;
             _digitalGoodsSwipeView.clipsToBounds = YES;
             _digitalGoodsSwipeView.truncateFinalPage = YES;
             _digitalGoodsSwipeView.decelerationRate = 0.5;
-            
+            if(IS_IPAD) {
+                _digitalGoodsSwipeView.alignment = SwipeViewAlignmentCenter;
+                _digitalGoodsSwipeView.isCenteredChild = YES;
+            }
+
+
             [_collectionView addSubview:_digitalGoodsSwipeView];
         }
     }];
@@ -217,6 +203,7 @@ NSInteger const bannerHeight = 115;
 - (void)moveToNextSlider {
     [_slider scrollToItemAtIndex:_slider.currentItemIndex+1 duration:1.0];
 }
+
 
 
 @end
