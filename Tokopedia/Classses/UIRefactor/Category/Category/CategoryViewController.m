@@ -180,8 +180,11 @@ NSInteger const bannerHeight = 115;
             _digitalGoodsSwipeView.clipsToBounds = YES;
             _digitalGoodsSwipeView.truncateFinalPage = YES;
             _digitalGoodsSwipeView.decelerationRate = 0.5;
-            _digitalGoodsSwipeView.alignment = SwipeViewAlignmentCenter;
-            _digitalGoodsSwipeView.isCenteredChild = YES;
+            if(IS_IPAD) {
+                _digitalGoodsSwipeView.alignment = SwipeViewAlignmentCenter;
+                _digitalGoodsSwipeView.isCenteredChild = YES;
+            }
+
 
             [_collectionView addSubview:_digitalGoodsSwipeView];
         }
