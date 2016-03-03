@@ -337,7 +337,7 @@
     UIViewController* sourceViewController = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?_detailViewController:self;
     
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    [_navigate navigateToInvoiceFromViewController:sourceViewController
+    [NavigateViewController navigateToInvoiceFromViewController:sourceViewController
                                     withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
 }
 

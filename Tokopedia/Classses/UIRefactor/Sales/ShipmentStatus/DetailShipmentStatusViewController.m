@@ -16,6 +16,7 @@
 #import "ChangeReceiptNumberViewController.h"
 #import "LabelMenu.h"
 #import "StickyAlertView.h"
+#import "NavigateViewController.h"
 
 @interface DetailShipmentStatusViewController ()
 <
@@ -149,26 +150,7 @@
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         
         } else if (button.tag == 3) {
-            
-            NSURL *desktopURL = [NSURL URLWithString:_order.order_detail.detail_pdf_uri];
-            
-            NSString *pdf = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:0] componentsSeparatedByString:@"="] objectAtIndex:1];
-            NSString *invoiceID = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:1] componentsSeparatedByString:@"="] objectAtIndex:1];
-            
-            UserAuthentificationManager *authManager = [UserAuthentificationManager new];
-            NSString *userID = authManager.getUserId;
-            
-            NSString *url = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",
-                             kTkpdBaseURLString, pdf, invoiceID, userID];
-            
-            UIWebView *webView = [[UIWebView alloc] initWithFrame:[self.view bounds]];
-            webView.scalesPageToFit = YES;
-            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
-            UIViewController *controller = [UIViewController new];
-            controller.title = _order.order_detail.detail_invoice;
-            [controller.view addSubview:webView];
-            [self.navigationController pushViewController:controller animated:YES];
-            
+            [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
         }
     }
 }

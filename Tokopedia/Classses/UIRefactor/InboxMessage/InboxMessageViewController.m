@@ -11,20 +11,14 @@
 #import "inbox.h"
 #import "string_home.h"
 #import "string_inbox_message.h"
-#import "string_home.h"
 #import "InboxMessageCell.h"
 #import "InboxMessageDetailViewController.h"
-#import "ReputationDetail.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-#import "UserAuthentificationManager.h"
-#import "EncodeDecoderManager.h"
 #import "SmileyAndMedal.h"
-#import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "NoResultReusableView.h"
-#import "TAGDataLayer.h"
 #import "NavigationHelper.h"
-
+#import "Tokopedia-Swift.h"
 
 @interface InboxMessageViewController ()
 <
@@ -36,7 +30,6 @@
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
     TKPDTabInboxMessageNavigationControllerDelegate,
-    TokopediaNetworkManagerDelegate,
     LoadingViewDelegate
 >
 
@@ -49,69 +42,44 @@
 @property (weak, nonatomic) IBOutlet UIView *inboxtrashview;
 
 
-@property (nonatomic, strong) NSMutableArray *messages;
+@property (nonatomic, strong) NSMutableArray<InboxMessageList*> *messages;
 @property (nonatomic, strong) NSDictionary *userinfo;
-@property (nonatomic, strong) NSMutableArray *messages_selected;
-
 
 @property (weak, nonatomic) IBOutlet UIButton *buttontrash;
 @property (weak, nonatomic) IBOutlet UIButton *buttonarchive;
-
-
-typedef enum TagRequest {
-    messageListTag,
-    messageActionTag
-} TagRequest;
-
 
 @end
 
 @implementation InboxMessageViewController
 {
-    BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL _iseditmode;
     
     NSInteger _page;
-    NSInteger _limit;
-    NSInteger _viewposition;
-    
-    //NSMutableArray *_hotlist;
-    NSMutableDictionary *_paging;
-    
+
     /** url to the next page **/
     NSString *_urinext;
-    NSMutableDictionary *_datainput;
-    
+
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
     NSInteger _requestarchivecount;
-    NSInteger _requesttrashcount;
     NSTimer *_timer;
     UISearchBar *_searchbar;
     NSString *_keyword;
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
-    
-    NSString *_inboxMessageBaseUrl;
-    NSString *_inboxMessagePostUrl;
-    NSString *_inboxMessageFullUrl;
-    
-    
+
     TAGContainer *_gtmContainer;
-    
-    BOOL _isrefreshnav;    
-    
+
     __weak RKObjectManager *_objectmanager;
     __weak RKObjectManager *_objectmanagerarchive;
     __weak RKManagedObjectRequestOperation *_request;
     __weak RKManagedObjectRequestOperation *_requestarchive;
-    __weak RKManagedObjectRequestOperation *_requesttrash;
     NSOperationQueue *_operationQueue;
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
-    EncodeDecoderManager *_encodeDecodeManager;
+
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
 }
@@ -123,7 +91,6 @@ typedef enum TagRequest {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isrefreshview = NO;
-        _isnodata = YES;
     }
     
     return self;
@@ -153,15 +120,11 @@ typedef enum TagRequest {
     
     /** create new **/
     _messages = [NSMutableArray new];
-    _messages_selected = [NSMutableArray new];
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
-    _encodeDecodeManager = [EncodeDecoderManager new];
-    
+
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = messageListTag;
-    
+
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
@@ -176,10 +139,6 @@ typedef enum TagRequest {
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
-    
-    if (_messages.count > 0) {
-        _isnodata = NO;
-    }
     
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     [titleLabel setTitle:@"All" forState:UIControlStateNormal];
@@ -201,8 +160,32 @@ typedef enum TagRequest {
     
     // GTM
     [self configureGTM];
-    
-    [_networkManager doRequest];
+
+    [self fetchInboxMessages];
+}
+
+- (void)fetchInboxMessages {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
+
+    NSDictionary* param =@{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
+            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+            kTKPDHOME_APIPAGEKEY:@(_page),
+            KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
+            KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
+            KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
+    };
+
+    [_networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                   path:KTKPDMESSAGE_PATHURL
+                                 method:RKRequestMethodPOST
+                              parameter:param
+                                mapping:[InboxMessage mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self onReceiveMessages:successResult.dictionary[@""]];
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  [self failedLoadingMessages];
+                              }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -276,14 +259,18 @@ typedef enum TagRequest {
     }
 }
 
-- (void) messageaction:(id)action{
+- (void) messageaction:(NSString*)action{
+    [self messageaction:action indexPaths:[_table indexPathsForSelectedRows]];
+}
+
+- (void)messageaction:(NSString*)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
     NSIndexPath *item;
     
     NSMutableArray *arr = [[NSMutableArray alloc] init];
     NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
     NSUInteger index = 1;
     
-    for (item in _messages_selected) {
+    for (item in indexPaths) {
         
         NSInteger row = [item row];
         [discardedItems addIndex:row];
@@ -297,15 +284,8 @@ typedef enum TagRequest {
     NSString *joinedArr = [arr componentsJoinedByString:@"and"];
     
     [_table beginUpdates];
-    [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
-    [_messages_selected removeAllObjects];
-    if(_messages==nil || _messages.count==0) {
-        _isnodata = YES;
-//        _table.tableFooterView = [self getNoResult];
-    }
+    [_table deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     [_table endUpdates];
-    
-
     
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
@@ -320,21 +300,20 @@ typedef enum TagRequest {
     InboxMessageCell* cell = nil;
     NSString *cellid = kTKPDINBOXMESSAGECELL_IDENTIFIER;
     
-    cell = (InboxMessageCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    cell = [tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [InboxMessageCell newcell];
         cell.delegate = self;
     }
     
     InboxMessageList *list = _messages[indexPath.row];
-    
-    cell.indexpath = indexPath;
-    cell.message = list;
-    cell.popTipAnchor = self.view;
-    
+
     if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
         cell.displaysUnreadIndicator = YES;
     }
+    
+    cell.message = list;
+    cell.popTipAnchor = self.view;
     
     return cell;
 }
@@ -344,66 +323,68 @@ typedef enum TagRequest {
     return  UITableViewCellEditingStyleNone;
 }
 
-
 #pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(_iseditmode || _table.isEditing) {
-        if ([_messages_selected containsObject:indexPath]) {
-            [_messages_selected removeObject:indexPath];
-        }
-    }
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if(_iseditmode || _table.isEditing) {
-        if (![_messages_selected containsObject:indexPath]) {
-            [_messages_selected addObject:indexPath];
-        }
     } else {
-        NSInteger index = indexPath.row;
-        InboxMessageList *list = _messages[index];
-
-        NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                               KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                               KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                               MESSAGE_INDEX_PATH : indexPath?:[NSIndexPath indexPathForRow:0 inSection:0]
-                               };
-
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-        {
-            if (![data isEqualToDictionary:_detailViewController.data]) {
-                [_detailViewController replaceDataSelected:data];
-            }
-        }
-        else
-        {
-            InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-            list.message_read_status = @"1";
-            vc.data = data;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+        [self showMessageDetailForIndexPath:indexPath];
     }
+}
+
+- (void)showMessageDetailForIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath) {
+        InboxMessageList *list = _messages[indexPath.row];
+        list.message_read_status = @"1";
+    }
+
+    InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+    vc.data = [self dataForIndexPath:indexPath];
+
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+    {
+        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+        navigationController.navigationBar.translucent = NO;
+
+        [self.splitViewController replaceDetailViewController:navigationController];
+    }
+    else
+    {
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (NSDictionary *)dataForIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *data = nil;
+
+    if (indexPath) {
+        InboxMessageList *message = _messages[indexPath.row];
+        data = @{
+                KTKPDMESSAGE_IDKEY : message.message_id ?: @"",
+                KTKPDMESSAGE_TITLEKEY : message.message_title ?: @"",
+                KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"] ?: @"",
+                MESSAGE_INDEX_PATH : indexPath
+        };
+    }
+    return data;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_isnodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [_networkManager doRequest];
+    NSInteger lastRow = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
+    if (lastRow == indexPath.row) {
+        if ([self hasMoreMessages]) {
+            [self fetchInboxMessages];
         } else {
-            _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
+            _table.tableFooterView = nil;
             [_act stopAnimating];
         }
     }
+}
+
+- (BOOL)hasMoreMessages {
+    return ![_urinext isEqualToString:@"0"] && _urinext != nil;
 }
 
 
@@ -454,7 +435,6 @@ typedef enum TagRequest {
 
         [_table reloadData];
         [self performSelector:@selector(disableEditing) withObject:nil afterDelay:0.05];
-        [_messages_selected removeAllObjects];
     }
 }
 
@@ -483,20 +463,20 @@ typedef enum TagRequest {
     [_table reloadData];
     _table.tableFooterView = _footer;
     _page = 1;
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
     
     [_table reloadData];
 }
 
 -(void) reloadVc:(NSNotification*)notification {
 
-    if([[_data objectForKey:@"nav"] isEqualToString:notification.userInfo[@"vc"]] && !_isrefreshnav) {
+    if([[_data objectForKey:@"nav"] isEqualToString:notification.userInfo[@"vc"]] && !_refreshControl.isRefreshing) {
         [_messages removeAllObjects];
         _page = 1;
         [_table reloadData];
         _table.tableFooterView = _footer;
         
-        [_networkManager doRequest];
+        [self fetchInboxMessages];
     }
 }
 
@@ -543,12 +523,10 @@ typedef enum TagRequest {
     _searchbar.text = @"";
     _requestcount = 0;
     _isrefreshview = YES;
-    _isrefreshnav = YES;
-    [_messages_selected removeAllObjects];
-    
+
     [_table reloadData];
     /** request data **/
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
 }
 
 
@@ -572,12 +550,13 @@ typedef enum TagRequest {
     [searchBar resignFirstResponder];
     
     _searchbar.text = nil;
-    _keyword = _searchbar.text;
+    _keyword = @"";
     _page = 1;
     
     [_messages removeAllObjects];
+    [_table reloadData];
 
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
@@ -597,23 +576,9 @@ typedef enum TagRequest {
 
 -(void) configureactionrestkit {
     _objectmanagerarchive =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    
+
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageAction mapping]
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL
                                                                                                  keyPath:@""
@@ -622,14 +587,13 @@ typedef enum TagRequest {
     [_objectmanagerarchive addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void) doactionmessage:(id)data withAction:(id)action{
-    NSString *deleted_json_info = data;
-    
+- (void) doactionmessage:(NSString*)data withAction:(NSString*)action{
+
     if (_requestarchive.isExecuting) return;
     
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:action,
-                            KTKPDMESSAGE_DATAELEMENTKEY : deleted_json_info,
+                            KTKPDMESSAGE_DATAELEMENTKEY : data,
                             };
     
     _requestarchivecount ++;
@@ -644,7 +608,6 @@ typedef enum TagRequest {
         
         [_table reloadData];
         _isrefreshview = NO;
-        _isrefreshnav = NO;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -677,8 +640,7 @@ typedef enum TagRequest {
     if(status) {
         //if success
         if([inboxmessageaction.result.is_success isEqualToString:@"1"]) {
-            _isrefreshnav = NO;
-            
+
             if([_navthatwillrefresh isEqualToString:@"inbox-archive-sent"]) {
                 [self reloadInbox];
                 [self reloadArchive];
@@ -728,10 +690,8 @@ typedef enum TagRequest {
 }
 
 -(void) undoactionmessage {
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:[_data objectForKey:@"nav"], @"vc", nil];
+    NSDictionary *dict = @{@"vc" : _data[@"nav"]};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
-    
-    [_messages_selected removeAllObjects];
 }
 
 
@@ -742,37 +702,6 @@ typedef enum TagRequest {
     [_networkManager requestCancel];
     _networkManager.delegate = nil;
     _networkManager = nil;
-}
-
-
-
-#pragma mark - InboxMessageCell Delegate
--(void)InboxMessageCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    
-    if(_iseditmode) {
-        if ([_messages_selected containsObject:indexpath]) {
-            [_messages_selected removeObject:indexpath];
-        }
-        else  {
-            [_messages_selected addObject:indexpath];
-        }
-        
-        [_table reloadData];
-    } else {
-        NSInteger index = indexpath.row;
-        InboxMessageList *list = _messages[index];
-        InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-        list.message_read_status = @"1";
-        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
-                    KTKPDMESSAGE_TITLEKEY : list.message_title,
-                    KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
-                    MESSAGE_INDEX_PATH : indexpath
-                    };
-        [_table reloadData];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    
 }
 
 #pragma mark - Swipe Delegate
@@ -787,7 +716,7 @@ typedef enum TagRequest {
 
 -(void) refreshDetailIfCellIsSelected:(UITableViewCell*) cell {
     if (![NavigationHelper shouldDoDeepNavigation] && [_table cellForRowAtIndexPath:[_table indexPathForSelectedRow]] == cell) {
-        [_detailViewController replaceDataSelected:nil];
+        [self showMessageDetailForIndexPath:nil];
     }
 }
 
@@ -798,34 +727,24 @@ typedef enum TagRequest {
     
     swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
-    
-    
+
     if (direction == MGSwipeDirectionRightToLeft) {
         expansionSettings.fillOnTrigger = YES;
         expansionSettings.threshold = 1.1;
         
         CGFloat padding = 15;
-        NSIndexPath *indexPath = ((InboxMessageCell*) cell).indexpath;
+        NSIndexPath *indexPath = [_table indexPathForCell:cell];
         InboxMessageList *list = _messages[indexPath.row];
-        
-        if ([_messages_selected containsObject:indexPath]) {
-            [_messages_selected removeObject:indexPath];
-        }
-        else  {
-            [_messages_selected addObject:indexPath];
-        }
-        
-        [_datainput setObject:list.message_id forKey:@"message_id"];
 
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
-            [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE];
+            [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE indexPaths:@[indexPath]];
             _navthatwillrefresh = @"trash";
             return YES;
         }];
         MGSwipeButton * archive = [MGSwipeButton buttonWithTitle:@"Arsipkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
-            [self messageaction:KTKPDMESSAGE_ACTIONARCHIVEMESSAGE];
+            [self messageaction:KTKPDMESSAGE_ACTIONARCHIVEMESSAGE indexPaths:@[indexPath]];
             _navthatwillrefresh = @"archive";
             return YES;
         }];
@@ -833,10 +752,10 @@ typedef enum TagRequest {
         MGSwipeButton * backtoinbox = [MGSwipeButton buttonWithTitle:@"Inbox" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
             if([_messageNavigationFlag isEqualToString:@"inbox-message-archive"]) {
-                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE indexPaths:@[indexPath]];
                 _navthatwillrefresh = @"inbox-sent";
             } else {
-                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE indexPaths:@[indexPath]];
                 _navthatwillrefresh = @"inbox-archive-sent";
             }
             return YES;
@@ -844,7 +763,7 @@ typedef enum TagRequest {
         
         MGSwipeButton * deleteforever = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self refreshDetailIfCellIsSelected:cell];
-            [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE];
+            [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE indexPaths:@[indexPath]];
             return YES;
         }];
 
@@ -863,125 +782,6 @@ typedef enum TagRequest {
     return nil;
 }
 
-#pragma mark - Tokopedia Network Manager 
-- (NSDictionary *)getParameter:(int)tag {
-    if(tag == messageListTag) {
-        NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
-                                kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                                kTKPDHOME_APIPAGEKEY:@(_page),
-                                KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
-                                KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                                KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
-                                };
-        return param;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getPath:(int)tag {
-    if(tag == messageListTag) {
-        return [_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    if(tag == messageListTag) {
-        NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-        id stat = [resultDict objectForKey:@""];
-        InboxMessage *list = stat;
-        
-        return list.status;
-    }
-    
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag {
-    if(tag == messageListTag) {
-//        _objectmanager =  [RKObjectManager sharedClient];
-//        _objectmanager =  ![_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_inboxMessageBaseUrl]:[RKObjectManager sharedClient];
-        if([_inboxMessageBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxMessageBaseUrl isEqualToString:@""]) {
-            _objectmanager = [RKObjectManager sharedClient];
-        } else {
-            _objectmanager = [RKObjectManager sharedClient:_inboxMessageBaseUrl];
-        }
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessage class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageResult class]];
-        
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-        
-        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageList class]];
-        [listMapping addAttributeMappingsFromArray:@[
-                                                     KTKPDMESSAGE_IDKEY,
-                                                     KTKPDMESSAGE_USERFULLNAMEKEY,
-                                                     KTKPDMESSAGE_CREATETIMEKEY,
-                                                     KTKPDMESSAGE_READSTATUSKEY,
-                                                     KTKPDMESSAGE_TITLEKEY,
-                                                     KTKPDMESSAGE_USERIDKEY,
-                                                     KTKPDMESSAGE_MESSAGEREPLYKEY,
-                                                     KTKPDMESSAGE_INBOXIDKEY,
-                                                     KTKPDMESSAGE_USERIMAGEKEY,
-                                                     KTKPDMESSAGE_JSONDATAKEY,
-                                                     KTKPDMESSAGE_USER_LABEL,
-                                                     KTKPDMESSAGE_USER_LABEL_ID
-                                                     ]];
-        
-        
-        RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-        [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                     CNoReputation,
-                                                                     CNegative,
-                                                                     CNeutral,
-                                                                     CPositif]];
-        RKRelationshipMapping *userReputationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:reviewUserReputationMapping];
-        [listMapping addPropertyMapping:userReputationRel];
-        
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-        [resultMapping addPropertyMapping:pageRel];
-        
-        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-        [resultMapping addPropertyMapping:listRel];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                      method:RKRequestMethodPOST
-                                                                                                 pathPattern:[_inboxMessagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _inboxMessagePostUrl
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-        return _objectmanager;
-    }
-    
-    return nil;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
-    if(tag == messageListTag) {
-        if (_navthatwillrefresh || !_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        } else {
-            _table.tableFooterView = nil;
-            [_act stopAnimating];
-        }
-
-    }
-}
-
 - (NSArray<NSIndexPath*>*) indexPathsForInserting:(NSArray*)appendedArray to:(NSArray*)sourceArray {
     NSMutableArray<NSIndexPath*>* indexPaths = [NSMutableArray new];
     
@@ -993,27 +793,44 @@ typedef enum TagRequest {
     return indexPaths;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    if(tag == messageListTag) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        InboxMessage *message = [result objectForKey:@""];
-        
-        NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:message.result.list to:_messages];
-        [_messages addObjectsFromArray: message.result.list];
-        [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+- (void)onReceiveMessages:(InboxMessage *)message {
+    _urinext =  message.result.paging.uri_next;
+    _page = [[_networkManager splitUriToPage:_urinext] integerValue];
 
-        if (_messages.count >0) {
-            _isnodata = NO;
-            _urinext =  message.result.paging.uri_next;
-            _page = [[_networkManager splitUriToPage:_urinext] integerValue];
-            [_noResultView removeFromSuperview];
-        } else {
-            _isnodata = YES;
-            //_table.tableFooterView = _noResultView;
-            NSString *text;
-            NSString *currentCategory = [_data objectForKey:@"nav"];
-            
-            if(_keyword != nil && ![_keyword isEqualToString:@""]){
+    [self addMessages:message.result.list];
+
+    if (_messages.count >0) {
+        [_noResultView removeFromSuperview];
+    } else {
+        NSString *currentCategory = _data[@"nav"];
+
+        [_noResultView setNoResultTitle:[self noMessageInfoFromCategory:currentCategory]];
+        _table.tableHeaderView = _searchView;
+        _table.tableFooterView = _noResultView;
+    }
+
+    [_refreshControl endRefreshing];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+        {
+            if (_messages.count > 0) {
+                NSIndexPath *indexpath = [_table indexPathForSelectedRow]?:[NSIndexPath indexPathForRow:0 inSection:0];
+
+                [self showMessageDetailForIndexPath:indexpath];
+                [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            } else {
+                [self showMessageDetailForIndexPath:nil];
+            }
+        }
+    });
+}
+
+- (NSString *)noMessageInfoFromCategory:(NSString *)currentCategory {
+    NSString *text;
+    if(_keyword != nil && ![_keyword isEqualToString:@""]){
                 text = [NSString stringWithFormat:@"Pesan dengan keyword \"%@\" tidak ditemukan.", _keyword];
             }else if([currentCategory isEqualToString:@"inbox-message"]){
                 text = @"Belum ada pesan";
@@ -1024,74 +841,32 @@ typedef enum TagRequest {
             }else if([currentCategory isEqualToString:@"inbox-message-trash"]){
                 text = @"Belum ada pesan dihapus";
             }
-            [_noResultView setNoResultTitle:text];
-            _table.tableHeaderView = _searchView;
-            _table.tableFooterView = _noResultView;
-        }
-
-        
-        if(_refreshControl.isRefreshing) {
-            [_refreshControl endRefreshing];
-        }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-            {
-                if (_messages.count > 0) {
-                    NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
-                    InboxMessageList *list = _messages[indexpath.row];
-                    
-                    NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                                           KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                                           KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                                           MESSAGE_INDEX_PATH : indexpath
-                                           };
-                    if (![data isEqualToDictionary:_detailViewController.data]) {
-                        [_detailViewController replaceDataSelected:data];
-                    }
-                    [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
-                } else {
-                    [_detailViewController replaceDataSelected:nil];
-                }
-            }
-        });
-    }
+    return text;
 }
 
-//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-//    if(tag == messageListTag) {
-//        
-//    }
-//}
+- (void)addMessages:(NSArray<InboxMessageList*> *)messages {
+    NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:messages to:_messages];
+    [_messages addObjectsFromArray:messages];
+    [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+}
 
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    if(tag == messageListTag) {
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        _table.tableFooterView = _loadingView.view;
-
-    }
+- (void)failedLoadingMessages {
+    _isrefreshview = NO;
+    [_refreshControl endRefreshing];
+    _table.tableFooterView = _loadingView.view;
 }
 
 #pragma mark - Retry Delegate
 - (void)pressRetryButton {
     _table.tableFooterView = _footer;
     [_act startAnimating];
-    [_networkManager doRequest];
+    [self fetchInboxMessages];
 }
 
 
 - (void)configureGTM {
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
     [dataLayer push:@{@"user_id" : [_userManager getUserId]}];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    _gtmContainer = appDelegate.container;
-    
-    _inboxMessageBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxMessageBase];
-    _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
 }
 
 @end

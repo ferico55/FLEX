@@ -29,6 +29,7 @@
 
 #import "UIImage+ImageEffects.h"
 #import "HelloPhoneVerificationViewController.h"
+#import "UIView+HVDLayout.h"
 
 #pragma mark - Profile Edit View Controller
 
@@ -145,6 +146,11 @@ typedef NS_ENUM(NSInteger, PickerView) {
     
     [self.scrollView addSubview:_contentView];
     [self.scrollView setContentSize:_contentView.frame.size];
+    
+    if(IS_IPAD) {
+        [self.scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(20, 70, 0, 70)];
+    }
+
 }
 
 - (void)showSaveButton {

@@ -913,8 +913,7 @@
 #pragma mark - MyReviewReputationCell delegate
 - (void)actionInvoice:(id)sender {
     if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {
-        NavigateViewController *navigate = [NavigateViewController new];
-        [navigate navigateToInvoiceFromViewController:self withInvoiceURL:_detailMyInboxReputation.invoice_uri];
+        [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_detailMyInboxReputation.invoice_uri];
     }
 }
 

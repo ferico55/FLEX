@@ -792,8 +792,7 @@
         }
         else {
             if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
-                NavigateViewController *navigate = [NavigateViewController new];
-                [navigate navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
+                [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
             }
         }
     }
