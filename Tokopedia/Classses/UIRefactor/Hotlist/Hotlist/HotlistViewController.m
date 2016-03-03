@@ -364,13 +364,13 @@ RetryViewDelegate
     CGFloat cellWidth;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
         UIDeviceOrientation *orientation = [[UIDevice currentDevice] orientation];
-        if(UIDeviceOrientationIsLandscape(orientation)) {
-            CGFloat screenWidth = screenRect.size.width/3;
-            cellWidth = screenWidth-15;
-        } else {
+//        if(UIDeviceOrientationIsLandscape(orientation)) {
+//            CGFloat screenWidth = screenRect.size.width/3;
+//            cellWidth = screenWidth-15;
+//        } else {
             CGFloat screenWidth = screenRect.size.width/2;
             cellWidth = screenWidth-15;
-        }
+//        }
 
     } else {
         CGFloat screenWidth = screenRect.size.width;
