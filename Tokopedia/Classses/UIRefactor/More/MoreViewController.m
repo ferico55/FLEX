@@ -569,7 +569,11 @@
 
 
 #pragma mark - Table delegate
-
+/*
+why we need to wrap more vc ?
+objective : to simply reduce the width of the table
+problem : morevc is a tableviewcontroller, that is why it has no self.view, and we need to shrink the view, not the tableview
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _wrapperViewController.hidesBottomBarWhenPushed = YES;

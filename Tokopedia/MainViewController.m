@@ -540,7 +540,8 @@ typedef enum TagRequest {
 //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
 //        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
 //        moreNavBar = moreNavController;
-        
+        MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
+        moreNavBar = [[UINavigationController alloc] initWithRootViewController:controller];
         
     }
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -563,8 +564,12 @@ typedef enum TagRequest {
     
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
 
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+//    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+    
+    MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
+    UINavigationController *moreNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+    
     [moreNavController.navigationBar setTranslucent:NO];
     [newControllers replaceObjectAtIndex:4 withObject:moreNavController];
     [_tabBarController setViewControllers:newControllers animated:YES];
