@@ -93,8 +93,7 @@
 }
 
 -(void)redirectToResolution{
-    _navigationController = (UINavigationController*)_delegate;
-    _navigationController.hidesBottomBarWhenPushed = YES;
+    _navigationController = (UINavigationController*)_delegate;    
     [[self navigate]navigateToInboxResolutionFromViewController:_navigationController];
 }
 
