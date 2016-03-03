@@ -144,6 +144,7 @@ NSInteger const bannerHeight = 115;
 
 
     NSInteger sliderHeight = IS_IPAD ? 225 : 175;
+    UIColor* backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
     
     [bannersStore fetchBannerWithCompletion:^(NSArray<Slide*>* banner, NSError *error) {
         if (wself != nil) {
@@ -152,7 +153,7 @@ NSInteger const bannerHeight = 115;
             
             _banner = banner;
             _slider = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, sliderHeight)];
-            _slider.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
+            _slider.backgroundColor = backgroundColor;
             _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner];
             _carouselDataSource.delegate = self;
 
@@ -171,7 +172,7 @@ NSInteger const bannerHeight = 115;
             [_digitalGoodsSwipeView removeFromSuperview];
             
             _digitalGoodsSwipeView = [[SwipeView alloc] initWithFrame:CGRectMake(0, sliderHeight, [UIScreen mainScreen].bounds.size.width, 120)];
-            _digitalGoodsSwipeView.backgroundColor = [UIColor colorWithRed:242.0/255.0 green:242.0/255.0 blue:242.0/255.0 alpha:1.0];
+            _digitalGoodsSwipeView.backgroundColor = backgroundColor;
             _digitalGoodsDataSource = [[DigitalGoodsDataSource alloc] initWithGoods:slide swipeView:_digitalGoodsSwipeView];
             
             _digitalGoodsSwipeView.dataSource = _digitalGoodsDataSource;
