@@ -50,22 +50,17 @@
 
     //Grab a reference to the LeftViewController and get the first monster in the list.
     InboxMessageDetailViewController *leftViewController = [InboxMessageDetailViewController new];
-    leftViewController.masterViewController = inboxController;
 
     UINavigationController *leftNav = [[UINavigationController alloc]initWithRootViewController:leftViewController];
     leftNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     leftNav.navigationBar.translucent = NO;
     leftNav.navigationBar.tintColor = [UIColor whiteColor];
-    vc.detailViewController = leftViewController;
-    vc1.detailViewController = leftViewController;
-    vc2.detailViewController = leftViewController;
-    vc3.detailViewController = leftViewController;
     
     self.view.frame = [UIScreen mainScreen].bounds;
     
     self.splitViewController = [[UISplitViewController alloc] init];
-    self.splitViewController.delegate = leftViewController;
-    self.splitViewController.viewControllers = [NSArray arrayWithObjects:rightNav, leftNav, nil];
+    self.splitViewController.delegate = self;
+    self.splitViewController.viewControllers = @[rightNav, leftNav];
     
     if ([self.splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {
         [self.splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAllVisible];
@@ -89,5 +84,9 @@
 
 }
 
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
 
 @end

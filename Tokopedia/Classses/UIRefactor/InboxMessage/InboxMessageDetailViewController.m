@@ -20,7 +20,7 @@
 #import "TagManagerHandler.h"
 #import "NavigationHelper.h"
 
-@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UISplitViewControllerDelegate>
+@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIView *messagingview;
@@ -106,6 +106,12 @@
     
     if (_data) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
+        
+        [_act startAnimating];
+    } else {
+        _messagingview.hidden = YES;
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
     }
 
     _operationQueue = [NSOperationQueue new];
@@ -118,7 +124,6 @@
     
     /** set table footer view (loading act) **/
     _table.tableHeaderView = _header;
-    [_act startAnimating];
     
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
@@ -137,13 +142,10 @@
     
     [self setMessagingView];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-    {
+    if (_data) {
         [self configureRestKit];
         [self loadData];
     }
-    
-
 }
 
 -(TAGContainer *)gtmContainer {
@@ -169,15 +171,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidLayoutSubviews {
+    CGFloat textViewWidth = self.view.bounds.size.width - _buttonsend.frame.size.width - 25;
+    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, 29);
+}
+
 - (void) setMessagingView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40, 45)];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-    {
-        CGRect frame = _growingtextview.frame;
-        frame.size.width = [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40 -_masterViewController.view.frame.size.width;
-        _growingtextview.frame = frame;
-    }
+    _growingtextview = [[HPGrowingTextView alloc] init];
+
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     _growingtextview.layer.borderWidth = 0.5f;
@@ -334,62 +335,14 @@
         _objectmanager = [RKObjectManager sharedClient:_messageBaseUrl];
     }
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageDetail class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailResult class]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
-
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 KTKPDMESSAGE_ACTIONKEY,
-                                                 KTKPDMESSAGE_CREATEBYKEY,
-                                                 KTKPDMESSAGE_REPLYKEY,
-                                                 KTKPDMESSAGE_REPLYIDKEY
-                                                 KTKPDMESSAGE_BUTTONSPAMKEY,
-                                                 KTKPDMESSAGE_REPLYTIMEKEY,
-                                                 KTKPDMESSAGE_ISMODKEY,
-                                                 KTKPDMESSAGE_USERIDKEY,
-                                                 KTKPDMESSAGE_USERNAMEKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY,
-                                                 KTKPDMESSAGE_USER_LABEL,
-                                                 KTKPDMESSAGE_USER_LABEL_ID
-                                                 ]];
-    
-    RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
-    [betweenMapping addAttributeMappingsFromArray:@[
-                                                     KTKPDMESSAGE_USERIDKEY,
-                                                     KTKPDMESSAGE_USERNAMEKEY
-                                                     ]];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *betweenRel = [RKRelationshipMapping relationshipMappingFromKeyPath:KTKPDMESSAGE_BETWEENCONVERSATIONKEY toKeyPath:KTKPDMESSAGE_BETWEENCONVERSATIONKEY withMapping:betweenMapping];
-    [resultMapping addPropertyMapping:betweenRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageDetail mapping]
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-
 }
 
 
@@ -420,7 +373,6 @@
       
         [_table reloadData];
         _isrefreshview = NO;
-        _buttonsend.enabled = YES;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -612,7 +564,7 @@
             case 11: {
                 NSString *message = [_growingtextview.text stringByTrimmingCharactersInSet:
                                      [NSCharacterSet whitespaceCharacterSet]];
-                if(message.length > 5 || ![message isEqualToString:@""]) {
+                if(message.length > 5) {
                     NSInteger lastindexpathrow = [_messages count];
                     
                     InboxMessageDetailList *sendmessage = [InboxMessageDetailList new];
@@ -829,12 +781,7 @@
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
     NSString *message = [growingTextView.text stringByTrimmingCharactersInSet:
                           [NSCharacterSet whitespaceCharacterSet]];
-    if([message length] < 5 || [message isEqualToString:@""]) {
-        _buttonsend.enabled = NO;
-        
-    } else {
-        _buttonsend.enabled = YES;
-    }
+    _buttonsend.enabled = !([message length] <= 5 || [message isEqualToString:@""]);
 }
 
 #pragma mark - Tap User
@@ -865,8 +812,4 @@
     _messagingview.hidden = _data == nil;
 }
 
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-{
-    return NO;
-}
 @end

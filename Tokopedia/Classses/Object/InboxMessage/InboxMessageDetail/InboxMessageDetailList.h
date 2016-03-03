@@ -26,5 +26,6 @@
 @property (nonatomic, strong) NSString *user_label_id;
 @property (nonatomic) BOOL is_just_sent;
 
++ (RKObjectMapping*)mapping;
 
 @end
