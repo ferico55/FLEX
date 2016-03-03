@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DetailMyInboxReputation.h"
+#import "DetailReputationReview.h"
 
 @interface GiveReviewResponseViewController : UIViewController
+
+@property (nonatomic, weak) DetailMyInboxReputation *inbox;
+@property (nonatomic, weak) DetailReputationReview *review;
 
 @end

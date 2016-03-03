@@ -322,10 +322,6 @@
     
     NSString *buttonText = @"Lihat Semua";
     
-//    if ([current.unassessed_reputation_review intValue] > 0) {
-//        buttonText = [NSString stringWithFormat:[current.role isEqualToString:@"1"]?@"Beri nilai dan %d ulasan":@"Beri nilai dan balas %d ulasan", [current.unassessed_reputation_review intValue]];
-//    }
-    
     if ([current.role isEqualToString:@"1"]) {
         if ([current.unassessed_reputation_review intValue] > 0) {
             if ([current.reviewee_score intValue] == 0 && ![current.reputation_progress isEqualToString:@"2"]) {
@@ -334,7 +330,7 @@
                 buttonText = [NSString stringWithFormat:@"Beri %d ulasan", [current.unassessed_reputation_review intValue]];
             }
         } else {
-            if ([current.reviewee_score intValue] == 0) {
+            if ([current.reviewee_score intValue] == 0 && ![current.reputation_progress isEqualToString:@"2"]) {
                 buttonText = @"Beri nilai";
             }
         }
@@ -346,7 +342,7 @@
                 buttonText = [NSString stringWithFormat:@"Balas %d ulasan", [current.unassessed_reputation_review intValue]];
             }
         } else {
-            if ([current.reviewee_score intValue] == 0) {
+            if ([current.reviewee_score intValue] == 0 && ![current.reputation_progress isEqualToString:@"2"]) {
                 buttonText = @"Beri nilai";
             }
         }
@@ -750,12 +746,12 @@
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
         
-//        DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
-//        detailMyReviewReputationViewController.tag = (int)indexPath.row;
-//        detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
-//        detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
-//        [detailMyReviewReputationViewController onReputationIconTapped:^void() {
-//            [self performSelector:@selector(actionFlagReview:) withObject:detailMyReviewReputationViewController];
+//        DetailMyReviewReputationViewController *vc = [DetailMyReviewReputationViewController new];
+//        vc.tag = (int)indexPath.row;
+//        vc.detailMyInboxReputation = tempObj;
+//        vc.autoRead = tempObj.auto_read;
+//        [vc onReputationIconTapped:^void() {
+//            [self performSelector:@selector(actionFlagReview:) withObject:vc];
 //        }];
         
         

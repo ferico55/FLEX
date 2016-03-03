@@ -26,7 +26,7 @@
 @end
 
 @interface MyReviewDetailRequest : NSObject
-- (void)requestGetListReputationReviewWithDetail:(DetailMyInboxReputation*)rep autoRead:(NSString*)autoRead;
+- (void)requestGetListReputationReviewWithDetail:(DetailMyInboxReputation*)rep autoRead:(NSString*)autoRead getDataFromMasterInServer:(NSString*)val;
 - (void)requestSkipReviewWithDetail:(DetailReputationReview*)rep;
 - (void)requestDeleteReputationReviewResponse:(DetailReputationReview*)review;
 - (void)requestInsertReputation:(DetailMyInboxReputation*)inbox withScore:(NSString*)score;

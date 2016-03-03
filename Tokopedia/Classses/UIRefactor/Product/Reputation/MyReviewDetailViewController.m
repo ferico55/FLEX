@@ -53,6 +53,7 @@
     
     NSString *_baseURL, *_baseActionURL;
     NSString *_postURL, *_postActionURL;
+    NSString *_getDataFromMasterInServer;
     NSString *_score;
     NavigateViewController *_navigator;
     
@@ -97,17 +98,13 @@
     [self configureGTM];
     
     _isRefreshView = NO;
+    _getDataFromMasterInServer = @"0";
     
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
                                                                     isDetail:NO
                                                                     delegate:self];
     
-    _refreshControl = [[UIRefreshControl alloc] init];
-    [_refreshControl addTarget:self
-                        action:@selector(refreshData)
-              forControlEvents:UIControlEventValueChanged];
-    [_collectionView addSubview:_refreshControl];
     
     _collectionView.delegate = self;
     _collectionView.alwaysBounceVertical = YES;
@@ -118,10 +115,18 @@
     
     [self setHeaderPosition];
     
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self
+                        action:@selector(refreshData)
+              forControlEvents:UIControlEventValueChanged];
+    [_header addSubview:_refreshControl];
+
+    
     _myReviewDetailRequest = [MyReviewDetailRequest new];
     _myReviewDetailRequest.delegate = self;
     [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
-                                                            autoRead:_autoRead];
+                                                            autoRead:_autoRead
+                                           getDataFromMasterInServer:_getDataFromMasterInServer];
     
     _navigator = [NavigateViewController new];
     
@@ -152,6 +157,7 @@
 
 #pragma mark - My Review Detail Request Delegate
 - (void)didReceiveReviewListing:(MyReviewReputationResult *)myReviews {
+    
     [_refreshControl endRefreshing];
     [_reviewList removeAllObjects];
     
@@ -172,13 +178,18 @@
                                                                      delegate:self];
     [alert show];
     
+    _page = 0;
+    _getDataFromMasterInServer = @"1";
     [_reviewList removeAllObjects];
     [_collectionView reloadData];
     
     _detailMyInboxReputation.unassessed_reputation_review = [NSString stringWithFormat:@"%d", [_detailMyInboxReputation.unassessed_reputation_review intValue]-1];
     
     [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
-                                                            autoRead:_autoRead];
+                                                            autoRead:_autoRead
+                                           getDataFromMasterInServer:_getDataFromMasterInServer];
+    
+    _getDataFromMasterInServer = @"0";
 }
 
 - (void)didFailSkipReview:(SkipReview *)skipReview {
@@ -289,6 +300,13 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [_myReviewDetailRequest requestDeleteReputationReviewResponse:_selectedReview];
+    }
+}
+
+#pragma mark - Alert View Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
+        [_myReviewDetailRequest requestInsertReputation:_selectedInbox withScore:_score];
     }
 }
 
@@ -446,6 +464,7 @@
                                               cancelButtonTitle:@"Ya"
                                               otherButtonTitles:@"Tidak", nil];
         _score = @"-1";
+        alert.tag = 10;
         [alert show];
     }
 }
@@ -458,6 +477,7 @@
                                           cancelButtonTitle:@"Ya"
                                           otherButtonTitles:@"Tidak", nil];
     _score = @"1";
+    alert.tag = 20;
     [alert show];
 }
 
@@ -469,6 +489,7 @@
                                           cancelButtonTitle:@"Ya"
                                           otherButtonTitles:@"Tidak", nil];
     _score = @"2";
+    alert.tag = 30;
     [alert show];
 }
 
@@ -483,14 +504,6 @@
 
 - (UIViewController *)didReceiveViewController {
     return self;
-}
-
-#pragma mark - Alert View Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        [_myReviewDetailRequest requestInsertReputation:_selectedInbox withScore:_score];
-    }
-    
 }
 
 #pragma mark - Lucky Deal Delegate
@@ -550,7 +563,8 @@
 
 - (void)refreshData {
     [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
-                                                            autoRead:_autoRead];
+                                                            autoRead:_autoRead
+                                           getDataFromMasterInServer:_getDataFromMasterInServer];
     
     _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
                                              delegate:self

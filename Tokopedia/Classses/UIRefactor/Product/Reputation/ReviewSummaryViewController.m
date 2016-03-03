@@ -11,9 +11,14 @@
 #import "DetailReputationReview.h"
 #import "GeneralAction.h"
 #import "GeneralActionResult.h"
+#import "RequestGenerateHost.h"
 #import "GiveReviewRatingViewController.h"
 
-@interface ReviewSummaryViewController () <TokopediaNetworkManagerDelegate>
+@interface ReviewSummaryViewController ()
+<
+    TokopediaNetworkManagerDelegate,
+    GenerateHostDelegate
+>
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImage;
 @property (weak, nonatomic) IBOutlet UILabel *productName;
@@ -32,6 +37,9 @@
 @implementation ReviewSummaryViewController {
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager *_objectManager;
+    
+    GeneratedHost *_generatedHost;
+    GenerateHost *_generateHost;
 }
 
 - (void)viewDidLoad {
@@ -43,6 +51,7 @@
                                                                               style:UIBarButtonItemStyleDone
                                                                              target:self
                                                                              action:@selector(tapToSend:)];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     
     _qualityStarsArray = [NSArray sortViewsWithTagInArray:_qualityStarsArray];
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
@@ -52,6 +61,11 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.isUsingHmac = NO;
+    
+    RequestGenerateHost *requestHost = [RequestGenerateHost new];
+    [requestHost configureRestkitGenerateHost];
+    [requestHost requestGenerateHost];
+    requestHost.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -354,6 +368,23 @@
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     
+}
+
+#pragma mark - Request Generate Host
+- (void)setGenerateHost:(GeneratedHost*)generatedHost {
+    _generatedHost = generatedHost;
+}
+
+- (void)successGenerateHost:(GenerateHost *)generateHost {
+    _generateHost = generateHost;
+    
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)failedGenerateHost:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages
+                                                                  delegate:self];
+    [alert show];
 }
 
 @end

@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     
     NSString *isAutoRead;
     NSString *reputationScore;
+    NSString *getDataFromMasterInServer;
     
     __weak RKObjectManager *_objectManager;
 }
@@ -54,9 +55,10 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
 }
 
 #pragma mark - Public Functions
-- (void)requestGetListReputationReviewWithDetail:(DetailMyInboxReputation*)rep autoRead:(NSString*)autoRead {
+- (void)requestGetListReputationReviewWithDetail:(DetailMyInboxReputation*)rep autoRead:(NSString*)autoRead getDataFromMasterInServer:(NSString *)val {
     myInboxReputation = rep;
     isAutoRead = autoRead;
+    getDataFromMasterInServer = val;
     networkManager.tagRequest = MyReviewDetailRequestGet;
     [networkManager doRequest];
 }
@@ -96,6 +98,15 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
                       @"reputation_id"       : myInboxReputation.reputation_id,
                       @"auto_read"           : isAutoRead
                       };
+        
+        if ([getDataFromMasterInServer isEqualToString:@"1"]) {
+            parameter = @{@"action"              : @"get_list_reputation_review",
+                          @"reputation_inbox_id" : myInboxReputation.reputation_inbox_id,
+                          @"reputation_id"       : myInboxReputation.reputation_id,
+                          @"auto_read"           : isAutoRead,
+                          @"n"                   : @(1)
+                          };
+        }
         
         return parameter;
     } else if (tag == MyReviewDetailRequestSkip) {
@@ -142,7 +153,7 @@ typedef NS_ENUM(NSInteger, MyReviewDetailRequestType) {
     if (tag == MyReviewDetailRequestGet) {
         return RKRequestMethodPOST;
     } else if (tag == MyReviewDetailRequestSkip) {
-        return RKRequestMethodPOST;
+        return RKRequestMethodGET;
     } else if (tag == DeleteReputationReviewResponse) {
         return RKRequestMethodPOST;
     } else if (tag == InsertReputation) {
