@@ -37,7 +37,7 @@
 @property NSString *emoney_code;
 @property NSString *transactionCode;
 @property TransactionSummaryDetail *cartDetail;
-@property NSDictionary *toppayParam;
+@property NSString *toppayQueryString;
 
 @property NSString *paymentID;
 

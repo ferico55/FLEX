@@ -3219,7 +3219,7 @@
 //    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 
     TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-    vc.toppayParam = data.result.parameter;
+    vc.toppayQueryString = data.result.query_string;
     vc.URLString = data.result.redirect_url;
     vc.gateway = @([_cart.gateway integerValue]);
     vc.delegate = self;
@@ -3237,7 +3237,7 @@
 -(void)replaceViewWithWebView:(TransactionAction*)data
 {
     TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-    vc.toppayParam = data.result.parameter;
+    vc.toppayQueryString = data.result.query_string;
     vc.URLString = data.result.redirect_url;
     vc.gateway = @([_cart.gateway integerValue]);
     vc.delegate = self;

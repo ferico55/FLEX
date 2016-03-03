@@ -145,16 +145,11 @@
         url = [NSURL URLWithString:urlAddress];
     }
     else{
-        //TODO:: USE _URLString
         urlAddress = _URLString;//@"http://pay-staging.tokopedia.com/v1/payment";
-        // DATA TO POST
-        if(_toppayParam) {
-            NSString *postString                = [self getFormDataString:_toppayParam];
-            NSData *postData                    = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-            NSString *postLength                = [NSString stringWithFormat:@"%d", [postData length]];
-            [request setHTTPMethod:@"POST"];
-            [request setHTTPBody:postData];
-        }
+        NSString *postString                = _toppayQueryString?:@"";
+        NSData *postData                    = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:postData];
         
         url = [NSURL URLWithString:urlAddress];
     }
@@ -167,90 +162,6 @@
     return self.presentingViewController.presentedViewController == self
     || (self.navigationController != nil && self.navigationController.presentingViewController.presentedViewController == self.navigationController)
     || [self.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]];
-}
-
-- (NSString *)getFormDataString:(NSDictionary*)dictionary {
-    if( ! dictionary) {
-        return nil;
-    }
-    NSArray* keys                               = [dictionary allKeys];
-    NSMutableString* resultString               = [[NSMutableString alloc] init];
-    for (int i = 0; i < [keys count]; i++)  {
-        NSString *key                           = [NSString stringWithFormat:@"%@", [keys objectAtIndex: i]];
-        NSString *value                         = [NSString stringWithFormat:@"%@", [dictionary valueForKey: [keys objectAtIndex: i]]];
-
-        NSString *encodedKey                    = [self escapeString:key];
-        NSString *encodedValue                  = [self escapeString:value];
-        
-        NSString *kvPair = @"";
-        if ([[dictionary valueForKey: [keys objectAtIndex: i]] isKindOfClass:[NSArray class]]) {
-            NSArray *valueArray = [dictionary valueForKey: [keys objectAtIndex: i]];
-            NSArray *valueKeys = [valueArray[0] allKeys];
-            for (int j = 0; j< valueArray.count; j++) {
-                for (int k = 0; k< valueKeys.count; k++) {
-                    kvPair = [NSString stringWithFormat:@"%@[%@]", encodedKey, valueKeys[k]];
-                    kvPair = [self escapeString:kvPair];
-                    NSString *valueString =  [self escapeString:[NSString stringWithFormat:@"%@",[valueArray[j] valueForKey: valueKeys[k]]]];
-                    kvPair = [NSString stringWithFormat:@"%@=%@", kvPair, valueString];
-
-                    if(i > 0) {
-                        [resultString appendString:@"&"];
-                    }
-                    [resultString appendString:kvPair];
-                }
-            }
-        } else if ([[dictionary valueForKey: [keys objectAtIndex: i]] isKindOfClass:[NSDictionary class]]) {
-            
-//            [resultString appendString:[self getFormDataString:(NSString*)[dictionary valueForKey: [keys objectAtIndex: i]] isKindOfClass:[NSDictionary class]]]];
-        }
-        else {
-            kvPair = [NSString stringWithFormat:@"%@=%@", encodedKey, encodedValue];
-            if(i > 0) {
-                [resultString appendString:@"&"];
-            }
-            [resultString appendString:kvPair];
-        }
-    }
-    return resultString;
-}
-
-- (NSString *)escapeString:(NSString *)string {
-    if(string == nil || [string isEqualToString:@""]) {
-        return @"";
-    }
-    NSString *outString     = [NSString stringWithString:string];
-    outString                   = [outString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-    // BUG IN stringByAddingPercentEscapesUsingEncoding
-    // WE NEED TO DO several OURSELVES
-    outString                   = [self replace:outString lookFor:@"&" replaceWith:@"%26"];
-    outString                   = [self replace:outString lookFor:@"?" replaceWith:@"%3F"];
-    outString                   = [self replace:outString lookFor:@"=" replaceWith:@"%3D"];
-    outString                   = [self replace:outString lookFor:@";" replaceWith:@"%3B"];
-    outString                   = [self replace:outString lookFor:@"+" replaceWith:@"%2B"];
-    outString                   = [self replace:outString lookFor:@" " replaceWith:@"+"];
-    
-    return outString;
-}
-
-- (NSString *)replace:(NSString *)originalString lookFor:(NSString *)find replaceWith:(NSString *)replaceWith {
-    if ( ! originalString || ! find) {
-        return originalString;
-    }
-    
-    if( ! replaceWith) {
-        replaceWith                 = @"";
-    }
-    
-    NSMutableString *mstring        = [NSMutableString stringWithString:originalString];
-    NSRange wholeShebang            = NSMakeRange(0, [originalString length]);
-    
-    [mstring replaceOccurrencesOfString: find
-                             withString: replaceWith
-                                options: 0
-                                  range: wholeShebang];
-    
-    return [NSString stringWithString: mstring];
 }
 
 -(NSString*)encodeDictionary:(NSDictionary*)dictionary{

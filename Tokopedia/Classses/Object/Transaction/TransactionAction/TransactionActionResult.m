@@ -14,7 +14,8 @@
     NSArray *keys = @[@"is_success",
                       @"cc_agent",
                       @"parameter",
-                      @"redirect_url"
+                      @"redirect_url",
+                      @"query_string"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
