@@ -10,6 +10,7 @@
 		14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		4569F2A81C88132300F4A17D /* StickyAlertView+NetworkErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4569F2A71C88132300F4A17D /* StickyAlertView+NetworkErrorHandler.m */; };
 		45DB3ED61C83F13A00130A43 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB31EE1C83F13600130A43 /* TPAnalytics.m */; };
 		45DB3ED71C83F13A00130A43 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB31F11C83F13600130A43 /* URLCacheAlert.m */; };
 		45DB3ED81C83F13A00130A43 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB31F31C83F13600130A43 /* URLCacheConnection.m */; };
@@ -2099,6 +2100,8 @@
 		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
 		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
+		4569F2A61C88132300F4A17D /* StickyAlertView+NetworkErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StickyAlertView+NetworkErrorHandler.h"; sourceTree = "<group>"; };
+		4569F2A71C88132300F4A17D /* StickyAlertView+NetworkErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StickyAlertView+NetworkErrorHandler.m"; sourceTree = "<group>"; };
 		45DB31ED1C83F13600130A43 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45DB31EE1C83F13600130A43 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45DB31F01C83F13600130A43 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -7514,6 +7517,8 @@
 				45DB36BC1C83F13700130A43 /* StickyAlert.m */,
 				45DB36BD1C83F13700130A43 /* StickyAlertView.h */,
 				45DB36BE1C83F13700130A43 /* StickyAlertView.m */,
+				4569F2A61C88132300F4A17D /* StickyAlertView+NetworkErrorHandler.h */,
+				4569F2A71C88132300F4A17D /* StickyAlertView+NetworkErrorHandler.m */,
 				45DB36BF1C83F13700130A43 /* StickyAlertView.xib */,
 				45DB36C01C83F13700130A43 /* string_alert.h */,
 				45DB36C11C83F13700130A43 /* TKPDAlert.h */,
@@ -12067,6 +12072,7 @@
 				45DB3F7A1C83F13A00130A43 /* InboxMessageDetailList.m in Sources */,
 				45DB3F6A1C83F13A00130A43 /* HotlistBannerQuery.m in Sources */,
 				45DB41661C83F13A00130A43 /* CollectionScrollAndSwipe.m in Sources */,
+				4569F2A81C88132300F4A17D /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				45DB43C51C83F13B00130A43 /* UserPageHeader.m in Sources */,
 				45DB40B51C83F13A00130A43 /* OrderButton.m in Sources */,
 				45DB3EFE1C83F13A00130A43 /* CreatePassword.m in Sources */,
