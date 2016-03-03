@@ -14,7 +14,7 @@
 
 #import "CartModelView.h"
 
-@interface TransactionCartList : NSObject
+@interface TransactionCartList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *cart_total_logistic_fee;
 @property(nonatomic,strong) ShippingInfoShipments *cart_shipments;

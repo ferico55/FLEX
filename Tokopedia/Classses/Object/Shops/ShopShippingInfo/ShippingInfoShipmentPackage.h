@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ShippingInfoShipmentPackage : NSObject
+@interface ShippingInfoShipmentPackage : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *price_total;
 @property (nonatomic, strong) NSString *price;

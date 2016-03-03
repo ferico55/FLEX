@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TransactionCartGateway : NSObject
+@interface TransactionCartGateway : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *gateway_image;
 @property (nonatomic, strong) NSNumber *gateway;
