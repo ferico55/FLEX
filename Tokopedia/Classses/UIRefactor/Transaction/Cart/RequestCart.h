@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TransactionCart.h"
+
+
 #define TAG_REQUEST_CART 10
 #define TAG_REQUEST_CANCEL_CART 11
 #define TAG_REQUEST_CHECKOUT 12
@@ -60,5 +63,7 @@
 -(void)doRequestCC;
 -(void)dorequestBRIEPay;
 -(void)doRequestToppay;
+
++(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error;
 
 @end

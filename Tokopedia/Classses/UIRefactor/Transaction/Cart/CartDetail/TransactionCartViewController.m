@@ -291,8 +291,7 @@
         [_tableView addSubview:_refreshControl];
         
         if (_isLogin) {
-            _requestCart.param = @{@"lp_flag":@"1"};
-            [_requestCart doRequestCart];
+            [self requestCartData];
         }
         _paymentMethodView.hidden = YES;
         
@@ -1068,8 +1067,7 @@
         
         [self adjustDropshipperListParam];
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        [self requestCartData];
         
     }
 }
@@ -1083,8 +1081,7 @@
         [_dataInput setObject:@(index) forKey:DATA_INDEX_KEY];
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
         
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        [self requestCartData];
         
         _refreshFromShipment = YES;
     }
@@ -1851,8 +1848,7 @@
         [_act stopAnimating];
     }
     
-    _requestCart.param = @{@"lp_flag":@"1"};
-    [_requestCart doRequestCart];
+    [self requestCartData];
     _paymentMethodView.hidden = YES;
 }
 
@@ -1901,13 +1897,53 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
-         [_requestCart doRequestCart];
+        [self requestCartData];
     }
     else
     {
         _popFromShipment = YES;
     }
+}
+
+-(void)requestCartData{
+    [RequestCart fetchCartData:^(TransactionCartResult *data) {
+        
+        [self endRefreshing];
+        [_act stopAnimating];
+        _isLoadingRequest = NO;
+        
+        [_list removeAllObjects];
+        
+        NSArray *list = data.list;
+        [_list addObjectsFromArray:list];
+        
+        if(list.count >0){
+            [_noResultView removeFromSuperview];
+        }else{
+            [_tableView addSubview:_noResultView];
+        }
+        
+        _cart = data;
+        [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
+        [_dataInput setObject:_cart.grand_total_without_lp forKey:DATA_CART_GRAND_TOTAL_WO_LP];
+        [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_W_LP];
+        
+        [self adjustAfterUpdateList];
+        
+        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
+        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
+        
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        
+    } error:^(NSError *error) {
+        
+        [self endRefreshing];
+        [_act stopAnimating];
+        _paymentMethodView.hidden = YES;
+        _isLoadingRequest = NO;
+        if (!_refreshFromShipment)_tableView.tableFooterView =_loadingView.view;
+    }];
+    
 }
 
 -(void)swipeView:(UIView*)view{
@@ -2892,42 +2928,6 @@
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
-#pragma mark - Request Cart
-
--(void)requestSuccessCart:(id)successResult withOperation:(RKObjectRequestOperation*)operation
-{
-    [self endRefreshing];
-    [_act stopAnimating];
-    _isLoadingRequest = NO;
-    
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionCart *cart = stat;
-            
-    [_list removeAllObjects];
-    
-    NSArray *list = cart.result.list;
-    [_list addObjectsFromArray:list];
-    
-    if(list.count >0){
-        [_noResultView removeFromSuperview];
-    }else{
-        [_tableView addSubview:_noResultView];
-    }
-    
-    _cart = cart.result;
-    [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
-    [_dataInput setObject:_cart.grand_total_without_lp forKey:DATA_CART_GRAND_TOTAL_WO_LP];
-    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_W_LP];
-    
-    [self adjustAfterUpdateList];
-    
-    NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
-    [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
-    
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-}
 
 -(void)adjustAfterUpdateList
 {
@@ -3184,8 +3184,7 @@
 {
     if (_indexPage == 0) {
         _refreshFromShipment = YES;
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        [self requestCartData];
     }
     [_tableView reloadData];
 }

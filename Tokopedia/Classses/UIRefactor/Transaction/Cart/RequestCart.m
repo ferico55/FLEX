@@ -40,6 +40,25 @@
 
 @implementation RequestCart
 
++(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error{
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                  path:@"tx.pl"
+                                method:RKRequestMethodPOST
+                             parameter: @{@"lp_flag":@"1"}
+                               mapping:[TransactionCart mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+     NSDictionary *result = successResult.dictionary;
+     TransactionCart *cart = [result objectForKey:@""];
+     success(cart.result);
+                                 
+    } onFailure:^(NSError *errorResult) {
+        [StickyAlertView showNetworkError:errorResult];
+        error(errorResult);
+    }];
+}
+
 -(TransactionObjectManager*)objectManager
 {
     if (!_objectManager) {
@@ -355,6 +374,8 @@
         TransactionAction *action = stat;
         return action.status;
     }
+    
+    
     return nil;
 }
 
