@@ -297,10 +297,12 @@
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:controller animated:YES];
         
     } else {
         InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:controller animated:YES];
     }
 }
