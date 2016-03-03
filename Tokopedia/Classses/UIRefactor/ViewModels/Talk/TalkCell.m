@@ -40,7 +40,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 {
     BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
-    IBOutlet UIView* selectedMarker;
     IBOutlet UILabel *_productNameLabel;
 }
 
@@ -85,11 +84,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    selectedMarker.hidden = !selected;
+    _view.backgroundColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    selectedMarker.hidden = !highlighted;
+    _view.backgroundColor = highlighted ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
