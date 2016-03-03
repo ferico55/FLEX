@@ -20,15 +20,15 @@
 }
 
 
-- (ProductReputationViewModel *)viewModel {
+- (DetailReviewReputationViewModel *)viewModel {
     if(_viewModel == nil) {
-        ProductReputationViewModel *viewModel = [[ProductReputationViewModel alloc] init];
-        [viewModel setReviewMessage:self.review_message];
-        [viewModel setReviewUserName:self.review_user_name];
-        [viewModel setReviewUserThumbUrl:self.review_user_image];
-        [viewModel setProductQuality:self.review_rate_quality];
-        [viewModel setProductAccuracy:self.review_rate_accuracy];
-        [viewModel setReviewDate:self.review_create_time];
+        DetailReviewReputationViewModel *viewModel = [[DetailReviewReputationViewModel alloc] init];
+        [viewModel setReview_message:_review_message];
+        [viewModel setReview_message:_review_user_name];
+        [viewModel setReview_user_image:_review_user_image];
+        [viewModel setReview_rate_quality:_review_rate_quality];
+        [viewModel setReview_rate_accuracy:_review_rate_accuracy];
+        [viewModel setReview_create_time:_review_create_time];
        
         _viewModel = viewModel;
     }

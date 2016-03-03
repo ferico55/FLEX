@@ -118,6 +118,13 @@
 @property (nonatomic, strong) ReviewResponse *review_response;
 @property (nonatomic, strong) DetailReviewReputationViewModel *viewModel;
 
+@property (nonatomic) NSString* review_product_status;
+@property (nonatomic) NSString* review_is_owner;
+@property (nonatomic, strong) NSString *review_product_name;
+@property (nonatomic, strong) NSString *review_product_id;
+@property (nonatomic, strong) NSString *review_product_image;
+@property (nonatomic, strong) NSString *review_rate_quality;
+
 
 //only used in helpful review, diff implementation, diff ws
 @property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;

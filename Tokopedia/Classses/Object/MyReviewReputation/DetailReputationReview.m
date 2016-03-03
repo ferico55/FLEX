@@ -71,7 +71,16 @@
                                                                         @"review_rate_product":@"review_rate_product",
                                                                         @"review_rate_speed":@"review_rate_speed",
                                                                         @"review_rate_service":@"review_rate_service",
-                                                                        @"review_user_id":@"review_user_id"
+                                                                        @"review_user_id":@"review_user_id",
+                                                                        @"review_shop_name":@"review_shop_name",
+                                                                        @"product_images":@"product_images",
+                                                                        @"review_rate_quality":@"review_rate_quality",
+                                                                        @"review_product_status":@"review_product_status",
+                                                                        @"review_is_allow_edit":@"review_is_allow_edit",
+                                                                        @"review_is_owner":@"review_is_owner",
+                                                                        @"review_product_name":@"review_product_name",
+                                                                        @"review_product_id":@"review_product_id",
+                                                                        @"review_product_image":@"review_product_image"
                                                                         }];
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation" toKeyPath:@"review_user_reputation" withMapping:[ReputationDetail mapping]]];
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response" toKeyPath:@"review_response" withMapping:[ReviewResponse mapping]]];
