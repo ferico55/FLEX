@@ -689,15 +689,15 @@ static NSInteger userViewHeight = 70;
     
     [self mappingAttribute:detailReputationReview];
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    productDetailReputationViewController.detailReputationReview = detailReputationReview;
     productDetailReputationViewController.dictLikeDislike = dictLikeDislike;
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = _strProductID;
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.product_owner.user_shop_reputation.reputation_badge_object;
 
-    if([dictLikeDislike objectForKey:productDetailReputationViewController.detailReputaitonReview.review_id]) {
-        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.detailReputaitonReview.review_id];
+    if([dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id]) {
+        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id];
         productDetailReputationViewController.strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
         productDetailReputationViewController.strTotalLike = totalLikeDislike.total_like_dislike.total_like;
         productDetailReputationViewController.strLikeStatus = totalLikeDislike.like_status;

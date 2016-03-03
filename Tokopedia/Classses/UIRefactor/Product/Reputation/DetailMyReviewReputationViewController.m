@@ -447,7 +447,7 @@
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    productDetailReputationViewController.detailReputationReview = detailReputationReview;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
     
     if(_detailMyInboxReputation.updated_reputation_review!=nil && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@""] && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@"0"]) {
