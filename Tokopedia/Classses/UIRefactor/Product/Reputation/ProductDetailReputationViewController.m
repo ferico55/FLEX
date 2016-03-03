@@ -121,7 +121,7 @@ MGSwipeTableCellDelegate>
                 constraintHeightViewMessage.constant = 0;
         }
         else {
-            if(_reviewList.review_product_owner!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_create_time!=nil && ![_reviewList.review_response.response_create_time isEqualToString:@"0"])
+            if(_reviewList.product_owner!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_create_time!=nil && ![_reviewList.review_response.response_create_time isEqualToString:@"0"])
                 constraintHeightViewMessage.constant = 0;
         }
     }
@@ -284,7 +284,7 @@ MGSwipeTableCellDelegate>
         }
         
         //Set image product
-        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputationReview!=nil)?_detailReputationReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputationReview!=nil)?_detailReputationReview.product_image : (_reviewList.product_image==nil? _reviewList.review_product_image:_reviewList.product_image)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         productReputationCell.getProductImage.image = nil;
         [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -316,7 +316,7 @@ MGSwipeTableCellDelegate>
     }
     else {
         NSString *strResponseMessage = (_detailReputationReview==nil? _reviewList.review_response.response_message:_detailReputationReview.review_response.response_message);
-        NSString *strUserID = (_detailReputationReview==nil? _reviewList.review_product_owner.user_id:_detailReputationReview.product_owner.user_id);
+        NSString *strUserID = (_detailReputationReview==nil? _reviewList.product_owner.user_id:_detailReputationReview.product_owner.user_id);
 
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
@@ -392,7 +392,7 @@ MGSwipeTableCellDelegate>
         NSDictionary *auth = [_userManager getUserLoginData];
 
         ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
-        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputationReview!=nil?_detailReputationReview.shop_id:_reviewList.review_shop_id),
+        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputationReview!=nil?_detailReputationReview.shop_id:_reviewList.shop_id),
                                              kTKPD_AUTHKEY:auth?:@{}};
         [self.navigationController pushViewController:shopContainerViewController animated:YES];
     }
@@ -414,8 +414,8 @@ MGSwipeTableCellDelegate>
                                                withName:(_detailReputationReview!=nil)?_detailReputationReview.product_name:_reviewList.review_product_name
                                               withPrice:nil
                                                  withId:(_detailReputationReview==nil? _reviewList.review_product_id:_detailReputationReview.product_id)
-                                           withImageurl:(_detailReputationReview!=nil)?_detailReputationReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images)
-                                           withShopName:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_name:_reviewList.review_product_owner.full_name];
+                                           withImageurl:(_detailReputationReview!=nil)?_detailReputationReview.product_image : (_reviewList.product_image==nil? _reviewList.review_product_image:_reviewList.product_image)
+                                           withShopName:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_name:_reviewList.product_owner.full_name];
 }
 
 - (void)actionVote:(id)sender
@@ -506,7 +506,7 @@ MGSwipeTableCellDelegate>
         return 0;
     }
     else {
-        if(_reviewList.review_product_owner!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_create_time!=nil && ![_reviewList.review_response.response_create_time isEqualToString:@"0"])
+        if(_reviewList.product_owner!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_create_time!=nil && ![_reviewList.review_response.response_create_time isEqualToString:@"0"])
             return 1;
         
         return 0;
@@ -540,7 +540,7 @@ MGSwipeTableCellDelegate>
 //    } failure:nil];
     
     
-    [cell.getViewLabelUser setText:_detailReputationReview!=nil? _detailReputationReview.product_owner.full_name:_reviewList.review_product_owner.full_name];
+    [cell.getViewLabelUser setText:_detailReputationReview!=nil? _detailReputationReview.product_owner.full_name:_reviewList.product_owner.full_name];
     [cell.getViewLabelUser setLabelBackground:(_detailReputationReview!=nil)?_detailReputationReview.review_user_label:_reviewList.review_user_label];
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
@@ -576,7 +576,7 @@ MGSwipeTableCellDelegate>
     cell.getBtnTryAgain.hidden = !(_detailReputationReview!=nil? _detailReputationReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_img:_reviewList.review_product_owner.user_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_img:_reviewList.product_owner.user_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -952,7 +952,7 @@ MGSwipeTableCellDelegate>
         NSDictionary *auth = [_userManager getUserLoginData];
         
         ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
-        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputationReview!=nil?_detailReputationReview.shop_id:_reviewList.review_shop_id),
+        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputationReview!=nil?_detailReputationReview.shop_id:_reviewList.shop_id),
                                              kTKPD_AUTHKEY:auth?:@{}};
         [self.navigationController pushViewController:shopContainerViewController animated:YES];
     }
@@ -1017,7 +1017,7 @@ MGSwipeTableCellDelegate>
     }
     else {
         strReviewID = _reviewList.review_id;
-        strShopID = _reviewList.review_shop_id;
+        strShopID = _reviewList.shop_id;
     }
     
     NSDictionary* param = @{@"action":@"like_dislike_review",
@@ -1216,8 +1216,8 @@ MGSwipeTableCellDelegate>
             }
             else if(_reviewList != nil) {
                 return @{@"action":@"insert_reputation_review_response",
-                         @"reputation_id":_reviewList.review_reputation_id,
-                         @"shop_id":_reviewList.review_shop_id,
+                         @"reputation_id":_reviewList.reputation_id,
+                         @"shop_id":_reviewList.shop_id,
                          @"review_id":_reviewList.review_id,
                          @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
             }
@@ -1232,7 +1232,7 @@ MGSwipeTableCellDelegate>
             }
             else if(_reviewList != nil) {
                 return @{@"action":@"add_comment_review",
-                         @"reputation_id":_reviewList.review_reputation_id==nil? @"":_reviewList.review_reputation_id,
+                         @"reputation_id":_reviewList.reputation_id==nil? @"":_reviewList.reputation_id,
                          @"product_id":_strProductID,
                          @"review_id":_reviewList.review_id,
                          @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
@@ -1251,8 +1251,8 @@ MGSwipeTableCellDelegate>
             }
             else if(_reviewList != nil) {
                 return @{@"action":@"delete_reputation_review_response",
-                         @"reputation_id":_reviewList.review_reputation_id,
-                         @"shop_id":_reviewList.review_shop_id,
+                         @"reputation_id":_reviewList.reputation_id,
+                         @"shop_id":_reviewList.shop_id,
                          @"review_id":_reviewList.review_id,
                          @"product_id":_reviewList.review_product_id
                          };
@@ -1380,9 +1380,9 @@ MGSwipeTableCellDelegate>
                 _reviewList.review_response.canDelete = YES;
                 
                 if(responseComment.result.product_owner != nil) {
-                    _reviewList.review_product_owner.full_name = responseComment.result.product_owner.full_name;
-                    _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
-                    _reviewList.review_product_owner.user_img = responseComment.result.product_owner.user_img;
+                    _reviewList.product_owner.full_name = responseComment.result.product_owner.full_name;
+                    _reviewList.product_owner.user_id = responseComment.result.product_owner.user_id;
+                    _reviewList.product_owner.user_img = responseComment.result.product_owner.user_img;
                 }
                 
                 //Set badge number
@@ -1455,9 +1455,9 @@ MGSwipeTableCellDelegate>
                 _reviewList.review_response.canDelete = NO;
                 _reviewList.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
                 _reviewList.review_response.response_message = responseComment.result.review_response.response_message;
-                _reviewList.review_product_owner.user_img = responseComment.result.product_owner.user_img;
-                _reviewList.review_product_owner.full_name = responseComment.result.product_owner.full_name;
-                _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
+                _reviewList.product_owner.user_img = responseComment.result.product_owner.user_img;
+                _reviewList.product_owner.full_name = responseComment.result.product_owner.full_name;
+                _reviewList.product_owner.user_id = responseComment.result.product_owner.user_id;
             }
             
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemoveMessage] delegate:self];

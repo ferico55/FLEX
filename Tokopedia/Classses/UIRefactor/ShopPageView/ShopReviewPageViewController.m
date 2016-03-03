@@ -393,11 +393,11 @@ ProductReputationSimpleDelegate>
     //3 is unlike or undislike
     RKObjectManager *objectManager = [RKObjectManager sharedClient];
     [self configureRestKitLikeDislike:objectManager];
-    ReviewList *reviewList = _list[btnLike.tag];
+    DetailReputationReview *reviewList = _list[btnLike.tag];
     NSDictionary* param = @{@"action":@"like_dislike_review",
                             @"review_id":reviewList.review_id,
                             @"like_status":@(likeDislikeTag),
-                            @"shop_id":reviewList.review_shop_id,
+                            @"shop_id":reviewList.shop_id,
                             @"product_id":reviewList.review_product_id};
 
     RKObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/review.pl" parameters:[param encrypt]];
@@ -456,11 +456,11 @@ ProductReputationSimpleDelegate>
     if(loadingLikeDislike.count > 10)
         return;
     dispatch_async(dispatch_get_main_queue(), ^(void){
-        ReviewList *list = [arrList firstObject];
+        DetailReputationReview *list = [arrList firstObject];
         RKObjectManager *tempObjectManager = [self getObjectManager:CTagGetTotalLike];
         NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
                                 kTKPDDETAIL_REVIEWIDS : list.review_id,
-                                kTKPDDETAIL_APISHOPIDKEY : list.review_shop_id};
+                                kTKPDDETAIL_APISHOPIDKEY : list.shop_id};
         RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPath:CTagGetTotalLike] parameters:[param encrypt]];
     
     
@@ -593,7 +593,7 @@ ProductReputationSimpleDelegate>
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
-    ReviewList *list = _list[indexPath.row];
+    DetailReputationReview *list = _list[indexPath.row];
     [cell setShopReputationModelView:list];
     cell.isHelpful = NO;
     cell.delegate = self;
@@ -715,7 +715,7 @@ ProductReputationSimpleDelegate>
     
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[Review mapping]
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:@"shop.pl"
                                                                                                  keyPath:@""
@@ -1021,7 +1021,7 @@ ProductReputationSimpleDelegate>
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"index"]integerValue];
     
-    ReviewList *list = _list[index];
+    DetailReputationReview *list = _list[index];
     
     list.review_response.response_message = [userinfo objectForKey:@"review_comment"];
     list.review_response.response_create_time = [userinfo objectForKey:@"review_comment_time"];
@@ -1075,7 +1075,7 @@ ProductReputationSimpleDelegate>
 }
 
 - (void)actionRate:(id)sender {
-    ReviewList *list = _list[((UIView *) sender).tag];
+    DetailReputationReview *list = _list[((UIView *) sender).tag];
     
     if(! (list.review_user_reputation.no_reputation!=nil && [list.review_user_reputation.no_reputation isEqualToString:@"1"])) {
         int paddingRightLeftContent = 10;
@@ -1100,7 +1100,7 @@ ProductReputationSimpleDelegate>
     if(_auth) {
         UIButton *btnLike = (UIButton *)sender;
         ProductReputationCell *cell = [self getCell:btnLike];
-        ReviewList *reviewList = _list[btnLike.tag];
+        DetailReputationReview *reviewList = _list[btnLike.tag];
         UIButton *btnDislike = [cell getBtnDisLike];
         
         int tagRequest = 3;
@@ -1153,7 +1153,7 @@ ProductReputationSimpleDelegate>
     if(_auth) {
         UIButton *btnDislike = (UIButton *)sender;
         ProductReputationCell *cell = [self getCell:btnDislike];
-        ReviewList *reviewList = _list[btnDislike.tag];
+        DetailReputationReview *reviewList = _list[btnDislike.tag];
         UIButton *btnLike = [cell getBtnLike];
         
         int tagRequest = 3;
@@ -1208,14 +1208,15 @@ ProductReputationSimpleDelegate>
     [self redirectToProductDetailReputation:_list[((UIView *) sender).tag] withIndexPath:[NSIndexPath indexPathForRow:((UIView *) sender).tag inSection:0]];
 }
 
-- (void)redirectToProductDetailReputation:(ReviewList *)reviewList withIndexPath:(NSIndexPath *)indexPath {
+- (void)redirectToProductDetailReputation:(DetailReputationReview *)reviewList withIndexPath:(NSIndexPath *)indexPath {
     if(_shop.result.stats.shop_badge_level == nil) {
         return;
     }
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.reviewList = reviewList;
-    productDetailReputationViewController.isMyProduct = (_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:reviewList.review_product_owner.user_id]);
+    productDetailReputationViewController.detailReputationReview = reviewList;
+    productDetailReputationViewController.isMyProduct = (_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:reviewList.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = _shop.result.stats.shop_badge_level;
     productDetailReputationViewController.dictLikeDislike = dictLikeDislike;
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
@@ -1233,7 +1234,7 @@ ProductReputationSimpleDelegate>
 
 - (void)actionMore:(id)sender {
     if(_auth) {
-        ReviewList *list = _list[((UIButton *)sender).tag];
+        DetailReputationReview *list = _list[((UIButton *)sender).tag];
         UIActionSheet *actionSheet;
         if([list.review_is_allow_edit isEqualToString:@"1"] && ![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
             actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:@"Lapor" otherButtonTitles:nil, nil];
@@ -1378,11 +1379,11 @@ ProductReputationSimpleDelegate>
         case 0:
         {
             ReportViewController *reportViewController = [ReportViewController new];
-            ReviewList *list = _list[actionSheet.tag];
+            DetailReputationReview *list = _list[actionSheet.tag];
             
             reportViewController.delegate = self;
             reportViewController.strProductID = list.review_product_id;
-            reportViewController.strShopID = list.review_shop_id;
+            reportViewController.strShopID = list.shop_id;
             reportViewController.strReviewID = list.review_id;
 
             [self.navigationController pushViewController:reportViewController animated:YES];

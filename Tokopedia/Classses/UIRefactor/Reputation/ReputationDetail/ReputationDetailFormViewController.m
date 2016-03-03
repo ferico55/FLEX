@@ -12,6 +12,7 @@
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
 #import "NavigateViewController.h"
+#import "DetailReputationReview.h"
 
 
 #import "string_inbox_review.h"
@@ -50,7 +51,7 @@
     int _defaultRating;
     int _maxRating;
     BOOL _editableRating;
-    ReviewList *_selectedReviewDetail;
+    DetailReputationReview *_selectedReviewDetail;
     NSMutableArray *_errorMessages;
     UIBarButtonItem *_barbuttonright;
     NSDictionary *_editedParam;
@@ -122,7 +123,7 @@
 
 
 - (void)initProductView {
-    _selectedReviewDetail = (ReviewList *)_data;
+    _selectedReviewDetail = (DetailReputationReview *)_data;
     
     [_productNameButton setTitle:_selectedReviewDetail.review_product_name forState:UIControlStateNormal];
     NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_selectedReviewDetail.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -298,7 +299,7 @@
                      @"action" : _isEditForm ? @"edit_product_review" : @"add_product_review",
                      @"mode" : _isEditForm ? @"edit" : @"",
                      @"review_id" : _isEditForm ? _selectedReviewDetail.review_id : @"",
-                     @"shop_id" : _selectedReviewDetail.review_shop_id,
+                     @"shop_id" : _selectedReviewDetail.shop_id,
                      @"product_id" : _selectedReviewDetail.review_product_id,
                      @"review_message" : _reviewMessage.text,
                      @"rate_product" : [formatter stringFromNumber:[NSNumber numberWithFloat:_qualityRateView.rating]],
