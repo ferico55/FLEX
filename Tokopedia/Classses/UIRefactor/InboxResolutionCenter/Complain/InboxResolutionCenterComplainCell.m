@@ -13,6 +13,8 @@
 
 @implementation InboxResolutionCenterComplainCell
 {
+    IBOutlet UIView *_userView;
+    IBOutlet UIView *_statusView;
     IBOutletCollection(UITapGestureRecognizer) NSArray* _gestureRecognizers;
     IBOutlet UIView* _selectionMarker;
 }
@@ -50,13 +52,17 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     if (![NavigationHelper shouldDoDeepNavigation]) {
-        _selectionMarker.hidden = !selected;
+        UIColor *selectionColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor whiteColor];
+        _userView.backgroundColor = selectionColor;
+        _statusView.backgroundColor = selectionColor;
     }
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     if (![NavigationHelper shouldDoDeepNavigation]) {
-        _selectionMarker.hidden = !highlighted;
+        UIColor *selectionColor = highlighted ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor whiteColor];
+        _userView.backgroundColor = selectionColor;
+        _statusView.backgroundColor = selectionColor;
     }
 }
 
