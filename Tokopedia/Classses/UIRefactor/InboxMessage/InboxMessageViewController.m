@@ -5,7 +5,6 @@
 //  Created by Tokopedia on 11/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "CMPopTipView.h"
 #import "InboxMessageViewController.h"
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
@@ -33,7 +32,6 @@
     UITableViewDelegate,
     UISearchBarDelegate,
     SmileyDelegate,
-    CMPopTipViewDelegate,
     InboxMessageDelegate,
     UISearchDisplayDelegate,
     MGSwipeTableCellDelegate,
@@ -73,7 +71,6 @@ typedef enum TagRequest {
     BOOL _isnodata;
     BOOL _isrefreshview;
     BOOL _iseditmode;
-    CMPopTipView *popTipView;
     
     NSInteger _page;
     NSInteger _limit;
@@ -214,12 +211,6 @@ typedef enum TagRequest {
     
     self.screenName = @"Inbox Message";
     [TPAnalytics trackScreenName:@"Inbox Message"];
-
-    if (!_isrefreshview) {
-        if (_isnodata && _page < 1) {
-            [_networkManager doRequest];
-        }
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -322,97 +313,27 @@ typedef enum TagRequest {
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _messages.count;
-#else
-    return _isnodata ? 0 : _messages.count;
-#endif
-    
+    return _messages.count;
 }
 
-
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        NSString *cellid = kTKPDINBOXMESSAGECELL_IDENTIFIER;
-        
-        cell = (InboxMessageCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [InboxMessageCell newcell];
-            ((InboxMessageCell*)cell).delegate = self;
-            ((InboxMessageCell*) cell).del = self;
-        }
-
-        if (_messages.count > indexPath.row ) {
-            InboxMessageList *list = _messages[indexPath.row];
-            
-            ((InboxMessageCell*)cell).btnReputasi.tag = indexPath.row;
-            ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
-            ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
-            ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
-            ((InboxMessageCell*)cell).indexpath = indexPath;
-            
-            if(list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"]) {
-                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                [((InboxMessageCell*)cell).btnReputasi setTitle:@"" forState:UIControlStateNormal];
-            }
-            else {
-                [((InboxMessageCell*)cell).btnReputasi setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                [((InboxMessageCell*)cell).btnReputasi setTitle:[NSString stringWithFormat:@"%@%%", list.user_reputation.positive_percentage] forState:UIControlStateNormal];
-            }
-            
-            //Set user label
-//            if([list.user_label isEqualToString:CPenjual]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagPenjual];
-//            }
-//            else if([list.user_label isEqualToString:CPembeli]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagPembeli];
-//            }
-//            else if([list.user_label isEqualToString:CAdministrator]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagAdministrator];
-//            }
-//            else if([list.user_label isEqualToString:CPengguna]) {
-//                [((InboxMessageCell*)cell).message_title setColor:CTagPengguna];
-//            }
-//            else {
-//                [((InboxMessageCell*)cell).message_title setColor:-1];//-1 is set to empty string
-//            }
-            [((InboxMessageCell*)cell).message_title setLabelBackground:list.user_label];
-            
-            if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
-                if([list.message_read_status isEqualToString:@"1"]) {
-                    ((InboxMessageCell*)cell).is_unread.hidden = YES;
-                } else {
-                    ((InboxMessageCell*)cell).is_unread.hidden = NO;
-                }
-            }
-            
-
-            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
-            thumb = [UIImageView circleimageview:thumb];
-            thumb.image = nil;
-            [thumb setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
-#pragma clang diagnostic pop
-            } failure:nil];
-        }
-        
-        return cell;
-    } else {
-        static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
+    InboxMessageCell* cell = nil;
+    NSString *cellid = kTKPDINBOXMESSAGECELL_IDENTIFIER;
+    
+    cell = (InboxMessageCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [InboxMessageCell newcell];
+        cell.delegate = self;
+    }
+    
+    InboxMessageList *list = _messages[indexPath.row];
+    
+    cell.indexpath = indexPath;
+    cell.message = list;
+    cell.popTipAnchor = self.view;
+    
+    if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
+        cell.displaysUnreadIndicator = YES;
     }
     
     return cell;
@@ -492,7 +413,6 @@ typedef enum TagRequest {
     _userinfo = notification.userInfo;
     
     NSInteger selected_vc = [_userinfo[@"show_check"] integerValue];
-    _isrefreshview = YES;
     
     //show OPTION move to archive + trash
     if(selected_vc == 0 || selected_vc == 1) {
@@ -604,7 +524,8 @@ typedef enum TagRequest {
             InboxMessageList *list = _messages[indexpath.row];
             
             list.message_read_status = readStatus;
-            [_table reloadData];
+            [_table reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+            [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
 }
@@ -1061,13 +982,26 @@ typedef enum TagRequest {
     }
 }
 
+- (NSArray<NSIndexPath*>*) indexPathsForInserting:(NSArray*)appendedArray to:(NSArray*)sourceArray {
+    NSMutableArray<NSIndexPath*>* indexPaths = [NSMutableArray new];
+    
+    for (NSInteger counter = 0; counter < appendedArray.count; counter++) {
+        NSInteger row = counter + sourceArray.count;
+        [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
+    }
+    
+    return indexPaths;
+}
+
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     if(tag == messageListTag) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         InboxMessage *message = [result objectForKey:@""];
         
+        NSArray<NSIndexPath*>* indexPaths = [self indexPathsForInserting:message.result.list to:_messages];
         [_messages addObjectsFromArray: message.result.list];
-        
+        [_table insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+
         if (_messages.count >0) {
             _isnodata = NO;
             _urinext =  message.result.paging.uri_next;
@@ -1094,40 +1028,35 @@ typedef enum TagRequest {
             _table.tableHeaderView = _searchView;
             _table.tableFooterView = _noResultView;
         }
+
         
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
-        [_table reloadData];
         
-        if(_iseditmode) {
-            for (NSIndexPath *indexpath in _messages_selected) {
-                [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
-            }
-            
-        }
-        
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-        {
-            if (_messages.count > 0) {
-                NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
-                InboxMessageList *list = _messages[indexpath.row];
-                
-                NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
-                                       KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
-                                       KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
-                                       MESSAGE_INDEX_PATH : indexpath
-                                       };
-                if (![data isEqualToDictionary:_detailViewController.data]) {
-                    [_detailViewController replaceDataSelected:data];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+            {
+                if (_messages.count > 0) {
+                    NSIndexPath *indexpath = [_table indexPathForSelectedRow]?[_table indexPathForSelectedRow]:[NSIndexPath indexPathForRow:0 inSection:0];
+                    InboxMessageList *list = _messages[indexpath.row];
+                    
+                    NSDictionary *data = @{KTKPDMESSAGE_IDKEY : list.message_id?:@"",
+                                           KTKPDMESSAGE_TITLEKEY : list.message_title?:@"",
+                                           KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]?:@"",
+                                           MESSAGE_INDEX_PATH : indexpath
+                                           };
+                    if (![data isEqualToDictionary:_detailViewController.data]) {
+                        [_detailViewController replaceDataSelected:data];
+                    }
+                    [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                } else {
+                    [_detailViewController replaceDataSelected:nil];
                 }
-                [_table selectRowAtIndexPath:indexpath animated:NO scrollPosition:UITableViewScrollPositionNone];
-            } else {
-                [_detailViewController replaceDataSelected:nil];
             }
-        }
+        });
     }
 }
 
@@ -1165,47 +1094,4 @@ typedef enum TagRequest {
     _inboxMessagePostUrl = [_gtmContainer stringForKey:GTMKeyInboxMessagePost];
 }
 
-
-#pragma mark - ToolTip Delegate
-- (void)dismissAllPopTipViews
-{
-    [popTipView dismissAnimated:YES];
-    popTipView = nil;
-}
-
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
-{
-    [self dismissAllPopTipViews];
-}
-
-
-#pragma mark - Smiley Delegate
-- (void)actionVote:(id)sender {
-    [self dismissAllPopTipViews];
-}
-
-
-#pragma mark - InboxMessage Delegate
-- (void)actionSmile:(id)sender {
-    InboxMessageList *list = _messages[((UIView *) sender).tag];
-
-    if(! (list.user_reputation.no_reputation!=nil && [list.user_reputation.no_reputation isEqualToString:@"1"])) {
-        int paddingRightLeftContent = 10;
-        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-        
-        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:list.user_reputation.neutral withRepSmile:list.user_reputation.positive withRepSad:list.user_reputation.negative withDelegate:self];
-        
-        //Init pop up
-        popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-        popTipView.delegate = self;
-        popTipView.backgroundColor = [UIColor whiteColor];
-        popTipView.animation = CMPopTipAnimationSlide;
-        popTipView.dismissTapAnywhere = YES;
-        popTipView.leftPopUp = YES;
-        
-        UIButton *button = (UIButton *)sender;
-        [popTipView presentPointingAtView:button inView:self.view animated:YES];
-    }
-}
 @end

@@ -37,4 +37,7 @@
 @property (nonatomic, strong) NSString *user_id;
 @property (nonatomic, strong) NSString *shop_reputation_badge;
 @property (nonatomic, strong) ShopReputation *user_shop_reputation;
+
++ (RKObjectMapping*) mapping;
+
 @end

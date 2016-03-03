@@ -147,13 +147,17 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
     _isFollowingTalk = talkFollowStatus;
-    if (talkFollowStatus) {
+    [self adjustFollowButton];
+}
+
+- (void)adjustFollowButton {
+    if (_isFollowingTalk) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
         
     } else {
         [_unfollowButton setTitle:@"Ikuti" forState:UIControlStateNormal];
-        [_unfollowButton setImage:[UIImage imageNamed:@"icon_check_grey"] forState:UIControlStateNormal];
+        [_unfollowButton setImage:[UIImage imageNamed:@"icon_order_check"] forState:UIControlStateNormal];
     }
 }
 
@@ -193,7 +197,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         }
     }
     else {
-        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
+        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:_marksOpenedTalkAsRead];
         vc.data = data;
 
         UIViewController *controller = [_delegate getNavigationController:self];
@@ -406,6 +410,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             NSArray *successMessages = [[NSMutableArray alloc] init];
             _isFollowingTalk = !_isFollowingTalk;
             
+            [self adjustFollowButton];
 
 			if (tag == RequestDeleteTalk) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];

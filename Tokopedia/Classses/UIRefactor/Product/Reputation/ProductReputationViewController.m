@@ -32,12 +32,14 @@
 #import "TotalLikeDislike.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductReputationSimpleCell.h"
+#import "HelpfulReviewRequest.h"
+#import "ReviewRequest.h"
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
 static NSInteger userViewHeight = 70;
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -52,21 +54,26 @@ static NSInteger userViewHeight = 70;
     LoadingView *loadingView;
     NoResultView *noResultView;
     NSOperationQueue *_operationQueue, *operationQueueLikeDislike;
-    
+
     int page, filterStar;
     NSString *strUri;
     Review *review;
     NSMutableArray *arrList;
+    NSMutableArray<DetailReputationReview*> *helpfulReviews;
     NSDictionary *auth;
     NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
+    
+    HelpfulReviewRequest *helpfulReviewRequest;
+    ReviewRequest *reviewRequest;
+    BOOL isShowingMore, animationHasShown;
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configureGTM];
     [self initNavigation];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
@@ -86,7 +93,9 @@ static NSInteger userViewHeight = 70;
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     auth = [_userManager getUserLoginData];
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    helpfulReviewRequest = [HelpfulReviewRequest new];
+    helpfulReviewRequest.delegate = self;
+    [helpfulReviewRequest requestHelpfulReview:_strProductID];
     
     //Add gesture to view star
     viewStarOne.tag = 1;
@@ -94,6 +103,9 @@ static NSInteger userViewHeight = 70;
     viewStarThree.tag = 3;
     viewStarFour.tag = 4;
     viewStarFive.tag = 5;
+    
+    helpfulReviews = [[NSMutableArray alloc]init];
+    isShowingMore = NO;
 
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -118,35 +130,26 @@ static NSInteger userViewHeight = 70;
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    
+    
 }
-
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    animationHasShown = NO;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-- (void)dealloc
-{
+- (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self unloadRequesting];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - Method View
 - (void)initNavigation {
     self.title = @"Ulasan";
 }
-
 - (void)setRateStar:(int)tag withAnimate:(BOOL)isAnimate {
     int nRate1, nRate2, nRate3, nRate4, nRate5;
     float totalCount = 0;
@@ -246,8 +249,6 @@ static NSInteger userViewHeight = 70;
     [attributedText setAttributes:subAttrs range:NSMakeRange(lblDescTotalHeaderRating.text.length-strReview.length, strReview.length)];
     [lblDescTotalHeaderRating setAttributedText:attributedText];
 }
-
-
 - (void)initTable {
     //Refresh Control
     refreshControl = [[UIRefreshControl alloc] init];
@@ -258,16 +259,64 @@ static NSInteger userViewHeight = 70;
     tableContent.tableHeaderView = viewHeader;
 }
 
-
-
-#pragma mark - UITableView Delegate and DataSource 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
+#pragma mark - UITableView Delegate and DataSource
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *header;
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        header = _helpfulReviewHeader;
+    }
+    return header;
 }
-
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *footer;
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        footer = _helpfulReviewFooter;
+    }
+    return footer;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        return 50;
+    }
+    return 10;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        return 10;
+    }
+    return 0;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return (filterStar == 0 && helpfulReviews.count > 0) ? 2 : 1;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DetailReputationReview *reputationDetail = arrList[indexPath.row];
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
+        }else{
+            if(!isShowingMore && indexPath.row == 1){
+                //"load more" cell
+                if(helpfulReviews.count > 1){
+                    return 30;
+                }else{
+                    return 0;
+                }
+            }else if(isShowingMore && indexPath.row == helpfulReviews.count){
+                return 30;
+            }else{
+                return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews];
+            }
+            
+        }
+    }else{
+        return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
+    }
+    return 0;
+}
+- (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
+    //don't auto calculate cell for performance in iOS 7
+    /*
+    DetailReputationReview *reputationDetail = arr[indexPath.row];
     UILabel *messageLabel = [[UILabel alloc] init];
     
     [messageLabel setText:reputationDetail.review_message];
@@ -281,70 +330,122 @@ static NSInteger userViewHeight = 70;
     
     CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
     return height;
-
+     */
+    
+    
+    return 160;
 }
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    cell.backgroundColor = [UIColor clearColor];
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
             [self setLoadingView:YES];
             [[self getNetworkManager:CTagGetProductReview] doRequest];
         }
     }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-    
-    DetailReputationReview *reputationDetail = arrList[indexPath.row];
-    [cell setReputationModelView:reputationDetail.viewModel];
-    
-    if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
-        if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
-            [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
-            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, @(indexPath.row)]];
-        }
+    if(!animationHasShown && helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
+        [self animate:cell];
+        animationHasShown = YES;
     }
-    
-    return cell;
 }
-
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+            cell.isHelpful = NO;
+            cell.delegate = self;
+            cell.indexPath = indexPath;
+            
+            DetailReputationReview *reputationDetail = arrList[indexPath.row];
+            [cell setReputationModelView:reputationDetail.viewModel];
+            return cell;
+        }else{
+            NSInteger limit = isShowingMore ? helpfulReviews.count : 1;
+            if(indexPath.row < limit){
+                ProductReputationSimpleCell *helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+                helpfulCell.isHelpful = YES;
+                helpfulCell.delegate = self;
+                helpfulCell.indexPath = indexPath;
+                
+                DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
+                [helpfulCell setReputationModelView:reputationDetail.viewModel];
+                
+                CGRect newFrame = helpfulCell.leftBorderView.frame;
+                newFrame.size.width = helpfulCell.leftBorderView.frame.size.width;
+                newFrame.size.height = [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews] - userViewHeight;
+                [helpfulCell.leftBorderView setFrame:newFrame];
+                return helpfulCell;
+            }else{
+                return _helpfulReviewLoadMoreCell;
+            }
+        }
+    }else{
+        ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+        cell.isHelpful = NO;
+        cell.delegate = self;
+        cell.indexPath = indexPath;
+        
+        DetailReputationReview *reputationDetail = arrList[indexPath.row];
+        [cell setReputationModelView:reputationDetail.viewModel];
+        return cell;
+    }
+}
 - (void)mappingAttribute:(DetailReputationReview *)reputationReview {
     reputationReview.product_rating_point = reputationReview.review_rate_product;
     reputationReview.product_accuracy_point = reputationReview.review_rate_accuracy;
     reputationReview.review_full_name = reputationReview.review_user_name;
-    
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
-}
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        }else{
+            if([self isLastCellInSectionZero:indexPath]){
+                [self showMoreTapped:nil];
+            }else{
+                //will show most hr details when jerry team has already STP
+                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+            }
+        }
+    }else{
+        DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+        [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
 
+    }
+}
+- (BOOL) isLastCellInSectionZero:(NSIndexPath *)indexPath{
+    if (isShowingMore){
+        return indexPath.row == helpfulReviews.count ? YES : NO;
+    }else{
+        return indexPath.row == 1 ? YES : NO;
+    }
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return arrList.count;
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(section==1){
+            return arrList.count;
+        }else{
+            return isShowingMore ? helpfulReviews.count+1 : 2;
+        }
+    }else{
+        return arrList.count;
+    }
 }
 
 #pragma mark - TTTAttributeLabel Delegate
-- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
-{
+- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point{
     
 }
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url{
     DetailReputationReview *detailReputationReview = arrList[label.tag];
     [self redirectToProductDetailReputation:detailReputationReview withIndexPath:[NSIndexPath indexPathForRow:label.tag inSection:0]];
 }
 
-
 #pragma mark - Action
-- (void)refreshView:(UIRefreshControl*)refresh
-{
+- (void)refreshView:(UIRefreshControl*)refresh{
     [refresh endRefreshing];
     
     [operationQueueLikeDislike cancelAllOperations];
@@ -362,7 +463,6 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (void)actionResetFilter:(id)sender {
     if(filterStar == 0) {
         return;
@@ -405,11 +505,13 @@ static NSInteger userViewHeight = 70;
     [arrList removeAllObjects];
     [tableContent reloadData];
     
+    if(helpfulReviews.count > 0){
+        [_middleMargin setHidden:NO];
+    }
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (IBAction)actionFilter6Month:(id)sender {
     [operationQueueLikeDislike cancelAllOperations];
     [_operationQueue cancelAllOperations];
@@ -422,11 +524,11 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     btnFilter6Month.tag = 1;
     btnFilterAllTime.tag = 0;
+    animationHasShown = NO;
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (IBAction)actionFilterAllTime:(id)sender {
     [operationQueueLikeDislike cancelAllOperations];
     [_operationQueue cancelAllOperations];
@@ -440,26 +542,12 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     btnFilter6Month.tag = 0;
     btnFilterAllTime.tag = 1;
+    animationHasShown = NO;
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (IBAction)actionSegmentedValueChange:(id)sender {
-    /*switch (((UISegmentedControl *) sender).selectedSegmentIndex) {
-        case 0:
-        {
-            [self setRateStar:0 withAnimate:YES];
-        }
-            break;
-        case 1:
-        {
-            [self setRateStar:1 withAnimate:YES];
-        }
-            break;
-    }
-    */
-    
     page = 0;
     strUri = nil;
     [arrList removeAllObjects];
@@ -467,11 +555,19 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
-
+- (IBAction)showMoreTapped:(id)sender {
+    if(isShowingMore){
+        isShowingMore = NO;
+        [_buttonShowMore setTitle:@"tampilkan semua" forState:UIControlStateNormal];
+    }else{
+        isShowingMore = YES;
+        [_buttonShowMore setTitle:@"sembunyikan" forState:UIControlStateNormal];
+    }
+    [tableContent reloadData];
+}
 
 #pragma mark - Method
 - (void)unloadRequesting {
@@ -492,27 +588,9 @@ static NSInteger userViewHeight = 70;
     
     [operationQueueLikeDislike cancelAllOperations];
 }
-
-
-- (void)requestLikeStatusAgain:(NSIndexPath *)indexPath {
-    DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    [loadingLikeDislike setObject:detailReputationReview.review_id forKey:detailReputationReview.review_id];
-    [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[detailReputationReview, [NSNumber numberWithInt:(int)indexPath.row]]];
-}
-
-
-- (void)updateDataInDetailView:(LikeDislike *)likeDislike {
-    if([[self.navigationController.viewControllers lastObject] isMemberOfClass:[ProductDetailReputationViewController class]]) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [((ProductDetailReputationViewController *) [self.navigationController.viewControllers lastObject]) updateLikeDislike:likeDislike];
-        });
-    }
-}
-
 - (void)reloadTable {
     [tableContent reloadData];
 }
-
 - (void)gestureViewStar:(UITapGestureRecognizer *)sender {
     switch (filterStar) {
         case 1:
@@ -592,6 +670,7 @@ static NSInteger userViewHeight = 70;
             break;
     }
     
+    [_middleMargin setHidden:YES];
     
     //Load data
     [operationQueueLikeDislike cancelAllOperations];
@@ -605,22 +684,20 @@ static NSInteger userViewHeight = 70;
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
-
-
 - (void)redirectToProductDetailReputation:(DetailReputationReview *)detailReputationReview withIndexPath:(NSIndexPath *)indexPath {
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     
     [self mappingAttribute:detailReputationReview];
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    productDetailReputationViewController.detailReputationReview = detailReputationReview;
     productDetailReputationViewController.dictLikeDislike = dictLikeDislike;
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = _strProductID;
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.product_owner.user_shop_reputation.reputation_badge_object;
 
-    if([dictLikeDislike objectForKey:productDetailReputationViewController.detailReputaitonReview.review_id]) {
-        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.detailReputaitonReview.review_id];
+    if([dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id]) {
+        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id];
         productDetailReputationViewController.strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
         productDetailReputationViewController.strTotalLike = totalLikeDislike.total_like_dislike.total_like;
         productDetailReputationViewController.strLikeStatus = totalLikeDislike.like_status;
@@ -628,7 +705,6 @@ static NSInteger userViewHeight = 70;
 
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
-
 - (void)showLoginView {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -644,6 +720,7 @@ static NSInteger userViewHeight = 70;
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
+//OBJECT MANAGER BUAT LIKEDISLIKE ACTION
 - (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[LikeDislikePost class]];
@@ -676,7 +753,6 @@ static NSInteger userViewHeight = 70;
     
     [objectManager addResponseDescriptor:responseDescriptorStatus];
 }
-
 - (void)doActionLikeDislike:(int)likeDislikeTag withView:(UIView *)btnLike {
     //1 is like
     //2 is dislike
@@ -740,94 +816,25 @@ static NSInteger userViewHeight = 70;
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:detailReputationReview.review_id repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
-
 - (void)timeOutGetLikeDislike:(NSTimer *)temp {
     RKManagedObjectRequestOperation *operation = [[loadingLikeDislike objectForKey:[temp userInfo]] firstObject];
     [operation cancel];
     operation = nil;
     [loadingLikeDislike removeObjectForKey:[temp userInfo]];
 }
-
-- (RKObjectManager *)getObjectManagerTotalLike
-{
-    // initialize RestKit
+- (RKObjectManager *)getObjectManagerTotalLike{
     RKObjectManager *tempObjectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[LikeDislike class]];
-    [productMapping addAttributeMappingsFromDictionary:@{CLStatus:CLStatus,
-                                                         CLServerProcessTime:CLServerProcessTime,
-                                                         CLStatus:CLStatus,
-                                                         CLMessageError:CLMessageError}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikeResult class]];
-    RKObjectMapping *totalLikeDislikeMapping = [RKObjectMapping mappingForClass:[TotalLikeDislike class]];
-    [totalLikeDislikeMapping addAttributeMappingsFromArray:@[CLikeStatus,
-                                                             CReviewID]];
-    
-    RKObjectMapping *detailTotalLikeMapping = [RKObjectMapping mappingForClass:[DetailTotalLikeDislike class]];
-    [detailTotalLikeMapping addAttributeMappingsFromDictionary:@{CTotalLike:CTotalLike,
-                                                                 CTotalDislike:CTotalDislike}];
-    
-    
-    
-    //Relation Mapping
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CLikeDislikeReview toKeyPath:CLikeDislikeReview withMapping:totalLikeDislikeMapping]];
-    [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CLResult toKeyPath:CLResult withMapping:resultMapping]];
-    [totalLikeDislikeMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTotalLikeDislike toKeyPath:CTotalLikeDislike withMapping:detailTotalLikeMapping]];
-    // Response Descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping method:RKRequestMethodPOST pathPattern:[self getPathLikeDislike] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LikeDislike mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:[self getPathLikeDislike]
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     [tempObjectManager addResponseDescriptor:responseDescriptor];
-    
     return tempObjectManager;
 }
-
 - (NSString *)getPathLikeDislike {
     return @"shop.pl";
 }
-
-- (void)actionGetLikeStatus:(NSArray *)arrayList {
-    if(loadingLikeDislike.count > 10)
-        return;
-    
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        DetailReputationReview *list = (DetailReputationReview *)[arrayList firstObject];
-        RKObjectManager *tempObjectManager = [self getObjectManagerTotalLike];
-        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
-                                kTKPDDETAIL_REVIEWIDS : list.review_id,
-                                kTKPDDETAIL_APISHOPIDKEY : list.shop_id};
-        RKManagedObjectRequestOperation *tempRequest = [tempObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[self getPathLikeDislike] parameters:[param encrypt]];
-
-        
-        NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
-        [loadingLikeDislike setObject:@[tempRequest, [NSIndexPath indexPathForRow:[[arrayList lastObject] intValue] inSection:0], timerLikeDislike] forKey:list.review_id];
-        
-        
-        [tempRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            NSLog(@"%@", operation.HTTPRequestOperation.responseString);
-            NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:list.review_id] lastObject];
-            [temporaryTimer invalidate];
-            
-            NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
-            LikeDislike *obj = [result objectForKey:@""];
-            [dictLikeDislike setObject:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]) forKey:((TotalLikeDislike *) [obj.result.like_dislike_review firstObject]).review_id];
-            [self performSelectorInBackground:@selector(updateDataInDetailView:) withObject:obj];
-            
-            //Update UI
-            if([loadingLikeDislike objectForKey:list.review_id])
-                [tableContent reloadRowsAtIndexPaths:@[[[loadingLikeDislike objectForKey:list.review_id] objectAtIndex:1]] withRowAnimation:UITableViewRowAnimationNone];
-            [loadingLikeDislike removeObjectForKey:list.review_id];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            NSTimer *temporaryTimer = [[loadingLikeDislike objectForKey:list.review_id] lastObject];
-            [temporaryTimer invalidate];
-            [loadingLikeDislike removeObjectForKey:list.review_id];
-        }];
-        [_operationQueue addOperation:tempRequest];
-    });
-}
-
 - (ProductReputationCell *)getCell:(UIView *)btn {
     UIView *tempView = btn.superview;
     while(tempView) {
@@ -840,7 +847,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (void)setLoadingView:(BOOL)isLoad {
     if(isLoad) {
         tableContent.tableFooterView = viewFooter;
@@ -851,8 +857,6 @@ static NSInteger userViewHeight = 70;
         tableContent.tableFooterView = nil;
     }
 }
-
-
 - (TokopediaNetworkManager *)getNetworkManager:(int)tag {
     if(tag == CTagGetProductReview) {
         if(tokopediaNetworkManager == nil) {
@@ -866,13 +870,10 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
-- (void)dismissAllPopTipViews
-{
+- (void)dismissAllPopTipViews{
     [popTipView dismissAnimated:YES];
     popTipView = nil;
 }
-
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
     lblDesc.backgroundColor = [UIColor clearColor];
     lblDesc.textAlignment = NSTextAlignmentLeft;
@@ -881,7 +882,6 @@ static NSInteger userViewHeight = 70;
     lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
     lblDesc.numberOfLines = 0;
 }
-
 
 #pragma mark - ProductReputation Delegate
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription {
@@ -913,7 +913,6 @@ static NSInteger userViewHeight = 70;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
     }
 }
-
 - (void)actionLike:(id)sender {
     if(auth) {
         UIButton *btnLike = (UIButton *)sender;
@@ -968,14 +967,12 @@ static NSInteger userViewHeight = 70;
         [self showLoginView];
     }
 }
-
 - (void)requestTimeout:(NSTimer *)timer {
     [loadingLikeDislike removeObjectForKey:[timer userInfo]];
     
     RKObjectRequestOperation *objectReputation = [operationQueueLikeDislike.operations firstObject];
     [objectReputation cancel];
 }
-
 - (void)actionDisLike:(id)sender {
     if(auth) {
         UIButton *btnDislike = (UIButton *)sender;
@@ -1028,24 +1025,28 @@ static NSInteger userViewHeight = 70;
         [self showLoginView];
     }
 }
-
-- (void)actionChat:(id)sender {
-//    ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-//    [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
-}
-
+- (void)actionChat:(id)sender {}
 - (void)actionMore:(id)sender {
-//    if(auth) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:CStringBatal destructiveButtonTitle:CStringLapor otherButtonTitles:nil, nil];
         actionSheet.tag = ((UIButton *) sender).tag;
         [actionSheet showInView:self.view];
-//    }
-//    else {
-//        [self showLoginView];
-//    }
 }
-
-
+- (void)animate:(UITableViewCell *)cell {
+    [@[cell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
+        [cell setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
+        [UIView animateWithDuration:1
+                              delay:0
+             usingSpringWithDamping:0.7
+              initialSpringVelocity:0.2
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^
+         {
+             [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
+         }
+                         completion:nil];
+    }];
+    
+}
 - (void)actionRate:(id)sender {
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
 
@@ -1069,10 +1070,8 @@ static NSInteger userViewHeight = 70;
     }
 }
 
-
 #pragma mark - PopUp
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
-{
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView{
     [self dismissAllPopTipViews];
 }
 
@@ -1095,7 +1094,6 @@ static NSInteger userViewHeight = 70;
         }
     }
 }
-
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
@@ -1122,7 +1120,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (NSString*)getPath:(int)tag {
     if(tag == CTagGetProductReview) {
         return [productPostUrl isEqualToString:@""] ? @"product.pl" : productPostUrl;
@@ -1130,7 +1127,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (id)getObjectManager:(int)tag {
     if(tag == CTagGetProductReview) {
         RKObjectManager *objectManager;
@@ -1139,126 +1135,7 @@ static NSInteger userViewHeight = 70;
         } else {
             objectManager = [RKObjectManager sharedClient:productBaseUrl];
         }
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Review class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReviewResult class]];
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromArray:@[CUriNext,
-                                                       CUriPrevious]];
-        
-        
-        RKObjectMapping *advreviewMapping = [RKObjectMapping mappingForClass:[AdvanceReview class]];
-        [advreviewMapping addAttributeMappingsFromDictionary:@{CProductRatingPoint:CProductRatingPoint,
-                                                          CProductRateAccuracyPoint:CProductRateAccuracyPoint,
-                                                          CProductPositiveReviewRating:CProductPositiveReviewRating,
-                                                          CProductNetralReviewRating:CProductNetralReviewRating,
-                                                          CProductRatingStarPoint:CProductRatingStarPoint,
-                                                          CProductRatingStarDesc:CProductRatingStarDesc,
-                                                          CProductNegativeReviewRating:CProductNegativeReviewRating,
-                                                          CProductReview:CProductReview,
-                                                          CProductRateAccuracy:CProductRateAccuracy,
-                                                          CProductAccuracyStarDesc:CProductAccuracyStarDesc,
-                                                          CProductRating:CProductRating,
-                                                          CProductNetralReviewRateAccuray:CProductNetralReviewRateAccuray,
-                                                          CProductAccuacyStarRate:CProductAccuacyStarRate,
-                                                          CProductPositiveReviewRateAccuracy:CProductPositiveReviewRateAccuracy,
-                                                          CProductNegativeReviewRateAccuracy:CProductNegativeReviewRateAccuracy
-                                                        }];
-        
-        RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
-        [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{CReviewUpdateTime:CReviewUpdateTime,
-                                                                       CReviewRateAccuracyDesc:CReviewRateAccuracyDesc,
-                                                                       CReviewUserLabelID:CReviewUserLabelID,
-                                                                       CReviewUserName:CReviewUserName,
-                                                                       CReviewRateAccuracy:CReviewRateAccuracy,
-                                                                       CReviewMessage:CReviewMessage,
-                                                                       CReviewRateProductDesc:CReviewRateProductDesc,
-                                                                       CReviewRateSpeedDesc:CReviewRateSpeedDesc,
-                                                                       CReviewShopID:CShopID,
-                                                                        @"review_reputation_id":CReputationID,
-                                                                       CReviewUserImage:CReviewUserImage,
-                                                                       CReviewUserLabel:CReviewUserLabel,
-                                                                       CReviewCreateTime:CReviewCreateTime,
-                                                                       CReviewID:CReviewID,
-                                                                       CReviewRateServiceDesc:CReviewRateServiceDesc,
-                                                                       CReviewRateProduct:CReviewRateProduct,
-                                                                       CReviewRateSpeed:CReviewRateSpeed,
-                                                                       CReviewRateService:CReviewRateService,
-                                                                       CReviewUserID:CReviewUserID
-                                                                            }];
-        
-        RKObjectMapping *reviewReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-        [reviewReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNoReputation,
-                                                                CNegative,
-                                                                CNeutral,
-                                                                CPositif]];
-        
-        RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
-        [reviewResponseMapping addAttributeMappingsFromArray:@[CResponseCreateTime,
-                                                                CResponseMessage]];
-        
-        
-        RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
-        [productOwnerMapping addAttributeMappingsFromDictionary:@{CUserLabelID:CUserLabelID,
-                                                                CUserLabel:CUserLabel,
-                                                                CuserID:CuserID,
-                                                                  @"user_shop_name":CShopName,
-                                                                  @"user_shop_image":CShopImg,
-                                                                CUserImage:CUserImg,
-                                                                CUserName:CFullName,
-                                                                CFullName:CUserName}];
-        
-        RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
-        [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
-                                                               CReputationBadge,
-                                                               CReputationScore,
-                                                               CScore,
-                                                               CMinBadgeScore]];        
-        
-        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-        
-
-        RKObjectMapping *ratingListMapping = [RKObjectMapping mappingForClass:[RatingList class]];
-        [ratingListMapping addAttributeMappingsFromArray:@[CRatingRatingStarPoint,
-                                                           CRatingTotalRateAccuracyPersen,
-                                                           CRatingRateService,
-                                                           CRatingRatingStarDesc,
-                                                           CRatingRatingFmt,
-                                                           CRatingTotalRatingPersen,
-                                                           CRatingUrlFilterRateAccuracy,
-                                                           CRatingRating,
-                                                           CRatingUrlFilterRating,
-                                                           CRatingRateSpeed,
-                                                           CRatingRateAccuracy,
-                                                           CRatingRateAccuracyFmt,
-                                                           CRatingRatingPoint]];
-        
-                                                                
-        //add relationship mapping
-        [productOwnerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserShopReputation toKeyPath:CUserShopReputation withMapping:shopReputationMapping]];
-        [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CPaging toKeyPath:CPaging withMapping:pagingMapping]];
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CAdvanceReview toKeyPath:CAdvanceReview withMapping:advreviewMapping]];
-        
-        [advreviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CProductRatingList toKeyPath:CRating_List withMapping:ratingListMapping]];
-        
-        [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:reviewReputationMapping]];
-        [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewResponse toKeyPath:CReviewResponse withMapping:reviewResponseMapping]];
-        [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewProductOwner toKeyPath:CProductOwner withMapping:productOwnerMapping]];
-        
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CList toKeyPath:CList withMapping:detailReputationReviewMapping]];
-
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[Review mapping]
                                                                                                       method:RKRequestMethodPOST
                                                                                                  pathPattern:[self getPath:tag]
                                                                                                      keyPath:@""
@@ -1271,7 +1148,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*) result).dictionary;
     id stat = [resultDict objectForKey:@""];
@@ -1283,7 +1159,6 @@ static NSInteger userViewHeight = 70;
     
     return nil;
 }
-
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
@@ -1327,19 +1202,15 @@ static NSInteger userViewHeight = 70;
         }
     }
 }
-
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     if(tag == CTagGetProductReview) {
         
     }
 }
-
 - (void)actionBeforeRequest:(int)tag {
 }
-
 - (void)actionRequestAsync:(int)tag {
 }
-
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == CTagGetProductReview) {
         [self setLoadingView:NO];
@@ -1354,36 +1225,22 @@ static NSInteger userViewHeight = 70;
     }
 }
 
-
 #pragma mark - LoadingView Delegate
-- (void)pressRetryButton
-{
+- (void)pressRetryButton{
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 
 #pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController{
-    
-}
-
-- (void)cancelLoginView {
-    
-}
-
 - (UIViewController *)didReceiveViewController {
     return self;
 }
-
 - (NSDictionary *)getParameter {
     return nil;
 }
-
-
 - (NSString *)getPath {
     return @"action/review.pl";
 }
-
 - (void)userDidLogin:(NSNotification*)notification {
     UIViewController *viewController = [self.navigationController.viewControllers lastObject];
     if([viewController isMemberOfClass:[ProductDetailReputationViewController class]]) {
@@ -1397,7 +1254,37 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
 }
 
-
+#pragma mark - HelpfulReviewRequestDelegate
+- (void) didReceiveHelpfulReview:(NSArray*)helpfulReview{
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    
+    [helpfulReviews removeAllObjects];
+    [helpfulReviews addObjectsFromArray:helpfulReview];
+    
+    if(helpfulReviews.count == 0){
+        [_middleMargin setHidden:YES];
+    }
+    
+}
+- (void)showMoreDidTappedInIndexPath:(NSIndexPath*)indexPath{
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        }else{
+            if([self isLastCellInSectionZero:indexPath]){
+                [self showMoreTapped:nil];
+            }else{
+                //will show most hr details when jerry team has already STP
+                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+            }
+        }
+    }else{
+        DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+        [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+    }
+}
 
 #pragma mark - GTM
 - (void)configureGTM {

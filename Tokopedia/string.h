@@ -68,6 +68,9 @@
 #define ERROR_TITLE @"ERROR"
 #define ERROR_CANCEL_BUTTON_TITLE @"OK"
 #define ERROR_REQUEST_TIMEOUT @"Request Timeout"
+#define CStringFailedInServer @"Server error"
+#define CStringNoConnection @"Tidak ada koneksi internet"
+
 
 #define TKPD_SUCCESS_VALUE @"1"
 

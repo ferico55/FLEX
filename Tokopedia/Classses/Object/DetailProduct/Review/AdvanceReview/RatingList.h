@@ -40,4 +40,6 @@
 @property (nonatomic, strong) NSString *rating_rate_accuracy;
 @property (nonatomic, strong) NSString *rating_rate_accuracy_fmt;
 @property (nonatomic, strong) NSString *rating_rating_point;
+
++ (RKObjectMapping*) mapping;
 @end

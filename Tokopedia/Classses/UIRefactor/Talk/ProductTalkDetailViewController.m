@@ -144,10 +144,11 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    _marksOpenedTalksAsRead = NO;
+    
     
     if (self) {
         _isnodata = YES;
+        _marksOpenedTalksAsRead = NO;
         self.title = kTKPDTITLE_TALK;
     }
     
@@ -187,10 +188,6 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view from its nib.
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    self.view.frame = screenRect;
     
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -350,7 +347,7 @@
             } else {
                 if (_auth) {
                     if (list.comment_user_reputation == nil && list.comment_user_id != nil) {
-                        NSString *userId = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+                        NSString *userId = [_userManager getUserId];
                         BOOL usersComment = [list.comment_user_id isEqualToString:userId];
                         if (usersComment) {
                             UserAuthentificationManager *user = [UserAuthentificationManager new];
@@ -493,7 +490,11 @@
     } else {
         [_header setHidden:NO];
         if([_userManager isLogin]) {
-            [_talkInputView setHidden:NO];
+            if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+               ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+               ) {
+                [_talkInputView setHidden:NO];
+            }
             [_sendButton setEnabled:NO];
         } else {
             [_talkInputView setHidden:YES];
@@ -584,7 +585,7 @@
 }
 
 - (void) initTalkInputView {
-    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10 - ((UIViewController*)_masterViewController).view.frame.size.width;
+    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10;
     _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
@@ -608,13 +609,12 @@
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
-
 #pragma mark - Life Cycle
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+- (void)viewDidLayoutSubviews {
+    //readjust growing textview width here, because we can't get the correct view controller size in viewDidLoad
+    NSInteger textViewWidth = self.view.bounds.size.width - _sendButton.frame.size.width - 10;
+    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, _growingtextview.frame.size.height);
 }
-
 
 #pragma mark - Request and Mapping
 -(void) cancel {
@@ -893,13 +893,17 @@
                 if(_auth) {
                     
                     TalkCommentList *comment = [TalkCommentList new];
-                    comment.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+                    comment.comment_user_id = [_userManager getUserId];
                     comment.comment_user_name = [_auth objectForKey:@"full_name"];
                     comment.comment_user_image = [_auth objectForKey:@"user_image"];
                     comment.comment_message =_growingtextview.text;
 
                     if ([_auth objectForKey:@"shop_id"]) {
-                        if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:[[_auth objectForKey:@"shop_id"] stringValue]]) {
+                        //TODO: the UserAuthenticationManager actually returns shop id as NSNumber*,
+                        //so we need to get the string value of it. need to fix data type problem
+                        NSString* userShopId = [((NSNumber*)[_userManager getShopId]) stringValue];
+                        
+                        if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:userShopId]) {
                             comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
                             comment.comment_shop_image = [_auth objectForKey:@"shop_avatar"];
                             comment.comment_is_owner = @"1";
@@ -1074,8 +1078,8 @@
             TalkCommentList *comment = _list[_list.count-1];
             comment.is_just_sent = NO;
             comment.comment_id = commentaction.result.comment_id;
-            comment.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
-
+            comment.comment_user_id = [_userManager getUserId];
+            
             if([dictCell objectForKey:@"-1"]) {
                 [dictCell removeObjectForKey:@"-1"];
             }

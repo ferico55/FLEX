@@ -14,4 +14,5 @@
 @property (nonatomic, strong) NSString *total_like;
 @property (nonatomic, strong) NSString *total_dislike;
 
++(RKObjectMapping*)mapping;
 @end

@@ -12,7 +12,7 @@
 #import "CatalogShopViewController.h"
 #import "CatalogShopCell.h"
 #import "UserAuthentificationManager.h"
-#import "GeneralTableViewController.h"
+#import "SortViewController.h"
 #import "FilterCatalogViewController.h"
 #import "CatalogProductViewController.h"
 #import "DetailProductViewController.h"
@@ -30,7 +30,7 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    GeneralTableViewControllerDelegate,
+    SortViewControllerDelegate,
     FilterCatalogDelegate,
     CatalogShopDelegate,
     CMPopTipViewDelegate,
@@ -65,6 +65,9 @@
     FilterCatalogViewController *_filterCatalogController;
     
     LoadingView *_loadingView;
+    NoResultReusableView *noResultView;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -93,7 +96,7 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    _page = 2;
+    _page = 1;
     _uriNext = _catalog.result.paging.uri_next;
     _catalogId = _catalog.result.catalog_info.catalog_id;
     
@@ -106,7 +109,10 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
-    if (_catalog_shops.count == 0) [self initNoResultView];
+    [_catalog_shops removeAllObjects];
+    [_networkManager doRequest];
+    
+    [self initNoResultView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -223,29 +229,10 @@
         UIButton *button = (UIButton *)sender;
         if (button.tag == 1) {
             
-            GeneralTableViewController *controller = [GeneralTableViewController new];
-            controller.title = @"Urutkan";
+            SortViewController *controller = [SortViewController new];
+            controller.sortType = SortCatalogDetailSeach;
+            controller.selectedIndexPath = _sortIndexPath;
             controller.delegate = self;
-            controller.objects = @[
-                                   @"Produk Terjual",
-                                   @"Penilaian",
-                                   @"Harga - Dari yang Terendah",
-                                   @"Harga - Dari yang Tertinggi",
-                                   ];
-            
-            NSString *selectedObject = @"Produk Terjual";
-            if ([_orderBy isEqualToString:@"1"]) {
-                selectedObject = @"Produk Terjual";
-            } else if ([_orderBy isEqualToString:@"2"]) {
-                selectedObject = @"Penilaian";
-            } else if ([_orderBy isEqualToString:@"3"]) {
-                selectedObject = @"Harga - Dari yang Terendah";
-            } else if ([_orderBy isEqualToString:@"4"]) {
-                selectedObject = @"Harga - Dari yang Tertinggi";
-            }
-            
-            controller.selectedObject = selectedObject;
-            controller.isPresentedViewController = YES;
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             navigationController.navigationBar.translucent = NO;
@@ -453,6 +440,7 @@
 - (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
+        [noResultView removeFromSuperview];
         [self loadMappingResult:result];
         [_activityIndicatorView stopAnimating];
         [_tableView setTableFooterView:nil];
@@ -464,7 +452,20 @@
     if (result && [result isKindOfClass:[RKMappingResult class]]) {
         Catalog *catalog = [result.dictionary objectForKey:@""];
         if (_page == 1) [_catalog_shops removeAllObjects];
-        [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
+        
+        if(catalog.result.catalog_shops.count > 0) {
+            [_catalog_shops addObjectsFromArray:catalog.result.catalog_shops];
+        }else{
+            //no data
+            if([_location isEqualToString:@"Semua Lokasi"] && [_condition isEqualToString:@"Semua Kondisi"]){
+                [noResultView setNoResultDesc:@"Toko tidak ditemukan pada katalog ini"];
+            }else{
+                //use filter
+                [noResultView setNoResultDesc:@"Toko tidak ditemukan pada katalog dengan filter ini"];
+            }
+            [_tableView addSubview:noResultView];
+        }
+        
         if (catalog.result.paging.uri_next) _page++;
         _uriNext = catalog.result.paging.uri_next;
         [_tableView reloadData];
@@ -495,25 +496,18 @@
 
 #pragma mark - General table delegate
 
-- (void)didSelectObject:(id)object
-{
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    _sortIndexPath = indexPath;
+    
     [_catalog_shops removeAllObjects];
+    
     [_tableView reloadData];
     [_tableView setTableFooterView:_footerView];
+    
     [_activityIndicatorView startAnimating];
-    NSString *orderBy;
-    if ([object isEqualToString:@"Produk Terjual"]) {
-        orderBy = @"1";
-    } else if ([object isEqualToString:@"Penilaian"]) {
-        orderBy = @"2";
-    } else if ([object isEqualToString:@"Harga - Dari yang Terendah"]) {
-        orderBy = @"3";
-    } else if ([object isEqualToString:@"Harga - Dari yang Tertinggi"]) {        
-        orderBy = @"4";
-    }
     
     _catalogId = _catalog.result.catalog_info.catalog_id;
-    _orderBy = orderBy;
+    _orderBy = sort;
     _page = 1;
     
     [_networkManager doRequest];
@@ -622,17 +616,15 @@
 #pragma mark - No result view
 
 - (void)initNoResultView {
-    NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     noResultView.delegate = self;
     [noResultView generateAllElements:@"no-result.png"
                                 title:@"Tidak ada penjual"
                                  desc:@"Toko tidak ditemukan pada katalog ini"
-                             btnTitle:@"Kembali ke halaman sebelumnya"];
-    [self.tableView addSubview:noResultView];
+                             btnTitle:nil];
 }
 
 - (void)buttonDidTapped:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -10,7 +10,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ShopBadgeLevel : NSObject
+@interface ShopBadgeLevel : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) NSString *level;
 @property (nonatomic, strong) NSString *set;
+
++ (RKObjectMapping*) mapping;
 @end

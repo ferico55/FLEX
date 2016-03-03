@@ -20,6 +20,7 @@
 
 @property (nonatomic, strong) ReviewResponse *review_response;
 @property (nonatomic, strong) NSString *review_shop_id;
+@property (nonatomic, strong) NSString *review_shop_name;
 @property (nonatomic, strong) NSString *review_user_image;
 @property (nonatomic, strong) NSString *review_create_time;
 @property (nonatomic, strong) NSString *review_id;
@@ -54,5 +55,8 @@
 
 @property (nonatomic, strong) ProductReputationViewModel *viewModel;
 
+@property (nonatomic, strong) NSString *is_helpful;
+
++ (RKObjectMapping*) mapping;
 
 @end

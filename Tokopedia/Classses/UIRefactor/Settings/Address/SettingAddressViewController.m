@@ -143,7 +143,7 @@
     _addNewAddressView.frame = frame;
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
         _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                               style:UIBarButtonItemStylePlain
                                                              target:(self)
@@ -254,7 +254,7 @@
         if (indexPath.row == 0) {
             NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
             
-            if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+            if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
                 static NSString *CellIdentifier = GENERAL_CHECKMARK_CELL_IDENTIFIER;
                 
                 cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -396,7 +396,7 @@
 {
     BOOL isdefault;
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+    if (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO) {
          AddressFormList *address = _list[indexPath.section];
         [_datainput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
         [_table reloadData];
@@ -507,6 +507,15 @@
     
     if (status) {
         [self requestProcess:object];
+    }
+    else
+    {
+        if(address.message_error.count>0) {
+            NSArray *errorMessages = address.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
+                                                                               delegate:self];
+            [alertView show];
+        }
     }
 }
 
@@ -631,7 +640,7 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETDEFAULTADDRESSKEY,
-                            kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]?:@0
+                            kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]?:@0,
                             };
     
     _requestActionSetDefault = [_objectmanagerActionSetDefault appropriateObjectRequestOperationWithObject:self
@@ -883,7 +892,7 @@
             {
                 //add new address
                 NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-                NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
+                NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
                 SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
                 vc.data = @{kTKPD_AUTHKEY: _auth,
                             kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
@@ -905,7 +914,7 @@
         if (button.tag == 1) {
             //add new address
             NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-            NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
+            NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC|| type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
             SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
             vc.data = @{kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
                         };
@@ -1057,47 +1066,9 @@
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
-
-    if (![searchBar.text isEqualToString:@""]) {
-        [_list removeAllObjects];
-        [_list addObjectsFromArray:_listTemp];
-        
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchBar.text];
-        NSMutableArray *listName = [NSMutableArray new];
-        NSMutableArray *listReceiver = [NSMutableArray new];
-        for (AddressFormList *address in _list) {
-            [listName addObject: address.address_name];
-            [listReceiver addObject:address.receiver_name];
-        }
-        
-        listName = [[listName filteredArrayUsingPredicate:resultPredicate] mutableCopy];
-        listReceiver = [[listReceiver filteredArrayUsingPredicate:resultPredicate] mutableCopy];
-        NSMutableArray *listFiltered = [NSMutableArray new];
-        for (AddressFormList *address in _list) {
-            for (NSString *name in listName) {
-                if ([address.address_name isEqualToString:name] && ![listFiltered containsObject:address]) {
-                    [listFiltered addObject:address];
-                }
-            }
-            for (NSString *receiver in listReceiver) {
-                if ([address.receiver_name isEqualToString:receiver] && ![listFiltered containsObject:address]) {
-                    [listFiltered addObject:address];
-                }
-            }
-        }
-        [_list removeAllObjects];
-        [_list addObjectsFromArray:listFiltered];
-    }
-    else
-    {
-        [_list removeAllObjects];
-        [_list addObjectsFromArray:_listTemp];
-    }
-    
     _searchKeyword = searchBar.text;
     
-    [_table reloadData];
-    
+    [self refreshView:nil];
     return YES;
 }
 
@@ -1121,7 +1092,9 @@
 #pragma mark - Add / Edit Address Delegate
 -(void)SettingAddressEditViewController:(SettingAddressEditViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    [_delegate SettingAddressViewController:self withUserInfo:userInfo];
+    if (_delegate && [_delegate respondsToSelector:@selector(SettingAddressViewController:withUserInfo:)]) {
+        [_delegate SettingAddressViewController:self withUserInfo:userInfo];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -1215,7 +1188,7 @@
                                 kTKPDPROFILE_APIPAGEKEY : @(_page),
                                 kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
                                 kTKPD_USERIDKEY : @(userID),
-                                API_QUERY_KEY : query
+                 API_QUERY_KEY : _searchKeyword?:@""
                                 };
     }
     
@@ -1232,7 +1205,7 @@
     requestObject.page = [NSString stringWithFormat:@"%zd", _page];
     requestObject.per_page = [NSString stringWithFormat:@"%zd",kTKPDPROFILESETTINGADDRESS_LIMITPAGE];
     requestObject.user_id = userID;
-    requestObject.query = query;
+    requestObject.query = query?:@"";
     
     return requestObject;
 }

@@ -10,9 +10,46 @@ import UIKit
 import Foundation
 import GoogleMaps
 
+
 enum TypePlacePicker : Int{
     case TypeEditPlace
     case TypeShowPlace
+}
+
+@objc class TKPAddressStreet : NSObject {
+    
+    func getStreetAddress(street : String)->String{
+        let str = street
+        let streetNumber = str.componentsSeparatedByCharactersInSet(
+            NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+        print(streetNumber)
+        
+        var address = street
+        var hasValue = false
+        
+        // Loops thorugh the street
+        for i in street.characters {
+            let str = String(i)
+            // Checks if the char is a number
+            if (Int(str) != nil){
+                // If it is it appends it to number
+                address = address.stringByReplacingOccurrencesOfString(str, withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                // Here we set the hasValue to true, beacause the street number will come in one order
+                // 531 in this case
+                hasValue = true
+            }
+            else{
+                // Lets say that we have runned through 531 and are at the blank char now, that means we have looped through the street number and can end the for iteration
+                if(hasValue){
+                    break
+                }
+            }
+        }
+        address = address.stringByReplacingOccurrencesOfString("Kav", withString: "")
+        address = address.stringByReplacingOccurrencesOfString("-", withString: "")
+        return address
+    }
+    
 }
 
 @objc protocol TKPPlacePickerDelegate {
@@ -39,8 +76,9 @@ enum TypePlacePicker : Int{
     @IBOutlet var addressNameLabel: UILabel!
     
     @IBOutlet var infoViewConstraintHeight: NSLayoutConstraint!
-    @IBOutlet var mapViewBotomConstraint: NSLayoutConstraint!
     @IBOutlet var transparantInfoView: UIView!
+    @IBOutlet weak var mapWarningLabel: UILabel!
+    
     var delegate: TKPPlacePickerDelegate?
     var firstCoordinate = CLLocationCoordinate2D()
     var type : Int = 0
@@ -67,7 +105,6 @@ enum TypePlacePicker : Int{
     var _previousY:CGFloat!
     var _infoTopConstraint:NSLayoutConstraint!
 
-//    var infoAddressView = InfoAddressView()
     var infoAddress : AddressViewModel!
 
     override func loadView() {
@@ -99,6 +136,7 @@ enum TypePlacePicker : Int{
         initLocationManager()
         adustBehaviorType(type)
         loadHistory()
+        createWarningLabel()
     }
     
     //MARK: - View Action
@@ -117,7 +155,7 @@ enum TypePlacePicker : Int{
     }
     
     @IBAction func tapShowInfoAddress(sender: AnyObject) {
-        if(_infoTopConstraint.constant <= -40){
+        if(_infoTopConstraint.constant <= -60){
             infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
             showInfo()
         }
@@ -141,8 +179,8 @@ enum TypePlacePicker : Int{
     
     //MARK: - GMSMapView Delegate
     func mapView(mapView: GMSMapView!, didChangeCameraPosition position: GMSCameraPosition!) {
-        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-        self.mapView.updateAddress("Lokasi yang Dituju")
+        self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+        self.mapView.updateAddress("Tandai lokasi Anda")
     }
     
     func mapView(mapView: GMSMapView!, willMove gesture: Bool) {
@@ -169,6 +207,17 @@ enum TypePlacePicker : Int{
     }
 
     //MARK: - Methods
+    
+    func createWarningLabel() -> Void {
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 2
+        let font = UIFont(name: "GothamLight", size: 10.0)!
+        let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:style]
+        let string = "Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas"
+        let attributedString = NSMutableAttributedString(string:string, attributes:attributes)
+        self.mapWarningLabel.attributedText = attributedString;
+    }
+    
     func adustBehaviorType(type: Int){
         switch type {
         case TypePlacePicker.TypeEditPlace.rawValue :
@@ -212,9 +261,8 @@ enum TypePlacePicker : Int{
                 toItem: self.view,
                 attribute: .Bottom,
                 multiplier: 1.0,
-                constant: -40.0)
+                constant: -60.0)
             self.view .addConstraint(_infoTopConstraint)
-//            mapViewBotomConstraint.constant = abs(_infoTopConstraint.constant)
             mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, abs(_infoTopConstraint.constant), 0.0);
             adjustInfoAddress(infoAddress)
         }
@@ -279,7 +327,7 @@ enum TypePlacePicker : Int{
     
     func hideInfo() -> Void{
         transparantInfoView.hidden = true
-        _infoTopConstraint.constant = -40
+        _infoTopConstraint.constant = -60
         UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseIn, animations: { () -> Void in
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
@@ -301,8 +349,8 @@ enum TypePlacePicker : Int{
     
     func updateAddressSaveHistory(shouldSaveHistory : Bool, addressSugestion:GMSAutocompletePrediction?)
     {
-        self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-        self.mapView.updateAddress("Lokasi yang Dituju")
+        self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+        self.mapView.updateAddress("Tandai lokasi Anda")
         geocoder.reverseGeocodeCoordinate(mapView.selectedMarker.position) { (response, error) -> Void in
             if (error != nil){
                 return
@@ -319,8 +367,8 @@ enum TypePlacePicker : Int{
                     self.saveHistory(placemark, addressSuggestions: addressSugestion!)
                 }
             }else {
-                self.addressLabel.setCustomAttributedText("Lokasi yang Dituju")
-                self.mapView.updateAddress("Lokasi yang Dituju")
+                self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
+                self.mapView.updateAddress("Tandai lokasi Anda")
                 self.mapView.selectedMarker = self.mapView.selectedMarker
             }
         }
@@ -351,16 +399,11 @@ enum TypePlacePicker : Int{
     }
     
     func addressString(address:GMSAddress)-> String{
-        var strSnippet : String = " "
-        
-        if (address.lines.count>0) {
-            strSnippet = address.lines[0] as! String;
+        var strSnippet : String = ""
+        //MARK:: IBR-372 PO Wishes
+        if (address.thoroughfare != nil) {
+            strSnippet = TKPAddressStreet().getStreetAddress(address.thoroughfare)
         }
-        else{
-            strSnippet = adjustStrSnippet(address.thoroughfare, strSnippet: strSnippet)
-        }
-        strSnippet = adjustStrSnippet(address.locality, strSnippet: strSnippet)
-        strSnippet = adjustStrSnippet(address.subLocality, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.administrativeArea, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.postalCode, strSnippet: strSnippet)
         
@@ -385,13 +428,7 @@ enum TypePlacePicker : Int{
         var documentsPath:String = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last!
         documentsPath += "/history_places.plist"
         
-        var addressString : String = " "
-        if (address.lines.count>0){
-            addressString = address.lines[0] as! String
-        }
-        else{
-            addressString = address.thoroughfare
-        }
+        let addressString : String = TKPAddressStreet().getStreetAddress(address.thoroughfare)
         
         var postalCode : String!
         if (address.postalCode == nil){ postalCode = ""} else{ postalCode = address.postalCode}

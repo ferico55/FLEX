@@ -18,7 +18,11 @@
     }
     self.backgroundColor = self.contentView.backgroundColor = [UIColor clearColor];
     tvDesc.backgroundColor = [UIColor clearColor];
-    [tvDesc sizeToFit];
+    tvDesc.textContainer.maximumNumberOfLines = 9999;
+    
+    [tvDesc setScrollEnabled:NO];
+    [tvDesc setUserInteractionEnabled:NO];
+    
     [viewStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapStar:)]];
     [viewStar setUserInteractionEnabled:YES];
     
@@ -34,13 +38,15 @@
 
 - (CGSize)getSizeDesc
 {
-    UILabel *tempLbl = [[UILabel alloc] init];
-    tempLbl.font = tvDesc.font;
-    tempLbl.numberOfLines = 0;
-    tempLbl.textColor = tvDesc.textColor;
-    tempLbl.text = tvDesc.text;
-    
-    return [tempLbl sizeThatFits:CGSizeMake(tvDesc.bounds.size.width, 9999)];
+    CGRect sizeOfMessage = [tvDesc.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0f]}
+                                                           context:nil];
+    //temporary fix to measure height for distance between desc and date,
+    //if you know better solution, please change this
+    constraintHeightDesc.constant = sizeOfMessage.size.height;
+    return CGSizeMake(sizeOfMessage.size.width, sizeOfMessage.size.height);
+     
 }
 
 - (void)updateConstraints

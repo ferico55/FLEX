@@ -46,7 +46,7 @@
 #define CTagListReputationReview 1
 #define CTagSkipReputationReview 2
 
-@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate, CMPopTipViewDelegate, SmileyDelegate>
+@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate, CMPopTipViewDelegate, SmileyDelegate, TTTAttributedLabelDelegate>
 
 @end
 
@@ -358,6 +358,10 @@
         n = 0;
     
     _detailMyInboxReputation.unassessed_reputation_review = _detailMyInboxReputation.viewModel.unassessed_reputation_review = [NSString stringWithFormat:@"%d", n];
+    
+    TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width-(CPaddingTopBottom*4), 0)];
+    [self setPropertyLabelDesc:tempLabel];
+    [self initLabelDesc:tempLabel withText:tempDetailReputationReview.viewModel.review_message];
 }
 
 - (void)successGiveComment {
@@ -454,7 +458,7 @@
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
-    productDetailReputationViewController.detailReputaitonReview = detailReputationReview;
+    productDetailReputationViewController.detailReputationReview = detailReputationReview;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
     
     if(_detailMyInboxReputation.updated_reputation_review!=nil && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@""] && ![_detailMyInboxReputation.updated_reputation_review isEqualToString:@"0"]) {
@@ -814,6 +818,7 @@
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
         [str addAttribute:NSFontAttributeName value:lblDesc.font range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
+        lblDesc.delegate = self;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
     else {
@@ -1052,4 +1057,6 @@
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
+
+
 @end
