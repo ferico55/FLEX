@@ -30,6 +30,7 @@
 @property (nonatomic, weak) NSString *review_rate_accuracy;
 @property (nonatomic, weak) NSString *review_rate_quality;
 @property (nonatomic, weak) NSString *product_status;
+@property (nonatomic, weak) NSString *product_id;
 
 
 @property (nonatomic, weak) ReviewResponse *review_response;

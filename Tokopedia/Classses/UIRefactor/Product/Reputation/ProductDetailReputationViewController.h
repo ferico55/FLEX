@@ -23,7 +23,7 @@
 @property (nonatomic, unsafe_unretained) NSMutableDictionary *dictLikeDislike, *loadingLikeDislike;
 @property (nonatomic, unsafe_unretained) DetailReputationReview *detailReputationReview;
 @property (nonatomic, unsafe_unretained) ShopBadgeLevel *shopBadgeLevel;
-@property (nonatomic, strong) ReviewList *reviewList;
+@property (nonatomic, strong) DetailReputationReview *reviewList;
 @property (nonatomic, strong) NSString *strTotalLike;
 @property (nonatomic, unsafe_unretained) NSString *strProductID;
 @property (nonatomic, strong) NSString *strTotalDisLike;
