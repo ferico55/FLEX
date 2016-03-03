@@ -10,7 +10,7 @@
 
 @implementation InboxTicketCell
 {
-    IBOutlet UIView* _selectionMarker;
+    IBOutlet UIView *_viewContainer;
 }
 
 + (id)initCell
@@ -28,11 +28,11 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    _selectionMarker.hidden = !selected;
+    _viewContainer.backgroundColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor whiteColor];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    _selectionMarker.hidden = !highlighted;
+    _viewContainer.backgroundColor = highlighted ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor whiteColor];
 }
 
 @end

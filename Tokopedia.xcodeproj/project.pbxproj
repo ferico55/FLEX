@@ -308,7 +308,6 @@
 		45DB3FFD1C83F13A00130A43 /* PromoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB34831C83F13700130A43 /* PromoteResult.m */; };
 		45DB3FFE1C83F13A00130A43 /* Reputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB34861C83F13700130A43 /* Reputation.m */; };
 		45DB3FFF1C83F13A00130A43 /* ReputationDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB34881C83F13700130A43 /* ReputationDetail.m */; };
-		45DB40001C83F13A00130A43 /* ReputationDetailCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB348A1C83F13700130A43 /* ReputationDetailCopy.m */; };
 		45DB40011C83F13A00130A43 /* ReputationList.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB348C1C83F13700130A43 /* ReputationList.m */; };
 		45DB40021C83F13A00130A43 /* ReputationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB348E1C83F13700130A43 /* ReputationResult.m */; };
 		45DB40031C83F13A00130A43 /* ShopBadgeLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DB34901C83F13700130A43 /* ShopBadgeLevel.m */; };
@@ -2695,8 +2694,6 @@
 		45DB34861C83F13700130A43 /* Reputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reputation.m; sourceTree = "<group>"; };
 		45DB34871C83F13700130A43 /* ReputationDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetail.h; sourceTree = "<group>"; };
 		45DB34881C83F13700130A43 /* ReputationDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetail.m; sourceTree = "<group>"; };
-		45DB34891C83F13700130A43 /* ReputationDetailCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetailCopy.h; sourceTree = "<group>"; };
-		45DB348A1C83F13700130A43 /* ReputationDetailCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetailCopy.m; sourceTree = "<group>"; };
 		45DB348B1C83F13700130A43 /* ReputationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationList.h; sourceTree = "<group>"; };
 		45DB348C1C83F13700130A43 /* ReputationList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationList.m; sourceTree = "<group>"; };
 		45DB348D1C83F13700130A43 /* ReputationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationResult.h; sourceTree = "<group>"; };
@@ -6508,8 +6505,6 @@
 				45DB34861C83F13700130A43 /* Reputation.m */,
 				45DB34871C83F13700130A43 /* ReputationDetail.h */,
 				45DB34881C83F13700130A43 /* ReputationDetail.m */,
-				45DB34891C83F13700130A43 /* ReputationDetailCopy.h */,
-				45DB348A1C83F13700130A43 /* ReputationDetailCopy.m */,
 				45DB348B1C83F13700130A43 /* ReputationList.h */,
 				45DB348C1C83F13700130A43 /* ReputationList.m */,
 				45DB348D1C83F13700130A43 /* ReputationResult.h */,
@@ -12863,7 +12858,6 @@
 				45DB3F031C83F13A00130A43 /* LogoutResult.m in Sources */,
 				45DB3EED1C83F13A00130A43 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				45DB3F271C83F13A00130A43 /* CatalogImages.m in Sources */,
-				45DB40001C83F13A00130A43 /* ReputationDetailCopy.m in Sources */,
 				45DB42B31C83F13A00130A43 /* FilterSalesTransactionListViewController.m in Sources */,
 				45DB40581C83F13A00130A43 /* Gojek.m in Sources */,
 				45DB3FE51C83F13A00130A43 /* UserInfo.m in Sources */,
