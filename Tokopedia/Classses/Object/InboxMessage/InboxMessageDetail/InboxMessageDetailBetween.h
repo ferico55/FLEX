@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *user_id;
 
++ (RKObjectMapping*)mapping;
+
 @end

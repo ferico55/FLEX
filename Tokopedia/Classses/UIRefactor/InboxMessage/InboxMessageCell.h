@@ -34,5 +34,4 @@
 @property BOOL displaysUnreadIndicator;
 @property (weak, nonatomic) UIView* popTipAnchor;
 
-@property (strong, nonatomic) NSIndexPath *indexpath;
 @end

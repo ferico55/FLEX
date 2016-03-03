@@ -10,4 +10,15 @@
 
 @implementation InboxMessage
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:self];
+    [statusMapping addAttributeMappingsFromDictionary:@{@"status":@"status",
+                                                        @"server_process_time":@"server_process_time"}];
+    
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[InboxMessageResult mapping]];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    return statusMapping;
+}
+
 @end
