@@ -118,6 +118,7 @@
 @property (nonatomic, strong) ReviewResponse *review_response;
 @property (nonatomic, strong) DetailReviewReputationViewModel *viewModel;
 
+
 //only used in helpful review, diff implementation, diff ws
 @property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;
 

@@ -452,7 +452,7 @@
                                                           kTKPDREVIEW_APIRESPONSEMESSAGEKEY:kTKPDREVIEW_APIRESPONSEMESSAGEKEY
                                                           }];
 
-    RKObjectMapping *reviewproductownerMapping = [RKObjectMapping mappingForClass:[ReviewProductOwner class]];
+    RKObjectMapping *reviewproductownerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
     [reviewproductownerMapping addAttributeMappingsFromDictionary:@{kTKPDREVIEW_APIUSERIDKEY:kTKPDREVIEW_APIUSERIDKEY,
                                                                     kTKPDREVIEW_APIUSERIMAGEKEY:kTKPDREVIEW_APIUSERIMAGEKEY,
                                                                     kTKPDREVIEW_APIUSERNAME:kTKPDREVIEW_APIUSERNAME

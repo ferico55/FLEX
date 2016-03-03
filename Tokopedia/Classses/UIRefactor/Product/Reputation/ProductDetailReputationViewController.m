@@ -410,7 +410,12 @@ MGSwipeTableCellDelegate>
 }
 
 - (void)goToDetailProduct:(id)sender {
-    [_TKPDNavigator navigateToProductFromViewController:self withName:(_detailReputationReview!=nil)?_detailReputationReview.product_name:_reviewList.review_product_name withPrice:nil withId:(_detailReputationReview==nil? _reviewList.review_product_id:_detailReputationReview.product_id) withImageurl:(_detailReputationReview!=nil)?_detailReputationReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images) withShopName:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
+    [_TKPDNavigator navigateToProductFromViewController:self
+                                               withName:(_detailReputationReview!=nil)?_detailReputationReview.product_name:_reviewList.review_product_name
+                                              withPrice:nil
+                                                 withId:(_detailReputationReview==nil? _reviewList.review_product_id:_detailReputationReview.product_id)
+                                           withImageurl:(_detailReputationReview!=nil)?_detailReputationReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images)
+                                           withShopName:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_name:_reviewList.review_product_owner.full_name];
 }
 
 - (void)actionVote:(id)sender
@@ -535,7 +540,7 @@ MGSwipeTableCellDelegate>
 //    } failure:nil];
     
     
-    [cell.getViewLabelUser setText:_detailReputationReview!=nil? _detailReputationReview.product_owner.full_name:_reviewList.review_product_owner.user_name];
+    [cell.getViewLabelUser setText:_detailReputationReview!=nil? _detailReputationReview.product_owner.full_name:_reviewList.review_product_owner.full_name];
     [cell.getViewLabelUser setLabelBackground:(_detailReputationReview!=nil)?_detailReputationReview.review_user_label:_reviewList.review_user_label];
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
@@ -571,7 +576,7 @@ MGSwipeTableCellDelegate>
     cell.getBtnTryAgain.hidden = !(_detailReputationReview!=nil? _detailReputationReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_img:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview!=nil? _detailReputationReview.product_owner.shop_img:_reviewList.review_product_owner.user_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -1375,9 +1380,9 @@ MGSwipeTableCellDelegate>
                 _reviewList.review_response.canDelete = YES;
                 
                 if(responseComment.result.product_owner != nil) {
-                    _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
+                    _reviewList.review_product_owner.full_name = responseComment.result.product_owner.full_name;
                     _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
-                    _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
+                    _reviewList.review_product_owner.user_img = responseComment.result.product_owner.user_img;
                 }
                 
                 //Set badge number
@@ -1450,8 +1455,8 @@ MGSwipeTableCellDelegate>
                 _reviewList.review_response.canDelete = NO;
                 _reviewList.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
                 _reviewList.review_response.response_message = responseComment.result.review_response.response_message;
-                _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
-                _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
+                _reviewList.review_product_owner.user_img = responseComment.result.product_owner.user_img;
+                _reviewList.review_product_owner.full_name = responseComment.result.product_owner.full_name;
                 _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
             }
             

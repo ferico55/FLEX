@@ -681,11 +681,11 @@ ProductReputationSimpleDelegate>
                                                                 REVIEW_RESPONSE_MESSAGE:REVIEW_RESPONSE_MESSAGE
                                                                 }];
     
-    RKObjectMapping *reviewProductOwnerMapping = [RKObjectMapping mappingForClass:[ReviewProductOwner class]];
+    RKObjectMapping *reviewProductOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
     [reviewProductOwnerMapping addAttributeMappingsFromDictionary:@{
                                                                     REVIEW_PRODUCT_OWNER_USER_ID:REVIEW_PRODUCT_OWNER_USER_ID,
-                                                                    REVIEW_PRODUCT_OWNER_USER_IMAGE:REVIEW_PRODUCT_OWNER_USER_IMAGE,
-                                                                    REVIEW_PRODUCT_OWNER_USER_NAME:REVIEW_PRODUCT_OWNER_USER_NAME
+                                                                    @"user_image":@"user_img",
+                                                                    REVIEW_PRODUCT_OWNER_USER_NAME:@"full_name"
                                                                     }];
 
     [ratinglistMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReviewUserReputation toKeyPath:CReviewUserReputation withMapping:reviewUserReputation]];

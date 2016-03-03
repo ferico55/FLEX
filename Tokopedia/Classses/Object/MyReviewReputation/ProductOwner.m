@@ -24,7 +24,10 @@
                                                               @"user_shop_image":CShopImg,
                                                               @"user_image":CUserImg,
                                                               CUserName:CFullName,
-                                                              CFullName:CUserName}];
+                                                              CFullName:CUserName,
+                                                              @"user_image":@"user_img"
+                                                              
+                                                              }];
     [productOwnerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserShopReputation toKeyPath:CUserShopReputation withMapping:[ShopReputation mapping]]];
     return productOwnerMapping;
 }

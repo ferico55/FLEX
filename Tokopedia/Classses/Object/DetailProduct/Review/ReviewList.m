@@ -64,7 +64,7 @@
     
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_product_owner"
                                                                                 toKeyPath:@"review_product_owner"
-                                                                              withMapping:[ReviewProductOwner mapping]]];
+                                                                              withMapping:[ProductOwner mapping]]];
     
     return listMapping;
 }

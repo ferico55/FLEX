@@ -53,25 +53,25 @@
 
 +(RKObjectMapping *)mapping{
     RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
-    [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{CReviewUpdateTime:CReviewUpdateTime,
-                                                                        CReviewRateAccuracyDesc:CReviewRateAccuracyDesc,
-                                                                        CReviewUserLabelID:CReviewUserLabelID,
-                                                                        CReviewUserName:CReviewUserName,
-                                                                        CReviewRateAccuracy:CReviewRateAccuracy,
-                                                                        CReviewMessage:CReviewMessage,
-                                                                        CReviewRateProductDesc:CReviewRateProductDesc,
-                                                                        CReviewRateSpeedDesc:CReviewRateSpeedDesc,
-                                                                        CReviewShopID:CShopID,
-                                                                        @"review_reputation_id":CReputationID,
-                                                                        CReviewUserImage:CReviewUserImage,
-                                                                        CReviewUserLabel:CReviewUserLabel,
-                                                                        CReviewCreateTime:CReviewCreateTime,
-                                                                        CReviewID:CReviewID,
-                                                                        CReviewRateServiceDesc:CReviewRateServiceDesc,
-                                                                        CReviewRateProduct:CReviewRateProduct,
-                                                                        CReviewRateSpeed:CReviewRateSpeed,
-                                                                        CReviewRateService:CReviewRateService,
-                                                                        CReviewUserID:CReviewUserID
+    [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{@"review_update_time":@"review_update_time",
+                                                                        @"review_rate_accuracy_desc":@"review_rate_accuracy_desc",
+                                                                        @"review_user_label_id":@"review_user_label_id",
+                                                                        @"review_user_name":@"review_user_name",
+                                                                        @"review_rate_accuracy":@"review_rate_accuracy",
+                                                                        @"review_message":@"review_message",
+                                                                        @"review_rate_product_desc":@"review_rate_product_desc",
+                                                                        @"review_rate_speed_desc":@"review_rate_speed_desc",
+                                                                        @"review_shop_id":@"shop_id",
+                                                                        @"review_reputation_id":@"reputation_id",
+                                                                        @"review_user_image":@"review_user_image",
+                                                                        @"review_user_label":@"review_user_label",
+                                                                        @"review_create_time":@"review_create_time",
+                                                                        @"review_id":@"review_id",
+                                                                        @"review_rate_service_desc":@"review_rate_service_desc",
+                                                                        @"review_rate_product":@"review_rate_product",
+                                                                        @"review_rate_speed":@"review_rate_speed",
+                                                                        @"review_rate_service":@"review_rate_service",
+                                                                        @"review_user_id":@"review_user_id"
                                                                         }];
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation" toKeyPath:@"review_user_reputation" withMapping:[ReputationDetail mapping]]];
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response" toKeyPath:@"review_response" withMapping:[ReviewResponse mapping]]];
