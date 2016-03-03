@@ -781,12 +781,7 @@
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
     NSString *message = [growingTextView.text stringByTrimmingCharactersInSet:
                           [NSCharacterSet whitespaceCharacterSet]];
-    if([message length] < 5 || [message isEqualToString:@""]) {
-        _buttonsend.enabled = NO;
-
-    } else {
-        _buttonsend.enabled = YES;
-    }
+    _buttonsend.enabled = !([message length] <= 5 || [message isEqualToString:@""]);
 }
 
 #pragma mark - Tap User
