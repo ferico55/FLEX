@@ -15,7 +15,7 @@
 #define CLResult @"result"
 
 @interface LikeDislike : NSObject
-@property (nonatomic, strong) NSArray *message_error;
+@property (nonatomic, strong) NSArray *config;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) LikeDislikeResult *result;

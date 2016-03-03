@@ -36,12 +36,11 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
 #pragma mark - Public Function
 -(void)requestReviewLikeDislikesWithId:(NSString *)reviewId shopId:(NSString *)shopId onSuccess:(void (^)(TotalLikeDislike *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     likeDislikeCountNetworkManager.isParameterNotEncrypted = NO;
-    likeDislikeCountNetworkManager.isUsingHmac = NO;
-    [likeDislikeCountNetworkManager requestWithBaseUrl:kTkpdBaseURLString
-                                                  path:@"shop.pl"
-                                                method:RKRequestMethodPOST
-                                             parameter:@{@"action" : @"get_like_dislike_review_shop",
-                                                         @"review_ids" : reviewId,
+    likeDislikeCountNetworkManager.isUsingHmac = YES;
+    [likeDislikeCountNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                                  path:@"/v4/product/get_like_dislike_review.pl"
+                                                method:RKRequestMethodGET
+                                             parameter:@{@"review_ids" : reviewId,
                                                          @"shop_id" : shopId}
                                                mapping:[LikeDislike mapping]
                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
