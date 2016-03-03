@@ -19,6 +19,8 @@
 - (void)refreshCartAfterCancelPayment;
 - (void)shouldDoRequestBRIEPay:(NSDictionary*)param;
 
+- (void)shouldDoRequestTopPayThx:(NSDictionary*)param;
+
 @end
 
 @interface TransactionCartWebViewViewController : UIViewController
@@ -35,6 +37,7 @@
 @property NSString *emoney_code;
 @property NSString *transactionCode;
 @property TransactionSummaryDetail *cartDetail;
+@property NSDictionary *toppayParam;
 
 @property NSString *paymentID;
 

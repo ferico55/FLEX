@@ -13,5 +13,6 @@
 @property (nonatomic, strong) NSString *gateway_image;
 @property (nonatomic, strong) NSNumber *gateway;
 @property (nonatomic, strong) NSString *gateway_name;
+@property (nonatomic, strong) NSString *toppay_flag;
 
 @end

@@ -121,7 +121,8 @@
     RKObjectMapping *gatewayMapping = [RKObjectMapping mappingForClass:[TransactionCartGateway class]];
     [gatewayMapping addAttributeMappingsFromDictionary:@{API_GATEWAY_LIST_IMAGE_KEY:API_GATEWAY_LIST_IMAGE_KEY,
                                                          API_GATEWAY_LIST_NAME_KEY:API_GATEWAY_LIST_NAME_KEY,
-                                                         API_GATEWAY_LIST_ID_KEY:API_GATEWAY_LIST_ID_KEY
+                                                         API_GATEWAY_LIST_ID_KEY:API_GATEWAY_LIST_ID_KEY,
+                                                         @"toppay_flag":@"toppay_flag"
                                                          }];
     return gatewayMapping;
 }
