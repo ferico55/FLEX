@@ -156,7 +156,8 @@ static CKComponent *deleteButton (NSString *role, SEL action) {
                                     size:{}]
                                }
                            }],
-                          .flexShrink = YES
+                          .flexShrink = YES,
+                          .flexGrow = YES
                       },
                       {
                           deleteButton(role, action)

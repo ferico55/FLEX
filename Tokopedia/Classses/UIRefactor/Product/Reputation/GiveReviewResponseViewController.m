@@ -17,7 +17,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface GiveReviewResponseViewController () <
-UICollectionViewDelegateFlowLayout
+    UICollectionViewDelegateFlowLayout,
+    HPGrowingTextViewDelegate
 >
 {
     MyReviewDetailDataManager *_dataManager;
@@ -51,11 +52,6 @@ UICollectionViewDelegateFlowLayout
     frame.size.width = self.view.bounds.size.width;
     _headerView.frame = frame;
     [_headerView sizeToFit];
-    
-    frame = _giveResponseView.frame;
-    frame.size.width = self.view.bounds.size.width;
-    _giveResponseView.frame = frame;
-    [_giveResponseView sizeToFit];
 }
 
 - (void)viewDidLoad {
@@ -95,18 +91,6 @@ UICollectionViewDelegateFlowLayout
     
     [_collectionView addSubview:_headerView];
     _collectionView.contentInset = UIEdgeInsetsMake(_headerView.frame.size.height, 0, 0, 0);
-
-    frame = _giveResponseView.frame;
-    frame.size.width = self.view.frame.size.width;
-    _giveResponseView.frame = frame;
-    [_giveResponseView sizeToFit];
-    
-    frame = _giveResponseView.frame;
-    frame.origin.y = _collectionView.frame.size.height - _giveResponseView.frame.size.height - _headerView.frame.size.height - 15; // Will find out later why
-    _giveResponseView.frame = frame;
-    
-    [_collectionView addSubview:_giveResponseView];
-    _collectionView.contentInset = UIEdgeInsetsMake(_headerView.frame.size.height, 0, _giveResponseView.frame.size.height, 0);
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -116,6 +100,10 @@ UICollectionViewDelegateFlowLayout
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardDidShowNotification
                                                object:nil];
 }
 
@@ -152,6 +140,8 @@ UICollectionViewDelegateFlowLayout
 }
 
 - (void)setGrowingTextView {
+    _responseMessageGrowingTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(8.0, 10.0, self.view.bounds.size.width - _sendButton.frame.size.width - 24, 30)];
+    
     [_responseMessageGrowingTextView setIsScrollable:NO];
     [_responseMessageGrowingTextView setContentInset:UIEdgeInsetsMake(0, 5, 0, 5)];
     [_responseMessageGrowingTextView.layer setBorderWidth:1];
@@ -168,6 +158,7 @@ UICollectionViewDelegateFlowLayout
     [_responseMessageGrowingTextView setFont:[UIFont fontWithName:@"Gotham Book"
                                                              size:12.0]];
     
+    [_giveResponseView addSubview:_responseMessageGrowingTextView];
     _giveResponseView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 }
 
@@ -195,7 +186,15 @@ UICollectionViewDelegateFlowLayout
 }
 
 #pragma mark - Growing Text View Delegate
-
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
+    float diff = growingTextView.frame.size.height - height;
+    
+    CGRect aRect = _giveResponseView.frame;
+    aRect.size.height -= diff;
+    aRect.origin.y += diff;
+    
+    _giveResponseView.frame = aRect;
+}
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification*)notification {
@@ -205,12 +204,12 @@ UICollectionViewDelegateFlowLayout
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0);
     _collectionView.contentInset = contentInsets;
     _collectionView.scrollIndicatorInsets = contentInsets;
-    
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= keyboardSize.height;
-    if (!CGRectContainsPoint(aRect, _giveResponseView.frame.origin)) {
-        [_collectionView scrollRectToVisible:_giveResponseView.frame animated:YES];
-    }    
+}
+
+- (void)keyboardDidShow:(NSNotification*)notification {
+    [_collectionView scrollRectToVisible:CGRectMake(0, _collectionView.contentSize.height - _collectionView.bounds.size.height, _collectionView.bounds.size.width, _collectionView.bounds.size.height)
+                                animated:YES];
+    [_giveResponseView setFrame:CGRectMake(0.0, _collectionView.contentSize.height - _collectionView.bounds.size.height + 59, _giveResponseView.frame.size.width, _giveResponseView.frame.size.height)];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
