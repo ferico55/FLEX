@@ -169,8 +169,9 @@
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
 
-    [_redirectButton makeObjectsPerformSelector:@selector(setEnabled:) withObject:@((![NavigationHelper shouldDoDeepNavigation]))];
-
+    for (UIButton *button in _redirectButton) {
+        button.enabled = [NavigationHelper shouldDoDeepNavigation];
+    }
 }
 
 -(TAGContainer *)gtmContainer
