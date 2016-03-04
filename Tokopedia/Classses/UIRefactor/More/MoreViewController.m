@@ -811,8 +811,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
         [emailController.navigationBar setTintColor:[UIColor whiteColor]];
         
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        [self presentViewController:emailController animated:YES completion:nil];
+
+        [self presentViewController:emailController animated:YES completion:^() {
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        }];
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email apabila ingin mengirimkan kritik dan saran aplikasi."]
                                                                        delegate:self];
@@ -1013,8 +1015,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 #pragma mark - Email delegate
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    [self dismissViewControllerAnimated:YES completion:NULL];
+
+    [self dismissViewControllerAnimated:YES completion:^() {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    }];
 }
 
 
