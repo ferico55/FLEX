@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TransactionSummaryResult.h"
 
-@interface TransactionSummary : NSObject
+@interface TransactionSummary : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;

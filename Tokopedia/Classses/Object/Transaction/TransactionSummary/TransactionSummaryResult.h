@@ -11,7 +11,7 @@
 #import "CCData.h"
 #import "Veritrans.h"
 
-@interface TransactionSummaryResult : NSObject
+@interface TransactionSummaryResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TransactionSummaryDetail *transaction;
 @property (nonatomic, strong) CCData *credit_card_data;
