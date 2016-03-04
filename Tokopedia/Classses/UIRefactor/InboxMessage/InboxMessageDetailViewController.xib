@@ -18,6 +18,7 @@
                 <outlet property="header" destination="Mxn-u0-ISc" id="M0J-K6-vMS"/>
                 <outlet property="messagingview" destination="b1X-S7-W2F" id="Bcc-3U-KSF"/>
                 <outlet property="table" destination="Fz9-tI-DuS" id="2ye-Au-bOf"/>
+                <outlet property="textView" destination="Ano-dQ-eSQ" id="CBE-bQ-eFS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

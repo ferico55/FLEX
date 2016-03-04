@@ -34,6 +34,7 @@
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 
+@property (strong, nonatomic) IBOutlet RSKGrowingTextView *textView;
 
 
 @end
@@ -103,6 +104,8 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
+    
+    _textView.delegate = self;
     
     if (_data) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
@@ -775,6 +778,13 @@
 
 - (void)requestsendtimeout {
     
+}
+
+#pragma mark - TextView Delegate
+- (void)textViewDidChange:(UITextView *)textView {
+    NSString *message = [textView.text stringByTrimmingCharactersInSet:
+                         [NSCharacterSet whitespaceCharacterSet]];
+    _buttonsend.enabled = !([message length] <= 5 || [message isEqualToString:@""]);
 }
 
 #pragma mark - Growing TextView Delegate
