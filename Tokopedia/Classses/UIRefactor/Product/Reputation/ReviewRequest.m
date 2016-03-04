@@ -69,8 +69,11 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     
     [getInboxReputationNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
                                                     path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
-                                                  method:RKRequestMethodPOST
-                                               parameter:@{}
+                                                  method:RKRequestMethodGET
+                                               parameter:@{@"filter" : filter,
+                                                           @"nav"    : navigation,
+                                                           @"page"   : page
+                                                           }
                                                  mapping:[MyReviewReputation mapping]
                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;

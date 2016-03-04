@@ -10,7 +10,26 @@
 #import "MyReviewDetailHeaderComponent.h"
 #import <ComponentKit/ComponentKit.h>
 
-static CKComponent* editedLabel(DetailMyInboxReputation *inbox) {
+static CKComponent* revieweeEditedLabel(DetailMyInboxReputation *inbox) {
+    if ([inbox.is_reviewee_score_edited isEqualToString:@"0"]) {
+        return nil;
+    }
+    
+    return [CKLabelComponent
+            newWithLabelAttributes:{
+                .string = @"(diubah)",
+                .font = [UIFont fontWithName:@"Gotham Book" size:12.0],
+                .color = [UIColor colorWithWhite:177.0/255 alpha:1.0]
+            }
+            viewAttributes:{}
+            size:{}];
+}
+
+static CKComponent* reviewerEditedLabel(DetailMyInboxReputation *inbox) {
+    if ([inbox.is_reviewer_score_edited isEqualToString:@"0"]) {
+        return nil;
+    }
+    
     return [CKLabelComponent
             newWithLabelAttributes:{
                 .string = @"(diubah)",
@@ -396,7 +415,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                               size:{([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"])?24.7:20,20}]
                          },
                          {
-                             editedLabel(inbox)
+                             revieweeEditedLabel(inbox)
                          }
                          
                      }],
@@ -474,7 +493,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                                size:{}]
                           },
                           {
-                              editedLabel(inbox)
+                              reviewerEditedLabel(inbox)
                           }
                       }],
                      .alignSelf = CKStackLayoutAlignSelfCenter,

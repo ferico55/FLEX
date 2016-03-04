@@ -140,7 +140,7 @@
 }
 
 - (void)setGrowingTextView {
-    _responseMessageGrowingTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(8.0, 10.0, self.view.bounds.size.width - _sendButton.frame.size.width - 24, 30)];
+    _responseMessageGrowingTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(8.0, 10.0, self.view.frame.size.width - _sendButton.frame.size.width - 24, 30)];
     
     [_responseMessageGrowingTextView setIsScrollable:NO];
     [_responseMessageGrowingTextView setContentInset:UIEdgeInsetsMake(0, 5, 0, 5)];

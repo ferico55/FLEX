@@ -13,8 +13,7 @@
 + (RKObjectMapping*)mapping {
     RKObjectMapping *myReviewReputationMapping = [RKObjectMapping mappingForClass:[MyReviewReputation class]];
     [myReviewReputationMapping addAttributeMappingsFromArray:@[@"status",
-                                                               @"server_process_time",
-                                                               @"config"]];
+                                                               @"server_process_time"]];
     
     [myReviewReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                               toKeyPath:@"data"

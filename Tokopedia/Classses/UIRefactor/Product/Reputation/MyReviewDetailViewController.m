@@ -279,7 +279,7 @@
 
 #pragma mark - Actions
 - (void)tapToInvoice {
-    [_navigator navigateToInvoiceFromViewController:self
+    [NavigateViewController navigateToInvoiceFromViewController:self
                                      withInvoiceURL:_detailMyInboxReputation.invoice_uri];
 }
 

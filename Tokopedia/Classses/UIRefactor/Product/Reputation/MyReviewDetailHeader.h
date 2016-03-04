@@ -20,5 +20,7 @@
 @end
 
 @interface MyReviewDetailHeader : CKComponentHostingView
-- (instancetype)initWithInboxDetail:(DetailMyInboxReputation*)inbox delegate:(id<MyReviewDetailHeaderDelegate>)delegate smileyDelegate:(id<MyReviewDetailHeaderSmileyDelegate>)smileyDelegate;
+- (instancetype)initWithInboxDetail:(DetailMyInboxReputation*)inbox
+                           delegate:(id<MyReviewDetailHeaderDelegate>)delegate
+                     smileyDelegate:(id<MyReviewDetailHeaderSmileyDelegate>)smileyDelegate;
 @end
