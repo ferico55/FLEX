@@ -9,5 +9,17 @@
 #import "TransactionVoucherResult.h"
 
 @implementation TransactionVoucherResult
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data_voucher" toKeyPath:@"data_voucher" withMapping:[TransactionVoucherData mapping]]];
+    
+    return mapping;
+}
 
 @end

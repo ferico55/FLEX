@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TransactionVoucherResult.h"
 
-@interface TransactionVoucher : NSObject
+@interface TransactionVoucher : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;

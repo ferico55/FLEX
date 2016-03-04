@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TransactionVoucherData : NSObject
+@interface TransactionVoucherData : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *voucher_amount;
 @property (nonatomic, strong) NSString *voucher_id;
