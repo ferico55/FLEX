@@ -32,7 +32,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
     //set change orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
 
 }
@@ -206,13 +206,12 @@
     if(_loggedIn) {
         [self initButton];
     } else {
-        UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*1, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-        [button1 setTitle:@"Beranda" forState:UIControlStateNormal];
-        [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button1.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
-        button1.tag = 1;
-        [button1 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:button1];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*1 - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
+        [button setTitle:@"HOME" forState:UIControlStateNormal];
+        [button.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:14]];
+        button.tag = 1;
+        [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:button];
     }
 
 }
