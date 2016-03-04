@@ -1,3 +1,4 @@
+
 //
 //  ProductDetailReputationViewController.m
 //  Tokopedia
@@ -239,7 +240,7 @@ MGSwipeTableCellDelegate>
     //Set profile image
     BOOL isResizeSeparatorProduct;
     NSString *strTempProductID = _detailReputationReview.review_product_id ;
-    if(strTempProductID!=nil && ![strTempProductID isEqualToString:@""]) {
+    if(_isShowingProductView) {
         [productReputationCell initProductCell];
         
 
@@ -278,7 +279,6 @@ MGSwipeTableCellDelegate>
 #pragma clang diagnostic pop
         } failure:nil];
     }
-    
     
     //Set image profile
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];

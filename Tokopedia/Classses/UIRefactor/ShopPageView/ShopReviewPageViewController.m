@@ -1221,6 +1221,7 @@ ProductReputationSimpleDelegate>
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = reviewList.review_product_id;
+    productDetailReputationViewController.isShowingProductView = YES;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 

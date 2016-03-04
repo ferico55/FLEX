@@ -695,6 +695,7 @@ static NSInteger userViewHeight = 70;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = _strProductID;
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.product_owner.user_shop_reputation.reputation_badge_object;
+    productDetailReputationViewController.isShowingProductView = NO;
 
     if([dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id]) {
         TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id];
