@@ -757,11 +757,9 @@
                     if([self isValidInput]) {
                         [self sendingProductDataToGA];
                         if([self isHandlePaymentWithNative]) {
-                            _requestCart.param = [self paramCheckout];
-                            [_requestCart doRequestCheckout];
+                            [self doCheckout];
                         } else if ([self isCanUseToppay]) {
-                            _requestCart.param = [self paramCheckout];
-                            [_requestCart doRequestToppay];
+                            [self doCheckoutWithToppay];
                         }
                     }
                 break;
@@ -2686,63 +2684,85 @@
     return param;
 }
 
--(NSDictionary*)paramCheckout
-{
-    [self adjustDropshipperListParam];
+
+-(void)doCheckout{
     
-    NSString *token = _cart.token;
+    [self adjustDropshipperListParam];
     
     TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSNumber *gatewayID = gateway.gateway;
     
-    NSMutableArray *tempDropshipStringList = [NSMutableArray new];
-    for (NSString *dropshipString in _dropshipStrList) {
-        if (![dropshipString isEqualToString:@""]) {
-            [tempDropshipStringList addObject:dropshipString];
-        }
-    }
-    NSMutableArray *tempPartialStringList = [NSMutableArray new];
-    for (NSString *partialString in _stockPartialStrList) {
-        if (![partialString isEqualToString:@""]) {
-            [tempPartialStringList addObject:partialString];
-        }
-    }
-    
-    NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     NSDictionary *dropshipperDetail = [_dataInput objectForKey:DATA_DROPSHIPPER_LIST_KEY]?:@{};
-    
-    NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     NSDictionary *partialDetail = [_dataInput objectForKey:DATA_PARTIAL_LIST_KEY]?:@{};
+    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
+
+    [RequestCart fetchCheckoutToken:_cart.token
+                          gatewayID:[gatewayID stringValue]
+                       listDropship:_dropshipStrList
+                     dropshipDetail:dropshipperDetail
+                        listPartial:_stockPartialStrList
+                      partialDetail:partialDetail
+                       isUsingSaldo:_isUsingSaldoTokopedia
+                              saldo:_saldoTokopediaAmountTextField.text
+                        voucherCode:voucherCode
+                            success:^(TransactionSummaryResult *data) {
+                                    
+        TransactionSummaryDetail *summary = data.transaction;
+        [TPAnalytics trackCheckout:summary.carts step:1 option:summary.gateway_name];
+        
+        TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+        NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:summary?:[TransactionSummaryDetail new],
+                                   DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
+                                   DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
+                                   DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
+                                   DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
+                                   DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
+                                   DATA_CC_KEY : data.credit_card_data?:[CCData new]
+                                   };
+        [_delegate didFinishRequestCheckoutData:userInfo];
+        _checkoutButton.enabled = YES;
+        _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    } error:^(NSError *error) {
+        _checkoutButton.enabled = YES;
+        _checkoutButton.layer.opacity = 1;
+    }];
+}
+
+-(void)doCheckoutWithToppay{
     
+    [self adjustDropshipperListParam];
+    
+    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    NSNumber *gatewayID = gateway.gateway;
+    
+    NSDictionary *dropshipperDetail = [_dataInput objectForKey:DATA_DROPSHIPPER_LIST_KEY]?:@{};
+    NSDictionary *partialDetail = [_dataInput objectForKey:DATA_PARTIAL_LIST_KEY]?:@{};
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     
-    NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-    deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
-    deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    
-    NSString *usedSaldo = _isUsingSaldoTokopedia?deposit?:@"0":@"0";
-    
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
-                                      API_TOKEN_KEY:token,
-                                      API_GATEWAY_LIST_ID_KEY:gatewayID,
-                                      API_DROPSHIP_STRING_KEY:dropshipString,
-                                      API_PARTIAL_STRING_KEY :partialString,
-                                      API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
-                                      API_DEPOSIT_AMT_KEY:usedSaldo,
-                                      @"lp_flag":@"1",
-                                      @"action": @"get_parameter"
-                                      };
-    
-    if (![voucherCode isEqualToString:@""]) {
-        [param setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
-    }
-    [param addEntriesFromDictionary:paramDictionary];
-    [param addEntriesFromDictionary:dropshipperDetail];
-    [param addEntriesFromDictionary:partialDetail];
-    
-    return param;
+    [RequestCart fetchToppayWithToken:_cart.token
+                            gatewayID:[gatewayID stringValue]
+                         listDropship:_dropshipStrList
+                       dropshipDetail:dropshipperDetail
+                          listPartial:_stockPartialStrList
+                        partialDetail:partialDetail
+                         isUsingSaldo:_isUsingSaldoTokopedia
+                                saldo:_saldoTokopediaAmountTextField.text
+                          voucherCode:voucherCode success:^(TransactionActionResult *data) {
+                              
+          TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+          vc.toppayQueryString = data.query_string;
+          vc.URLString = data.redirect_url;
+          vc.gateway = @([_cart.gateway integerValue]);
+          vc.delegate = self;
+          
+          [self.navigationController pushViewController:vc animated:YES];
+          [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+                              
+     } error:^(NSError *error) {
+         _checkoutButton.enabled = YES;
+         _checkoutButton.layer.opacity = 1;
+     }];
 }
 
 -(NSDictionary*)paramBuy

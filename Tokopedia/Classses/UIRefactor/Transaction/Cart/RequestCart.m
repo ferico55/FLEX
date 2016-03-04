@@ -59,6 +59,129 @@
     }];
 }
 
++(void)fetchCheckoutToken:(NSString *)token gatewayID:(NSString*)gatewayID listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary*)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail isUsingSaldo:(BOOL)isUsingSaldo saldo:(NSString *)saldo voucherCode:(NSString*)voucherCode success:(void(^)(TransactionSummaryResult *data))success error:(void (^)(NSError *error))error{
+    
+    NSMutableArray *tempDropshipStringList = [NSMutableArray new];
+    for (NSString *dropshipString in listDropship) {
+        if (![dropshipString isEqualToString:@""]) {
+            [tempDropshipStringList addObject:dropshipString];
+        }
+    }
+    NSMutableArray *tempPartialStringList = [NSMutableArray new];
+    for (NSString *partialString in listPartial) {
+        if (![partialString isEqualToString:@""]) {
+            [tempPartialStringList addObject:partialString];
+        }
+    }
+    
+    NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
+    
+    NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
+
+    NSString *deposit = [saldo stringByReplacingOccurrencesOfString:@"." withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
+
+    NSString *usedSaldo = isUsingSaldo?deposit?:@"0":@"0";
+    
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
+                                      API_TOKEN_KEY:token,
+                                      API_GATEWAY_LIST_ID_KEY:gatewayID,
+                                      API_DROPSHIP_STRING_KEY:dropshipString,
+                                      API_PARTIAL_STRING_KEY :partialString,
+                                      API_USE_DEPOSIT_KEY:@(isUsingSaldo),
+                                      API_DEPOSIT_AMT_KEY:usedSaldo,
+                                      @"lp_flag":@"1",
+                                      @"action": @"get_parameter"
+                                      };
+    
+    if (![voucherCode isEqualToString:@""]) {
+        [param setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
+    }
+    [param addEntriesFromDictionary:paramDictionary];
+    [param addEntriesFromDictionary:dropshipDetail];
+    [param addEntriesFromDictionary:partialDetail];
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                  path:@"tx.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionSummary mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        NSDictionary *result = successResult.dictionary;
+        TransactionSummary *cart = [result objectForKey:@""];
+        success(cart.result);
+    } onFailure:^(NSError *errorResult) {
+        [StickyAlertView showNetworkError:errorResult];
+        error(errorResult);
+    }];
+}
+
++(void)fetchToppayWithToken:(NSString *)token gatewayID:(NSString *)gatewayID listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail isUsingSaldo:(BOOL)isUsingSaldo saldo:(NSString *)saldo voucherCode:(NSString *)voucherCode success:(void (^)(TransactionSummaryResult *data))success error:(void (^)(NSError *))error{
+    
+    NSMutableArray *tempDropshipStringList = [NSMutableArray new];
+    for (NSString *dropshipString in listDropship) {
+        if (![dropshipString isEqualToString:@""]) {
+            [tempDropshipStringList addObject:dropshipString];
+        }
+    }
+    NSMutableArray *tempPartialStringList = [NSMutableArray new];
+    for (NSString *partialString in listPartial) {
+        if (![partialString isEqualToString:@""]) {
+            
+            [tempPartialStringList addObject:partialString];
+        }
+    }
+    
+    NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
+    
+    NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
+    
+    NSString *deposit = [saldo stringByReplacingOccurrencesOfString:@"." withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
+    deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    
+    NSString *usedSaldo = isUsingSaldo?deposit?:@"0":@"0";
+    
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
+                                      API_TOKEN_KEY:token,
+                                      API_GATEWAY_LIST_ID_KEY:gatewayID,
+                                      API_DROPSHIP_STRING_KEY:dropshipString,
+                                      API_PARTIAL_STRING_KEY :partialString,
+                                      API_USE_DEPOSIT_KEY:@(isUsingSaldo),
+                                      API_DEPOSIT_AMT_KEY:usedSaldo,
+                                      @"lp_flag":@"1",
+                                      @"action": @"get_parameter"
+                                      };
+    
+    if (![voucherCode isEqualToString:@""]) {
+        [param setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
+    }
+    [param addEntriesFromDictionary:paramDictionary];
+    [param addEntriesFromDictionary:dropshipDetail];
+    [param addEntriesFromDictionary:partialDetail];
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                  path:@"action/toppay.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionSummary mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 NSDictionary *result = successResult.dictionary;
+                                 TransactionSummary *cart = [result objectForKey:@""];
+                                 success(cart.result);
+                             } onFailure:^(NSError *errorResult) {
+                                 [StickyAlertView showNetworkError:errorResult];
+                                 error(errorResult);
+                             }];
+}
+
 -(TransactionObjectManager*)objectManager
 {
     if (!_objectManager) {
