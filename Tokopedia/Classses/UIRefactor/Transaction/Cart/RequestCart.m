@@ -19,11 +19,8 @@
 
 @interface RequestCart()<TokopediaNetworkManagerDelegate>
 {
-    TokopediaNetworkManager *_networkManager;
     TokopediaNetworkManager *_networkManagerCancelCart;
-    TokopediaNetworkManager *_networkManagerCheckout;
     TokopediaNetworkManager *_networkManagerBuy;
-    TokopediaNetworkManager *_networkManagerVoucher;
     TokopediaNetworkManager *_networkManagerEditProduct;
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
@@ -54,7 +51,6 @@
      success(cart.result);
                                  
     } onFailure:^(NSError *errorResult) {
-        [StickyAlertView showNetworkError:errorResult];
         error(errorResult);
     }];
 }
@@ -115,12 +111,11 @@
         TransactionSummary *cart = [result objectForKey:@""];
         success(cart.result);
     } onFailure:^(NSError *errorResult) {
-        [StickyAlertView showNetworkError:errorResult];
         error(errorResult);
     }];
 }
 
-+(void)fetchToppayWithToken:(NSString *)token gatewayID:(NSString *)gatewayID listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail isUsingSaldo:(BOOL)isUsingSaldo saldo:(NSString *)saldo voucherCode:(NSString *)voucherCode success:(void (^)(TransactionSummaryResult *data))success error:(void (^)(NSError *))error{
++(void)fetchToppayWithToken:(NSString *)token gatewayID:(NSString *)gatewayID listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail isUsingSaldo:(BOOL)isUsingSaldo saldo:(NSString *)saldo voucherCode:(NSString *)voucherCode success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *))error{
     
     NSMutableArray *tempDropshipStringList = [NSMutableArray new];
     for (NSString *dropshipString in listDropship) {
@@ -172,14 +167,43 @@
                                 method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionSummary mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 NSDictionary *result = successResult.dictionary;
-                                 TransactionSummary *cart = [result objectForKey:@""];
-                                 success(cart.result);
-                             } onFailure:^(NSError *errorResult) {
-                                 [StickyAlertView showNetworkError:errorResult];
-                                 error(errorResult);
-                             }];
+     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+         NSDictionary *result = successResult.dictionary;
+         TransactionAction *cart = [result objectForKey:@""];
+         
+         if (cart.result.parameter != nil) {
+             NSArray *successMessages = cart.message_status;
+             if (successMessages.count > 0) {
+                 [StickyAlertView showSuccessMessage:successMessages];
+             }
+             success(cart.result);
+         }
+         
+     } onFailure:^(NSError *errorResult) {
+         error(errorResult);
+     }];
+}
+
+
++(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucherData *data))success error:(void (^)(NSError *error))error{
+    
+    NSDictionary* param = @{API_ACTION_KEY :ACTION_CECK_VOUCHER_CODE,
+                            API_VOUCHER_CODE_KEY : voucherCode
+                            };
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                  path:@"tx-voucher.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionVoucher mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                   
+       NSDictionary *result = successResult.dictionary;
+       TransactionVoucher *cart = [result objectForKey:@""];
+       success(cart.result.data_voucher);
+                                   
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
 }
 
 -(TransactionObjectManager*)objectManager
@@ -193,15 +217,6 @@
     return _objectManager;
 }
 
--(TokopediaNetworkManager*)networkManager
-{
-    if (!_networkManager) {
-        _networkManager = [TokopediaNetworkManager new];
-        _networkManager.tagRequest = TAG_REQUEST_CART;
-        _networkManager.delegate = self;
-    }
-    return _networkManager;
-}
 
 -(TokopediaNetworkManager*)networkManagerCancelCart
 {
@@ -213,16 +228,6 @@
     return _networkManagerCancelCart;
 }
 
--(TokopediaNetworkManager *)networkManagerCheckout
-{
-    if (!_networkManagerCheckout) {
-        _networkManagerCheckout = [TokopediaNetworkManager new];
-        _networkManagerCheckout.tagRequest = TAG_REQUEST_CHECKOUT;
-        _networkManagerCheckout.delegate = self;
-    }
-    return _networkManagerCheckout;
-}
-
 -(TokopediaNetworkManager*)networkManagerBuy
 {
     if (!_networkManagerBuy) {
@@ -231,16 +236,6 @@
         _networkManagerBuy.delegate = self;
     }
     return _networkManagerBuy;
-}
-
--(TokopediaNetworkManager*)networkManagerVoucher
-{
-    if (!_networkManagerVoucher) {
-        _networkManagerVoucher = [TokopediaNetworkManager new];
-        _networkManagerVoucher.tagRequest = TAG_REQUEST_VOUCHER;
-        _networkManagerVoucher.delegate = self;
-    }
-    return _networkManagerVoucher;
 }
 
 -(TokopediaNetworkManager*)networkManagerEditProduct
@@ -303,16 +298,6 @@
     return _networkManagerToppay;
 }
 
--(void)doRequestCart
-{
-    [[self networkManager] doRequest];
-}
-
--(void)doRequestCheckout
-{
-    [[self networkManagerCheckout] doRequest];
-}
-
 -(void)doRequestCancelCart
 {
     [[self networkManagerCancelCart]doRequest];
@@ -321,11 +306,6 @@
 -(void)dorequestBuy
 {
     [[self networkManagerBuy]doRequest];
-}
-
--(void)doRequestVoucher
-{
-    [[self networkManagerVoucher]doRequest];
 }
 
 -(void)doRequestEditProduct
@@ -361,20 +341,11 @@
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_CART) {
-        return [[self objectManager] objectManagerCart];
-    }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         return [[self objectManager] objectManagerCancelCart];
     }
-    if (tag == TAG_REQUEST_CHECKOUT) {
-        return [[self objectManager] objectManagerCheckout];
-    }
     if (tag == TAG_REQUEST_BUY) {
         return [[self objectManager] objectManagerBuy];
-    }
-    if (tag == TAG_REQUEST_VOUCHER) {
-        return  [[self objectManager] objectManagerVoucher];
     }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         return [[self objectManager] objectMangerEditProduct];
@@ -404,20 +375,11 @@
 
 -(NSString *)getPath:(int)tag
 {
-    if (tag == TAG_REQUEST_CART) {
-        return API_TRANSACTION_PATH;
-    }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         return API_ACTION_TRANSACTION_PATH;
     }
-    if (tag == TAG_REQUEST_CHECKOUT) {
-        return API_TRANSACTION_PATH;
-    }
     if (tag == TAG_REQUEST_BUY) {
         return API_TRANSACTION_PATH;
-    }
-    if (tag == TAG_REQUEST_VOUCHER) {
-        return API_CHECK_VOUCHER_PATH;
     }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         return API_ACTION_TRANSACTION_PATH;
@@ -453,26 +415,15 @@
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
-    if (tag == TAG_REQUEST_CART) {
-        TransactionCart *cart = stat;
-        return cart.status;
-    }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         TransactionAction *action = stat;
         return action.status;
-    }
-    if (tag == TAG_REQUEST_CHECKOUT) {
-        TransactionSummary *cart = stat;
-        return cart.status;
     }
     if (tag == TAG_REQUEST_BUY) {
         TransactionBuy *cart = stat;
         return cart.status;
     }
-    if (tag == TAG_REQUEST_VOUCHER) {
-        TransactionVoucher *dataVoucher = stat;
-        return dataVoucher.status;
-    }
+    
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         TransactionAction *action = stat;
         return action.status;
@@ -508,20 +459,6 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
     
-    if (tag == TAG_REQUEST_CART) {
-        TransactionCart *cart = stat;
-        if(cart.message_error)
-        {
-            [self showErrorMesage:cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-        else
-        {
-            if (cart.message_status && cart.message_status.count > 0)
-                [self showStatusMesage:cart.message_status];
-            [_delegate requestSuccessCart:successResult withOperation:operation];
-        }
-    }
     if (tag == TAG_REQUEST_CANCEL_CART) {
         TransactionAction *action = stat;
         if (action.result.is_success == 1) {
@@ -534,19 +471,7 @@
             [_delegate actionAfterFailRequestMaxTries:tag];
         }
     }
-    if (tag == TAG_REQUEST_CHECKOUT) {
-        TransactionSummary *cart = stat;
-        if(cart.message_error)
-        {
-            [self showErrorMesage:cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-        else{
-            if (cart.message_status && cart.message_status.count > 0)
-                [self showStatusMesage:cart.message_status];
-            [_delegate requestSuccessActionCheckout:successResult withOperation:operation];
-        }
-    }
+    
     if (tag == TAG_REQUEST_BUY) {
         TransactionBuy *cart = stat;
         if (cart.result.is_success == 1) {
@@ -558,20 +483,6 @@
         {
             [self showErrorMesage:cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
             [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
-    if (tag == TAG_REQUEST_VOUCHER) {
-        TransactionVoucher *dataVoucher = stat;
-
-        if(dataVoucher.message_error)
-        {
-            [self showErrorMesage:dataVoucher.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-        else{
-            if (dataVoucher.message_status && dataVoucher.message_status.count > 0)
-                [self showStatusMesage:dataVoucher.message_status];
-            [_delegate requestSuccessActionVoucher:successResult withOperation:operation];
         }
     }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
@@ -646,23 +557,23 @@
     if (tag == TAG_REQUEST_TOPPAY) {
         TransactionAction *action = stat;
         
-        if (action.result.parameter != nil) {
-            NSArray *successMessages = action.message_status;
-            if (successMessages.count > 0) {
-                [self showStatusMesage:successMessages];
-            }
-            [_delegate requestSuccessToppay:successResult withOperation:operation];
-        }
-        else
-        {
-//            if (action.result.is_success == 1){
-                [_delegate requestSuccessToppayThx:successResult withOperation:operation];
-//            } else {
-//                [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-//                [_delegate actionAfterFailRequestMaxTries:tag];
-//    
+//        if (action.result.parameter != nil) {
+//            NSArray *successMessages = action.message_status;
+//            if (successMessages.count > 0) {
+//                [self showStatusMesage:successMessages];
 //            }
-        }
+//            [_delegate requestSuccessToppay:successResult withOperation:operation];
+//        }
+//        else
+//        {
+////            if (action.result.is_success == 1){
+//                [_delegate requestSuccessToppayThx:successResult withOperation:operation];
+////            } else {
+////                [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+////                [_delegate actionAfterFailRequestMaxTries:tag];
+////    
+////            }
+//        }
     }
 }
 

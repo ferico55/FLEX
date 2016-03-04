@@ -28,4 +28,12 @@
     return alert;
 }
 
++ (StickyAlertView*)showSuccessMessage:(NSArray *)successMessage{
+    
+    StickyAlertView *alert = [[self alloc] initWithSuccessMessages:successMessage delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    [alert show];
+    
+    return alert;
+}
+
 @end

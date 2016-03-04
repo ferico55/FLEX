@@ -11,5 +11,6 @@
 @interface StickyAlertView (NetworkErrorHandler)
 
 + (StickyAlertView*)showNetworkError:(NSError *)error;
++ (StickyAlertView*)showSuccessMessage:(NSArray *)successMessage;
 
 @end

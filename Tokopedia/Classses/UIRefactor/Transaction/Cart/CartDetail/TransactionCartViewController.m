@@ -295,7 +295,6 @@
         }
         _paymentMethodView.hidden = YES;
         
-        //[_networkManager doRequest];
     }
     [self initNoResultView];
     
@@ -1558,9 +1557,7 @@
                 NSString *voucherCode = [[alertView textFieldAtIndex:0] text];
                 [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
                 if ([self isValidInputVoucher]) {
-                    _requestCart.param = [self paramVoucher];
-                    [_requestCart doRequestVoucher];
-                    
+                    [self doRequestVoucher];
                 }
                 else
                 {
@@ -1598,7 +1595,6 @@
             break;
     }
 }
-
 
 #pragma mark - Mandiri Klik Pay Form Delegate
 -(void)TransactionCartMandiriClickPayForm:(TransactionCartFormMandiriClickPayViewController *)VC withUserInfo:(NSDictionary *)userInfo
@@ -2684,6 +2680,33 @@
     return param;
 }
 
+-(void)doRequestVoucher{
+    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
+    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucherData *data) {
+        
+        _voucherData = data;
+        
+        _voucherCodeButton.hidden = YES;
+        _voucherAmountLabel.hidden = NO;
+        
+        NSInteger voucher = [_voucherData.voucher_amount integerValue];
+        NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
+        voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+        _voucherAmountLabel.text = voucherString;
+        _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+        
+        _buttonVoucherInfo.hidden = YES;
+        _buttonCancelVoucher.hidden = NO;
+        
+        [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
+        
+        [_tableView reloadData];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        
+    } error:^(NSError *error) {
+        [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
+    }];
+}
 
 -(void)doCheckout{
     
@@ -3088,34 +3111,6 @@
     
 }
 
-
-#pragma mark - Request Checkout
-
--(void)requestSuccessActionCheckout:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionSummary *cart = stat;
-    
-    TransactionSummaryDetail *summary = cart.result.transaction;
-    [TPAnalytics trackCheckout:summary.carts step:1 option:summary.gateway_name];
-    
-    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
-                               DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
-                               DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
-                               DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
-                               DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
-                               DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
-                               DATA_CC_KEY : cart.result.credit_card_data?:[CCData new]
-                               };
-    [_delegate didFinishRequestCheckoutData:userInfo];
-    _checkoutButton.enabled = YES;
-    _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-}
-
-
 #pragma mark - Request Buy
 
 -(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -3142,9 +3137,8 @@
             vc.title = _cartSummary.gateway_name?:@"Mandiri E-Cash";
             
             UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
             navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         }
             break;
@@ -3166,35 +3160,6 @@
     //
     _buyButton.enabled = YES;
     _buyButton.layer.opacity = 1;
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-}
-
-#pragma mark - Request Action Voucher
-
--(void)requestSuccessActionVoucher:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionVoucher *voucherResponse = stat;
-    _voucherData = voucherResponse.result.data_voucher;
-    
-    _voucherCodeButton.hidden = YES;
-    _voucherAmountLabel.hidden = NO;
-    
-    NSInteger voucher = [voucherResponse.result.data_voucher.voucher_amount integerValue];
-    NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
-    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
-    _voucherAmountLabel.text = voucherString;
-    _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-    
-    _buttonVoucherInfo.hidden = YES;
-    _buttonCancelVoucher.hidden = NO;
-    
-    [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
-    
-    [_tableView reloadData];
-    
     [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 
 }
@@ -3226,26 +3191,6 @@
 }
 
 #pragma mark - Request Toppay
--(void)requestSuccessToppay:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    TransactionAction *data = [result objectForKey:@""];
-    
-//    [_delegate didFinishRequestCheckoutData:@{@"show_webview":@(1),
-//                                              @"data":data}];
-//    _checkoutButton.enabled = YES;
-//    _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
-//    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-    vc.toppayQueryString = data.result.query_string;
-    vc.URLString = data.result.redirect_url;
-    vc.gateway = @([_cart.gateway integerValue]);
-    vc.delegate = self;
-    
-    [self.navigationController pushViewController:vc animated:YES];
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-}
 
 -(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
