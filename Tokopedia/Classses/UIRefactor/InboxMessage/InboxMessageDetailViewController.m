@@ -198,8 +198,8 @@
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
     _growingtextview.enablesReturnKeyAutomatically = YES;
     
-    [_messagingview addSubview:_growingtextview];
-        
+//    [_messagingview addSubview:_growingtextview];
+    
     _messagingview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
