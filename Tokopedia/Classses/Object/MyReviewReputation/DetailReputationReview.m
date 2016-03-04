@@ -30,25 +30,80 @@
         tempViewModel.product_status = _product_status;
         tempViewModel.review_rate_accuracy = _review_rate_accuracy;
         tempViewModel.review_rate_quality = _review_rate_product;
-        tempViewModel.review_user_name = _review_user_name;
-        tempViewModel.review_user_image = _review_user_image;
+        tempViewModel.product_id = _review_product_id;
+        if(_review_user_name != nil){
+            //if coming from product review and shop page
+            tempViewModel.review_user_name = _review_user_name;
+        }else{
+            tempViewModel.review_user_name = _review_full_name;
+        }
+        if(_review_user_image != nil){
+            //if coming from product review and shop page
+            tempViewModel.review_user_image = _review_user_image;
+        }else{
+            //if coming from inbox review
+            tempViewModel.review_user_image = _user_image;
+        }
 
         _viewModel = tempViewModel;
     }
     
     return _viewModel;
 }
-
 - (NSString*)shop_name {
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
 - (NSString*)product_name {
-    return [_product_name kv_decodeHTMLCharacterEntities];
+    if(_product_name != nil){
+        return [_product_name kv_decodeHTMLCharacterEntities];
+    }else{
+        return [_review_product_name kv_decodeHTMLCharacterEntities];
+    }
 }
 
 - (NSString*)review_message {
     return [_review_message kv_decodeHTMLCharacterEntities];
+}
+
+-(NSString *)product_image{
+    if(_product_image != nil){
+        return _product_image;
+    }else{
+        return _review_product_image;
+    }
+}
+
+- (NSString*)review_user_name{
+    if(_review_user_name != nil){
+        return _review_user_name;
+    }else{
+        return _review_full_name;
+    }
+}
+
+-(NSString *)review_user_image{
+    if(_review_user_image != nil){
+        return _review_user_image;
+    }else{
+        return _user_image;
+    }
+}
+
+-(NSString *)product_rating_point{
+    if(_product_rating_point != nil){
+        return _product_rating_point;
+    }else{
+        return _review_rate_quality;
+    }
+}
+
+-(NSString *)product_accuracy_point{
+    if(_product_accuracy_point != nil){
+        return _product_accuracy_point;
+    }else{
+        return _review_rate_accuracy;
+    }
 }
 
 +(RKObjectMapping *)mapping{

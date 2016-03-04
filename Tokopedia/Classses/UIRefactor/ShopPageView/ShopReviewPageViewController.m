@@ -604,7 +604,7 @@ ProductReputationSimpleDelegate>
     if (![dictLikeDislike objectForKey:list.review_id]) {
         if(! [loadingLikeDislike objectForKey:list.review_id]) {
             [loadingLikeDislike setObject:list.review_id forKey:list.review_id];
-            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[list, @(indexPath.row)]];
+            //[self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[list, @(indexPath.row)]];
         }
     }
     
@@ -1214,7 +1214,6 @@ ProductReputationSimpleDelegate>
     }
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
-    productDetailReputationViewController.reviewList = reviewList;
     productDetailReputationViewController.detailReputationReview = reviewList;
     productDetailReputationViewController.isMyProduct = (_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:reviewList.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = _shop.result.stats.shop_badge_level;
@@ -1222,13 +1221,6 @@ ProductReputationSimpleDelegate>
     productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = reviewList.review_product_id;
-    
-    if([dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id]) {
-        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.reviewList.review_id];
-        productDetailReputationViewController.strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
-        productDetailReputationViewController.strTotalLike = totalLikeDislike.total_like_dislike.total_like;
-        productDetailReputationViewController.strLikeStatus = totalLikeDislike.like_status;
-    }
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 
