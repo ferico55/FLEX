@@ -210,6 +210,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *bankView;
 @property (weak, nonatomic) IBOutlet UIView *durationView;
+@property (strong, nonatomic) IBOutlet UILabel *transferCodeInfoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *transferCodeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
@@ -354,7 +356,7 @@
                                 title:@"Keranjang belanja Anda kosong"
                                  desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
                              btnTitle:@"Ayo mulai belanja!"];
-
+    [_transferCodeInfoLabel setCustomAttributedText:_transferCodeInfoLabel.text];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -841,6 +843,12 @@
             [self sendingProductDataToGA];
         }
     }
+}
+- (IBAction)tapInfoTransferCode:(id)sender {
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info Kode Unik";
+    alertInfo.detailText = @"Kode Unik adalah nominal unik yang ditambahkan untuk mempermudah proses verifikasi.";
+    [alertInfo show];
 }
 
 - (IBAction)tapBankInstallment:(id)sender {
@@ -2100,7 +2108,7 @@
         }
         case 5:
             cell = _transferCodeCell;
-            [cell.detailTextLabel setText:_cartSummary.conf_code_idr];
+            [_transferCodeLabel setText:_cartSummary.conf_code_idr];
             break;
         case 6:
         {
@@ -2488,6 +2496,7 @@
         if (indexPath.row == 5) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
                 return 0;
+            else return 91;
         }
         if (indexPath.row == 6) {
             if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC || ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [_cartSummary.conf_code integerValue] != 0)) {
