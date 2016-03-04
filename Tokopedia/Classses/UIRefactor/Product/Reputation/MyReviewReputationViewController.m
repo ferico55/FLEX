@@ -834,6 +834,110 @@
     }
 }
 
+- (void)actionReviewRate:(id)sender
+{
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+        
+        if([tempObj.reputation_progress isEqualToString:@"2"]) {
+            // add some stickey message
+            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf penilaian ini telah dikunci, Anda telah melewati batas waktu penilaian."] delegate:self];
+            [stickyAlertView show];
+        } else {
+            alertRateView = [[AlertRateView alloc] initViewWithDelegate:self withDefaultScore:[tempObj.role isEqualToString:@"2"]?tempObj.buyer_score:tempObj.seller_score from:[tempObj.viewModel.role isEqualToString:@"1"]? CPembeli:CPenjual];
+            alertRateView.tag = ((UIButton *) sender).tag;
+            [alertRateView show];
+        }
+        
+
+    }
+}
+
+- (void)actionInvoice:(id)sender
+{
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+
+        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            UserAuthentificationManager *auth = [UserAuthentificationManager new];
+            WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
+            NSDictionary *invoiceURLDictionary = [NSDictionary dictionaryFromURLString:tempObj.invoice_uri];
+            NSString *invoicePDF = [invoiceURLDictionary objectForKey:@"pdf"];
+            NSString *invoiceID = [invoiceURLDictionary objectForKey:@"id"];
+            NSString *userID = [auth getUserId];
+            NSString *invoiceURLforWS = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@", kTkpdBaseURLString, invoicePDF, invoiceID, userID];
+            VC.urlAddress = invoiceURLforWS?:@"";
+            
+            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:VC];
+        }
+        else {
+            if(tempObj.invoice_uri!=nil && tempObj.invoice_uri.length>0) {
+                [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:tempObj.invoice_uri];
+            }
+        }
+    }
+}
+
+
+
+- (void)actionFlagReview:(id)sender {
+    DetailMyInboxReputation *object = arrList[((UIView *)sender).tag];
+    BOOL loggedInUserIsSeller = [object.role isEqualToString:@"2"];
+
+    NSString *img = object.my_score_image;
+    NSString *opponentRole;
+    NSString *alertString;
+    if(!loggedInUserIsSeller) {
+        //score given to me as buyer role
+        opponentRole = @"Penjual";
+    } else {
+        //score given to me as seller role
+        opponentRole = @"Pembeli";
+    }
+    
+    if([img isEqualToString:@"smiley_neutral"]) {
+        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah cukup puas", opponentRole];
+    } else if([img isEqualToString:@"smiley_bad"]) {
+        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah tidak puas", opponentRole];
+    } else if([img isEqualToString:@"smiley_good"]) {
+        alertString = [NSString stringWithFormat:@"Penilaian dari %@ adalah puas", opponentRole];
+    } else if([img isEqualToString:@"grey_question_mark"] || [img isEqualToString:@"smiley_none"]) {
+        alertString = [NSString stringWithFormat:@"%@ belum memberikan penilaian untuk Anda", opponentRole];
+    } else if([img isEqualToString:@"blue_question_mark"]) {
+        alertString = [NSString stringWithFormat:@"Penasaran ? \n Isi penilaian untuk %@ dulu ya!", opponentRole];
+    }
+    
+    UIAlertView *alertView;
+    alertView = [[UIAlertView alloc] initWithTitle:@"" message:alertString delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+    [alertView show];
+
+}
+
+- (void)actionFooter:(id)sender {
+    if(! isRefreshing) {
+        DetailMyInboxReputation *tempObj = arrList[((UIButton *) sender).tag];
+        //Set flag to read -> From unread
+        tempObj.read_status = CValueRead;
+        tempObj.viewModel.read_status = CValueRead;
+        DetailMyReviewReputationViewController *detailMyReviewReputationViewController = [DetailMyReviewReputationViewController new];
+        detailMyReviewReputationViewController.tag = (int)((UIButton *) sender).tag;
+        detailMyReviewReputationViewController.detailMyInboxReputation = tempObj;
+        detailMyReviewReputationViewController.autoRead = tempObj.auto_read;
+        [detailMyReviewReputationViewController onReputationIconTapped:^void() {
+            [self performSelector:@selector(actionFlagReview:) withObject:detailMyReviewReputationViewController];
+        }];
+
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:detailMyReviewReputationViewController];
+        }
+        else {
+            [self.navigationController pushViewController:detailMyReviewReputationViewController animated:YES];
+        }
+    }
+}
+
+
 #pragma mark - AlertRate Delegate
 - (void)closeWindow {
     alertRateView = nil;

@@ -42,6 +42,7 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *filterButtons;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *checkListImageViews;
+
 @end
 
 @implementation InboxResolutionCenterTabViewController
@@ -92,7 +93,7 @@
     
     _selectedFilterRead = _arrayFilterRead[0];
     
-    [self setTitleButtonString:_selectedFilterRead[@"filter_name"]];
+    [self setTitleButtonString:_selectedFilterRead[@"filter_name"] withImage:@"icon_triangle_down_white.png"];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -134,6 +135,7 @@
 -(IBAction)tapBackButton:(id)sender
 {
     [_splitVC.navigationController popViewControllerAnimated:YES];
+    [_filterAlertView dismissWithClickedButtonIndex:0 animated:NO];
 }
 
 
@@ -152,6 +154,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [_filterAlertView dismissWithClickedButtonIndex:0 animated:NO];
     self.title = nil;
 }
 
@@ -184,8 +187,11 @@
         _filterAlertView.list = [self getListFilterNameFromArray:_arrayFilterRead];
         _filterAlertView.selectedObject = _selectedFilterRead[@"filter_name"];
         _filterAlertView.delegate = self;
+        [self setTitleButtonString:_selectedFilterRead[@"filter_name"] withImage:@"icon_triangle_up_white.png"];
+
         [_filterAlertView show];
     }else{
+        [self setTitleButtonString:_selectedFilterRead[@"filter_name"] withImage:@"icon_triangle_down_white.png"];
         [_filterAlertView dismissWithClickedButtonIndex:-1 animated:YES];
         _filterAlertView =nil;
     }
@@ -294,7 +300,7 @@
     return [self viewControllerAtIndex:index];
 }
 
-- (void)setTitleButtonString:(NSString*)string {
+- (void)setTitleButtonString:(NSString*)string withImage:(NSString*)imageName {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 10, 17);
     [button addTarget:self action:@selector(tapFilterRead:) forControlEvents:UIControlEventTouchUpInside];
@@ -302,7 +308,7 @@
     
     NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
     attachment.bounds = CGRectMake(0, 0, 10, 10);
-    attachment.image = [UIImage imageNamed:@"icon_triangle_down_white.png"];
+    attachment.image = [UIImage imageNamed:imageName];
     
     NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
     button.titleLabel.numberOfLines = 2;
@@ -320,7 +326,7 @@
 
 -(void)alertView:(TKPDAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (buttonIndex >= 0) {
-        [self setTitleButtonString:_arrayFilterRead[buttonIndex][@"filter_name"]];
+        [self setTitleButtonString:_arrayFilterRead[buttonIndex][@"filter_name"] withImage:@"icon_triangle_down_white.png"];
         _selectedFilterRead = _arrayFilterRead[buttonIndex];
          [self refreshChildViewController];
     }

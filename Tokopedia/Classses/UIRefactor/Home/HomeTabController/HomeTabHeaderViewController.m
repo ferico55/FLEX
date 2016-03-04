@@ -32,53 +32,27 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
     //set change orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
 
 }
 
 - (void)initButton {
+    UIButton * (^createButton)(NSString* ,NSInteger, NSInteger) = ^UIButton * (NSString* buttonTitle, NSInteger multiplier, NSInteger buttonTag) {
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*multiplier - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
+        [button setTitle:buttonTitle forState:UIControlStateNormal];
+        [button.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:14]];
+        button.tag = buttonTag;
+        [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        return button;
+    };
 
-    UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*1, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-    [button1 setTitle:@"Beranda" forState:UIControlStateNormal];
-    [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
-    button1.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    button1.tag = 1;
-    [button1 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_scrollView addSubview:button1];
-    
-    UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*2, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-    [button2 setTitle:@"Produk Feed" forState:UIControlStateNormal];
-    [button2 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-    button2.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    button2.tag = 2;
-    [button2 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_scrollView addSubview:button2];
-    
-    UIButton *buttonWishList = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*3, 0, [[UIScreen mainScreen]bounds].size.width/3, 44)];
-    [buttonWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-    [buttonWishList setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-    buttonWishList.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    buttonWishList.tag = 3;
-    [buttonWishList addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_scrollView addSubview:buttonWishList];
-    
-    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*4, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-    [button3 setTitle:@"Terakhir Dilihat" forState:UIControlStateNormal];
-    [button3 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-    button3.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    button3.tag = 4;
-    [button3 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_scrollView addSubview:button3];
-    
-    UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*5, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-    [button4 setTitle:@"Toko Favorit" forState:UIControlStateNormal];
-    [button4 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-    button4.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    button4.tag = 5;
-    [button4 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_scrollView addSubview:button4];
-    
+    [_scrollView addSubview:createButton(@"HOME", 1, 1)];
+    [_scrollView addSubview:createButton(@"PRODUCT FEED", 2, 2)];
+    [_scrollView addSubview:createButton(@"WISHLIST", 3, 3)];
+    [_scrollView addSubview:createButton(@"TERAKHIR DILIHAT", 4, 4)];
+    [_scrollView addSubview:createButton(@"TOKO FAVORIT", 5, 5)];
 }
 
 #pragma mark - Lifecycle
@@ -92,10 +66,12 @@
     [super viewDidLoad];
     [self initNotificationCenter];
     
-    _scrollView.contentSize = CGSizeMake(([[UIScreen mainScreen]bounds].size.width/3)*6, self.view.frame.size.height);
+    _scrollView.contentSize = CGSizeMake(([[UIScreen mainScreen]bounds].size.width/2)*6, self.view.frame.size.height);
     
-    [_scrollView setShowsHorizontalScrollIndicator:NO];
     _scrollView.delegate = self;
+    _scrollView.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
+    _scrollView.bounces = NO;
+    
     [self initButton];
     
     UserAuthentificationManager *manager = [[UserAuthentificationManager alloc] init];
@@ -160,35 +136,35 @@
 - (void)tap:(int)page {
     switch (page) {
         case 1 :{
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/3)*0;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*0;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 1;
             break;
         }
             
         case 2 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/3)*1;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*1;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 2;
             break;
         }
             
         case 3 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/3)*2;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*2;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 3;
             break;
         }
             
         case 4 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/3)*3;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*3;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 4;
             break;
         }
             
         case 5 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/3)*4;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*4;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 5;
             break;
@@ -204,9 +180,9 @@
     for (UIButton *button in _scrollView.subviews) {
         if ([button isKindOfClass:[UIButton class]]) {
             if (button.tag == _viewControllerIndex) {
-                [button setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
+                [button setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1] forState:UIControlStateNormal];
             } else {
-                [button setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+                [button setTitleColor:[UIColor colorWithRed:182.0/255.0 green:223.0/255.0 blue:185.0/255.0 alpha:1] forState:UIControlStateNormal];
             }
         }
     }
@@ -230,13 +206,12 @@
     if(_loggedIn) {
         [self initButton];
     } else {
-        UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*1, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-        [button1 setTitle:@"Beranda" forState:UIControlStateNormal];
-        [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button1.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button1.tag = 1;
-        [button1 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:button1];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*1 - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
+        [button setTitle:@"HOME" forState:UIControlStateNormal];
+        [button.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:14]];
+        button.tag = 1;
+        [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:button];
     }
 
 }

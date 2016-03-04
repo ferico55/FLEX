@@ -15,7 +15,5 @@
 
 -(void)replaceDataSelected:(NSDictionary*)data;
 
-@property (strong, nonatomic) UIViewController *masterViewController;
-
 
 @end

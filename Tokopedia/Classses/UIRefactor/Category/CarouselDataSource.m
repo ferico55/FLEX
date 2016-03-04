@@ -10,8 +10,7 @@
 #import "Slide.h"
 #import "WebViewController.h"
 
-NSInteger const sliderHeight = 175;
-NSInteger const bannerIpadWidth = 350;
+NSInteger const bannerIpadWidth = 450;
 
 @implementation CarouselDataSource {
     NSArray *_banners;
@@ -40,7 +39,7 @@ NSInteger const bannerIpadWidth = 350;
         bannerWidth = 375;
     }
 
-    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, sliderHeight)];
+    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerWidth, IS_IPAD ? 225 : 175)];
     Slide *banner = _banners[index];
     [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.image_url] placeholderImage:nil];
     

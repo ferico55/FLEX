@@ -10,14 +10,15 @@
 
 @implementation ReputationDetail
 
-+ (RKObjectMapping *)mapping{
-    RKObjectMapping *reputationDetail = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reputationDetail addAttributeMappingsFromArray:@[@"positive_percentage",
-                                                      @"negative",
-                                                      @"positive",
-                                                      @"neutral",
-                                                      @"no_reputation"]];
-    return reputationDetail;
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:self];
+    [reviewUserReputationMapping addAttributeMappingsFromArray:@[@"positive_percentage",
+                                                                 @"no_reputation",
+                                                                 @"negative",
+                                                                 @"neutral",
+                                                                 @"positive"]];
+    
+    return reviewUserReputationMapping;
 }
 
 @end

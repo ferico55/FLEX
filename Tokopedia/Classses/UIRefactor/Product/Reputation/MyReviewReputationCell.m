@@ -70,11 +70,11 @@
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    _selectionMarker.hidden = !selected;
+    viewContent.backgroundColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor whiteColor];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    _selectionMarker.hidden = !highlighted;
+    viewContent.backgroundColor = highlighted ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor whiteColor];
 }
 
 

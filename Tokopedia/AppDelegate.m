@@ -32,6 +32,9 @@
 {
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
+
+    [self hideTitleBackButton];
+    
     _viewController = [MainViewController new];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
@@ -257,5 +260,10 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         self.container = container;
     });
+}
+
+- (void)hideTitleBackButton {
+    //hide title back button globally
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 @end

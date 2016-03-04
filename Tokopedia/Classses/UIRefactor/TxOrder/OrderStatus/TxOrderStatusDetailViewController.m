@@ -240,7 +240,7 @@
     }
 }
 - (IBAction)gesture:(id)sender {
-    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
+    [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
 }
 
 -(void)showAlertViewOpenComplain

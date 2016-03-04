@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -105,25 +105,17 @@
                             <constraint firstItem="CBX-ja-ctf" firstAttribute="top" secondItem="MhL-d7-7Cg" secondAttribute="bottom" constant="10" id="uNu-f2-olE"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wle-LS-C7H">
-                        <rect key="frame" x="310" y="10" width="5" height="114"/>
-                        <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
                 </subviews>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="aVN-c5-5o5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="13c-4Q-HZb"/>
-                    <constraint firstItem="Wle-LS-C7H" firstAttribute="top" secondItem="aVN-c5-5o5" secondAttribute="top" id="1jW-ge-nHG"/>
-                    <constraint firstItem="Wle-LS-C7H" firstAttribute="height" secondItem="aVN-c5-5o5" secondAttribute="height" id="AnY-3u-sXW"/>
                     <constraint firstItem="aVN-c5-5o5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="HUz-5r-KsX"/>
-                    <constraint firstItem="Wle-LS-C7H" firstAttribute="leading" secondItem="aVN-c5-5o5" secondAttribute="trailing" id="fC9-dO-KbS"/>
-                    <constraint firstAttribute="trailing" secondItem="Wle-LS-C7H" secondAttribute="trailing" constant="5" id="oNu-aj-t3D"/>
                     <constraint firstAttribute="trailing" secondItem="aVN-c5-5o5" secondAttribute="trailing" constant="10" id="vI4-1H-F5s"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="_selectionMarker" destination="Wle-LS-C7H" id="cbr-jQ-ucy"/>
+                <outlet property="_viewContainer" destination="aVN-c5-5o5" id="kjy-81-ILQ"/>
                 <outlet property="dateLabel" destination="MhL-d7-7Cg" id="uQw-uz-l7n"/>
                 <outlet property="statusLabel" destination="FMf-TR-LdY" id="lCD-pQ-HG8"/>
                 <outlet property="ticketTotalMessageButton" destination="4Mc-av-u6t" id="ocV-Ty-TGZ"/>

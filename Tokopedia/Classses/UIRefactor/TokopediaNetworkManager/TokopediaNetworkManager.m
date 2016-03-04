@@ -24,6 +24,7 @@
     
     if(self != nil) {
         _operationQueue = [NSOperationQueue new];
+        _isUsingDefaultError = YES;
     }
     
     return self;
@@ -356,12 +357,11 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
         
-        __unsafe_unretained typeof(self) weakSelf = self;
         NSInteger requestCountMax = _maxTries?:kTKPDREQUESTCOUNTMAX;
         if(_requestCount < requestCountMax) {
             //cancelled request
             if(error.code == -999) {
-                [weakSelf requestWithBaseUrl:baseUrl
+                [self requestWithBaseUrl:baseUrl
                                         path:path
                                       method:method
                                    parameter:parameter
@@ -380,8 +380,8 @@
     [_operationQueue addOperation:_objectRequest];
     NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
 
-    __unsafe_unretained typeof(self) weakSelf = self;
-    _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:1.0 block:^(NSTimer* timer) {
+    __weak typeof(self) weakSelf = self;
+    _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:timeInterval block:^(NSTimer* timer) {
         [weakSelf requestCancel];
     } repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
@@ -391,21 +391,28 @@
 - (void)handleErrorWithCallback:(void (^)(NSError *))errorCallback error:(NSError *)error {
     if (errorCallback) {
         errorCallback(error);
-    } else {
-        StickyAlertView *alert;
-        NSArray *errors;
-        if(error.code == -1011) {
-            errors = @[@"Mohon maaf, terjadi kendala pada server"];
-        } else if (error.code==-1009) {
-            errors = @[@"Tidak ada koneksi internet"];
-        } else {
-            errors = @[error.localizedDescription];
+        if(_isUsingDefaultError) {
+            [self showErrorAlert:error];
         }
-
-
-        alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
-        [alert show];
+    } else {
+        [self showErrorAlert:error];
     }
+}
+
+- (void)showErrorAlert:(NSError*)error {
+    StickyAlertView *alert;
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code==-1009) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
+    }
+    
+    
+    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    [alert show];
 }
 
 @end

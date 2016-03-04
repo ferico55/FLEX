@@ -63,7 +63,7 @@
     NSUInteger *_indexImage;
     NSArray *_imageDescriptions;
 }
--(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
++(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
@@ -297,10 +297,12 @@
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:controller animated:YES];
         
     } else {
         InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:controller animated:YES];
     }
 }
