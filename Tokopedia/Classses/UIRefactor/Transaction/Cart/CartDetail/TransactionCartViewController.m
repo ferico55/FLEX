@@ -1139,7 +1139,10 @@
     TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
     if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
         if (!_selectedInstallmentBank) _selectedInstallmentBank = _cartSummary.installment_bank_option[0];
-        if (!_selectedInstallmentDuration) _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+        if (!_selectedInstallmentDuration){
+            _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+            [self adjustTotalPaymentInstallment];
+        }
         
         _bankInstallmentLabel.text = _selectedInstallmentBank.bank_name;
         _durationInstallmentLabel.text = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price_idr];
@@ -1435,6 +1438,7 @@
             }
         }
         _selectedInstallmentDuration = _selectedInstallmentBank.installment_term[0];
+        [self adjustTotalPaymentInstallment];
         _isSelectBankInstallment = NO;
     }
     
@@ -1443,12 +1447,20 @@
             NSString *termNow = [NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price_idr];
             if ([termNow isEqualToString:object]) {
                 _selectedInstallmentDuration = term;
+                [self adjustTotalPaymentInstallment];
             }
         }
         _isSelectDurationInstallment = NO;
     }
     
     [_tableView reloadData];
+}
+
+-(void)adjustTotalPaymentInstallment{
+    _cartSummary.conf_code = _selectedInstallmentDuration.admin_price;
+    _cartSummary.payment_left = _selectedInstallmentDuration.total_price;
+    _cartSummary.conf_code_idr = _selectedInstallmentDuration.admin_price_idr;
+    _cartSummary.payment_left_idr = _selectedInstallmentDuration.total_price_idr;
 }
 
 -(void)adjustGrandTotalWithDeposit:(NSString*)deposit
