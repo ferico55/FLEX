@@ -67,7 +67,7 @@ TTTAttributedLabelDelegate
     bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
     [self.reputationBuyerView.layer addSublayer:bottomBorder];
     
-    _productID = viewModel.product_id;
+    _productID = viewModel.review_product_id;
     _productName = viewModel.product_name;
     _productImage = viewModel.product_image;
 }

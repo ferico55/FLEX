@@ -238,11 +238,8 @@ MGSwipeTableCellDelegate>
     
     //Set profile image
     BOOL isResizeSeparatorProduct;
-    NSString *strTempProductID = _detailReputationReview.product_id;
-    if((_detailReputationReview!=nil &&
-         _detailReputationReview.review_message!=nil &&
-         ![_detailReputationReview.review_message isEqualToString:@"0"]) && (strTempProductID!=nil && ![strTempProductID isEqualToString:@""])
-       ) {
+    NSString *strTempProductID = _detailReputationReview.review_product_id ;
+    if(strTempProductID!=nil && ![strTempProductID isEqualToString:@""]) {
         [productReputationCell initProductCell];
         
 
@@ -260,7 +257,7 @@ MGSwipeTableCellDelegate>
         [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorProduct];
         
         
-        NSString *strProductStatus = _detailReputationReview.product_status;
+        NSString *strProductStatus = _detailReputationReview.review_product_status;
         //check product deleted
         if([strProductStatus isEqualToString:@"1"]) {
             productReputationCell.getLabelProductName.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
@@ -401,7 +398,7 @@ MGSwipeTableCellDelegate>
     [_TKPDNavigator navigateToProductFromViewController:self
                                                withName:_detailReputationReview.product_name
                                               withPrice:nil
-                                                 withId:_detailReputationReview.product_id
+                                                 withId:_detailReputationReview.review_product_id
                                            withImageurl:_detailReputationReview.product_image
                                            withShopName:_detailReputationReview.product_owner.shop_name];
 }
