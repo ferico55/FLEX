@@ -7,7 +7,23 @@
 //
 
 #import "MyReviewReputationResult.h"
+#import "Paging.h"
+#import "DetailMyInboxReputation.h"
 
 @implementation MyReviewReputationResult
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *myReviewReputationResultMapping = [RKObjectMapping mappingForClass:[MyReviewReputationResult class]];
+    
+    [myReviewReputationResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging"
+                                                                                                    toKeyPath:@"paging"
+                                                                                                  withMapping:[Paging mapping]]];
+    
+    [myReviewReputationResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
+                                                                                                    toKeyPath:@"list"
+                                                                                                  withMapping:[DetailMyInboxReputation mapping]]];
+    
+    return myReviewReputationResultMapping;
+}
 
 @end

@@ -7,6 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ProductOwner.h"
+#import "ReviewResponse.h"
+#import "ShopReputation.h"
+
 #define CIsOwner @"is_owner"
 #define CProductOwner @"product_owner"
 #define CReviewResponse @"review_response"
@@ -19,8 +23,6 @@
 #define CShopName @"shop_name"
 #define CShopImgUri @"shop_img_uri"
 #define CShopReputation @"shop_reputation"
-
-@class ProductOwner, ReviewResponse, ShopReputation;
 
 @interface ResponseCommentResult : NSObject
 @property (nonatomic, strong) NSString *is_owner;
@@ -36,4 +38,6 @@
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *shop_img_uri;
+
++ (RKObjectMapping*)mapping;
 @end

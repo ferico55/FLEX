@@ -74,4 +74,6 @@
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 @property (nonatomic, strong) MyReviewReputationViewModel *viewModel;
 @property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
+
++ (RKObjectMapping*)mapping;
 @end

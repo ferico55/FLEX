@@ -30,15 +30,13 @@
     }
 }
 
-+(NSDictionary *)attributeMappingDictionary
-{
++ (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"uri_next",
                       @"uri_previous"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
-+(RKObjectMapping*)mapping
-{
++ (RKObjectMapping*)mapping {
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromArray:@[@"uri_next",
                                                    @"uri_previous"]];

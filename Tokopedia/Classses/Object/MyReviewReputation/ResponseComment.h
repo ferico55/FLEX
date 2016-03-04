@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ResponseCommentResult.h"
 #define CMessageError @"message_error"
 #define CMessageStatus @"message_status"
 #define CStatus @"status"
@@ -22,4 +23,6 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) ResponseCommentResult *result;
 @property (nonatomic, strong) ResponseCommentResult *data;
+
++ (RKObjectMapping*)mapping;
 @end

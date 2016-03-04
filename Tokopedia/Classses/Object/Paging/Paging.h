@@ -16,7 +16,7 @@
 @property (strong, nonatomic) NSString *uri_previous;
 @property (strong, nonatomic) RKObjectMapping *mapping;
 
-- (void) encodeWithCoder:(NSCoder *)encoder;
+- (void)encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;
 
 @end
