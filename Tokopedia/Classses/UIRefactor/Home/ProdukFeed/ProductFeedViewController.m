@@ -146,7 +146,7 @@ CollectionViewSupplementaryDataSource
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteShop) name:@"updateFavoriteShop" object:nil];
     //set change orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     //todo with network
     _networkManager = [TokopediaNetworkManager new];
@@ -256,7 +256,7 @@ CollectionViewSupplementaryDataSource
 #pragma mark - Tokopedia Network Delegate
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:@(_page), kTKPDHOME_APIPAGEKEY,
-                               @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
+                               IS_IPAD ? @"16" : @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
     
     return parameter;
 }
@@ -481,8 +481,7 @@ CollectionViewSupplementaryDataSource
 
 #pragma mark - Scroll delegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (self.lastContentOffset > scrollView.contentOffset.y) {
         self.scrollDirection = ScrollDirectionUp;
     } else if (self.lastContentOffset < scrollView.contentOffset.y) {
@@ -495,11 +494,15 @@ CollectionViewSupplementaryDataSource
     }
     
     if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
-        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
+        if ([self isAbleToRequest]) {
             _isFailRequest = NO;
             [_networkManager doRequest];
         }
     }
+}
+
+- (BOOL)isAbleToRequest {
+    return (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0);
 }
 
 - (void)orientationChanged:(NSNotification *)note {
