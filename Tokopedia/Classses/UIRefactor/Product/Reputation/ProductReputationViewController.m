@@ -757,6 +757,7 @@ static NSInteger userViewHeight = 70;
     //1 is like
     //2 is dislike
     //3 is unlike or undislike
+    
     RKObjectManager *objectManager;
     if([reviewActionBaseUrl isEqualToString:kTkpdBaseURLString] || [reviewActionBaseUrl isEqualToString:@""]) {
         objectManager = [RKObjectManager sharedClient];
@@ -1165,16 +1166,21 @@ static NSInteger userViewHeight = 70;
     
     if(tag == CTagGetProductReview) {
         review = stat;
+        NSMutableArray *contentsToAdd = [[NSMutableArray alloc] initWithArray:review.result.list];
+        for(DetailReputationReview *detailReputation in contentsToAdd){
+            detailReputation.product_id = _strProductID;
+            detailReputation.review_product_id = _strProductID;
+        }
         
         if(page==0 && review.result.list!=nil) {
-            arrList = [[NSMutableArray alloc] initWithArray:review.result.list];
+            arrList = [[NSMutableArray alloc] initWithArray:contentsToAdd];
             
             segmentedControl.enabled = YES;
             btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
             [self setRateStar:(int)segmentedControl.selectedSegmentIndex withAnimate:YES];
         }
         else if(review.result.list != nil) {
-            [arrList addObjectsFromArray:review.result.list];
+            [arrList addObjectsFromArray:contentsToAdd];
         }
         
         //Check next page

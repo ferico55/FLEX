@@ -11,6 +11,7 @@
 #define CLStatus @"status"
 #define CLServerProcessTime @"server_process_time"
 #define CLResult @"result"
+#import "LikeDislikePostResult.h"
 @class LikeDislikePostResult;
 
 @interface LikeDislikePost : NSObject
@@ -18,4 +19,6 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) LikeDislikePostResult *result;
+
++ (RKObjectManager*)mapping;
 @end

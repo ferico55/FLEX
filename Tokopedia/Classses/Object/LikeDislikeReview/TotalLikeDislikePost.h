@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DetailTotalLikeDislike.h"
 @class DetailTotalLikeDislike;
 
 @interface TotalLikeDislikePost : NSObject
 @property (nonatomic, strong) DetailTotalLikeDislike *total_like_dislike;
++(RKObjectMapping*)mapping;
 @end

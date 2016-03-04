@@ -23,12 +23,14 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
 
 @implementation ReviewRequest{
     TokopediaNetworkManager *likeDislikeCountNetworkManager;
+    TokopediaNetworkManager *actionLikeDislikeNetworkManager;
 }
 
 - (id)init{
     self = [super init];
     if(self){
         likeDislikeCountNetworkManager = [TokopediaNetworkManager new];
+        actionLikeDislikeNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -51,4 +53,28 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                                  errorCallback(errorResult);
                                              }];
 }
+
+-(void)actionLikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(TotalLikeDislikePost *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    actionLikeDislikeNetworkManager.isParameterNotEncrypted = NO;
+    actionLikeDislikeNetworkManager.isUsingHmac = YES;
+    [actionLikeDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                                  path:@"/v4/action/review/like_dislike_review.pl"
+                                                method:RKRequestMethodGET
+                                             parameter:@{@"product_id"  : productId,
+                                                         @"review_id"   : reviewId,
+                                                         @"shop_id"     : shopId,
+                                                         @"user_id"     : userId,
+                                                         @"like_status" : @(1)
+                                                         }
+                                               mapping:[LikeDislikePost mapping]
+                                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                 LikeDislikePost *obj = [result objectForKey:@""];
+                                                 successCallback(obj.result.content);
+                                             } onFailure:^(NSError *errorResult) {
+                                                 errorCallback(errorResult);
+                                             }];
+}
+
+
 @end

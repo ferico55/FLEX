@@ -592,6 +592,7 @@ MGSwipeTableCellDelegate>
     NSDictionary *auth = [_userManager getUserLoginData];
 
     if(auth) {
+        
         NSString *strReviewID = _detailReputationReview.review_id;
         int tagRequest = 3;//3 is netral
         if([dictLikeDislike objectForKey:strReviewID] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"])) { //2 dislike, 1 like
@@ -970,6 +971,7 @@ MGSwipeTableCellDelegate>
     //1 is like
     //2 is dislike
     //3 is unlike or undislike
+    /*
     RKObjectManager *objectManager = [RKObjectManager sharedClient];
     [self configureRestKitLikeDislike:objectManager];
 
@@ -1041,6 +1043,16 @@ MGSwipeTableCellDelegate>
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:strReviewID repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+     */
+    [reviewRequest actionLikeWithReviewId:_detailReputationReview.review_id
+                                   shopId:_detailReputationReview.shop_id
+                                productId:_detailReputationReview.review_product_id
+                                   userId:_detailReputationReview.review_user_id
+                                onSuccess:^(TotalLikeDislikePost *totalLikeDislike) {
+                                    
+                                } onFailure:^(NSError *errorResult) {
+                                    
+                                }];
 }
 
 - (void)requestTimeout:(NSTimer *)timer {
