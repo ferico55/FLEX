@@ -58,7 +58,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <state key="disabled">
-                                <color key="titleColor" red="0.33725490196078434" green="0.81960784313725488" blue="0.33333333333333331" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="B03-lF-cnc"/>
@@ -78,6 +78,9 @@
                                     <integer key="value" value="1"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Kirim pesanmu di sini.."/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </textView>
                     </subviews>
