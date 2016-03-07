@@ -77,7 +77,7 @@
     NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
-    HPGrowingTextView *_growingtextview;
+    IBOutlet RSKGrowingTextView *_growingtextview;
     
     NSTimeInterval _timeinterval;
     NSMutableDictionary *_auth;
@@ -558,35 +558,10 @@
 }
 
 - (void) initTalkInputView {
-    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10;
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
-    _growingtextview.isScrollable = NO;
-    _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     _growingtextview.layer.borderWidth = 0.5f;
     _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _growingtextview.layer.cornerRadius = 5;
-    _growingtextview.layer.masksToBounds = YES;
-    
-    _growingtextview.minNumberOfLines = 1;
-    _growingtextview.maxNumberOfLines = 6;
-    // you can also set the maximum height in points with maxHeight
-    _growingtextview.maxHeight = 150.f;
 
-    //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-    _growingtextview.delegate = self;
-    _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    _growingtextview.backgroundColor = [UIColor whiteColor];
-    _growingtextview.placeholder = @"Kirim pesanmu di sini..";
-    
-//    [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-}
-
-#pragma mark - Life Cycle
-- (void)viewDidLayoutSubviews {
-    //readjust growing textview width here, because we can't get the correct view controller size in viewDidLoad
-    NSInteger textViewWidth = self.view.bounds.size.width - _sendButton.frame.size.width - 10;
-    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, _growingtextview.frame.size.height);
 }
 
 #pragma mark - Request and Mapping

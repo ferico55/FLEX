@@ -17,6 +17,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductTalkDetailViewController">
             <connections>
+                <outlet property="_growingtextview" destination="6u1-H4-Esw" id="36T-Pu-0YS"/>
                 <outlet property="act" destination="HT4-sT-0SH" id="tNf-cA-xIm"/>
                 <outlet property="btnReputation" destination="uyQ-Vr-VeE" id="Ezh-DA-n8S"/>
                 <outlet property="footer" destination="RKC-0v-BTt" id="oc9-8o-9wN"/>
@@ -87,6 +88,9 @@
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="animateHeightChange" value="NO"/>
                                 <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Kirim pesanmu di sini.."/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </textView>
                     </subviews>
