@@ -89,7 +89,7 @@
                                                  name:@"didReceiveDeeplinkUrl" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
    
 }
 
