@@ -113,6 +113,7 @@
     
     BOOL _refreshFromShipment;
     BOOL _popFromShipment;
+    BOOL _popFromToppay;
     
     NavigateViewController *_navigate;
     
@@ -367,6 +368,11 @@
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
         _tableView.tableHeaderView = nil;
+        
+        if (_popFromToppay) {
+            _popFromToppay = NO;
+            [self requestCartData];
+        }
         
     } else {
         
@@ -2776,10 +2782,11 @@
           TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
           vc.toppayQueryString = data.query_string;
           vc.URLString = data.redirect_url;
-                              vc.toppayParam = data.parameter;
+          vc.toppayParam = data.parameter;
           vc.gateway = @([_cart.gateway integerValue]);
           vc.delegate = self;
-          
+          _popFromToppay = YES;
+                              
           [self.navigationController pushViewController:vc animated:YES];
           [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
                               
