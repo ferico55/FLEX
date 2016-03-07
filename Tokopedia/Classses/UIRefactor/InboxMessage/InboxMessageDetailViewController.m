@@ -567,6 +567,7 @@
                     [self doSendMessage:_textView.text];
                     
                     _textView.text = nil;
+                    [self adjustButtonSendAvailability];
                 } else {
                     
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM5, nil];
@@ -736,9 +737,13 @@
 
 #pragma mark - TextView Delegate
 - (void)textViewDidChange:(UITextView *)textView {
-    NSString *message = [textView.text stringByTrimmingCharactersInSet:
+    [self adjustButtonSendAvailability];
+}
+
+- (void)adjustButtonSendAvailability {
+    NSString *message = [_textView.text stringByTrimmingCharactersInSet:
                          [NSCharacterSet whitespaceCharacterSet]];
-    _buttonsend.enabled = !([message length] <= 5 || [message isEqualToString:@""]);
+    _buttonsend.enabled = message.length > 5;
 }
 
 #pragma mark - Tap User
