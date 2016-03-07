@@ -2080,6 +2080,8 @@
 		622D830B1C8967A000BC1CB8 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 622D7AF61C89679F00BC1CB8 /* Tokopedia-Info.plist */; };
 		622D830C1C8967A000BC1CB8 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 622D7AF81C89679F00BC1CB8 /* Tokopedia.entitlements */; };
 		622D830D1C8967A000BC1CB8 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 622D7AF91C89679F00BC1CB8 /* Tokopedia.xcworkspace */; };
+		62E59DC31C8D2DA600AF4503 /* InboxReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E59DC21C8D2DA600AF4503 /* InboxReputation.m */; };
+		62E59DC61C8D2DB400AF4503 /* InboxReputationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E59DC51C8D2DB400AF4503 /* InboxReputationResult.m */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -5289,6 +5291,10 @@
 		622D7AF81C89679F00BC1CB8 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		622D7AF91C89679F00BC1CB8 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
+		62E59DC11C8D2DA600AF4503 /* InboxReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReputation.h; sourceTree = "<group>"; };
+		62E59DC21C8D2DA600AF4503 /* InboxReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReputation.m; sourceTree = "<group>"; };
+		62E59DC41C8D2DB400AF4503 /* InboxReputationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReputationResult.h; sourceTree = "<group>"; };
+		62E59DC51C8D2DB400AF4503 /* InboxReputationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReputationResult.m; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -6417,6 +6423,10 @@
 				622D6FB51C89679700BC1CB8 /* SkipReview.m */,
 				622D6FB61C89679700BC1CB8 /* SkipReviewResult.h */,
 				622D6FB71C89679700BC1CB8 /* SkipReviewResult.m */,
+				62E59DC11C8D2DA600AF4503 /* InboxReputation.h */,
+				62E59DC21C8D2DA600AF4503 /* InboxReputation.m */,
+				62E59DC41C8D2DB400AF4503 /* InboxReputationResult.h */,
+				62E59DC51C8D2DB400AF4503 /* InboxReputationResult.m */,
 			);
 			path = MyReviewReputation;
 			sourceTree = "<group>";
@@ -12367,6 +12377,7 @@
 				622D7E671C89679F00BC1CB8 /* DetailProductViewController.m in Sources */,
 				622D7ECC1C89679F00BC1CB8 /* ReputationDetailFormViewController.m in Sources */,
 				622D7C5E1C89679F00BC1CB8 /* OpenShopPictureResult.m in Sources */,
+				62E59DC61C8D2DB400AF4503 /* InboxReputationResult.m in Sources */,
 				622D7D781C89679F00BC1CB8 /* ContactUsFormPresenter.m in Sources */,
 				622D7F2A1C89679F00BC1CB8 /* SettingAddressViewController.m in Sources */,
 				622D7CE81C89679F00BC1CB8 /* UploadImageParams.m in Sources */,
@@ -12684,6 +12695,7 @@
 				622D7CA01C89679F00BC1CB8 /* TransactionBuyResult.m in Sources */,
 				622D7DD01C89679F00BC1CB8 /* FavoritedShopViewController.m in Sources */,
 				622D80301C89679F00BC1CB8 /* MoreWrapperViewController.m in Sources */,
+				62E59DC31C8D2DA600AF4503 /* InboxReputation.m in Sources */,
 				622D7C0F1C89679F00BC1CB8 /* ProfileSettingsResult.m in Sources */,
 				622D7F1D1C89679F00BC1CB8 /* SearchResultShopViewController.m in Sources */,
 				622D7B721C89679F00BC1CB8 /* TalkResult.m in Sources */,

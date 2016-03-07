@@ -78,6 +78,7 @@
 @property (nonatomic, strong) NSString *is_reviewee_score_edited;
 @property (nonatomic, strong) NSString *is_edited;
 @property (nonatomic, strong) NSString *show_reputation_day;
+@property (nonatomic, strong) NSString *create_time_fmt_ws;
 
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 @property (nonatomic, strong) MyReviewReputationViewModel *viewModel;

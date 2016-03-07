@@ -26,6 +26,7 @@
 #import "GiveReviewResponseViewController.h"
 #import "ReportViewController.h"
 #import "RequestLDExtension.h"
+#import "ReviewRequest.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface MyReviewDetailViewController ()
@@ -43,6 +44,7 @@
 {
     TAGContainer *_gtmContainer;
     MyReviewDetailRequest *_myReviewDetailRequest;
+    ReviewRequest *_reviewRequest;
     DetailReputationReview *_detailReputationReview;
     DetailReputationReview *_selectedReview;
     DetailMyInboxReputation *_selectedInbox;
@@ -124,9 +126,43 @@
     
     _myReviewDetailRequest = [MyReviewDetailRequest new];
     _myReviewDetailRequest.delegate = self;
-    [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
-                                                            autoRead:_autoRead
-                                           getDataFromMasterInServer:_getDataFromMasterInServer];
+//    [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
+//                                                            autoRead:_autoRead
+//                                           getDataFromMasterInServer:_getDataFromMasterInServer];
+    
+//    [_myReviewDetailRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
+//                                                         reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
+//                                                              isUsingRedis:_getDataFromMasterInServer
+//                                                                      role:_detailMyInboxReputation.role
+//                                                                  autoRead:_autoRead
+//                                                                 onSuccess:^(MyReviewReputationResult *result) {
+//                                                                     
+//                                                                 }
+//                                                                 onFailure:^(NSError *errorResult) {
+//                                                                     
+//                                                                 }];
+    _reviewRequest = [ReviewRequest new];
+    [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
+                                                 reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
+                                                      isUsingRedis:_getDataFromMasterInServer
+                                                              role:_detailMyInboxReputation.role
+                                                          autoRead:_autoRead
+                                                         onSuccess:^(MyReviewReputationResult *result) {
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             
+                                                             if (_page == 0) {
+                                                                 _isRefreshing = NO;
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager replaceReviews:result.list];
+                                                             } else {
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager addReviews:result.list];
+                                                             }
+                                                         } onFailure:^(NSError *errorResult) {
+                                                             
+                                                         }];
+    
     
     _navigator = [NavigateViewController new];
     
@@ -562,9 +598,26 @@
 }
 
 - (void)refreshData {
-    [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
-                                                            autoRead:_autoRead
-                                           getDataFromMasterInServer:_getDataFromMasterInServer];
+    [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
+                                                 reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
+                                                      isUsingRedis:_getDataFromMasterInServer
+                                                              role:_detailMyInboxReputation.role
+                                                          autoRead:_autoRead
+                                                         onSuccess:^(MyReviewReputationResult *result) {
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             
+                                                             if (_page == 0) {
+                                                                 _isRefreshing = NO;
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager replaceReviews:result.list];
+                                                             } else {
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager addReviews:result.list];
+                                                             }
+                                                         } onFailure:^(NSError *errorResult) {
+                                                             
+                                                         }];
     
     _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
                                              delegate:self

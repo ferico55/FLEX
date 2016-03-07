@@ -415,7 +415,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                               size:{([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"])?24.7:20,20}]
                          },
                          {
-                             revieweeEditedLabel(inbox)
+                             reviewerEditedLabel(inbox)
                          }
                          
                      }],
@@ -493,7 +493,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                                size:{}]
                           },
                           {
-                              reviewerEditedLabel(inbox)
+                              revieweeEditedLabel(inbox)
                           }
                       }],
                      .alignSelf = CKStackLayoutAlignSelfCenter,

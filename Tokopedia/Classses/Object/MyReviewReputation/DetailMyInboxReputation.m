@@ -86,7 +86,8 @@
                                                                     @"seller_score",
                                                                     @"reputation_days_left",
                                                                     @"reputation_score",
-                                                                    @"show_bookmark"]];
+                                                                    @"show_bookmark",
+                                                                    @"create_time_fmt_ws"]];
     
     [detailMyInboxReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"user_reputation"
                                                                                                    toKeyPath:@"user_reputation"

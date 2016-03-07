@@ -10,6 +10,7 @@
 #import "DetailReputationReview.h"
 #import "TotalLikeDislike.h"
 #import "DetailMyInboxReputation.h"
+#import "InboxReputationResult.h"
 #import "MyReviewReputationResult.h"
 
 @interface ReviewRequest : NSObject
@@ -21,9 +22,17 @@
 - (void)requestGetInboxReputationWithNavigation:(NSString*)navigation
                                            page:(NSNumber*)page
                                          filter:(NSString*)filter
-                                      onSuccess:(void(^)(MyReviewReputationResult *myReviewReputationResult))successCallback
+                                      onSuccess:(void(^)(InboxReputationResult *inboxReputationResult))successCallback
                                       onFailure:(void(^)(NSError *errorResult))errorCallback;
 
 - (int)getNextPageFromUri:(NSString*)uri;
+
+- (void)requestGetListReputationReviewWithReputationID:(NSString*)reputationID
+                                     reputationInboxID:(NSString*)reputationInboxID
+                                          isUsingRedis:(NSString*)isUsingRedis
+                                                  role:(NSString*)role
+                                              autoRead:(NSString*)autoRead
+                                             onSuccess:(void(^)(MyReviewReputationResult*))successCallback
+                                             onFailure:(void(^)(NSError*))errorCallback;
 
 @end

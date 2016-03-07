@@ -8,7 +8,7 @@
 
 #import "MyReviewReputationResult.h"
 #import "Paging.h"
-#import "DetailMyInboxReputation.h"
+#import "DetailReputationReview.h"
 
 @implementation MyReviewReputationResult
 
@@ -21,7 +21,9 @@
     
     [myReviewReputationResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
                                                                                                     toKeyPath:@"list"
-                                                                                                  withMapping:[DetailMyInboxReputation mapping]]];
+                                                                                                  withMapping:[DetailReputationReview mapping]]];
+    
+    
     
     return myReviewReputationResultMapping;
 }

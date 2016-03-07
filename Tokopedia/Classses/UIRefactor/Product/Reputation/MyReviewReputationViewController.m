@@ -37,6 +37,7 @@
 #import "InboxReviewCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "ReviewRequest.h"
+#import "InboxReputationResult.h"
 
 #define CFailedGetData @"Proses ambil data gagal"
 #define CCellIndetifier @"cell"
@@ -121,7 +122,7 @@
     [_reviewRequest requestGetInboxReputationWithNavigation:strNav
                                                        page:@(page)
                                                      filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(MyReviewReputationResult *result) {
+                                                  onSuccess:^(InboxReputationResult *result) {
                                                       if (page == 0) {
                                                           isRefreshing = NO;
                                                           arrList = [[NSMutableArray alloc] initWithArray:result.list];
@@ -313,7 +314,7 @@
             [_reviewRequest requestGetInboxReputationWithNavigation:strNav
                                                                page:@(page)
                                                              filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                          onSuccess:^(MyReviewReputationResult *result) {
+                                                          onSuccess:^(InboxReputationResult *result) {
                                                               if (page == 0) {
                                                                   isRefreshing = NO;
                                                                   arrList = [[NSMutableArray alloc] initWithArray:result.list];
@@ -408,7 +409,7 @@
         cell.remainingTimeView.hidden = YES;
     }
     
-    cell.timestampLabel.text = current.create_time_fmt;
+    cell.timestampLabel.text = [current.score_edit_time_fmt isEqualToString:@"0"]?current.create_time_fmt:current.score_edit_time_fmt;
     
     [cell.button setTitle:current.review_status_description forState:UIControlStateNormal];
     [cell.button.layer setBorderWidth:2.0];
@@ -745,7 +746,7 @@
     [_reviewRequest requestGetInboxReputationWithNavigation:strNav
                                                        page:@(page)
                                                      filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(MyReviewReputationResult *result) {
+                                                  onSuccess:^(InboxReputationResult *result) {
                                                       if (page == 0) {
                                                           isRefreshing = NO;
                                                           arrList = [[NSMutableArray alloc] initWithArray:result.list];
@@ -803,7 +804,7 @@
     [_reviewRequest requestGetInboxReputationWithNavigation:strNav
                                                        page:@(page)
                                                      filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(MyReviewReputationResult *result) {
+                                                  onSuccess:^(InboxReputationResult *result) {
                                                       if (page == 0) {
                                                           isRefreshing = NO;
                                                           arrList = [[NSMutableArray alloc] initWithArray:result.list];
@@ -860,7 +861,7 @@
     [_reviewRequest requestGetInboxReputationWithNavigation:strNav
                                                        page:@(page)
                                                      filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(MyReviewReputationResult *result) {
+                                                  onSuccess:^(InboxReputationResult *result) {
                                                       if (page == 0) {
                                                           isRefreshing = NO;
                                                           arrList = [[NSMutableArray alloc] initWithArray:result.list];
@@ -917,7 +918,7 @@
     [_reviewRequest requestGetInboxReputationWithNavigation:strNav
                                                        page:@(page)
                                                      filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(MyReviewReputationResult *result) {
+                                                  onSuccess:^(InboxReputationResult *result) {
                                                       if (page == 0) {
                                                           isRefreshing = NO;
                                                           arrList = [[NSMutableArray alloc] initWithArray:result.list];

@@ -7,7 +7,7 @@
 //
 
 #import "DetailReputationReview.h"
-
+#import "ShopBadgeLevel.h"
 @implementation DetailReputationReview
 
 - (DetailReviewReputationViewModel *)viewModel {
@@ -40,7 +40,11 @@
 }
 
 - (NSString*)shop_name {
-    return [_shop_name kv_decodeHTMLCharacterEntities];
+    if (_shop_name != nil) {
+        return [_shop_name kv_decodeHTMLCharacterEntities];
+    } else {
+        return [_review_shop_name kv_decodeHTMLCharacterEntities];
+    }
 }
 
 - (NSString*)product_name {
@@ -51,40 +55,103 @@
     return [_review_message kv_decodeHTMLCharacterEntities];
 }
 
+- (NSString*)reputation_id {
+    if (_reputation_id != nil) {
+        return _reputation_id;
+    } else {
+        return _review_reputation_id;
+    }
+}
+
+- (NSString*)shop_id {
+    if (_shop_id != nil) {
+        return _shop_id;
+    } else {
+        return _review_shop_id;
+    }
+}
+
+- (ProductOwner*)product_owner {
+    if (_product_owner != nil) {
+        return _product_owner;
+    } else {
+        return _review_product_owner;
+    }
+}
+
 +(RKObjectMapping *)mapping{
     RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
-    [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{@"review_update_time":@"review_update_time",
-                                                                        @"review_rate_accuracy_desc":@"review_rate_accuracy_desc",
-                                                                        @"review_user_label_id":@"review_user_label_id",
-                                                                        @"review_user_name":@"review_user_name",
-                                                                        @"review_rate_accuracy":@"review_rate_accuracy",
-                                                                        @"review_message":@"review_message",
-                                                                        @"review_rate_product_desc":@"review_rate_product_desc",
-                                                                        @"review_rate_speed_desc":@"review_rate_speed_desc",
-                                                                        @"review_shop_id":@"shop_id",
-                                                                        @"review_reputation_id":@"reputation_id",
-                                                                        @"review_user_image":@"review_user_image",
-                                                                        @"review_user_label":@"review_user_label",
-                                                                        @"review_create_time":@"review_create_time",
-                                                                        @"review_id":@"review_id",
-                                                                        @"review_rate_service_desc":@"review_rate_service_desc",
-                                                                        @"review_rate_product":@"review_rate_product",
-                                                                        @"review_rate_speed":@"review_rate_speed",
-                                                                        @"review_rate_service":@"review_rate_service",
-                                                                        @"review_user_id":@"review_user_id",
-                                                                        @"review_shop_name":@"review_shop_name",
-                                                                        @"product_images":@"product_images",
-                                                                        @"review_rate_quality":@"review_rate_quality",
-                                                                        @"review_product_status":@"review_product_status",
-                                                                        @"review_is_allow_edit":@"review_is_allow_edit",
-                                                                        @"review_is_owner":@"review_is_owner",
-                                                                        @"review_product_name":@"review_product_name",
-                                                                        @"review_product_id":@"review_product_id",
-                                                                        @"review_product_image":@"review_product_image"
+    [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{@"review_update_time"           : @"review_update_time",
+                                                                        @"review_rate_accuracy_desc"    : @"review_rate_accuracy_desc",
+                                                                        @"review_user_label_id"         : @"review_user_label_id",
+                                                                        @"review_user_name"             : @"review_user_name",
+                                                                        @"review_rate_accuracy"         : @"review_rate_accuracy",
+                                                                        @"review_message"               : @"review_message",
+                                                                        @"review_rate_product_desc"     : @"review_rate_product_desc",
+                                                                        @"review_rate_speed_desc"       : @"review_rate_speed_desc",
+                                                                        @"review_shop_id"               : @"shop_id",
+                                                                        @"review_reputation_id"         : @"reputation_id",
+                                                                        @"review_user_image"            : @"review_user_image",
+                                                                        @"review_user_label"            : @"review_user_label",
+                                                                        @"review_create_time"           : @"review_create_time",
+                                                                        @"review_id"                    : @"review_id",
+                                                                        @"review_rate_service_desc"     : @"review_rate_service_desc",
+                                                                        @"review_rate_product"          : @"review_rate_product",
+                                                                        @"review_rate_speed"            : @"review_rate_speed",
+                                                                        @"review_rate_service"          : @"review_rate_service",
+                                                                        @"review_user_id"               : @"review_user_id",
+                                                                        @"review_shop_name"             : @"review_shop_name",
+                                                                        @"product_images"               : @"product_images",
+                                                                        @"review_rate_quality"          : @"review_rate_quality",
+                                                                        @"review_product_status"        : @"review_product_status",
+                                                                        @"review_is_allow_edit"         : @"review_is_allow_edit",
+                                                                        @"review_is_owner"              : @"review_is_owner",
+                                                                        @"review_product_name"          : @"review_product_name",
+                                                                        @"review_product_id"            : @"review_product_id",
+                                                                        @"review_product_image"         : @"review_product_image",
+                                                                        
+                                                                        @"product_rating_point"         : @"product_rating_point",
+                                                                        @"review_is_skipped"            : @"review_is_skipped",
+                                                                        @"review_is_skipable"           : @"review_is_skipable",
+                                                                        @"product_status"               : @"product_status",
+                                                                        @"review_full_name"             : @"review_full_name",
+                                                                        @"product_speed_desc"           : @"product_speed_desc",
+                                                                        @"review_read_status"           : @"review_read_status",
+                                                                        @"product_uri"                  : @"product_uri",
+                                                                        @"product_service_desc"         : @"product_service_desc",
+                                                                        @"product_speed_point"          : @"product_speed_point",
+                                                                        @"review_status"                : @"review_status",
+                                                                        @"product_service_point"        : @"product_service_point",
+                                                                        @"product_accuracy_point"       : @"product_accuracy_point",
+                                                                        @"product_id"                   : @"product_id",
+                                                                        @"product_rating_desc"          : @"product_rating_desc",
+                                                                        @"product_image"                : @"product_image",
+                                                                        @"product_accuracy_desc"        : @"product_accuracy_desc",
+                                                                        @"user_image"                   : @"user_image",
+                                                                        @"reputation_inbox_id"          : @"reputation_inbox_id",
+                                                                        @"user_url"                     : @"user_url",
+                                                                        @"shop_name"                    : @"shop_name",
+                                                                        @"review_message_edit"          : @"review_message_edit",
+                                                                        @"review_post_time"             : @"review_post_time",
+                                                                        @"product_name"                 : @"product_name",
+                                                                        @"shop_domain"                  : @"shop_domain"
                                                                         }];
-    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation" toKeyPath:@"review_user_reputation" withMapping:[ReputationDetail mapping]]];
-    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response" toKeyPath:@"review_response" withMapping:[ReviewResponse mapping]]];
-    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_product_owner" toKeyPath:@"product_owner" withMapping:[ProductOwner mapping]]];
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation"
+                                                                                                  toKeyPath:@"review_user_reputation"
+                                                                                                withMapping:[ReputationDetail mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response"
+                                                                                                  toKeyPath:@"review_response"
+                                                                                                withMapping:[ReviewResponse mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_product_owner"
+                                                                                                  toKeyPath:@"product_owner"
+                                                                                                withMapping:[ProductOwner mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level"
+                                                                                                  toKeyPath:@"shop_badge_level"
+                                                                                                withMapping:[ShopBadgeLevel mapping]]];
+    
     return detailReputationReviewMapping;
 }
 @end
