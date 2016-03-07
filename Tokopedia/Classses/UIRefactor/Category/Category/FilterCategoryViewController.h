@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "CategoryDetail.h"
 
+typedef NS_ENUM(NSInteger, FilterCategoryType) {
+    FilterCategoryTypeHotlist,
+    FilterCategoryTypeCategory,
+    FilterCategoryTypeSearchProduct,
+    FilterCategoryTypeProductAddEdit,
+};
+
 @protocol FilterCategoryViewDelegate <NSObject>
 
 - (void)didSelectCategory:(CategoryDetail *)category;
@@ -17,8 +24,9 @@
 
 @interface FilterCategoryViewController : UITableViewController
 
-@property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
+@property (strong, nonatomic) NSMutableArray *categories;
 @property (weak, nonatomic) CategoryDetail *selectedCategory;
-@property BOOL allowAnyCategorySelected;
+@property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
+@property FilterCategoryType filterType;
 
 @end

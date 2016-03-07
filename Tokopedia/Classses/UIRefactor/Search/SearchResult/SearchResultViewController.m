@@ -140,7 +140,7 @@ SpellCheckRequestDelegate
     NSString *_searchFullUrl;
     NSString *_suggestion;
     
-    BOOL _isFailRequest;
+    BOOL _isFailRequest;    
 }
 
 #pragma mark - Initialization
@@ -670,6 +670,7 @@ SpellCheckRequestDelegate
     [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
     [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
+    [parameter setObject:@"true" forKey:@"breadcrumb"];
     
     return parameter;
 }
@@ -694,13 +695,13 @@ SpellCheckRequestDelegate
 #ifdef DEBUG
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
-        NSString *baseUrl;
+        NSString *baseUrl = @"https://ace.tokopedia.com/";
 //        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
-        if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
-            baseUrl = @"https://ace.tokopedia.com/";
-        } else {
-            baseUrl = @"https://ace-staging.tokopedia.com/";
-        }
+//        if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
+//            baseUrl = @"https://ace.tokopedia.com/";
+//        } else {
+//            baseUrl = @"https://ace-staging.tokopedia.com/";
+//        }
         _objectmanager = [RKObjectManager sharedClient:baseUrl];
 #endif
 
@@ -740,6 +741,32 @@ SpellCheckRequestDelegate
     // add page relationship
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
+    
+    NSDictionary *categoryAttributeMappings = @{
+                                                @"d_id" : @"categoryId",
+                                                @"title" : @"name",
+                                                @"tree" : @"tree",
+                                                @"href" : @"url",
+                                                };
+    
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    // Adjust Relationship
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
+    [resultMapping addPropertyMapping:categoryRelationship];
+    
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+    
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
@@ -788,9 +815,16 @@ SpellCheckRequestDelegate
         NSString *departementID = search.result.department_id?:@"";
         [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
         if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-            [_delegate updateTabCategory:departementID];            
+            CategoryDetail *category = [CategoryDetail new];
+            category.categoryId = departementID;
+            [_delegate updateTabCategory:category];
         }
     }
+    
+    if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
+        [_delegate updateCategories:search.result.breadcrumb];
+    }
+    
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
         
         
@@ -887,7 +921,9 @@ SpellCheckRequestDelegate
             [_networkManager requestCancel];
 
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
-                [self.delegate updateTabCategory:departementID];
+                CategoryDetail *category = [CategoryDetail new];
+                category.categoryId = departementID;
+                [self.delegate updateTabCategory:category];
             }
             
             [self refreshView:nil];

@@ -711,6 +711,7 @@
                 case BUTTON_PRODUCT_CATEGORY:
                 {
                     FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                    controller.filterType = FilterCategoryTypeProductAddEdit;
                     controller.delegate = self;
                     controller.selectedCategory = [_dataInput objectForKey:DATA_CATEGORY_KEY];
                     UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];

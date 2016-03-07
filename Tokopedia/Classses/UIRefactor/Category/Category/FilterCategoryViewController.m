@@ -9,12 +9,16 @@
 #import "FilterCategoryViewController.h"
 #import "CategoryResponse.h"
 #import "FilterCategoryViewCell.h"
+#import "LoadingView.h"
 
 #define cellIdentifier @"filterCategoryViewCell"
 
-@interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate>
+@interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
-@property (strong, nonatomic) NSMutableArray *categories;
+@property (strong, nonatomic) NSArray *initialCategories;
+@property BOOL requestError;
+
+@property (strong, nonatomic) LoadingView *loadingView;
 
 @end
 
@@ -22,6 +26,10 @@
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0);
+        self.tableView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+    }
     return self;
 }
 
@@ -30,7 +38,15 @@
     self.title = @"Pilih Kategori";
     [self setCancelButton];
     [self setDoneButton];
-    [self loadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.categories == nil || [self.categories count] == 0) {
+        [self loadData];
+    } else {
+        [self showPresetCategories];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,7 +67,7 @@
 
 - (void)updateDoneButtonAppearance {
     UIBarButtonItem *doneButton = self.navigationItem.rightBarButtonItem;
-    if (!self.allowAnyCategorySelected) {
+    if (self.filterType == FilterCategoryTypeProductAddEdit) {
         if (self.selectedCategory.hasChildCategories || self.selectedCategory == nil) {
             doneButton.enabled = NO;
             doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
@@ -59,6 +75,9 @@
             doneButton.enabled = YES;
             doneButton.tintColor = [UIColor whiteColor];
         }
+    } else {
+        doneButton.enabled = YES;
+        doneButton.tintColor = [UIColor whiteColor];
     }
 }
 
@@ -79,6 +98,23 @@
     [networkManager doRequest];
 }
 
+- (void)showPresetCategories {
+    for (CategoryDetail *category in self.categories) {
+        for (CategoryDetail *childCategory in category.child) {
+            childCategory.parent = category.categoryId;
+            for (CategoryDetail *lastCategory in childCategory.child) {
+                lastCategory.parent = childCategory.categoryId;
+            }
+        }
+    }
+    self.initialCategories = self.categories;
+    if (self.selectedCategory) {
+        [self expandSelectedCategories];
+    }
+    [self updateDoneButtonAppearance];
+    [self.tableView reloadData];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -89,6 +125,22 @@
     return self.categories.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 1.0f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 1.0f;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FilterCategoryViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
@@ -97,12 +149,32 @@
     }
     
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
+    
     cell.categoryNameLabel.text = category.name;
     
-    NSInteger level = [category.tree integerValue];
-    cell.leftPaddingConstraint.constant = level * 18; // 18 -> left padding
+    if ([category.tree isEqualToString:@"1"]) {
+        cell.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1];
+    } else {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
-    if (self.allowAnyCategorySelected) {
+    if ([self.selectedCategory isEqual:category]) {
+        UIColor *greenColor = [UIColor colorWithRed:72.0/255.0 green:187.0/255.0 blue:72.0/255.0 alpha:1];
+        cell.categoryNameLabel.textColor = greenColor;
+        cell.categoryNameLabel.font = [UIFont fontWithName:@"GothamMedium" size:13];
+        cell.arrowImageView.tintColor = greenColor;
+        cell.checkmarkImageView.tintColor = greenColor;
+    } else {
+        cell.categoryNameLabel.textColor = [UIColor blackColor];
+        cell.categoryNameLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
+        cell.arrowImageView.tintColor = [UIColor grayColor];
+    }
+    
+    cell.leftPaddingConstraint.constant = [category.tree integerValue] * 15;
+    
+    if (self.filterType == FilterCategoryTypeHotlist ||
+        self.filterType == FilterCategoryTypeCategory ||
+        self.filterType == FilterCategoryTypeSearchProduct) {
         if ([category isEqual:_selectedCategory]) {
             [cell showCheckmark];
         } else {
@@ -110,14 +182,14 @@
         }
     } else {
         // Selected category is last category
-        if (!category.hasChildCategories && [category isEqual:_selectedCategory]) {
+        if (category.isLastCategory && [category isEqual:_selectedCategory]) {
             [cell showCheckmark];
         } else {
             [cell hideCheckmark];
         }
     }
     
-    if (category.child.count > 0) {
+    if (category.hasChildCategories) {
         [cell showArrow];
         ArrowDirection direction = category.isExpanded ? ArrowDirectionUp : ArrowDirectionDown;
         [cell setArrowDirection:direction];
@@ -128,8 +200,20 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (self.categories.count > 0) {
+    if (self.categories.count > 0 || self.requestError) {
         return nil;
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
@@ -143,59 +227,45 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
-    if (self.allowAnyCategorySelected) {
+    if (self.filterType == FilterCategoryTypeCategory ||
+        self.filterType == FilterCategoryTypeHotlist ||
+        self.filterType == FilterCategoryTypeSearchProduct) {
         if ([category isEqual:_selectedCategory]) {
-            [self deselectCategory:category];
+            if (category.isExpanded) {
+                [self deselectCategory:category];
+            } else {
+                [self selectCategory:category];
+            }
         } else {
             [self selectCategory:category];
         }
-        self.selectedCategory = category;
     } else {
         if (category.isExpanded) {
             [self deselectCategory:category];
         } else {
             [self selectCategory:category];
         }
-        self.selectedCategory = category;
-        [self updateDoneButtonAppearance];
     }
+    [self updateDoneButtonAppearance];
     [tableView reloadData];
 }
 
 - (void)selectCategory:(CategoryDetail *)category {
-    category.isExpanded = YES;
-    
-    NSInteger index = [self.categories indexOfObject:category];
-    NSRange range = NSMakeRange(index + 1, category.child.count);
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-    [self.categories insertObjects:category.child atIndexes:indexSet];
-    
-    NSInteger selectedTree = [category.tree integerValue];
-    NSInteger selectedParent = [category.parent integerValue];
-    NSInteger selectedId = [category.categoryId integerValue];
-    
-    NSMutableArray *categories = [NSMutableArray new];
-    for (CategoryDetail *category in self.categories) {
-        if (selectedTree == 1) {
-            if ([category.tree integerValue] == 2 && [category.parent integerValue] != selectedId) {
-                [categories addObject:category];
-            } else if ([category.tree integerValue] == 3) {
-                [categories addObject:category];
-            }
-        } else if (selectedTree == 2) {
-            if ([category.tree integerValue] == 2 && [category.parent integerValue] != selectedParent) {
-                [categories addObject:category];
-            } else if ([category.tree integerValue] == 3 && [category.parent integerValue] != selectedId) {
-                [categories addObject:category];
-            }
-        }
-    }
-    [self.categories removeObjectsInArray:categories];
+    self.selectedCategory = category;
+    [self expandSelectedCategories];
+    [self scrollToCategory:category];
 }
 
-- (void)deselectCategory:(CategoryDetail *)category {
-    category.isExpanded = NO;
-    [self.categories removeObjectsInArray:category.child];
+- (void)deselectCategory:(CategoryDetail *)selectedCategory {
+    self.selectedCategory = selectedCategory;
+    [self collapseSelectedCategories];
+    [self scrollToCategory:selectedCategory];
+}
+
+- (void)scrollToCategory:(CategoryDetail *)category {
+    NSInteger index = [self.categories indexOfObject:category];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 #pragma mark - Tokopedia network
@@ -268,20 +338,50 @@
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult
              withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    NSMutableArray *parentCategories = [response.result.categories mutableCopy];
-    NSMutableArray *categories = [NSMutableArray arrayWithArray:parentCategories];
-    for (CategoryDetail *category in parentCategories) {
-        for (CategoryDetail *childCategory in category.child) {
-            for (CategoryDetail *lastCategory in childCategory.child) {
-                if ([self.selectedCategory isEqual:lastCategory]) {
+    self.initialCategories = response.result.categories;
+    [self expandSelectedCategories];
+    if (self.filterType == FilterCategoryTypeCategory) {
+        NSMutableArray *deletedCategories = [NSMutableArray new];
+        for (CategoryDetail *category in self.initialCategories) {
+            if ([category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
+                [deletedCategories addObject:category];
+            }
+        }
+        [self.categories removeObjectsInArray:deletedCategories];
+    }
+    if (self.selectedCategory) {
+        [self scrollToCategory:self.selectedCategory];
+        [self updateDoneButtonAppearance];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)expandSelectedCategories {
+    [self collapseAllCategories];
+    NSMutableArray *categories = [NSMutableArray new];
+    for (CategoryDetail *category in self.initialCategories) {
+        [categories addObject:category];
+        if ([self.selectedCategory isEqual:category]) {
+            category.isExpanded = YES;
+            NSInteger location = [categories indexOfObject:category] + 1;
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
+            [categories insertObjects:category.child atIndexes:indexSet];
+        } else {
+            for (CategoryDetail *childCategory in category.child) {
+                if ([self.selectedCategory isEqual:childCategory]) {
                     category.isExpanded = YES;
                     childCategory.isExpanded = YES;
-                    NSInteger location = [parentCategories indexOfObject:category] + 1;
-                    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
-                    [categories insertObjects:category.child atIndexes:indexSet];
-                    location = [categories indexOfObject:childCategory] + 1;
-                    indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, childCategory.child.count)];
-                    [categories insertObjects:childCategory.child atIndexes:indexSet];
+                    categories = [self categories:categories addChildCategory:category];
+                    categories = [self categories:categories addChildCategory:childCategory];
+                } else {
+                    for (CategoryDetail *lastCategory in childCategory.child) {
+                        if ([self.selectedCategory isEqual:lastCategory]) {
+                            category.isExpanded = YES;
+                            childCategory.isExpanded = YES;
+                            categories = [self categories:categories addChildCategory:category];
+                            categories = [self categories:categories addChildCategory:childCategory];
+                        }
+                    }
                 }
             }
         }
@@ -290,12 +390,74 @@
     [self.tableView reloadData];
 }
 
+- (NSMutableArray *)categories:(NSMutableArray *)categories addChildCategory:(CategoryDetail *)category  {
+    NSInteger location = [categories indexOfObject:category] + 1;
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
+    [categories insertObjects:category.child atIndexes:indexSet];
+    return categories;
+}
+
+- (void)collapseSelectedCategories {
+    NSMutableArray *categories = [NSMutableArray new];
+    for (CategoryDetail *category in self.initialCategories) {
+        [categories addObject:category];
+        if ([self.selectedCategory isEqual:category]) {
+            category.isExpanded = NO;
+        }
+        for (CategoryDetail *childCategory in category.child) {
+            if ([self.selectedCategory isEqual:childCategory]) {
+                childCategory.isExpanded = NO;
+                NSInteger location = [categories indexOfObject:category] + 1;
+                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, category.child.count)];
+                [categories insertObjects:category.child atIndexes:indexSet];
+            }
+        }
+    }
+    self.categories = categories;
+    [self.tableView reloadData];
+}
+
+- (void)collapseAllCategories {
+    for (CategoryDetail *category in _categories) {
+        category.isExpanded = NO;
+        for (CategoryDetail *childCategory in category.child) {
+            childCategory.isExpanded = NO;
+            for (CategoryDetail *lastCategory in childCategory.child) {
+                lastCategory.isExpanded = NO;
+            }
+        }
+    }
+}
+
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
+    [self requestFail];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
-    
+    [self requestFail];
+}
+
+- (void)requestFail {
+    [[[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf sedang terjadi kendala pada internet."] delegate:self] show];
+    self.requestError = YES;
+    self.tableView.tableFooterView = self.loadingView;
+    [self.tableView reloadData];
+}
+
+#pragma mark - Loading view delegate
+
+- (void)pressRetryButton {
+    [self loadData];
+}
+
+#pragma mark - Objects
+
+- (LoadingView *)loadingView {
+    if (_loadingView == nil) {
+        _loadingView = [LoadingView new];
+        _loadingView.delegate = self;
+    }
+    return _loadingView;
 }
 
 @end

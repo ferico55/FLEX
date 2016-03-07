@@ -24,6 +24,12 @@
 		851F907D1C717ABE00BB38E4 /* CategoryResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F907C1C717ABE00BB38E4 /* CategoryResponse.m */; };
 		851F90801C717AD800BB38E4 /* CategoryData.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F907F1C717AD800BB38E4 /* CategoryData.m */; };
 		851F90861C717C9C00BB38E4 /* CategoryDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F90851C717C9C00BB38E4 /* CategoryDetail.m */; };
+		8526B65D1C87E89D00C25282 /* icon-minus-math.png in Resources */ = {isa = PBXBuildFile; fileRef = 8526B65B1C87E89D00C25282 /* icon-minus-math.png */; };
+		8526B65E1C87E89D00C25282 /* icon-minus-math@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8526B65C1C87E89D00C25282 /* icon-minus-math@2x.png */; };
+		8526B6611C87F88300C25282 /* icon-plus-math.png in Resources */ = {isa = PBXBuildFile; fileRef = 8526B65F1C87F88300C25282 /* icon-plus-math.png */; };
+		8526B6621C87F88300C25282 /* icon-plus-math@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8526B6601C87F88300C25282 /* icon-plus-math@2x.png */; };
+		8526B6651C87F88900C25282 /* icon-checkmark-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 8526B6631C87F88900C25282 /* icon-checkmark-filled.png */; };
+		8526B6661C87F88900C25282 /* icon-checkmark-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8526B6641C87F88900C25282 /* icon-checkmark-filled@2x.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2116,6 +2122,12 @@
 		851F907F1C717AD800BB38E4 /* CategoryData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryData.m; sourceTree = "<group>"; };
 		851F90841C717C9C00BB38E4 /* CategoryDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryDetail.h; sourceTree = "<group>"; };
 		851F90851C717C9C00BB38E4 /* CategoryDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryDetail.m; sourceTree = "<group>"; };
+		8526B65B1C87E89D00C25282 /* icon-minus-math.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-minus-math.png"; sourceTree = "<group>"; };
+		8526B65C1C87E89D00C25282 /* icon-minus-math@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-minus-math@2x.png"; sourceTree = "<group>"; };
+		8526B65F1C87F88300C25282 /* icon-plus-math.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-plus-math.png"; sourceTree = "<group>"; };
+		8526B6601C87F88300C25282 /* icon-plus-math@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-plus-math@2x.png"; sourceTree = "<group>"; };
+		8526B6631C87F88900C25282 /* icon-checkmark-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark-filled.png"; sourceTree = "<group>"; };
+		8526B6641C87F88900C25282 /* icon-checkmark-filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-checkmark-filled@2x.png"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -9731,6 +9743,12 @@
 		85905CC01C6B1406009E0D71 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8526B6631C87F88900C25282 /* icon-checkmark-filled.png */,
+				8526B6641C87F88900C25282 /* icon-checkmark-filled@2x.png */,
+				8526B65B1C87E89D00C25282 /* icon-minus-math.png */,
+				8526B65C1C87E89D00C25282 /* icon-minus-math@2x.png */,
+				8526B65F1C87F88300C25282 /* icon-plus-math.png */,
+				8526B6601C87F88300C25282 /* icon-plus-math@2x.png */,
 				85A8F9D31C74581B002A6EF2 /* collapse_arrow@2x.png */,
 				85A8F9D41C74581B002A6EF2 /* collapse_arrow.png */,
 				85A8F9CF1C7457B5002A6EF2 /* expand_arrow@2x.png */,
@@ -10897,6 +10915,7 @@
 				8590627D1C6B1409009E0D71 /* HomeTabHeaderViewController.xib in Resources */,
 				8590638D1C6B1409009E0D71 /* DetailShipmentStatusCell.xib in Resources */,
 				8565E1ED1B9405C800843388 /* GooglePlus.bundle in Resources */,
+				8526B65E1C87E89D00C25282 /* icon-minus-math@2x.png in Resources */,
 				859065A31C6B1409009E0D71 /* icon_love_active@2x.png in Resources */,
 				859063711C6B1409009E0D71 /* SalesNewOrderViewController.xib in Resources */,
 				859067101C6B1409009E0D71 /* icon_more_active@3x.png in Resources */,
@@ -11353,6 +11372,7 @@
 				859065EA1C6B1409009E0D71 /* icon_neutral25@3x.png in Resources */,
 				859066061C6B1409009E0D71 /* icon_order_cancel-01@2x.png in Resources */,
 				8590669F1C6B1409009E0D71 /* icon_track_grey@2x.png in Resources */,
+				8526B6611C87F88300C25282 /* icon-plus-math.png in Resources */,
 				859065B01C6B1409009E0D71 /* icon_medal_bronze14.png in Resources */,
 				859065A11C6B1409009E0D71 /* icon_love@2x.png in Resources */,
 				859066921C6B1409009E0D71 /* icon_success.png in Resources */,
@@ -11368,6 +11388,7 @@
 				859066871C6B1409009E0D71 /* icon_speed_neutral_large@3x.png in Resources */,
 				859065431C6B1409009E0D71 /* icon_9@3x.png in Resources */,
 				859064B91C6B1409009E0D71 /* GothamBook.ttf in Resources */,
+				8526B65D1C87E89D00C25282 /* icon-minus-math.png in Resources */,
 				8590638B1C6B1409009E0D71 /* ChangeReceiptNumberViewController.xib in Resources */,
 				859063CB1C6B1409009E0D71 /* BerhasilBukaTokoViewController.xib in Resources */,
 				859066D71C6B1409009E0D71 /* map_gokil.png in Resources */,
@@ -11377,6 +11398,7 @@
 				859066E81C6B1409009E0D71 /* logo@2x.png in Resources */,
 				859064FC1C6B1409009E0D71 /* icon_arrow_down_white@2x.png in Resources */,
 				859066611C6B1409009E0D71 /* icon_smile20@3x.png in Resources */,
+				8526B6661C87F88900C25282 /* icon-checkmark-filled@2x.png in Resources */,
 				859065ED1C6B1409009E0D71 /* icon_neutral50@3x.png in Resources */,
 				8590668F1C6B1409009E0D71 /* icon_star_med@2x.png in Resources */,
 				8590624F1C6B1409009E0D71 /* DepositListBankViewController.xib in Resources */,
@@ -11688,6 +11710,7 @@
 				859066271C6B1409009E0D71 /* icon_quote.png in Resources */,
 				859064E41C6B1409009E0D71 /* icon_3.png in Resources */,
 				859067401C6B1409009E0D71 /* icon_arrow_down_grey.png in Resources */,
+				8526B6621C87F88300C25282 /* icon-plus-math@2x.png in Resources */,
 				8590663E1C6B1409009E0D71 /* icon_search_active (deleted 9049b8eae695cf9632f6f1691fc7f40b).png in Resources */,
 				8590625E1C6B1409009E0D71 /* GeneralPhotoProductCell.xib in Resources */,
 				8590662C1C6B1409009E0D71 /* icon_retur@2x.png in Resources */,
@@ -11728,6 +11751,7 @@
 				8590646B1C6B1409009E0D71 /* TxOrderDropshipCell.xib in Resources */,
 				859063451C6B1409009E0D71 /* ProductReputationSimpleCell.xib in Resources */,
 				8590651A1C6B1409009E0D71 /* icon_button_share@3x.png in Resources */,
+				8526B6651C87F88900C25282 /* icon-checkmark-filled.png in Resources */,
 				859062A31C6B1409009E0D71 /* InboxResolutionCenterComplainCell.xib in Resources */,
 				859065071C6B1409009E0D71 /* icon_arrow_white_down@2x.png in Resources */,
 				8590650C1C6B1409009E0D71 /* icon_button_favorite_active.png in Resources */,
@@ -13136,7 +13160,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CC = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/compiler/clang";
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
@@ -13188,8 +13212,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CC = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/compiler/clang";
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

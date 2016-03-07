@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSArray *child;
 
 @property BOOL isExpanded;
+@property BOOL isLastCategory;
 @property BOOL hasChildCategories;
 
 @end

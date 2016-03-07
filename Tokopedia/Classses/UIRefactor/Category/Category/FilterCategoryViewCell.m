@@ -26,6 +26,11 @@
 }
 
 - (void)showCheckmark {
+    UIImage *image = [UIImage imageNamed:@"icon-checkmark-filled.png"];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.checkmarkImageView.image = image;
+    UIColor *greenColor = [UIColor colorWithRed:72.0/255.0 green:187.0/255.0 blue:72.0/255.0 alpha:1];
+    self.checkmarkImageView.tintColor = greenColor;
     self.checkmarkImageView.hidden = NO;
 }
 
@@ -50,9 +55,13 @@
 
 - (void)setArrowDirection:(ArrowDirection)direction {
     if (direction == ArrowDirectionUp) {
-        self.arrowImageView.image = [UIImage imageNamed:@"collapse_arrow.png"];
+        UIImage *image = [UIImage imageNamed:@"icon-minus-math.png"];
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.arrowImageView.image = image;
     } else if (direction == ArrowDirectionDown) {
-        self.arrowImageView.image = [UIImage imageNamed:@"expand_arrow.png"];
+        UIImage *image = [UIImage imageNamed:@"icon-plus-math.png"];
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.arrowImageView.image = image;
     }
 }
 

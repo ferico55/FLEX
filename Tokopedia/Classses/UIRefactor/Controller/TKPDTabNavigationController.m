@@ -9,13 +9,13 @@
 #import "controller.h"
 #import "category.h"
 #import "TKPDTabNavigationController.h"
-#import "CategoryMenuViewController.h"
+#import "FilterCategoryViewController.h"
 #import "SearchResultShopViewController.h"
 #import "SearchResultViewController.h"
 
 #import "DBManager.h"
 
-@interface TKPDTabNavigationController () <CategoryMenuViewDelegate, SearchResultDelegate>{
+@interface TKPDTabNavigationController () <FilterCategoryViewDelegate, SearchResultDelegate>{
     UIView *_tabbar;
     NSArray *_buttons;
     NSInteger _unloadSelectedIndex;
@@ -24,7 +24,8 @@
     
     UIBarButtonItem *_barbuttoncategory;
     
-    NSString *_categoryID;
+    NSArray *_initialCategories;
+    CategoryDetail *_selectedCategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *container;
@@ -466,19 +467,19 @@
             }
             case 11:
             {
-                CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                NSString *categoryID = _categoryID;
-                NSString *d_id = [_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY]?:categoryID?:@"";
-                NSDictionary *dataDepartment = [[DBManager getSharedInstance]dataFromDepartmentID:d_id];
-                NSInteger tree = [[dataDepartment objectForKey:@"tree"] integerValue];
-                if (tree == 3) {
-                    d_id = [dataDepartment objectForKey:@"parent"];
+                FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                controller.delegate = self;
+                controller.categories = [_initialCategories mutableCopy];
+                controller.selectedCategory = _selectedCategory;
+                if ([_data objectForKey:@"department_id"]) {
+                    controller.filterType = FilterCategoryTypeCategory;
+                } else {
+                    controller.filterType = FilterCategoryTypeSearchProduct;
                 }
-                vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:d_id};
-                vc.delegate = self;
-                vc.selectedCategoryID = [_data[@"selected_id"] integerValue];
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                
+                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                navigation.navigationBar.translucent = NO;
+                [self.navigationController presentViewController:navigation animated:YES completion:nil];                
             }
             default:
                 break;
@@ -548,14 +549,19 @@
 }
 
 #pragma mark - Category delegate
--(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
-                                                        object:nil
-                                                      userInfo:userInfo];
-    
-    [_data setObject:userInfo[kTKPDCONTROLLER_DATADEPARTMENTIDKEY] forKey:@"selected_id"];
+- (void)didSelectCategory:(CategoryDetail *)category {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:self userInfo:@{@"department_id" : category.categoryId}];
+    [_data setObject:category.categoryId forKey:@"selected_id"];
 }
+
+//-(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
+//{
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
+//                                                        object:nil
+//                                                      userInfo:userInfo];
+//    
+//    [_data setObject:userInfo[kTKPDCONTROLLER_DATADEPARTMENTIDKEY] forKey:@"selected_id"];
+//}
 
 #pragma mark - Notification setsegmentcontroll
 -(void)SetHiddenSegmentController:(NSNotification*)notification
@@ -635,9 +641,14 @@
     }
 }
 
-- (void)updateTabCategory:(NSString *)categoryID
-{
-    _categoryID = categoryID;
+- (void)updateTabCategory:(CategoryDetail *)category {
+    _selectedCategory = category;
+}
+
+- (void)updateCategories:(NSArray *)categories {
+    if (_initialCategories == nil) {
+        _initialCategories = [NSArray arrayWithArray:categories];
+    }
 }
 
 - (void)setTabShopActive {

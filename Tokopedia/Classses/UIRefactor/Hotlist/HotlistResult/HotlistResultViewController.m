@@ -29,7 +29,6 @@
 #import "SearchResultShopViewController.h"
 
 #import "TKPDTabNavigationController.h"
-#import "CategoryMenuViewController.h"
 #import "FilterCategoryViewController.h"
 
 #import "URLCacheController.h"
@@ -52,6 +51,10 @@
 #import "Localytics.h"
 
 #import "UIActivityViewController+Extensions.h"
+
+#import "FilterCategoryViewController.h"
+
+#import "NoResultReusableView.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -85,14 +88,14 @@ static NSString const *rows = @"12";
 @interface HotlistResultViewController ()
 <
     GeneralProductCellDelegate,
-    CategoryMenuViewDelegate,
     SortViewControllerDelegate,
     FilterViewControllerDelegate,
     GeneralSingleProductDelegate,
     GeneralPhotoProductDelegate,
     PromoCollectionViewDelegate,
     PromoRequestDelegate,
-HotlistBannerDelegate
+    HotlistBannerDelegate,
+    FilterCategoryViewDelegate
 >
 {
     NSInteger _page;
@@ -135,12 +138,15 @@ HotlistBannerDelegate
     URLCacheConnection *_cacheconnection;
     
     NSTimeInterval _timeinterval;
-    NoResultView *_noResultView;
+    NoResultReusableView *_noResultView;
     
     PromoRequest *_promoRequest;
     
     HotlistBannerRequest *_bannerRequest;
     BOOL _shouldUseHashtag;
+    
+    NSArray *_initialCategories;
+    CategoryDetail *_selectedCategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -211,7 +217,6 @@ HotlistBannerDelegate
     _cachecontroller = [URLCacheController new];
     _cacheconnection = [URLCacheConnection new];
     _operationQueue = [NSOperationQueue new];
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
     _shouldUseHashtag = YES;
 
     _promo = [NSMutableArray new];
@@ -246,6 +251,7 @@ HotlistBannerDelegate
         _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     
     _barbuttoncategory.tag = 11;
+    _barbuttoncategory.enabled = NO;
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
     UIImageView *imageview = [_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY];
@@ -311,6 +317,8 @@ HotlistBannerDelegate
     [_bannerRequest requestBanner];
     
     self.scrollDirection = ScrollDirectionDown;
+    
+    [self initNoResultView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -373,29 +381,16 @@ HotlistBannerDelegate
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         
         switch (button.tag) {
-            case 10:
-            {
+            case 10: {
                 //BACK
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
-            case 11:
-            {
-                //CATEGORY
-//                CategoryMenuViewController *vc = [CategoryMenuViewController new];
-//                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@(0),
-//                            kTKPDCATEGORY_DATAPUSHCOUNTKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0),
-//                            kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_detailfilter objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
-//                            kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue])?:NO,
-//                            kTKPDCATEGORY_DATAINDEXPATHKEY :[_detailfilter objectForKey:kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-//                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-//                            DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
-//                            };
-//                vc.selectedCategoryID = [[_detailfilter objectForKey:@"selected_id"] integerValue];
-//                vc.delegate = self;
-
+            case 11: {
                 FilterCategoryViewController *controller = [FilterCategoryViewController new];
-                
+                controller.selectedCategory = _selectedCategory;
+                controller.categories = [_initialCategories mutableCopy];
+                controller.delegate = self;
                 UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
                 navigationController.navigationBar.translucent = NO;
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -632,20 +627,32 @@ HotlistBannerDelegate
     RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:hashtagMapping];
     [resultMapping addPropertyMapping:hashtagRel];
     
-    RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
-    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY,
-                                                       kTKPDHOME_APITREEKEY,
-                                                       kTKPDHOME_APIDIDKEY,
-                                                       kTKPDHOME_APITITLEKEY
-                                                       ]];
+    NSDictionary *categoryAttributeMappings = @{
+        @"d_id" : @"categoryId",
+        @"title" : @"name",
+        @"tree" : @"tree",
+        @"href" : @"url",
+    };
+    
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
     // Adjust Relationship
-    //add Department tree relationship
-    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:departmentMapping];
-    [resultMapping addPropertyMapping:depttreeRel];
-    
-    RKRelationshipMapping *deptchildRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APICHILDTREEKEY toKeyPath:kTKPDHOME_APICHILDTREEKEY withMapping:departmentMapping];
-    [departmentMapping addPropertyMapping:deptchildRel];
-    
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
+    [resultMapping addPropertyMapping:categoryRelationship];
+
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
+
     // add page relationship
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
@@ -684,8 +691,6 @@ HotlistBannerDelegate
                             @"hashtag" : _shouldUseHashtag?@"true":@"",
                             @"breadcrumb" : _shouldUseHashtag?@"true":@"",
                             };
-    
-
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodGET
@@ -774,12 +779,11 @@ HotlistBannerDelegate
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
+                
                 [self setHeaderData];
-                
-                NSArray * departmenttree = _searchObject.result.breadcrumb;
-                
-                if (_departmenttree.count == 0) {
-                    [_departmenttree addObjectsFromArray:departmenttree];
+
+                if (_initialCategories == nil) {
+                    _initialCategories = [_searchObject.result.breadcrumb mutableCopy];
                 }
                 
                 if (_searchObject.result.products.count > 0) {
@@ -804,7 +808,6 @@ HotlistBannerDelegate
                     }
                     
                     _start = [queries objectForKey:@"start"];
-
                     
                     NSLog(@"next page : %zd",_page);
                     
@@ -817,11 +820,13 @@ HotlistBannerDelegate
                     if([_urinext isEqualToString:@""]) {
                         [flowLayout setFooterReferenceSize:CGSizeZero];
                     }
+                    
+                    _barbuttoncategory.enabled = YES;
                 } else {
+                    _isnodata = YES;                    
                     [flowLayout setFooterReferenceSize:CGSizeZero];
                     [viewCollection addSubview:_noResultView];
                     [viewCollection reloadData];
-                    [viewCollection layoutIfNeeded];
                 }
             } else {
                 [viewCollection addSubview:_noResultView];
@@ -980,10 +985,9 @@ HotlistBannerDelegate
 }
 
 #pragma mark - Category Delegate
-- (void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-{
-    [_detailfilter addEntriesFromDictionary:userInfo];
-    [_detailfilter setObject:userInfo[@"department_id"] forKey:@"selected_id"];
+- (void)didSelectCategory:(CategoryDetail *)category {
+    _selectedCategory = category;
+    [_detailfilter setObject:category.categoryId forKey:@"department_id"];
     [self refreshView:nil];
 }
 
@@ -1148,13 +1152,15 @@ HotlistBannerDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-    NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
-    if (section == lastSection) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
+    if (!_isnodata) {
+        NSInteger lastSection = [self numberOfSectionsInCollectionView:collectionView] - 1;
+        if (section == lastSection) {
+            if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
+                size = CGSizeMake(self.view.frame.size.width, 50);
+            }
+        } else if (_product.count == 0 && _start == 0) {
             size = CGSizeMake(self.view.frame.size.width, 50);
         }
-    } else if (_product.count == 0 && _start == 0) {
-        size = CGSizeMake(self.view.frame.size.width, 50);
     }
     return size;
 }
@@ -1257,5 +1263,19 @@ HotlistBannerDelegate
     [self configureRestKit];
     [self request];
 }
+
+#pragma mark - No result view
+
+- (void)initNoResultView{
+    CGRect frame = [[UIScreen mainScreen] bounds];
+    frame.origin.y = _header.frame.size.height;
+    _noResultView = [[NoResultReusableView alloc]initWithFrame:frame];
+    [_noResultView generateAllElements:@"no-result.png"
+                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
+                                  desc:@"Silahkan lakukan pencarian dengan filter lain"
+                              btnTitle:@""];
+    [_noResultView hideButton:YES];
+}
+
 
 @end
