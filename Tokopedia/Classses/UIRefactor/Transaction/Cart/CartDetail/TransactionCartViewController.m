@@ -134,9 +134,7 @@
     LoadingView *_loadingView;
     TAGContainer *_gtmContainer;
     
-    InstallmentBank *_selectedInstallmentBank;
-    InstallmentTerm *_selectedInstallmentDuration;
-    
+
     BOOL _isSelectBankInstallment;
     BOOL _isSelectDurationInstallment;
     
@@ -1458,9 +1456,7 @@
 
 -(void)adjustTotalPaymentInstallment{
     _cartSummary.conf_code = _selectedInstallmentDuration.admin_price;
-    _cartSummary.payment_left = _selectedInstallmentDuration.total_price;
     _cartSummary.conf_code_idr = _selectedInstallmentDuration.admin_price_idr;
-    _cartSummary.payment_left_idr = _selectedInstallmentDuration.total_price_idr;
 }
 
 -(void)adjustGrandTotalWithDeposit:(NSString*)deposit
@@ -2068,8 +2064,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
-    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
+    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
 
     NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
@@ -2141,10 +2137,15 @@
             break;
         }
         case 8:
+        {
             cell = _totalPaymentDetail;
-            [cell.detailTextLabel setText:_cartSummary.payment_left_idr?:@"Rp 0" animated:YES];
+            NSString *paymentLeft = _cartSummary.payment_left_idr?:@"Rp 0";
+            if([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT){
+                paymentLeft = _selectedInstallmentDuration.total_price_idr;
+            }
+            [cell.detailTextLabel setText:paymentLeft animated:YES];
             break;
-
+        }
         default:
             break;
      }
@@ -2567,8 +2568,8 @@
 
 -(CGFloat)errorLabelHeight:(TransactionCartList*)list
 {
-    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
-    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
+    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
     if ([error1 isEqualToString:@""]&& [error2 isEqualToString:@""])
     {
         return 0;
