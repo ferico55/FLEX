@@ -126,21 +126,7 @@
     
     _myReviewDetailRequest = [MyReviewDetailRequest new];
     _myReviewDetailRequest.delegate = self;
-//    [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
-//                                                            autoRead:_autoRead
-//                                           getDataFromMasterInServer:_getDataFromMasterInServer];
     
-//    [_myReviewDetailRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
-//                                                         reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
-//                                                              isUsingRedis:_getDataFromMasterInServer
-//                                                                      role:_detailMyInboxReputation.role
-//                                                                  autoRead:_autoRead
-//                                                                 onSuccess:^(MyReviewReputationResult *result) {
-//                                                                     
-//                                                                 }
-//                                                                 onFailure:^(NSError *errorResult) {
-//                                                                     
-//                                                                 }];
     _reviewRequest = [ReviewRequest new];
     [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
                                                  reputationInboxID:_detailMyInboxReputation.reputation_inbox_id

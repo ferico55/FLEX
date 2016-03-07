@@ -111,6 +111,11 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Actions
+- (IBAction)didTapSendButton:(id)sender {
+    
+}
+
 #pragma mark - Methods
 - (void)setHeaderView {
     [_revieweeImage setImageWithURL:[NSURL URLWithString:_inbox.reviewee_picture]
@@ -140,8 +145,6 @@
 }
 
 - (void)setGrowingTextView {
-    _responseMessageGrowingTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(8.0, 10.0, self.view.frame.size.width - _sendButton.frame.size.width - 24, 30)];
-    
     [_responseMessageGrowingTextView setIsScrollable:NO];
     [_responseMessageGrowingTextView setContentInset:UIEdgeInsetsMake(0, 5, 0, 5)];
     [_responseMessageGrowingTextView.layer setBorderWidth:1];

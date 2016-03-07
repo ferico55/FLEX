@@ -409,7 +409,7 @@
         cell.remainingTimeView.hidden = YES;
     }
     
-    cell.timestampLabel.text = [current.score_edit_time_fmt isEqualToString:@"0"]?current.create_time_fmt:current.score_edit_time_fmt;
+    cell.timestampLabel.text = current.create_time_fmt_ws;
     
     [cell.button setTitle:current.review_status_description forState:UIControlStateNormal];
     [cell.button.layer setBorderWidth:2.0];

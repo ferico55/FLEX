@@ -35,4 +35,15 @@
                                              onSuccess:(void(^)(MyReviewReputationResult* result))successCallback
                                              onFailure:(void(^)(NSError* errorResult))errorCallback;
 
+- (void)requestSubmitReviewWithReputationID:(NSString*)reputationID
+                                  productID:(NSString*)productID
+                               accuracyRate:(int)accuracyRate
+                                qualityRate:(int)qualityRate
+                                    message:(NSString*)reviewMessage
+                                     shopID:(NSString*)shopID
+                                   serverID:(NSString*)serverID
+                      hasProductReviewPhoto:(BOOL)hasProductReviewID
+                             reviewPhotoIDs:(NSArray*)imageIDs
+                         reviewPhotoObjects:(NSDictionary*)photos;
+
 @end

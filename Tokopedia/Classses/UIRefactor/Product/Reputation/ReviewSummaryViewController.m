@@ -13,6 +13,7 @@
 #import "GeneralActionResult.h"
 #import "GenerateHostRequest.h"
 #import "GiveReviewRatingViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface ReviewSummaryViewController ()
 <
@@ -39,10 +40,18 @@
     __weak RKObjectManager *_objectManager;
     
     GeneratedHost *_generatedHost;
+    
+    BOOL _hasProductReviewPhoto;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (_uploadedImages == nil) {
+        _hasProductReviewPhoto = NO;
+    } else {
+        _hasProductReviewPhoto = YES;
+    }
     
     self.title = @"Ringkasan Ulasan";
     
@@ -56,6 +65,7 @@
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
     
     [self setData];
+    [self generateImageIDs];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -71,6 +81,8 @@
                                               onFailure:^(NSError *errorResult) {
                                                   
                                               }];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,22 +93,8 @@
 - (void)setData {
     _productName.text = [NSString convertHTML:_detailReputationReview.product_name];
     
-    // Set Product Image
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_productImage setImageWithURLRequest:request
-                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                      [_productImage setImage:image];
-#pragma clang diagnostic pop
-                                  }
-                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                      NSLog(@"Failed get image");
-                                  }];
+    [_productImage setImageWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
+                  placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
     
     _reviewMessageTextView.text = _reviewMessage;
     
@@ -239,6 +237,10 @@
     return YES;
 }
 
+- (void)generateImageIDs {
+    
+}
+
 #pragma mark - Actions
 - (IBAction)tapToSend:(id)sender {
     if ([self isSuccessValidateReview]) {
@@ -292,8 +294,8 @@
                                                    @"is_success"]];
     
     RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
-                                                                                 toKeyPath:@"result"
-                                                                               withMapping:resultMapping];
+                                                                                   toKeyPath:@"result"
+                                                                                 withMapping:resultMapping];
     [statusMapping addPropertyMapping:resultRel];
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
