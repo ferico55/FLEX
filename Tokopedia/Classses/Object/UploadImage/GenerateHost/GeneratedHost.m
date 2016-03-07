@@ -10,4 +10,14 @@
 
 @implementation GeneratedHost
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *generatedHostMapping = [RKObjectMapping mappingForClass:[GeneratedHost class]];
+    
+    [generatedHostMapping addAttributeMappingsFromArray:@[@"server_id",
+                                                          @"upload_host",
+                                                          @"user_id"]];
+    
+    return generatedHostMapping;
+}
+
 @end

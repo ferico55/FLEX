@@ -2082,6 +2082,7 @@
 		622D830D1C8967A000BC1CB8 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 622D7AF91C89679F00BC1CB8 /* Tokopedia.xcworkspace */; };
 		62E59DC31C8D2DA600AF4503 /* InboxReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E59DC21C8D2DA600AF4503 /* InboxReputation.m */; };
 		62E59DC61C8D2DB400AF4503 /* InboxReputationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E59DC51C8D2DB400AF4503 /* InboxReputationResult.m */; };
+		62E59DC91C8D6C2200AF4503 /* GenerateHostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E59DC81C8D6C2200AF4503 /* GenerateHostRequest.m */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -5295,6 +5296,8 @@
 		62E59DC21C8D2DA600AF4503 /* InboxReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReputation.m; sourceTree = "<group>"; };
 		62E59DC41C8D2DB400AF4503 /* InboxReputationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReputationResult.h; sourceTree = "<group>"; };
 		62E59DC51C8D2DB400AF4503 /* InboxReputationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReputationResult.m; sourceTree = "<group>"; };
+		62E59DC71C8D6C2200AF4503 /* GenerateHostRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateHostRequest.h; sourceTree = "<group>"; };
+		62E59DC81C8D6C2200AF4503 /* GenerateHostRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateHostRequest.m; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -7740,6 +7743,8 @@
 				622D72A01C89679800BC1CB8 /* RequestUploadImage.m */,
 				622D72A11C89679800BC1CB8 /* TKPDPhotoPicker.h */,
 				622D72A21C89679800BC1CB8 /* TKPDPhotoPicker.m */,
+				62E59DC71C8D6C2200AF4503 /* GenerateHostRequest.h */,
+				62E59DC81C8D6C2200AF4503 /* GenerateHostRequest.m */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -13260,6 +13265,7 @@
 				622D7B851C89679F00BC1CB8 /* GoogleDistanceMatrixElements.m in Sources */,
 				622D7D091C89679F00BC1CB8 /* AddressViewController.m in Sources */,
 				622D7D2E1C89679F00BC1CB8 /* TKPDAlert.m in Sources */,
+				62E59DC91C8D6C2200AF4503 /* GenerateHostRequest.m in Sources */,
 				622D7BCF1C89679F00BC1CB8 /* RatingResponse.m in Sources */,
 				622D7F9D1C89679F00BC1CB8 /* RequestEditAddress.m in Sources */,
 				622D7E911C89679F00BC1CB8 /* DetailReputationReviewHeaderComponent.mm in Sources */,

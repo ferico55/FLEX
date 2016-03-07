@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) GeneratedHost *generated_host;
 
++ (RKObjectMapping*)mapping;
+
 @end

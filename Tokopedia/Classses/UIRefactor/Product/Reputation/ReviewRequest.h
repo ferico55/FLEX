@@ -32,7 +32,7 @@
                                           isUsingRedis:(NSString*)isUsingRedis
                                                   role:(NSString*)role
                                               autoRead:(NSString*)autoRead
-                                             onSuccess:(void(^)(MyReviewReputationResult*))successCallback
-                                             onFailure:(void(^)(NSError*))errorCallback;
+                                             onSuccess:(void(^)(MyReviewReputationResult* result))successCallback
+                                             onFailure:(void(^)(NSError* errorResult))errorCallback;
 
 @end
