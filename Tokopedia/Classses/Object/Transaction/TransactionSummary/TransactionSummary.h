@@ -17,4 +17,8 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) TransactionSummaryResult *result;
 
+@property (nonatomic) NSInteger gatewayID;
+
+-(RKObjectMapping *)mapping;
+
 @end
