@@ -102,16 +102,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *talkCommentButtonLarge;
 
--(void)cancel;
--(void)configureRestKit;
--(void)loadData;
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
--(void)requestprocess:(id)object;
--(void)requesttimeout;
--(void)configureSendCommentRestkit;
-- (void)configureDeleteCommentRestkit;
-
 @end
 
 @implementation ProductTalkDetailViewController
@@ -588,7 +578,7 @@
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
     
-    [_talkInputView addSubview:_growingtextview];
+//    [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
