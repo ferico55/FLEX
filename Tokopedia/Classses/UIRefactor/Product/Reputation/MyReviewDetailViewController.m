@@ -457,11 +457,27 @@
 #pragma mark - Smiley Delegate
 - (void)didTapReviewerScore:(DetailMyInboxReputation*)inbox {
     
+    NSString *smileyNoneString = @"";
+    
+    if ([inbox.reputation_progress isEqualToString:@"2"]) {
+        if ([inbox.role isEqualToString:@"1"]) {
+            smileyNoneString = @"Penjual telah melewati batas waktu penilaian";
+        } else {
+            smileyNoneString = @"Pembeli telah melewati batas waktu penilaian";
+        }
+    } else {
+        if ([inbox.role isEqualToString:@"1"]) {
+            smileyNoneString = @"Penjual belum memberi nilai untuk Anda";
+        } else {
+            smileyNoneString = @"Pembeli belum memberi nilai untuk Anda";
+        }
+    }
+    
     NSDictionary<NSString*, NSString*>* myScoreMessageByType = @{
                                                                    @"smiley_neutral":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Netral\"":@"Nilai dari Pembeli: \"Netral\"",
                                                                    @"smiley_bad":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Tidak Puas\"":@"Nilai dari Pembeli : \"Tidak Puas\"",
                                                                    @"smiley_good":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Puas\"":@"Nilai dari Pembeli: \"Puas\"",
-                                                                   @"smiley_none":[inbox.role isEqualToString:@"1"]?@"Penjual telah melewati batas waktu penilaian":@"Pembeli telah melewati batas waktu penilaian",
+                                                                   @"smiley_none":smileyNoneString,
                                                                    @"grey_question_mark":[inbox.role isEqualToString:@"1"]?@"Penjual belum memberi nilai untuk Anda":@"Pembeli belum memberi nilai untuk Anda",
                                                                    @"blue_question_mark":[inbox.role isEqualToString:@"1"]?@"Beri nilai Penjual untuk melihat nilai Anda":@"Beri nilai Pembeli untuk melihat nilai Anda"
                                                                    };

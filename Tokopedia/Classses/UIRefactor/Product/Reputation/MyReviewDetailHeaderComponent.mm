@@ -88,6 +88,42 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox) {
     }
 }
 
+static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
+    
+    NSString *timeLeft = [NSString stringWithFormat:@"Batas waktu ubah nilai %d hari lagi", [inbox.reputation_days_left intValue]];
+    
+    if([inbox.reputation_days_left intValue] > 0 && [inbox.reputation_days_left intValue] < 4) {
+        return [CKStackLayoutComponent
+                newWithView:{}
+                size:{}
+                style:{
+                    .direction = CKStackLayoutDirectionHorizontal,
+                    .alignItems = CKStackLayoutAlignItemsCenter,
+                    .spacing = 5
+                }
+                children:{
+                    {
+                        [CKImageComponent
+                         newWithImage:[UIImage imageNamed:@"icon_countdown.png"]
+                         size:{14,14}]
+                    },
+                    {
+                        [CKLabelComponent
+                         newWithLabelAttributes:{
+                             .string = timeLeft,
+                             .font = [UIFont fontWithName:@"Gotham Book" size:14.0]
+                         }
+                         viewAttributes:{
+                             {@selector(setBackgroundColor:), [UIColor clearColor]}
+                         }
+                         size:{}],
+                        
+                    }
+                }];
+    } else {
+        return nil;
+    }
+}
 
 @implementation MyReviewDetailHeaderComponent {
     __weak id<MyReviewDetailHeaderDelegate> _delegate;
@@ -188,6 +224,10 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox) {
                                         },
                                         {
                                             [MyReviewDetailHeaderSmileyComponent newWithInbox:inbox context:context],
+                                            .spacingAfter = 8
+                                        },
+                                        {
+                                            remainingTimeLeft(inbox),
                                             .spacingAfter = 8
                                         }
                                     }]];

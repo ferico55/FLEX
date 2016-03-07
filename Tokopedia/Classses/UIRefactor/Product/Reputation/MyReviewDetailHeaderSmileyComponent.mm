@@ -104,7 +104,9 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                           .string = @"Tidak Puas",
                                                           .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
                                                       }
-                                                      viewAttributes:{}
+                                                      viewAttributes:{
+                                                      {@selector(setBackgroundColor:), [UIColor clearColor]}
+                                                      }
                                                       size:{}]
                                                  }
                                              }];
@@ -157,7 +159,9 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                               .string = @"Netral",
                                                               .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
                                                           }
-                                                          viewAttributes:{}
+                                                          viewAttributes:{
+                                                          {@selector(setBackgroundColor:), [UIColor clearColor]}
+                                                          }
                                                           size:{}]
                                                      }
                                                  }];
@@ -210,7 +214,9 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                             .string = @"Puas",
                                                             .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
                                                         }
-                                                        viewAttributes:{}
+                                                        viewAttributes:{
+                                                            {@selector(setBackgroundColor:), [UIColor clearColor]}
+                                                        }
                                                         size:{}]
                                                    }
                                                }];
@@ -244,6 +250,8 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
         return smileyLocked;
     }
     
+    UIColor *backgroundColor = [UIColor clearColor];
+    
     switch (score) {
         case -1: {
             smileys.push_back({smileySad});
@@ -255,6 +263,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
             smileys.push_back({smileySadGrey});
             smileys.push_back({smileyNeutralGrey});
             smileys.push_back({smileySmileGrey});
+            backgroundColor = [UIColor colorWithRed:255.0/255 green:251.0/255 blue:234.0/255 alpha:1.0];
         }
             break;
         case 1: {
@@ -271,8 +280,15 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
             break;
     }
     
+    
+    
     return [CKStackLayoutComponent
-            newWithView:{}
+            newWithView:{
+                [UIView class],
+                {
+                    {@selector(setBackgroundColor:), backgroundColor}
+                }
+            }
             size:{}
             style:{
                 .direction = CKStackLayoutDirectionHorizontal,
@@ -282,77 +298,6 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
             children:smileys];
 }
 
-static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
-    
-    NSString *timeLeft = [NSString stringWithFormat:@"Batas waktu ubah nilai %d hari lagi", [inbox.reputation_days_left intValue]];
-    
-    if([inbox.reputation_days_left intValue] > 0 && [inbox.reputation_days_left intValue] < 4) {
-        return [CKStackLayoutComponent
-                newWithView:{
-                    [UIView class],
-                    {
-                        {
-                            {@selector(setBackgroundColor:),[UIColor colorWithRed:255.0/255
-                                                                            green:209.0/255
-                                                                             blue:209.0/255
-                                                                            alpha:1]}
-                        }
-                    }
-                }
-                size:{}
-                style:{
-                    .direction = CKStackLayoutDirectionVertical,
-                    .alignItems = CKStackLayoutAlignItemsStretch,
-                    .spacing = 8
-                }
-                children:{
-                    {
-                        [CKComponent
-                         newWithView:{
-                             [UIView class],
-                             {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784
-                                                                              green:0.78
-                                                                               blue:0.8
-                                                                              alpha:0.4]}}
-                         }
-                         size:{.height = 1}]
-                    },
-                    {
-                        [CKStackLayoutComponent
-                         newWithView:{}
-                         size:{}
-                         style:{
-                             .direction = CKStackLayoutDirectionHorizontal,
-                             .alignItems = CKStackLayoutAlignItemsCenter,
-                             .spacing = 5
-                         }
-                         children:{
-                             {
-                                 [CKImageComponent
-                                  newWithImage:[UIImage imageNamed:@"icon_countdown.png"]
-                                  size:{14,14}]
-                             },
-                             {
-                                 [CKLabelComponent
-                                  newWithLabelAttributes:{
-                                      .string = timeLeft,
-                                      .font = [UIFont fontWithName:@"Gotham Book" size:14.0]
-                                  }
-                                  viewAttributes:{
-                                      {@selector(setBackgroundColor:), [UIColor clearColor]}
-                                  }
-                                  size:{}],
-                                 
-                             }
-                         }],
-                        .alignSelf = CKStackLayoutAlignSelfCenter,
-                        .spacingAfter = 8
-                    }
-                }];
-    } else {
-        return nil;
-    }
-}
 
 static CKComponent *myScore(DetailMyInboxReputation *inbox) {
     NSDictionary<NSString*, NSString*>* myScoreImageNameByType = @{
@@ -368,7 +313,8 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
             newWithView:{
                 [UIView class],
                 {
-                    {CKComponentTapGestureAttribute(@selector(getMyScore))}
+                    {CKComponentTapGestureAttribute(@selector(getMyScore))},
+                    {@selector(setBackgroundColor:), [UIColor whiteColor]}
                 }
             }
             size:{}
@@ -452,6 +398,20 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
 }
 
 + (instancetype)newWithInbox:(DetailMyInboxReputation *)inbox context:(MyReviewDetailContext *)context {
+    UIColor *backgroundColor = [UIColor clearColor];
+    
+    NSInteger revieweeScore;
+    
+    if ([inbox.reviewee_role isEqualToString:@"2"]) {
+        revieweeScore = [inbox.seller_score integerValue];
+    } else {
+        revieweeScore = [inbox.buyer_score integerValue];
+    }
+    
+    if (revieweeScore == 0 && ![inbox.reputation_progress isEqualToString:@"2"]) {
+        backgroundColor = [UIColor colorWithRed:255.0/255 green:251.0/255 blue:234.0/255 alpha:1.0];
+    }
+    
     MyReviewDetailHeaderSmileyComponent *smiley = [super newWithComponent:
             [CKStackLayoutComponent
              newWithView:{
@@ -460,8 +420,8 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                      {CKComponentViewAttribute::LayerAttribute(@selector(setBorderWidth:)), 1.0},
                      {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 5.0},
                      {CKComponentViewAttribute::LayerAttribute(@selector(setBorderColor:)), (id)[[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4] CGColor]},
-                     {@selector(setClipsToBounds:), YES}
-                     
+                     {@selector(setClipsToBounds:), YES},
+                     {@selector(setBackgroundColor:), backgroundColor}
                  }
              }
              size:{
@@ -489,7 +449,9 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                                    .string = [inbox.reviewee_role isEqualToString:@"2"]?@"Beri Nilai Penjual:":@"Beri Nilai Pembeli:",
                                    .font = [UIFont fontWithName:@"Gotham Medium" size:14.0]
                                }
-                               viewAttributes:{}
+                               viewAttributes:{
+                                   {@selector(setBackgroundColor:), backgroundColor}
+                               }
                                size:{}]
                           },
                           {
@@ -502,11 +464,6 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                  {
                      score(inbox),
                      .alignSelf = CKStackLayoutAlignSelfStretch
-                 },
-                 {
-                     remainingTimeLeft(inbox),
-                     .alignSelf = CKStackLayoutAlignSelfStretch,
-                     .spacingAfter = -8
                  },
                  {
                      myScore(inbox),
