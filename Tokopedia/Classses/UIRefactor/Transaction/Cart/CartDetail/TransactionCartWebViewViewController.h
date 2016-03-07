@@ -38,7 +38,7 @@
 @property NSString *transactionCode;
 @property TransactionSummaryDetail *cartDetail;
 @property NSString *toppayQueryString;
-
+@property NSDictionary *toppayParam;
 @property NSString *paymentID;
 
 @property NSDictionary *data;

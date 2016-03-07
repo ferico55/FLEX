@@ -259,11 +259,12 @@
     else
     {
         if ([request.URL.absoluteString rangeOfString:@"tx-toppay-thanks.pl"].location != NSNotFound) {
+            
             NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
             
             NSDictionary *param = @{
                                     @"action" : @"get_thanks_data",
-                                    @"id": [paramURL objectForKey:@"id"]?:@""
+                                    @"id": [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@""
                                     };
             [_delegate shouldDoRequestTopPayThx:param];
             if ([self isModal]) {

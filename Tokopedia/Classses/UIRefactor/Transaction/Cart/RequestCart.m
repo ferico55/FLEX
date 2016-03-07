@@ -100,12 +100,15 @@
     [param addEntriesFromDictionary:dropshipDetail];
     [param addEntriesFromDictionary:partialDetail];
     
+    TransactionSummary *transactionSummary = [TransactionSummary new];
+    transactionSummary.gatewayID = [gatewayID integerValue];
+    
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     [networkManager requestWithBaseUrl:kTkpdBaseURLString
                                   path:@"tx.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
-                               mapping:[TransactionSummary mapping]
+                               mapping:[transactionSummary mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *result = successResult.dictionary;
         TransactionSummary *cart = [result objectForKey:@""];
@@ -161,12 +164,13 @@
     [param addEntriesFromDictionary:dropshipDetail];
     [param addEntriesFromDictionary:partialDetail];
     
+    
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     [networkManager requestWithBaseUrl:kTkpdBaseURLString
                                   path:@"action/toppay.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
-                               mapping:[TransactionSummary mapping]
+                               mapping:[TransactionAction mapping]
      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
          NSDictionary *result = successResult.dictionary;
          TransactionAction *cart = [result objectForKey:@""];
@@ -399,9 +403,6 @@
     if (tag == TAG_REQUEST_TOPPAY) {
         return @"action/toppay.pl";
     }
-    if (tag == TAG_REQUEST_TOPPAY) {
-        return @"action/toppay.pl";
-    }
     return nil;
 }
 
@@ -556,24 +557,13 @@
     }
     if (tag == TAG_REQUEST_TOPPAY) {
         TransactionAction *action = stat;
-        
-//        if (action.result.parameter != nil) {
-//            NSArray *successMessages = action.message_status;
-//            if (successMessages.count > 0) {
-//                [self showStatusMesage:successMessages];
-//            }
-//            [_delegate requestSuccessToppay:successResult withOperation:operation];
-//        }
-//        else
-//        {
-////            if (action.result.is_success == 1){
-//                [_delegate requestSuccessToppayThx:successResult withOperation:operation];
-////            } else {
-////                [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-////                [_delegate actionAfterFailRequestMaxTries:tag];
-////    
-////            }
-//        }
+        if (action.result.is_success == 1){
+            [_delegate requestSuccessToppayThx:successResult withOperation:operation];
+        } else {
+            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+            [_delegate actionAfterFailRequestMaxTries:tag];
+
+        }
     }
 }
 

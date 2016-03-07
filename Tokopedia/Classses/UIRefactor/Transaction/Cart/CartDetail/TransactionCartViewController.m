@@ -2776,6 +2776,7 @@
           TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
           vc.toppayQueryString = data.query_string;
           vc.URLString = data.redirect_url;
+                              vc.toppayParam = data.parameter;
           vc.gateway = @([_cart.gateway integerValue]);
           vc.delegate = self;
           
