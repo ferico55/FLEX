@@ -87,8 +87,23 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveDeeplinkUrl:)
                                                  name:@"didReceiveDeeplinkUrl" object:nil];
-
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
+   
+}
+
+- (void)didLoggedIn {
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 44;
+    _scrollView.frame = frame;
+}
+
+- (void)didLoggedOut {
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 0;
+    _scrollView.frame = frame;
+
 }
 
 #pragma mark - Lifecycle
@@ -133,6 +148,13 @@
     [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
     [_scrollView setPagingEnabled:YES];
+    
+    //this code to prevent user lose their hometabheader being hided by scrollview if they already loggedin from previous version
+    //check didLoggedIn method
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 44;
+    _scrollView.frame = frame;
+    
     _scrollView.delegate = self;
 
     [self addChildViewController:_categoryController];
