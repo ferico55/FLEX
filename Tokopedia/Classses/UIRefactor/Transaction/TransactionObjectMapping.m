@@ -262,9 +262,18 @@
 -(RKObjectMapping*)installmentTermMapping
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[InstallmentTerm class]];
-    [mapping addAttributeMappingsFromArray:@[@"duration",
+    [mapping addAttributeMappingsFromArray:@[
+                                             @"total_price",
                                              @"monthly_price",
-                                             @"monthly_price_idr"
+                                             @"total_price_idr",
+                                             @"admin_price_idr",
+                                             @"monthly_price_idr",
+                                             @"bunga",
+                                             @"duration",
+                                             @"is_zero",
+                                             @"interest_price_idr",
+                                             @"interest_price",
+                                             @"admin_price"
                                              ]];
     return mapping;
 }
