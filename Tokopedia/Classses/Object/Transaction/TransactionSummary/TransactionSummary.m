@@ -44,8 +44,55 @@
      
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionSummaryResult class]];
     [resultMapping addAttributeMappingsFromArray:@[@"year_now"]];
+        
+    RKObjectMapping *transactionMapping = [RKObjectMapping mappingForClass:[TransactionSummaryDetail class]];
+    [transactionMapping addAttributeMappingsFromArray:@[
+                                                        @"voucher_amount_idr",
+                                                        @"deposit_after",
+                                                        @"grand_total",
+                                                        @"payment_left_idr",
+                                                        @"confirmation_id",
+                                                        @"step",
+                                                        @"deposit_left",
+                                                        @"data_partial",
+                                                        @"use_deposit",
+                                                        @"payment_id",
+                                                        @"use_otp",
+                                                        @"now_time",
+                                                        @"emoney_code",
+                                                        @"unik",
+                                                        @"grand_total_idr",
+                                                        @"deposit_amount_idr",
+                                                        @"ga_data",
+                                                        @"discount_gateway_idr",
+                                                        @"user_deposit_idr",
+                                                        @"msisdn_verified",
+                                                        @"gateway",
+                                                        @"conf_code",
+                                                        @"dropship_list",
+                                                        @"conf_due_date",
+                                                        @"token",
+                                                        @"processing",
+                                                        @"grand_total_before_fee_idr",
+                                                        @"discount_gateway",
+                                                        @"gateway_name",
+                                                        @"status_unik",
+                                                        @"user_deposit",
+                                                        @"lock_mandiri",
+                                                        @"deposit_amount",
+                                                        @"voucher_amount",
+                                                        @"grand_total_before_fee",
+                                                        @"conf_code_idr",
+                                                        @"payment_left",
+                                                        @"transaction_code",
+                                                        @"bri_website_link",
+                                                        @"klikbca_user",
+                                                        @"lp_amount_idr",
+                                                        @"lp_amount",
+                                                        @"cashback_idr",
+                                                        @"cashback"
+                                                        ]];
     
-    RKObjectMapping *transactionMapping = [TransactionSummaryDetail mapping];
     RKObjectMapping *listMapping        = [TransactionCartList mapping];
     RKObjectMapping *ccMapping          = [CCData mapping];
     RKObjectMapping *veritransMapping   = [Veritrans mapping];
