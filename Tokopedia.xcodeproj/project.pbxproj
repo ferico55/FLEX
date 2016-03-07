@@ -2057,6 +2057,8 @@
 		920330DA1C882A9400FC5CAD /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 92032BCA1C882A9300FC5CAD /* VTItemDetails.m */; };
 		920330DB1C882A9400FC5CAD /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 92032BCC1C882A9300FC5CAD /* VTToken.m */; };
 		920330DC1C882A9400FC5CAD /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 92032BCE1C882A9300FC5CAD /* VTTransactionDetails.m */; };
+		92CBBD981C898118000969CE /* RSKGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CBBD971C898118000969CE /* RSKGrowingTextView.swift */; };
+		92CBBD9A1C89823F000969CE /* RSKPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CBBD991C89823F000969CE /* RSKPlaceholderTextView.swift */; };
 		9DE0A4BBA86D4190A7E07CB2 /* RolloutDynamic_03.m in Sources */ = {isa = PBXBuildFile; fileRef = D42C03553460450FB506D4DE /* RolloutDynamic_03.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		9E7E2D6D104C42C59FBFF513 /* RolloutDynamic_15.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2849330B874E69A80561F9 /* RolloutDynamic_15.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		A057EECF8D204BED8A68681F /* RolloutDynamic_14.m in Sources */ = {isa = PBXBuildFile; fileRef = 533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5182,6 +5184,8 @@
 		92032BCC1C882A9300FC5CAD /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
 		92032BCD1C882A9300FC5CAD /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
 		92032BCE1C882A9300FC5CAD /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
+		92CBBD971C898118000969CE /* RSKGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSKGrowingTextView.swift; path = "Tokopedia/Classses/Third Party/RSKGrowingTextView.swift"; sourceTree = SOURCE_ROOT; };
+		92CBBD991C89823F000969CE /* RSKPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RSKPlaceholderTextView.swift; path = "Tokopedia/Classses/Third Party/RSKPlaceholderTextView.swift"; sourceTree = SOURCE_ROOT; };
 		939838F8A82345A2B27A507A /* RolloutDynamic_01.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_01.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_01.m"; sourceTree = "<group>"; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_19.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_19.m"; sourceTree = "<group>"; };
@@ -6307,6 +6311,8 @@
 		8562491B1C6DC48A00036001 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				92CBBD991C89823F000969CE /* RSKPlaceholderTextView.swift */,
+				92CBBD971C898118000969CE /* RSKGrowingTextView.swift */,
 			);
 			path = "Third Party";
 			sourceTree = "<group>";
@@ -12068,6 +12074,7 @@
 				92032C001C882A9300FC5CAD /* VerifyOTP.m in Sources */,
 				92032D3C1C882A9300FC5CAD /* DetailShopResult.m in Sources */,
 				92032F111C882A9300FC5CAD /* MyShopEtalaseFilterCell.m in Sources */,
+				92CBBD9A1C89823F000969CE /* RSKPlaceholderTextView.swift in Sources */,
 				92032D381C882A9300FC5CAD /* NotesList.m in Sources */,
 				92032D351C882A9300FC5CAD /* NoteDetailResult.m in Sources */,
 				92032CBE1C882A9300FC5CAD /* SkipReviewResult.m in Sources */,
@@ -12622,6 +12629,7 @@
 				920330211C882A9400FC5CAD /* ShopContainerViewController.m in Sources */,
 				92032F391C882A9300FC5CAD /* DetailProductViewController.m in Sources */,
 				92032F401C882A9300FC5CAD /* GalleryPhotoView.m in Sources */,
+				92CBBD981C898118000969CE /* RSKGrowingTextView.swift in Sources */,
 				920330081C882A9300FC5CAD /* ShopFavoritedViewController.m in Sources */,
 				92032F481C882A9300FC5CAD /* ProductReviewViewController.m in Sources */,
 				92032C071C882A9300FC5CAD /* AddressProvince.m in Sources */,
