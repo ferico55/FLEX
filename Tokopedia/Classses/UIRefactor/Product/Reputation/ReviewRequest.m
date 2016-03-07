@@ -54,7 +54,7 @@
                                              }];
 }
 
--(void)actionLikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(TotalLikeDislikePost *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)actionLikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     [self actionLikeDislikeCancelWithReviewId:reviewId
                                        shopId:shopId
                                     productId:productId
@@ -64,27 +64,27 @@
                                     onFailure:errorCallback];
 }
 
--(void)actionDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(TotalLikeDislikePost *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)actionDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     [self actionLikeDislikeCancelWithReviewId:reviewId
                                        shopId:shopId
                                     productId:productId
                                        userId:userId
-                                   withAction:ACTION_LIKE_REQUEST
+                                   withAction:ACTION_DISLIKE_REQUEST
                                     onSuccess:successCallback
                                     onFailure:errorCallback];
 }
 
--(void)actionCancelLikeOrDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(TotalLikeDislikePost *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)actionCancelLikeOrDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     [self actionLikeDislikeCancelWithReviewId:reviewId
                                        shopId:shopId
                                     productId:productId
                                        userId:userId
-                                   withAction:ACTION_LIKE_REQUEST
+                                   withAction:ACTION_CANCEL_LIKE_OR_DISLIKE_REQUEST
                                     onSuccess:successCallback
                                     onFailure:errorCallback];
 }
 
--(void)actionLikeDislikeCancelWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId withAction:(NSInteger)actionTag onSuccess:(void (^)(TotalLikeDislikePost *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)actionLikeDislikeCancelWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId withAction:(NSInteger)actionTag onSuccess:(void (^)(LikeDislikePostResult *)likeDislikePostResult)successCallback onFailure:(void (^)(NSError *))errorCallback{
     actionLikeDislikeNetworkManager.isParameterNotEncrypted = NO;
     actionLikeDislikeNetworkManager.isUsingHmac = YES;
     [actionLikeDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
@@ -94,13 +94,13 @@
                                                           @"review_id"   : reviewId,
                                                           @"shop_id"     : shopId,
                                                           @"user_id"     : userId,
-                                                          @"like_status" : @(1)
+                                                          @"like_status" : @(actionTag)
                                                           }
                                                 mapping:[LikeDislikePost mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                   NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                   LikeDislikePost *obj = [result objectForKey:@""];
-                                                  successCallback(obj.result.content);
+                                                  successCallback(obj.result);
                                               } onFailure:^(NSError *errorResult) {
                                                   errorCallback(errorResult);
                                               }];

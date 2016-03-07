@@ -10,6 +10,7 @@
 #import "DetailReputationReview.h"
 #import "TotalLikeDislike.h"
 #import "TotalLikeDislikePost.h"
+#import "LikeDislikePostResult.h"
 
 @interface ReviewRequest : NSObject
 - (void) requestReviewLikeDislikesWithId:(NSString *)reviewId
@@ -21,20 +22,20 @@
                          shopId:(NSString *)shopId
                       productId:(NSString *)productId
                          userId:(NSString *)userId
-                      onSuccess:(void(^)(TotalLikeDislikePost* totalLikeDislike))successCallback
+                      onSuccess:(void(^)(LikeDislikePostResult* likeDislikePostResult))successCallback
                       onFailure:(void(^)(NSError* errorResult)) errorCallback;
 
 - (void) actionDislikeWithReviewId:(NSString *)reviewId
                          shopId:(NSString *)shopId
                       productId:(NSString *)productId
                          userId:(NSString *)userId
-                      onSuccess:(void(^)(TotalLikeDislikePost* totalLikeDislike))successCallback
+                      onSuccess:(void(^)(LikeDislikePostResult* likeDislikePostResult))successCallback
                       onFailure:(void(^)(NSError* errorResult)) errorCallback;
 
 - (void) actionCancelLikeOrDislikeWithReviewId:(NSString *)reviewId
                          shopId:(NSString *)shopId
                       productId:(NSString *)productId
                          userId:(NSString *)userId
-                      onSuccess:(void(^)(TotalLikeDislikePost* totalLikeDislike))successCallback
+                      onSuccess:(void(^)(LikeDislikePostResult* likeDislikePostResult))successCallback
                       onFailure:(void(^)(NSError* errorResult)) errorCallback;
 @end

@@ -20,5 +20,5 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) LikeDislikePostResult *result;
 
-+ (RKObjectManager*)mapping;
++ (RKObjectMapping*)mapping;
 @end
