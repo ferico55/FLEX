@@ -48,7 +48,10 @@
                                  
      NSDictionary *result = successResult.dictionary;
      TransactionCart *cart = [result objectForKey:@""];
-     success(cart.result);
+     if (cart.message_error.count>0) {
+         [StickyAlertView showErrorMessage:cart.message_error];
+     } else
+         success(cart.result);
                                  
     } onFailure:^(NSError *errorResult) {
         error(errorResult);
@@ -112,7 +115,10 @@
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *result = successResult.dictionary;
         TransactionSummary *cart = [result objectForKey:@""];
-        success(cart.result);
+         if (cart.message_error.count>0) {
+             [StickyAlertView showErrorMessage:cart.message_error];
+         } else
+            success(cart.result);
     } onFailure:^(NSError *errorResult) {
         error(errorResult);
     }];
@@ -179,8 +185,8 @@
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];
-             }
-             success(cart.result);
+             } else
+                 success(cart.result);
          }
          
      } onFailure:^(NSError *errorResult) {

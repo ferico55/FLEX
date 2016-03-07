@@ -36,4 +36,11 @@
     return alert;
 }
 
++ (StickyAlertView*)showErrorMessage:(NSArray *)errorMessage{
+    
+    StickyAlertView *alert = [[self alloc] initWithErrorMessages:errorMessage delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    [alert show];
+    
+    return alert;
+}
 @end

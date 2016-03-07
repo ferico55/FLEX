@@ -12,5 +12,6 @@
 
 + (StickyAlertView*)showNetworkError:(NSError *)error;
 + (StickyAlertView*)showSuccessMessage:(NSArray *)successMessage;
++ (StickyAlertView*)showErrorMessage:(NSArray *)errorMessage;
 
 @end
