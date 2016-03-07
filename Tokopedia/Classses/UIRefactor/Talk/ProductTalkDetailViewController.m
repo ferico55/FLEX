@@ -1461,7 +1461,9 @@
 }
 
 - (void)adjustSendButtonAvailability {
-    _sendButton.enabled = _growingtextview.text.length > 5;
+    NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    _sendButton.enabled = text.length > 5;
 }
 
 @end
