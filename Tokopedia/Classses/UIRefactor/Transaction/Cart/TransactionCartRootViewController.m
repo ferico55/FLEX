@@ -240,6 +240,8 @@
             _cartSummaryViewController.data =_data;
             _cartSummaryViewController.listSummary = [_data objectForKey:DATA_CART_SUMMARY_LIST_KEY];
             _cartSummaryViewController.delegate = self;
+            _cartSummaryViewController.selectedInstallmentBank = nil;
+            _cartSummaryViewController.selectedInstallmentDuration = nil;
             ((UIButton*)_pageButtons[index-1]).enabled = YES;
             ((UIButton*)_pageButtons[index-1]).backgroundColor = COLOR_SELECTED_BUTTON;
             ((UIButton*)_pageButtons[index]).enabled = YES;
