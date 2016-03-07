@@ -7,41 +7,24 @@
 //
 
 #define CHeightUserLabel 21
-#import "Tkpd.h"
+
 #import "ShopReputation.h"
 #import "CMPopTipView.h"
-#import "ReputationDetail.h"
 #import "ProductTalkDetailViewController.h"
 #import "TalkComment.h"
 #import "detail.h"
 #import "GeneralTalkCommentCell.h"
 #import "ProductTalkCommentAction.h"
-#import "TKPDSecureStorage.h"
-#import "URLCacheController.h"
 #import "HPGrowingTextView.h"
-#import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
-#import "DetailProductViewController.h"
 #import "LoginViewController.h"
-#import "ShopBadgeLevel.h"
 
-#import "ProfileFavoriteShopViewController.h"
-#import "ProfileContactViewController.h"
-#import "TKPDTabProfileNavigationController.h"
-#import "TKPDTabInboxTalkNavigationController.h"
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
-#import "UserAuthentificationManager.h"
-
-#import "ProductTalkViewController.h"
-#import "InboxTalkViewController.h"
-#import "UserContainerViewController.h"
 
 #import "SmileyAndMedal.h"
-#import "string_inbox_message.h"
 #import "stringrestkit.h"
-#import "string_more.h"
 #import "string_inbox_talk.h"
 
 #import "NavigationHelper.h"
