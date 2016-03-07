@@ -12,15 +12,14 @@
 
 @protocol ProductAddCaptionDelegate <NSObject>
 @optional
-- (void)didDismissController:(ProductAddCaptionViewController*)controller withUserInfo:(NSDictionary*)userInfo;
-- (void)setGenerateHost:(GeneratedHost*)generateHost;
+- (void)didDismissController:(ProductAddCaptionViewController*)controller
+                withUserInfo:(NSDictionary*)userInfo;
 @end
 
 @interface ProductAddCaptionViewController : UIViewController
 
 @property (weak, nonatomic) id<ProductAddCaptionDelegate> delegate;
 @property (nonatomic, strong) NSDictionary *userInfo;
-@property BOOL isFromGiveReview;
 @property NSInteger selectedImageTag;
 @property int numberOfUploadedImages;
 

@@ -28,5 +28,6 @@
 @property int accuracyRate;
 @property NSString *reviewMessage;
 @property NSArray *uploadedImages;
+@property NSArray *imagesCaption;
 
 @end

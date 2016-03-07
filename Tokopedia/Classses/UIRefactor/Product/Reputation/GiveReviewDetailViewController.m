@@ -12,14 +12,11 @@
 #import "ReviewSummaryViewController.h"
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
-#import "RequestGenerateHost.h"
-#import "RequestUploadImage.h"
 #import "CameraController.h"
-#import "RequestGenerateHost.h"
 #import "ProductAddCaptionViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, GenerateHostDelegate, CameraControllerDelegate, RequestUploadImageDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
+@interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, CameraControllerDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     NSMutableArray *_attachedImageURL;
@@ -29,9 +26,6 @@
     NSMutableArray *_attachedImages;
     
     NSOperationQueue *_operationQueue;
-    
-    GenerateHost *_generateHost;
-    GeneratedHost *_generatedHost;
     
     BOOL _isFinishedUploadingImage;
 }
@@ -64,8 +58,6 @@
     [self initCameraIcon];
     
     _operationQueue = [NSOperationQueue new];
-    _generateHost = [GenerateHost new];
-    _generatedHost = [GeneratedHost new];
     
     _uploadingImages = [NSMutableArray new];
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
@@ -74,11 +66,6 @@
     _attachedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
     _isFinishedUploadingImage = YES;
-    
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
     
     _reviewDetailTextView.delegate = self;
 }
@@ -196,7 +183,8 @@
         vc.qualityRate = _qualityRate;
         vc.accuracyRate = _accuracyRate;
         vc.reviewMessage = _reviewMessage;
-        vc.uploadedImages = _attachedImages;
+        vc.uploadedImages = [_userInfo objectForKey:@"selected_images"];
+        vc.imagesCaption = [_userInfo objectForKey:@"images-captions"];
         vc.detailMyReviewReputation = _detailMyReviewReputation;
         
         [self.navigationController pushViewController:vc animated:YES];
@@ -210,7 +198,6 @@
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
         vc.userInfo = _userInfo;
         vc.delegate = self;
-        vc.isFromGiveReview = YES;
         vc.selectedImageTag = (int)sender.view.tag;
         
         UINavigationController *nav = [[UINavigationController alloc]init];
@@ -275,21 +262,6 @@
     NSArray *controllers = @[albumVC,photoVC];
     [nav setViewControllers:controllers];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
-}
-
-#pragma mark - Request Generate Host
-- (void)setGenerateHost:(GeneratedHost *)generateHost {
-    _generatedHost = generateHost;
-}
-
-- (void)successGenerateHost:(GenerateHost *)generateHost {
-    _generateHost = generateHost;
-    [_delegate setGenerateHost:_generateHost.result.generated_host];
-}
-
-- (void)failedGenerateHost:(NSArray *)errorMessages {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-    [alert show];
 }
 
 #pragma mark - Product Add Caption Delegate
@@ -372,59 +344,6 @@
     
     [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
     [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
-}
-
-#pragma mark - Request Action Upload Image
-- (void)actionUploadImage:(id)object {
-    if (![_uploadingImages containsObject:object]) {
-        [_uploadingImages addObject:object];
-    }
-    
-    _isFinishedUploadingImage = NO;
-    
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    [uploadImage requestActionUploadObject:object
-                             generatedHost:_generateHost.result.generated_host
-                                    action:@"upload_contact_image"
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:@"fileToUpload"
-                                   success:^(id imageObject, UploadImage *image) {
-                                       [self successUploadObject:object withMappingResult:image];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       [self failedUploadObject:imageObject];
-                                   }];
-}
-
-- (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
-    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.alpha = 1.0;
-    
-    if (![_uploadedImages containsObject:uploadImage.result.file_th]) {
-        [_uploadedImages replaceObjectAtIndex:imageView.tag-20 withObject:uploadImage.result.file_th];
-    }
-    
-    [_uploadingImages removeObject:object];
-    _isFinishedUploadingImage = YES;
-    
-}
-
-- (void)failedUploadObject:(id)object {
-    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.image = nil;
-    imageView.hidden = YES;
-    
-    [_uploadingImages removeObject:object];
-    NSMutableArray *objectProductPhoto = [NSMutableArray new];
-    objectProductPhoto = _uploadedImages;
-    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-        if ([_selectedImagesCameraController[i]isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
-            [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
-            [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
-            [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
-        }
-    }
 }
 
 @end

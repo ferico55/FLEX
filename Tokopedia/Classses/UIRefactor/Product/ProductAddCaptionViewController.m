@@ -10,20 +10,23 @@
 #import "NavigateViewController.h"
 #import "CameraCollectionViewController.h"
 #import "CameraAlbumListViewController.h"
-#import "RequestGenerateHost.h"
-#import "RequestUploadImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+HVDLayout.h"
 
-@interface ProductAddCaptionViewController () <UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate, CameraCollectionViewControllerDelegate, UIScrollViewDelegate, UITextFieldDelegate, TokopediaNetworkManagerDelegate> {
+@interface ProductAddCaptionViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    CameraCollectionViewControllerDelegate,
+    UIScrollViewDelegate,
+    UITextFieldDelegate,
+    TokopediaNetworkManagerDelegate
+>
+{
     NavigateViewController *_navigate;
     
     UITextField *_activeTextField;
     
-    GenerateHost *_generateHost;
-    GeneratedHost *_generatedHost;
-    
-    NSOperationQueue *_operationQueue;
     NSMutableArray *_uploadedImages;
     NSMutableArray *_uploadingImages;
     NSMutableArray *_attachedImageURLs;
@@ -88,10 +91,6 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
-    _generateHost = [GenerateHost new];
-    _generatedHost = [GeneratedHost new];
-    _operationQueue = [NSOperationQueue new];
-    
     _uploadingImages = [NSMutableArray new];
     _uploadedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
@@ -106,10 +105,7 @@
     
     _imageCaptionTextField.delegate = self;
     
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    [self startUploadingImageWithUserInfo:_userInfo];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -304,18 +300,6 @@
     
 }
 
-#pragma mark - Request Generate Host
-- (void)successGenerateHost:(GenerateHost *)generateHost {
-    _generateHost = generateHost;
-    _generatedHost = _generateHost.result.generated_host;
-    [self startUploadingImageWithUserInfo:_userInfo];
-}
-
-- (void)failedGenerateHost:(NSArray *)errorMessages {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-    [alert show];
-}
-
 
 #pragma mark - Camera Collection Delegate
 - (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo {
@@ -371,7 +355,7 @@
             imageView = image;
             image.image = imagePhoto;
             image.hidden = NO;
-            image.alpha = _isFromGiveReview?1.0f:0.5f;
+            image.alpha = 1.0;
             image.userInteractionEnabled = YES;
             [image.layer setBorderColor:(_selectedImageTag == tagView)?[[UIColor colorWithRed:18.0/255 green:199.0/255 blue:0.0 alpha:1] CGColor]:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
             [image.layer setBorderWidth:(_selectedImageTag == tagView)?2.0:1.0];
@@ -395,10 +379,6 @@
     
     [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
     [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
-    
-    if (!_isFromGiveReview) {
-        [self actionUploadImage:object];
-    }
     
     _numberOfUploadedImages++;
     _scrollViewPageAmount = (_scrollViewPageAmount>=_numberOfUploadedImages)?_scrollViewPageAmount:_numberOfUploadedImages;
@@ -428,71 +408,9 @@
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
-    NSString *imageCaption = textField.text;    [_attachedImagesCaptions replaceObjectAtIndex:_selectedImageTag withObject:imageCaption];
+    NSString *imageCaption = textField.text;
+    [_attachedImagesCaptions replaceObjectAtIndex:_selectedImageTag withObject:imageCaption];
     return YES;
-}
-
-#pragma mark - Request Action Upload Image
-- (void)actionUploadImage:(id)object {
-    if (![_uploadingImages containsObject:object]) {
-        [_uploadingImages addObject:object];
-    }
-    
-    _isFinishedUploadingImage = NO;
-    
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    [uploadImage requestActionUploadObject:object
-                             generatedHost:_generateHost.result.generated_host
-                                    action:@"upload_contact_image"
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:@"fileToUpload"
-                                   success:^(id imageObject, UploadImage *image) {
-                                       [self successUploadObject:object withMappingResult:image];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       [self failedUploadObject:imageObject];
-                                   }];
-    
-}
-
-- (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage {
-    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.alpha = 1.0;
-    
-    if (![_uploadedImages containsObject:uploadImage.result.file_th]) {
-        [_uploadedImages replaceObjectAtIndex:imageView.tag-20 withObject:uploadImage.result.file_th];
-    }
-    
-    [_uploadingImages removeObject:object];
-    _isFinishedUploadingImage = YES;
-    
-    
-}
-
-- (void)failedUploadObject:(id)object {
-    
-    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
-    
-    for (UIImageView *image in _attachedImages) {
-        if (image.tag == imageView.tag) {
-            image.image = imageView.image;
-            image.hidden = NO;
-            image.userInteractionEnabled = YES;
-        }
-    }
-    
-    [_uploadingImages removeObject:object];
-    NSMutableArray *objectProductPhoto = [NSMutableArray new];
-    objectProductPhoto = _uploadedImages;
-    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-        if ([_selectedImagesCameraController[i] isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
-            [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
-            [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
-            [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
-        }
-    }
 }
 
 #pragma mark - Go to Camera Collection
@@ -551,7 +469,6 @@
 }
 
 #pragma mark - Methods
-
 - (void)setScrollViewImages {
     [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     

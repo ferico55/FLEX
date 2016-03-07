@@ -390,7 +390,6 @@
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
         vc.userInfo = _userInfo;
         vc.delegate = self;
-        vc.isFromGiveReview = YES;
         vc.selectedImageTag = (int)sender.view.tag;
         
         UINavigationController *nav = [[UINavigationController alloc]init];
