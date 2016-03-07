@@ -87,24 +87,7 @@ import UIKit
     }
     
     func sizeForItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
-        var numberOfCell: CGFloat
-        var cellHeight: CGFloat
-        
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
-                numberOfCell = 5
-            } else {
-                numberOfCell = 4
-            }
-            cellHeight = 250
-        } else {
-            numberOfCell = 2
-            cellHeight = 205 * (UIScreen.mainScreen().bounds.size.height / 568)
-        }
-        
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let cellWidth = screenWidth/numberOfCell - 15
-        
-        return CGSizeMake(cellWidth, cellHeight)
+        let type = 1
+        return ProductCellSize.sizeWithType(type)
     }
 }

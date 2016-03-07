@@ -13,6 +13,7 @@
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		7A1D3CA51C8DB65300824477 /* ProductCellSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1D3CA41C8DB65300824477 /* ProductCellSize.swift */; };
 		7A830F731C88239000CB28B1 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = 7A8307841C88238D00CB28B1 /* TokopediaDB.db */; };
 		7A830F741C88239000CB28B1 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A8307861C88238D00CB28B1 /* GothamBlack.ttf */; };
 		7A830F751C88239000CB28B1 /* GothamBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A8307871C88238D00CB28B1 /* GothamBook.ttf */; };
@@ -2104,6 +2105,7 @@
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
+		7A1D3CA41C8DB65300824477 /* ProductCellSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCellSize.swift; sourceTree = "<group>"; };
 		7A8307841C88238D00CB28B1 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		7A8307861C88238D00CB28B1 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		7A8307871C88238D00CB28B1 /* GothamBook.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBook.ttf; sourceTree = "<group>"; };
@@ -9451,6 +9453,7 @@
 				920329491C882A9200FC5CAD /* RequestMoveTo.m */,
 				9203294A1C882A9200FC5CAD /* SimpleReputation */,
 				920329501C882A9200FC5CAD /* string_product.h */,
+				7A1D3CA41C8DB65300824477 /* ProductCellSize.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -12460,6 +12463,7 @@
 				92032E841C882A9300FC5CAD /* GeneralList1GestureCell.m in Sources */,
 				92032DB61C882A9300FC5CAD /* UploadImage.m in Sources */,
 				92032D011C882A9300FC5CAD /* ActionOrder.m in Sources */,
+				7A1D3CA51C8DB65300824477 /* ProductCellSize.swift in Sources */,
 				85624E301C6DC48B00036001 /* main.m in Sources */,
 				9203301F1C882A9400FC5CAD /* ShopSettingViewController.m in Sources */,
 				92032D271C882A9300FC5CAD /* SendMessage.m in Sources */,
