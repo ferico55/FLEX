@@ -15,7 +15,6 @@
 #import "detail.h"
 #import "GeneralTalkCommentCell.h"
 #import "ProductTalkCommentAction.h"
-#import "HPGrowingTextView.h"
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
 #import "LoginViewController.h"
@@ -35,8 +34,8 @@
     UITableViewDelegate,
     UIScrollViewDelegate,
     UISplitViewControllerDelegate,
+    UITextViewDelegate,
     MGSwipeTableCellDelegate,
-    HPGrowingTextViewDelegate,
     ReportViewControllerDelegate,
     LoginViewDelegate,
     GeneralTalkCommentCellDelegate,
@@ -161,6 +160,8 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [self adjustSendButtonAvailability];
     
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -176,8 +177,7 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
-    [_sendButton setEnabled:NO];
-    
+
     if(_marksOpenedTalksAsRead) {
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
@@ -663,7 +663,6 @@
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [_timer invalidate];
-        [_sendButton setEnabled:YES];
         _timer = nil;
         [_act stopAnimating];
         _table.hidden = NO;
@@ -830,7 +829,7 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
-                if([_growingtextview.text length] < 5) {
+                if([_growingtextview.text length] < 6) {
                     return;
                 }
                 NSInteger lastindexpathrow = [_list count];
@@ -884,6 +883,7 @@
                         [self addProductCommentTalk];
                         
                         _growingtextview.text = nil;
+                        [self adjustSendButtonAvailability];
                         [_growingtextview resignFirstResponder];
                     } else {
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sedang memuat komentar.."]
@@ -979,7 +979,7 @@
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        
+
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestfailure:error];
@@ -1048,18 +1048,6 @@
 
 - (void)requestactionfailure:(id)error {
     
-}
-
-#pragma mark - UITextView Delegate
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
-    float diff = (growingTextView.frame.size.height - height);
-    
-    CGRect r = _talkInputView.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-    
-    _talkInputView.frame = r;
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
@@ -1419,15 +1407,6 @@
 
 }
 
-#pragma mark - GrowingTextView Delegate
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView  {
-    if([growingTextView.text length] < 5) {
-        _sendButton.enabled = NO;
-    } else {
-        _sendButton.enabled = YES;
-    }
-}
-
 #pragma mark - Notification Delegate
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
@@ -1476,4 +1455,13 @@
 {
     return NO;
 }
+
+- (void)textViewDidChange:(UITextView *)textView {
+    [self adjustSendButtonAvailability];
+}
+
+- (void)adjustSendButtonAvailability {
+    _sendButton.enabled = _growingtextview.text.length > 5;
+}
+
 @end
