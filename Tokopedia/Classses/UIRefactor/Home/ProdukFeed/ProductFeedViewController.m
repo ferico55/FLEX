@@ -129,11 +129,13 @@ FavoriteShopRequestDelegate
     _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     _loadingIndicator.hidesWhenStopped = YES;
     [_loadingIndicator startAnimating];
+    [_loadingIndicator setFrame:CGRectMake(0, 10, [UIScreen mainScreen].bounds.size.width, _loadingIndicator.frame.size.height)];
     _loadingIndicator.center = self.view.center;
 
     
     [_collectionView addSubview:_loadingIndicator];
     _collectionView.delegate = self;
+
     
     [self initNoResultView];
     _page = 0;
@@ -148,8 +150,8 @@ FavoriteShopRequestDelegate
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
-    [_collectionView addSubview:_firstFooter];
-    [_firstFooter setHidden:NO];
+//    [_collectionView addSubview:_firstFooter];
+//    [_firstFooter setHidden:NO];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
@@ -458,6 +460,10 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     [stickyView show];
     _isFailRequest = YES;
     _isRequestingProductFeed = NO;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [ProductCellSize sizeWithType:1];
 }
 
 #pragma mark - No Request delegate

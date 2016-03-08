@@ -9,7 +9,7 @@
 #import "FavoriteShopRequest.h"
 #import "TokopediaNetworkManager.h"
 
-#define PER_PAGE 6
+#define PER_PAGE 16
 
 typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     FavoriteShopRequestAll,
