@@ -135,9 +135,7 @@
     LoadingView *_loadingView;
     TAGContainer *_gtmContainer;
     
-    InstallmentBank *_selectedInstallmentBank;
-    InstallmentTerm *_selectedInstallmentDuration;
-    
+
     BOOL _isSelectBankInstallment;
     BOOL _isSelectDurationInstallment;
     
@@ -211,6 +209,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *bankView;
 @property (weak, nonatomic) IBOutlet UIView *durationView;
+@property (strong, nonatomic) IBOutlet UILabel *transferCodeInfoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *transferCodeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
@@ -353,7 +353,7 @@
                                 title:@"Keranjang belanja Anda kosong"
                                  desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
                              btnTitle:@"Ayo mulai belanja!"];
-
+    [_transferCodeInfoLabel setCustomAttributedText:_transferCodeInfoLabel.text];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -851,6 +851,12 @@
         }
     }
 }
+- (IBAction)tapInfoTransferCode:(id)sender {
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info Kode Unik";
+    alertInfo.detailText = @"Kode Unik adalah nominal unik yang ditambahkan untuk mempermudah proses verifikasi.";
+    [alertInfo show];
+}
 
 -(BOOL)isCanUseToppay
 {
@@ -1166,7 +1172,10 @@
     TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
     if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
         if (!_selectedInstallmentBank) _selectedInstallmentBank = _cartSummary.installment_bank_option[0];
-        if (!_selectedInstallmentDuration) _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+        if (!_selectedInstallmentDuration){
+            _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+            [self adjustTotalPaymentInstallment];
+        }
         
         _bankInstallmentLabel.text = _selectedInstallmentBank.bank_name;
         _durationInstallmentLabel.text = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price_idr];
@@ -1462,6 +1471,7 @@
             }
         }
         _selectedInstallmentDuration = _selectedInstallmentBank.installment_term[0];
+        [self adjustTotalPaymentInstallment];
         _isSelectBankInstallment = NO;
     }
     
@@ -1470,12 +1480,18 @@
             NSString *termNow = [NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price_idr];
             if ([termNow isEqualToString:object]) {
                 _selectedInstallmentDuration = term;
+                [self adjustTotalPaymentInstallment];
             }
         }
         _isSelectDurationInstallment = NO;
     }
     
     [_tableView reloadData];
+}
+
+-(void)adjustTotalPaymentInstallment{
+    _cartSummary.conf_code = _selectedInstallmentDuration.admin_price;
+    _cartSummary.conf_code_idr = _selectedInstallmentDuration.admin_price_idr;
 }
 
 -(void)adjustGrandTotalWithDeposit:(NSString*)deposit
@@ -2125,8 +2141,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
-    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
+    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
 
     NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
@@ -2177,7 +2193,7 @@
         }
         case 5:
             cell = _transferCodeCell;
-            [cell.detailTextLabel setText:_cartSummary.conf_code_idr];
+            [_transferCodeLabel setText:_cartSummary.conf_code_idr];
             break;
         case 6:
         {
@@ -2198,10 +2214,15 @@
             break;
         }
         case 8:
+        {
             cell = _totalPaymentDetail;
-            [cell.detailTextLabel setText:_cartSummary.payment_left_idr?:@"Rp 0" animated:YES];
+            NSString *paymentLeft = _cartSummary.payment_left_idr?:@"Rp 0";
+            if([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT){
+                paymentLeft = _selectedInstallmentDuration.total_price_idr;
+            }
+            [cell.detailTextLabel setText:paymentLeft animated:YES];
             break;
-
+        }
         default:
             break;
      }
@@ -2565,6 +2586,7 @@
         if (indexPath.row == 5) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
                 return 0;
+            else return 91;
         }
         if (indexPath.row == 6) {
             if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC || ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [_cartSummary.conf_code integerValue] != 0)) {
@@ -2623,8 +2645,8 @@
 
 -(CGFloat)errorLabelHeight:(TransactionCartList*)list
 {
-    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
-    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
+    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
     if ([error1 isEqualToString:@""]&& [error2 isEqualToString:@""])
     {
         return 0;
