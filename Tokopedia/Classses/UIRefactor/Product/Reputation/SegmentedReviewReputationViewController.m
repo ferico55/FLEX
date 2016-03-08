@@ -173,7 +173,16 @@
 
 - (void)hiddenShadowFilter:(BOOL)isHidden {
     viewShadow.hidden = viewContentAction.hidden = isHidden;
-//    [btnTitle setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(isHidden? @"icon_arrow_down_white":@"icon_arrow_up") ofType:@"png"]] forState:UIControlStateNormal];
+    
+    arrowImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(isHidden? @"icon_triangle_down_white":@"icon_triangle_up_white") ofType:@"png"]];
+    CGRect rect = CGRectMake(0, 0, 10 ,7);
+    UIGraphicsBeginImageContext( rect.size );
+    [arrowImage drawInRect:rect];
+    arrowImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    
+    [btnTitle setImage:arrowImage forState:UIControlStateNormal];
 }
 
 #pragma mark - Action 
