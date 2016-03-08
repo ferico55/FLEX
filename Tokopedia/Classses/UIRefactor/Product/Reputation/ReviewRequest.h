@@ -32,7 +32,7 @@
                       onSuccess:(void(^)(LikeDislikePostResult* likeDislikePostResult))successCallback
                       onFailure:(void(^)(NSError* errorResult)) errorCallback;
 
-- (void) actionCancelLikeOrDislikeWithReviewId:(NSString *)reviewId
+- (void) actionCancelLikeDislikeWithReviewId:(NSString *)reviewId
                          shopId:(NSString *)shopId
                       productId:(NSString *)productId
                          userId:(NSString *)userId

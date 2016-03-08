@@ -23,14 +23,18 @@
 
 @implementation ReviewRequest{
     TokopediaNetworkManager *likeDislikeCountNetworkManager;
-    TokopediaNetworkManager *actionLikeDislikeNetworkManager;
+    TokopediaNetworkManager *actionLikeNetworkManager;
+    TokopediaNetworkManager *actionDislikeNetworkManager;
+    TokopediaNetworkManager *actionCancelLikeDislikeNetworkManager;
 }
 
 - (id)init{
     self = [super init];
     if(self){
         likeDislikeCountNetworkManager = [TokopediaNetworkManager new];
-        actionLikeDislikeNetworkManager = [TokopediaNetworkManager new];
+        actionLikeNetworkManager = [TokopediaNetworkManager new];
+        actionDislikeNetworkManager = [TokopediaNetworkManager new];
+        actionCancelLikeDislikeNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -55,55 +59,73 @@
 }
 
 -(void)actionLikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    [self actionLikeDislikeCancelWithReviewId:reviewId
-                                       shopId:shopId
-                                    productId:productId
-                                       userId:userId
-                                   withAction:ACTION_LIKE_REQUEST
-                                    onSuccess:successCallback
-                                    onFailure:errorCallback];
-}
-
--(void)actionDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    [self actionLikeDislikeCancelWithReviewId:reviewId
-                                       shopId:shopId
-                                    productId:productId
-                                       userId:userId
-                                   withAction:ACTION_DISLIKE_REQUEST
-                                    onSuccess:successCallback
-                                    onFailure:errorCallback];
-}
-
--(void)actionCancelLikeOrDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    [self actionLikeDislikeCancelWithReviewId:reviewId
-                                       shopId:shopId
-                                    productId:productId
-                                       userId:userId
-                                   withAction:ACTION_CANCEL_LIKE_OR_DISLIKE_REQUEST
-                                    onSuccess:successCallback
-                                    onFailure:errorCallback];
-}
-
--(void)actionLikeDislikeCancelWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId withAction:(NSInteger)actionTag onSuccess:(void (^)(LikeDislikePostResult *)likeDislikePostResult)successCallback onFailure:(void (^)(NSError *))errorCallback{
-    actionLikeDislikeNetworkManager.isParameterNotEncrypted = NO;
-    actionLikeDislikeNetworkManager.isUsingHmac = YES;
-    [actionLikeDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    
+    actionLikeNetworkManager.isParameterNotEncrypted = NO;
+    actionLikeNetworkManager.isUsingHmac = YES;
+    [actionLikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
                                                    path:@"/v4/action/review/like_dislike_review.pl"
                                                  method:RKRequestMethodGET
                                               parameter:@{@"product_id"  : productId,
                                                           @"review_id"   : reviewId,
                                                           @"shop_id"     : shopId,
                                                           @"user_id"     : userId,
-                                                          @"like_status" : @(actionTag)
+                                                          @"like_status" : @(ACTION_LIKE_REQUEST)
                                                           }
                                                 mapping:[LikeDislikePost mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                   NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                   LikeDislikePost *obj = [result objectForKey:@""];
-                                                  successCallback(obj.result);
+                                                  successCallback(obj.data);
                                               } onFailure:^(NSError *errorResult) {
                                                   errorCallback(errorResult);
                                               }];
 }
+
+-(void)actionDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    
+    actionDislikeNetworkManager.isParameterNotEncrypted = NO;
+    actionDislikeNetworkManager.isUsingHmac = YES;
+    [actionDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                            path:@"/v4/action/review/like_dislike_review.pl"
+                                          method:RKRequestMethodGET
+                                       parameter:@{@"product_id"  : productId,
+                                                   @"review_id"   : reviewId,
+                                                   @"shop_id"     : shopId,
+                                                   @"user_id"     : userId,
+                                                   @"like_status" : @(ACTION_DISLIKE_REQUEST)
+                                                   }
+                                         mapping:[LikeDislikePost mapping]
+                                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                           NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                           LikeDislikePost *obj = [result objectForKey:@""];
+                                           successCallback(obj.data);
+                                       } onFailure:^(NSError *errorResult) {
+                                           errorCallback(errorResult);
+                                       }];
+}
+
+-(void)actionCancelLikeDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    
+    actionCancelLikeDislikeNetworkManager.isParameterNotEncrypted = NO;
+    actionCancelLikeDislikeNetworkManager.isUsingHmac = YES;
+    [actionCancelLikeDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                                         path:@"/v4/action/review/like_dislike_review.pl"
+                                                       method:RKRequestMethodGET
+                                                    parameter:@{@"product_id"  : productId,
+                                                                @"review_id"   : reviewId,
+                                                                @"shop_id"     : shopId,
+                                                                @"user_id"     : userId,
+                                                                @"like_status" : @(ACTION_CANCEL_LIKE_OR_DISLIKE_REQUEST)
+                                                                }
+                                                      mapping:[LikeDislikePost mapping]
+                                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                        LikeDislikePost *obj = [result objectForKey:@""];
+                                                        successCallback(obj.data);
+                                                    } onFailure:^(NSError *errorResult) {
+                                                        errorCallback(errorResult);
+                                                    }];
+}
+
 
 @end

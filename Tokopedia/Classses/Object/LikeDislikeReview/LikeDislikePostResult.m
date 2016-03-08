@@ -12,7 +12,7 @@
 
 +(RKObjectMapping *)mapping{
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikePostResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];    
+    [resultMapping addAttributeMappingsFromArray:@[@"is_success"]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"content" toKeyPath:@"content" withMapping:[TotalLikeDislikePost mapping]]];
     return resultMapping;
 }

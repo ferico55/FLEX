@@ -410,7 +410,7 @@ ProductReputationSimpleDelegate>
         //Result
         NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
         LikeDislikePost *likeDislikePost = [result objectForKey:@""];
-        LikeDislikePostResult *likeDislikePostResult = likeDislikePost.result;
+        LikeDislikePostResult *likeDislikePostResult = likeDislikePost.data;
         BOOL status = [likeDislikePostResult.is_success isEqualToString:@"1"];
         
         TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:reviewList.review_id];

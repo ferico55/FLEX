@@ -11,7 +11,7 @@
 +(RKObjectMapping *)mapping{
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[LikeDislikePost class]];
     [statusMapping addAttributeMappingsFromArray:@[@"status", @"server_process_time", @"message_error"]];
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[LikeDislikePostResult mapping]]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[LikeDislikePostResult mapping]]];
     return statusMapping;
 }
 @end

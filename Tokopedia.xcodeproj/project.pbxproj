@@ -2065,6 +2065,7 @@
 		BBF06F761C86F06C0071A0B8 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBF0679E1C86F06B0071A0B8 /* Tokopedia-Info.plist */; };
 		BBF06F771C86F06C0071A0B8 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BBF067A01C86F06B0071A0B8 /* Tokopedia.entitlements */; };
 		BBF06F781C86F06C0071A0B8 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BBF067A11C86F06B0071A0B8 /* Tokopedia.xcworkspace */; };
+		BBF06F7A1C8E7F140071A0B8 /* loading-icon.gif in Resources */ = {isa = PBXBuildFile; fileRef = BBF06F791C8E7F130071A0B8 /* loading-icon.gif */; };
 		C7F961F230434FC497BE3DDF /* RolloutDynamic_18.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		D9C98E17B9A542E18C19C91B /* RolloutDynamic_19.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5187,6 +5188,7 @@
 		BBF0679F1C86F06B0071A0B8 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BBF067A01C86F06B0071A0B8 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BBF067A11C86F06B0071A0B8 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BBF06F791C8E7F130071A0B8 /* loading-icon.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "loading-icon.gif"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_20.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_20.m"; sourceTree = "<group>"; };
 		CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_08.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_08.m"; sourceTree = "<group>"; };
@@ -10306,6 +10308,7 @@
 		BBF064BB1C86F0680071A0B8 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BBF06F791C8E7F130071A0B8 /* loading-icon.gif */,
 				BBF064BC1C86F0680071A0B8 /* badges_gold_merchant.png */,
 				BBF064BD1C86F0680071A0B8 /* balloon_read_left.png */,
 				BBF064BE1C86F0680071A0B8 /* balloon_read_right.png */,
@@ -11833,6 +11836,7 @@
 				BBF06D9F1C86F06C0071A0B8 /* icon_lock_grey@2x.png in Resources */,
 				BBF06BD81C86F06C0071A0B8 /* ShopEditStatusViewController.xib in Resources */,
 				BBF069B71C86F06C0071A0B8 /* AlertDatePickerView.xib in Resources */,
+				BBF06F7A1C8E7F140071A0B8 /* loading-icon.gif in Resources */,
 				BBF06D421C86F06C0071A0B8 /* icon_4@3x.png in Resources */,
 				BBF06B841C86F06C0071A0B8 /* SalesTransactionListViewController.xib in Resources */,
 				BBF06AC71C86F06C0071A0B8 /* InboxTalkViewController.xib in Resources */,
