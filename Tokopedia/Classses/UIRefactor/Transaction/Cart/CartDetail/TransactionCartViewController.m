@@ -71,7 +71,7 @@
     NoResultDelegate
 >
 {
-    NSMutableArray<TransactionCartList> *_list;
+    NSMutableArray<TransactionCartList *> *_list;
     
     TransactionCartResult *_cart;
     TransactionSummaryDetail *_cartSummary;
@@ -913,26 +913,6 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-//-(BOOL)isValidInputInstallment
-//{
-//    BOOL isvalid = YES;
-//    NSMutableArray *errorMessage = [NSMutableArray new];
-//
-//    if ([_durationInstallmentLabel.text isEqualToString:@"Pilih"]) {
-//        [errorMessage addObject:@"Durasi harus dipilih"];
-//        isvalid = NO;
-//    }
-//    if ([_bankInstallmentLabel.text isEqualToString:@"Pilih"]) {
-//        [errorMessage addObject:@"Durasi harus dipilih"];
-//        isvalid = NO;
-//    }
-//    
-//    [self headerInstallmentAnimating];
-//    return isvalid;
-//}
-
-
-
 -(BOOL)isValidInputCC
 {
     BOOL isvalid = YES;
@@ -1014,7 +994,6 @@
     
     NSString *hiddenGatewayString = [[self gtmContainer] stringForKey:GTMHiddenPaymentKey]?:@"-1";
     hiddenGatewayString = ([hiddenGatewayString isEqualToString:@""])?@"-1":hiddenGatewayString;
-    NSArray *hiddenGatewayArray = [hiddenGatewayString componentsSeparatedByString: @","];
     
     NSMutableArray *hiddenGatewayName = [NSMutableArray new];
     NSMutableArray *hiddenGatewayImage = [NSMutableArray new];
@@ -1550,8 +1529,7 @@
                 case 1:
                 {
                     [_dataInput setObject:@(TYPE_CANCEL_CART_PRODUCT) forKey:DATA_CANCEL_TYPE_KEY];
-                    _requestCart.param = [self paramCancelCart];
-                    [_requestCart doRequestCancelCart];
+                    [self doCancelCart];
                     
                     break;
                 }
@@ -1564,8 +1542,7 @@
                 case 1:
                 {
                     [_dataInput setObject:@(TYPE_CANCEL_CART_SHOP) forKey:DATA_CANCEL_TYPE_KEY];
-                    _requestCart.param = [self paramCancelCart];
-                    [_requestCart doRequestCancelCart];
+                    [self doCancelCart];
                     
                     break;
                 }
@@ -1922,6 +1899,17 @@
 }
 
 -(void)requestCartData{
+    
+    if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"])
+    {
+        [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
+    }
+    if (![_refreshControl isRefreshing] && !_refreshFromShipment) {
+        _tableView.tableFooterView = _footerView;
+        [_act startAnimating];
+    }
+    _isLoadingRequest = YES;
+    
     [RequestCart fetchCartData:^(TransactionCartResult *data) {
         
         [self endRefreshing];
@@ -1963,15 +1951,17 @@
 }
 
 -(void)doCancelCart{
+    [_alertLoading show];
+    
     NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
     
     TransactionCartList *list = _list[indexPathCancelProduct.section];
     NSArray *products = list.cart_products;
     ProductDetail *product = products[indexPathCancelProduct.row];
     
-    NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
+    NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY] integerValue];
     
-    [RequestCart fetchDeleteProduct:product cart:list withType:type success:^(TransactionAction *data, ProductDetail *product, TransactionCartList *cart, TYPE_CANCEL_CART type) {
+    [RequestCart fetchDeleteProduct:product cart:list withType:type success:^(TransactionAction *data, ProductDetail *product, TransactionCartList *cart, NSInteger type) {
         
         if (type == TYPE_CANCEL_CART_PRODUCT ) {
             NSMutableArray *products = [NSMutableArray new];
@@ -1993,7 +1983,7 @@
         
     } error:^(NSError *error) {
         [self endRefreshing];
-    }]
+    }];
 }
 
 -(void)swipeView:(UIView*)view{
@@ -2715,32 +2705,6 @@
     return CELL_PRODUCT_ROW_HEIGHT+expectedLabelSize.height;
 }
 
-#pragma mark - Network Manager Delegate
--(NSDictionary *)paramCancelCart
-{
-    NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
-    
-    TransactionCartList *list = _list[indexPathCancelProduct.section];
-    NSArray *products = list.cart_products;
-    ProductDetail *product = products[indexPathCancelProduct.row];
-    
-    NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
-    
-    NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
-    NSString *shopID = list.cart_shop.shop_id?:@"";
-    NSInteger addressID = list.cart_destination.address_id;
-    NSString *shipmentID = list.cart_shipments.shipment_id?:@"";
-    NSString *shipmentPackageID = list.cart_shipments.shipment_package_id?:@"";
-    
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_CANCEL_CART,
-                            API_PRODUCT_CART_ID_KEY : @(productCartID),
-                            kTKPD_SHOPIDKEY:shopID,
-                            API_ADDRESS_ID_KEY:@(addressID),
-                            API_SHIPMENT_ID_KEY:shipmentID,
-                            API_SHIPMENT_PACKAGE_ID:shipmentPackageID
-                            };
-    return param;
-}
 
 -(void)doRequestVoucher{
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
@@ -2771,6 +2735,8 @@
 }
 
 -(void)doCheckout{
+    _checkoutButton.enabled = NO;
+    [_alertLoading show];
     
     [self adjustDropshipperListParam];
     
@@ -2815,6 +2781,8 @@
 }
 
 -(void)doCheckoutWithToppay{
+    
+    [_alertLoading show];
     
     [self adjustDropshipperListParam];
     
@@ -2935,36 +2903,13 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    if (tag == TAG_REQUEST_CART) {
-        if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"])
-        {
-            [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
-        }
-        if (![_refreshControl isRefreshing] && !_refreshFromShipment) {
-            _tableView.tableFooterView = _footerView;
-            [_act startAnimating];
-        }
-        _isLoadingRequest = YES;
-    }
-    
-    if (tag == TAG_REQUEST_CANCEL_CART) {
-        //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-        [_alertLoading show];
-    }
-    
-    if (tag == TAG_REQUEST_CHECKOUT) {
-        _checkoutButton.enabled = NO;
-        [_alertLoading show];
-    }
     
     if (tag == TAG_REQUEST_BUY) {
         _buyButton.enabled = NO;
         //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
         [_alertLoading show];
     }
-    if (tag == TAG_REQUEST_VOUCHER) {
-        
-    }
+
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         
     }

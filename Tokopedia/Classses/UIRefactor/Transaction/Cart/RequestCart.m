@@ -19,7 +19,6 @@
 
 @interface RequestCart()<TokopediaNetworkManagerDelegate>
 {
-    TokopediaNetworkManager *_networkManagerCancelCart;
     TokopediaNetworkManager *_networkManagerBuy;
     TokopediaNetworkManager *_networkManagerEditProduct;
     TokopediaNetworkManager *_networkManagerEMoney;
@@ -50,6 +49,7 @@
      TransactionCart *cart = [result objectForKey:@""];
      if (cart.message_error.count>0) {
          [StickyAlertView showErrorMessage:cart.message_error];
+         error(nil);
      } else
          success(cart.result);
                                  
@@ -117,6 +117,7 @@
         TransactionSummary *cart = [result objectForKey:@""];
          if (cart.message_error.count>0) {
              [StickyAlertView showErrorMessage:cart.message_error];
+             error(nil);
          } else
             success(cart.result);
     } onFailure:^(NSError *errorResult) {
@@ -185,8 +186,11 @@
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];
-             } else
-                 success(cart.result);
+             }
+             success(cart.result);
+         } else {
+             [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
+             error(nil);
          }
          
      } onFailure:^(NSError *errorResult) {
@@ -209,14 +213,18 @@
                                    
        NSDictionary *result = successResult.dictionary;
        TransactionVoucher *cart = [result objectForKey:@""];
-       success(cart.result.data_voucher);
+       if (cart.message_error.count>0) {
+           [StickyAlertView showErrorMessage:cart.message_error];
+           error (nil);
+       } else
+           success(cart.result.data_voucher);
                                    
     } onFailure:^(NSError *errorResult) {
         error(errorResult);
     }];
 }
 
-+(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(TYPE_CANCEL_CART)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, TYPE_CANCEL_CART type))success error:(void (^)(NSError *error))error{
++(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error{
     
     NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
     NSString *shopID = cart.cart_shop.shop_id?:@"";
@@ -233,7 +241,8 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLHttpsString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    networkManager.isUsingHmac = NO;
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
@@ -245,8 +254,8 @@
             }
             else
             {
-                [StickyAlertView showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-                error()
+                [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+                error(nil);
             }
             
     } onFailure:^(NSError *errorResult) {
@@ -263,17 +272,6 @@
     _objectManager.gatewayID = [gatewayID integerValue];
         
     return _objectManager;
-}
-
-
--(TokopediaNetworkManager*)networkManagerCancelCart
-{
-    if (!_networkManagerCancelCart) {
-        _networkManagerCancelCart = [TokopediaNetworkManager new];
-        _networkManagerCancelCart.tagRequest = TAG_REQUEST_CANCEL_CART;
-        _networkManagerCancelCart.delegate = self;
-    }
-    return _networkManagerCancelCart;
 }
 
 -(TokopediaNetworkManager*)networkManagerBuy
@@ -346,11 +344,6 @@
     return _networkManagerToppay;
 }
 
--(void)doRequestCancelCart
-{
-    [[self networkManagerCancelCart]doRequest];
-}
-
 -(void)dorequestBuy
 {
     [[self networkManagerBuy]doRequest];
@@ -389,9 +382,6 @@
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_CANCEL_CART) {
-        return [[self objectManager] objectManagerCancelCart];
-    }
     if (tag == TAG_REQUEST_BUY) {
         return [[self objectManager] objectManagerBuy];
     }
@@ -423,9 +413,6 @@
 
 -(NSString *)getPath:(int)tag
 {
-    if (tag == TAG_REQUEST_CANCEL_CART) {
-        return API_ACTION_TRANSACTION_PATH;
-    }
     if (tag == TAG_REQUEST_BUY) {
         return API_TRANSACTION_PATH;
     }
@@ -460,10 +447,6 @@
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
-    if (tag == TAG_REQUEST_CANCEL_CART) {
-        TransactionAction *action = stat;
-        return action.status;
-    }
     if (tag == TAG_REQUEST_BUY) {
         TransactionBuy *cart = stat;
         return cart.status;
@@ -503,20 +486,7 @@
     
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
-    
-    if (tag == TAG_REQUEST_CANCEL_CART) {
-        TransactionAction *action = stat;
-        if (action.result.is_success == 1) {
-            [self showStatusMesage:action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY]];
-            [_delegate requestSuccessActionCancelCart:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
-    
+
     if (tag == TAG_REQUEST_BUY) {
         TransactionBuy *cart = stat;
         if (cart.result.is_success == 1) {

@@ -25,7 +25,6 @@
 
 @protocol RequestCartDelegate <NSObject>
 @required
--(void)requestSuccessActionCancelCart:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation;
@@ -48,7 +47,6 @@
 
 @property (nonatomic, strong) UIViewController *viewController;
 
--(void)doRequestCancelCart;
 -(void)dorequestBuy;
 -(void)doRequestEditProduct;
 -(void)doRequestEMoney;
@@ -65,6 +63,6 @@
 
 +(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucherData *data))success error:(void (^)(NSError *error))error;
 
-+(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(TYPE_CANCEL_CART)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, TYPE_CANCEL_CART type))success error:(void (^)(NSError *error))error;
++(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error;
 
 @end
