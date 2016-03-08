@@ -299,8 +299,11 @@
                             API_BCA_USER_ID_KEY : klikBCAUserID,
                             @"lp_flag":@"1"
                             };
+    TransactionBuy *transactionBuy = [TransactionBuy new];
+    transactionBuy.gatewayID = [gatewayID integerValue];
+    
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionBuy mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx.pl" method:RKRequestMethodPOST parameter:param mapping:[transactionBuy mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         NSDictionary *result = successResult.dictionary;
         id stat = [result objectForKey:@""];
