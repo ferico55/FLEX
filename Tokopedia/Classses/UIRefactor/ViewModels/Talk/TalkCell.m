@@ -424,6 +424,9 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 	            } else {
     	            successMessages = @[@"Anda batal mengikuti diskusi ini."];
         	    }
+
+                if ([_delegate respondsToSelector:@selector(updateTalkStatusAtIndexPath:following:)])
+                    [_delegate updateTalkStatusAtIndexPath:indexPath following:_isFollowingTalk];
 			}
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];
