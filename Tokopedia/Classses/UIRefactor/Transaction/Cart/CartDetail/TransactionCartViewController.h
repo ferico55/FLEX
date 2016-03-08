@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "InstallmentBank.h"
 
 @class TransactionCartViewController;
 
@@ -36,6 +37,10 @@
 @property NSArray *listSummary;
 
 @property BOOL isLogin;
+
+@property InstallmentBank *selectedInstallmentBank;
+@property InstallmentTerm *selectedInstallmentDuration;
+
 
 -(void)refreshRequestCart;
 
