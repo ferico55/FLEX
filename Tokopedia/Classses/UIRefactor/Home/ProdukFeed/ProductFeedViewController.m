@@ -126,14 +126,7 @@ FavoriteShopRequestDelegate
     
     _favoritedShops = [[FavoritedShopResult alloc] init];
     
-    _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    _loadingIndicator.hidesWhenStopped = YES;
-    [_loadingIndicator startAnimating];
-    [_loadingIndicator setFrame:CGRectMake(0, 10, [UIScreen mainScreen].bounds.size.width, _loadingIndicator.frame.size.height)];
-    _loadingIndicator.center = self.view.center;
 
-    
-    [_collectionView addSubview:_loadingIndicator];
     _collectionView.delegate = self;
 
     
@@ -157,6 +150,14 @@ FavoriteShopRequestDelegate
     
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    
+    _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _loadingIndicator.hidesWhenStopped = YES;
+    [_loadingIndicator startAnimating];
+    [_loadingIndicator setFrame:CGRectMake(0, 10, [UIScreen mainScreen].bounds.size.width, _loadingIndicator.frame.size.height)];
+    
+    
+    [_collectionView addSubview:_loadingIndicator];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteShop) name:@"updateFavoriteShop" object:nil];
     //set change orientation
