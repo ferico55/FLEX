@@ -13,14 +13,13 @@
 #import "inbox.h"
 #import "string_inbox_message.h"
 #import "string_home.h"
-#import "HPGrowingTextView.h"
 #import "inbox.h"
 #import "detail.h"
 #import "NavigateViewController.h"
 #import "TagManagerHandler.h"
 #import "NavigationHelper.h"
 
-@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
+@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIView *messagingview;
@@ -34,6 +33,7 @@
 
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 
+@property (strong, nonatomic) IBOutlet RSKGrowingTextView *textView;
 
 
 @end
@@ -44,7 +44,6 @@
     BOOL _ismorebuttonview;
     
     NSMutableArray *_messages;
-    HPGrowingTextView *_growingtextview;
     
     NSInteger _page;
     NSInteger _limit;
@@ -103,6 +102,8 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
+    
+    _textView.delegate = self;
     
     if (_data) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
@@ -171,35 +172,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidLayoutSubviews {
-    CGFloat textViewWidth = self.view.bounds.size.width - _buttonsend.frame.size.width - 25;
-    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, 29);
-}
-
 - (void) setMessagingView {
-    _growingtextview = [[HPGrowingTextView alloc] init];
+    _textView.layer.borderWidth = 0.5f;
+    _textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
 
-    _growingtextview.isScrollable = NO;
-    _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-    _growingtextview.layer.borderWidth = 0.5f;
-    _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _growingtextview.layer.cornerRadius = 5;
-    _growingtextview.layer.masksToBounds = YES;
-    
-
-    _growingtextview.minNumberOfLines = 1;
-    _growingtextview.maxNumberOfLines = 6;
-    // you can also set the maximum height in points with maxHeight
-    // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
-    _growingtextview.delegate = self;
-    _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    _growingtextview.backgroundColor = [UIColor whiteColor];
-    _growingtextview.placeholder = @"Kirim pesanmu di sini..";
-    _growingtextview.enablesReturnKeyAutomatically = YES;
-    
-    [_messagingview addSubview:_growingtextview];
-        
     _messagingview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
@@ -319,12 +295,6 @@
     
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
 }
-
--(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [_growingtextview resignFirstResponder];
-}
-
-
 
 #pragma mark - Request and Mapping
 - (void) configureRestKit {
@@ -562,13 +532,13 @@
             }
                 
             case 11: {
-                NSString *message = [_growingtextview.text stringByTrimmingCharactersInSet:
+                NSString *message = [_textView.text stringByTrimmingCharactersInSet:
                                      [NSCharacterSet whitespaceCharacterSet]];
                 if(message.length > 5) {
                     NSInteger lastindexpathrow = [_messages count];
                     
                     InboxMessageDetailList *sendmessage = [InboxMessageDetailList new];
-                    sendmessage.message_reply = _growingtextview.text;
+                    sendmessage.message_reply = _textView.text;
                     
                     NSDate *today = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -594,9 +564,10 @@
                                           animated:YES];
                     
                     [self configureActionRestkit];
-                    [self doSendMessage:_growingtextview.text];
+                    [self doSendMessage:_textView.text];
                     
-                    _growingtextview.text = nil;
+                    _textView.text = nil;
+                    [self adjustButtonSendAvailability];
                 } else {
                     
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM5, nil];
@@ -611,19 +582,6 @@
         }
     }
 }
-
-#pragma mark - UITextView Delegate
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
-    float diff = (growingTextView.frame.size.height - height);
-    
-    CGRect r = _messagingview.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-    
-    _messagingview.frame = r;
-}
-
 
 -(void) keyboardWillShow:(NSNotification *)note{
     // get keyboard size and loctaion
@@ -743,9 +701,9 @@
     _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl parameters:[param encrypt]];
     
     NSDictionary *userinfo;
-    userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _growingtextview.text};
+    userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _textView.text};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessageWithIndex" object:nil userInfo:userinfo];
-    [_growingtextview resignFirstResponder];
+    [_textView resignFirstResponder];
     
     [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsendmessage:mappingResult withOperation:operation];
@@ -777,11 +735,15 @@
     
 }
 
-#pragma mark - Growing TextView Delegate
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
-    NSString *message = [growingTextView.text stringByTrimmingCharactersInSet:
-                          [NSCharacterSet whitespaceCharacterSet]];
-    _buttonsend.enabled = !([message length] <= 5 || [message isEqualToString:@""]);
+#pragma mark - TextView Delegate
+- (void)textViewDidChange:(UITextView *)textView {
+    [self adjustButtonSendAvailability];
+}
+
+- (void)adjustButtonSendAvailability {
+    NSString *message = [_textView.text stringByTrimmingCharactersInSet:
+                         [NSCharacterSet whitespaceCharacterSet]];
+    _buttonsend.enabled = message.length > 5;
 }
 
 #pragma mark - Tap User

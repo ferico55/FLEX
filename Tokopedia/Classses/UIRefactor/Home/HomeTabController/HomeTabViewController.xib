@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -17,19 +17,29 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="d8S-dT-Td2">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8S-dT-Td2">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="2Zt-An-G8S"/>
+                    </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="dHr-6J-IMO" customClass="ScrollViewSimultaneousGesture">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHr-6J-IMO" customClass="ScrollViewSimultaneousGesture">
                     <rect key="frame" x="0.0" y="44" width="320" height="524"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <animations/>
                 </scrollView>
             </subviews>
             <animations/>
             <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="d8S-dT-Td2" secondAttribute="trailing" id="3yL-d1-6XL"/>
+                <constraint firstItem="d8S-dT-Td2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5fe-er-an7"/>
+                <constraint firstItem="dHr-6J-IMO" firstAttribute="top" secondItem="d8S-dT-Td2" secondAttribute="bottom" constant="-1" id="HNd-yw-3pu"/>
+                <constraint firstItem="d8S-dT-Td2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="QcU-O0-hcC"/>
+                <constraint firstAttribute="bottom" secondItem="dHr-6J-IMO" secondAttribute="bottom" id="XDo-Ew-V2x"/>
+                <constraint firstItem="dHr-6J-IMO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gFC-2U-2MI"/>
+                <constraint firstAttribute="trailing" secondItem="dHr-6J-IMO" secondAttribute="trailing" id="i3N-9v-vCU"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="192" y="238"/>
         </view>

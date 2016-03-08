@@ -50,6 +50,7 @@
 #import "PromoRequest.h"
 
 #import "UIActivityViewController+Extensions.h"
+#import "Tokopedia-Swift.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -434,52 +435,7 @@ RetryViewDelegate
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger numberOfCell;
-    NSInteger cellHeight;
-    if(IS_IPAD) {
-        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-        if(self.cellType == UITableViewCellTypeTwoColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
-                numberOfCell = 5;
-            } else {
-                numberOfCell = 4;
-            }
-            cellHeight = 250;
-        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
-                numberOfCell = 8;
-            } else {
-                numberOfCell = 6;
-            }
-            cellHeight = 150;
-        } else if(self.cellType == UITableViewCellTypeOneColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
-                numberOfCell = 4;
-                cellHeight = 400;
-            } else {
-                numberOfCell = 2;
-                cellHeight = 450;
-            }
-            
-        }
-    } else {
-        if(self.cellType == UITableViewCellTypeTwoColumn) {
-            numberOfCell = 2;
-            cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
-        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
-            numberOfCell = 3;
-            cellHeight = [UIScreen mainScreen].bounds.size.width / 3 - 15;
-        } else {
-            numberOfCell = 1;
-            cellHeight = [UIScreen mainScreen].bounds.size.width + 100;
-        }
-    }
-    
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-    
-    return CGSizeMake(cellWidth, cellHeight);
+   return [ProductCellSize sizeWithType:self.cellType];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
