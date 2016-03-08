@@ -144,6 +144,8 @@
 	}
 	
 	self.center = _window.center;
+    [_window setFrame:[[UIScreen mainScreen] bounds]];
+    [_background setFrame:_window.frame];
 	self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
 	
 	[UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionCrossDissolve) animations:^{
