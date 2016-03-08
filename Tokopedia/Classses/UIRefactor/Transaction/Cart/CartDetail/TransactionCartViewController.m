@@ -71,7 +71,7 @@
     NoResultDelegate
 >
 {
-    NSMutableArray *_list;
+    NSMutableArray<TransactionCartList> *_list;
     
     TransactionCartResult *_cart;
     TransactionSummaryDetail *_cartSummary;
@@ -1962,6 +1962,40 @@
     
 }
 
+-(void)doCancelCart{
+    NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+    
+    TransactionCartList *list = _list[indexPathCancelProduct.section];
+    NSArray *products = list.cart_products;
+    ProductDetail *product = products[indexPathCancelProduct.row];
+    
+    NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
+    
+    [RequestCart fetchDeleteProduct:product cart:list withType:type success:^(TransactionAction *data, ProductDetail *product, TransactionCartList *cart, TYPE_CANCEL_CART type) {
+        
+        if (type == TYPE_CANCEL_CART_PRODUCT ) {
+            NSMutableArray *products = [NSMutableArray new];
+            [products addObjectsFromArray:list.cart_products];
+            [products removeObject:product];
+            ([_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
+            if (([_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
+                [_list removeObject:_list[indexPathCancelProduct.section]];
+            }
+        }
+        else
+        {
+            [_list removeObject:list];
+        }
+        
+        [self adjustAfterUpdateList];
+        [self refreshRequestCart];
+        [self endRefreshing];
+        
+    } error:^(NSError *error) {
+        [self endRefreshing];
+    }]
+}
+
 -(void)swipeView:(UIView*)view{
 //- (void)swipePaymentMethod {
     CGAffineTransform tr = CGAffineTransformTranslate(view.transform, -40, 0);
@@ -3106,38 +3140,6 @@
     _refreshFromShipment = NO;
     
     [_tableView reloadData];
-    
-}
-
-
-#pragma mark - Request Cancel Cart
-
--(void)requestSuccessActionCancelCart:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
-    TransactionCartList *list = _list[indexPathCancelProduct.section];
-    
-    NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
-    NSMutableArray *products = [NSMutableArray new];
-    [products addObjectsFromArray:list.cart_products];
-    ProductDetail *product = products[indexPathCancelProduct.row];
-    
-    if (type == TYPE_CANCEL_CART_PRODUCT ) {
-        [products removeObject:product];
-        ((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
-        if (((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
-            [_list removeObject:_list[indexPathCancelProduct.section]];
-        }
-    }
-    else
-    {
-        [_list removeObject:list];
-    }
-    
-    //
-    [self adjustAfterUpdateList];
-    [self refreshRequestCart];
-    [self endRefreshing];
     
 }
 

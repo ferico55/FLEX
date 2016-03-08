@@ -12,6 +12,7 @@
 #import "TransactionSummary.h"
 #import "TransactionAction.h"
 #import "TransactionVoucher.h"
+#import "string_transaction.h"
 
 #define TAG_REQUEST_CANCEL_CART 11
 #define TAG_REQUEST_BUY 13
@@ -63,5 +64,7 @@
 +(void)fetchToppayWithToken:(NSString *)token gatewayID:(NSString *)gatewayID listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail isUsingSaldo:(BOOL)isUsingSaldo saldo:(NSString *)saldo voucherCode:(NSString *)voucherCode success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *))error;
 
 +(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucherData *data))success error:(void (^)(NSError *error))error;
+
++(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(TYPE_CANCEL_CART)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, TYPE_CANCEL_CART type))success error:(void (^)(NSError *error))error;
 
 @end

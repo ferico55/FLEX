@@ -152,15 +152,15 @@
     NSString *usedSaldo = isUsingSaldo?deposit?:@"0":@"0";
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
-                                      API_TOKEN_KEY:token,
-                                      API_GATEWAY_LIST_ID_KEY:gatewayID,
-                                      API_DROPSHIP_STRING_KEY:dropshipString,
-                                      API_PARTIAL_STRING_KEY :partialString,
-                                      API_USE_DEPOSIT_KEY:@(isUsingSaldo),
-                                      API_DEPOSIT_AMT_KEY:usedSaldo,
-                                      @"lp_flag":@"1",
-                                      @"action": @"get_parameter"
+    NSDictionary* paramDictionary = @{@"step"           :@(STEP_CHECKOUT),
+                                      @"token"          :token,
+                                      @"gateway"        :gatewayID,
+                                      @"dropship_str"   :dropshipString,
+                                      @"partial_str"    :partialString,
+                                      @"use_deposit"    :@(isUsingSaldo),
+                                      @"deposit_amt"    :usedSaldo,
+                                      @"lp_flag"        :@"1",
+                                      @"action"         :@"get_parameter"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
@@ -197,8 +197,8 @@
 
 +(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucherData *data))success error:(void (^)(NSError *error))error{
     
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_CECK_VOUCHER_CODE,
-                            API_VOUCHER_CODE_KEY : voucherCode
+    NSDictionary* param = @{@"action" : @"check_voucher_code",
+                            @"voucher_code" : voucherCode
                             };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     [networkManager requestWithBaseUrl:kTkpdBaseURLString
@@ -211,6 +211,44 @@
        TransactionVoucher *cart = [result objectForKey:@""];
        success(cart.result.data_voucher);
                                    
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
+}
+
++(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(TYPE_CANCEL_CART)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, TYPE_CANCEL_CART type))success error:(void (^)(NSError *error))error{
+    
+    NSInteger productCartID = (type == TYPE_CANCEL_CART_PRODUCT)?[product.product_cart_id integerValue]:0;
+    NSString *shopID = cart.cart_shop.shop_id?:@"";
+    NSInteger addressID = cart.cart_destination.address_id;
+    NSString *shipmentID = cart.cart_shipments.shipment_id?:@"";
+    NSString *shipmentPackageID = cart.cart_shipments.shipment_package_id?:@"";
+    
+    NSDictionary* param = @{@"action"               :@"cancel_cart",
+                            @"product_cart_id"      :@(productCartID),
+                            @"shop_id"              :shopID,
+                            @"address_id"           :@(addressID),
+                            @"shipment_id"          :shipmentID,
+                            @"shipment_package_id"  :shipmentPackageID
+                            };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLHttpsString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
+        
+        TransactionAction *action = stat;
+            if (action.result.is_success == 1) {
+                [StickyAlertView showSuccessMessage:action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY]];
+                success(action, product, cart, type);
+            }
+            else
+            {
+                [StickyAlertView showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+                error()
+            }
+            
     } onFailure:^(NSError *errorResult) {
         error(errorResult);
     }];
