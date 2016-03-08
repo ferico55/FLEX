@@ -24,6 +24,7 @@
 #import "Localytics.h"
 
 #import "RetryCollectionReusableView.h"
+#import "Tokopedia-Swift.h"
 
 static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -198,25 +199,26 @@ typedef enum TagRequest {
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger numberOfCell;
-    NSInteger cellHeight;
-    if(IS_IPAD) {
-        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-        if(UIInterfaceOrientationIsLandscape(orientation)) {
-            numberOfCell = 5;
-        } else {
-            numberOfCell = 4;
-        }
-        cellHeight = 250;
-    } else {
-        numberOfCell = 2;
-        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
-    }
-    
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-    
-    return CGSizeMake(cellWidth, cellHeight);
+//    NSInteger numberOfCell;
+//    NSInteger cellHeight;
+//    if(IS_IPAD) {
+//        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+//        if(UIInterfaceOrientationIsLandscape(orientation)) {
+//            numberOfCell = 5;
+//        } else {
+//            numberOfCell = 4;
+//        }
+//        cellHeight = 250;
+//    } else {
+//        numberOfCell = 2;
+//        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
+//    }
+//    
+//    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+//    CGFloat cellWidth = screenWidth/numberOfCell - 15;
+//    
+//    return CGSizeMake(cellWidth, cellHeight);
+    return [ProductCellSize sizeWithType:1];
 }
 
 
