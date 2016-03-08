@@ -45,6 +45,9 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -98,7 +101,9 @@
                 <outlet property="totalInvoiceCell" destination="AVf-0Y-ZcY" id="dEk-gk-dOg"/>
                 <outlet property="totalPaymentCell" destination="hTf-We-spw" id="2vh-Vl-d0W"/>
                 <outlet property="totalPaymentDetail" destination="XiX-Jr-HT9" id="YQo-Ac-X0o"/>
-                <outlet property="transferCodeCell" destination="hHW-yd-Xhs" id="QsD-o3-0tn"/>
+                <outlet property="transferCodeCell" destination="Gdx-au-rdp" id="trC-xH-xGO"/>
+                <outlet property="transferCodeInfoLabel" destination="hVz-Fp-qb0" id="fLF-cu-FNr"/>
+                <outlet property="transferCodeLabel" destination="Ua7-df-Oic" id="1ad-EA-OzJ"/>
                 <outlet property="usedLP1Cell" destination="rwl-nh-vRv" id="B7L-2D-s0c"/>
                 <outlet property="usedLPCell" destination="3NZ-AS-z69" id="2CC-69-3ac"/>
                 <outlet property="usedSaldoCell" destination="gnN-iy-Hi0" id="Q2N-GN-bKz"/>
@@ -509,7 +514,117 @@
                 <color key="tintColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
             </tableViewCellContentView>
             <animations/>
-            <point key="canvasLocation" x="117" y="336"/>
+            <point key="canvasLocation" x="226" y="345"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="91" id="Gdx-au-rdp">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="91"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gdx-au-rdp" id="4rG-Fs-jlT">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="90.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xTw-CI-sDP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <subviews>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kode Unik" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iaz-kS-TXn">
+                                <rect key="frame" x="15" y="0.0" width="73" height="44"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73" id="v5C-zB-SEX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp.0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ua7-df-Oic">
+                                <rect key="frame" x="108" y="0.0" width="197" height="44"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zxJ-0N-hPJ">
+                                <rect key="frame" x="88" y="0.0" width="20" height="44"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="aRa-Dk-Tj5"/>
+                                </constraints>
+                                <state key="normal" image="icon_info_grey_small.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tapInfoTransferCode:" destination="-1" eventType="touchUpInside" id="CbI-gP-b5z"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ua7-df-Oic" firstAttribute="top" secondItem="xTw-CI-sDP" secondAttribute="top" id="2Ob-PL-b2e"/>
+                            <constraint firstItem="zxJ-0N-hPJ" firstAttribute="top" secondItem="xTw-CI-sDP" secondAttribute="top" id="B0M-M4-SYQ"/>
+                            <constraint firstAttribute="trailing" secondItem="Ua7-df-Oic" secondAttribute="trailing" constant="15" id="CfR-WZ-TLl"/>
+                            <constraint firstItem="Ua7-df-Oic" firstAttribute="leading" secondItem="zxJ-0N-hPJ" secondAttribute="trailing" id="OT6-ox-yHe"/>
+                            <constraint firstItem="iaz-kS-TXn" firstAttribute="baseline" secondItem="Ua7-df-Oic" secondAttribute="baseline" id="Okh-Tw-98K"/>
+                            <constraint firstItem="iaz-kS-TXn" firstAttribute="leading" secondItem="xTw-CI-sDP" secondAttribute="leading" constant="15" id="Srr-jO-CmI"/>
+                            <constraint firstAttribute="bottom" secondItem="Ua7-df-Oic" secondAttribute="bottom" id="Xw2-qk-LSa"/>
+                            <constraint firstAttribute="height" constant="43.5" id="Zcu-xH-HG7"/>
+                            <constraint firstAttribute="bottom" secondItem="Ua7-df-Oic" secondAttribute="bottom" id="ger-d0-1t2"/>
+                            <constraint firstItem="iaz-kS-TXn" firstAttribute="top" secondItem="xTw-CI-sDP" secondAttribute="top" id="iJ8-UH-gH8"/>
+                            <constraint firstAttribute="bottom" secondItem="zxJ-0N-hPJ" secondAttribute="bottom" id="jhe-zr-Lpu"/>
+                            <constraint firstItem="zxJ-0N-hPJ" firstAttribute="leading" secondItem="iaz-kS-TXn" secondAttribute="trailing" id="lhV-xZ-NDj"/>
+                            <constraint firstItem="Ua7-df-Oic" firstAttribute="top" secondItem="xTw-CI-sDP" secondAttribute="top" id="n2Y-Ww-yJf"/>
+                            <constraint firstAttribute="trailing" secondItem="Ua7-df-Oic" secondAttribute="trailing" constant="15" id="tc3-G3-djw"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nvZ-Ob-FvG">
+                        <rect key="frame" x="0.0" y="44" width="320" height="46"/>
+                        <subviews>
+                            <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kode Unik akan dikembalikan ke saldo Tokopedia Anda setelah pembayaran diverifikasi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVz-Fp-qb0">
+                                <rect key="frame" x="15" y="0.0" width="290" height="46"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <color key="textColor" red="1" green="0.33167733690000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OLC-3T-qU9">
+                                <rect key="frame" x="15" y="0.0" width="290" height="1"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="0.8353003102836879" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="G1S-bP-nVY"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="oMO-Vn-eyL"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hVz-Fp-qb0" firstAttribute="top" secondItem="nvZ-Ob-FvG" secondAttribute="top" id="1J0-u3-jHU"/>
+                            <constraint firstAttribute="bottom" secondItem="hVz-Fp-qb0" secondAttribute="bottom" id="6dr-Ws-Q9C"/>
+                            <constraint firstAttribute="trailing" secondItem="OLC-3T-qU9" secondAttribute="trailing" constant="15" id="TFJ-rU-SlU"/>
+                            <constraint firstItem="hVz-Fp-qb0" firstAttribute="leading" secondItem="nvZ-Ob-FvG" secondAttribute="leading" constant="15" id="Yoy-YV-0lz"/>
+                            <constraint firstItem="OLC-3T-qU9" firstAttribute="top" secondItem="nvZ-Ob-FvG" secondAttribute="top" id="ksk-wC-2Jj"/>
+                            <constraint firstItem="OLC-3T-qU9" firstAttribute="leading" secondItem="nvZ-Ob-FvG" secondAttribute="leading" constant="15" id="l8W-zG-Iw9"/>
+                            <constraint firstAttribute="trailing" secondItem="hVz-Fp-qb0" secondAttribute="trailing" constant="15" id="oux-ob-q8Z"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <animations/>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <color key="tintColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="xTw-CI-sDP" firstAttribute="leading" secondItem="4rG-Fs-jlT" secondAttribute="leading" id="Fzc-Ip-mFs"/>
+                    <constraint firstAttribute="trailing" secondItem="xTw-CI-sDP" secondAttribute="trailing" id="GTQ-Iz-cNG"/>
+                    <constraint firstItem="xTw-CI-sDP" firstAttribute="top" secondItem="4rG-Fs-jlT" secondAttribute="top" id="UpO-P1-uqO"/>
+                    <constraint firstItem="nvZ-Ob-FvG" firstAttribute="top" secondItem="xTw-CI-sDP" secondAttribute="bottom" id="bDX-jC-hkG"/>
+                    <constraint firstAttribute="bottom" secondItem="nvZ-Ob-FvG" secondAttribute="bottom" id="gLb-Vl-6Gq"/>
+                    <constraint firstItem="nvZ-Ob-FvG" firstAttribute="leading" secondItem="4rG-Fs-jlT" secondAttribute="leading" id="ilM-NY-y6I"/>
+                    <constraint firstAttribute="trailing" secondItem="nvZ-Ob-FvG" secondAttribute="trailing" id="zI7-94-BAs"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <point key="canvasLocation" x="312" y="428.5"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="1Oa-Pn-t5D" detailTextLabel="duK-WS-3V1" style="IBUITableViewCellStyleValue1" id="oQo-sj-Ytv" userLabel="Administrasi Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1402,5 +1517,6 @@
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
         <image name="icon_cancel_grey.png" width="14" height="14"/>
         <image name="icon_info_grey.png" width="20" height="20"/>
+        <image name="icon_info_grey_small.png" width="14" height="14"/>
     </resources>
 </document>

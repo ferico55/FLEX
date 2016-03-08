@@ -11,8 +11,8 @@
 @implementation CatalogShopCell
 
 - (void)awakeFromNib {
-    [viewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionContentStar:)]];
-    [expandViewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noAction:)]];
+    //[_reputationBadgeView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionContentStar:)]];
+    //[expandViewContentStar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noAction:)]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -47,6 +47,6 @@
 }
 
 - (void)setTagContentStar:(int)tag {
-    viewContentStar.tag = tag;
+    //viewContentStar.tag = tag;
 }
 @end

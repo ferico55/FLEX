@@ -32,21 +32,31 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
     //set change orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
 
 }
 
 - (void)initButton {
     UIButton * (^createButton)(NSString* ,NSInteger, NSInteger) = ^UIButton * (NSString* buttonTitle, NSInteger multiplier, NSInteger buttonTag) {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*multiplier - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
-        [button setTitle:buttonTitle forState:UIControlStateNormal];
-        [button.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:14]];
+        UIButton *button;
+        if(IS_IPAD) {
+            button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/5)*multiplier - ([[UIScreen mainScreen]bounds].size.width/5), 0, ([[UIScreen mainScreen]bounds].size.width/5), 44)];
+        } else {
+            button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*multiplier - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
+        }
+
+        button.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
         button.tag = buttonTag;
+        [button setTitle:buttonTitle forState:UIControlStateNormal];
         [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
         
         return button;
     };
+    
+    if(IS_IPAD) {
+        [_scrollView setScrollEnabled:NO];
+    }
 
     [_scrollView addSubview:createButton(@"HOME", 1, 1)];
     [_scrollView addSubview:createButton(@"PRODUCT FEED", 2, 2)];
@@ -112,9 +122,12 @@
 
 #pragma mark _ Tap Action
 - (void)tapButtonAnimate:(CGFloat)totalOffset{
-    [UIView animateWithDuration:0.3 animations:^{
-        _scrollView.contentOffset = CGPointMake(totalOffset, 0);
-    }];
+    if(IS_IPAD == false) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _scrollView.contentOffset = CGPointMake(totalOffset, 0);
+        }];
+    }
+
 }
 
 - (void)tapButton:(UIButton*)button {
@@ -134,37 +147,39 @@
 
 
 - (void)tap:(int)page {
+    int divider = 2;
+
     switch (page) {
         case 1 :{
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*0;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*0;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 1;
             break;
         }
             
         case 2 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*1;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*1;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 2;
             break;
         }
             
         case 3 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*2;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*2;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 3;
             break;
         }
             
         case 4 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*3;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*3;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 4;
             break;
         }
             
         case 5 : {
-            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/2)*4;
+            _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*4;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 5;
             break;
@@ -206,13 +221,12 @@
     if(_loggedIn) {
         [self initButton];
     } else {
-        UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/3)*1, 0, ([[UIScreen mainScreen]bounds].size.width/3), 44)];
-        [button1 setTitle:@"Beranda" forState:UIControlStateNormal];
-        [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button1.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
-        button1.tag = 1;
-        [button1 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:button1];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*1 - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
+        [button setTitle:@"HOME" forState:UIControlStateNormal];
+        [button.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:14]];
+        button.tag = 1;
+        [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:button];
     }
 
 }

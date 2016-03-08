@@ -17,19 +17,24 @@ import UIKit
     static let productCellIdentifier: String = "ProductCellIdentifier"
     
     var _collectionView: UICollectionView!
-    var _products: Array<ProductFeedList>!
+    var _products: Array<SearchAWSProduct>!
     var _supplementaryDataSource: CollectionViewSupplementaryDataSource!
-//
+
     init(collectionView:UICollectionView, supplementaryDataSource: CollectionViewSupplementaryDataSource?) {
         super.init()
         _supplementaryDataSource = supplementaryDataSource
-        _products = Array<ProductFeedList>()
+        _products = Array<SearchAWSProduct>()
         _collectionView = collectionView
         _collectionView.dataSource = self
         
         let cellNib = UINib.init(nibName: "ProductCell", bundle: nil)
         _collectionView.registerNib(cellNib, forCellWithReuseIdentifier: ProductDataSource.productCellIdentifier)
         
+        let footerNib = UINib.init(nibName: "FooterCollectionReusableView", bundle: nil)
+        _collectionView.registerNib(footerNib, forCellWithReuseIdentifier: "FooterView")
+        
+        let retryNib = UINib.init(nibName: "RetryCollectionReusableView", bundle: nil)
+        _collectionView.registerNib(retryNib, forCellWithReuseIdentifier: "RetryView")
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -48,13 +53,14 @@ import UIKit
         return cell
     }
     
-    func addProducts(products:Array<ProductFeedList>) {
+    func addProducts(products:Array<SearchAWSProduct>) {
         let indexPaths = indexPathForInsertions(products)
         _products.appendContentsOf(products)
-        _collectionView.insertItemsAtIndexPaths(indexPaths)
+        //_collectionView.insertItemsAtIndexPaths(indexPaths)
+        _collectionView.reloadData()
     }
     
-    func indexPathForInsertions(products: Array<ProductFeedList>) -> [NSIndexPath] {
+    func indexPathForInsertions(products: Array<SearchAWSProduct>) -> [NSIndexPath] {
         var indexPaths:[NSIndexPath] = []
         
         for var index = 0; index < products.count; index++ {
@@ -64,7 +70,7 @@ import UIKit
         return indexPaths
     }
 
-    func replaceProductsWith(products:Array<ProductFeedList>) {
+    func replaceProductsWith(products:Array<SearchAWSProduct>) {
         _products = products
         _collectionView.reloadData()
     }
@@ -74,7 +80,7 @@ import UIKit
         _collectionView.reloadData()
     }
     
-    func productAtIndex(index: Int) -> ProductFeedList {
+    func productAtIndex(index: Int) -> SearchAWSProduct {
         return _products[index]
     }
     
@@ -87,24 +93,11 @@ import UIKit
     }
     
     func sizeForItemAtIndexPath(indexPath: NSIndexPath) -> CGSize {
-        var numberOfCell: CGFloat
-        var cellHeight: CGFloat
-        
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
-                numberOfCell = 5
-            } else {
-                numberOfCell = 4
-            }
-            cellHeight = 250
-        } else {
-            numberOfCell = 2
-            cellHeight = 205 * (UIScreen.mainScreen().bounds.size.height / 568)
-        }
-        
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let cellWidth = screenWidth/numberOfCell - 15
-        
-        return CGSizeMake(cellWidth, cellHeight)
+        let type = 1
+        return ProductCellSize.sizeWithType(type)
+    }
+    
+    func isProductFeedEmpty() -> Bool{
+        return _products.isEmpty;
     }
 }

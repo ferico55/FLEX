@@ -7,41 +7,23 @@
 //
 
 #define CHeightUserLabel 21
-#import "Tkpd.h"
+
 #import "ShopReputation.h"
 #import "CMPopTipView.h"
-#import "ReputationDetail.h"
 #import "ProductTalkDetailViewController.h"
 #import "TalkComment.h"
 #import "detail.h"
 #import "GeneralTalkCommentCell.h"
 #import "ProductTalkCommentAction.h"
-#import "TKPDSecureStorage.h"
-#import "URLCacheController.h"
-#import "HPGrowingTextView.h"
-#import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
-#import "DetailProductViewController.h"
 #import "LoginViewController.h"
-#import "ShopBadgeLevel.h"
 
-#import "ProfileFavoriteShopViewController.h"
-#import "ProfileContactViewController.h"
-#import "TKPDTabProfileNavigationController.h"
-#import "TKPDTabInboxTalkNavigationController.h"
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
-#import "UserAuthentificationManager.h"
-
-#import "ProductTalkViewController.h"
-#import "InboxTalkViewController.h"
-#import "UserContainerViewController.h"
 
 #import "SmileyAndMedal.h"
-#import "string_inbox_message.h"
 #import "stringrestkit.h"
-#import "string_more.h"
 #import "string_inbox_talk.h"
 
 #import "NavigationHelper.h"
@@ -52,8 +34,8 @@
     UITableViewDelegate,
     UIScrollViewDelegate,
     UISplitViewControllerDelegate,
+    UITextViewDelegate,
     MGSwipeTableCellDelegate,
-    HPGrowingTextViewDelegate,
     ReportViewControllerDelegate,
     LoginViewDelegate,
     GeneralTalkCommentCellDelegate,
@@ -94,7 +76,7 @@
     NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
-    HPGrowingTextView *_growingtextview;
+    IBOutlet RSKGrowingTextView *_growingtextview;
     
     NSTimeInterval _timeinterval;
     NSMutableDictionary *_auth;
@@ -118,16 +100,6 @@
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *talkCommentButtonLarge;
-
--(void)cancel;
--(void)configureRestKit;
--(void)loadData;
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
--(void)requestprocess:(id)object;
--(void)requesttimeout;
--(void)configureSendCommentRestkit;
-- (void)configureDeleteCommentRestkit;
 
 @end
 
@@ -188,6 +160,8 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [self adjustSendButtonAvailability];
     
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -203,8 +177,7 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
-    [_sendButton setEnabled:NO];
-    
+
     if(_marksOpenedTalksAsRead) {
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
@@ -585,35 +558,10 @@
 }
 
 - (void) initTalkInputView {
-    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10;
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
-    _growingtextview.isScrollable = NO;
-    _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     _growingtextview.layer.borderWidth = 0.5f;
     _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _growingtextview.layer.cornerRadius = 5;
-    _growingtextview.layer.masksToBounds = YES;
-    
-    _growingtextview.minNumberOfLines = 1;
-    _growingtextview.maxNumberOfLines = 6;
-    // you can also set the maximum height in points with maxHeight
-    _growingtextview.maxHeight = 150.f;
 
-    //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-    _growingtextview.delegate = self;
-    _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    _growingtextview.backgroundColor = [UIColor whiteColor];
-    _growingtextview.placeholder = @"Kirim pesanmu di sini..";
-    
-    [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-}
-
-#pragma mark - Life Cycle
-- (void)viewDidLayoutSubviews {
-    //readjust growing textview width here, because we can't get the correct view controller size in viewDidLoad
-    NSInteger textViewWidth = self.view.bounds.size.width - _sendButton.frame.size.width - 10;
-    _growingtextview.frame = CGRectMake(10, 10, textViewWidth, _growingtextview.frame.size.height);
 }
 
 #pragma mark - Request and Mapping
@@ -715,7 +663,6 @@
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [_timer invalidate];
-        [_sendButton setEnabled:YES];
         _timer = nil;
         [_act stopAnimating];
         _table.hidden = NO;
@@ -882,7 +829,7 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
-                if([_growingtextview.text length] < 5) {
+                if([_growingtextview.text length] < 6) {
                     return;
                 }
                 NSInteger lastindexpathrow = [_list count];
@@ -936,6 +883,7 @@
                         [self addProductCommentTalk];
                         
                         _growingtextview.text = nil;
+                        [self adjustSendButtonAvailability];
                         [_growingtextview resignFirstResponder];
                     } else {
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sedang memuat komentar.."]
@@ -1031,7 +979,7 @@
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        
+
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestfailure:error];
@@ -1100,18 +1048,6 @@
 
 - (void)requestactionfailure:(id)error {
     
-}
-
-#pragma mark - UITextView Delegate
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
-    float diff = (growingTextView.frame.size.height - height);
-    
-    CGRect r = _talkInputView.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-    
-    _talkInputView.frame = r;
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
@@ -1471,15 +1407,6 @@
 
 }
 
-#pragma mark - GrowingTextView Delegate
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView  {
-    if([growingTextView.text length] < 5) {
-        _sendButton.enabled = NO;
-    } else {
-        _sendButton.enabled = YES;
-    }
-}
-
 #pragma mark - Notification Delegate
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
@@ -1528,4 +1455,15 @@
 {
     return NO;
 }
+
+- (void)textViewDidChange:(UITextView *)textView {
+    [self adjustSendButtonAvailability];
+}
+
+- (void)adjustSendButtonAvailability {
+    NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    _sendButton.enabled = text.length > 5;
+}
+
 @end

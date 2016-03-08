@@ -24,6 +24,7 @@
     
     if(self != nil) {
         _operationQueue = [NSOperationQueue new];
+        _isUsingDefaultError = YES;
     }
     
     return self;
@@ -390,21 +391,28 @@
 - (void)handleErrorWithCallback:(void (^)(NSError *))errorCallback error:(NSError *)error {
     if (errorCallback) {
         errorCallback(error);
-    } else {
-        StickyAlertView *alert;
-        NSArray *errors;
-        if(error.code == -1011) {
-            errors = @[@"Mohon maaf, terjadi kendala pada server"];
-        } else if (error.code==-1009) {
-            errors = @[@"Tidak ada koneksi internet"];
-        } else {
-            errors = @[error.localizedDescription];
+        if(_isUsingDefaultError) {
+            [self showErrorAlert:error];
         }
-
-
-        alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
-        [alert show];
+    } else {
+        [self showErrorAlert:error];
     }
+}
+
+- (void)showErrorAlert:(NSError*)error {
+    StickyAlertView *alert;
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code==-1009) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
+    }
+    
+    
+    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    [alert show];
 }
 
 @end

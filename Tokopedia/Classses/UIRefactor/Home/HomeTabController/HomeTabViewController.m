@@ -84,11 +84,29 @@
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveDeeplinkUrl:)
-                                                 name:@"didReceiveDeeplinkUrl" object:nil];
-
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didReceiveDeeplinkUrl:)
+//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+   
+}
+
+- (void)didLoggedIn {
+    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 44;
+    _scrollView.frame = frame;
+}
+
+- (void)didLoggedOut {
+    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 0;
+    frame.size.height += 44;
+    _scrollView.frame = frame;
+
 }
 
 #pragma mark - Lifecycle
@@ -131,8 +149,15 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setPagingEnabled:YES];
+    
+    //this code to prevent user lose their hometabheader being hided by scrollview if they already loggedin from previous version
+    //check didLoggedIn method
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 44;
+    _scrollView.frame = frame;
+    
     _scrollView.delegate = self;
 
     [self addChildViewController:_categoryController];
@@ -182,7 +207,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.navigationController.title = @"Beranda";
+    self.navigationController.title = @"Home";
     
     [self goToPage:_page];
     [self initNotificationManager];
