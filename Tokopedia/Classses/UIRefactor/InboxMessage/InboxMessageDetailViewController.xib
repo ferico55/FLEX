@@ -5,6 +5,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
         </mutableArray>
@@ -16,6 +19,7 @@
                 <outlet property="buttonloadmore" destination="kVd-M4-5br" id="vF9-Bb-0YS"/>
                 <outlet property="buttonsend" destination="lQ1-OO-0m5" id="j9U-F0-PZG"/>
                 <outlet property="header" destination="Mxn-u0-ISc" id="M0J-K6-vMS"/>
+                <outlet property="messageViewBottomConstraint" destination="NWY-K6-Leu" id="egH-CH-ISU"/>
                 <outlet property="messagingview" destination="b1X-S7-W2F" id="Bcc-3U-KSF"/>
                 <outlet property="table" destination="Fz9-tI-DuS" id="2ye-Au-bOf"/>
                 <outlet property="textView" destination="Ano-dQ-eSQ" id="CBE-bQ-eFS"/>
@@ -67,7 +71,7 @@
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ano-dQ-eSQ" customClass="RSKGrowingTextView" customModule="Tokopedia" customModuleProvider="target">
                             <rect key="frame" x="10" y="10" width="242" height="30"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="animateHeightChange" value="NO"/>
