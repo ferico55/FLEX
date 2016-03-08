@@ -140,11 +140,7 @@
     BOOL _isSelectDurationInstallment;
     
     TransactionVoucherData *_voucherData;
-    
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
-    
-    NSString *_cachepath;
+
     NoResultReusableView *_noResultView;
     
 }
@@ -265,8 +261,6 @@
     _requestCart = [RequestCart new];
     _requestCart.viewController = self;
     _requestCart.delegate = self;
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -337,12 +331,7 @@
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
-    
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"bank-account"];
-    ListRekeningBank *listBank = [ListRekeningBank new];
-    _cachepath = [listBank cachepath];
-    _cachecontroller.filePath = _cachepath;
-    [_cachecontroller initCacheWithDocumentPath:path];
+ 
 }
 
 - (void)initNoResultView{
@@ -778,8 +767,7 @@
                 case TYPE_GATEWAY_BCA_KLIK_BCA:
                 case TYPE_GATEWAY_INDOMARET:
                     if ([self isValidInput]) {
-                        _requestCart.param = [self paramBuy];
-                        [_requestCart dorequestBuy];
+                        [self doBuy];
                     }
                     break;
                 case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
@@ -814,8 +802,7 @@
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
                 {
                     if ([self isValidInput]) {
-                        _requestCart.param = [self paramBuy];
-                        [_requestCart dorequestBuy];
+                        [self doBuy];
                     }
                 }
                     break;
@@ -1599,15 +1586,13 @@
 -(void)TransactionCartMandiriClickPayForm:(TransactionCartFormMandiriClickPayViewController *)VC withUserInfo:(NSDictionary *)userInfo
 {
     [_dataInput addEntriesFromDictionary:userInfo];
-    _requestCart.param = [self paramBuy];
-    [_requestCart dorequestBuy];
+    [self doBuy];
 }
 
 -(void)doRequestCC:(NSDictionary *)param
 {
     [_dataInput addEntriesFromDictionary:param];
-    _requestCart.param = [self paramBuy];
-    [_requestCart dorequestBuy];
+    [self doBuy];
 }
 
 -(void)isSucessSprintAsia:(NSDictionary *)param
@@ -1946,6 +1931,8 @@
         _paymentMethodView.hidden = YES;
         _isLoadingRequest = NO;
         if (!_refreshFromShipment)_tableView.tableFooterView =_loadingView.view;
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        
     }];
     
 }
@@ -1983,6 +1970,7 @@
         
     } error:^(NSError *error) {
         [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }];
 }
 
@@ -2731,6 +2719,8 @@
         
     } error:^(NSError *error) {
         [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
+        [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }];
 }
 
@@ -2777,6 +2767,8 @@
     } error:^(NSError *error) {
         _checkoutButton.enabled = YES;
         _checkoutButton.layer.opacity = 1;
+        [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }];
 }
 
@@ -2817,53 +2809,66 @@
      } error:^(NSError *error) {
          _checkoutButton.enabled = YES;
          _checkoutButton.layer.opacity = 1;
+         [self endRefreshing];
+         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
      }];
 }
 
--(NSDictionary*)paramBuy
-{
-    NSString *token = _cartSummary.token;
-    NSNumber *gatewayID = _cartSummary.gateway;
+-(void)doBuy{
+    _buyButton.enabled = NO;
+    //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
+    [_alertLoading show];
+    
     NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
     NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
     NSString *password = _passwordTextField.text?:@"";
     NSString *userIDKlikBCA = _userIDKlikBCATextField.text?:@"";
     
-    NSString *CCToken = [_dataInput objectForKey:API_CC_TOKEN_ID_KEY]?:@"";
-    NSString *CCEditFlag =[_dataInput objectForKey:API_CC_EDIT_FLAG_KEY]?:@"1";
-    NSString *CCFirstName=[_dataInput objectForKey:API_CC_FIRST_NAME_KEY]?:@"";
-    NSString *CCLastName =[_dataInput objectForKey:API_CC_LAST_NAME_KEY]?:@"";
-    NSString *CCCity =[_dataInput objectForKey:API_CC_CITY_KEY]?:@"";
-    NSString *CCPostalCode =[_dataInput objectForKey:API_CC_POSTAL_CODE_KEY]?:@"";
-    NSString *CCAddress =[_dataInput objectForKey:API_CC_ADDRESS_KEY]?:@"";
-    NSString *CCPhone =[_dataInput objectForKey:API_CC_PHONE_KEY]?:@"";
-    NSString *CCState =[_dataInput objectForKey:API_CC_STATE_KEY]?:@"";
-    NSString *CCOwnerName =[_dataInput objectForKey:API_CC_OWNER_KEY]?:@"";
-    NSString *CCNumber =[_dataInput objectForKey:API_CC_CARD_NUMBER_KEY]?:@"";
-    
-    
-    NSDictionary* param = @{API_STEP_KEY:@(STEP_BUY),
-                            API_TOKEN_KEY:token,
-                            API_GATEWAY_LIST_ID_KEY:gatewayID,
-                            API_MANDIRI_TOKEN_KEY:mandiriToken,
-                            API_CARD_NUMBER_KEY:cardNumber,
-                            API_PASSWORD_KEY:password,
-                            API_CC_TOKEN_ID_KEY : CCToken,
-                            API_CC_OWNER_KEY:CCOwnerName,
-                            API_CC_EDIT_FLAG_KEY : CCEditFlag,
-                            API_CC_FIRST_NAME_KEY :CCFirstName,
-                            API_CC_LAST_NAME_KEY : CCLastName,
-                            API_CC_CITY_KEY : CCCity,
-                            API_CC_POSTAL_CODE_KEY : CCPostalCode,
-                            API_CC_ADDRESS_KEY : CCAddress,
-                            API_CC_PHONE_KEY : CCPhone,
-                            API_CC_STATE_KEY : CCState,
-                            API_CC_CARD_NUMBER_KEY : CCNumber,
-                            API_BCA_USER_ID_KEY : userIDKlikBCA,
-                            @"lp_flag":@"1"
-                            };
-    return param;
+    [RequestCart fetchBuy:_cartSummary dataCC:_dataInput mandiriToken:mandiriToken cardNumber:cardNumber password:password klikBCAUserID:userIDKlikBCA success:^(TransactionBuyResult *data) {
+        
+        TransactionSummaryDetail *summary = data.transaction;
+        [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
+        
+        _cartBuy = data;
+        switch ([_cartSummary.gateway integerValue]) {
+            case TYPE_GATEWAY_MANDIRI_E_CASH:
+            {
+                TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
+                vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
+                vc.token = _cartSummary.token;
+                vc.URLString = data.link_mandiri?:@"";
+                vc.cartDetail = _cartSummary;
+                vc.emoney_code = data.transaction.emoney_code;
+                vc.delegate = self;
+                vc.paymentID = data.transaction.payment_id;
+                vc.title = _cartSummary.gateway_name?:@"Mandiri E-Cash";
+                
+                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                navigationController.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }
+                break;
+            default:
+            {
+                NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:data};
+                [self.delegate didFinishRequestBuyData:userInfo];
+                [_dataInput removeAllObjects];
+            }
+                break;
+        }
+        //
+        _buyButton.enabled = YES;
+        _buyButton.layer.opacity = 1;
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    } error:^(NSError *error) {
+        _buyButton.enabled = YES;
+        _buyButton.layer.opacity = 1;
+        [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }];
 }
+
 
 -(NSDictionary*)paramVoucher
 {
@@ -2903,12 +2908,6 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    
-    if (tag == TAG_REQUEST_BUY) {
-        _buyButton.enabled = NO;
-        //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-        [_alertLoading show];
-    }
 
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         
@@ -2939,20 +2938,6 @@
 }
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    if (tag == TAG_REQUEST_CART) {
-        [self endRefreshing];
-        [_act stopAnimating];
-        _paymentMethodView.hidden = YES;
-        _isLoadingRequest = NO;
-        if (!_refreshFromShipment)_tableView.tableFooterView =_loadingView.view;
-    }
-    if (tag == TAG_REQUEST_CANCEL_CART) {
-        [self endRefreshing];
-    }
-    if (tag == TAG_REQUEST_CHECKOUT) {
-        _checkoutButton.enabled = YES;
-        _checkoutButton.layer.opacity = 1;
-    }
     if (tag == TAG_REQUEST_BUY) {
         _buyButton.enabled = YES;
         _buyButton.layer.opacity = 1;
@@ -3088,58 +3073,6 @@
     
 }
 
-#pragma mark - Request Buy
-
--(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionBuy *cart = stat;
-    
-    TransactionSummaryDetail *summary = cart.result.transaction;
-    [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
-    
-    _cartBuy = cart.result;
-    switch ([_cartSummary.gateway integerValue]) {
-        case TYPE_GATEWAY_MANDIRI_E_CASH:
-        {
-            TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-            vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
-            vc.token = _cartSummary.token;
-            vc.URLString = cart.result.link_mandiri?:@"";
-            vc.cartDetail = _cartSummary;
-            vc.emoney_code = cart.result.transaction.emoney_code;
-            vc.delegate = self;
-            vc.paymentID = cart.result.transaction.payment_id;
-            vc.title = _cartSummary.gateway_name?:@"Mandiri E-Cash";
-            
-            UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-            navigationController.navigationBar.translucent = NO;
-            
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        }
-            break;
-        default:
-        {
-            NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
-            [_delegate didFinishRequestBuyData:userInfo];
-            [_dataInput removeAllObjects];
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-            if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_TRANSFER_BANK) {
-                [_cacheconnection connection:operation.HTTPRequestOperation.request
-                          didReceiveResponse:operation.HTTPRequestOperation.response];
-                [_cachecontroller connectionDidFinish:_cacheconnection];
-                [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-            }
-        }
-        break;
-    }
-    //
-    _buyButton.enabled = YES;
-    _buyButton.layer.opacity = 1;
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-}
 
 #pragma mark - Request Edit Product
 -(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation

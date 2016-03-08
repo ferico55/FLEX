@@ -13,6 +13,7 @@
 #import "TransactionAction.h"
 #import "TransactionVoucher.h"
 #import "string_transaction.h"
+#import "TransactionBuyResult.h"
 
 #define TAG_REQUEST_CANCEL_CART 11
 #define TAG_REQUEST_BUY 13
@@ -64,5 +65,7 @@
 +(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucherData *data))success error:(void (^)(NSError *error))error;
 
 +(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error;
+
++(void)fetchBuy:(TransactionSummaryDetail*)transaction dataCC:(NSDictionary*)dataCC mandiriToken:(NSString*)mandiriToken cardNumber:(NSString*)cardNumber password:(NSString*)password klikBCAUserID:(NSString*)klikBCAUserID success:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error;
 
 @end

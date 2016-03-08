@@ -13,13 +13,13 @@
 #import "TransactionBuy.h"
 #import "TransactionVoucher.h"
 #import "TransactionCC.h"
+#import "ListRekeningBank.h"
 
 #import "TransactionObjectManager.h"
 #import "string_transaction.h"
 
 @interface RequestCart()<TokopediaNetworkManagerDelegate>
 {
-    TokopediaNetworkManager *_networkManagerBuy;
     TokopediaNetworkManager *_networkManagerEditProduct;
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
@@ -241,7 +241,6 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isUsingHmac = NO;
     [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
@@ -263,6 +262,81 @@
     }];
 }
 
++(void)fetchBuy:(TransactionSummaryDetail*)transaction dataCC:(NSDictionary*)dataCC mandiriToken:(NSString*)mandiriToken cardNumber:(NSString*)cardNumber password:(NSString*)password klikBCAUserID:(NSString*)klikBCAUserID success:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error{
+    NSString *token = transaction.token;
+    NSNumber *gatewayID = transaction.gateway;
+    
+    NSString *CCToken       = dataCC [@"credit_card_token"]?:@"";
+    NSString *CCEditFlag    = dataCC [@"credit_card_edit_flag"]?:@"1";
+    NSString *CCFirstName   = dataCC [@"first_name"]?:@"";
+    NSString *CCLastName    = dataCC [@"last_name"]?:@"";
+    NSString *CCCity        = dataCC [@"city"]?:@"";
+    NSString *CCPostalCode  = dataCC [@"postal_code"]?:@"";
+    NSString *CCAddress     = dataCC [@"address_street"]?:@"";
+    NSString *CCPhone       = dataCC [@"phone"]?:@"";
+    NSString *CCState       = dataCC [ @"state"]?:@"";
+    NSString *CCOwnerName   = dataCC [@"card_owner"]?:@"";
+    NSString *CCNumber      = dataCC [@"card_number"]?:@"";
+    
+    
+    NSDictionary* param = @{API_STEP_KEY:@(STEP_BUY),
+                            API_TOKEN_KEY:token,
+                            API_GATEWAY_LIST_ID_KEY:gatewayID,
+                            API_MANDIRI_TOKEN_KEY:mandiriToken,
+                            API_CARD_NUMBER_KEY:cardNumber,
+                            API_PASSWORD_KEY:password,
+                            API_CC_TOKEN_ID_KEY : CCToken,
+                            API_CC_OWNER_KEY:CCOwnerName,
+                            API_CC_EDIT_FLAG_KEY : CCEditFlag,
+                            API_CC_FIRST_NAME_KEY :CCFirstName,
+                            API_CC_LAST_NAME_KEY : CCLastName,
+                            API_CC_CITY_KEY : CCCity,
+                            API_CC_POSTAL_CODE_KEY : CCPostalCode,
+                            API_CC_ADDRESS_KEY : CCAddress,
+                            API_CC_PHONE_KEY : CCPhone,
+                            API_CC_STATE_KEY : CCState,
+                            API_CC_CARD_NUMBER_KEY : CCNumber,
+                            API_BCA_USER_ID_KEY : klikBCAUserID,
+                            @"lp_flag":@"1"
+                            };
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionBuy mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        
+        NSDictionary *result = successResult.dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionBuy *cart = stat;
+        
+        if (cart.result.is_success == 1) {
+            if (cart.message_status && cart.message_status.count > 0)
+                [StickyAlertView showSuccessMessage:cart.message_status];
+            success(cart.result);
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+            if ([transaction.gateway integerValue] == TYPE_GATEWAY_TRANSFER_BANK) {
+                URLCacheConnection *cacheConnection = [URLCacheConnection new];
+                URLCacheController *cacheController = [URLCacheController new];
+                
+                NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"bank-account"];
+                ListRekeningBank *listBank = [ListRekeningBank new];
+                NSString *cachepath = [listBank cachepath];
+                cacheController.filePath = cachepath;
+                [cacheController initCacheWithDocumentPath:path];
+                
+                [cacheConnection connection:operation.HTTPRequestOperation.request
+                              didReceiveResponse:operation.HTTPRequestOperation.response];
+                [cacheController connectionDidFinish:cacheConnection];
+                [operation.HTTPRequestOperation.responseData writeToFile:cachepath atomically:YES];
+            }
+        }
+        else
+        {
+            [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
+            error(nil);
+        }
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
+}
+
 -(TransactionObjectManager*)objectManager
 {
     if (!_objectManager) {
@@ -274,15 +348,6 @@
     return _objectManager;
 }
 
--(TokopediaNetworkManager*)networkManagerBuy
-{
-    if (!_networkManagerBuy) {
-        _networkManagerBuy = [TokopediaNetworkManager new];
-        _networkManagerBuy.tagRequest = TAG_REQUEST_BUY;
-        _networkManagerBuy.delegate = self;
-    }
-    return _networkManagerBuy;
-}
 
 -(TokopediaNetworkManager*)networkManagerEditProduct
 {
@@ -344,10 +409,6 @@
     return _networkManagerToppay;
 }
 
--(void)dorequestBuy
-{
-    [[self networkManagerBuy]doRequest];
-}
 
 -(void)doRequestEditProduct
 {
@@ -382,9 +443,6 @@
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_BUY) {
-        return [[self objectManager] objectManagerBuy];
-    }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         return [[self objectManager] objectMangerEditProduct];
     }
@@ -413,9 +471,6 @@
 
 -(NSString *)getPath:(int)tag
 {
-    if (tag == TAG_REQUEST_BUY) {
-        return API_TRANSACTION_PATH;
-    }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         return API_ACTION_TRANSACTION_PATH;
     }
@@ -446,12 +501,7 @@
 {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
-    
-    if (tag == TAG_REQUEST_BUY) {
-        TransactionBuy *cart = stat;
-        return cart.status;
-    }
-    
+
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         TransactionAction *action = stat;
         return action.status;
@@ -487,19 +537,6 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
 
-    if (tag == TAG_REQUEST_BUY) {
-        TransactionBuy *cart = stat;
-        if (cart.result.is_success == 1) {
-            if (cart.message_status && cart.message_status.count > 0)
-                [self showStatusMesage:cart.message_status];
-            [_delegate requestSuccessActionBuy:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
     if (tag == TAG_REQUEST_EDIT_PRODUCT) {
         TransactionAction *action = stat;
         
