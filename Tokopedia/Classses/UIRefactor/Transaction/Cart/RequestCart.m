@@ -340,6 +340,41 @@
     }];
 }
 
++(void)fetchEditProduct:(ProductDetail*)product success:(void (^)(TransactionAction *data))success error:(void (^)(NSError *error))error{
+    
+    NSInteger productCartID = [product.product_cart_id integerValue];
+    NSString *productNotes = product.product_notes?:@"";
+    NSString *productQty = product.product_quantity?:@"";
+    
+    NSDictionary* param = @{@"action"           : @"edit_product",
+                            @"product_cart_id"  : @(productCartID),
+                            @"product_notes"    : productNotes,
+                            @"product_quantity" : productQty
+                            };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionAction *action = stat;
+            
+        if (action.result.is_success == 1) {
+            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            [StickyAlertView showSuccessMessage:successMessages];
+            success(action);
+        }
+        else
+        {
+            [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+            error(nil);
+        }
+        
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
+}
+
+
 -(TransactionObjectManager*)objectManager
 {
     if (!_objectManager) {
@@ -412,12 +447,6 @@
     return _networkManagerToppay;
 }
 
-
--(void)doRequestEditProduct
-{
-    [[self networkManagerEditProduct]doRequest];
-}
-
 -(void)doRequestEMoney;
 {
     [[self networkManagerEMoney]doRequest];
@@ -474,9 +503,7 @@
 
 -(NSString *)getPath:(int)tag
 {
-    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-        return API_ACTION_TRANSACTION_PATH;
-    }
+
     if (tag == TAG_REQUEST_EMONEY) {
         return API_EMONEY_PATH;
     }
@@ -540,20 +567,6 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
 
-    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-        TransactionAction *action = stat;
-        
-        if (action.result.is_success == 1) {
-            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-            [self showStatusMesage:successMessages];
-            [_delegate requestSuccessActionEditProductCart:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
     if (tag == TAG_REQUEST_EMONEY) {
         TxEmoney *emoney = stat;
         

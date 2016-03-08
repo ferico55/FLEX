@@ -26,8 +26,6 @@
 
 @protocol RequestCartDelegate <NSObject>
 @required
--(void)requestSuccessActionBuy:(id)object withOperation:(RKObjectRequestOperation *)operation;
--(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation;
@@ -48,8 +46,6 @@
 
 @property (nonatomic, strong) UIViewController *viewController;
 
--(void)dorequestBuy;
--(void)doRequestEditProduct;
 -(void)doRequestEMoney;
 -(void)doRequestBCAClickPay;
 -(void)doRequestCC;
@@ -67,5 +63,7 @@
 +(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error;
 
 +(void)fetchBuy:(TransactionSummaryDetail*)transaction dataCC:(NSDictionary*)dataCC mandiriToken:(NSString*)mandiriToken cardNumber:(NSString*)cardNumber password:(NSString*)password klikBCAUserID:(NSString*)klikBCAUserID success:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error;
+
++(void)fetchEditProduct:(ProductDetail*)product success:(void (^)(TransactionAction *data))success error:(void (^)(NSError *error))error;
 
 @end

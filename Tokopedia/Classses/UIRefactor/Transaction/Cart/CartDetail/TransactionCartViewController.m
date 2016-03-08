@@ -1066,9 +1066,8 @@
 {
     [_dataInput addEntriesFromDictionary:userInfo];
     if (_indexPage == 0) {
-         _requestCart.param = [self paramEditProduct];
-        [_requestCart doRequestEditProduct];
-       
+        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+        [self doRequestEditProduct:product];       
     }
 }
 #pragma mark - Cell Delegate
@@ -2881,22 +2880,19 @@
     return param;
 }
 
--(NSDictionary*)paramEditProduct
-{
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    
-    NSInteger productCartID = [product.product_cart_id integerValue];
-    NSString *productNotes = product.product_notes?:@"";
-    NSString *productQty = product.product_quantity?:@"";
-    
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_EDIT_PRODUCT_CART,
-                            API_PRODUCT_CART_ID_KEY : @(productCartID),
-                            API_CART_PRODUCT_NOTES_KEY:productNotes,
-                            API_PRODUCT_QUANTITY_KEY:productQty
-                            };
-    return param;
-
+-(void)doRequestEditProduct:(ProductDetail*)product{
+    [RequestCart fetchEditProduct:product success:^(TransactionAction *data) {
+        if (_indexPage == 0) {
+            _refreshFromShipment = YES;
+            [self requestCartData];
+        }
+        [_tableView reloadData];
+    } error:^(NSError *error) {
+        [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }];
 }
+
 
 -(NSDictionary*)paramEMoney
 {
@@ -2908,11 +2904,6 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-
-    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-        
-    }
-    
     if (tag == TAG_REQUEST_EMONEY) {
         //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
         [_alertLoading show];
@@ -2938,16 +2929,11 @@
 }
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    if (tag == TAG_REQUEST_BUY) {
-        _buyButton.enabled = YES;
-        _buyButton.layer.opacity = 1;
-    }
+
     if (tag == TAG_REQUEST_VOUCHER) {
         [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
     }
-    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-        
-    }
+
     if (tag == TAG_REQUEST_EMONEY) {
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
@@ -3073,16 +3059,6 @@
     
 }
 
-
-#pragma mark - Request Edit Product
--(void)requestSuccessActionEditProductCart:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    if (_indexPage == 0) {
-        _refreshFromShipment = YES;
-        [self requestCartData];
-    }
-    [_tableView reloadData];
-}
 
 #pragma mark - Request BRI E-Pay
 -(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation
