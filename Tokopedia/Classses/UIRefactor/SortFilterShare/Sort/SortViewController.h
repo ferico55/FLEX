@@ -32,7 +32,6 @@ typedef NS_ENUM(NSInteger, SortType) {
 @interface SortViewController : UITableViewController
 
 @property (nonatomic, weak) id<SortViewControllerDelegate> delegate;
-@property (nonatomic, weak) UIImage *screenshotImage;
 @property SortType sortType;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
