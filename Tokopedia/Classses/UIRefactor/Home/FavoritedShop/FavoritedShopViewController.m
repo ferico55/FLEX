@@ -318,7 +318,6 @@ FavoriteShopRequestDelegate
 -(void)pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
     [_favoriteShopRequest requestActionButtonFavoriteShop:strTempShopID withAdKey:_selectedPromoShop.ad_key];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
 }
 
 
@@ -358,6 +357,8 @@ FavoriteShopRequestDelegate
 -(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
     [self resetAllState];
     [_table reloadData];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
 }
 
 -(void)failToRequestFavoriteShopListing{
@@ -523,6 +524,10 @@ FavoriteShopRequestDelegate
 
 - (void)didReceivePromo:(NSArray *)promo {
     _isnodata = NO;
+    if(promo == nil){
+        StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+        [stickyView show];
+    }
     _promoShops = [NSMutableArray arrayWithArray:promo];
     [_table reloadData];
 }
