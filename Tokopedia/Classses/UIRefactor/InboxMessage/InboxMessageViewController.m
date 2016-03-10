@@ -62,7 +62,6 @@
 
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
-    NSInteger _requestarchivecount;
     NSTimer *_timer;
     UISearchBar *_searchbar;
     NSString *_keyword;
@@ -75,7 +74,6 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKObjectManager *_objectmanagerarchive;
     __weak RKManagedObjectRequestOperation *_request;
-    __weak RKManagedObjectRequestOperation *_requestarchive;
     NSOperationQueue *_operationQueue;
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
@@ -290,7 +288,6 @@
     [_table deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     [_table endUpdates];
     
-    [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
 }
 
@@ -577,19 +574,6 @@
 
 #pragma mark - Message Action
 
--(void) configureactionrestkit {
-    _objectmanagerarchive =  [RKObjectManager sharedClient];
-
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageAction mapping]
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerarchive addResponseDescriptor:responseDescriptorStatus];
-}
-
 - (void) doactionmessage:(NSString*)data withAction:(NSString*)action{
 
     NSDictionary* param = @{
@@ -669,9 +653,6 @@
 }
 
 -(void) requestactionfailure:(id)error {
-    [self undoactionmessage];
-}
--(void) requestactiontimeout {
     [self undoactionmessage];
 }
 
@@ -848,7 +829,6 @@
     [_act startAnimating];
     [self fetchInboxMessages];
 }
-
 
 - (void)configureGTM {
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;
