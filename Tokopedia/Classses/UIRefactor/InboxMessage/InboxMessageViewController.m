@@ -265,14 +265,11 @@
 }
 
 - (void)messageaction:(NSString*)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
-    NSIndexPath *item;
-    
     NSMutableArray *arr = [[NSMutableArray alloc] init];
     NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
     NSUInteger index = 1;
     
-    for (item in indexPaths) {
-        
+    for (NSIndexPath* item in indexPaths) {
         NSInteger row = [item row];
         [discardedItems addIndex:row];
         InboxMessageList *list = _messages[row];
@@ -281,14 +278,40 @@
     }
     
     [_messages removeObjectsAtIndexes:discardedItems];
-    
-    NSString *joinedArr = [arr componentsJoinedByString:@"and"];
-    
+
+
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
     [_table endUpdates];
-    
-    [self doactionmessage:joinedArr withAction:action];
+
+    [self postAction:action withMessageJson:arr];
+}
+
+- (void)postAction:(NSString *)action withMessageJson:(NSMutableArray<NSString*> *)messagesJson {
+    NSString *joinedArr = [messagesJson componentsJoinedByString:@"and"];
+    NSDictionary* param = @{
+            kTKPDHOME_APIACTIONKEY: action,
+            KTKPDMESSAGE_DATAELEMENTKEY : joinedArr,
+    };
+
+    [_messageActionNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                                path:KTKPDMESSAGEPRODUCTACTION_PATHURL
+                                              method:RKRequestMethodPOST
+                                           parameter:param
+                                             mapping:[InboxMessageAction mapping]
+                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                               [self requestactionsuccess:successResult withOperation:operation];
+
+                                               [_table reloadData];
+                                               _isrefreshview = NO;
+                                               [_refreshControl endRefreshing];
+                                           }
+                                           onFailure:^(NSError *errorResult) {
+                                               [self requestactionfailure:errorResult];
+
+                                               _isrefreshview = NO;
+                                               [_refreshControl endRefreshing];
+                                           }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -573,33 +596,6 @@
 
 
 #pragma mark - Message Action
-
-- (void) doactionmessage:(NSString*)data withAction:(NSString*)action{
-
-    NSDictionary* param = @{
-            kTKPDHOME_APIACTIONKEY:action,
-            KTKPDMESSAGE_DATAELEMENTKEY : data,
-    };
-
-    [_messageActionNetworkManager requestWithBaseUrl:kTkpdBaseURLString
-                                                path:KTKPDMESSAGEPRODUCTACTION_PATHURL
-                                              method:RKRequestMethodPOST
-                                           parameter:param
-                                             mapping:[InboxMessageAction mapping]
-                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                               [self requestactionsuccess:successResult withOperation:operation];
-
-                                               [_table reloadData];
-                                               _isrefreshview = NO;
-                                               [_refreshControl endRefreshing];
-                                           }
-                                           onFailure:^(NSError *errorResult) {
-                                               [self requestactionfailure:errorResult];
-
-                                               _isrefreshview = NO;
-                                               [_refreshControl endRefreshing];
-                                           }];
-}
 
 -(void) requestactionsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
