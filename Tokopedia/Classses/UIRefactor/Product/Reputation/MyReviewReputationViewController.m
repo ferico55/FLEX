@@ -308,13 +308,13 @@
     }
     
     [cell setView:tempReputation.viewModel];
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //TODO: refactor this nasty hack
     MyReviewReputationCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setSelected:YES];
     [self actionFooter:cell.getBtnFooter];
 }
 
@@ -537,6 +537,9 @@
         [self showFirstDataOnFirstShowInIpad];
         
         [tableContent reloadData];
+        
+        UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [firstCell setSelected:YES];
     }
     else if(tag == CTagInsertReputation) {
         NSDateFormatter *formatter = [NSDateFormatter new];

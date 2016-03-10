@@ -142,8 +142,12 @@
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(willPresentAlertView:)])) {
 		[_delegate willPresentAlertView:self];
 	}
+    
+    [_window setFrame:[[UIScreen mainScreen] bounds]];
+    [_background setFrame:_window.frame];
 	
 	self.center = _window.center;
+    
 	self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
 	
 	[UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionCrossDissolve) animations:^{

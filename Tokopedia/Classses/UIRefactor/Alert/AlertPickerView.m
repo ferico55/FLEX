@@ -19,7 +19,6 @@
 
 @implementation AlertPickerView
 {
-    UITapGestureRecognizer *_newGesture;
     NSInteger index;
     NSInteger secondIndex;
     __weak IBOutlet UIPickerView *pickerView;
@@ -138,6 +137,8 @@
 #pragma mark - Methods
 - (void)show
 {
+    [super show];
+    
 	id<TKPDAlertViewDelegate> _delegate = self.delegate;
 	
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(willPresentAlertView:)])) {
@@ -162,21 +163,12 @@
 	
 	self.center = hidecenter;
 	self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
-	
-	if (_background.superview == nil) {	//fix dismiss - show race condition
-		[_window addSubview:_background];
-	}
-    _background.userInteractionEnabled = YES;
-    _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
-    [_background addGestureRecognizer:_newGesture];
-    
+
     self.frame = CGRectMake(0, self.frame.origin.y, _window.bounds.size.width, self.bounds.size.height);
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	
-    _window.tag = 99;
-    
-	[UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionNone | UIViewAnimationOptionAllowAnimatedContent) animations:^{
+	[UIView transitionWithView:_window duration:0.5 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionNone | UIViewAnimationOptionAllowAnimatedContent) animations:^{
 		
 		//[_window addSubview:self];	//moved before animation call above
 		self.center = selfcenter;
@@ -201,7 +193,6 @@
     [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     if(self.superview != nil){
-        [_background removeGestureRecognizer:_newGesture];
         [self dismissindex:buttonIndex silent:NO animated:animated];
     }
 }

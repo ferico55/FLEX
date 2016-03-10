@@ -918,12 +918,12 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 #pragma mark - Notification Manager
 
-//- (void)initNotificationManager {
-//    _notifManager = [NotificationManager new];
-//    [_notifManager setViewController:_wrapperViewController];
-//    _notifManager.delegate = _wrapperViewController;
-//    _wrapperViewController.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
-//}
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:_wrapperViewController];
+    _notifManager.delegate = _wrapperViewController;
+    _wrapperViewController.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
 
 //
 //- (void)tapNotificationBar {
@@ -946,10 +946,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 #pragma mark - Notification delegate
-//- (void)reloadNotification
-//{
-//    [self initNotificationManager];
-//}
+- (void)reloadNotification
+{
+    [self initNotificationManager];
+}
 //
 //- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
 //{

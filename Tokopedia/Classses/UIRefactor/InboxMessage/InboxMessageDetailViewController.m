@@ -18,6 +18,7 @@
 #import "NavigateViewController.h"
 #import "TagManagerHandler.h"
 #import "NavigationHelper.h"
+#import "Tokopedia-Swift.h"
 
 @interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
@@ -28,12 +29,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonloadmore;
 @property (weak, nonatomic) IBOutlet UIButton *buttonsend;
 @property (weak, nonatomic) IBOutlet UILabel *titlelabel;
-@property (weak, nonatomic) IBOutlet UILabel *titlebetween;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
-@property (strong, nonatomic) UIPopoverController *masterPopoverController;
-
 @property (strong, nonatomic) IBOutlet RSKGrowingTextView *textView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageViewBottomConstraint;
 
 
 @end
@@ -41,8 +40,7 @@
 @implementation InboxMessageDetailViewController {
     BOOL _isnodata;
     BOOL _isrefreshview;
-    BOOL _ismorebuttonview;
-    
+
     NSMutableArray *_messages;
     
     NSInteger _page;
@@ -587,56 +585,44 @@
     // get keyboard size and loctaion
     CGRect keyboardBounds;
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    NSNumber *duration = note.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = note.userInfo[UIKeyboardAnimationCurveUserInfoKey];
     
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    // get a rect for the textView frame
-    CGRect containerFrame = self.view.frame;
-    
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
-//    containerFrame.size.height = self.view.bounds.size.height - keyboardBounds.size.height;
-//    _table.contentInset = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
-//    [_table scrollRectToVisible:CGRectMake(0, _table.contentSize.height, _table.bounds.size.width, 1) animated:YES];
-    // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
     
-    
-    // set views with new info
-    self.view.frame = containerFrame;
-    
+    _messageViewBottomConstraint.constant = keyboardBounds.size.height;
+    [self.view layoutIfNeeded];
+
     [_messagingview becomeFirstResponder];
-    // commit animations
     [UIView commitAnimations];
 }
 
 -(void) keyboardWillHide:(NSNotification *)note{
-    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    
-    // get a rect for the textView frame
-    self.view.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
-    CGRect containerFrame = self.view.frame;
-    
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
-//    containerFrame.size.height = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.bounds.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
-//    _table.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
-    // animations settings
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = note.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = note.userInfo[UIKeyboardAnimationCurveUserInfoKey];
+
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
-    
-    // set views with new info
-    self.view.frame = containerFrame;
-    
-    // commit animations
+
+
+    _messageViewBottomConstraint.constant = 0;
+    [self.view layoutIfNeeded];
+
+    [_messagingview becomeFirstResponder];
     [UIView commitAnimations];
 }
 
