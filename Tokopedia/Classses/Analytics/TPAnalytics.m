@@ -90,21 +90,21 @@
 
 + (void)trackProductClick:(id)product {
     if (!product) return;
-//    TPAnalytics *analytics = [[self alloc] init];
-//    NSString *list = [analytics getProductListName:product];
-//    NSDictionary *productFieldObjects = [product productFieldObjects];
-//    NSDictionary *data = @{
-//        @"event" : @"productClick",
-//        @"ecommerce" : @{
-//            @"click" : @{
-//                @"actionField" : @{
-//                    @"list" : list
-//                },
-//                @"products" : @[productFieldObjects]
-//            }
-//        }
-//    };
-//    [analytics.dataLayer push:data];
+    TPAnalytics *analytics = [[self alloc] init];
+    NSString *list = [analytics getProductListName:product];
+    NSDictionary *productFieldObjects = [product productFieldObjects];
+    NSDictionary *data = @{
+        @"event" : @"productClick",
+        @"ecommerce" : @{
+            @"click" : @{
+                @"actionField" : @{
+                    @"list" : list
+                },
+                @"products" : @[productFieldObjects]
+            }
+        }
+    };
+    [analytics.dataLayer push:data];
 }
 
 + (void)trackProductView:(id)product {
