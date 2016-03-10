@@ -62,7 +62,7 @@ NSInteger const bannerHeight = 115;
     [_collectionView setContentSize:self.view.bounds.size];
     
     //set change orientation
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
 
     
