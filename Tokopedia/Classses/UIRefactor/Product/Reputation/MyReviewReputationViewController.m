@@ -142,6 +142,14 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [tableContent reloadData];
+    
+    if(arrList.count > 0){
+        UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+        {
+            [firstCell setSelected:YES];
+        }
+    }
 }
 
 /*
@@ -313,8 +321,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //TODO: refactor this nasty hack
+    UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        [firstCell setSelected:NO];
+    }
+    
     MyReviewReputationCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-    [cell setSelected:YES];
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        [cell setSelected:YES];
+    }
+    
     [self actionFooter:cell.getBtnFooter];
 }
 

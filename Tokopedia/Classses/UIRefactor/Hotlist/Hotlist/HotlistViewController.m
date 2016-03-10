@@ -146,7 +146,7 @@ RetryViewDelegate
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
