@@ -405,6 +405,7 @@ static NSString const *rows = @"12";
             {
                 //CATEGORY
                 FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                controller.filterType = FilterCategoryTypeHotlist;
                 controller.selectedCategory = _selectedCategory;
                 controller.categories = [_initialCategories mutableCopy];
                 controller.delegate = self;
@@ -643,19 +644,31 @@ static NSString const *rows = @"12";
     RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:hashtagMapping];
     [resultMapping addPropertyMapping:hashtagRel];
     
-    RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
-    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY,
-                                                       kTKPDHOME_APITREEKEY,
-                                                       kTKPDHOME_APIDIDKEY,
-                                                       kTKPDHOME_APITITLEKEY
-                                                       ]];
-    // Adjust Relationship
-    //add Department tree relationship
-    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:departmentMapping];
-    [resultMapping addPropertyMapping:depttreeRel];
+    NSDictionary *categoryAttributeMappings = @{
+                                                @"d_id" : @"categoryId",
+                                                @"title" : @"name",
+                                                @"tree" : @"tree",
+                                                @"href" : @"url",
+                                                };
     
-    RKRelationshipMapping *deptchildRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APICHILDTREEKEY toKeyPath:kTKPDHOME_APICHILDTREEKEY withMapping:departmentMapping];
-    [departmentMapping addPropertyMapping:deptchildRel];
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    // Adjust Relationship
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
+    [resultMapping addPropertyMapping:categoryRelationship];
+    
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+    
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
     
     // add page relationship
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
@@ -786,12 +799,11 @@ static NSString const *rows = @"12";
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
+
                 [self setHeaderData];
                 
-                NSArray * departmenttree = _searchObject.result.breadcrumb;
-                
-                if (_departmenttree.count == 0) {
-                    [_departmenttree addObjectsFromArray:departmenttree];
+                if (_initialCategories == nil) {
+                    _initialCategories = [_searchObject.result.breadcrumb mutableCopy];
                 }
                 
                 if (_searchObject.result.products.count > 0) {

@@ -125,14 +125,6 @@
     return self.categories.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewAutomaticDimension;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewAutomaticDimension;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 1.0f;
 }
@@ -283,7 +275,7 @@
 }
 
 - (id)getObjectManager:(int)tag {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"https://hades-staging.tokopedia.com/"];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"https://hades.tokopedia.com/"];
     
     RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[CategoryResponse class]];
     [responseMapping addAttributeMappingsFromArray:@[@"status"]];
@@ -340,15 +332,7 @@
     CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
     self.initialCategories = response.result.categories;
     [self expandSelectedCategories];
-    if (self.filterType == FilterCategoryTypeCategory) {
-        NSMutableArray *deletedCategories = [NSMutableArray new];
-        for (CategoryDetail *category in self.initialCategories) {
-            if ([category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
-                [deletedCategories addObject:category];
-            }
-        }
-        [self.categories removeObjectsInArray:deletedCategories];
-    }
+    [self hidesOtherCategories];
     if (self.selectedCategory) {
         [self scrollToCategory:self.selectedCategory];
         [self updateDoneButtonAppearance];
@@ -387,7 +371,21 @@
         }
     }
     self.categories = categories;
+    [self hidesOtherCategories];
     [self.tableView reloadData];
+}
+
+// For Search Category, remove other categories at level 1. Shows only selected category level 1 and its childs
+- (void)hidesOtherCategories {
+    if (self.filterType == FilterCategoryTypeCategory) {
+        NSMutableArray *deletedCategories = [NSMutableArray new];
+        for (CategoryDetail *category in self.initialCategories) {
+            if ([category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
+                [deletedCategories addObject:category];
+            }
+        }
+        [self.categories removeObjectsInArray:deletedCategories];
+    }
 }
 
 - (NSMutableArray *)categories:(NSMutableArray *)categories addChildCategory:(CategoryDetail *)category  {

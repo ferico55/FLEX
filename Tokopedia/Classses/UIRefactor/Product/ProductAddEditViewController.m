@@ -405,6 +405,7 @@
         switch (btn.tag) {
             case BUTTON_PRODUCT_CATEGORY: {
                 FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                controller.filterType = FilterCategoryTypeProductAddEdit;
                 controller.delegate = self;
                 UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];
                 navigation.navigationBar.translucent = NO;
