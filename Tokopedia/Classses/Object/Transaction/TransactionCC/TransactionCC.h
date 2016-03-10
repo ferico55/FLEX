@@ -10,7 +10,7 @@
 
 #import "TransactionCCResult.h"
 
-@interface TransactionCC : NSObject
+@interface TransactionCC : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;

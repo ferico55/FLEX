@@ -8,16 +8,6 @@
 
 #import "RequestCart.h"
 
-#import "TransactionAction.h"
-#import "TransactionSummary.h"
-#import "TransactionBuy.h"
-#import "TransactionVoucher.h"
-#import "TransactionCC.h"
-#import "ListRekeningBank.h"
-
-#import "TransactionObjectManager.h"
-#import "string_transaction.h"
-
 @interface RequestCart()<TokopediaNetworkManagerDelegate>
 {
     TokopediaNetworkManager *_networkManagerEMoney;
@@ -373,7 +363,7 @@
     }];
 }
 
-+(void)fetchBuyEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error{
++(void)fetchEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error{
     NSDictionary* param = @{//API_ACTION_KEY : isWSNew?ACTION_START_UP_EMONEY:ACTION_VALIDATE_CODE_EMONEY,
                             API_ACTION_KEY :ACTION_START_UP_EMONEY,
                             API_MANDIRI_ID_KEY : code};
@@ -399,7 +389,90 @@
     }];
 }
 
++(void)fetchBCAClickPaySuccess:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error{
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-payment-bcaklikpay.pl" method:RKRequestMethodPOST parameter:@{} mapping:[TransactionBuy mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionBuy *BCAClickPay = stat;
+            
+        if (BCAClickPay.result.is_success == 1) {
+            if (BCAClickPay.message_status && BCAClickPay.message_status.count > 0)
+                [StickyAlertView showSuccessMessage:BCAClickPay.message_status];
+            success(BCAClickPay.result);
+        }
+        else
+        {
+            [StickyAlertView showErrorMessage:BCAClickPay.message_error?:@[@"Pembayaran Anda gagal"]];
+            error(nil);
+        }
+    } onFailure:^(NSError *errorResult) {
+        error(nil);
+    }];
+}
 
++(void)fetchCCValidationFirstName:(NSString*)firstName lastName:(NSString*)lastName city:(NSString*)city postalCode:(NSString*)postalCode addressStreet:(NSString*)addressStreet phone:(NSString *)phone state:(NSString*)state cardNumber:(NSString*)cardNumber installmentBank:(NSString*)installmentBank InstallmentTerm:(NSString*)installmentTerm success:(void (^)(DataCredit *data))success error:(void (^)(NSError *error))error{
+    NSDictionary *param = @{@"action"               :@"step_1_process_credit_card",
+                            @"credit_card_edit_flag":@"1",
+                            @"first_name"           :firstName,
+                            @"last_name"            :lastName,
+                            @"city"                 :city,
+                            @"postal_code"          :postalCode,
+                            @"address_street"       :addressStreet,
+                            @"phone"                :phone,
+                            @"state"                :state,
+                            @"card_number"          :cardNumber,
+                            @"installment_bank"     :installmentBank,
+                            @"installment_term"     :installmentTerm
+                            };
+
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionCC mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionCC *actionCC = stat;
+        
+        if (actionCC.result.data_credit.cc_agent != nil && ![actionCC.result.data_credit.cc_agent isEqualToString:@"0"] && ![actionCC.result.data_credit.cc_agent isEqualToString:@""]) {
+            success(actionCC.result.data_credit);
+        }
+        else
+        {
+            [StickyAlertView showErrorMessage:actionCC.message_error?:@[@"Pembayaran Anda gagal"]];
+            error(nil);
+        }
+            
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
+}
+
++(void)fetchValidateBRIEPayCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error{
+    NSDictionary *param = @{
+                            @"action" : @"validate_payment",
+                            @"tid"    : code
+                            };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-payment-briepay.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionAction *action = stat;
+            
+        if (action.result.is_success == 1) {
+            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            [StickyAlertView showSuccessMessage:successMessages];
+            success(action.result);
+        }
+        else
+        {
+            [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+            error(nil);
+        }
+        
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
+}
 
 -(TransactionObjectManager*)objectManager
 {
@@ -412,27 +485,6 @@
     return _objectManager;
 }
 
--(TokopediaNetworkManager*)networkManagerBCAClickPay
-{
-    if (!_networkManagerBCAClickPay) {
-        _networkManagerBCAClickPay = [TokopediaNetworkManager new];
-        _networkManagerBCAClickPay.tagRequest = TAG_REQUEST_BCA_CLICK_PAY;
-        _networkManagerBCAClickPay.delegate = self;
-    }
-    
-    return _networkManagerBCAClickPay;
-}
-
--(TokopediaNetworkManager*)networkManagerCC
-{
-    if (!_networkManagerCC) {
-        _networkManagerCC = [TokopediaNetworkManager new];
-        _networkManagerCC.tagRequest = TAG_REQUEST_CC;
-        _networkManagerCC.delegate = self;
-    }
-    
-    return _networkManagerCC;
-}
 
 -(TokopediaNetworkManager*)networkManagerBRIEpay{
     if (!_networkManagerBRIEpay) {
@@ -452,16 +504,6 @@
     return _networkManagerToppay;
 }
 
--(void)doRequestBCAClickPay
-{
-    [[self networkManagerBCAClickPay]doRequest];
-}
-
--(void)doRequestCC
-{
-    [[self networkManagerCC]doRequest];
-}
-
 -(void)dorequestBRIEPay
 {
     [[self networkManagerBRIEpay] doRequest];
@@ -475,12 +517,6 @@
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        return [[self objectManager] objectManagerBCAClickPay];
-    }
-    if (tag == TAG_REQUEST_CC) {
-        return [[self objectManager] objectManagerCC];
-    }
     if (tag == TAG_REQUEST_BRI_EPAY) {
         return [[self objectManager] objectManagerBRIEPay];
     }
@@ -497,12 +533,7 @@
 
 -(NSString *)getPath:(int)tag
 {
-    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        return API_BCA_KLICK_PAY_PATH;
-    }
-    if (tag == TAG_REQUEST_CC) {
-        return API_ACTION_CC_PATH;
-    }
+
     if (tag == TAG_REQUEST_BRI_EPAY) {
         return @"tx-payment-briepay.pl";
     }
@@ -522,14 +553,6 @@
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
 
-    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        TransactionBuy *BCAClickPay = stat;
-        return BCAClickPay.status;
-    }
-    if (tag == TAG_REQUEST_CC) {
-        TransactionCC *action = stat;
-        return action.status;
-    }
     if (tag == TAG_REQUEST_BRI_EPAY) {
         TransactionAction *action = stat;
         return action.status;
@@ -549,33 +572,6 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
 
-    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        TransactionBuy *BCAClickPay = stat;
-        
-        if (BCAClickPay.result.is_success == 1) {
-            if (BCAClickPay.message_status && BCAClickPay.message_status.count > 0)
-                [self showStatusMesage:BCAClickPay.message_status];
-            [_delegate requestSuccessBCAClickPay:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:BCAClickPay.message_error?:@[@"Pembayaran Anda gagal"]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
-    if (tag == TAG_REQUEST_CC)
-    { 
-        TransactionCC *actionCC = stat;
-        
-        if (actionCC.result.data_credit.cc_agent != nil && ![actionCC.result.data_credit.cc_agent isEqualToString:@"0"] && ![actionCC.result.data_credit.cc_agent isEqualToString:@""]) {
-            [_delegate requestSuccessCC:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:actionCC.message_error?:@[@"Pembayaran Anda gagal"]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
     if (tag == TAG_REQUEST_BRI_EPAY) {
         TransactionAction *action = stat;
         

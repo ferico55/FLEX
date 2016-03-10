@@ -8,22 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TransactionCart.h"
-#import "TransactionSummary.h"
 #import "TransactionAction.h"
+#import "TransactionSummary.h"
+#import "TransactionBuy.h"
 #import "TransactionVoucher.h"
-#import "string_transaction.h"
-#import "TransactionBuyResult.h"
+#import "TransactionCC.h"
+#import "ListRekeningBank.h"
 
-#define TAG_REQUEST_BCA_CLICK_PAY 17
-#define TAG_REQUEST_CC 18
+#import "TransactionObjectManager.h"
+#import "string_transaction.h"
+
 #define TAG_REQUEST_BRI_EPAY 19
 #define TAG_REQUEST_TOPPAY 20
 
 @protocol RequestCartDelegate <NSObject>
 @required
--(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
--(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation;
 
@@ -41,8 +40,6 @@
 
 @property (nonatomic, strong) UIViewController *viewController;
 
--(void)doRequestBCAClickPay;
--(void)doRequestCC;
 -(void)dorequestBRIEPay;
 -(void)doRequestToppay;
 
@@ -60,6 +57,10 @@
 
 +(void)fetchEditProduct:(ProductDetail*)product success:(void (^)(TransactionAction *data))success error:(void (^)(NSError *error))error;
 
-+(void)fetchBuyEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error;
++(void)fetchEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error;
+
++(void)fetchBCAClickPaySuccess:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error;
+
++(void)fetchCCValidationFirstName:(NSString*)firstName lastName:(NSString*)lastName city:(NSString*)city postalCode:(NSString*)postalCode addressStreet:(NSString*)addressStreet phone:(NSString *)phone state:(NSString*)state cardNumber:(NSString*)cardNumber installmentBank:(NSString*)installmentBank InstallmentTerm:(NSString*)installmentTerm success:(void (^)(DataCredit *data))success error:(void (^)(NSError *error))error;
 
 @end

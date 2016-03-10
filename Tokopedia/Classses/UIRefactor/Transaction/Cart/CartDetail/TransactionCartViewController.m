@@ -227,7 +227,6 @@
 #define DEFAULT_ROW_HEIGHT 44
 #define CELL_PRODUCT_ROW_HEIGHT 126
 
-#define TAG_REQUEST_BCA_CLICK_PAY 17
 
 #define NOT_SELECT_GATEWAY -1
 
@@ -760,7 +759,7 @@
                 case TYPE_GATEWAY_BCA_KLIK_BCA:
                 case TYPE_GATEWAY_INDOMARET:
                     if ([self isValidInput]) {
-                        [self doBuy];
+                        [self doRequestBuy];
                     }
                     break;
                 case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
@@ -795,7 +794,7 @@
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
                 {
                     if ([self isValidInput]) {
-                        [self doBuy];
+                        [self doRequestBuy];
                     }
                 }
                     break;
@@ -1578,13 +1577,13 @@
 -(void)TransactionCartMandiriClickPayForm:(TransactionCartFormMandiriClickPayViewController *)VC withUserInfo:(NSDictionary *)userInfo
 {
     [_dataInput addEntriesFromDictionary:userInfo];
-    [self doBuy];
+    [self doRequestBuy];
 }
 
 -(void)doRequestCC:(NSDictionary *)param
 {
     [_dataInput addEntriesFromDictionary:param];
-    [self doBuy];
+    [self doRequestBuy];
 }
 
 -(void)isSucessSprintAsia:(NSDictionary *)param
@@ -1767,7 +1766,7 @@
 -(void)doRequestEmoney{
     [_alertLoading show];
     
-    [RequestCart fetchBuyEMoneyCode:_cartBuy.transaction.emoney_code?:@"" success:^(TxEMoneyData *data) {
+    [RequestCart fetchEMoneyCode:_cartBuy.transaction.emoney_code?:@"" success:^(TxEMoneyData *data) {
         NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
         [_delegate didFinishRequestBuyData:userInfo];
         
@@ -1787,13 +1786,32 @@
 
 -(void)shouldDoRequestBCAClickPay
 {
-    _requestCart.param = @{};
-    [_requestCart doRequestBCAClickPay];
+    [self doRequestBCAClickPay];
 }
 
--(void)shouldDoRequestBRIEPay:(NSDictionary *)param
+-(void)doRequestBCAClickPay{
+    [_alertLoading show];
+    [RequestCart fetchBCAClickPaySuccess:^(TransactionBuyResult *data) {
+        
+        NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:data?:[TransactionBuyResult new]};
+        [_delegate didFinishRequestBuyData:userInfo?:@{}];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        
+        //
+        [_act stopAnimating];
+        
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    } error:^(NSError *error) {
+        [_delegate shouldBackToFirstPage];
+        [_act stopAnimating];
+        [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }];
+}
+
+-(void)shouldDoRequestBRIEPayCode:(NSString *)code
 {
-    _requestCart.param = param?:@{};
     [_requestCart dorequestBRIEPay];
 }
 
@@ -2826,7 +2844,7 @@
      }];
 }
 
--(void)doBuy{
+-(void)doRequestBuy{
     _buyButton.enabled = NO;
     //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
     [_alertLoading show];
@@ -2882,17 +2900,6 @@
 }
 
 
--(NSDictionary*)paramVoucher
-{
-    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
-    
-    NSDictionary* param = @{API_ACTION_KEY :ACTION_CECK_VOUCHER_CODE,
-                            API_VOUCHER_CODE_KEY : voucherCode
-                            };
-    
-    return param;
-}
-
 -(void)doRequestEditProduct:(ProductDetail*)product{
     [RequestCart fetchEditProduct:product success:^(TransactionAction *data) {
         if (_indexPage == 0) {
@@ -2907,25 +2914,10 @@
 }
 
 
--(NSDictionary*)paramEMoney
-{
-    NSDictionary* param = @{//API_ACTION_KEY : isWSNew?ACTION_START_UP_EMONEY:ACTION_VALIDATE_CODE_EMONEY,
-                            API_ACTION_KEY :ACTION_START_UP_EMONEY,
-                            API_MANDIRI_ID_KEY : _cartBuy.transaction.emoney_code?:@""};
-    return param;
-}
-
 -(void)actionBeforeRequest:(int)tag
 {
 
-    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
         [_alertLoading show];
-
-    }
-    else{
-        [_alertLoading show];
-    }
 }
 
 
@@ -2938,10 +2930,7 @@
 }
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
-        [_delegate shouldBackToFirstPage];
-        [_act stopAnimating];
-    }
+
     if (tag == TAG_REQUEST_BRI_EPAY) {
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];

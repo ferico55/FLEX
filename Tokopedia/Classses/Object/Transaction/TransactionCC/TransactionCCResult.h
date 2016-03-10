@@ -10,7 +10,7 @@
 
 #import "DataCredit.h"
 
-@interface TransactionCCResult : NSObject
+@interface TransactionCCResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) DataCredit *data_credit;
 
