@@ -1958,8 +1958,8 @@
         
         _cart = data;
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
-        [_dataInput setObject:_cart.grand_total_without_lp forKey:DATA_CART_GRAND_TOTAL_WO_LP];
-        [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_W_LP];
+        [_dataInput setObject:_cart.grand_total_without_lp?:@"" forKey:DATA_CART_GRAND_TOTAL_WO_LP];
+        [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_W_LP];
         
         [self adjustAfterUpdateList];
         
@@ -2985,7 +2985,7 @@
         }
     }
     [self adjustPaymentMethodView];
-    [_dataInput setObject:_cart.grand_total forKey:DATA_UPDATED_GRAND_TOTAL];
+    [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_UPDATED_GRAND_TOTAL];
         
     [self adjustDropshipperListParam];
     [self adjustPartialListParam];
