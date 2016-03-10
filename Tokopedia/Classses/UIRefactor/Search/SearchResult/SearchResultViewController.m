@@ -1185,10 +1185,10 @@ ImageSearchRequestDelegate
 #pragma mark - Promo collection delegate
 
 - (void)requestPromo {
-//    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
-//    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
-//    _promoRequest.page = _start/[startPerPage integerValue];
-//    [_promoRequest requestForProductQuery:search department:departmentId];
+    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
+    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
+    _promoRequest.page = _start/[startPerPage integerValue];
+    [_promoRequest requestForProductQuery:search department:departmentId];
 }
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
