@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TxEMoneyData.h"
 
-@interface TxEMoneyResult : NSObject
+@interface TxEMoneyResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TxEMoneyData *data;
 @property (nonatomic) NSInteger is_success;

@@ -20,7 +20,6 @@
 
 @interface RequestCart()<TokopediaNetworkManagerDelegate>
 {
-    TokopediaNetworkManager *_networkManagerEditProduct;
     TokopediaNetworkManager *_networkManagerEMoney;
     TokopediaNetworkManager *_networkManagerBCAClickPay;
     TokopediaNetworkManager *_networkManagerCC;
@@ -374,6 +373,33 @@
     }];
 }
 
++(void)fetchBuyEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error{
+    NSDictionary* param = @{//API_ACTION_KEY : isWSNew?ACTION_START_UP_EMONEY:ACTION_VALIDATE_CODE_EMONEY,
+                            API_ACTION_KEY :ACTION_START_UP_EMONEY,
+                            API_MANDIRI_ID_KEY : code};
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-payment-emoney.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
+        TransactionAction *emoney = stat;
+        if (emoney.result.is_success == 1) {
+            if (emoney.message_status && emoney.message_status.count > 0)
+                [StickyAlertView showSuccessMessage:emoney.message_status];
+            success(emoney.result.emoney_data);
+        }
+        else
+        {
+            [StickyAlertView showErrorMessage:emoney.message_error?:@[@"Pembayaran Anda gagal"]];
+            error(nil);
+        }
+        
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
+}
+
+
 
 -(TransactionObjectManager*)objectManager
 {
@@ -384,27 +410,6 @@
     _objectManager.gatewayID = [gatewayID integerValue];
         
     return _objectManager;
-}
-
-
--(TokopediaNetworkManager*)networkManagerEditProduct
-{
-    if (!_networkManagerEditProduct) {
-        _networkManagerEditProduct = [TokopediaNetworkManager new];
-        _networkManagerEditProduct.tagRequest = TAG_REQUEST_EDIT_PRODUCT;
-        _networkManagerEditProduct.delegate = self;
-    }
-    return _networkManagerEditProduct;
-}
-
--(TokopediaNetworkManager*)networkManagerEMoney
-{
-    if (!_networkManagerEMoney) {
-        _networkManagerEMoney = [TokopediaNetworkManager new];
-        _networkManagerEMoney.tagRequest = TAG_REQUEST_EMONEY;
-        _networkManagerEMoney.delegate = self;
-    }
-    return _networkManagerEMoney;
 }
 
 -(TokopediaNetworkManager*)networkManagerBCAClickPay
@@ -447,11 +452,6 @@
     return _networkManagerToppay;
 }
 
--(void)doRequestEMoney;
-{
-    [[self networkManagerEMoney]doRequest];
-}
-
 -(void)doRequestBCAClickPay
 {
     [[self networkManagerBCAClickPay]doRequest];
@@ -475,12 +475,6 @@
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-        return [[self objectManager] objectMangerEditProduct];
-    }
-    if (tag == TAG_REQUEST_EMONEY) {
-        return [[self objectManager] objectManagerEMoney];
-    }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         return [[self objectManager] objectManagerBCAClickPay];
     }
@@ -503,10 +497,6 @@
 
 -(NSString *)getPath:(int)tag
 {
-
-    if (tag == TAG_REQUEST_EMONEY) {
-        return API_EMONEY_PATH;
-    }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         return API_BCA_KLICK_PAY_PATH;
     }
@@ -532,14 +522,6 @@
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
 
-    if (tag == TAG_REQUEST_EDIT_PRODUCT) {
-        TransactionAction *action = stat;
-        return action.status;
-    }
-    if (tag == TAG_REQUEST_EMONEY) {
-        TxEmoney *emoney = stat;
-        return emoney.status;
-    }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         TransactionBuy *BCAClickPay = stat;
         return BCAClickPay.status;
@@ -567,20 +549,6 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
 
-    if (tag == TAG_REQUEST_EMONEY) {
-        TxEmoney *emoney = stat;
-        
-        if (emoney.result.is_success == 1) {
-            if (emoney.message_status && emoney.message_status.count > 0)
-                [self showStatusMesage:emoney.message_status];
-            [_delegate requestSuccessEMoney:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:emoney.message_error?:@[@"Pembayaran Anda gagal"]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         TransactionBuy *BCAClickPay = stat;
         

@@ -26,6 +26,9 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ld"
                                                                             toKeyPath:@"ld"
                                                                           withMapping:[LuckyDeal mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"emoney_data"
+                                                                          withMapping:[TxEMoneyData mapping]]];
     return mapping;
     
 }

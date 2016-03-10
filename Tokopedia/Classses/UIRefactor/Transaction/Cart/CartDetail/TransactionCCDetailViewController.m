@@ -420,7 +420,7 @@
 -(NSString*)getSprintAsiaURLString
 {
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-    NSString *baseURLString = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+    NSString *baseURLString = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:@"https://www.tokopedia.com/ws";
     
     NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURLString];
     

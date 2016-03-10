@@ -227,13 +227,6 @@
 #define DEFAULT_ROW_HEIGHT 44
 #define CELL_PRODUCT_ROW_HEIGHT 126
 
-#define TAG_REQUEST_CART 10
-#define TAG_REQUEST_CANCEL_CART 11
-#define TAG_REQUEST_CHECKOUT 12
-#define TAG_REQUEST_BUY 13
-#define TAG_REQUEST_VOUCHER 14
-#define TAG_REQUEST_EDIT_PRODUCT 15
-#define TAG_REQUEST_EMONEY 16
 #define TAG_REQUEST_BCA_CLICK_PAY 17
 
 #define NOT_SELECT_GATEWAY -1
@@ -1768,8 +1761,28 @@
 
 -(void)shouldDoRequestEMoney:(BOOL)isWSNew
 {
-     _requestCart.param = [self paramEMoney];
-    [_requestCart doRequestEMoney];
+    [self doRequestEmoney];
+}
+
+-(void)doRequestEmoney{
+    [_alertLoading show];
+    
+    [RequestCart fetchBuyEMoneyCode:_cartBuy.transaction.emoney_code?:@"" success:^(TxEMoneyData *data) {
+        NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
+        [_delegate didFinishRequestBuyData:userInfo];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        //
+        [_act stopAnimating];
+        
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+
+    } error:^(NSError *error) {
+        [_delegate shouldBackToFirstPage];
+        [_act stopAnimating];
+        [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }];
 }
 
 -(void)shouldDoRequestBCAClickPay
@@ -2904,11 +2917,7 @@
 
 -(void)actionBeforeRequest:(int)tag
 {
-    if (tag == TAG_REQUEST_EMONEY) {
-        //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-        [_alertLoading show];
 
-    }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
         [_alertLoading show];
@@ -2929,15 +2938,6 @@
 }
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-
-    if (tag == TAG_REQUEST_VOUCHER) {
-        [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
-    }
-
-    if (tag == TAG_REQUEST_EMONEY) {
-        [_delegate shouldBackToFirstPage];
-        [_act stopAnimating];
-    }
     if (tag == TAG_REQUEST_BCA_CLICK_PAY) {
         [_delegate shouldBackToFirstPage];
         [_act stopAnimating];
@@ -3094,21 +3094,6 @@
     
     self.view = vc.view;
 }
-
-#pragma mark - Request E-Money
--(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
-    [_delegate didFinishRequestBuyData:userInfo];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-//
-    [_act stopAnimating];
-
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-}
-
 
 #pragma mark - Request BCA ClickPay
 -(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation

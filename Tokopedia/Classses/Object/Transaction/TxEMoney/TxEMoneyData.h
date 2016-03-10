@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TxEMoneyData : NSObject
+@interface TxEMoneyData : NSObject <TKPObjectMapping>
 
 
 @property (nonatomic, strong) NSString *trace_num;

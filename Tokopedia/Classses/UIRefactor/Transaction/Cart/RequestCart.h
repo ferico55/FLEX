@@ -15,10 +15,6 @@
 #import "string_transaction.h"
 #import "TransactionBuyResult.h"
 
-#define TAG_REQUEST_CANCEL_CART 11
-#define TAG_REQUEST_BUY 13
-#define TAG_REQUEST_EDIT_PRODUCT 15
-#define TAG_REQUEST_EMONEY 16
 #define TAG_REQUEST_BCA_CLICK_PAY 17
 #define TAG_REQUEST_CC 18
 #define TAG_REQUEST_BRI_EPAY 19
@@ -26,7 +22,6 @@
 
 @protocol RequestCartDelegate <NSObject>
 @required
--(void)requestSuccessEMoney:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation;
 -(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation;
@@ -46,7 +41,6 @@
 
 @property (nonatomic, strong) UIViewController *viewController;
 
--(void)doRequestEMoney;
 -(void)doRequestBCAClickPay;
 -(void)doRequestCC;
 -(void)dorequestBRIEPay;
@@ -65,5 +59,7 @@
 +(void)fetchBuy:(TransactionSummaryDetail*)transaction dataCC:(NSDictionary*)dataCC mandiriToken:(NSString*)mandiriToken cardNumber:(NSString*)cardNumber password:(NSString*)password klikBCAUserID:(NSString*)klikBCAUserID success:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error;
 
 +(void)fetchEditProduct:(ProductDetail*)product success:(void (^)(TransactionAction *data))success error:(void (^)(NSError *error))error;
+
++(void)fetchBuyEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error;
 
 @end
