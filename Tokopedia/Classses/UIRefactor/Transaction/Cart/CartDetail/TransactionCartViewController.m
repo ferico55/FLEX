@@ -63,7 +63,6 @@
     TransactionCartShippingViewControllerDelegate,
     TransactionCartEditViewControllerDelegate,
     TransactionCartWebViewViewControllerDelegate,
-    TokopediaNetworkManagerDelegate,
     LoadingViewDelegate,
     TransactionCCViewControllerDelegate,
     GeneralTableViewControllerDelegate,
@@ -369,10 +368,6 @@
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
         _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
-        if ([[_data objectForKey:@"show_webview"] integerValue] == 1) {
-            [self replaceViewWithWebView:[_data objectForKey:@"data"]];
-        }
-        
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -419,9 +414,6 @@
             _paymentMethodSelectedView.hidden = NO;
         }
     }
-    
-    
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -3049,18 +3041,6 @@
     [_tableView reloadData];
     
 }
-
--(void)replaceViewWithWebView:(TransactionAction*)data
-{
-    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-    vc.toppayQueryString = data.result.query_string;
-    vc.URLString = data.result.redirect_url;
-    vc.gateway = @([_cart.gateway integerValue]);
-    vc.delegate = self;
-    
-    self.view = vc.view;
-}
-
 
 -(void)dealloc
 {
