@@ -19,7 +19,7 @@
 - (void)refreshCartAfterCancelPayment;
 - (void)shouldDoRequestBRIEPayCode:(NSString*)code;
 
-- (void)shouldDoRequestTopPayThx:(NSDictionary*)param;
+- (void)shouldDoRequestTopPayThxCode:(NSString*)code;
 
 @end
 

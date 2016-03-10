@@ -65,7 +65,6 @@
     TransactionCartWebViewViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
     LoadingViewDelegate,
-    RequestCartDelegate,
     TransactionCCViewControllerDelegate,
     GeneralTableViewControllerDelegate,
     NoResultDelegate
@@ -251,8 +250,6 @@
     _mapping = [TransactionObjectMapping new];
     _navigate = [NavigateViewController new];
     _requestCart = [RequestCart new];
-    _requestCart.viewController = self;
-    _requestCart.delegate = self;
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -1835,10 +1832,15 @@
     }];
 }
 
--(void)shouldDoRequestTopPayThx:(NSDictionary *)param
+-(void)shouldDoRequestTopPayThxCode:(NSString *)code
 {
-    _requestCart.param = param?:@{};
-    [_requestCart doRequestToppay];
+    [RequestCart fetchToppayThanksCode:code success:^(TransactionActionResult *data) {
+        [self refreshRequestCart];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    } error:^(NSError *error) {
+        [self endRefreshing];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }];
 }
 
 #pragma mark - Methods
@@ -3046,15 +3048,6 @@
     
     [_tableView reloadData];
     
-}
-
-
-#pragma mark - Request Toppay
-
--(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    [self refreshRequestCart];
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 -(void)replaceViewWithWebView:(TransactionAction*)data

@@ -474,140 +474,26 @@
     }];
 }
 
--(TransactionObjectManager*)objectManager
-{
-    if (!_objectManager) {
-        _objectManager = [TransactionObjectManager new];
-    }
-    NSNumber *gatewayID  = [_param objectForKey:@"gateway"];
-    _objectManager.gatewayID = [gatewayID integerValue];
-        
-    return _objectManager;
-}
-
-
--(TokopediaNetworkManager*)networkManagerToppay{
-    if (!_networkManagerToppay) {
-        _networkManagerToppay = [TokopediaNetworkManager new];
-        _networkManagerToppay.tagRequest = TAG_REQUEST_TOPPAY;
-        _networkManagerToppay.delegate = self;
-    }
-    return _networkManagerToppay;
-}
-
--(void)doRequestToppay
-{
-    [[self networkManagerToppay] doRequest];
-}
-
-#pragma mark - Network Manager Delegate
--(id)getObjectManager:(int)tag
-{
-    if (tag == TAG_REQUEST_TOPPAY) {
-        return [[self objectManager] objectManagerToppay];
-    }
-    return nil;
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    return _param?:@{};
-}
-
--(NSString *)getPath:(int)tag
-{
-
-    if (tag == TAG_REQUEST_TOPPAY) {
-        return @"action/toppay.pl";
-    }
-    return nil;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-    [_delegate actionBeforeRequest:tag];
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-
-    if (tag == TAG_REQUEST_TOPPAY) {
-        TransactionAction *action = stat;
-        return action.status;
-    }
++(void)fetchToppayThanksCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error{
+    NSDictionary *param = @{
+                            @"action" : @"get_thanks_data",
+                            @"id": code
+                            };
     
-    
-    return nil;
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    id stat = [result objectForKey:@""];
-
-    if (tag == TAG_REQUEST_TOPPAY) {
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/toppay.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        id stat = [result objectForKey:@""];
         TransactionAction *action = stat;
         if (action.result.is_success == 1){
-            [_delegate requestSuccessToppayThx:successResult withOperation:operation];
+            success(action.result);
         } else {
-            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-
+            [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+            error(nil);
         }
-    }
-}
-
--(void)showErrorMesage:(NSArray*)errorMessage
-{
-    StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:_viewController];
-    [failedAlert show];
-}
-
--(void)showStatusMesage:(NSArray*)statusMessage
-{
-    StickyAlertView *messageAlert = [[StickyAlertView alloc]initWithSuccessMessages:statusMessage delegate:_viewController];
-    [messageAlert show];
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    NSError *error = errorResult;
-    NSArray *errors;
-
-    if (error.code==-1009 || error.code==-999) {
-        errors = @[@"Tidak ada koneksi internet"];
-    } else {
-         errors = @[@"Mohon maaf, terjadi kendala pada server"];
-    }
-    
-    StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_viewController];
-    [failedAlert show];
-    
-    [self performSelector:@selector(doActionBeforeRequest:) withObject:@(tag) afterDelay:1.0f];
-    
-}
--(void)doActionBeforeRequest:(int)tag
-{
-    [_delegate actionBeforeRequest:tag];
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    [_delegate actionAfterFailRequestMaxTries:tag];
-}
-
--(void)setParam:(NSDictionary *)param
-{
-    _param = param;
-//    NSNumber *gatewayID  = [_param objectForKey:@"gateway"];
-//    if([gatewayID integerValue] == TYPE_GATEWAY_CLICK_BCA){
-//        _objectManager = nil;
-//        _objectManager = [self objectManager];
-//    }
-
+    } onFailure:^(NSError *errorResult) {
+        error(errorResult);
+    }];
 }
 
 @end

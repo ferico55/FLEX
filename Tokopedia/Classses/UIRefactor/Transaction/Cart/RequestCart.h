@@ -18,27 +18,7 @@
 #import "TransactionObjectManager.h"
 #import "string_transaction.h"
 
-#define TAG_REQUEST_TOPPAY 20
-
-@protocol RequestCartDelegate <NSObject>
-@required
--(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation;
-
--(void)actionBeforeRequest:(int)tag;
--(void)actionAfterFailRequestMaxTries:(int)tag;
-
-- (void)requestError:(NSArray*)errorMessages;
-
-@end
-
 @interface RequestCart : NSObject
-
-@property (nonatomic, weak) IBOutlet id<RequestCartDelegate> delegate;
-@property (nonatomic, strong) NSDictionary *param;
-
-@property (nonatomic, strong) UIViewController *viewController;
-
--(void)doRequestToppay;
 
 +(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error;
 
@@ -61,5 +41,7 @@
 +(void)fetchCCValidationFirstName:(NSString*)firstName lastName:(NSString*)lastName city:(NSString*)city postalCode:(NSString*)postalCode addressStreet:(NSString*)addressStreet phone:(NSString *)phone state:(NSString*)state cardNumber:(NSString*)cardNumber installmentBank:(NSString*)installmentBank InstallmentTerm:(NSString*)installmentTerm success:(void (^)(DataCredit *data))success error:(void (^)(NSError *error))error;
 
 +(void)fetchBRIEPayCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error;
+
++(void)fetchToppayThanksCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error;
 
 @end

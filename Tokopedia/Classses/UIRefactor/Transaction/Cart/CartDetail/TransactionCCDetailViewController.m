@@ -22,7 +22,6 @@
 @interface TransactionCCDetailViewController ()
 <
     TKPDAlertViewDelegate,
-    RequestCartDelegate,
     TransactionCartWebViewViewControllerDelegate,
     UITextFieldDelegate,
     UIWebViewDelegate
@@ -92,8 +91,6 @@
     }
     
     _requestCart = [RequestCart new];
-    _requestCart.viewController = self;
-    _requestCart.delegate = self;
     
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
