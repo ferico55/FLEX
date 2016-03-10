@@ -5,7 +5,7 @@
 //  Created by Tokopedia on 11/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import <BlocksKit/NSArray+BlocksKit.h>
+#import <BlocksKit/BlocksKit.h>
 #import "InboxMessageViewController.h"
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
@@ -62,7 +62,6 @@
     NSString *_urinext;
 
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
     NSTimer *_timer;
     UISearchBar *_searchbar;
     NSString *_keyword;
@@ -72,10 +71,6 @@
 
     TAGContainer *_gtmContainer;
 
-    __weak RKObjectManager *_objectmanager;
-    __weak RKObjectManager *_objectmanagerarchive;
-    __weak RKManagedObjectRequestOperation *_request;
-    NSOperationQueue *_operationQueue;
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
 
@@ -116,8 +111,6 @@
 #pragma mark - UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _operationQueue = [NSOperationQueue new];
     
     /** create new **/
     _messages = [NSMutableArray new];
@@ -467,7 +460,6 @@
 }
 
 -(void)showMessageWithFilter:(NSNotification*)notification {
-    if (_request.isExecuting) return;
     _userinfo = notification.userInfo;
     
     if([_userinfo[@"show_read"] isEqualToString:@"1"]) {
@@ -539,7 +531,6 @@
     _page = 1;
     _keyword = @"";
     _searchbar.text = @"";
-    _requestcount = 0;
     _isrefreshview = YES;
 
     [_table reloadData];
