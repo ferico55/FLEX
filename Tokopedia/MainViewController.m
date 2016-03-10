@@ -592,6 +592,20 @@ typedef enum TagRequest {
 }
 
 - (void)doApplicationLogout {
+    /*
+    remove all cache from webview, all credential that been logged in, will be removed
+    example : login kereta api, login pulsa
+    */
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [cookieStorage cookies]) {
+        NSString* domainName = [cookie domain];
+        NSRange domainRange = [domainName rangeOfString:@"tokopedia"];
+        if(domainRange.length > 0) {
+            [cookieStorage deleteCookie:cookie];
+        }
+    }
+    
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     

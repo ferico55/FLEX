@@ -98,7 +98,7 @@
     _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
     CGRect frame = _scrollView.frame;
     frame.origin.y = 44;
-    frame.size.height -= 44;
+    frame.size.height = self.view.frame.size.height-44;
     _scrollView.frame = frame;
 
 //    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
