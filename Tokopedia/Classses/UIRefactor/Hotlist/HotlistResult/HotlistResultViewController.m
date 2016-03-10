@@ -29,7 +29,7 @@
 #import "SearchResultShopViewController.h"
 
 #import "TKPDTabNavigationController.h"
-#import "CategoryMenuViewController.h"
+#import "FilterCategoryViewController.h"
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
@@ -85,7 +85,7 @@ static NSString const *rows = @"12";
 @interface HotlistResultViewController ()
 <
     GeneralProductCellDelegate,
-    CategoryMenuViewDelegate,
+    FilterCategoryViewDelegate,
     SortViewControllerDelegate,
     FilterViewControllerDelegate,
     GeneralSingleProductDelegate,
@@ -143,6 +143,9 @@ static NSString const *rows = @"12";
     BOOL _shouldUseHashtag;
     
     NSIndexPath *_sortIndexPath;
+    
+    NSArray *_initialCategories;
+    CategoryDetail *_selectedCategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -401,19 +404,12 @@ static NSString const *rows = @"12";
             case 11:
             {
                 //CATEGORY
-                CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@(0),
-                            kTKPDCATEGORY_DATAPUSHCOUNTKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0),
-                            kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_detailfilter objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
-                            kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue])?:NO,
-                            kTKPDCATEGORY_DATAINDEXPATHKEY :[_detailfilter objectForKey:kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                            DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
-                            };
-                vc.selectedCategoryID = [[_detailfilter objectForKey:@"selected_id"] integerValue];
-                vc.delegate = self;
-                
-                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                controller.selectedCategory = _selectedCategory;
+                controller.categories = [_initialCategories mutableCopy];
+                controller.delegate = self;
+                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
+                navigationController.navigationBar.translucent = NO;
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }
                 break;
@@ -996,10 +992,9 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Category Delegate
-- (void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-{
-    [_detailfilter addEntriesFromDictionary:userInfo];
-    [_detailfilter setObject:userInfo[@"department_id"] forKey:@"selected_id"];
+- (void)didSelectCategory:(CategoryDetail *)category {
+    _selectedCategory = category;
+    [_detailfilter setObject:category.categoryId forKey:@"department_id"];
     [self refreshView:nil];
 }
 
