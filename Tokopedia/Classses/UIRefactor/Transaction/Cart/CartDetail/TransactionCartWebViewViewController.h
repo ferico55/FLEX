@@ -17,7 +17,7 @@
 - (void)doRequestCC:(NSDictionary*)param;
 - (void)isSucessSprintAsia:(NSDictionary*)param;
 - (void)refreshCartAfterCancelPayment;
-- (void)shouldDoRequestBRIEPay:(NSDictionary*)param;
+- (void)shouldDoRequestBRIEPayCode:(NSString*)code;
 
 - (void)shouldDoRequestTopPayThx:(NSDictionary*)param;
 

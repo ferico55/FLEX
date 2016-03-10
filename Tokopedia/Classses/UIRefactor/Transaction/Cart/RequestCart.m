@@ -446,7 +446,7 @@
     }];
 }
 
-+(void)fetchValidateBRIEPayCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error{
++(void)fetchBRIEPayCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error{
     NSDictionary *param = @{
                             @"action" : @"validate_payment",
                             @"tid"    : code
@@ -486,15 +486,6 @@
 }
 
 
--(TokopediaNetworkManager*)networkManagerBRIEpay{
-    if (!_networkManagerBRIEpay) {
-        _networkManagerBRIEpay = [TokopediaNetworkManager new];
-        _networkManagerBRIEpay.tagRequest = TAG_REQUEST_BRI_EPAY;
-        _networkManagerBRIEpay.delegate = self;
-    }
-    return _networkManagerBRIEpay;
-}
-
 -(TokopediaNetworkManager*)networkManagerToppay{
     if (!_networkManagerToppay) {
         _networkManagerToppay = [TokopediaNetworkManager new];
@@ -502,11 +493,6 @@
         _networkManagerToppay.delegate = self;
     }
     return _networkManagerToppay;
-}
-
--(void)dorequestBRIEPay
-{
-    [[self networkManagerBRIEpay] doRequest];
 }
 
 -(void)doRequestToppay
@@ -517,9 +503,6 @@
 #pragma mark - Network Manager Delegate
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_BRI_EPAY) {
-        return [[self objectManager] objectManagerBRIEPay];
-    }
     if (tag == TAG_REQUEST_TOPPAY) {
         return [[self objectManager] objectManagerToppay];
     }
@@ -534,9 +517,6 @@
 -(NSString *)getPath:(int)tag
 {
 
-    if (tag == TAG_REQUEST_BRI_EPAY) {
-        return @"tx-payment-briepay.pl";
-    }
     if (tag == TAG_REQUEST_TOPPAY) {
         return @"action/toppay.pl";
     }
@@ -553,10 +533,6 @@
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
 
-    if (tag == TAG_REQUEST_BRI_EPAY) {
-        TransactionAction *action = stat;
-        return action.status;
-    }
     if (tag == TAG_REQUEST_TOPPAY) {
         TransactionAction *action = stat;
         return action.status;
@@ -572,20 +548,6 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
 
-    if (tag == TAG_REQUEST_BRI_EPAY) {
-        TransactionAction *action = stat;
-        
-        if (action.result.is_success == 1) {
-            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-            [self showStatusMesage:successMessages];
-            [_delegate requestSuccessBRIEPay:successResult withOperation:operation];
-        }
-        else
-        {
-            [self showErrorMesage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            [_delegate actionAfterFailRequestMaxTries:tag];
-        }
-    }
     if (tag == TAG_REQUEST_TOPPAY) {
         TransactionAction *action = stat;
         if (action.result.is_success == 1){

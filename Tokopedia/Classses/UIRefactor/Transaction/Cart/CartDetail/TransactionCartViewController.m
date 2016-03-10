@@ -1812,7 +1812,27 @@
 
 -(void)shouldDoRequestBRIEPayCode:(NSString *)code
 {
-    [_requestCart dorequestBRIEPay];
+    [_alertLoading show];
+    
+    [RequestCart fetchBRIEPayCode:code success:^(TransactionActionResult *data) {
+        
+        TransactionBuyResult *BRIEPay = [TransactionBuyResult new];
+        BRIEPay.transaction = _cartSummary;
+        
+        NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BRIEPay?:[TransactionBuyResult new]};
+        [_delegate didFinishRequestBuyData:userInfo?:@{}];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        
+        [_act stopAnimating];
+        
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    } error:^(NSError *error) {
+        [_delegate shouldBackToFirstPage];
+        [_act stopAnimating];
+         [self endRefreshing];
+         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }];
 }
 
 -(void)shouldDoRequestTopPayThx:(NSDictionary *)param
@@ -2913,14 +2933,6 @@
     }];
 }
 
-
--(void)actionBeforeRequest:(int)tag
-{
-
-        [_alertLoading show];
-}
-
-
 -(void)endRefreshing
 {
     if (_refreshControl.isRefreshing) {
@@ -2928,18 +2940,6 @@
         [_refreshControl endRefreshing];
     }
 }
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-
-    if (tag == TAG_REQUEST_BRI_EPAY) {
-        [_delegate shouldBackToFirstPage];
-        [_act stopAnimating];
-    }
-    
-    [self endRefreshing];
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-}
-
 
 -(void)adjustAfterUpdateList
 {
@@ -3049,22 +3049,6 @@
 }
 
 
-#pragma mark - Request BRI E-Pay
--(void)requestSuccessBRIEPay:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    TransactionBuyResult *BRIEPay = [TransactionBuyResult new];
-    BRIEPay.transaction = _cartSummary;
-    
-    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BRIEPay?:[TransactionBuyResult new]};
-    [_delegate didFinishRequestBuyData:userInfo?:@{}];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-    
-    [_act stopAnimating];
-    
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-}
-
 #pragma mark - Request Toppay
 
 -(void)requestSuccessToppayThx:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -3084,24 +3068,6 @@
     self.view = vc.view;
 }
 
-#pragma mark - Request BCA ClickPay
--(void)requestSuccessBCAClickPay:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionBuy *BCAClickPay = stat;
-
-    NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:BCAClickPay.result?:[TransactionBuyResult new]};
-    [_delegate didFinishRequestBuyData:userInfo?:@{}];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-
-    //
-    [_act stopAnimating];
-    
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-}
 
 -(void)dealloc
 {

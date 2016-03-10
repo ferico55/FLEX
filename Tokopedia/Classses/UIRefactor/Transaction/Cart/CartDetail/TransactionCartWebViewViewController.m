@@ -244,12 +244,9 @@
             self.navigationItem.leftBarButtonItem = nil;
         }
         if ([request.URL.absoluteString rangeOfString:BRI_EPAY_CALLBACK_URL].location != NSNotFound) {
-            NSDictionary *param = @{
-                                    @"action" : @"validate_payment",
-                                    @"tid" : _transactionCode
-                                    };
+
             if (!_isBRIEPayRequested) {
-                [_delegate shouldDoRequestBRIEPay:param];
+                [_delegate shouldDoRequestBRIEPayCode:_transactionCode];
                 _isBRIEPayRequested = YES;
             }
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
