@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSArray *message_status;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) TransactionCartResult *result;
+@property (nonatomic, strong) TransactionCartResult *data;
 
 
 @end

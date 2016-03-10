@@ -7,29 +7,14 @@
 //
 
 #import "RequestCart.h"
-
-@interface RequestCart()<TokopediaNetworkManagerDelegate>
-{
-    TokopediaNetworkManager *_networkManagerEMoney;
-    TokopediaNetworkManager *_networkManagerBCAClickPay;
-    TokopediaNetworkManager *_networkManagerCC;
-    TokopediaNetworkManager *_networkManagerBRIEpay;
-    TokopediaNetworkManager *_networkManagerToppay;
-     TokopediaNetworkManager *_networkManagerToppayThx;
-    
-    TransactionObjectManager *_objectManager;
-    
-}
-
-@end
-
 @implementation RequestCart
 
 +(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error{
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString
-                                  path:@"tx.pl"
-                                method:RKRequestMethodPOST
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                  path:@"/v4/tx.pl"
+                                method:RKRequestMethodGET
                              parameter: @{@"lp_flag":@"1"}
                                mapping:[TransactionCart mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -40,7 +25,7 @@
          [StickyAlertView showErrorMessage:cart.message_error];
          error(nil);
      } else
-         success(cart.result);
+         success(cart.data);
                                  
     } onFailure:^(NSError *errorResult) {
         error(errorResult);
