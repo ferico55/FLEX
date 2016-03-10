@@ -227,6 +227,8 @@
             if (indexPath.row == 0) {
                 ((GeneralList1GestureCell*)cell).detailTextLabel.text = [NSString stringWithFormat:@"%@ (Utama)", list.bank_name];
                 ((GeneralList1GestureCell*)cell).detailTextLabel.textColor = [UIColor redColor];
+            } else {
+                ((GeneralList1GestureCell*)cell).detailTextLabel.textColor = [UIColor grayColor];
             }
             
         }

@@ -179,13 +179,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
     if(alertView.tag != 100){
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         [secureStorage setKeychainWithValue:@"1" withKey:@"msisdn_is_verified"];
-        if(_isSkipButtonHidden){
-            //return to biodata
-            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:3] animated:YES];
-        }else{
-            //return to home
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        }
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         
     }
 }
