@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
         <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
             <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImagePickerCategoryController">
             <connections>
-                <outlet property="backgroundImageView" destination="SaP-do-Lji" id="4JP-XB-pGZ"/>
-                <outlet property="searchButton" destination="GB3-9j-mCF" id="fJg-E1-MCu"/>
-                <outlet property="tableView" destination="tj6-Pp-jSr" id="U9I-Ct-taY"/>
+                <outlet property="tableHeaderView" destination="p38-cS-H56" id="YLn-wZ-CJI"/>
+                <outlet property="tableView" destination="tj6-Pp-jSr" id="uKM-dl-fbf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,139 +22,49 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SaP-do-Lji">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tj6-Pp-jSr">
-                    <rect key="frame" x="0.0" y="64" width="320" height="341"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="separatorColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="C9n-Ay-YZa"/>
                         <outlet property="delegate" destination="-1" id="z3X-c3-hHO"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oqc-Rc-UT5" userLabel="Border">
-                    <rect key="frame" x="0.0" y="64" width="320" height="1"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="xWJ-sL-aqI"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cHU-fS-8cb" userLabel="Border">
-                    <rect key="frame" x="0.0" y="405" width="320" height="1"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="T1d-Uh-fnA"/>
-                    </constraints>
-                </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih Kategori" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gP4-x1-Mgj">
-                    <rect key="frame" x="97" y="20" width="126" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="Aec-Id-HTW"/>
-                        <constraint firstAttribute="width" constant="126" id="CoA-eX-zVf"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GB3-9j-mCF">
-                    <rect key="frame" x="15" y="421" width="290" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="wdt-n4-3Na"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" title="Cari Produk Ini">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="didTapSearchButton:" destination="-1" eventType="touchUpInside" id="rAM-OH-j6g"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0kw-3C-9Xc">
-                    <rect key="frame" x="15" y="20" width="46" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="46" id="LrV-zA-Apq"/>
-                        <constraint firstAttribute="height" constant="44" id="zV4-np-A1c"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                    <state key="normal" title="Batal">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tapCancelButton:" destination="-1" eventType="touchUpInside" id="0Yy-Ia-Nuu"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="oqc-Rc-UT5" firstAttribute="top" secondItem="0kw-3C-9Xc" secondAttribute="bottom" id="22a-V9-CIq"/>
-                <constraint firstAttribute="trailing" secondItem="cHU-fS-8cb" secondAttribute="trailing" id="6pJ-10-iVe">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstItem="0kw-3C-9Xc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="8hz-b1-wea"/>
-                <constraint firstItem="GB3-9j-mCF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="9IN-iD-Je0">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstAttribute="bottom" secondItem="SaP-do-Lji" secondAttribute="bottom" id="HDh-67-D4L"/>
-                <constraint firstItem="tj6-Pp-jSr" firstAttribute="top" secondItem="0kw-3C-9Xc" secondAttribute="bottom" id="JzN-av-cEK"/>
-                <constraint firstItem="gP4-x1-Mgj" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Mta-Hm-ESk"/>
-                <constraint firstItem="SaP-do-Lji" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Nh7-2V-qRt"/>
-                <constraint firstItem="cHU-fS-8cb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ODS-sQ-SNT">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstAttribute="trailing" secondItem="oqc-Rc-UT5" secondAttribute="trailing" id="PEy-I3-F1r">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstAttribute="bottom" secondItem="GB3-9j-mCF" secondAttribute="bottom" constant="20" id="QhU-DR-w8j">
-                    <variation key="heightClass=regular-widthClass=compact" constant="15"/>
-                </constraint>
-                <constraint firstAttribute="trailing" secondItem="GB3-9j-mCF" secondAttribute="trailing" constant="15" id="RH8-2R-tgF">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstItem="SaP-do-Lji" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="VjC-tp-zLp"/>
-                <constraint firstAttribute="trailing" secondItem="SaP-do-Lji" secondAttribute="trailing" id="fR8-ea-lHU"/>
-                <constraint firstAttribute="trailing" secondItem="tj6-Pp-jSr" secondAttribute="trailing" id="fUV-92-tIa">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstItem="cHU-fS-8cb" firstAttribute="top" secondItem="tj6-Pp-jSr" secondAttribute="bottom" id="gJC-A6-GRS"/>
-                <constraint firstItem="0kw-3C-9Xc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="h6R-Mc-SPG"/>
-                <constraint firstItem="tj6-Pp-jSr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hpm-6N-gQe">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstAttribute="bottom" secondItem="GB3-9j-mCF" secondAttribute="bottom" constant="15" id="iY0-WK-AFj"/>
-                <constraint firstItem="gP4-x1-Mgj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="kKC-JU-AfM"/>
-                <constraint firstItem="oqc-Rc-UT5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oRL-Ia-jr1">
-                    <variation key="heightClass=regular-widthClass=regular" constant="80"/>
-                </constraint>
-                <constraint firstAttribute="bottom" secondItem="GB3-9j-mCF" secondAttribute="bottom" constant="20" id="tyh-EN-k9u">
-                    <variation key="heightClass=regular-widthClass=regular" constant="15"/>
-                </constraint>
-                <constraint firstItem="GB3-9j-mCF" firstAttribute="top" secondItem="cHU-fS-8cb" secondAttribute="bottom" constant="15" id="z11-zJ-XsO">
-                    <variation key="heightClass=regular-widthClass=compact" constant="15"/>
-                    <variation key="heightClass=regular-widthClass=regular" constant="15"/>
-                </constraint>
-                <constraint firstItem="oqc-Rc-UT5" firstAttribute="top" secondItem="gP4-x1-Mgj" secondAttribute="bottom" id="zR8-qe-C7a"/>
+                <constraint firstItem="tj6-Pp-jSr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0px-UW-982"/>
+                <constraint firstAttribute="trailing" secondItem="tj6-Pp-jSr" secondAttribute="trailing" id="EKG-ce-wWg"/>
+                <constraint firstItem="tj6-Pp-jSr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="O8Y-oB-EBk"/>
+                <constraint firstAttribute="bottom" secondItem="tj6-Pp-jSr" secondAttribute="bottom" id="tNw-ej-piP"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="QhU-DR-w8j"/>
-                    <exclude reference="tyh-EN-k9u"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=regular-widthClass=compact">
-                <mask key="constraints">
-                    <include reference="QhU-DR-w8j"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=regular-widthClass=regular">
-                <mask key="constraints">
-                    <include reference="tyh-EN-k9u"/>
-                </mask>
-            </variation>
+            <point key="canvasLocation" x="505" y="355"/>
+        </view>
+        <view contentMode="scaleToFill" id="p38-cS-H56">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih kategori untuk permudah pencarian" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UxC-xI-FWd">
+                    <rect key="frame" x="15" y="14" width="290" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="DKu-32-tRZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="UxC-xI-FWd" firstAttribute="leading" secondItem="p38-cS-H56" secondAttribute="leading" constant="15" id="OHg-Ka-xJx"/>
+                <constraint firstAttribute="trailing" secondItem="UxC-xI-FWd" secondAttribute="trailing" constant="15" id="Ps3-Gu-14E"/>
+                <constraint firstItem="UxC-xI-FWd" firstAttribute="top" secondItem="p38-cS-H56" secondAttribute="top" constant="14" id="VAK-Bu-6X9"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="447" y="807"/>
         </view>
     </objects>
 </document>

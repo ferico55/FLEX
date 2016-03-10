@@ -1036,8 +1036,6 @@
 		85298C1C1C8408BE00250277 /* ShipmentStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8529831E1C8408B800250277 /* ShipmentStatusCell.xib */; };
 		85298C1D1C8408BE00250277 /* ShipmentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852983201C8408B800250277 /* ShipmentStatusViewController.m */; };
 		85298C1E1C8408BE00250277 /* ShipmentStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852983211C8408B800250277 /* ShipmentStatusViewController.xib */; };
-		85298C1F1C8408BE00250277 /* ImagePickerCategoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852983261C8408B800250277 /* ImagePickerCategoryController.m */; };
-		85298C201C8408BE00250277 /* ImagePickerCategoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852983271C8408B800250277 /* ImagePickerCategoryController.xib */; };
 		85298C211C8408BE00250277 /* SearchAutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8529832B1C8408B800250277 /* SearchAutoCompleteCell.m */; };
 		85298C221C8408BE00250277 /* SearchAutoCompleteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8529832C1C8408B800250277 /* SearchAutoCompleteCell.xib */; };
 		85298C231C8408BE00250277 /* SearchAutoCompleteHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8529832E1C8408B800250277 /* SearchAutoCompleteHeaderView.m */; };
@@ -2060,6 +2058,8 @@
 		8565E1ED1B9405C800843388 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8565E1EC1B9405C800843388 /* GooglePlus.bundle */; };
 		85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDD1BAFCE4A002F1382 /* Fabric.framework */; };
 		85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDF1BAFD257002F1382 /* StoreKit.framework */; };
+		85A2F75D1C913CB3005170EB /* ImagePickerCategoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A2F75B1C913CB3005170EB /* ImagePickerCategoryController.m */; };
+		85A2F75E1C913CB3005170EB /* ImagePickerCategoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A2F75C1C913CB3005170EB /* ImagePickerCategoryController.xib */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -3981,9 +3981,6 @@
 		852983201C8408B800250277 /* ShipmentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentStatusViewController.m; sourceTree = "<group>"; };
 		852983211C8408B800250277 /* ShipmentStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentStatusViewController.xib; sourceTree = "<group>"; };
 		852983221C8408B800250277 /* string_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_order.h; sourceTree = "<group>"; };
-		852983251C8408B800250277 /* ImagePickerCategoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerCategoryController.h; sourceTree = "<group>"; };
-		852983261C8408B800250277 /* ImagePickerCategoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerCategoryController.m; sourceTree = "<group>"; };
-		852983271C8408B800250277 /* ImagePickerCategoryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImagePickerCategoryController.xib; sourceTree = "<group>"; };
 		852983281C8408B800250277 /* search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = search.h; sourceTree = "<group>"; };
 		8529832A1C8408B800250277 /* SearchAutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchAutoCompleteCell.h; sourceTree = "<group>"; };
 		8529832B1C8408B800250277 /* SearchAutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchAutoCompleteCell.m; sourceTree = "<group>"; };
@@ -5198,6 +5195,9 @@
 		8565E1EC1B9405C800843388 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
 		85A18BDD1BAFCE4A002F1382 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		85A18BDF1BAFD257002F1382 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		85A2F75A1C913CB3005170EB /* ImagePickerCategoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerCategoryController.h; sourceTree = "<group>"; };
+		85A2F75B1C913CB3005170EB /* ImagePickerCategoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerCategoryController.m; sourceTree = "<group>"; };
+		85A2F75C1C913CB3005170EB /* ImagePickerCategoryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImagePickerCategoryController.xib; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -8921,9 +8921,9 @@
 		852983241C8408B800250277 /* ImageSearch */ = {
 			isa = PBXGroup;
 			children = (
-				852983251C8408B800250277 /* ImagePickerCategoryController.h */,
-				852983261C8408B800250277 /* ImagePickerCategoryController.m */,
-				852983271C8408B800250277 /* ImagePickerCategoryController.xib */,
+				85A2F75A1C913CB3005170EB /* ImagePickerCategoryController.h */,
+				85A2F75B1C913CB3005170EB /* ImagePickerCategoryController.m */,
+				85A2F75C1C913CB3005170EB /* ImagePickerCategoryController.xib */,
 			);
 			path = ImageSearch;
 			sourceTree = "<group>";
@@ -11119,7 +11119,6 @@
 				85298DAA1C8408BF00250277 /* icon_button_pricealert_nonactive@3x.png in Resources */,
 				85298F691C8408BF00250277 /* loyalMerchant.png in Resources */,
 				85298B1E1C8408BE00250277 /* InboxMessageDetailCell.xib in Resources */,
-				85298C201C8408BE00250277 /* ImagePickerCategoryController.xib in Resources */,
 				85298DF81C8408BF00250277 /* icon_default_shop@2x.jpg in Resources */,
 				85298B501C8408BE00250277 /* InboxTicketReplyViewController.xib in Resources */,
 				85298A491C8408BE00250277 /* AlertListViewCell.xib in Resources */,
@@ -11895,6 +11894,7 @@
 				85298DC31C8408BF00250277 /* icon_11@3x.png in Resources */,
 				85298B5F1C8408BE00250277 /* MyShopAddressDetailViewController.xib in Resources */,
 				85298C841C8408BE00250277 /* ShopReviewPageViewController.xib in Resources */,
+				85A2F75E1C913CB3005170EB /* ImagePickerCategoryController.xib in Resources */,
 				85298DF21C8408BF00250277 /* icon_contact_us@3x.png in Resources */,
 				85298E741C8408BF00250277 /* icon_netral50@3x.png in Resources */,
 				85298DB71C8408BF00250277 /* icon_camera_album@2x.png in Resources */,
@@ -12984,7 +12984,6 @@
 				852989C21C8408BE00250277 /* LuckyDealWord.m in Sources */,
 				852989151C8408BE00250277 /* SkipReviewResult.m in Sources */,
 				85298A8A1C8408BE00250277 /* RequestCategory.m in Sources */,
-				85298C1F1C8408BE00250277 /* ImagePickerCategoryController.m in Sources */,
 				852989D01C8408BE00250277 /* TransactionCart.m in Sources */,
 				852988E01C8408BE00250277 /* ResolutionOrder.m in Sources */,
 				85298AAE1C8408BE00250277 /* TKPDTabInboxTalkNavigationController.m in Sources */,
@@ -13041,6 +13040,7 @@
 				85298A2C1C8408BE00250277 /* LogoutViewController.m in Sources */,
 				85298B7E1C8408BE00250277 /* AlertPriceNotificationViewController.m in Sources */,
 				85298B9B1C8408BE00250277 /* ProductReviewCell.m in Sources */,
+				85A2F75D1C913CB3005170EB /* ImagePickerCategoryController.m in Sources */,
 				85298C3E1C8408BE00250277 /* SettingBankNameViewController.m in Sources */,
 				852988CB1C8408BE00250277 /* InboxMessageDetailBetween.m in Sources */,
 				85298A131C8408BE00250277 /* UploadImageImage.m in Sources */,

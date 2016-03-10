@@ -94,6 +94,8 @@ SpellCheckRequestDelegate,
 ImageSearchRequestDelegate
 >
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+
 @property (strong, nonatomic) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
 @property (strong, nonatomic) NSMutableDictionary *similarityDictionary;
@@ -219,11 +221,11 @@ ImageSearchRequestDelegate
     [_collectionView setAlwaysBounceVertical:YES];
     [_collectionView setDelegate:self];
     [_collectionView setDataSource:self];
-    [_firstFooter setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 50)];
+    [_firstFooter setFrame:CGRectMake(0, 0, _flowLayout.footerReferenceSize.width, 50)];
     [_collectionView addSubview:_firstFooter];
     
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     
     [_params setDictionary:_data];
@@ -569,6 +571,8 @@ ImageSearchRequestDelegate
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
     [_networkManager doRequest];
+    
+    [_act startAnimating];
 }
 
 -(IBAction)tap:(id)sender {

@@ -12,23 +12,36 @@
 
 @interface ImagePickerCategoryController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
 @property (strong, nonatomic) NSArray *categories;
+@property (strong, nonatomic) NSDictionary *selectedCategory;
 
 @end
 
-@implementation ImagePickerCategoryController{
-    NSDictionary *_selectedCategory;
-}
+@implementation ImagePickerCategoryController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setBlurBackground];
-    [self setSearchButtonStyle];
+    self.title = @"Hasil Pencarian";
+    self.navigationItem.rightBarButtonItem = [self rightButton];
+    self.navigationItem.backBarButtonItem = [self backButton];
+    self.tableView.tableHeaderView = _tableHeaderView;
     self.categories = [self getCategories];
     self.tableView.allowsMultipleSelection = NO;
+}
+
+
+- (UIBarButtonItem *)backButton {
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    return backButton;
+}
+
+- (UIBarButtonItem *)rightButton {
+    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Lanjutkan" style:UIBarButtonItemStyleDone target:self action:@selector(tapContinueButton:)];
+    continueButton.enabled = NO;
+    continueButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+    return continueButton;
 }
 
 -(NSArray *)getCategories{
@@ -54,16 +67,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)setBlurBackground {
-    UIImage *image = [_imageQuery objectForKey:UIImagePickerControllerEditedImage];
-    self.backgroundImageView.image = [UIImageEffects imageByApplyingDarkEffectToImage:image];
-}
-
-- (void)setSearchButtonStyle {
-    self.searchButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
-    self.searchButton.layer.cornerRadius = 3;
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -74,18 +77,8 @@
     return self.categories.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (IS_IPAD) {
-        return 25;
-    }
-    return 1.0f;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (IS_IPAD) {
-        return tableView.sectionFooterHeight;
-    }
-    return 1.0f;
+    return 25;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -94,53 +87,35 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"categories"];
     }
     cell.textLabel.text = self.categories[indexPath.row][@"title"];
-    cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.separatorInset = UIEdgeInsetsZero;
-    cell.tintColor = [UIColor whiteColor];
-    
     if ([_categories[indexPath.row] isEqual:_selectedCategory]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    
     return cell;
 }
 
 #pragma mark - Table view delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath   *)indexPath
-{
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     _selectedCategory = _categories[indexPath.row];
     [_tableView reloadData];
+    
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
 }
 
-- (IBAction)didTapSearchButton:(UIButton *)sender {
-    if (!_selectedCategory) {
-        return;
-    }
+- (void)tapContinueButton:(UIBarButtonItem *)sender {
     SearchResultViewController *controller = [SearchResultViewController new];
     controller.isFromAutoComplete = NO;
     controller.isFromImageSearch = YES;
-    controller.title = @"Image Search";
+    controller.title = @"Hasil Pencarian";
     controller.hidesBottomBarWhenPushed = YES;
-    controller.data = @{@"type":@"search_product",
-                        @"department_id":_selectedCategory[@"id"]};
+    controller.data = @{@"type":@"search_product", @"department_id":_selectedCategory[@"id"]};
     controller.imageQueryInfo = _imageQuery;
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigation.navigationBar.translucent = NO;
-    
-    [self presentViewController:navigation animated:YES completion:nil];
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-}
-
-- (IBAction)tapCancelButton:(UIButton *)sender {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

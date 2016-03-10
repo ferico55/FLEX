@@ -128,7 +128,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     [self loadHistory];
 
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(clearHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
@@ -680,8 +680,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [picker dismissViewControllerAnimated:YES completion:^{
         ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
         controller.imageQuery = info;
-        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:controller animated:YES completion:nil];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
     }];
 }
 
