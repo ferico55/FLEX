@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 11/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import <BlocksKit/NSArray+BlocksKit.h>
 #import "InboxMessageViewController.h"
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
@@ -265,26 +266,20 @@
 }
 
 - (void)messageaction:(NSString*)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
-    NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
-    NSUInteger index = 1;
-    
-    for (NSIndexPath* item in indexPaths) {
-        NSInteger row = [item row];
-        [discardedItems addIndex:row];
-        InboxMessageList *list = _messages[row];
-        [arr addObject:list.json_data_info];
-        index++;
-    }
-    
+    NSIndexSet* discardedItems = [indexPaths bk_reduce:[NSMutableIndexSet new]
+                                             withBlock:^NSMutableIndexSet *(NSMutableIndexSet * totalSet, NSIndexPath *indexPath) {
+        [totalSet addIndex:indexPath.row];
+        return totalSet;
+    }];
+
+    NSArray *messagesJson = [indexPaths bk_map:^NSString *(NSIndexPath *indexPath) {
+        return _messages[indexPath.row].json_data_info;
+    }];
+
     [_messages removeObjectsAtIndexes:discardedItems];
-
-
-    [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    [_table endUpdates];
 
-    [self postAction:action withMessageJson:arr];
+    [self postAction:action withMessageJson:messagesJson];
 }
 
 - (void)postAction:(NSString *)action withMessageJson:(NSMutableArray<NSString*> *)messagesJson {
