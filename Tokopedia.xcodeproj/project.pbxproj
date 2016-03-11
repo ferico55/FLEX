@@ -2085,7 +2085,7 @@
 		62E5B3421C8D984C00AF4503 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62E5AB281C8D984B00AF4503 /* Tokopedia-Info.plist */; };
 		62E5B3431C8D984C00AF4503 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 62E5AB2A1C8D984B00AF4503 /* Tokopedia.entitlements */; };
 		62E5B3441C8D984C00AF4503 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 62E5AB2B1C8D984B00AF4503 /* Tokopedia.xcworkspace */; };
-		62E694F01C9116980074394F /* UploadReviewImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E694EF1C9116980074394F /* UploadReviewImageResult.m */; };
+		62E694F01C9116980074394F /* ImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E694EF1C9116980074394F /* ImageResult.m */; };
 		62EA5C581C8EB06A001F1D48 /* SubmitReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EA5C571C8EB06A001F1D48 /* SubmitReview.m */; };
 		62EA5C5B1C8EB100001F1D48 /* SubmitReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EA5C5A1C8EB100001F1D48 /* SubmitReviewResult.m */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5305,8 +5305,8 @@
 		62E5AB291C8D984B00AF4503 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		62E5AB2A1C8D984B00AF4503 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		62E5AB2B1C8D984B00AF4503 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
-		62E694EE1C9116980074394F /* UploadReviewImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadReviewImageResult.h; sourceTree = "<group>"; };
-		62E694EF1C9116980074394F /* UploadReviewImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadReviewImageResult.m; sourceTree = "<group>"; };
+		62E694EE1C9116980074394F /* ImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageResult.h; path = ../MyReviewReputation/ImageResult.h; sourceTree = "<group>"; };
+		62E694EF1C9116980074394F /* ImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageResult.m; path = ../MyReviewReputation/ImageResult.m; sourceTree = "<group>"; };
 		62EA5C561C8EB06A001F1D48 /* SubmitReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubmitReview.h; sourceTree = "<group>"; };
 		62EA5C571C8EB06A001F1D48 /* SubmitReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubmitReview.m; sourceTree = "<group>"; };
 		62EA5C591C8EB100001F1D48 /* SubmitReviewResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubmitReviewResult.h; sourceTree = "<group>"; };
@@ -6447,8 +6447,6 @@
 				62EA5C571C8EB06A001F1D48 /* SubmitReview.m */,
 				62EA5C591C8EB100001F1D48 /* SubmitReviewResult.h */,
 				62EA5C5A1C8EB100001F1D48 /* SubmitReviewResult.m */,
-				62E694EE1C9116980074394F /* UploadReviewImageResult.h */,
-				62E694EF1C9116980074394F /* UploadReviewImageResult.m */,
 			);
 			path = MyReviewReputation;
 			sourceTree = "<group>";
@@ -7407,6 +7405,8 @@
 		62E5A20D1C8D984400AF4503 /* UploadImage */ = {
 			isa = PBXGroup;
 			children = (
+				62E694EE1C9116980074394F /* ImageResult.h */,
+				62E694EF1C9116980074394F /* ImageResult.m */,
 				62E5A20E1C8D984400AF4503 /* GenerateHost */,
 				62E5A2151C8D984400AF4503 /* Upload.h */,
 				62E5A2161C8D984400AF4503 /* Upload.m */,
@@ -12500,7 +12500,7 @@
 				62E5AD0C1C8D984C00AF4503 /* TxOrderPaymentEditMethod.m in Sources */,
 				62E5AB381C8D984B00AF4503 /* NSStringCategory.m in Sources */,
 				62E5AC7D1C8D984C00AF4503 /* List.m in Sources */,
-				62E694F01C9116980074394F /* UploadReviewImageResult.m in Sources */,
+				62E694F01C9116980074394F /* ImageResult.m in Sources */,
 				62E5AEE61C8D984C00AF4503 /* ProductDetailReputationViewController.m in Sources */,
 				62E5AF231C8D984C00AF4503 /* SalesNewOrderViewController.m in Sources */,
 				62E5AE691C8D984C00AF4503 /* SalesViewController.m in Sources */,

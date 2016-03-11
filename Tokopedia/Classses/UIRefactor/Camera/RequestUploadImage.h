@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "UploadImage.h"
+#import "ImageResult.h"
 #import "GenerateHost.h"
 
 #define DATA_SELECTED_IMAGE_VIEW_KEY @"data_selected_image_view"
@@ -46,5 +47,14 @@
                        fieldName:(NSString*)fieldName
                          success:(void (^)(id imageObject, UploadImage*image))success
                          failure:(void(^)(id imageObject, NSError *error))failure;
+
++ (void)requestUploadImage:(UIImage*)image
+            withUploadHost:(NSString*)host
+                      path:(NSString*)path
+                      name:(NSString*)name
+                  fileName:(NSString*)fileName
+             requestObject:(id)object
+                 onSuccess:(void (^)(ImageResult *))success
+                 onFailure:(void (^)(NSError *))failure;
 
 @end

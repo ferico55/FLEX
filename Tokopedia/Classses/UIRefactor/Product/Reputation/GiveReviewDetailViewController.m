@@ -176,11 +176,9 @@
 - (NSString*)generateUniqueImageID {
     NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSString *userID = [[UserAuthentificationManager new] getUserId];
-    NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                          dateStyle:NSDateFormatterShortStyle
-                                                          timeStyle:NSDateFormatterFullStyle];
+    int unixTime = (int) [[NSDate date] timeIntervalSince1970];
     
-    return [NSString stringWithFormat:@"%zd%@%@", userID, uuid, dateString];
+    return [NSString stringWithFormat:@"%zd%@%d", userID, uuid, unixTime];
 }
 
 #pragma mark - Text Field Delegate 

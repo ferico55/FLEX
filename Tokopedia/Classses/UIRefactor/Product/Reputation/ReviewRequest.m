@@ -17,6 +17,8 @@
 #import "MyReviewReputation.h"
 #import "SubmitReview.h"
 #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
+#import "RequestUploadImage.h"
+#import "RequestObject.h"
 
 typedef NS_ENUM(NSInteger, ReviewRequestType){
     ReviewRequestLikeDislike
@@ -31,6 +33,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     TokopediaNetworkManager *getReviewDetailNetworkManager;
     TokopediaNetworkManager *submitReviewNetworkManager;
     TokopediaNetworkManager *uploadReviewImageNetworkManager;
+    TokopediaNetworkManager *productReviewSubmitNetworkManager;
 }
 
 - (id)init{
@@ -41,6 +44,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
         getReviewDetailNetworkManager = [TokopediaNetworkManager new];
         submitReviewNetworkManager = [TokopediaNetworkManager new];
         uploadReviewImageNetworkManager = [TokopediaNetworkManager new];
+        productReviewSubmitNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -180,28 +184,55 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                     data:(id)imageData
                                  imageID:(NSString *)imageID
                                    token:(NSString *)token
-                               onSuccess:(void (^)(UploadReviewImageResult *))successCallback
+                               onSuccess:(void (^)(ImageResult *))successCallback
                                onFailure:(void (^)(NSError *))errorCallback {
     uploadReviewImageNetworkManager.isParameterNotEncrypted = NO;
     uploadReviewImageNetworkManager.isUsingHmac = YES;
     
-    NSData *image = [imageData objectForKey:@"cameraimagedata"]?:@"";
+    UIImage *image = [imageData objectForKey:@"photo"];
+    NSString *fileName = [imageData objectForKey:@"cameraimagename"];
+    NSString *name = @"fileToUpload";
     
-    [uploadReviewImageNetworkManager requestWithBaseUrl:[NSString stringWithFormat:@"https://%@", host]
-                                                   path:@"/upload/attachment"
-                                                 method:RKRequestMethodPOST
-                                              parameter:@{@"id" : imageID,
-                                                          @"fileToUpload" : image,
-                                                          @"token" : token}
-                                                mapping:[UploadReviewImageResult mapping]
-                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                                  UploadReviewImageResult *obj = [result objectForKey:@""];
-                                                  successCallback(obj);
-                                              }
-                                              onFailure:^(NSError *errorResult) {
-                                                  errorCallback(errorResult);
-                                              }];
+    RequestObjectUploadReviewImage *requestObject = [RequestObjectUploadReviewImage new];
+    requestObject.image_id = imageID;
+    requestObject.token = token;
+    requestObject.user_id = [[UserAuthentificationManager new] getUserId];
+    
+    [RequestUploadImage requestUploadImage:image
+                            withUploadHost:host
+                                      path:@"/upload/attachment"
+                                      name:name
+                                  fileName:fileName
+                             requestObject:requestObject
+                                 onSuccess:^(ImageResult *imageResult) {
+                                     successCallback(imageResult);
+                                 }
+                                 onFailure:^(NSError *errorResult) {
+                                     errorCallback(errorResult);
+                                 }];
+}
+
+- (void)requestProductReviewSubmitWithPostKey:(NSString *)postKey
+                                 fileUploaded:(NSDictionary *)fileUploaded
+                                    onSuccess:(void (^)(SubmitReviewResult *))successCallback
+                                    onFailure:(void (^)(NSError *))errorCallback {
+    productReviewSubmitNetworkManager.isParameterNotEncrypted = NO;
+    productReviewSubmitNetworkManager.isUsingHmac = YES;
+    
+    [productReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+                                                     path:@"/v4/action/review/add_product_review_submit.pl"
+                                                   method:RKRequestMethodPOST
+                                                parameter:@{@"post_key" : postKey,
+                                                            @"file_uploaded" : fileUploaded}
+                                                  mapping:[SubmitReview mapping]
+                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                    SubmitReview *obj = [result objectForKey:@""];
+                                                    successCallback(obj.data);
+                                                }
+                                                onFailure:^(NSError *errorResult) {
+                                                    errorCallback(errorResult);
+                                                }];
 }
 
 @end

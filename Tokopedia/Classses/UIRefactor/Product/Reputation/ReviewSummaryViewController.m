@@ -18,7 +18,7 @@
 
 @interface ReviewSummaryViewController ()
 <
-    TokopediaNetworkManagerDelegate
+TokopediaNetworkManagerDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImage;
@@ -45,6 +45,7 @@
     ReviewRequest *_reviewRequest;
     
     BOOL _hasProductReviewPhoto;
+    NSInteger _counter;
     
     NSMutableDictionary *_fileUploaded;
     NSString *_postKey;
@@ -263,6 +264,7 @@
                                                       onSuccess:^(SubmitReviewResult *result) {
                                                           if (_hasAttachedImages) {
                                                               _postKey = result.post_key;
+                                                              _counter = 0;
                                                               for (NSString *imageID in _imageIDs) {
                                                                   [self requestUploadImageWithImageID:imageID];
                                                               }
@@ -411,15 +413,34 @@
 }
 
 - (void)requestUploadImageWithImageID:(NSString*)imageID {
-    [_reviewRequest requestUploadReviewImageWithHost:_generatedHost.upload_host
-                                                data:[_imagesToUpload objectForKey:imageID] imageID:imageID
+    [_reviewRequest requestUploadReviewImageWithHost:[NSString stringWithFormat:@"https://%@",_generatedHost.upload_host]
+                                                data:[_imagesToUpload objectForKey:imageID]
+                                             imageID:imageID
                                                token:_token
-                                           onSuccess:^(UploadReviewImageResult *result) {
+                                           onSuccess:^(ImageResult *result) {
                                                [_fileUploaded setObject:result.pic_obj forKey:imageID];
+                                               _counter++;
+                                               if (_counter == [_imageIDs count]) {
+                                                   [self requestSubmitReviewWithPostKey:_postKey
+                                                                           fileUploaded:_fileUploaded];
+                                               }
                                            }
                                            onFailure:^(NSError *errorResult) {
-                                           
+                                               
                                            }];
+    
+}
+
+- (void)requestSubmitReviewWithPostKey:(NSString*)postKey
+                          fileUploaded:(NSDictionary*)fileUploaded {
+    [_reviewRequest requestProductReviewSubmitWithPostKey:postKey
+                                             fileUploaded:fileUploaded
+                                                onSuccess:^(SubmitReviewResult *result) {
+                                                    
+                                                }
+                                                onFailure:^(NSError *errorResult) {
+                                                    
+                                                }];
 }
 
 @end

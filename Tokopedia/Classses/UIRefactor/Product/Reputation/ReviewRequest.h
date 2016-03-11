@@ -13,7 +13,7 @@
 #import "InboxReputationResult.h"
 #import "MyReviewReputationResult.h"
 #import "SubmitReviewResult.h"
-#import "UploadReviewImageResult.h"
+#import "ImageResult.h"
 
 @interface ReviewRequest : NSObject
 - (void)requestReviewLikeDislikesWithId:(NSString *)reviewId
@@ -54,7 +54,12 @@
                                     data:(id)imageData
                                  imageID:(NSString*)imageID
                                    token:(NSString*)token
-                               onSuccess:(void(^)(UploadReviewImageResult *result))successCallback
+                               onSuccess:(void(^)(ImageResult *result))successCallback
                                onFailure:(void(^)(NSError *errorResult))errorCallback;
+
+- (void)requestProductReviewSubmitWithPostKey:(NSString*)postKey
+                                 fileUploaded:(NSDictionary*)fileUploaded
+                                    onSuccess:(void(^)(SubmitReviewResult *result))successCallback
+                                    onFailure:(void(^)(NSError *errorResult))errorCallback;
 
 @end
