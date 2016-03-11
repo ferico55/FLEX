@@ -96,7 +96,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCheckmark:) name:@"editModeOn" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageWithFilter:) name:[NSString stringWithFormat:@"%@%@", @"showRead", _messageNavigationFlag] object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadVc:) name:@"reloadvc" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMessageWithIndex:) name:@"updateMessageWithIndex" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markAsReadMessage:) name:@"markAsReadMessage" object:nil];
 }
 
@@ -501,20 +500,6 @@
         
         [self fetchInboxMessages];
     }
-}
-
--(void) updateMessageWithIndex:(NSNotification*)notification {
-    NSDictionary *userinfo = notification.userInfo;
-    NSIndexPath *indexpath = [userinfo objectForKey:MESSAGE_INDEX_PATH];
-    NSString *messageReply = [userinfo objectForKey:KTKPDMESSAGE_MESSAGEREPLYKEY];
-    
-    if(messageReply) {
-        InboxMessageList *list = _messages[indexpath.row];
-        
-        list.message_reply = [NSString stringWithFormat:@"%@",messageReply];
-        [_table reloadData];
-    }
-
 }
 
 - (void)markAsReadMessage:(NSNotification*)notification {
