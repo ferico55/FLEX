@@ -108,7 +108,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     _hotlist = [NSMutableArray new];
     
     [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
-    [_searchBar setTintColor:[UIColor whiteColor]];
     [self.view addSubview:_searchBar];
     
     _searchBar.delegate = self;
@@ -686,6 +685,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
     }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 -(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{

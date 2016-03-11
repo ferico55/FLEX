@@ -309,10 +309,10 @@
                 rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
             }
             if ([self isShowAttachment:conversation]) {
-                rowHeight = cellRowHeight;
+                rowHeight = cellRowHeight + deltaHeightCell;
             }
             if ([self isShowAttachmentWithButton:conversation]) {
-                rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height;
+                rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
             }
         }
         

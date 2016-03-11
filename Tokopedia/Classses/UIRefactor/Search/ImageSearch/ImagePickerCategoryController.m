@@ -48,7 +48,7 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
     
-    NSString *categoryString = [gtmContainer stringForKey:@"image_search_categories"]?:@"Aksesoris:91,Aksesoris Rambut:1228,Baju Korea:84,Baju Muslim:86,Barang Couple:85,Batik:88,Fashion & Aksesoris Lainnya:1128,Jam Tangan:93,Kaos:87,Pakaian Anak Laki-Laki:83,Pakaian Anak Perempuan:82,Pakaian Pria:81,Pakaian Wanita:80,Sepatu:90,Perhiasan:92,Tas Pria & Wanita:89";
+    NSString *categoryString = [gtmContainer stringForKey:@"image_search_categories"]?:@"Semua Kategori:0,Aksesoris:91,Aksesoris Rambut:1228,Baju Korea:84,Baju Muslim:86,Barang Couple:85,Batik:88,Fashion & Aksesoris Lainnya:1128,Jam Tangan:93,Kaos:87,Pakaian Anak Laki-Laki:83,Pakaian Anak Perempuan:82,Pakaian Pria:81,Pakaian Wanita:80,Sepatu:90,Perhiasan:92,Tas Pria & Wanita:89";
     
     NSArray *arrayFromGTM = [[NSMutableArray alloc] initWithArray:[categoryString componentsSeparatedByString:@","]];
     NSMutableArray *arrayCategory = [NSMutableArray new];

@@ -32,6 +32,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "TKPDPhotoPicker.h"
+#import "FilterCategoryViewController.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -51,7 +52,8 @@
     RequestUploadImageDelegate,
     TokopediaNetworkManagerDelegate,
     TKPDPhotoPickerDelegate,
-    GeneralTableViewControllerDelegate
+    GeneralTableViewControllerDelegate,
+    FilterCategoryViewDelegate
 >
 {
     NSMutableDictionary *_dataInput;
@@ -249,8 +251,10 @@
     else if(type == TYPE_ADD_EDIT_PRODUCT_ADD)
     {
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        Breadcrumb *lastCategory = [auth getLastProductAddCategory];
-        [_dataInput setObject:lastCategory forKey:DATA_CATEGORY_KEY];
+        CategoryDetail *lastCategory = [auth getLastProductAddCategory];
+        if (lastCategory) {
+            [_dataInput setObject:lastCategory forKey:DATA_CATEGORY_KEY];
+        }
     }
     
     RequestGenerateHost *generateHost =[RequestGenerateHost new];
@@ -399,21 +403,13 @@
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
-            case BUTTON_PRODUCT_CATEGORY:
-            {
-                Breadcrumb *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                CategoryMenuViewController *categoryViewController = [CategoryMenuViewController new];
-                NSInteger d_id = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY] integerValue];
-                categoryViewController.data = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:@(d_id),
-                                                DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
-                                                };
-                categoryViewController.selectedCategoryID = [category.department_id integerValue];
-                categoryViewController.delegate = self;
-                
-                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:categoryViewController];
-                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                
-                //[self.navigationController pushViewController:categoryViewController animated:YES];
+            case BUTTON_PRODUCT_CATEGORY: {
+                FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                controller.filterType = FilterCategoryTypeProductAddEdit;
+                controller.delegate = self;
+                UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];
+                navigation.navigationBar.translucent = NO;
+                [self.navigationController presentViewController:navigation animated:YES completion:nil];
                 break;
             }
             case BUTTON_PRODUCT_PRICE_CURRENCY:
@@ -586,8 +582,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    //NSDictionary *selectedCategory = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-    Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     
     UITableViewCell* cell = nil;
@@ -606,8 +601,8 @@
                 }
                 if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
                     NSString *departmentTitle = @"Pilih Kategori";
-                    if (breadcrumb.department_name && ![breadcrumb.department_name isEqualToString:@""]) {
-                        departmentTitle = breadcrumb.department_name;
+                    if (category.name && ![category.name isEqualToString:@""]) {
+                        departmentTitle = category.name;
                     }
                     cell.detailTextLabel.text = departmentTitle;
                 }
@@ -716,17 +711,13 @@
                     break;
                 case BUTTON_PRODUCT_CATEGORY:
                 {
-                    Breadcrumb *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                    CategoryMenuViewController *categoryViewController = [CategoryMenuViewController new];
-                    NSInteger d_id = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY] integerValue];
-                    categoryViewController.data = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:@(d_id),
-                                                    DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
-                                                    };
-                    categoryViewController.selectedCategoryID = [category.department_id integerValue];
-                    categoryViewController.delegate = self;
-                    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:categoryViewController];
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                    //[self.navigationController pushViewController:categoryViewController animated:YES];
+                    FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                    controller.filterType = FilterCategoryTypeProductAddEdit;
+                    controller.delegate = self;
+                    controller.selectedCategory = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                    UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];
+                    navigation.navigationBar.translucent = NO;
+                    [self.navigationController presentViewController:navigation animated:YES completion:nil];
                     break;
                 }
                 case BUTTON_PRODUCT_CATALOG:
@@ -850,11 +841,15 @@
         return param;
     }
     if (tag == TAG_REQUEST_LIST_CATALOG) {
-        Breadcrumb *department = [_dataInput objectForKey:DATA_CATEGORY_KEY]?:[Breadcrumb new];
-        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY: ACTION_GET_CATALOG,
-                                @"product_name":_productNameTextField.text?:@"",
-                                @"product_department_id": department.department_id?:@""
-                                };
+        NSString *categoryId = @"";
+        if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
+            categoryId = [[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId];
+        }
+        NSDictionary *param = @{
+            kTKPDDETAIL_APIACTIONKEY    : ACTION_GET_CATALOG,
+            @"product_name"             : _productNameTextField.text?:@"",
+            @"product_department_id"    : categoryId,
+        };
         return param;
     }
     return nil;
@@ -1435,25 +1430,16 @@
 }
 
 #pragma mark - Category Delegate
--(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-{
-    [_dataInput setObject:userInfo forKey:DATA_CATEGORY_KEY];
-    NSString *departmentName = [userInfo objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    NSString *departmentID = [userInfo objectForKey:API_DEPARTMENT_ID_KEY];
-    //[_categoryButton setTitle:departmentTitle forState:UIControlStateNormal];
-    Breadcrumb *breadcrumb = [Breadcrumb new];
-    breadcrumb.department_id = departmentID;
-    breadcrumb.department_name = departmentName;
-    [_dataInput setObject:breadcrumb forKey:DATA_CATEGORY_KEY];
-    [_tableView reloadData];
-    
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+
+- (void)didSelectCategory:(CategoryDetail *)category {
+    [_dataInput setObject:category forKey:DATA_CATEGORY_KEY];
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY] integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        [secureStorage setKeychainWithValue:departmentID withKey:LAST_CATEGORY_VALUE];
-        [secureStorage setKeychainWithValue:departmentName withKey:LAST_CATEGORY_NAME];
+        [secureStorage setKeychainWithValue:category.categoryId withKey:LAST_CATEGORY_VALUE];
+        [secureStorage setKeychainWithValue:category.name withKey:LAST_CATEGORY_NAME];
     }
-    [_networkManagerCatalog doRequest];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Product Edit Image Delegate
@@ -1917,11 +1903,13 @@
         NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
         
         NSString *serverID = result.server_id?:_generateHost.result.generated_host.server_id?:@"0";
-        NSArray *breadcrumbs = result.breadcrumb?:@[];
-        Breadcrumb *breadcrumb = [breadcrumbs lastObject]?:[Breadcrumb new];
-        [_dataInput setObject:breadcrumb forKey:DATA_CATEGORY_KEY];
-        NSString *priceCurencyID = result.product.product_currency_id?:@"1";
+
+        if (result.breadcrumb.count > 0) {
+            CategoryDetail *category = [result.breadcrumb lastObject];
+            [_dataInput setObject:category forKey:DATA_CATEGORY_KEY];
+        }
         
+        NSString *priceCurencyID = result.product.product_currency_id?:@"1";
         NSString *price = result.product.product_price?:@"";
         NSString *weight = result.product.product_weight?:@"";
         NSArray *wholesale = result.wholesale_price?:@[];
@@ -1985,13 +1973,16 @@
     BOOL isValidImage = nImage!=0;
     
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductDetail new];
-    Breadcrumb *department = [_dataInput objectForKey:DATA_CATEGORY_KEY]?:[Breadcrumb new];
     NSString *productName = product.product_name;
     NSString *productPrice = product.product_price;
     NSString *productPriceCurrencyID = product.product_currency_id;
     NSString *productWeight = product.product_weight;
     NSString *productWeightUnitID = product.product_weight_unit;
-    NSInteger departmentID = [department.department_id integerValue];
+
+    NSInteger departmentID = 0;
+    if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
+        departmentID = [[[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId] integerValue];
+    }
     
     BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
     BOOL isPriceCurrencyUSD = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD);
@@ -2232,8 +2223,8 @@
     RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
     [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
     
-    RKObjectMapping *breadcrumbMapping = [RKObjectMapping mappingForClass:[Breadcrumb class]];
-    [breadcrumbMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY,API_DEPARTMENT_ID_KEY]];
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:@{@"department_id" : @"categoryId", @"department_name" : @"name"}];
     
     RKObjectMapping *otherproductMapping = [RKObjectMapping mappingForClass:[OtherProduct class]];
     [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,
@@ -2253,7 +2244,7 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
     [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
     
-    RKRelationshipMapping *breadcrumbRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY toKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY withMapping:breadcrumbMapping];
+    RKRelationshipMapping *breadcrumbRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY toKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY withMapping:categoryMapping];
     [resultMapping addPropertyMapping:breadcrumbRel];
     RKRelationshipMapping *otherproductRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherproductMapping];
     [resultMapping addPropertyMapping:otherproductRel];
