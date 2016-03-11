@@ -64,7 +64,7 @@ PODS:
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
-  - AppsFlyer-SDK
+  - AppsFlyer-SDK (= 4.3.7)
   - BlocksKit (~> 2.2.5)
   - Google/Analytics
   - GoogleAppIndexing
@@ -99,4 +99,4 @@ SPEC CHECKSUMS:
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.38.0
