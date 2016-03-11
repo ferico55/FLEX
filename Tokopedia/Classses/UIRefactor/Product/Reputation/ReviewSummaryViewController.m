@@ -14,6 +14,7 @@
 #import "GenerateHostRequest.h"
 #import "GiveReviewRatingViewController.h"
 #import "UIImageView+AFNetworking.h"
+#import "ReviewRequest.h"
 
 @interface ReviewSummaryViewController ()
 <
@@ -30,6 +31,7 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *accuracyStarsArray;
 @property (weak, nonatomic) IBOutlet UILabel *accuracyLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachedImagesViewHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
 
 
 @end
@@ -40,8 +42,12 @@
     __weak RKObjectManager *_objectManager;
     
     GeneratedHost *_generatedHost;
+    ReviewRequest *_reviewRequest;
     
     BOOL _hasProductReviewPhoto;
+    
+    NSMutableDictionary *_fileUploaded;
+    NSString *_postKey;
 }
 
 - (void)viewDidLoad {
@@ -82,7 +88,7 @@
                                                   
                                               }];
     
-    
+    _reviewRequest = [ReviewRequest new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -116,13 +122,13 @@
     
     if ([self isNoImageUploaded]) {
         _attachedImagesViewHeight.constant = 0;
+        _textViewHeight.constant = 147.0;
     } else {
         for (int ii = 0; ii < _uploadedImages.count; ii++) {
-            if ([_uploadedImages[ii] isKindOfClass:[UIImageView class]]) {
-                ((UIImageView*)_attachedImagesArray[ii]).image = ((UIImageView*)_uploadedImages[ii]).image;
-                ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
-                
-            }
+            ((UIImageView*)_attachedImagesArray[ii]).image = [[_uploadedImages[ii] objectForKey:@"photo"] objectForKey:@"photo"];
+            ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
+            
+            
         }
     }
     
@@ -200,10 +206,8 @@
 }
 
 - (BOOL)isNoImageUploaded {
-    for (id image in _uploadedImages) {
-        if ([image isKindOfClass:[UIImageView class]]) {
-            return NO;
-        }
+    if (_uploadedImages != nil) {
+        return NO;
     }
     
     return YES;
@@ -245,7 +249,36 @@
 - (IBAction)tapToSend:(id)sender {
     if ([self isSuccessValidateReview]) {
         [self sendButtonIsLoading:YES];
-        [_networkManager doRequest];
+        
+        [_reviewRequest requestReviewValidationWithReputationID:_detailReputationReview.reputation_id
+                                                      productID:_detailReputationReview.product_id
+                                                   accuracyRate:_accuracyRate
+                                                    qualityRate:_qualityRate
+                                                        message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                                                         shopID:_detailReputationReview.shop_id
+                                                       serverID:_generatedHost.server_id
+                                          hasProductReviewPhoto:_hasAttachedImages
+                                                 reviewPhotoIDs:_imageIDs
+                                             reviewPhotoObjects:_imageDescriptions
+                                                      onSuccess:^(SubmitReviewResult *result) {
+                                                          if (_hasAttachedImages) {
+                                                              _postKey = result.post_key;
+                                                              for (NSString *imageID in _imageIDs) {
+                                                                  [self requestUploadImageWithImageID:imageID];
+                                                              }
+                                                          } else {
+                                                              NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                                                              
+                                                              for (UIViewController *aViewController in allViewControllers) {
+                                                                  if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
+                                                                      [self.navigationController popToViewController:aViewController animated:NO];
+                                                                  }
+                                                              }
+                                                          }
+                                                      }
+                                                      onFailure:^(NSError *errorResult) {
+                                                          [self sendButtonIsLoading:NO];
+                                                      }];
     }
 }
 
@@ -375,6 +408,18 @@
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     
+}
+
+- (void)requestUploadImageWithImageID:(NSString*)imageID {
+    [_reviewRequest requestUploadReviewImageWithHost:_generatedHost.upload_host
+                                                data:[_imagesToUpload objectForKey:imageID] imageID:imageID
+                                               token:_token
+                                           onSuccess:^(UploadReviewImageResult *result) {
+                                               [_fileUploaded setObject:result.pic_obj forKey:imageID];
+                                           }
+                                           onFailure:^(NSError *errorResult) {
+                                           
+                                           }];
 }
 
 @end

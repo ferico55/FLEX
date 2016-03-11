@@ -26,6 +26,7 @@
                 <outlet property="productName" destination="hPZ-Jl-ctl" id="Pui-VS-ffX"/>
                 <outlet property="qualityLabel" destination="VDz-FD-BTg" id="6NB-tl-gku"/>
                 <outlet property="reviewMessageTextView" destination="CJU-JC-Ebx" id="sId-9b-tAt"/>
+                <outlet property="textViewHeight" destination="WOy-bU-FH4" id="yRK-9i-vEB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="attachedImagesArray" destination="0q6-My-BHX" id="tRv-qC-Bh4"/>
                 <outletCollection property="attachedImagesArray" destination="Bej-Qd-wrz" id="ABR-eJ-DR9"/>

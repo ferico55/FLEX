@@ -57,6 +57,7 @@
     NSString *_postURL, *_postActionURL;
     NSString *_getDataFromMasterInServer;
     NSString *_score;
+    NSString *_token;
     NavigateViewController *_navigator;
     
     UIRefreshControl *_refreshControl;
@@ -134,6 +135,8 @@
                                                               role:_detailMyInboxReputation.role
                                                           autoRead:_autoRead
                                                          onSuccess:^(MyReviewReputationResult *result) {
+                                                             _token = result.token;
+                                                             
                                                              [_refreshControl endRefreshing];
                                                              [_reviewList removeAllObjects];
                                                              
@@ -347,6 +350,7 @@
     vc.detailMyReviewReputation = self;
     vc.detailReputationReview = review;
     vc.isEdit = NO;
+    vc.token = _token;
     
     [self.navigationController pushViewController:vc animated:YES];
 }

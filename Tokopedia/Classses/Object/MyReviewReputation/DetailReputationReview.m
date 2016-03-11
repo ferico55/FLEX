@@ -32,7 +32,7 @@
         tempViewModel.review_rate_quality = _review_rate_product;
         tempViewModel.review_user_name = _review_user_name;
         tempViewModel.review_user_image = _review_user_image;
-
+        
         _viewModel = tempViewModel;
     }
     
@@ -55,31 +55,31 @@
     return [_review_message kv_decodeHTMLCharacterEntities];
 }
 
-- (NSString*)reputation_id {
-    if (_reputation_id != nil) {
-        return _reputation_id;
-    } else {
-        return _review_reputation_id;
-    }
-}
+//- (NSString*)reputation_id {
+//    if (_reputation_id != nil) {
+//        return _reputation_id;
+//    } else {
+//        return _review_reputation_id;
+//    }
+//}
+//
+//- (NSString*)shop_id {
+//    if (_shop_id != nil) {
+//        return _shop_id;
+//    } else {
+//        return _review_shop_id;
+//    }
+//}
+//
+//- (ProductOwner*)product_owner {
+//    if (_product_owner != nil) {
+//        return _product_owner;
+//    } else {
+//        return _review_product_owner;
+//    }
+//}
 
-- (NSString*)shop_id {
-    if (_shop_id != nil) {
-        return _shop_id;
-    } else {
-        return _review_shop_id;
-    }
-}
-
-- (ProductOwner*)product_owner {
-    if (_product_owner != nil) {
-        return _product_owner;
-    } else {
-        return _review_product_owner;
-    }
-}
-
-+(RKObjectMapping *)mapping{
++ (RKObjectMapping *)mapping{
     RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
     [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{@"review_update_time"           : @"review_update_time",
                                                                         @"review_rate_accuracy_desc"    : @"review_rate_accuracy_desc",
@@ -154,4 +154,63 @@
     
     return detailReputationReviewMapping;
 }
+
++ (RKObjectMapping *)mappingForInbox {
+    RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
+    [detailReputationReviewMapping addAttributeMappingsFromArray:@[@"shop_id",
+                                                                   @"product_rating_point",
+                                                                   @"review_is_skipped",
+                                                                   @"review_is_skipable",
+                                                                   @"product_status",
+                                                                   @"review_full_name",
+                                                                   @"review_message",
+                                                                   @"review_is_read",
+                                                                   @"review_user_label",
+                                                                   @"product_speed_desc",
+                                                                   @"review_read_status",
+                                                                   @"product_uri",
+                                                                   @"review_user_id",
+                                                                   @"product_service_desc",
+                                                                   @"product_speed_point",
+                                                                   @"review_status",
+                                                                   @"review_update_time",
+                                                                   @"product_service_point",
+                                                                   @"product_accuracy_point",
+                                                                   @"reputation_id",
+                                                                   @"product_id",
+                                                                   @"product_rating_desc",
+                                                                   @"product_image",
+                                                                   @"product_accuracy_desc",
+                                                                   @"user_image",
+                                                                   @"reputation_inbox_id",
+                                                                   @"review_create_time",
+                                                                   @"user_url",
+                                                                   @"shop_name",
+                                                                   @"review_message_edit",
+                                                                   @"review_id",
+                                                                   @"review_post_time",
+                                                                   @"review_is_allow_edit",
+                                                                   @"product_name",
+                                                                   @"shop_domain"
+                                                                   ]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation"
+                                                                                                  toKeyPath:@"review_user_reputation"
+                                                                                                withMapping:[ReputationDetail mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response"
+                                                                                                  toKeyPath:@"review_response"
+                                                                                                withMapping:[ReviewResponse mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_owner"
+                                                                                                  toKeyPath:@"product_owner"
+                                                                                                withMapping:[ProductOwner mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level"
+                                                                                                  toKeyPath:@"shop_badge_level"
+                                                                                                withMapping:[ShopBadgeLevel mapping]]];
+    
+    return detailReputationReviewMapping;
+}
+
 @end

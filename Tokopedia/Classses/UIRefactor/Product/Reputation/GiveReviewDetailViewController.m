@@ -25,9 +25,14 @@
     NSMutableArray *_uploadedImages;
     NSMutableArray *_attachedImages;
     
+    NSMutableDictionary *_imagesToUpload;
+    NSMutableArray *_imageIDs;
+    NSMutableDictionary *_imageCaptions;
+    
     NSOperationQueue *_operationQueue;
     
     BOOL _isFinishedUploadingImage;
+    BOOL _hasImages;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImage;
@@ -64,6 +69,10 @@
     _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImageURL = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    
+    _imageIDs = [NSMutableArray new];
+    _imagesToUpload = [NSMutableDictionary new];
+    _imageCaptions = [NSMutableDictionary new];
     
     _isFinishedUploadingImage = YES;
     
@@ -164,6 +173,16 @@
     return NO;
 }
 
+- (NSString*)generateUniqueImageID {
+    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSString *userID = [[UserAuthentificationManager new] getUserId];
+    NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
+                                                          dateStyle:NSDateFormatterShortStyle
+                                                          timeStyle:NSDateFormatterFullStyle];
+    
+    return [NSString stringWithFormat:@"%zd%@%@", userID, uuid, dateString];
+}
+
 #pragma mark - Text Field Delegate 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     _reviewDetailTextView.placeholder = nil;
@@ -186,6 +205,11 @@
         vc.uploadedImages = [_userInfo objectForKey:@"selected_images"];
         vc.imagesCaption = [_userInfo objectForKey:@"images-captions"];
         vc.detailMyReviewReputation = _detailMyReviewReputation;
+        vc.token = _token;
+        vc.imagesToUpload = [_imagesToUpload copy];
+        vc.imageDescriptions = [_imageCaptions copy];
+        vc.hasAttachedImages = _hasImages;
+        vc.imageIDs = [_imageIDs copy];
         
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -267,6 +291,7 @@
 #pragma mark - Product Add Caption Delegate
 - (void)didDismissController:(ProductAddCaptionViewController*)controller withUserInfo:(NSDictionary *)userinfo {
     _userInfo = userinfo;
+    _hasImages = YES;
     NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
     NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
     
@@ -299,8 +324,7 @@
     }
 }
 
--(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
-{
+- (void)setImageData:(NSDictionary*)data tag:(NSInteger)tag {
     id selectedIndexpaths = [data objectForKey:@"selected_indexpath"];
     [_selectedIndexPathCameraController replaceObjectAtIndex:tag withObject:selectedIndexpaths?:@""];
     
@@ -337,6 +361,13 @@
             }
         }
     }
+    
+    NSString *imageID = [self generateUniqueImageID];
+    NSString *caption = [_userInfo objectForKey:@"images-captions"][tag];
+    
+    [_imagesToUpload setObject:photo forKey:imageID];
+    [_imageCaptions setObject:[[NSDictionary alloc] initWithObjects:@[caption] forKeys:@[@"file_desc"]] forKey:imageID];
+    [_imageIDs addObject:imageID];
     
     if (imageView != nil) {
         [object setObject:imageView forKey:@"data_selected_image_view"];

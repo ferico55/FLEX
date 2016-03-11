@@ -44,6 +44,7 @@
 
 @property (nonatomic, strong) ShopReputation *user_shop_reputation;
 
-+ (RKObjectMapping*) mapping;
++ (RKObjectMapping*)mapping;
++ (RKObjectMapping*)mappingForInbox;
 
 @end

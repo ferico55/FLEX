@@ -65,5 +65,23 @@
     return productOwnerMapping;
 }
 
++ (RKObjectMapping *)mappingForInbox {
+    RKObjectMapping *productOwnerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
+    [productOwnerMapping addAttributeMappingsFromArray:@[@"user_label_id",
+                                                         @"shop_id",
+                                                         @"user_url",
+                                                         @"full_name",
+                                                         @"shop_name",
+                                                         @"shop_url",
+                                                         @"shop_img",
+                                                         @"user_img",
+                                                         @"user_label",
+                                                         @"user_id",
+                                                         @"shop_reputation_badge",
+                                                         @"shop_reputation_score"]];
+    
+    return productOwnerMapping;
+}
+
 
 @end

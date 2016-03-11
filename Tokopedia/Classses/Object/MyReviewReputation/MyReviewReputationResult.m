@@ -15,13 +15,15 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *myReviewReputationResultMapping = [RKObjectMapping mappingForClass:[MyReviewReputationResult class]];
     
+    [myReviewReputationResultMapping addAttributeMappingsFromArray:@[@"token"]];
+    
     [myReviewReputationResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging"
                                                                                                     toKeyPath:@"paging"
                                                                                                   withMapping:[Paging mapping]]];
     
     [myReviewReputationResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
                                                                                                     toKeyPath:@"list"
-                                                                                                  withMapping:[DetailReputationReview mapping]]];
+                                                                                                  withMapping:[DetailReputationReview mappingForInbox]]];
     
     
     

@@ -20,6 +20,7 @@
 @property int accuracyRate;
 @property NSString *reviewMessage;
 @property NSDictionary *userInfo;
+@property NSString *token;
 @property (nonatomic, weak) GiveReviewRatingViewController *reviewRating;
 
 @end

@@ -12,6 +12,8 @@
 #import "DetailMyInboxReputation.h"
 #import "InboxReputationResult.h"
 #import "MyReviewReputationResult.h"
+#import "SubmitReviewResult.h"
+#import "UploadReviewImageResult.h"
 
 @interface ReviewRequest : NSObject
 - (void)requestReviewLikeDislikesWithId:(NSString *)reviewId
@@ -35,15 +37,24 @@
                                              onSuccess:(void(^)(MyReviewReputationResult* result))successCallback
                                              onFailure:(void(^)(NSError* errorResult))errorCallback;
 
-- (void)requestSubmitReviewWithReputationID:(NSString*)reputationID
-                                  productID:(NSString*)productID
-                               accuracyRate:(int)accuracyRate
-                                qualityRate:(int)qualityRate
-                                    message:(NSString*)reviewMessage
-                                     shopID:(NSString*)shopID
-                                   serverID:(NSString*)serverID
-                      hasProductReviewPhoto:(BOOL)hasProductReviewID
-                             reviewPhotoIDs:(NSArray*)imageIDs
-                         reviewPhotoObjects:(NSDictionary*)photos;
+- (void)requestReviewValidationWithReputationID:(NSString*)reputationID
+                                      productID:(NSString*)productID
+                                   accuracyRate:(int)accuracyRate
+                                    qualityRate:(int)qualityRate
+                                        message:(NSString*)reviewMessage
+                                         shopID:(NSString*)shopID
+                                       serverID:(NSString*)serverID
+                          hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
+                                 reviewPhotoIDs:(NSArray*)imageIDs
+                             reviewPhotoObjects:(NSDictionary*)photos
+                                      onSuccess:(void(^)(SubmitReviewResult *result))successCallback
+                                      onFailure:(void(^)(NSError *errorResult))errorCallback;
+
+- (void)requestUploadReviewImageWithHost:(NSString*)host
+                                    data:(id)imageData
+                                 imageID:(NSString*)imageID
+                                   token:(NSString*)token
+                               onSuccess:(void(^)(UploadReviewImageResult *result))successCallback
+                               onFailure:(void(^)(NSError *errorResult))errorCallback;
 
 @end

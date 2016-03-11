@@ -15,6 +15,8 @@
 #import "TotalLikeDislike.h"
 #import "InboxReputation.h"
 #import "MyReviewReputation.h"
+#import "SubmitReview.h"
+#import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
 
 typedef NS_ENUM(NSInteger, ReviewRequestType){
     ReviewRequestLikeDislike
@@ -27,6 +29,8 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     TokopediaNetworkManager *likeDislikeCountNetworkManager;
     TokopediaNetworkManager *getInboxReputationNetworkManager;
     TokopediaNetworkManager *getReviewDetailNetworkManager;
+    TokopediaNetworkManager *submitReviewNetworkManager;
+    TokopediaNetworkManager *uploadReviewImageNetworkManager;
 }
 
 - (id)init{
@@ -35,6 +39,8 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
         likeDislikeCountNetworkManager = [TokopediaNetworkManager new];
         getInboxReputationNetworkManager = [TokopediaNetworkManager new];
         getReviewDetailNetworkManager = [TokopediaNetworkManager new];
+        submitReviewNetworkManager = [TokopediaNetworkManager new];
+        uploadReviewImageNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -70,7 +76,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     getInboxReputationNetworkManager.isParameterNotEncrypted = NO;
     getInboxReputationNetworkManager.isUsingHmac = YES;
     
-    [getInboxReputationNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [getInboxReputationNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
                                                     path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
                                                   method:RKRequestMethodGET
                                                parameter:@{@"filter" : filter,
@@ -110,7 +116,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                 @"buyer_seller"         : role
                                 };
     
-    [getReviewDetailNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [getReviewDetailNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
                                                  path:@"/v4/inbox-reputation/get_list_reputation_review.pl"
                                                method:RKRequestMethodGET
                                             parameter:parameter
@@ -123,6 +129,79 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                             onFailure:^(NSError *errorResult) {
                                                 errorCallback(errorResult);
                                             }];
+}
+
+- (void)requestReviewValidationWithReputationID:(NSString *)reputationID
+                                      productID:(NSString *)productID
+                                   accuracyRate:(int)accuracyRate
+                                    qualityRate:(int)qualityRate
+                                        message:(NSString *)reviewMessage
+                                         shopID:(NSString *)shopID
+                                       serverID:(NSString *)serverID
+                          hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
+                                 reviewPhotoIDs:(NSArray *)imageIDs
+                             reviewPhotoObjects:(NSDictionary *)photos
+                                      onSuccess:(void (^)(SubmitReviewResult *))successCallback
+                                      onFailure:(void (^)(NSError *))errorCallback {
+    
+    submitReviewNetworkManager.isParameterNotEncrypted = NO;
+    submitReviewNetworkManager.isUsingHmac = YES;
+    
+    NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
+    NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
+    
+    [submitReviewNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+                                              path:@"/v4/action/review/add_product_review_validation.pl"
+                                            method:RKRequestMethodGET
+                                         parameter:@{@"product_id" : productID,
+                                                     @"rate_accuracy" : @(accuracyRate),
+                                                     @"rate_product" : @(qualityRate),
+                                                     @"reputation_id" : reputationID,
+                                                     @"review_message" : reviewMessage,
+                                                     @"shop_id" : shopID,
+                                                     @"server_id" : serverID,
+                                                     @"has_product_review_photo" : hasPhoto,
+                                                     @"product_review_photo_all" : allImageIDs?:@"",
+                                                     @"product_review_photo_obj" : photos?:@{}
+                                                     }
+                                           mapping:[SubmitReview mapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                             SubmitReview *obj = [result objectForKey:@""];
+                                             successCallback(obj.data);
+                                         }
+                                         onFailure:^(NSError *errorResult) {
+                                             errorCallback(errorResult);
+                                         }];
+    
+}
+
+- (void)requestUploadReviewImageWithHost:(NSString*)host
+                                    data:(id)imageData
+                                 imageID:(NSString *)imageID
+                                   token:(NSString *)token
+                               onSuccess:(void (^)(UploadReviewImageResult *))successCallback
+                               onFailure:(void (^)(NSError *))errorCallback {
+    uploadReviewImageNetworkManager.isParameterNotEncrypted = NO;
+    uploadReviewImageNetworkManager.isUsingHmac = YES;
+    
+    NSData *image = [imageData objectForKey:@"cameraimagedata"]?:@"";
+    
+    [uploadReviewImageNetworkManager requestWithBaseUrl:[NSString stringWithFormat:@"https://%@", host]
+                                                   path:@"/upload/attachment"
+                                                 method:RKRequestMethodPOST
+                                              parameter:@{@"id" : imageID,
+                                                          @"fileToUpload" : image,
+                                                          @"token" : token}
+                                                mapping:[UploadReviewImageResult mapping]
+                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                  UploadReviewImageResult *obj = [result objectForKey:@""];
+                                                  successCallback(obj);
+                                              }
+                                              onFailure:^(NSError *errorResult) {
+                                                  errorCallback(errorResult);
+                                              }];
 }
 
 @end

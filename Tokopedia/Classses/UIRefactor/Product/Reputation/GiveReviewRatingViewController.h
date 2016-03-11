@@ -25,5 +25,6 @@
 @property int accuracyRate;
 @property int qualityRate;
 @property NSString *reviewMessage;
+@property NSString *token;
 
 @end

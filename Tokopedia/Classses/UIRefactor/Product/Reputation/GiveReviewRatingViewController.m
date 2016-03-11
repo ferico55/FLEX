@@ -61,6 +61,7 @@
         vc.qualityRate = _qualityRate;
         vc.accuracyRate = _accuracyRate;
         vc.detailReputationReview = _detailReputationReview;
+        vc.token = _token;
         
         [self.navigationController pushViewController:vc animated:YES];
     }

@@ -86,6 +86,7 @@
 @property (nonatomic, strong) NSString *review_full_name;
 @property (nonatomic, strong) NSString *review_id;
 @property (nonatomic, strong) NSString *review_is_allow_edit;
+@property (nonatomic, strong) NSString *review_is_read;
 @property (nonatomic, strong) NSString *review_is_skipable;
 @property (nonatomic, strong) NSString *review_is_skipped;
 @property (nonatomic, strong) NSString *review_message;
@@ -135,5 +136,6 @@
 @property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;
 
 
-+ (RKObjectMapping*) mapping;
++ (RKObjectMapping*)mapping;
++ (RKObjectMapping*)mappingForInbox;
 @end

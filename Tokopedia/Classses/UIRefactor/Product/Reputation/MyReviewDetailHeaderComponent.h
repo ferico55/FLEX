@@ -12,6 +12,7 @@
 
 @interface MyReviewDetailHeaderComponent : CKCompositeComponent
 
-+ (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox context:(MyReviewDetailContext*)context;
++ (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox
+                     context:(MyReviewDetailContext*)context;
 
 @end

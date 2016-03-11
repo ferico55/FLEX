@@ -27,7 +27,11 @@
 @property int qualityRate;
 @property int accuracyRate;
 @property NSString *reviewMessage;
+@property NSString *token;
 @property NSArray *uploadedImages;
 @property NSArray *imagesCaption;
+@property NSDictionary *imagesToUpload;
+@property NSArray *imageIDs;
+@property NSDictionary *imageDescriptions;
 
 @end
