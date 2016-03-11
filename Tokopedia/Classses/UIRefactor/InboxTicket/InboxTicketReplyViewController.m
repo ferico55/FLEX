@@ -138,6 +138,8 @@
     frame.size.width = screenWidth;
     _scrollViewContentView.frame = frame;
 
+    self.scrollViewContentView.hidden = YES;
+    
     CGRect scrollViewContentFrame = _scrollViewInputContent.frame;
     scrollViewContentFrame.size.width = screenWidth;
     self.scrollViewInputContent.frame = scrollViewContentFrame;
@@ -251,6 +253,8 @@
 }
 
 - (void)openPhotoGallery {
+    self.scrollViewContentView.hidden = NO;
+    
     _cameraButtonClicked = YES;
     
     [self.textView resignFirstResponder];
@@ -728,12 +732,19 @@
         CGFloat width = 90 * _uploadedPhotos.count;
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     }
+    
+    if (_uploadedPhotos.count == 0) {
+        self.scrollViewContentView.hidden = YES;
+    }
 }
 
 -(void)failedUploadErrorMessage:(NSArray *)errorMessage
 {
     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
     [stickyAlertView show];
+    if (_uploadedPhotos.count == 0) {
+        self.scrollViewContentView.hidden = YES;
+    }
 }
 
 #pragma mark Request Generate Host
