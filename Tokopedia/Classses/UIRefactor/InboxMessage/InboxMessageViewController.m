@@ -350,7 +350,13 @@
         list.message_read_status = @"1";
     }
 
+    __weak typeof(self) weakSelf = self;
+
     InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+    vc.onMessagePosted = ^(NSString *replyMessage) {
+        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
+    };
+
     vc.data = [self dataForIndexPath:indexPath];
 
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
@@ -364,6 +370,13 @@
     {
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)updateReplyMessage:(NSString *)message atIndexPath:(NSIndexPath *)indexPath {
+    InboxMessageList *list = _messages[indexPath.row];
+
+    list.message_reply = message;
+    [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (NSDictionary *)dataForIndexPath:(NSIndexPath *)indexPath {

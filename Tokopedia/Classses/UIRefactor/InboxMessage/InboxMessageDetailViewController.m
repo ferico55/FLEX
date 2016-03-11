@@ -692,9 +692,14 @@
     _requestsendcount ++;
     _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl parameters:[param encrypt]];
     
-    NSDictionary *userinfo;
-    userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _textView.text};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessageWithIndex" object:nil userInfo:userinfo];
+//    NSDictionary *userinfo;
+//    userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _textView.text};
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessageWithIndex" object:nil userInfo:userinfo];
+
+    if (_onMessagePosted) {
+        _onMessagePosted(_textView.text);
+    }
+
     [_textView resignFirstResponder];
     
     [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
