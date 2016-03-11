@@ -112,7 +112,7 @@
         name = _fullName;
     } else if (_facebookUserData) {
         name = [_facebookUserData objectForKey:@"name"];
-    } else if (_googleUser) {
+    } else if (![_googleUser.name.givenName isEqualToString:@""]) {
         name = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
     }
     _fullNameTextField.text = name;
