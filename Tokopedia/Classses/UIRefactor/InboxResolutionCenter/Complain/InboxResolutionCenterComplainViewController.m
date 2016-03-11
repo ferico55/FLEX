@@ -391,7 +391,9 @@
     cell.unreadBorderView.hidden = YES;
     cell.unreadIconImageView.hidden = YES;
 
-    [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    });
 }
 
 -(void)didResponseComplain:(NSIndexPath*)indexPath {
@@ -645,7 +647,8 @@
                     InboxResolutionCenterList *resolution = _list[indexPath.row];
                     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
                     if (![resolution isEqual:_detailViewController.resolution]) {
-                        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                        [self goToResolutionDetailAtIndexPath:indexPath];
+                        //[_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
                     }
                 }
             }

@@ -13394,7 +13394,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang";
@@ -13403,9 +13403,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphoneos",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
-					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
@@ -13419,6 +13416,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -13443,7 +13441,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang";
@@ -13452,9 +13450,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphoneos",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
-					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/GoogleAnalytics",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",

@@ -30,7 +30,7 @@
                 <outlet property="bankInformationLabel" destination="UlA-HK-VJM" id="hEu-MA-vdo"/>
                 <outlet property="bankNameButton" destination="uxK-Dt-HgQ" id="2mH-Ay-ivo"/>
                 <outlet property="container" destination="NqZ-n7-OkZ" id="6h3-Yo-OFA"/>
-                <outlet property="contentView" destination="c5G-Me-Mvi" id="XCW-Ib-i25"/>
+                <outlet property="contentView" destination="0mw-Mq-wBd" id="52g-0p-Jhh"/>
                 <outlet property="otpInformationLabel" destination="vpW-pM-MnP" id="lb2-ye-ZBg"/>
                 <outlet property="passwordTextField" destination="Wp0-pG-MDR" id="08h-zv-s2L"/>
                 <outlet property="sendOTPButton" destination="LFC-ke-dZO" id="qgj-WO-gsZ"/>
@@ -68,8 +68,8 @@
                 <action selector="gesture:" destination="-1" id="7v8-Ff-C90"/>
             </connections>
         </tapGestureRecognizer>
-        <view contentMode="scaleToFill" id="c5G-Me-Mvi">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+        <view contentMode="scaleToFill" id="0mw-Mq-wBd">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB">
@@ -455,40 +455,23 @@
             <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="C2T-eO-lyf">
+                <constraint firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="7d7-iZ-YdW">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="top" secondItem="0mw-Mq-wBd" secondAttribute="top" id="7tS-dU-35i">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="leading" secondItem="0mw-Mq-wBd" secondAttribute="leading" id="Bvn-N6-bWM">
                     <variation key="heightClass=regular-widthClass=regular" constant="70"/>
                 </constraint>
-                <constraint firstItem="iN0-l3-epB" firstAttribute="leading" secondItem="c5G-Me-Mvi" secondAttribute="leading" id="KlY-WW-sns">
+                <constraint firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="U1S-Yx-Wei">
                     <variation key="heightClass=regular-widthClass=regular" constant="70"/>
                 </constraint>
-                <constraint firstItem="iN0-l3-epB" firstAttribute="top" secondItem="c5G-Me-Mvi" secondAttribute="top" id="jJA-TT-z3w"/>
-                <constraint firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="xKV-gm-56J"/>
             </constraints>
-            <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="iN0-l3-epB"/>
-                </mask>
-                <mask key="constraints">
-                    <exclude reference="C2T-eO-lyf"/>
-                    <exclude reference="KlY-WW-sns"/>
-                    <exclude reference="jJA-TT-z3w"/>
-                    <exclude reference="xKV-gm-56J"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=regular-widthClass=regular">
-                <mask key="subviews">
-                    <include reference="iN0-l3-epB"/>
-                </mask>
-                <mask key="constraints">
-                    <include reference="C2T-eO-lyf"/>
-                    <include reference="KlY-WW-sns"/>
-                    <include reference="jJA-TT-z3w"/>
-                    <include reference="xKV-gm-56J"/>
-                </mask>
-            </variation>
             <connections>
-                <outletCollection property="gestureRecognizers" destination="yLf-tS-J9a" appends="YES" id="eOM-8O-Rw1"/>
+                <outletCollection property="gestureRecognizers" destination="yLf-tS-J9a" appends="YES" id="0xk-RB-q9R"/>
             </connections>
+            <point key="canvasLocation" x="728" y="245"/>
         </view>
     </objects>
     <resources>
