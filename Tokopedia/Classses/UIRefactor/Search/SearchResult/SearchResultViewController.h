@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "CategoryDetail.h"
 
 @protocol SearchResultDelegate <NSObject>
 
 - (void)pushViewController:(id)viewController animated:(BOOL)animated;
-- (void)updateTabCategory:(NSString *)categoryID;
+- (void)updateTabCategory:(CategoryDetail *)category;
+- (void)updateCategories:(NSArray *)categories;
 
 @end
 

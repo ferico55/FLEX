@@ -1,0 +1,32 @@
+//
+//  FilterCategoryViewController.h
+//  Tokopedia
+//
+//  Created by Tokopedia on 2/10/16.
+//  Copyright © 2016 TOKOPEDIA. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "CategoryDetail.h"
+
+typedef NS_ENUM(NSInteger, FilterCategoryType) {
+    FilterCategoryTypeHotlist,
+    FilterCategoryTypeCategory,
+    FilterCategoryTypeSearchProduct,
+    FilterCategoryTypeProductAddEdit,
+};
+
+@protocol FilterCategoryViewDelegate <NSObject>
+
+- (void)didSelectCategory:(CategoryDetail *)category;
+
+@end
+
+@interface FilterCategoryViewController : UITableViewController
+
+@property (strong, nonatomic) NSMutableArray *categories;
+@property (weak, nonatomic) CategoryDetail *selectedCategory;
+@property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
+@property FilterCategoryType filterType;
+
+@end

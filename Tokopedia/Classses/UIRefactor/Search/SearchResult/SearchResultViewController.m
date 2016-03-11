@@ -537,15 +537,6 @@ ImageSearchRequestDelegate
             } else {
                 controller.sortType = SortCatalogSearch;
             }
-
-            UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-                [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
-            }
-            
-            UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            controller.screenshotImage = screenshotImage;
             
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
@@ -645,8 +636,13 @@ ImageSearchRequestDelegate
             return first > second;
         }];
         _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
-        [_collectionView reloadData];
         _sortIndexPath = indexPath;
+        [_refreshControl beginRefreshing];
+        [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [_refreshControl endRefreshing];
+            [_collectionView reloadData];
+        });
     } else {
         //normal sort
         [self refreshView:nil];
@@ -685,15 +681,18 @@ ImageSearchRequestDelegate
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
-        if([_product firstObject] != nil && [[_product firstObject] count] > 0){
+        if (_strImageSearchResult) {
             [parameter setObject:_strImageSearchResult forKey:@"id"];
             [parameter setObject:@(allProductsCount) forKey:@"rows"];
+        }
+        if([_product firstObject] != nil && [[_product firstObject] count] > 0){
             [parameter setObject:@(0) forKey:@"start"];
         }
     } else {
         [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
         [parameter setObject:startPerPage forKey:@"rows"];
         [parameter setObject:@(_start) forKey:@"start"];
+        [parameter setObject:@"true" forKey:@"breadcrumb"];
     }
     return parameter;
 }
@@ -806,6 +805,32 @@ ImageSearchRequestDelegate
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
+    NSDictionary *categoryAttributeMappings = @{
+        @"d_id" : @"categoryId",
+        @"title" : @"name",
+        @"tree" : @"tree",
+        @"href" : @"url",
+    };
+
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    // Adjust Relationship
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
+    [resultMapping addPropertyMapping:categoryRelationship];
+
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
+
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:[self didReceiveRequestMethod:nil]
@@ -843,7 +868,9 @@ ImageSearchRequestDelegate
         NSString* productId = ((SearchAWSProduct*)products[i]).product_id;
         ((SearchAWSProduct*)products[i]).similarity_rank = [_similarityDictionary objectForKey:productId];
     }
-    _product[0] = products;
+    if (_product.count > 0) {
+        _product[0] = products;
+    }
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
@@ -857,15 +884,131 @@ ImageSearchRequestDelegate
     }
     
     if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
-        ImageSearchResponse *search = [successResult.dictionary objectForKey:@""];
+        [self imageSearchMappingResult:successResult];
+    } else {
+        [self searchMappingResult:successResult];
+    }
+}
+
+- (void)imageSearchMappingResult:(RKMappingResult *)mappingResult {
+    ImageSearchResponse *search = [mappingResult.dictionary objectForKey:@""];
+    if(search.data.similar_prods.count > 0){
         
-        if(search.data.similar_prods.count > 0){
-            [_product addObject:search.data.similar_prods];
-            [self backupSimilarity];
+        [_product addObject:search.data.similar_prods];
+        
+        [self backupSimilarity];
+        
+        _strImageSearchResult = [self generateProductIdString];
+        allProductsCount = [[_product firstObject] count];
+        _isnodata = NO;
+        _start = [[self splitUriToPage:_urinext] integerValue];
+        if([_urinext isEqualToString:@""]) {
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
+        [_noResultView removeFromSuperview];
+        
+        for (UIButton *button in self.imageSearchToolbarButtons) {
+            button.enabled = YES;
+        }
+        
+    } else {
+        //no data at all
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        
+        if([self isUsingAnyFilter]){
+            _suggestion = @"";
+            [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+            [_noResultView hideButton:YES];
+        }else{
+            [_noResultView setNoResultDesc:@"Mohon maaf, gambar serupa tidak dapat ditemukan. Coba foto lagi dari sisi yang berbeda."];
+            [_noResultView hideButton:YES];
+        }
+        [_collectionView addSubview:_noResultView];
+    }
+    
+    if(_start > 0) [self requestPromo];
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+        [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
+    } else  {
+        [_collectionView reloadData];
+    }
+}
+
+- (void)searchMappingResult:(RKMappingResult *)mappingResult {
+    SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
+    _searchObject = search;
+    
+    [_noResultView removeFromSuperview];
+    [_firstFooter removeFromSuperview];
+    
+    if(_isNeedToRemoveAllObject) {
+        [_product removeAllObjects];
+        [_promo removeAllObjects];
+        _isNeedToRemoveAllObject = NO;
+    }
+    
+    if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
+        [_delegate updateCategories:search.result.breadcrumb];
+    }
+    
+    NSString *redirect_url = search.result.redirect_url;
+    if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
+        NSString *departementID = search.result.department_id?:@"";
+        [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
+            CategoryDetail *category = [CategoryDetail new];
+            category.categoryId = departementID;
+            [_delegate updateTabCategory:category];
+        }
+    }
+    if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
+        NSString *hascatalog = search.result.has_catalog;
+        
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            hascatalog = @"1";
+        }
+        
+        //setting is this product has catalog or not
+        if ([hascatalog isEqualToString:@"1"] && hascatalog) {
+            NSDictionary *userInfo = @{@"count":@(3)};
+            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+        }
+        else if ([hascatalog isEqualToString:@"0"] && hascatalog){
+            NSDictionary *userInfo = @{@"count":@(2)};
+            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+        }
+        
+        
+        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
+            if(search.result.products.count > 0) {
+                [_product addObject: search.result.products];
+                [TPAnalytics trackProductImpressions:search.result.products];
+            }
             
-            _strImageSearchResult = [self generateProductIdString];
-            allProductsCount = [[_product firstObject] count];
+        } else {
+            if(search.result.catalogs.count > 0) {
+                //_product[0] is for products
+                //so everything is in first index
+                //you're welcome!
+                [_product addObject: search.result.catalogs];
+            }
+            
+        }
+        
+        if(_start == 0) {
+            [_collectionView setContentOffset:CGPointZero animated:YES];
+            
+            [_collectionView reloadData];
+            //            [_collectionView layoutIfNeeded];
+        }
+        
+        if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
             _isnodata = NO;
+            _urinext =  search.result.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -874,8 +1017,16 @@ ImageSearchRequestDelegate
             [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
             [_noResultView removeFromSuperview];
             
-            [self.imageSearchToolbarButtons makeObjectsPerformSelector:@selector(setEnabled:) withObject:@(YES)];
-            
+            if(_isFromImageSearch && [_params objectForKey:@"order_by"] && [[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
+                [self restoreSimilarity];
+                //image search sort by similarity
+                NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+                    CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
+                    CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
+                    return first > second;
+                }];
+                _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
+            }
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -885,9 +1036,13 @@ ImageSearchRequestDelegate
                 [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
                 [_noResultView hideButton:YES];
             }else{
-                [_noResultView setNoResultDesc:@"Mohon maaf, gambar serupa tidak dapat ditemukan. Coba foto lagi dari sisi yang berbeda."];
-                [_noResultView hideButton:YES];
+                if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
+                    [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
+                }else{
+                    _suggestion = @"";
+                }
             }
+            
             [_collectionView addSubview:_noResultView];
         }
         
@@ -900,153 +1055,42 @@ ImageSearchRequestDelegate
             [_collectionView reloadData];
         }
     } else {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        SearchAWS *search = [result objectForKey:@""];
-        _searchObject = search;
         
-        [_noResultView removeFromSuperview];
-        [_firstFooter removeFromSuperview];
+        NSURL *url = [NSURL URLWithString:search.result.redirect_url];
+        NSArray* query = [[url path] componentsSeparatedByString: @"/"];
         
-        if(_isNeedToRemoveAllObject) {
-            [_product removeAllObjects];
-            [_promo removeAllObjects];
-            _isNeedToRemoveAllObject = NO;
+        // Redirect URI to hotlist
+        if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
+            [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
         }
         
-        NSString *redirect_url = search.result.redirect_url;
-        if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
+        // redirect uri to search category
+        else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.result.department_id?:@"";
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-            if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-                [_delegate updateTabCategory:departementID];
+            [_params removeObjectForKey:@"search"];
+            [_networkManager requestCancel];
+            
+            if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
+                CategoryDetail *category = [CategoryDetail new];
+                category.categoryId = departementID;
+                [self.delegate updateTabCategory:category];
             }
+            
+            [self refreshView:nil];
+            
+            [Localytics triggerInAppMessage:@"Category Result Screen"];
         }
-        if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
-            NSString *hascatalog = search.result.has_catalog;
-            
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-                hascatalog = @"1";
-            }
-            
-            //setting is this product has catalog or not
-            if ([hascatalog isEqualToString:@"1"] && hascatalog) {
-                NSDictionary *userInfo = @{@"count":@(3)};
-                [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-            }
-            else if ([hascatalog isEqualToString:@"0"] && hascatalog){
-                NSDictionary *userInfo = @{@"count":@(2)};
-                [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-            }
-            
-            
-            if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-                if(search.result.products.count > 0) {
-                    [_product addObject: search.result.products];
-                    [TPAnalytics trackProductImpressions:search.result.products];
-                }
-                
-            } else {
-                if(search.result.catalogs.count > 0) {
-                    //_product[0] is for products
-                    //so everything is in first index
-                    //you're welcome!
-                    [_product addObject: search.result.catalogs];
-                }
-                
-            }
-            
-            if(_start == 0) {
-                [_collectionView setContentOffset:CGPointZero animated:YES];
-                
-                [_collectionView reloadData];
-                //            [_collectionView layoutIfNeeded];
-            }
-            
-            if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
-                _isnodata = NO;
-                _urinext =  search.result.paging.uri_next;
-                _start = [[self splitUriToPage:_urinext] integerValue];
-                if([_urinext isEqualToString:@""]) {
-                    [_flowLayout setFooterReferenceSize:CGSizeZero];
-                }
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
-                [_noResultView removeFromSuperview];
-                
-                if(_isFromImageSearch && [_params objectForKey:@"order_by"] && [[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
-                    [self restoreSimilarity];
-                    //image search sort by similarity
-                    NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-                        CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
-                        CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
-                        return first > second;
-                    }];
-                    _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
-                }
-            } else {
-                //no data at all
-                [_flowLayout setFooterReferenceSize:CGSizeZero];
-                
-                if([self isUsingAnyFilter]){
-                    _suggestion = @"";
-                    [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
-                    [_noResultView hideButton:YES];
-                }else{
-                    if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
-                        [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
-                    }else{
-                        _suggestion = @"";
-                    }
-                }
-                
-                [_collectionView addSubview:_noResultView];
-            }
-            
-            if(_start > 0) [self requestPromo];
-            
-            if(_refreshControl.isRefreshing) {
-                [_refreshControl endRefreshing];
-                [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
-            } else  {
-                [_collectionView reloadData];
-            }
-        } else {
-            
-            NSURL *url = [NSURL URLWithString:search.result.redirect_url];
-            NSArray* query = [[url path] componentsSeparatedByString: @"/"];
-            
-            // Redirect URI to hotlist
-            if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
-                [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
-            }
-            
-            // redirect uri to search category
-            else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-                NSString *departementID = search.result.department_id?:@"";
-                [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-                [_params removeObjectForKey:@"search"];
-                [_networkManager requestCancel];
-                
-                if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
-                    [self.delegate updateTabCategory:departementID];
-                }
-                
-                [self refreshView:nil];
-                
-                [Localytics triggerInAppMessage:@"Category Result Screen"];
-            }
-            
-            else if ([query[1] isEqualToString:@"catalog"]) {
-                [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
-            }
-            
-            else {
-                [Localytics triggerInAppMessage:@"Search Result Screen"];
-            }
+        
+        else if ([query[1] isEqualToString:@"catalog"]) {
+            [self performSelector:@selector(redirectToCatalogResult) withObject:nil afterDelay:1.0f];
+        }
+        
+        else {
+            [Localytics triggerInAppMessage:@"Search Result Screen"];
         }
     }
 }
-
 
 - (void)redirectToCatalogResult{
     NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];

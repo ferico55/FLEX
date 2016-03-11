@@ -834,7 +834,7 @@
     NSDictionary *userInfo = _dataInput;
 #define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
     
-    Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     CatalogList *catalog = [_dataInput objectForKey:DATA_CATALOG_KEY];
     
@@ -842,13 +842,12 @@
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
     NSString *productDescription = product.product_description?:@"";
-    NSString *departmentID = breadcrumb.department_id?:@"";
+    NSString *departmentID = category.categoryId?:@"";
     NSString *minimumOrder = product.product_min_order?:@"1";
     NSString *productPriceCurrencyID = product.product_currency_id?:@"";
     NSString *productPrice = product.product_price?:@"";
     NSString *productWeightUnitID = product.product_weight_unit?:@"";
     NSString *productWeight = product.product_weight?:@"";
-    NSString *photoDefaultIndex = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_INDEX]?:@"0";
     NSString *productInsurance = product.product_must_insurance?:@"";
     NSString *moveToWarehouse = product.product_move_to?:@"";
     
@@ -1248,7 +1247,7 @@
     
     NSString *action = ACTION_EDIT_PRODUCT_KEY;
     ProductDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    Breadcrumb *breadcrumb = [userInfo objectForKey:DATA_CATEGORY_KEY];
+    CategoryDetail *category = [userInfo objectForKey:DATA_CATEGORY_KEY];
     
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
@@ -1257,7 +1256,7 @@
     NSString *productPriceCurrencyID = product.product_currency_id?:@"";
     NSString *productWeight = product.product_weight?:@"";
     NSString *productWeightUnitID = product.product_weight_unit?:@"";
-    NSString *departmentID = breadcrumb.department_id?:@"";
+    NSString *departmentID = category.categoryId?:@"";
     NSString *minimumOrder = product.product_min_order?:@"";
     NSString *productInsurance = product.product_must_insurance?:@"";
     
