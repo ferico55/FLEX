@@ -273,7 +273,9 @@ TokopediaNetworkManagerDelegate
                                                               
                                                               for (UIViewController *aViewController in allViewControllers) {
                                                                   if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
-                                                                      [self.navigationController popToViewController:aViewController animated:NO];
+                                                                      [self.navigationController popToViewController:aViewController animated:YES];
+                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
+                                                                                                                          object:nil];
                                                                   }
                                                               }
                                                           }

@@ -173,6 +173,11 @@
     self.navigationItem.titleView = _pageTitleView;
     
     _navigator = [NavigateViewController new];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshData)
+                                                 name:@"RefreshData"
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
