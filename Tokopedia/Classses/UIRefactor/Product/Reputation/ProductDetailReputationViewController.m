@@ -495,18 +495,6 @@ MGSwipeTableCellDelegate>
     
     cell.getTvDesc.text = _detailReputationReview.review_response.response_message;
     cell.getLblDate.text = _detailReputationReview.review_response.response_time_fmt;
-
-    
-    //Set image
-//    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview!=nil? _detailReputationReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-//    productReputationCell.getProductImage.image = nil;
-//    [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Warc-retain-cycles"
-//        [productReputationCell.getProductImage setImage:image];
-//#pragma clang diagnostic pop
-//    } failure:nil];
-    
     
     [cell.getViewLabelUser setText:_detailReputationReview.product_owner.full_name];
     [cell.getViewLabelUser setLabelBackground:_detailReputationReview.review_user_label];
