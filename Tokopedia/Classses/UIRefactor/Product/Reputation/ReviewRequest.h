@@ -37,29 +37,19 @@
                                              onSuccess:(void(^)(MyReviewReputationResult* result))successCallback
                                              onFailure:(void(^)(NSError* errorResult))errorCallback;
 
-- (void)requestReviewValidationWithReputationID:(NSString*)reputationID
-                                      productID:(NSString*)productID
-                                   accuracyRate:(int)accuracyRate
-                                    qualityRate:(int)qualityRate
-                                        message:(NSString*)reviewMessage
-                                         shopID:(NSString*)shopID
-                                       serverID:(NSString*)serverID
-                          hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
-                                 reviewPhotoIDs:(NSArray*)imageIDs
-                             reviewPhotoObjects:(NSDictionary*)photos
-                                      onSuccess:(void(^)(SubmitReviewResult *result))successCallback
-                                      onFailure:(void(^)(NSError *errorResult))errorCallback;
-
-- (void)requestUploadReviewImageWithHost:(NSString*)host
-                                    data:(id)imageData
-                                 imageID:(NSString*)imageID
-                                   token:(NSString*)token
-                               onSuccess:(void(^)(ImageResult *result))successCallback
-                               onFailure:(void(^)(NSError *errorResult))errorCallback;
-
-- (void)requestProductReviewSubmitWithPostKey:(NSString*)postKey
-                                 fileUploaded:(NSDictionary*)fileUploaded
-                                    onSuccess:(void(^)(SubmitReviewResult *result))successCallback
-                                    onFailure:(void(^)(NSError *errorResult))errorCallback;
-
+- (void)requestSubmitReviewWithImageWithReputationID:(NSString *)reputationID
+                                           productID:(NSString *)productID
+                                        accuracyRate:(int)accuracyRate
+                                         qualityRate:(int)qualityRate
+                                             message:(NSString *)reviewMessage
+                                              shopID:(NSString *)shopID
+                                            serverID:(NSString *)serverID
+                               hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
+                                      reviewPhotoIDs:(NSArray *)imageIDs
+                                  reviewPhotoObjects:(NSDictionary *)photos
+                                      imagesToUpload:(NSDictionary *)imagesToUpload
+                                               token:(NSString*)token
+                                                host:(NSString*)host
+                                           onSuccess:(void (^)(SubmitReviewResult *result))successCallback
+                                           onFailure:(void (^)(NSError *error))errorCallback;
 @end

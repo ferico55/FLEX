@@ -90,6 +90,7 @@ TokopediaNetworkManagerDelegate
                                               }];
     
     _reviewRequest = [ReviewRequest new];
+    _fileUploaded = [NSMutableDictionary new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -251,38 +252,33 @@ TokopediaNetworkManagerDelegate
     if ([self isSuccessValidateReview]) {
         [self sendButtonIsLoading:YES];
         
-        [_reviewRequest requestReviewValidationWithReputationID:_detailReputationReview.reputation_id
-                                                      productID:_detailReputationReview.product_id
-                                                   accuracyRate:_accuracyRate
-                                                    qualityRate:_qualityRate
-                                                        message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
-                                                         shopID:_detailReputationReview.shop_id
-                                                       serverID:_generatedHost.server_id
-                                          hasProductReviewPhoto:_hasAttachedImages
-                                                 reviewPhotoIDs:_imageIDs
-                                             reviewPhotoObjects:_imageDescriptions
-                                                      onSuccess:^(SubmitReviewResult *result) {
-                                                          if (_hasAttachedImages) {
-                                                              _postKey = result.post_key;
-                                                              _counter = 0;
-                                                              for (NSString *imageID in _imageIDs) {
-                                                                  [self requestUploadImageWithImageID:imageID];
-                                                              }
-                                                          } else {
-                                                              NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-                                                              
-                                                              for (UIViewController *aViewController in allViewControllers) {
-                                                                  if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
-                                                                      [self.navigationController popToViewController:aViewController animated:YES];
-                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
-                                                                                                                          object:nil];
-                                                                  }
-                                                              }
-                                                          }
-                                                      }
-                                                      onFailure:^(NSError *errorResult) {
-                                                          [self sendButtonIsLoading:NO];
-                                                      }];
+        [_reviewRequest requestSubmitReviewWithImageWithReputationID:_detailReputationReview.reputation_id
+                                                           productID:_detailReputationReview.product_id
+                                                        accuracyRate:_accuracyRate
+                                                         qualityRate:_qualityRate
+                                                             message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                                                              shopID:_detailReputationReview.shop_id
+                                                            serverID:_generatedHost.server_id
+                                               hasProductReviewPhoto:_hasAttachedImages
+                                                      reviewPhotoIDs:_imageIDs
+                                                  reviewPhotoObjects:_imageDescriptions
+                                                      imagesToUpload:_imagesToUpload
+                                                               token:_token
+                                                                host:_generatedHost.upload_host
+                                                           onSuccess:^(SubmitReviewResult *result) {
+                                                               NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                                                               
+                                                               for (UIViewController *aViewController in allViewControllers) {
+                                                                   if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
+                                                                       [self.navigationController popToViewController:aViewController animated:YES];
+                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
+                                                                                                                           object:nil];
+                                                                   }
+                                                               }
+                                                           }
+                                                           onFailure:^(NSError *error) {
+                                                               [self sendButtonIsLoading:NO];
+                                                           }];
     }
 }
 
@@ -412,37 +408,6 @@ TokopediaNetworkManagerDelegate
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     
-}
-
-- (void)requestUploadImageWithImageID:(NSString*)imageID {
-    [_reviewRequest requestUploadReviewImageWithHost:[NSString stringWithFormat:@"https://%@",_generatedHost.upload_host]
-                                                data:[_imagesToUpload objectForKey:imageID]
-                                             imageID:imageID
-                                               token:_token
-                                           onSuccess:^(ImageResult *result) {
-                                               [_fileUploaded setObject:result.pic_obj forKey:imageID];
-                                               _counter++;
-                                               if (_counter == [_imageIDs count]) {
-                                                   [self requestSubmitReviewWithPostKey:_postKey
-                                                                           fileUploaded:_fileUploaded];
-                                               }
-                                           }
-                                           onFailure:^(NSError *errorResult) {
-                                               
-                                           }];
-    
-}
-
-- (void)requestSubmitReviewWithPostKey:(NSString*)postKey
-                          fileUploaded:(NSDictionary*)fileUploaded {
-    [_reviewRequest requestProductReviewSubmitWithPostKey:postKey
-                                             fileUploaded:fileUploaded
-                                                onSuccess:^(SubmitReviewResult *result) {
-                                                    
-                                                }
-                                                onFailure:^(NSError *errorResult) {
-                                                    
-                                                }];
 }
 
 @end

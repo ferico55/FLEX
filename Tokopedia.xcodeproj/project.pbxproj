@@ -2088,6 +2088,8 @@
 		62E694F01C9116980074394F /* ImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E694EF1C9116980074394F /* ImageResult.m */; };
 		62EA5C581C8EB06A001F1D48 /* SubmitReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EA5C571C8EB06A001F1D48 /* SubmitReview.m */; };
 		62EA5C5B1C8EB100001F1D48 /* SubmitReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EA5C5A1C8EB100001F1D48 /* SubmitReviewResult.m */; };
+		62ED95711C9667C100555901 /* StickyAlertView+NetworkErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 62ED95701C9667C100555901 /* StickyAlertView+NetworkErrorHandler.m */; };
+		62ED95741C96B79800555901 /* ReviewImageAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 62ED95731C96B79800555901 /* ReviewImageAttachment.m */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -5311,6 +5313,10 @@
 		62EA5C571C8EB06A001F1D48 /* SubmitReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubmitReview.m; sourceTree = "<group>"; };
 		62EA5C591C8EB100001F1D48 /* SubmitReviewResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubmitReviewResult.h; sourceTree = "<group>"; };
 		62EA5C5A1C8EB100001F1D48 /* SubmitReviewResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubmitReviewResult.m; sourceTree = "<group>"; };
+		62ED956F1C9667C100555901 /* StickyAlertView+NetworkErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StickyAlertView+NetworkErrorHandler.h"; sourceTree = "<group>"; };
+		62ED95701C9667C100555901 /* StickyAlertView+NetworkErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StickyAlertView+NetworkErrorHandler.m"; sourceTree = "<group>"; };
+		62ED95721C96B79800555901 /* ReviewImageAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewImageAttachment.h; sourceTree = "<group>"; };
+		62ED95731C96B79800555901 /* ReviewImageAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewImageAttachment.m; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -6447,6 +6453,8 @@
 				62EA5C571C8EB06A001F1D48 /* SubmitReview.m */,
 				62EA5C591C8EB100001F1D48 /* SubmitReviewResult.h */,
 				62EA5C5A1C8EB100001F1D48 /* SubmitReviewResult.m */,
+				62ED95721C96B79800555901 /* ReviewImageAttachment.h */,
+				62ED95731C96B79800555901 /* ReviewImageAttachment.m */,
 			);
 			path = MyReviewReputation;
 			sourceTree = "<group>";
@@ -7745,6 +7753,8 @@
 				62E5A2AD1C8D984500AF4503 /* TKPDAlert.xib */,
 				62E5A2AE1C8D984500AF4503 /* TKPDAlertView.h */,
 				62E5A2AF1C8D984500AF4503 /* TKPDAlertView.m */,
+				62ED956F1C9667C100555901 /* StickyAlertView+NetworkErrorHandler.h */,
+				62ED95701C9667C100555901 /* StickyAlertView+NetworkErrorHandler.m */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -12981,6 +12991,7 @@
 				62E5ABD51C8D984C00AF4503 /* InboxMessageDetailResult.m in Sources */,
 				62E5AEB51C8D984C00AF4503 /* ProductAddEditViewController.m in Sources */,
 				62E5AC601C8D984C00AF4503 /* RequestObject.m in Sources */,
+				62ED95711C9667C100555901 /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				62E5AC871C8D984C00AF4503 /* SearchRedirect.m in Sources */,
 				62E5AE071C8D984C00AF4503 /* FavoritedShopViewController.m in Sources */,
 				62E5B0231C8D984C00AF4503 /* TxOrderConfirmedCell.m in Sources */,
@@ -13293,6 +13304,7 @@
 				62E5B0171C8D984C00AF4503 /* TxOrderConfirmationShipmentCell.m in Sources */,
 				62E5ABDB1C8D984C00AF4503 /* InboxResolutionCenterList.m in Sources */,
 				62E5ABB71C8D984C00AF4503 /* GoogleDistanceMatrixElements.m in Sources */,
+				62ED95741C96B79800555901 /* ReviewImageAttachment.m in Sources */,
 				62E5AF491C8D984C00AF4503 /* SearchAutoCompleteCell.m in Sources */,
 				62E5AFDD1C8D984C00AF4503 /* TransactionShipmentATCViewController.m in Sources */,
 				62E5AC011C8D984C00AF4503 /* RatingResponse.m in Sources */,

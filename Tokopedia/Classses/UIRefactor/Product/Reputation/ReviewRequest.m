@@ -19,12 +19,17 @@
 #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
 #import "RequestUploadImage.h"
 #import "RequestObject.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
 
 typedef NS_ENUM(NSInteger, ReviewRequestType){
     ReviewRequestLikeDislike
 };
 
 @interface ReviewRequest()
+
+@property (nonatomic, copy) void (^successCompletionBlock)(id completion);
+@property (nonatomic, copy) void (^errorCompletionBlock)(id completion);
+
 @end
 
 @implementation ReviewRequest {
@@ -34,6 +39,12 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     TokopediaNetworkManager *submitReviewNetworkManager;
     TokopediaNetworkManager *uploadReviewImageNetworkManager;
     TokopediaNetworkManager *productReviewSubmitNetworkManager;
+    
+    TokopediaNetworkManager *submitReviewWithImageNetworkManager;
+    NSInteger _counter;
+    NSArray *_imageIDs;
+    NSString *_postKey;
+    NSMutableDictionary *_fileUploaded;
 }
 
 - (id)init{
@@ -45,6 +56,8 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
         submitReviewNetworkManager = [TokopediaNetworkManager new];
         uploadReviewImageNetworkManager = [TokopediaNetworkManager new];
         productReviewSubmitNetworkManager = [TokopediaNetworkManager new];
+        
+        submitReviewWithImageNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -219,20 +232,139 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     productReviewSubmitNetworkManager.isParameterNotEncrypted = NO;
     productReviewSubmitNetworkManager.isUsingHmac = YES;
     
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:fileUploaded options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
+    uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     [productReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
                                                      path:@"/v4/action/review/add_product_review_submit.pl"
-                                                   method:RKRequestMethodPOST
-                                                parameter:@{@"post_key" : postKey,
-                                                            @"file_uploaded" : fileUploaded}
+                                                   method:RKRequestMethodGET
+                                                parameter:@{@"post_key" : postKey?:@"",
+                                                            @"file_uploaded" : uploaded?:@""}
                                                   mapping:[SubmitReview mapping]
                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                     SubmitReview *obj = [result objectForKey:@""];
-                                                    successCallback(obj.data);
+                                                    
+                                                    if ([obj.data.is_success isEqualToString:@"1"]) {
+                                                        successCallback(obj.data);
+                                                    } else {
+                                                        [StickyAlertView showErrorMessage:obj.message_error];
+                                                    }
+     
                                                 }
                                                 onFailure:^(NSError *errorResult) {
                                                     errorCallback(errorResult);
                                                 }];
 }
+
+-(void)requestSubmitReviewWithImageWithReputationID:(NSString *)reputationID
+                                          productID:(NSString *)productID
+                                       accuracyRate:(int)accuracyRate
+                                        qualityRate:(int)qualityRate
+                                            message:(NSString *)reviewMessage
+                                             shopID:(NSString *)shopID
+                                           serverID:(NSString *)serverID
+                              hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
+                                     reviewPhotoIDs:(NSArray *)imageIDs
+                                 reviewPhotoObjects:(NSDictionary *)photos
+                                     imagesToUpload:(NSDictionary *)imagesToUpload
+                                              token:(NSString*)token
+                                               host:(NSString*)host
+                                          onSuccess:(void (^)(SubmitReviewResult *))successCallback
+                                          onFailure:(void (^)(NSError *))errorCallback {
+    _imageIDs = imageIDs;
+    _counter = 0;
+    
+    submitReviewWithImageNetworkManager.isParameterNotEncrypted = NO;
+    submitReviewWithImageNetworkManager.isUsingHmac = YES;
+    
+    NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
+    NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
+    
+    
+    [submitReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+                                                       path:@"/v4/action/review/add_product_review_validation.pl"
+                                                     method:RKRequestMethodGET
+                                                  parameter:@{@"product_id" : productID,
+                                                              @"rate_accuracy" : @(accuracyRate),
+                                                              @"rate_product" : @(qualityRate),
+                                                              @"reputation_id" : reputationID,
+                                                              @"review_message" : reviewMessage,
+                                                              @"shop_id" : shopID,
+                                                              @"server_id" : serverID,
+                                                              @"has_product_review_photo" : hasPhoto,
+                                                              @"product_review_photo_all" : allImageIDs?:@"",
+                                                              @"product_review_photo_obj" : photos?:@{}
+                                                              }
+                                                    mapping:[SubmitReview mapping]
+                                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                      NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                      SubmitReview *obj = [result objectForKey:@""];
+                                                      
+                                                      if (hasProductReviewPhoto) {
+                                                          _postKey = obj.data.post_key;
+                                                          _fileUploaded = [NSMutableDictionary new];
+                                                          for (NSString *imageID in imageIDs) {
+                                                              [self requestUploadImageWithImageID:imageID
+                                                                                   imagesToUpload:imagesToUpload
+                                                                                            token:token
+                                                                                             host:host];
+                                                              self.successCompletionBlock = successCallback;
+                                                              self.errorCompletionBlock = errorCallback;
+                                                          }
+                                                      } else {
+                                                          successCallback(obj.data);
+                                                      }
+                                                      
+                                                  }
+                                                  onFailure:^(NSError *errorResult) {
+                                                      errorCallback(errorResult);
+                                                  }];
+}
+
+- (void)requestUploadImageWithImageID:(NSString*)imageID
+                       imagesToUpload:(NSDictionary*)imagesToUpload
+                                token:(NSString*)token
+                                 host:(NSString*)host {
+    
+    
+    [self requestUploadReviewImageWithHost:[NSString stringWithFormat:@"https://%@",host]
+                                      data:[imagesToUpload objectForKey:imageID]
+                                   imageID:imageID
+                                     token:token
+                                 onSuccess:^(ImageResult *result) {
+                                     [_fileUploaded setObject:result.pic_obj forKey:imageID];
+                                     _counter++;
+                                     if (_counter == [_imageIDs count]) {
+                                         [self requestSubmitReviewWithPostKey:_postKey
+                                                                 fileUploaded:_fileUploaded];
+                                     }
+                                 }
+                                 onFailure:^(NSError *errorResult) {
+                                     self.errorCompletionBlock(errorResult);
+                                 }];
+    
+}
+
+- (void)requestSubmitReviewWithPostKey:(NSString*)postKey
+                          fileUploaded:(NSDictionary*)fileUploaded {
+    [self requestProductReviewSubmitWithPostKey:postKey
+                                   fileUploaded:fileUploaded
+                                      onSuccess:^(SubmitReviewResult *result) {
+                                          if ([result.is_success isEqualToString:@"1"]) {
+                                              self.successCompletionBlock(result);
+                                          } else {
+                                              self.errorCompletionBlock(nil);
+                                          }
+                                      }
+                                      onFailure:^(NSError *errorResult) {
+                                          self.errorCompletionBlock(errorResult);
+                                      }];
+}
+
 
 @end

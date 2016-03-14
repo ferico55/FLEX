@@ -59,6 +59,11 @@
                                                                              target:self
                                                                              action:@selector(tapToContinue:)];
     
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:nil];
+    
     [self initData];
     [self initCameraIcon];
     
@@ -81,6 +86,16 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.title = @"";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.title = _isEdit?@"Ubah Ulasan":@"Tulis Ulasan";
 }
 
 #pragma mark - Methods
@@ -174,11 +189,11 @@
 }
 
 - (NSString*)generateUniqueImageID {
-    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    NSString *userID = [[UserAuthentificationManager new] getUserId];
+//    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//    NSString *userID = [[UserAuthentificationManager new] getUserId];
     int unixTime = (int) [[NSDate date] timeIntervalSince1970];
     
-    return [NSString stringWithFormat:@"%zd%@%d", userID, uuid, unixTime];
+    return [NSString stringWithFormat:@"%d", unixTime];
 }
 
 #pragma mark - Text Field Delegate 
@@ -360,7 +375,7 @@
         }
     }
     
-    NSString *imageID = [self generateUniqueImageID];
+    NSString *imageID = [[self generateUniqueImageID] stringByAppendingString:[NSString stringWithFormat:@"%d", tag]];
     NSString *caption = [_userInfo objectForKey:@"images-captions"][tag];
     
     [_imagesToUpload setObject:photo forKey:imageID];

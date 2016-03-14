@@ -132,6 +132,8 @@
 @property (nonatomic, strong) NSString *review_shop_id;
 @property (nonatomic, strong) NSString *review_reputation_id;
 
+@property (nonatomic, strong) NSArray *review_image_attachment;
+
 //only used in helpful review, diff implementation, diff ws
 @property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;
 

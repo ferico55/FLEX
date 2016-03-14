@@ -15,6 +15,7 @@
 #import "Upload.h"
 #import "TKPMappingManager.h"
 #import "RequestObject.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
 
 @implementation RequestUploadImage
 {
@@ -246,15 +247,15 @@
                                                                                        if ([obj.success isEqualToString:@"1"]) {
                                                                                            success(obj);
                                                                                        } else {
-                                                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:obj.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."] delegate:nil];
-                                                                                           [alert show];
+                                                                                           [StickyAlertView showErrorMessage:obj.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+                                                                                           failure(nil);
                                                                                        }
+                                                                                       
                                                                                    }
                                                                                    failure:^(RKObjectRequestOperation *operation, NSError *error) {
                                                                                        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
                                                                                        
-                                                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."] delegate:nil];
-                                                                                       [alert show];
+                                                                                       [StickyAlertView showNetworkError:error];
                                                                                        
                                                                                        failure(error);
                                                                                    }];
