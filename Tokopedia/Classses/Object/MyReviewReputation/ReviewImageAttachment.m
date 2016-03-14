@@ -10,4 +10,15 @@
 
 @implementation ReviewImageAttachment
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *reviewImageAttachmentMapping = [RKObjectMapping mappingForClass:[ReviewImageAttachment class]];
+    
+    [reviewImageAttachmentMapping addAttributeMappingsFromDictionary:@{@"desc" : @"description",
+                                                                       @"uri_large" : @"uri_large",
+                                                                       @"attachment_id" : @"attachment_id",
+                                                                       @"uri_thumbnail" : @"uri_thumbnail"}];
+    
+    return reviewImageAttachmentMapping;
+}
+
 @end

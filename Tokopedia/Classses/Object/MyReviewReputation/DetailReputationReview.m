@@ -8,6 +8,8 @@
 
 #import "DetailReputationReview.h"
 #import "ShopBadgeLevel.h"
+#import "ReviewImageAttachment.h"
+
 @implementation DetailReputationReview
 
 - (DetailReviewReputationViewModel *)viewModel {
@@ -209,6 +211,10 @@
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level"
                                                                                                   toKeyPath:@"shop_badge_level"
                                                                                                 withMapping:[ShopBadgeLevel mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_image_attachment"
+                                                                                                  toKeyPath:@"review_image_attachment"
+                                                                                                withMapping:[ReviewImageAttachment mapping]]];
     
     return detailReputationReviewMapping;
 }

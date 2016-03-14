@@ -11,6 +11,7 @@
 #import "ReviewRatingComponent.h"
 #import "ReviewResponseComponent.h"
 #import "AFNetworkingImageDownloader.h"
+#import "ReviewImageAttachment.h"
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent* skipButton (DetailReputationReview* review) {
@@ -144,6 +145,39 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
             size:{.height = 1, .width = CKRelativeDimension::Percent(.95)}];
 }
 
+static CKComponent *attachedImages(DetailReputationReview *review, DetailReputationReviewContext *context) {
+    if (review.review_image_attachment.count == 0) {
+        return nil;
+    }
+    
+    std::vector<CKStackLayoutComponentChild> images;
+    
+    for (int ii = 0; ii < review.review_image_attachment.count; ii++) {
+        ReviewImageAttachment *image = review.review_image_attachment[ii];
+        images.push_back({
+            [CKNetworkImageComponent
+             newWithURL:[NSURL URLWithString:image.uri_thumbnail]
+             imageDownloader:context.imageDownloader
+             scenePath:nil
+             size:{50,50}
+             options:{}
+             attributes:{}]
+        });
+    }
+    
+    return [CKInsetComponent
+            newWithInsets:{8,8,8,8}
+            component:
+            [CKStackLayoutComponent
+             newWithView:{}
+             size:{}
+             style:{
+                 .direction = CKStackLayoutDirectionHorizontal,
+                 .spacing = 8
+             }
+             children:images]];
+}
+
 @implementation DetailReputationReviewContext
 @end
 
@@ -238,6 +272,9 @@ static CKComponent *horizontalBorder (DetailReputationReview *review) {
                                                         },
                                                         {
                                                             messageLabel(review, role)
+                                                        },
+                                                        {
+                                                            attachedImages(review, context)
                                                         },
                                                         {
                                                             giveReviewButton(review, role)
