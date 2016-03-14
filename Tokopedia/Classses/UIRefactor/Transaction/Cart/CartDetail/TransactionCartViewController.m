@@ -12,8 +12,6 @@
 #import "NoResult.h"
 #import "NavigateViewController.h"
 
-#import "TransactionObjectMapping.h"
-
 #import "TransactionCartViewController.h"
 #import "TransactionCartCell.h"
 #import "TransactionCartHeaderView.h"
@@ -32,7 +30,6 @@
 
 #import "TransactionCCViewController.h"
 
-#import "TransactionObjectManager.h"
 #import "RequestCart.h"
 #import "TAGDataLayer.h"
 
@@ -98,22 +95,13 @@
     NSMutableArray *_senderPhoneDropshipper;
     NSMutableArray *_dropshipStrList;
     
-    CGPoint _keyboardPosition;
-    CGSize _keyboardSize;
-    
-    CGRect _containerDefault;
-    CGSize _scrollviewContentSize;
-    
     BOOL _isUsingSaldoTokopedia;
     
-    TransactionObjectMapping *_mapping;
     BOOL _isLoadingRequest;
     
     BOOL _refreshFromShipment;
     BOOL _popFromShipment;
     BOOL _popFromToppay;
-    
-    NavigateViewController *_navigate;
     
     NSString *_saldoTokopedia;
     NSIndexPath *_switchSaldoIndexPath;
@@ -124,16 +112,11 @@
     
     NSNumberFormatter *_IDRformatter;
     
-    TransactionObjectManager *_objectManager;
-    
-    RequestCart *_requestCart;
-    
     UIAlertView *_alertLoading;
     
     LoadingView *_loadingView;
     TAGContainer *_gtmContainer;
     
-
     BOOL _isSelectBankInstallment;
     BOOL _isSelectDurationInstallment;
     
@@ -238,20 +221,12 @@
     
     _list = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
     _isDropshipper = [NSMutableArray new];
     _stockPartialStrList = [NSMutableArray new];
     _senderNameDropshipper = [NSMutableArray new];
     _senderPhoneDropshipper = [NSMutableArray new];
     _dropshipStrList = [NSMutableArray new];
     _stockPartialDetail = [NSMutableArray new];
-    _objectManager = [TransactionObjectManager new];
-    _mapping = [TransactionObjectMapping new];
-    _navigate = [NavigateViewController new];
-    _requestCart = [RequestCart new];
-    
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
     
     _selectedPaymentMethodLabels = [NSArray sortViewsWithTagInArray:_selectedPaymentMethodLabels];
     
@@ -1062,8 +1037,7 @@
     if ([product.product_error_msg isEqualToString:@""] ||
         [product.product_error_msg isEqualToString:@"0"] ||
         product.product_error_msg == nil ) {
-//        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
-        [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
+        [NavigateViewController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -1075,9 +1049,7 @@
     ProductDetail *product = listProducts[indexProduct];
     
     if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
-
-//        [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
-        [_navigate navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
+        [NavigateViewController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_pic withShopName:list.cart_shop.shop_name];
     }
 }
 
@@ -1203,8 +1175,8 @@
             }
             else if (((NSString*)_senderPhoneDropshipper[i]).length < 6) {
                 isValid = NO;
-                if (![messageError containsObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT])
-                    [messageError addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
+                if (![messageError containsObject:@"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."])
+                    [messageError addObject:@"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."];
             }
         }
     }
@@ -1343,7 +1315,7 @@
 {
     if (_indexPage == 0) {
         TransactionCartList *list = _list[section];
-        [_navigate navigateToShopFromViewController:self withShopID:list.cart_shop.shop_id];
+        [NavigateViewController navigateToShopFromViewController:self withShopID:list.cart_shop.shop_id];
     }
 }
 
@@ -3064,14 +3036,6 @@
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
     [self refreshRequestCart];
-}
-
--(TransactionObjectManager*)objectManager
-{
-    if (_objectManager) {
-        _objectManager = [TransactionObjectManager new];
-    }
-    return _objectManager;
 }
 
 #pragma mark - Sending data to GA
