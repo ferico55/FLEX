@@ -53,7 +53,6 @@ static NSInteger userViewHeight = 70;
     UIRefreshControl *refreshControl;
     LoadingView *loadingView;
     NoResultView *noResultView;
-    NSOperationQueue *_operationQueue, *operationQueueLikeDislike;
 
     int page, filterStar;
     NSString *strUri;
@@ -61,7 +60,6 @@ static NSInteger userViewHeight = 70;
     NSMutableArray *arrList;
     NSMutableArray<DetailReputationReview*> *helpfulReviews;
     NSDictionary *auth;
-    NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
     
     HelpfulReviewRequest *helpfulReviewRequest;
@@ -81,11 +79,6 @@ static NSInteger userViewHeight = 70;
     
     [self initTable];
     tableContent.backgroundColor = [UIColor clearColor];
-
-    _operationQueue = [NSOperationQueue new];
-    operationQueueLikeDislike = [NSOperationQueue new];
-    loadingLikeDislike = [NSMutableDictionary new];
-    dictLikeDislike = [NSMutableDictionary new];
     [btnFilterAllTime setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     btnFilter6Month.tag = 0;
     btnFilterAllTime.tag = 1;
@@ -448,17 +441,12 @@ static NSInteger userViewHeight = 70;
 - (void)refreshView:(UIRefreshControl*)refresh{
     [refresh endRefreshing];
     
-    [operationQueueLikeDislike cancelAllOperations];
-    [_operationQueue cancelAllOperations];
-    
     page = 0;
     strUri = nil;
     [arrList removeAllObjects];
     [tableContent reloadData];
     
     [self unloadRequesting];
-    [loadingLikeDislike removeAllObjects];
-    [dictLikeDislike removeAllObjects];
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
@@ -467,9 +455,6 @@ static NSInteger userViewHeight = 70;
     if(filterStar == 0) {
         return;
     }
-     
-    [operationQueueLikeDislike cancelAllOperations];
-    [_operationQueue cancelAllOperations];
 
     switch (filterStar) {
         case 1:
@@ -513,8 +498,6 @@ static NSInteger userViewHeight = 70;
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 - (IBAction)actionFilter6Month:(id)sender {
-    [operationQueueLikeDislike cancelAllOperations];
-    [_operationQueue cancelAllOperations];
     [btnFilterAllTime setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
     [btnFilter6Month setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     
@@ -530,8 +513,6 @@ static NSInteger userViewHeight = 70;
     [[self getNetworkManager:CTagGetProductReview] doRequest];
 }
 - (IBAction)actionFilterAllTime:(id)sender {
-    [operationQueueLikeDislike cancelAllOperations];
-    [_operationQueue cancelAllOperations];
     [btnFilter6Month setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
     [btnFilterAllTime setTitleColor:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] forState:UIControlStateNormal];
     
@@ -574,19 +555,6 @@ static NSInteger userViewHeight = 70;
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager.delegate = nil;
     tokopediaNetworkManager = nil;
-    
-    for(id obj in [loadingLikeDislike allValues]) {
-        if([obj isMemberOfClass:[NSArray class]]) {
-            NSArray *tempArr = (NSArray *)obj;
-            RKManagedObjectRequestOperation *operation = [tempArr firstObject];
-            [operation cancel];
-            
-            NSTimer *timer = [tempArr lastObject];
-            [timer invalidate];
-        }
-    }
-    
-    [operationQueueLikeDislike cancelAllOperations];
 }
 - (void)reloadTable {
     [tableContent reloadData];
@@ -671,11 +639,6 @@ static NSInteger userViewHeight = 70;
     }
     
     [_middleMargin setHidden:YES];
-    
-    //Load data
-    [operationQueueLikeDislike cancelAllOperations];
-    [_operationQueue cancelAllOperations];
-    
     page = 0;
     strUri = nil;
     [arrList removeAllObjects];
@@ -690,20 +653,10 @@ static NSInteger userViewHeight = 70;
     [self mappingAttribute:detailReputationReview];
     productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
     productDetailReputationViewController.detailReputationReview = detailReputationReview;
-    productDetailReputationViewController.dictLikeDislike = dictLikeDislike;
-    productDetailReputationViewController.loadingLikeDislike = loadingLikeDislike;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = _strProductID;
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.product_owner.user_shop_reputation.reputation_badge_object;
     productDetailReputationViewController.isShowingProductView = NO;
-
-    if([dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id]) {
-        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:productDetailReputationViewController.detailReputationReview.review_id];
-        productDetailReputationViewController.strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
-        productDetailReputationViewController.strTotalLike = totalLikeDislike.total_like_dislike.total_like;
-        productDetailReputationViewController.strLikeStatus = totalLikeDislike.like_status;
-    }
-
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 - (void)showLoginView {
@@ -721,19 +674,6 @@ static NSInteger userViewHeight = 70;
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (RKObjectManager *)getObjectManagerTotalLike{
-    RKObjectManager *tempObjectManager =  [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[LikeDislike mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:[self getPathLikeDislike]
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    [tempObjectManager addResponseDescriptor:responseDescriptor];
-    return tempObjectManager;
-}
-- (NSString *)getPathLikeDislike {
-    return @"shop.pl";
-}
 - (ProductReputationCell *)getCell:(UIView *)btn {
     UIView *tempView = btn.superview;
     while(tempView) {
@@ -1042,8 +982,6 @@ static NSInteger userViewHeight = 70;
     
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     auth = [_userManager getUserLoginData];
-    [dictLikeDislike removeAllObjects];
-    [loadingLikeDislike removeAllObjects];
     [tableContent reloadData];
 }
 
