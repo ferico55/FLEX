@@ -89,6 +89,8 @@
 
 #import "NoResultReusableView.h"
 
+#import "OtherProductDataSource.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -103,27 +105,29 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
-LabelMenuDelegate,
-TTTAttributedLabelDelegate,
-GalleryViewControllerDelegate,
-UITableViewDelegate,
-UITableViewDataSource,
-DetailProductInfoCellDelegate,
-DetailProductOtherViewDelegate,
-LoginViewDelegate,
-TokopediaNetworkManagerDelegate,
-MyShopEtalaseFilterViewControllerDelegate,
-RequestMoveToDelegate,
-UIAlertViewDelegate,
-CMPopTipViewDelegate,
-UIAlertViewDelegate,
-NoResultDelegate
+    LabelMenuDelegate,
+    TTTAttributedLabelDelegate,
+    GalleryViewControllerDelegate,
+    UITableViewDelegate,
+    UITableViewDataSource,
+    DetailProductInfoCellDelegate,
+    DetailProductOtherViewDelegate,
+    LoginViewDelegate,
+    TokopediaNetworkManagerDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    RequestMoveToDelegate,
+    UIAlertViewDelegate,
+    CMPopTipViewDelegate,
+    UIAlertViewDelegate,
+    NoResultDelegate,
+    UICollectionViewDelegate,
+    OtherProductDelegate
 >
 {
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
-    NSMutableArray<SearchAWSProduct*> *_otherProductObj;
+    NSArray<SearchAWSProduct*> *_otherProductObj;
     
     NSMutableArray *_expandedSections;
     CGFloat _descriptionHeight;
@@ -202,6 +206,8 @@ NoResultDelegate
     NSString *_detailProductFullUrl;
 
     PromoRequest *_promoRequest;
+    
+    OtherProductDataSource *_otherProductDataSource;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -238,11 +244,16 @@ NoResultDelegate
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightBuyButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightDinkButton;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
+//@property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (weak, nonatomic) IBOutlet UIButton *favButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightShare;
 @property (weak, nonatomic) IBOutlet UIButton *dinkButton;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *otherProductsCollectionView;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *otherProductsFlowLayout;
+@property (weak, nonatomic) IBOutlet UILabel *otherProductNoDataLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *otherProductsConstraintHeight;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -299,6 +310,7 @@ NoResultDelegate
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     _TKPDNavigator = [NavigateViewController new];
+    _otherProductDataSource = [OtherProductDataSource new];
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
@@ -410,15 +422,11 @@ NoResultDelegate
 }
 
 - (void)initNotification {
-    
-    
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
     [center addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [center addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
-
-
 
 - (void)setButtonFav {
     
@@ -513,7 +521,6 @@ NoResultDelegate
 {
     [super viewWillDisappear:animated];
 }
-
 
 #pragma mark - Table view delegate
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
@@ -2306,18 +2313,10 @@ NoResultDelegate
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-    if(sender.tag == 111)
-    {
-        CGFloat pageWidth = _otherproductscrollview.bounds.size.width;
-        otherProductPageControl.currentPage = floor((_otherproductscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    }
-    else
-    {
-        // Update the page when more than 50% of the previous/next page is visible
-        CGFloat pageWidth = _imagescrollview.frame.size.width;
-        _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-        _pagecontrol.currentPage = _pageheaderimages;
-    }
+    // Update the page when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = _imagescrollview.frame.size.width;
+    _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pagecontrol.currentPage = _pageheaderimages;
 }
 
 #pragma mark - Cell Delegate
@@ -2773,68 +2772,47 @@ NoResultDelegate
     }];
 }
 
--(void)setOtherProducts
-{
-    float count;
+-(void)setOtherProducts {
+    [self.otherProductIndicator stopAnimating];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        count = 3.0f;
+    if (_otherProductObj.count > 0) {
+
+        self.otherProductNoDataLabel.hidden = YES;
+        otherProductPageControl.hidden = NO;
+        
+        UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+        [self.otherProductsCollectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
+
+        otherProductPageControl.numberOfPages = _otherProductObj.count;
+        
+        _otherProductDataSource.products = _otherProductObj;
+        _otherProductDataSource.collectionView = _otherProductsCollectionView;
+        _otherProductDataSource.pageControl = otherProductPageControl;
+        _otherProductDataSource.delegate = self;
+        
+        self.otherProductsCollectionView.dataSource = _otherProductDataSource;
+        self.otherProductsCollectionView.delegate = _otherProductDataSource;
+        self.otherProductsCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+        
+        self.otherProductsConstraintHeight.constant = _otherProductDataSource.collectionViewItemSize.height + 20; // padding top bottom
+        
+        [self.otherProductsCollectionView performBatchUpdates:^{
+            [self.otherProductsCollectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        } completion:nil];
+        
+        CGRect frame = _shopinformationview.frame;
+        frame.size.height = 457;
+        _shopinformationview.frame = frame;
+
+        _table.tableFooterView = _shopinformationview;
+        [_table reloadData];
+        
+        [self.otherProductsCollectionView flashScrollIndicators];
+        
+    } else {
+        self.otherProductNoDataLabel.hidden = NO;
+        otherProductPageControl.hidden = YES;
     }
-    else
-    {
-        count = 2.0f;
-    }
-    
-    float widthOtherProductView = (_otherproductscrollview.frame.size.width-(10*(count+1)))/count;
-    constraintHeightScrollOtherView.constant = widthOtherProductView + (widthOtherProductView/count);
-    otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/count);
-    int x = 10;
-    for(int i = 0; i< _otherProductObj.count; i++)
-    {
-        SearchAWSProduct *product = _otherProductObj[i];
-        
-        
-        DetailProductOtherView *v = [DetailProductOtherView newview];
-        
-        [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/count)))];
-        x += widthOtherProductView+10;
-        NSInteger countInt = (int)count;
-        x += (((i+1)%countInt==0) && i<(_otherProductObj.count-1)? 10 : 0);
-        v.delegate = self;
-        v.index = i;
-        [v.act startAnimating];
-        v.namelabel.text = product.product_name;
-        v.pricelabel.text = product.product_price;
-        
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        
-        UIImageView *thumb = v.thumb;
-        
-        thumb.image = nil;
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image];
-            [thumb setContentMode:UIViewContentModeScaleAspectFit];
-            [v.act stopAnimating];
-#pragma clang diagnostic pop
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-            [thumb setContentMode:UIViewContentModeCenter];
-            [v.act stopAnimating];
-        }];
-        
-        
-        [_otherproductscrollview addSubview:v];
-        [_otherproductviews addObject:v];
-    }
-    
-    _otherproductscrollview.pagingEnabled = YES;
-    _otherproductscrollview.contentSize = CGSizeMake(x, 0);
-    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, _otherproductscrollview.frame.origin.y + constraintHeightScrollOtherView.constant + 6 + _pagecontrol.bounds.size.height);
-    _table.tableFooterView = _shopinformationview;
 }
 
 
@@ -2843,7 +2821,9 @@ NoResultDelegate
 }
 
 - (void)loadDataOtherProduct {
-    [tokopediaOtherProduct doRequest];
+    [_otherProductIndicator setHidden:NO];
+    [_otherProductIndicator startAnimating];
+    [tokopediaOtherProduct doRequest];    
 }
 
 - (void)requestSuccessOtherProduct:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -2880,25 +2860,10 @@ NoResultDelegate
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
             SearchAWS *otherProduct = [result objectForKey:@""];
-
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
             if (status) {
-                [_otherProductObj removeAllObjects];
-                
-                for(int i=0;i<_otherproductviews.count;i++)
-                    [[_otherproductviews objectAtIndex:i] removeFromSuperview];
-                [_otherproductviews removeAllObjects];
-                [_otherProductObj addObjectsFromArray: otherProduct.result.products];
-                
-                if(_otherProductObj.count == 0) {
-                    lblOtherProductTitle.hidden = YES;
-                    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
-                    _table.tableFooterView = _shopinformationview;
-                }
-                else {
-                    [self setOtherProducts];
-                }
+                _otherProductObj = [NSArray arrayWithArray:otherProduct.result.products];
+                [self setOtherProducts];
             }
         }
         else{
@@ -3276,6 +3241,19 @@ NoResultDelegate
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
         self.userActivity = [TPSpotlight productDetailActivity:_product.result];
     }
+}
+
+#pragma mark - Push other product
+
+- (void)didSelectOtherProduct:(SearchAWSProduct *)product {
+    [TPAnalytics trackProductClick:product];
+    NavigateViewController *navigateController = [NavigateViewController new];
+    [navigateController navigateToProductFromViewController:self
+                                                   withName:product.product_name
+                                                  withPrice:product.product_price
+                                                     withId:product.product_id
+                                               withImageurl:product.product_image
+                                               withShopName:product.shop_name];
 }
 
 @end

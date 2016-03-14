@@ -21,6 +21,7 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		852DFE9F1C92B3C100A52E93 /* OtherProductDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DFE9E1C92B3C100A52E93 /* OtherProductDataSource.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2154,6 +2155,8 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		852DFE9D1C92B3C100A52E93 /* OtherProductDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherProductDataSource.h; sourceTree = "<group>"; };
+		852DFE9E1C92B3C100A52E93 /* OtherProductDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherProductDataSource.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5414,6 +5417,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		852DFE9C1C92B3A300A52E93 /* OtherProduct */ = {
+			isa = PBXGroup;
+			children = (
+				852DFE9D1C92B3C100A52E93 /* OtherProductDataSource.h */,
+				852DFE9E1C92B3C100A52E93 /* OtherProductDataSource.m */,
+			);
+			path = OtherProduct;
+			sourceTree = "<group>";
+		};
 		85A276321C919C1C005170EB /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -8638,6 +8650,7 @@
 		85A27D631C919C20005170EB /* DetailProduct */ = {
 			isa = PBXGroup;
 			children = (
+				852DFE9C1C92B3A300A52E93 /* OtherProduct */,
 				85A27D641C919C20005170EB /* DetailProductDescriptionCell.h */,
 				85A27D651C919C20005170EB /* DetailProductDescriptionCell.m */,
 				85A27D661C919C20005170EB /* DetailProductDescriptionCell.xib */,
@@ -12445,6 +12458,7 @@
 				85A284001C919C2B005170EB /* GoogleDistanceMatrixDetail.m in Sources */,
 				85A2877C1C919C2C005170EB /* ShipmentStatusViewController.m in Sources */,
 				85A285CE1C919C2B005170EB /* CatalogShopViewController.m in Sources */,
+				852DFE9F1C92B3C100A52E93 /* OtherProductDataSource.m in Sources */,
 				85A288071C919C2C005170EB /* TrackOrderHistoryCell.m in Sources */,
 				85A2886F1C919C2C005170EB /* ProfileFavoriteShopCell.m in Sources */,
 				85A2873C1C919C2C005170EB /* ReputationShopHeader.m in Sources */,
