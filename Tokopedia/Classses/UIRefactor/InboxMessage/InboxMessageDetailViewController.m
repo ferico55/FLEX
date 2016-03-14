@@ -733,6 +733,10 @@
     [self adjustButtonSendAvailability];
 }
 
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [_table scrollToBottomAnimated:YES];
+}
+
 - (void)adjustButtonSendAvailability {
     NSString *message = [_textView.text stringByTrimmingCharactersInSet:
                          [NSCharacterSet whitespaceCharacterSet]];

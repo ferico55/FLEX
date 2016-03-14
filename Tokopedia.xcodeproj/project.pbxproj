@@ -2098,6 +2098,7 @@
 		8C25CB72C9504D0289FE6475 /* RolloutDynamic_16.m in Sources */ = {isa = PBXBuildFile; fileRef = A05CDE3AB94D4662AE7303A7 /* RolloutDynamic_16.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8E3B2B29E0054A1D9A285411 /* RolloutDynamic_20.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		9034B7F19CD24D21A190AB50 /* RolloutDynamic_04.m in Sources */ = {isa = PBXBuildFile; fileRef = 4511DD45484E4930BD91882A /* RolloutDynamic_04.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		92351FD61C9690B30056B25C /* UIScrollViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */; };
 		9DE0A4BBA86D4190A7E07CB2 /* RolloutDynamic_03.m in Sources */ = {isa = PBXBuildFile; fileRef = D42C03553460450FB506D4DE /* RolloutDynamic_03.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		9E7E2D6D104C42C59FBFF513 /* RolloutDynamic_15.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2849330B874E69A80561F9 /* RolloutDynamic_15.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		A057EECF8D204BED8A68681F /* RolloutDynamic_14.m in Sources */ = {isa = PBXBuildFile; fileRef = 533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5278,6 +5279,7 @@
 		8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_18.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_18.m"; sourceTree = "<group>"; };
 		8E670BDDA5CB41D18FCB051D /* RolloutDynamic_02.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_02.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_02.m"; sourceTree = "<group>"; };
 		90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_17.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_17.m"; sourceTree = "<group>"; };
+		92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewCategory.swift; sourceTree = "<group>"; };
 		939838F8A82345A2B27A507A /* RolloutDynamic_01.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_01.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_01.m"; sourceTree = "<group>"; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_19.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_19.m"; sourceTree = "<group>"; };
@@ -5560,6 +5562,7 @@
 				85A2767A1C919C1C005170EB /* Utils */,
 				85A2767D1C919C1C005170EB /* ViewLabelUser.h */,
 				85A2767E1C919C1C005170EB /* ViewLabelUser.m */,
+				92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -12767,6 +12770,7 @@
 				85A283BF1C919C2B005170EB /* ContactUsQuery.m in Sources */,
 				85A2886E1C919C2C005170EB /* GoldShopView.m in Sources */,
 				85A285671C919C2B005170EB /* UploadImageHelperResult.m in Sources */,
+				92351FD61C9690B30056B25C /* UIScrollViewCategory.swift in Sources */,
 				85A284361C919C2B005170EB /* ResolutionShop.m in Sources */,
 				85A283A71C919C2B005170EB /* VerifyOTPResult.m in Sources */,
 				85A283961C919C2B005170EB /* ViewLabelUser.m in Sources */,
