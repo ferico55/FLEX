@@ -21,6 +21,11 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		7AF609131C927AEF00923343 /* ProductWishlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF609121C927AEF00923343 /* ProductWishlistCell.swift */; };
+		7AF609151C927B2900923343 /* ProductWishlistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AF609141C927B2900923343 /* ProductWishlistCell.xib */; };
+		7AF609191C92818000923343 /* icon_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF609161C92818000923343 /* icon_trash.png */; };
+		7AF6091A1C92818000923343 /* icon_trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF609171C92818000923343 /* icon_trash@2x.png */; };
+		7AF6091B1C92818000923343 /* icon_trash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AF609181C92818000923343 /* icon_trash@3x.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2154,6 +2159,11 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7AF609121C927AEF00923343 /* ProductWishlistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductWishlistCell.swift; sourceTree = "<group>"; };
+		7AF609141C927B2900923343 /* ProductWishlistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductWishlistCell.xib; sourceTree = "<group>"; };
+		7AF609161C92818000923343 /* icon_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_trash.png; sourceTree = "<group>"; };
+		7AF609171C92818000923343 /* icon_trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_trash@2x.png"; sourceTree = "<group>"; };
+		7AF609181C92818000923343 /* icon_trash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_trash@3x.png"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -3938,7 +3948,7 @@
 		85A27DD61C919C21005170EB /* ProductReputationViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReputationViewModel.h; sourceTree = "<group>"; };
 		85A27DD71C919C21005170EB /* ProductReputationViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReputationViewModel.m; sourceTree = "<group>"; };
 		85A27DD81C919C21005170EB /* string_product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_product.h; sourceTree = "<group>"; };
-		85A27DD91C919C21005170EB /* ProductDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDataSource.swift; sourceTree = "<group>"; };
+		85A27DD91C919C21005170EB /* ProductDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductDataSource.swift; path = Tokopedia/Classses/UIRefactor/ProductDataSource.swift; sourceTree = SOURCE_ROOT; };
 		85A27DDC1C919C21005170EB /* ProfileContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileContactViewController.h; sourceTree = "<group>"; };
 		85A27DDD1C919C21005170EB /* ProfileContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileContactViewController.m; sourceTree = "<group>"; };
 		85A27DDE1C919C21005170EB /* ProfileContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileContactViewController.xib; sourceTree = "<group>"; };
@@ -7521,7 +7531,6 @@
 				85A27D431C919C20005170EB /* NotificationManager */,
 				85A27D4D1C919C20005170EB /* PriceAlert */,
 				85A27D621C919C20005170EB /* Product */,
-				85A27DD91C919C21005170EB /* ProductDataSource.swift */,
 				85A27DDA1C919C21005170EB /* Profile */,
 				85A27DDF1C919C21005170EB /* Promo */,
 				85A27DE91C919C21005170EB /* Reputation */,
@@ -8600,6 +8609,7 @@
 		85A27D621C919C20005170EB /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				85A27DD91C919C21005170EB /* ProductDataSource.swift */,
 				85A27D631C919C20005170EB /* DetailProduct */,
 				85A27D8E1C919C21005170EB /* ProductAddEditDetailViewController.h */,
 				85A27D8F1C919C21005170EB /* ProductAddEditDetailViewController.m */,
@@ -8631,6 +8641,8 @@
 				85A27DD11C919C21005170EB /* RequestMoveTo.m */,
 				85A27DD21C919C21005170EB /* SimpleReputation */,
 				85A27DD81C919C21005170EB /* string_product.h */,
+				7AF609121C927AEF00923343 /* ProductWishlistCell.swift */,
+				7AF609141C927B2900923343 /* ProductWishlistCell.xib */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -9926,6 +9938,9 @@
 		85A280751C919C24005170EB /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AF609161C92818000923343 /* icon_trash.png */,
+				7AF609171C92818000923343 /* icon_trash@2x.png */,
+				7AF609181C92818000923343 /* icon_trash@3x.png */,
 				85A280761C919C24005170EB /* badges_gold_merchant.png */,
 				85A280771C919C24005170EB /* balloon_read_left.png */,
 				85A280781C919C24005170EB /* balloon_read_right.png */,
@@ -11294,6 +11309,7 @@
 				85A28ABD1C919C2C005170EB /* icon_search_active.png in Resources */,
 				85A28AF91C919C2C005170EB /* hotlist.png in Resources */,
 				85A288A31C919C2C005170EB /* GothamLight.ttf in Resources */,
+				7AF609191C92818000923343 /* icon_trash.png in Resources */,
 				85A289491C919C2C005170EB /* icon_check_orange.png in Resources */,
 				85A288AE1C919C2C005170EB /* button_white_rounded_2.png in Resources */,
 				85A288B81C919C2C005170EB /* icon_10.png in Resources */,
@@ -11390,6 +11406,7 @@
 				85A28AAB1C919C2C005170EB /* icon_urutkan_alt@2x.png in Resources */,
 				85A288501C919C2C005170EB /* TxOrderConfirmationShipmentCell.xib in Resources */,
 				85A289E21C919C2C005170EB /* icon_neutral20.png in Resources */,
+				7AF609151C927B2900923343 /* ProductWishlistCell.xib in Resources */,
 				85A289531C919C2C005170EB /* icon_clock.png in Resources */,
 				85A285D61C919C2B005170EB /* CatalogSellerHeaderView.xib in Resources */,
 				85A289B51C919C2C005170EB /* icon_medal_diamond_one.png in Resources */,
@@ -11946,6 +11963,7 @@
 				85A288DE1C919C2C005170EB /* icon_8@2x.png in Resources */,
 				85A28AAC1C919C2C005170EB /* icon_view.png in Resources */,
 				85A28B391C919C2C005170EB /* icon_signin_active@2x.png in Resources */,
+				7AF6091B1C92818000923343 /* icon_trash@3x.png in Resources */,
 				85A28B4C1C919C2C005170EB /* icon_info_grey@2x.png in Resources */,
 				85A2895C1C919C2C005170EB /* icon_contact_us@3x.png in Resources */,
 				85A28B731C919C2C005170EB /* Tokopedia.xcworkspace in Resources */,
@@ -12091,6 +12109,7 @@
 				85A286741C919C2B005170EB /* HotlistResultViewController.xib in Resources */,
 				85A28A731C919C2C005170EB /* icon_speed_fast.png in Resources */,
 				85A287001C919C2C005170EB /* ProductTalkViewController.xib in Resources */,
+				7AF6091A1C92818000923343 /* icon_trash@2x.png in Resources */,
 				85A289B71C919C2C005170EB /* icon_medal_diamond_one14@2x.png in Resources */,
 				85A28A1C1C919C2C005170EB /* icon_problem_shopper@3x.png in Resources */,
 				85A285DE1C919C2B005170EB /* FilterCategoryViewCell.xib in Resources */,
@@ -12576,6 +12595,7 @@
 				85A286B81C919C2B005170EB /* PurchaseViewController.m in Sources */,
 				85A286E31C919C2B005170EB /* InboxPriceAlertSplitViewController.m in Sources */,
 				85A287211C919C2C005170EB /* ProductDetailReputationViewController.m in Sources */,
+				7AF609131C927AEF00923343 /* ProductWishlistCell.swift in Sources */,
 				85A285E11C919C2B005170EB /* CategoryMenuViewCell.m in Sources */,
 				85A284901C919C2B005170EB /* AddressFormResult.m in Sources */,
 				85A286E11C919C2B005170EB /* DetailPriceAlertViewController.m in Sources */,
@@ -13419,6 +13439,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tokopedia/Tokopedia-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;

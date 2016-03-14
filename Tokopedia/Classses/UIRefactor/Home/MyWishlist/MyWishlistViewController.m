@@ -26,7 +26,7 @@
 #import "RetryCollectionReusableView.h"
 #import "Tokopedia-Swift.h"
 
-static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
+static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
 
@@ -163,7 +163,7 @@ typedef enum TagRequest {
 }
 
 - (void)registerNib {
-    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    UINib *cellNib = [UINib nibWithNibName:@"ProductWishlistCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:wishListCellIdentifier];
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
@@ -181,10 +181,9 @@ typedef enum TagRequest {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
+    ProductWishlistCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
     
     WishListObjectList *list = [_product objectAtIndex:indexPath.row];
-    cell.productPrice.text = list.product_price;
     [cell setViewModel:list.viewModel];
     
     //next page if already last cell
@@ -218,7 +217,7 @@ typedef enum TagRequest {
 //    CGFloat cellWidth = screenWidth/numberOfCell - 15;
 //    
 //    return CGSizeMake(cellWidth, cellHeight);
-    return [ProductCellSize sizeWithType:1];
+    return [ProductCellSize sizeWishlistCell];
 }
 
 
