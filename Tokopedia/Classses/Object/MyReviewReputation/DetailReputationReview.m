@@ -106,6 +106,22 @@
     }
 }
 
+-(NSString *)product_id{
+    if(_product_id != nil){
+        return _product_id;
+    }else{
+        return _review_product_id;
+    }
+}
+
+-(NSString *)review_shop_name{
+    if(_review_shop_name != nil){
+        return _review_shop_name;
+    }else{
+        return _product_owner.shop_name;
+    }
+}
+
 +(RKObjectMapping *)mapping{
     RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
     [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{@"review_update_time":@"review_update_time",

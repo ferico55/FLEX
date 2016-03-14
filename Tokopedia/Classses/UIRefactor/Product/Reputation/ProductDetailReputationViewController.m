@@ -542,7 +542,7 @@ MGSwipeTableCellDelegate>
     
 
     [cell setStar:_shopBadgeLevel.level withSet:_shopBadgeLevel.set];
-    [cell.getViewLabelUser setText:_detailReputationReview.product_owner.shop_name];
+    [cell.getViewLabelUser setText:_detailReputationReview.review_shop_name];
     [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
     [cell.getViewLabelUser setLabelBackground:(_detailReputationReview!=nil)?_detailReputationReview.product_owner.user_label:CPenjual];
     cell.getViewStar.tag = indexPath.row;
