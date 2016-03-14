@@ -28,11 +28,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIButton *buttonloadmore;
 @property (weak, nonatomic) IBOutlet UIButton *buttonsend;
-@property (weak, nonatomic) IBOutlet UILabel *titlelabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) IBOutlet RSKGrowingTextView *textView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageViewBottomConstraint;
+@property (strong, nonatomic) IBOutlet UIView *titleView;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *participantsLabel;
 
 
 @end
@@ -140,7 +142,10 @@
     _buttonsend.enabled = NO;
     
     [self setMessagingView];
-    
+//    self.navigationController.navigationBar.backItem.backBarButtonItem.title = @"";
+//    self.navigationController.navigationItem.backBarButtonItem = nil;
+    self.navigationItem.titleView = _titleView;
+
     if (_data) {
         [self configureRestKit];
         [self loadData];
@@ -429,15 +434,17 @@
             
             NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
 
+            _titleLabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
+            _participantsLabel.text = btw;
+
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
             [attributedText addAttribute:NSFontAttributeName
                                    value:[UIFont boldSystemFontOfSize: 16.0f]
                                    range:NSMakeRange(0, [[_data objectForKey:KTKPDMESSAGE_TITLEKEY] length])];
+
             
             label.attributedText = attributedText;
-            
-            self.navigationItem.titleView = label;
-            
+
             [_table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
         }
         
@@ -491,7 +498,6 @@
         }
     }
 }
-
 
 
 - (void)requesttimeout {
@@ -685,10 +691,11 @@
     
     _requestsendcount ++;
     _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl parameters:[param encrypt]];
-    
-    NSDictionary *userinfo;
-    userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _textView.text};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessageWithIndex" object:nil userInfo:userinfo];
+
+    if (_onMessagePosted) {
+        _onMessagePosted(_textView.text);
+    }
+
     [_textView resignFirstResponder];
     
     [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
