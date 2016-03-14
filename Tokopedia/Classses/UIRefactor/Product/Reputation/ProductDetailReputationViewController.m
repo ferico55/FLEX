@@ -595,26 +595,28 @@ MGSwipeTableCellDelegate>
 
     if(auth) {
         [productReputationCell.getBtnLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
-        if([_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"2"]){
+        if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"2"]){
             [reviewRequest actionLikeWithReviewId:_detailReputationReview.review_id
                                               shopId:_detailReputationReview.shop_id
                                            productId:_detailReputationReview.product_id
-                                              userId:_detailReputationReview.review_user_id
+                                              userId:[auth objectForKey:@"user_id"]
                                            onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
-                                               _strLikeStatus = @"1";
+                                               
                                                if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                                   _strLikeStatus = @"1";
                                                    [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
                                                    [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
                                                    [self setLikeDislikeActive:_strLikeStatus];
                                                }
                                            } onFailure:^(NSError *errorResult) {
                                                [self setLikeDislikeActive:_strLikeStatus];
+                                               [self showNetworkFailStickyAlert];
                                            }];
         }else{
             [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
                                                         shopId:_detailReputationReview.shop_id
                                                      productId:_detailReputationReview.product_id
-                                                        userId:_detailReputationReview.review_user_id
+                                                        userId:[auth objectForKey:@"user_id"]
                                                      onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                          if([likeDislikePostResult.is_success isEqualToString:@"1"]){
                                                              [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
@@ -624,6 +626,7 @@ MGSwipeTableCellDelegate>
                                                          }
                                                      } onFailure:^(NSError *errorResult) {
                                                          [self setLikeDislikeActive:_strLikeStatus];
+                                                         [self showNetworkFailStickyAlert];
                                                      }];
         }
     }else {
@@ -637,26 +640,26 @@ MGSwipeTableCellDelegate>
     
     if(auth) {
         [productReputationCell.getBtnDisLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
-        if([_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"1"]){
+        if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"1"]){
             [reviewRequest actionDislikeWithReviewId:_detailReputationReview.review_id
                                               shopId:_detailReputationReview.shop_id
                                            productId:_detailReputationReview.product_id
-                                              userId:_detailReputationReview.review_user_id
-                                           onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
-                                               _strLikeStatus = @"2";
-                                               if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                              userId:[auth objectForKey:@"user_id"]
+                                           onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {                                               if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                                   _strLikeStatus = @"2";
                                                    [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
                                                    [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
                                                    [self setLikeDislikeActive:_strLikeStatus];
                                                }
                                            } onFailure:^(NSError *errorResult) {
                                                [self setLikeDislikeActive:_strLikeStatus];
+                                               [self showNetworkFailStickyAlert];
                                            }];
         }else{
             [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
                                               shopId:_detailReputationReview.shop_id
                                            productId:_detailReputationReview.product_id
-                                              userId:_detailReputationReview.review_user_id
+                                              userId:[auth objectForKey:@"user_id"]
                                            onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                if([likeDislikePostResult.is_success isEqualToString:@"1"]){
                                                    _strLikeStatus = @"3";
@@ -667,6 +670,7 @@ MGSwipeTableCellDelegate>
                                                }
                                            } onFailure:^(NSError *errorResult) {
                                                [self setLikeDislikeActive:_strLikeStatus];
+                                               [self showNetworkFailStickyAlert];
                                            }];
         }
         
@@ -1469,19 +1473,6 @@ MGSwipeTableCellDelegate>
     return nil;
 }
 
-#pragma mark - ReviewRequestDelegate
--(void)didReceiveReviewLikeDislikes:(TotalLikeDislike *)totalLikeDislike{
-    _strTotalLike = totalLikeDislike.total_like_dislike.total_like;
-    _strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
-        
-    if(_detailReputationReview!=nil && [totalLikeDislike.review_id isEqualToString:_detailReputationReview.review_id]) {
-        [productReputationCell setHiddenViewLoad:YES];
-        [productReputationCell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
-        [productReputationCell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like  forState:UIControlStateNormal];
-        
-        [self setLikeDislikeActive:totalLikeDislike.like_status];
-    }
-}
 - (void)setLikeDislikeActive:(NSString *)strStatusLike {
     if(strStatusLike!=nil && [strStatusLike isEqualToString:@"1"]) {
         [productReputationCell enableLikeButton];
@@ -1494,4 +1485,10 @@ MGSwipeTableCellDelegate>
         [productReputationCell resetLikeDislikeButton];
     }
 }
+
+- (void)showNetworkFailStickyAlert{
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+    [alert show];
+}
+
 @end
