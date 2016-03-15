@@ -52,6 +52,8 @@
 @property (nonatomic, strong) NSString *cart_dropship_name;
 @property (nonatomic, strong) NSString *cart_dropship_phone;
 
+@property (nonatomic, strong) NSString *cart_is_partial;
+
 @property (nonatomic, strong) ShopInfo *cart_shop;
 
 @property (nonatomic, strong) CartModelView *viewModel;

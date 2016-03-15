@@ -17,7 +17,7 @@
 
 +(UITableViewCell*)cellDetailShipmentTable:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
 
-+(UITableViewCell*)cellPartialDetail:(NSArray*)partialDetail partialStrList:(NSArray*)partialStrList tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath;
++(UITableViewCell*)cellIsPartial:(NSString*)isPartial partialStrList:(NSArray*)partialStrList tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath;
 
 +(UITableViewCell*)cellTextFieldPlaceholder:(NSString*)placeholder List:(NSArray<TransactionCartList *>*)list tableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath withText:(NSString*)text
 ;

@@ -1357,8 +1357,7 @@
     ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
     NSString *dropshipName = [_data objectForKey:DATA_DROPSHIPPER_NAME_KEY];
     NSString *dropshipPhone = [_data objectForKey:DATA_DROPSHIPPER_PHONE_KEY];
-    NSString *partial = [_data objectForKey:DATA_PARTIAL_LIST_KEY];
-    NSString *partialString = ([partial isEqualToString:@""]||partial == nil)?@"Tidak":@"Ya";
+    NSString *partialString = [_data objectForKey:DATA_PARTIAL_LIST_KEY];
     
     cell = _tableViewSummaryCell[indexPath.row];
     switch (indexPath.row) {

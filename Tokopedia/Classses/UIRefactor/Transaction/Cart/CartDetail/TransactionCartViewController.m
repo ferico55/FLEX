@@ -86,7 +86,6 @@
     
     UIBarButtonItem *_doneBarButtonItem;
     
-    NSMutableArray *_stockPartialDetail;
     NSMutableArray *_stockPartialStrList;
     
     NSMutableArray *_dropshipStrList;
@@ -219,8 +218,7 @@
     _dataInput = [NSMutableDictionary new];
     _stockPartialStrList = [NSMutableArray new];
     _dropshipStrList = [NSMutableArray new];
-    _stockPartialDetail = [NSMutableArray new];
-    
+
     _selectedPaymentMethodLabels = [NSArray sortViewsWithTagInArray:_selectedPaymentMethodLabels];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -610,29 +608,9 @@
     NSString *partial = @"";
     TransactionCartList *list = _list[index];
     if (_indexPage == 1) {
-        NSInteger shopID = [list.cart_shop.shop_id integerValue];
-        NSInteger addressID =list.cart_destination.address_id;
-        NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
-        NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
-        NSString *dropshipStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentID,shipmentPackageID];
-        NSString *partialStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_PARTIAL_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentPackageID];
-        
-        NSDictionary *dropshipList = _cartSummary.dropship_list;
-        for (int i = 0; i<[dropshipList allKeys].count; i++) {
-            if ([[dropshipList allKeys][i] isEqualToString:dropshipStringObjectFormat]) {
-                dropshipName = [[dropshipList objectForKey:dropshipStringObjectFormat]objectForKey:@"name"]?:@"";
-                dropshipPhone = [[dropshipList objectForKey:dropshipStringObjectFormat]objectForKey:@"telp"]?:@"";
-                break;
-            }
-        }
-        
-        NSDictionary *partialList = _cartSummary.data_partial;
-        for (int i = 0; i<[partialList allKeys].count; i++) {
-            if ([[partialList allKeys][i] isEqualToString:partialStringObjectFormat]) {
-                partial = @"Ya";
-                break;
-            }
-        }
+        dropshipName = _list[index].cart_dropship_name?:@"";
+        dropshipPhone = _list[index].cart_dropship_phone?:@"";
+        partial = ([list.cart_is_partial integerValue]==1)?@"Ya":@"Tidak";
     }
 
     TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
@@ -647,6 +625,35 @@
     shipmentViewController.indexPage = _indexPage;
     shipmentViewController.delegate = self;
     [self.navigationController pushViewController:shipmentViewController animated:YES];
+}
+
+-(void)setDataDropshipperCartSummary{
+    for (TransactionCartList *cart in _cartSummary.carts) {
+        NSInteger shopID = [cart.cart_shop.shop_id integerValue];
+        NSInteger addressID =cart.cart_destination.address_id;
+        NSInteger shipmentID =[cart.cart_shipments.shipment_id integerValue];
+        NSInteger shipmentPackageID = [cart.cart_shipments.shipment_package_id integerValue];
+        NSString *dropshipStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentID,shipmentPackageID];
+        NSString *partialStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_PARTIAL_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentPackageID];
+        
+        NSDictionary *dropshipList = _cartSummary.dropship_list;
+        for (int i = 0; i<[dropshipList allKeys].count; i++) {
+            if ([[dropshipList allKeys][i] isEqualToString:dropshipStringObjectFormat]) {
+                cart.cart_is_dropshipper = @"1";
+                cart.cart_dropship_name = [[dropshipList objectForKey:dropshipStringObjectFormat]objectForKey:@"name"]?:@"";
+                cart.cart_dropship_phone = [[dropshipList objectForKey:dropshipStringObjectFormat]objectForKey:@"telp"]?:@"";
+                break;
+            }
+        }
+        
+        NSDictionary *partialList = _cartSummary.data_partial;
+        for (int i = 0; i<[partialList allKeys].count; i++) {
+            if ([[partialList allKeys][i] isEqualToString:partialStringObjectFormat]) {
+                cart.cart_is_partial = @"1";
+                break;
+            }
+        }
+    }
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
@@ -1209,8 +1216,8 @@
         NSString *dropshipperNameKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_NAME_KEY,shopID,addressID,shipmentID,shipmentPackageID];
         NSString *dropshipperPhoneKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_PHONE_KEY,shopID,addressID,shipmentID,shipmentPackageID];
         if (_list.count >i) {
-            [dropshipListParam setObject:_list[i].cart_dropship_name forKey:dropshipperNameKey];
-            [dropshipListParam setObject:_list[i].cart_dropship_phone forKey:dropshipperPhoneKey];
+            [dropshipListParam setObject:_list[i].cart_dropship_name?:@"" forKey:dropshipperNameKey];
+            [dropshipListParam setObject:_list[i].cart_dropship_phone?:@"" forKey:dropshipperPhoneKey];
         }
         else
         {
@@ -1245,8 +1252,8 @@
         //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *partialDetailKey = [NSString stringWithFormat:FORMAT_CART_CANCEL_PARTIAL_KEY,shopID,addressID, shipmentPackageID];
-        if(_stockPartialDetail.count>0)
-            [partialListParam setObject:_stockPartialDetail[i] forKey:partialDetailKey];
+        if(_list.count>0)
+            [partialListParam setObject:_list[i].cart_is_partial?:@"0" forKey:partialDetailKey];
     }
     [_dataInput setObject:partialListParam forKey:DATA_PARTIAL_LIST_KEY];
 }
@@ -1501,14 +1508,14 @@
             NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
             
             if (index == 0){
+                _list[partialSection].cart_is_partial = @"0";
                 [_stockPartialStrList replaceObjectAtIndex:partialSection withObject:@""];
-                [_stockPartialDetail replaceObjectAtIndex:partialSection withObject:@(0)];
             }
             else
             {
                 NSString *partialStringObject = [NSString stringWithFormat:FORMAT_CART_PARTIAL_STR_KEY,shopID,addressID,shipmentPackageID];
                 [_stockPartialStrList replaceObjectAtIndex:partialSection withObject:partialStringObject];
-                [_stockPartialDetail replaceObjectAtIndex:partialSection withObject:@(1)];
+                _list[partialSection].cart_is_partial = @"1";
             }
             
             [self adjustPartialListParam];
@@ -1798,7 +1805,6 @@
 {
     [_stockPartialStrList addObject:@""];
     [_dropshipStrList addObject:@""];
-    [_stockPartialDetail addObject:@(0)];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
 }
@@ -1835,7 +1841,6 @@
     [_delegate isNodata:NO];
     [_dataInput removeAllObjects];
     [_dropshipStrList removeAllObjects];
-    [_stockPartialDetail removeAllObjects];
     [_stockPartialStrList removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
@@ -2114,7 +2119,7 @@
         if (indexPath.row == productCount+1)
             cell = [CartCell cellDetailShipmentTable:_tableView indexPath:indexPath];
         else if (indexPath.row == productCount+2)
-            cell = [CartCell cellPartialDetail:_stockPartialDetail partialStrList:_stockPartialStrList tableView:_tableView atIndextPath:indexPath];
+            cell = [CartCell cellIsPartial:_list[indexPath.section].cart_is_partial partialStrList:_stockPartialStrList tableView:_tableView atIndextPath:indexPath];
         else if (indexPath.row == productCount+3)
             cell = [CartCell cellIsDropshipper:_list[indexPath.section].cart_is_dropshipper tableView:_tableView atIndextPath:indexPath];
         else if (indexPath.row == productCount+4){
@@ -2572,11 +2577,12 @@
                         voucherCode:voucherCode
                             success:^(TransactionSummaryResult *data) {
                                     
-        TransactionSummaryDetail *summary = data.transaction;
-        [TPAnalytics trackCheckout:summary.carts step:1 option:summary.gateway_name];
+        _cartSummary = data.transaction;
+        [TPAnalytics trackCheckout:_cartSummary.carts step:1 option:_cartSummary.gateway_name];
+        [self setDataDropshipperCartSummary];
 
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-        NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:summary?:[TransactionSummaryDetail new],
+        NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:_cartSummary?:[TransactionSummaryDetail new],
                                    DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
                                    DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
                                    DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
@@ -2743,7 +2749,6 @@
         if (productCount<=0) {
             [_stockPartialStrList removeObjectAtIndex:i];
             [_dropshipStrList removeObjectAtIndex:i];
-            [_stockPartialDetail removeObjectAtIndex:i];
         }
         
     }

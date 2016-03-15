@@ -28,7 +28,7 @@
 }
 
 
-+(UITableViewCell*)cellPartialDetail:(NSArray*)partialDetail partialStrList:(NSArray*)partialStrList tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
++(UITableViewCell*)cellIsPartial:(NSString*)isPartial partialStrList:(NSArray*)partialStrList tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
 {
     static NSString *CellIdentifier = @"leftStockIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -36,20 +36,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
-    NSInteger choosenIndex;
-    if (partialDetail.count>0) {
-        choosenIndex = [partialStrList[indexPath.section] isEqualToString:@""]?0:1;
-    }
-    else
-    {
-        choosenIndex = 0;
-    }
-    
+
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Stock Tersedia Sebagian";
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    cell.detailTextLabel.text = [ARRAY_IF_STOCK_AVAILABLE_PARTIALLY[choosenIndex]objectForKey:DATA_NAME_KEY];
+    cell.detailTextLabel.text = [ARRAY_IF_STOCK_AVAILABLE_PARTIALLY[[isPartial integerValue]]objectForKey:DATA_NAME_KEY];
     cell.detailTextLabel.font = FONT_DETAIL_DEFAULT_CELL_TKPD;
     cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
     cell.clipsToBounds = YES;
