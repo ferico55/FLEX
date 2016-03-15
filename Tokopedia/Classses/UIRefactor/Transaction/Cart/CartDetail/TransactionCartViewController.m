@@ -996,7 +996,6 @@
         NSInteger index = [[userInfo objectForKey:DATA_INDEX_KEY] integerValue];
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
         
-        [self adjustDropshipperListParam];
         _refreshFromShipment = YES;
         [self requestCartData];
         
@@ -1588,10 +1587,6 @@
     if (textField == _passwordTextField) {
         [_dataInput setObject:textField.text?:@"" forKey:API_PASSWORD_KEY];
     }
-    
-    //_checkoutButton.enabled = isValid;
-
-    [self adjustDropshipperListParam];
     return YES;
 }
 
@@ -1873,12 +1868,7 @@
 
 -(void)popShippingViewController
 {
-    if (_indexPage == 0) {
-        _refreshFromShipment = YES;
-        [self requestCartData];
-    }
-    else
-    {
+    if (_indexPage == 1) {
         _popFromShipment = YES;
     }
 }
@@ -2766,9 +2756,6 @@
     }
     [self adjustPaymentMethodView];
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_UPDATED_GRAND_TOTAL];
-        
-    [self adjustDropshipperListParam];
-    [self adjustPartialListParam];
     
     NSNumber *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
     
