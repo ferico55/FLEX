@@ -36,8 +36,6 @@
 
 @import GoogleMaps;
 
-#define TAG_REQUEST_CALCULATE 12
-
 #pragma mark - Transaction Add To Cart View Controller
 
 @interface TransactionATCViewController ()
@@ -89,8 +87,6 @@
     
     ShippingInfoShipmentPackage *_selectedShipmentPackage;
     ShippingInfoShipments *_selectedShipment;
-    
-    TokopediaNetworkManager *_networkManagerCalculate;
     
     RequestEditAddress *_requestEditAddress;
     RequestAddAddress *_requestAddAddress;
@@ -189,10 +185,6 @@
                                                object:nil];
     
     [self requestDataCart];
-
-    _networkManagerCalculate = [TokopediaNetworkManager new];
-    _networkManagerCalculate.tagRequest = TAG_REQUEST_CALCULATE;
-    _networkManagerCalculate.delegate = self;
     
     _buyButton.hidden = YES;
     
@@ -911,16 +903,6 @@
     [_dataInput setObject:_remarkTextView.text forKey:API_NOTES_KEY];
 }
 
-#pragma mark - Request Form
--(id)getObjectManager:(int)tag
-{
-    if (tag == TAG_REQUEST_CALCULATE) {
-        return [self objecManagerCalculate];
-    }
-    
-    return nil;
-}
-
 -(void)requestATC {
     _isFinishRequesting = NO;
     [self buyButtonIsLoading:YES];
@@ -956,110 +938,84 @@
     }];
 }
 
--(NSDictionary *)getParameter:(int)tag
-{
-    if (tag == TAG_REQUEST_CALCULATE) {
-        NSDictionary *userinfo = _dataInput;
-        
-        NSString *action = ACTION_CALCULATE_PRICE;
-        NSString *toDoCalculate = [userinfo objectForKey:DATA_TODO_CALCULATE]?:@"";
-        ProductDetail *product = [userinfo objectForKey:DATA_DETAIL_PRODUCT_KEY];
-        NSInteger productID = [product.product_id integerValue];
-        NSInteger quantity = [_productQuantityTextField.text integerValue];
-        NSInteger insuranceID = [[userinfo objectForKey:API_INSURANCE_KEY]integerValue];
-        ShippingInfoShipments *shipment = _selectedShipment;
-        NSInteger shippingID = [shipment.shipment_id integerValue];
-        ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
-        NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
-        NSString *weight = product.product_weight?:@"0";
-        
-        AddressFormList *address = [userinfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
-        NSInteger addressID = (address.address_id==0)?-1:address.address_id;
-        NSNumber *districtID = address.district_id?:@(0);
-        NSString *addressName = address.address_name?:@"";
-        NSString *addressStreet = address.address_street?:@"";
-        NSString *provinceName = address.province_name?:@"";
-        NSString *cityName = address.city_name?:@"";
-        NSString *disctrictName = address.district_name?:@"";
-        NSInteger postalCode = [address.postal_code integerValue];
-        NSString *recieverName = address.receiver_name?:@"";
-        NSString *recieverPhone = address.receiver_phone?:@"";
-        
-        NSDictionary* param = @{API_ACTION_KEY:action,
-                                API_DO_KEY : toDoCalculate,
-                                API_PRODUCT_ID_KEY:@(productID),
-                                API_DISTRICT_ID_KEY: districtID,
-                                API_ADDRESS_ID_KEY : @(addressID),
-                                API_ADDRESS_NAME_KEY: addressName,
-                                API_ADDRESS_STREET_KEY : addressStreet,
-                                API_ADDRESS_PROVINCE_KEY:provinceName,
-                                API_ADDRESS_CITY_KEY:cityName,
-                                API_ADDRESS_DISTRICT_KEY:disctrictName,
-                                API_POSTAL_CODE_KEY:@(postalCode),
-                                API_RECIEVER_NAME_KEY:recieverName,
-                                API_RECIEVER_PHONE_KEY:recieverPhone,
-                                API_CALCULATE_QUANTTITY_KEY:@(quantity),
-                                API_INSURANCE_KEY:@(insuranceID),
-                                API_SHIPPING_ID_KEY:@(shippingID),
-                                API_SHIPPING_PRODUCT_KEY:@(shippingProduct),
-                                API_CALCULATE_WEIGHT_KEY: weight
-                                };
-
-        return param;
-    }
-    
-    return nil;
-}
-
--(NSString *)getPath:(int)tag
-{
-
-    if (tag == TAG_REQUEST_CALCULATE) {
-        return API_TRANSACTION_CART_PATH;
-    }
-
-    return nil;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
+-(void)doCalculate{
     _isFinishRequesting = NO;
-
-    if (tag == TAG_REQUEST_CALCULATE) {
-        [self buyButtonIsLoading:YES];
-    }
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    if (tag == TAG_REQUEST_CALCULATE) {
-        TransactionCalculatePrice *calculate = stat;
-        return calculate.status;
-    }
-    return nil;
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    _isFinishRequesting = YES;
-
-    if (tag == TAG_REQUEST_CALCULATE) {
-        [self requestSuccessActionCalculate:successResult withOperation:operation];
+    [self buyButtonIsLoading:YES];
+        
+    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+    NSString *quantity = _productQuantityTextField.text;
+    NSString *insuranceID = [_dataInput objectForKey:API_INSURANCE_KEY];
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    
+    [RequestATC fetchCalculateProduct:product qty:quantity insurance:insuranceID shipment:_selectedShipment shipmentPackage:_selectedShipmentPackage address:address success:^(TransactionCalculatePriceResult *data) {
+        
+        _isFinishRequesting = YES;
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
         [self buyButtonIsLoading:NO];
-    }
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    if (tag == TAG_REQUEST_CALCULATE) {
+        
+        NSString *toDoCalculate = [_dataInput objectForKey:DATA_TODO_CALCULATE]?:@"";
+        
+        if ([toDoCalculate isEqualToString:CALCULATE_PRODUCT]) {
+            NSString *productPrice = data.product.price;
+            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY]?:[ProductDetail new];
+            product.product_price = productPrice;
+            [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
+        }
+        
+        NSArray *shipments = data.shipment;
+        _shipments = shipments;
+        
+        NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+        
+        for (ShippingInfoShipments *shipment in _shipments) {
+            if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
+                _selectedShipment = shipment;
+            }
+            NSMutableArray *shipmentPackages = [NSMutableArray new];
+            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
+                    _selectedShipmentPackage = package;
+                }
+                if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
+                    [shipmentPackages addObject:package];
+                }
+            }
+            
+            if ([_ATCForm.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
+                shipment.auto_resi_image = _ATCForm.rpx.indomaret_logo;
+            } else {
+                shipment.auto_resi_image = @"";
+            }
+            
+            if (shipmentPackages.count>0) {
+                shipment.shipment_package = shipmentPackages;
+                [shipmentSupporteds addObject:shipment];
+            }
+            
+        }
+        
+        _shipments = shipmentSupporteds;
+        _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
+        _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
+        
+        for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
+            UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
+            [indicatorView stopAnimating];
+            [indicatorView setHidden:YES];
+            
+            UILabel *label = (UILabel *)[cell viewWithTag:1];
+            label.hidden = NO;
+        }
+        _tableView.tableHeaderView = (_shipments.count <= 0)?_messageZeroShipmentView:[[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+        
+        [_tableView reloadData];
+    
+    } failed:^(NSError *error) {
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
         [self buyButtonIsLoading:NO];
-    }
+    }];
 }
 
 -(NSString*)addressString:(GMSAddress*)address
@@ -1068,155 +1024,6 @@
     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
     strSnippet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     return  strSnippet;
-}
-
--(void)requestSuccessActionATC:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(setting.message_error)
-        {
-            NSArray *messages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-            [alert show];
-        }
-        if (setting.result.is_success == 1) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:[setting.message_status firstObject]
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Kembali Belanja"
-                                                      otherButtonTitles:@"Ke Keranjang Belanja",nil];
-            alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
-            [alertView show];
-            
-            [self pushLocalyticsData];
-            
-            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
-            [TPAnalytics trackAddToCart:product];
-        }
-    }
-}
-
-#pragma mark Request Action Calculate Price
-
--(RKObjectManager *)objecManagerCalculate
-{
-    RKObjectManager *objectManagerActionCalculate = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePrice class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePriceResult class]];
-    
-    TransactionObjectMapping *mapping = [TransactionObjectMapping new];
-    RKObjectMapping *productMapping = [mapping productMapping];
-    RKObjectMapping *shipmentsMapping = [mapping shipmentsMapping];
-    RKObjectMapping *shipmentspackageMapping = [mapping shipmentPackageMapping];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_KEY toKeyPath:API_PRODUCT_KEY withMapping:productMapping]];
-    
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY withMapping:shipmentsMapping];
-    [resultMapping addPropertyMapping:shipmentRel];
-    
-    RKRelationshipMapping *shipmentpackageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY withMapping:shipmentspackageMapping];
-    [shipmentsMapping addPropertyMapping:shipmentpackageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_CART_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManagerActionCalculate addResponseDescriptor:responseDescriptor];
-    return objectManagerActionCalculate;
-}
-
--(void)requestSuccessActionCalculate:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionCalculatePrice *calculate = stat;
-    BOOL status = [calculate.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(calculate.message_error)
-        {
-            NSArray *messages = calculate.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-            [alert show];
-        }
-        else
-        {
-            NSString *toDoCalculate = [_dataInput objectForKey:DATA_TODO_CALCULATE]?:@"";
-            
-            if ([toDoCalculate isEqualToString:CALCULATE_PRODUCT]) {
-                NSString *productPrice = calculate.result.product.price;
-                ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY]?:[ProductDetail new];
-                product.product_price = productPrice;
-                [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
-            }
-            else
-            {
-                
-            }
-            
-            NSArray *shipments = calculate.result.shipment;
-            _shipments = shipments;
-            
-            NSMutableArray *shipmentSupporteds = [NSMutableArray new];
-            
-            for (ShippingInfoShipments *shipment in _shipments) {
-                if ([shipment.shipment_id isEqualToString:_selectedShipment.shipment_id]) {
-                    _selectedShipment = shipment;
-                }
-                NSMutableArray *shipmentPackages = [NSMutableArray new];
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.sp_id isEqualToString:_selectedShipmentPackage.sp_id]) {
-                        _selectedShipmentPackage = package;
-                    }
-                    if (![package.price isEqualToString:@"0"]&&package.price != nil && ![package.price isEqualToString:@""]) {
-                        [shipmentPackages addObject:package];
-                    }
-                }
-                
-                if ([_ATCForm.auto_resi containsObject:shipment.shipment_id] && [shipment.shipment_id isEqualToString:@"3"]) {
-                    shipment.auto_resi_image = _ATCForm.rpx.indomaret_logo;
-                } else {
-                    shipment.auto_resi_image = @"";
-                }
-                
-                if (shipmentPackages.count>0) {
-                    shipment.shipment_package = shipmentPackages;
-                    [shipmentSupporteds addObject:shipment];
-                }
-                
-            }
-            
-            _shipments = shipmentSupporteds;
-            _selectedShipment = _selectedShipment?:[shipmentSupporteds firstObject];
-            _selectedShipmentPackage = _selectedShipmentPackage?:[_selectedShipment.shipment_package firstObject];
-            
-            for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
-                UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
-                [indicatorView stopAnimating];
-                [indicatorView setHidden:YES];
-                
-                UILabel *label = (UILabel *)[cell viewWithTag:1];
-                label.hidden = NO;
-            }
-            _tableView.tableHeaderView = (_shipments.count <= 0)?_messageZeroShipmentView:[[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
-            
-            [_tableView reloadData];
-        }
-    }
 }
 
 #pragma mark - Transaction Shipment Delegate
@@ -1559,8 +1366,7 @@ replacementString:(NSString*)string
 
 -(void)calculatePriceWithAction:(NSString*)action
 {
-    [_dataInput setObject:action forKey:DATA_TODO_CALCULATE];
-    [_networkManagerCalculate doRequest];
+    [self doCalculate];
 }
 
 -(NSInteger)insuranceStatus
@@ -1658,8 +1464,6 @@ replacementString:(NSString*)string
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];
     [self refreshView];
-
-//    [self calculatePriceWithAction:CALCULATE_SHIPMENT];
 }
 
 @end

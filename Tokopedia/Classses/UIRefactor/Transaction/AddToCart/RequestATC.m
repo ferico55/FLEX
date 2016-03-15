@@ -83,10 +83,76 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
-    } onFailure:^(NSError *errorResult) {
-        
-    }];
+        TransactionAction *setting = [successResult.dictionary objectForKey:@""];
+        if (setting.result.is_success == 1) {
+            success(setting);
+        } else {
+            NSArray *messages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+            [alert show];
+            failed (nil);
+        }
 
+    } onFailure:^(NSError *errorResult) {
+        failed(errorResult);
+    }];
+}
+
++(void)fetchCalculateProduct:(ProductDetail*)product qty:(NSString*)qty insurance:(NSString*)insurance shipment:(ShippingInfoShipments*)shipment shipmentPackage:(ShippingInfoShipmentPackage*)shipmentPackage address:(AddressFormList*)address success:(void(^)(TransactionCalculatePriceResult* data))success failed:(void(^)(NSError * error))failed {
+    
+    NSString *productID = product.product_id;
+    NSInteger shippingID = [shipment.shipment_id integerValue];
+    NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
+    NSString *weight = product.product_weight?:@"0";
+    
+    NSInteger addressID = (address.address_id==0)?-1:address.address_id;
+    NSNumber *districtID = address.district_id?:@(0);
+    NSString *addressName = address.address_name?:@"";
+    NSString *addressStreet = address.address_street?:@"";
+    NSString *provinceName = address.province_name?:@"";
+    NSString *cityName = address.city_name?:@"";
+    NSString *disctrictName = address.district_name?:@"";
+    NSInteger postalCode = [address.postal_code integerValue];
+    NSString *recieverName = address.receiver_name?:@"";
+    NSString *recieverPhone = address.receiver_phone?:@"";
+    
+    NSDictionary* param = @{@"action":@"calculate_cart",
+                            @"product_id":productID,
+                            @"district_id": districtID,
+                            @"address_id" : @(addressID),
+                            @"address_name": addressName,
+                            @"address_street" : addressStreet,
+                            @"address_province":provinceName,
+                            @"address_province":cityName,
+                            @"address_district":disctrictName,
+                            @"postal_code":@(postalCode),
+                            @"receiver_name":recieverName,
+                            @"receiver_phone":recieverPhone,
+                            @"qty":qty,
+                            @"insurance":insurance,
+                            @"shipping_id":@(shippingID),
+                            @"shipping_product":@(shippingProduct),
+                            @"weight": weight
+                            };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionCalculatePrice mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+
+        TransactionCalculatePrice *calculate = [successResult.dictionary objectForKey:@""];
+        if(calculate.message_error){
+            NSArray *messages = calculate.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+            [alert show];
+            failed(nil);
+        }
+        else
+        {
+            success(calculate.result);
+        }
+    } onFailure:^(NSError *errorResult) {
+        failed(errorResult);
+    }];
+    
 }
 
 @end
