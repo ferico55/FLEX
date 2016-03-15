@@ -42,4 +42,6 @@
 
 - (NSDictionary *)productFieldObjects;
 
++ (RKObjectMapping *)mapping;
+
 @end

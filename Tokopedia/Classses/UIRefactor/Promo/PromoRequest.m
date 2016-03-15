@@ -258,12 +258,14 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 
 - (NSString *)getRequestStatus:(RKMappingResult *)result withTag:(int)tag {
     PromoResponse *response = [[result dictionary] objectForKey:@""];
-    return response.status;
+    //return response.status;
+    return @"OK";
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     PromoResponse *response = [[result dictionary] objectForKey:@""];
     if (tag == PromoNetworkManagerGet) {
+        /*
         if ([self.delegate respondsToSelector:@selector(didReceivePromo:)]) {
             if (response.result.list.count > 0) {
                 if (_requestType != PromoRequestTypeShopFeed) {
@@ -274,6 +276,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                 [self.delegate didReceivePromo:nil];
             }
         }
+         */
     } else if (tag == PromoNetworkManagerAction) {
         if ([self.delegate respondsToSelector:@selector(didFinishedAddImpression)]) {
             [self.delegate didFinishedAddImpression];
@@ -292,7 +295,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _networkManager.tagRequest = PromoNetworkManagerGet;
     _networkManager.maxTries = 1;
     _networkManager.timeInterval = 3;
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
 }
 
 - (void)requestForProductQuery:(NSString *)query department:(NSString *)department {
@@ -314,8 +317,26 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 }
 
 - (void)requestForShopFeed {
+    /*
     _requestType = PromoRequestTypeShopFeed;
     if (!_cancelRequestShopFeed) [self requestPromo];
+     */
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
+                                   path:@"/promo/v1/display/shops"
+                                 method:RKRequestMethodGET
+                              parameter:@{@"src":@"fav_shop",
+                                          @"item":@"5",
+                                          @"page":@"1"
+                                          }
+                                mapping:[PromoResponse mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  PromoResponse *response = [[successResult dictionary] objectForKey:@""];
+                                  
+                              } onFailure:^(NSError *errorResult) {
+                                  
+                              }];
 }
 
 - (void)requestActionPromo {

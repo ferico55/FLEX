@@ -10,6 +10,10 @@
 
 @implementation PromoProduct
 
++(RKObjectMapping *)mapping{
+    return nil;
+}
+
 - (NSString*)shop_name {
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }

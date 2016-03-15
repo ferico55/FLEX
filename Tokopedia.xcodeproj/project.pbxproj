@@ -2109,6 +2109,7 @@
 		AFAA2BA84BC74A62BC6E1CC3 /* RolloutDynamic_08.m in Sources */ = {isa = PBXBuildFile; fileRef = CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		B8BC1868860D43638F0559D3 /* RolloutDynamic_12.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		B992750762994650B9C16E0E /* RolloutDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		BBD82FDE1C97E9DD008FF990 /* PromoShopImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD82FDD1C97E9DD008FF990 /* PromoShopImage.m */; };
 		C7F961F230434FC497BE3DDF /* RolloutDynamic_18.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		D9C98E17B9A542E18C19C91B /* RolloutDynamic_19.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5289,6 +5290,8 @@
 		A05CDE3AB94D4662AE7303A7 /* RolloutDynamic_16.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_16.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_16.m"; sourceTree = "<group>"; };
 		B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic.m; path = Pods/Rollout.io/Rollout/RolloutDynamic.m; sourceTree = "<group>"; };
 		B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_11.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_11.m"; sourceTree = "<group>"; };
+		BBD82FDC1C97E9DD008FF990 /* PromoShopImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromoShopImage.h; sourceTree = "<group>"; };
+		BBD82FDD1C97E9DD008FF990 /* PromoShopImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromoShopImage.m; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_20.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_20.m"; sourceTree = "<group>"; };
 		CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_08.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_08.m"; sourceTree = "<group>"; };
@@ -6664,6 +6667,8 @@
 				85A278D51C919C1D005170EB /* PromoResult.m */,
 				85A278D61C919C1D005170EB /* PromoShop.h */,
 				85A278D71C919C1D005170EB /* PromoShop.m */,
+				BBD82FDC1C97E9DD008FF990 /* PromoShopImage.h */,
+				BBD82FDD1C97E9DD008FF990 /* PromoShopImage.m */,
 			);
 			path = Promo;
 			sourceTree = "<group>";
@@ -12329,6 +12334,7 @@
 				85A2847E1C919C2B005170EB /* ProductTalkFormResult.m in Sources */,
 				85A286D71C919C2B005170EB /* NavigateViewController.m in Sources */,
 				85A283FD1C919C2B005170EB /* GeneralAction.m in Sources */,
+				BBD82FDE1C97E9DD008FF990 /* PromoShopImage.m in Sources */,
 				85A286DF1C919C2B005170EB /* DetailPriceAlertTableViewCell.m in Sources */,
 				85A285091C919C2B005170EB /* ShippingInfoShipmentPackage.m in Sources */,
 				85A285A31C919C2B005170EB /* AlertLuckyView.m in Sources */,

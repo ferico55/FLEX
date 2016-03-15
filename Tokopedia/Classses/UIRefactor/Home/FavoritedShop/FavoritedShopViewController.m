@@ -317,7 +317,7 @@ FavoriteShopRequestDelegate
 
 -(void)pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
-    [_favoriteShopRequest requestActionButtonFavoriteShop:strTempShopID withAdKey:_selectedPromoShop.ad_key];
+    //[_favoriteShopRequest requestActionButtonFavoriteShop:strTempShopID withAdKey:_selectedPromoShop.ad_key];
 }
 
 
@@ -418,11 +418,11 @@ FavoriteShopRequestDelegate
         PromoShop *shop = [_promoShops objectAtIndex:indexpath.row];
         container.data = @{
                            kTKPDDETAIL_APISHOPIDKEY:shop.shop_id?:@0,
-                           kTKPDDETAIL_APISHOPNAMEKEY:shop.shop_name?:@"",
+                           kTKPDDETAIL_APISHOPNAMEKEY:shop.name?:@"",
                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                           PromoImpressionKey          : shop.ad_key,
-                           PromoSemKey                 : shop.ad_sem_key,
-                           PromoReferralKey            : shop.ad_r
+                           //PromoImpressionKey          : shop.ad_key,
+                           //PromoSemKey                 : shop.ad_sem_key,
+                           //PromoReferralKey            : shop.ad_r
                            };
         
     } else {
@@ -434,7 +434,7 @@ FavoriteShopRequestDelegate
             promoShop = (PromoShop*)shopTemp;
             container.data = @{
                                kTKPDDETAIL_APISHOPIDKEY:promoShop.shop_id?:@0,
-                               kTKPDDETAIL_APISHOPNAMEKEY:promoShop.shop_name?:@"",
+                               kTKPDDETAIL_APISHOPNAMEKEY:promoShop.name?:@"",
                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                };
         }else{
