@@ -13,9 +13,7 @@
 #import "NavigateViewController.h"
 
 #import "TransactionCartViewController.h"
-#import "TransactionCartCell.h"
 #import "TransactionCartHeaderView.h"
-#import "GeneralSwitchCell.h"
 #import "TransactionCartCostView.h"
 #import "TransactionCartEditViewController.h"
 #import "TransactionCartShippingViewController.h"
@@ -25,8 +23,9 @@
 #import "AlertInfoView.h"
 #import "StickyAlertView.h"
 #import "GeneralTableViewController.h"
-#import "GAIDictionaryBuilder.h"
-#import "GAIEcommerceFields.h"
+
+#import "CartCell.h"
+#import "CartGAHandler.h"
 
 #import "TransactionCCViewController.h"
 
@@ -2117,22 +2116,22 @@
     NSInteger productCount = products.count;
     
     if (indexPath.row == 0) {
-        cell = [self cellErrorAtIndexPath:indexPath];
+        cell = [CartCell cellErrorList:[_list copy] tableView:_tableView atIndexPath:indexPath];
     }
     else if (indexPath.row <= productCount)
     {
         NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
-        cell = [self cellTransactionCartAtIndexPath:newIndexPath];
+        cell = [CartCell cellCart:[_list copy] tableView:_tableView atIndexPath:newIndexPath page:_indexPage];
     }
     else
     {
         //otherCell
         if (indexPath.row == productCount+1)
-            cell = [self cellDetailShipmentAtIndexPath:indexPath];
+            cell = [CartCell cellDetailShipmentTable:_tableView indexPath:indexPath];
         else if (indexPath.row == productCount+2)
-            cell = [self cellPartialStockAtIndextPath:indexPath];
+            cell = [CartCell cellPartialDetail:_stockPartialDetail partialStrList:_stockPartialStrList tableView:_tableView atIndextPath:indexPath];
         else if (indexPath.row == productCount+3)
-            cell = [self cellIsDropshipperAtIndextPath:indexPath];
+            cell = [CartCell cellIsDropshipper:_isDropshipper tableView:_tableView atIndextPath:indexPath];
         else if (indexPath.row == productCount+4){
             NSInteger count =_senderNameDropshipper.count;
             if (indexPath.section>count-1) {
@@ -2140,7 +2139,7 @@
                     [_senderNameDropshipper addObject:@""];
                 }
             }
-            cell = [self cellTextFieldPlaceholder:@"Nama Pengirim" atIndexPath:indexPath withText:[_senderNameDropshipper objectAtIndex:indexPath.section]?:@""];
+            cell = [CartCell cellTextFieldPlaceholder:@"Nama Pengirim" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_senderNameDropshipper[indexPath.section]?:@""];
         }
         else if (indexPath.row == productCount+5)
         {
@@ -2150,38 +2149,9 @@
                     [_senderPhoneDropshipper addObject:@""];
                 }
             }
-            cell = [self cellTextFieldPlaceholder:@"Nomer Telepon" atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]];
+            cell = [CartCell cellTextFieldPlaceholder:@"Nomer Telepon" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]?:@""];
         }
     }
-    
-    return cell;
-}
-
--(UITableViewCell *)cellErrorAtIndexPath:(NSIndexPath*)indexPath
-{
-    TransactionCartList *list = _list[indexPath.section];
-
-    static NSString *CellIdentifier = @"ErrorIdentifier";
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-
-    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
-    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-
-    NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
-    [cell.textLabel setCustomAttributedText:string];
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.textColor = [UIColor redColor];
-    
-    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-    
-    cell.clipsToBounds = YES;
-    cell.contentView.clipsToBounds = YES;
     
     return cell;
 }
@@ -2297,134 +2267,6 @@
             break;
     }
     
-    return cell;
-}
-
--(UITableViewCell*)cellDetailShipmentAtIndexPath:(NSIndexPath*)indexPath
-{
-    static NSString *CellIdentifier = @"shipmentDetailIdentifier";
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = @"Detail Pengiriman";
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width,1)];
-        lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
-        [cell.contentView addSubview:lineView];
-    return cell;
-}
-
--(UITableViewCell*)cellPartialStockAtIndextPath:(NSIndexPath*)indexPath
-{
-    static NSString *CellIdentifier = @"leftStockIdentifier";
-    UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    NSInteger choosenIndex;
-    if (_stockPartialDetail.count>0) {
-        choosenIndex = [_stockPartialStrList[indexPath.section] isEqualToString:@""]?0:1;
-    }
-    else
-    {
-        choosenIndex = 0;
-    }
-    
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = @"Stock Tersedia Sebagian";
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    cell.detailTextLabel.text = [ARRAY_IF_STOCK_AVAILABLE_PARTIALLY[choosenIndex]objectForKey:DATA_NAME_KEY];
-    cell.detailTextLabel.font = FONT_DETAIL_DEFAULT_CELL_TKPD;
-    cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
-    cell.clipsToBounds = YES;
-    return cell;
-}
-
--(UITableViewCell*)cellTextFieldPlaceholder:(NSString*)placeholder atIndexPath:(NSIndexPath*)indexPath withText:(NSString*)text
-{
-    
-    static NSString *CellIdentifier = @"textfieldCellIdentifier";
-    BOOL isSaldoTokopediaTextField = (indexPath.section==_list.count);
-    NSInteger indexList = (isSaldoTokopediaTextField)?0:(indexPath.section);
-    TransactionCartList *list = _list[indexList];
-    NSArray *products = list.cart_products;
-    UITableViewCell *cell;
-    
-    //if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 44)];
-    
-        textField.placeholder = placeholder;
-        textField.text = text;
-        textField.delegate = self;
-        if ([placeholder isEqualToString:@"Nama Pengirim"]) {
-            textField.tag = indexPath.section+1;
-            textField.keyboardType = UIKeyboardTypeDefault;
-        }
-        else
-        {
-            textField.tag = -indexPath.section -1;
-            textField.keyboardType = UIKeyboardTypeNumberPad;
-        }
-        textField.font = FONT_DEFAULT_CELL_TKPD;
-        [textField setReturnKeyType:UIReturnKeyDone];
-        textField.text = text;
-        [cell addSubview:textField];
-    //}
-
-    return cell;
-}
-
--(UITableViewCell*)cellIsDropshipperAtIndextPath:(NSIndexPath*)indexPath
-{
-    NSString *cellid = GENERAL_SWITCH_CELL_IDENTIFIER;
-    
-    UITableViewCell *cell = (GeneralSwitchCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [GeneralSwitchCell newcell];
-        ((GeneralSwitchCell*)cell).delegate = self;
-    }
-    
-    ((GeneralSwitchCell*)cell).indexPath = indexPath;
-    ((GeneralSwitchCell*)cell).textCellLabel.text = @"Dropshipper";
-    if (_isDropshipper.count>0) {
-        ((GeneralSwitchCell*)cell).settingSwitch.on = [_isDropshipper[indexPath.section] boolValue];
-    }
-    else
-    {
-        ((GeneralSwitchCell*)cell).settingSwitch.on = NO;
-    }
-    
-    return cell;
-}
-
--(UITableViewCell*)cellTransactionCartAtIndexPath:(NSIndexPath*)indexPath
-{
-    NSString *cellid = TRANSACTION_CART_CELL_IDENTIFIER;
-    
-    TransactionCartCell *cell = (TransactionCartCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [TransactionCartCell newcell];
-        ((TransactionCartCell*)cell).delegate = self;
-    }
-    TransactionCartList *list = _list[indexPath.section];
-    NSInteger indexProduct = indexPath.row;
-    NSArray *listProducts = list.cart_products;
-    ProductDetail *product = listProducts[indexProduct];
-    
-    ((TransactionCartCell*)cell).indexPage = _indexPage;
-    ((TransactionCartCell*)cell).indexPath = indexPath;
-    [(TransactionCartCell*)cell setCartViewModel:list.viewModel];
-    [(TransactionCartCell*)cell setViewModel:product.viewModel];
-    ((TransactionCartCell*)cell).userInteractionEnabled = (_indexPage ==0);
-    cell.actionSheetDelegate = self;
     return cell;
 }
 
@@ -2990,11 +2832,7 @@
     }
     
     grandTotalInteger = totalInteger;
-    
-    
-    
     [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_UPDATED_GRAND_TOTAL];
-    
     [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
     
     grandTotalInteger -= [deposit integerValue];
@@ -3017,7 +2855,6 @@
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-    
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     
     _tableView.delegate = nil;
@@ -3040,34 +2877,7 @@
 
 #pragma mark - Sending data to GA
 - (void)sendingProductDataToGA {
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    
-    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:@"Ecommerce"
-                                                                               action:@"Checkout"
-                                                                                label:nil
-                                                                                value:nil];
-
-    // Add the step number and additional info about the checkout to the action.
-    GAIEcommerceProductAction *action = [[GAIEcommerceProductAction alloc] init];
-    [action setAction:kGAIPACheckout];
-    [action setCheckoutStep:(_indexPage == 0)?@1:@2];
-    [action setCheckoutOption:[_dataInput objectForKey:@"gateway"]];
-
-    for(TransactionCartList *list in _cart.list) {
-        for(ProductDetail *detailProduct in list.cart_products) {
-            GAIEcommerceProduct *product = [[GAIEcommerceProduct alloc] init];
-            [product setId:detailProduct.product_id?:@""];
-            [product setName:detailProduct.product_name?:@""];
-            [product setCategory:[NSString stringWithFormat:@"%zd", detailProduct.product_department_id]];
-            [product setPrice:@([detailProduct.product_price integerValue])];
-            [product setQuantity:@([detailProduct.product_quantity integerValue])];
-
-            [builder addProduct:product];
-            [builder setProductAction:action];
-        }
-    }
-    [tracker send:[builder build]];
+    [CartGAHandler sendingProductCart:_cart.list page:_indexPage gateway:[_dataInput objectForKey:@"gateway"]];
 }
 
 #pragma mark - NoResult Delegate

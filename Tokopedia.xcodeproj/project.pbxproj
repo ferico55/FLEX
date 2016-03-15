@@ -2010,6 +2010,8 @@
 		453EC0A21C9115FA0002F917 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 453EB8D01C9115F90002F917 /* vt-iOSlib-1.0.1.tar.gz */; };
 		453EC0A31C9115FA0002F917 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 453EB8D11C9115F90002F917 /* vt-iOSlib-1.0.1.zip */; };
 		453EC0A41C9115FA0002F917 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 453EB8D41C9115F90002F917 /* XYPieChart.m */; };
+		454449C21C96B3FB00DFE62E /* CartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 454449C11C96B3FB00DFE62E /* CartCell.m */; };
+		459062A11C97AF2F0091450E /* CartGAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 459062A01C97AF2F0091450E /* CartGAHandler.m */; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5133,6 +5135,10 @@
 		453EB8D11C9115F90002F917 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		453EB8D31C9115F90002F917 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		453EB8D41C9115F90002F917 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		454449C01C96B3FB00DFE62E /* CartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartCell.h; sourceTree = "<group>"; };
+		454449C11C96B3FB00DFE62E /* CartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartCell.m; sourceTree = "<group>"; };
+		4590629F1C97AF2F0091450E /* CartGAHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartGAHandler.h; sourceTree = "<group>"; };
+		459062A01C97AF2F0091450E /* CartGAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartGAHandler.m; sourceTree = "<group>"; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
@@ -9438,6 +9444,10 @@
 				453EB52E1C9115F70002F917 /* TransactionCCViewController.xib */,
 				453EB52F1C9115F70002F917 /* TransactionPaymenViewController.h */,
 				453EB5301C9115F70002F917 /* TransactionPaymenViewController.m */,
+				454449C01C96B3FB00DFE62E /* CartCell.h */,
+				454449C11C96B3FB00DFE62E /* CartCell.m */,
+				4590629F1C97AF2F0091450E /* CartGAHandler.h */,
+				459062A01C97AF2F0091450E /* CartGAHandler.m */,
 			);
 			path = CartDetail;
 			sourceTree = "<group>";
@@ -12287,7 +12297,9 @@
 				453EB9761C9115F90002F917 /* HotlistResult.m in Sources */,
 				453EB9521C9115F90002F917 /* Favorited.m in Sources */,
 				453EB95D1C9115F90002F917 /* GoogleDistanceMatrixDetail.m in Sources */,
+				454449C21C96B3FB00DFE62E /* CartCell.m in Sources */,
 				453EB9651C9115F90002F917 /* GoogleplaceDetailResult.m in Sources */,
+				459062A11C97AF2F0091450E /* CartGAHandler.m in Sources */,
 				453EBB8C1C9115F90002F917 /* GeneralAlertCell.m in Sources */,
 				453EBA601C9115F90002F917 /* ShippingContact.m in Sources */,
 				453EBA5F1C9115F90002F917 /* RPX.m in Sources */,
