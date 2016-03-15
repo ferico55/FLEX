@@ -5,6 +5,7 @@
 //  Created by Tokopedia on 11/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+#import <BlocksKit/BlocksKit.h>
 #import "InboxMessageViewController.h"
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
@@ -61,8 +62,6 @@
     NSString *_urinext;
 
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
-    NSInteger _requestarchivecount;
     NSTimer *_timer;
     UISearchBar *_searchbar;
     NSString *_keyword;
@@ -72,15 +71,12 @@
 
     TAGContainer *_gtmContainer;
 
-    __weak RKObjectManager *_objectmanager;
-    __weak RKObjectManager *_objectmanagerarchive;
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKManagedObjectRequestOperation *_requestarchive;
-    NSOperationQueue *_operationQueue;
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
 
-    TokopediaNetworkManager *_networkManager;
+    TokopediaNetworkManager *_getInboxListNetworkManager;
+    TokopediaNetworkManager *_messageActionNetworkManager;
+
     LoadingView *_loadingView;
 }
 
@@ -100,7 +96,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showCheckmark:) name:@"editModeOn" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMessageWithFilter:) name:[NSString stringWithFormat:@"%@%@", @"showRead", _messageNavigationFlag] object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadVc:) name:@"reloadvc" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMessageWithIndex:) name:@"updateMessageWithIndex" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(markAsReadMessage:) name:@"markAsReadMessage" object:nil];
 }
 
@@ -116,14 +111,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _operationQueue = [NSOperationQueue new];
-    
     /** create new **/
     _messages = [NSMutableArray new];
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
 
-    _networkManager = [TokopediaNetworkManager new];
+    _getInboxListNetworkManager = [TokopediaNetworkManager new];
+    _messageActionNetworkManager = [TokopediaNetworkManager new];
 
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
@@ -175,17 +169,17 @@
             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
     };
 
-    [_networkManager requestWithBaseUrl:kTkpdBaseURLString
-                                   path:KTKPDMESSAGE_PATHURL
-                                 method:RKRequestMethodPOST
-                              parameter:param
-                                mapping:[InboxMessage mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self onReceiveMessages:successResult.dictionary[@""]];
-                              }
-                              onFailure:^(NSError *errorResult) {
-                                  [self failedLoadingMessages];
-                              }];
+    [_getInboxListNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                               path:KTKPDMESSAGE_PATHURL
+                                             method:RKRequestMethodPOST
+                                          parameter:param
+                                            mapping:[InboxMessage mapping]
+                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                              [self onReceiveMessages:successResult.dictionary[@""]];
+                                          }
+                                          onFailure:^(NSError *errorResult) {
+                                              [self failedLoadingMessages];
+                                          }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -199,7 +193,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-//    [_networkManager requestCancel];
+//    [_getInboxListNetworkManager requestCancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -264,31 +258,47 @@
 }
 
 - (void)messageaction:(NSString*)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
-    NSIndexPath *item;
-    
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
-    NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
-    NSUInteger index = 1;
-    
-    for (item in indexPaths) {
-        
-        NSInteger row = [item row];
-        [discardedItems addIndex:row];
-        InboxMessageList *list = _messages[row];
-        [arr addObject:list.json_data_info];
-        index++;
-    }
-    
+    NSIndexSet* discardedItems = [indexPaths bk_reduce:[NSMutableIndexSet new]
+                                             withBlock:^NSMutableIndexSet *(NSMutableIndexSet * totalSet, NSIndexPath *indexPath) {
+        [totalSet addIndex:indexPath.row];
+        return totalSet;
+    }];
+
+    NSArray *messagesJson = [indexPaths bk_map:^NSString *(NSIndexPath *indexPath) {
+        return _messages[indexPath.row].json_data_info;
+    }];
+
     [_messages removeObjectsAtIndexes:discardedItems];
-    
-    NSString *joinedArr = [arr componentsJoinedByString:@"and"];
-    
-    [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    [_table endUpdates];
-    
-    [self configureactionrestkit];
-    [self doactionmessage:joinedArr withAction:action];
+
+    [self postAction:action withMessageJson:messagesJson];
+}
+
+- (void)postAction:(NSString *)action withMessageJson:(NSMutableArray<NSString*> *)messagesJson {
+    NSString *joinedArr = [messagesJson componentsJoinedByString:@"and"];
+    NSDictionary* param = @{
+            kTKPDHOME_APIACTIONKEY: action,
+            KTKPDMESSAGE_DATAELEMENTKEY : joinedArr,
+    };
+
+    [_messageActionNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                                path:KTKPDMESSAGEPRODUCTACTION_PATHURL
+                                              method:RKRequestMethodPOST
+                                           parameter:param
+                                             mapping:[InboxMessageAction mapping]
+                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                               [self requestactionsuccess:successResult withOperation:operation];
+
+                                               [_table reloadData];
+                                               _isrefreshview = NO;
+                                               [_refreshControl endRefreshing];
+                                           }
+                                           onFailure:^(NSError *errorResult) {
+                                               [self requestactionfailure:errorResult];
+
+                                               _isrefreshview = NO;
+                                               [_refreshControl endRefreshing];
+                                           }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -339,7 +349,13 @@
         list.message_read_status = @"1";
     }
 
+    __weak typeof(self) weakSelf = self;
+
     InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+    vc.onMessagePosted = ^(NSString *replyMessage) {
+        [weakSelf updateReplyMessage:replyMessage atIndexPath:indexPath];
+    };
+
     vc.data = [self dataForIndexPath:indexPath];
 
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
@@ -353,6 +369,13 @@
     {
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)updateReplyMessage:(NSString *)message atIndexPath:(NSIndexPath *)indexPath {
+    InboxMessageList *list = _messages[indexPath.row];
+
+    list.message_reply = message;
+    [_table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (NSDictionary *)dataForIndexPath:(NSIndexPath *)indexPath {
@@ -449,7 +472,6 @@
 }
 
 -(void)showMessageWithFilter:(NSNotification*)notification {
-    if (_request.isExecuting) return;
     _userinfo = notification.userInfo;
     
     if([_userinfo[@"show_read"] isEqualToString:@"1"]) {
@@ -458,7 +480,7 @@
         _readstatus = @"unread";
     }
 
-    [_networkManager requestCancel];
+    [_getInboxListNetworkManager requestCancel];
     [_messages removeAllObjects];
     [_table reloadData];
     _table.tableFooterView = _footer;
@@ -478,20 +500,6 @@
         
         [self fetchInboxMessages];
     }
-}
-
--(void) updateMessageWithIndex:(NSNotification*)notification {
-    NSDictionary *userinfo = notification.userInfo;
-    NSIndexPath *indexpath = [userinfo objectForKey:MESSAGE_INDEX_PATH];
-    NSString *messageReply = [userinfo objectForKey:KTKPDMESSAGE_MESSAGEREPLYKEY];
-    
-    if(messageReply) {
-        InboxMessageList *list = _messages[indexpath.row];
-        
-        list.message_reply = [NSString stringWithFormat:@"%@",messageReply];
-        [_table reloadData];
-    }
-
 }
 
 - (void)markAsReadMessage:(NSNotification*)notification {
@@ -514,14 +522,13 @@
 #pragma mark - Refresh Data
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    [_networkManager requestCancel];
+    [_getInboxListNetworkManager requestCancel];
     /** clear object **/
     [_messages removeAllObjects];
     
     _page = 1;
     _keyword = @"";
     _searchbar.text = @"";
-    _requestcount = 0;
     _isrefreshview = YES;
 
     [_table reloadData];
@@ -573,63 +580,6 @@
 
 
 #pragma mark - Message Action
-
--(void) configureactionrestkit {
-    _objectmanagerarchive =  [RKObjectManager sharedClient];
-
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageAction mapping]
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerarchive addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void) doactionmessage:(NSString*)data withAction:(NSString*)action{
-
-    if (_requestarchive.isExecuting) return;
-    
-    
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:action,
-                            KTKPDMESSAGE_DATAELEMENTKEY : data,
-                            };
-    
-    _requestarchivecount ++;
-    _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self
-                                                                                  method:RKRequestMethodPOST
-                                                                                    path:KTKPDMESSAGEPRODUCTACTION_PATHURL
-                                                                              parameters:[param encrypt]];
-    
-    [_requestarchive setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        [self requestactionsuccess:mappingResult withOperation:operation];
-        
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-       
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestactionfailure:error];
-        
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationQueue addOperation:_requestarchive];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestactiontimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    
-}
 
 -(void) requestactionsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -685,9 +635,6 @@
 -(void) requestactionfailure:(id)error {
     [self undoactionmessage];
 }
--(void) requestactiontimeout {
-    [self undoactionmessage];
-}
 
 -(void) undoactionmessage {
     NSDictionary *dict = @{@"vc" : _data[@"nav"]};
@@ -699,9 +646,9 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
+    [_getInboxListNetworkManager requestCancel];
+    _getInboxListNetworkManager.delegate = nil;
+    _getInboxListNetworkManager = nil;
 }
 
 #pragma mark - Swipe Delegate
@@ -795,7 +742,7 @@
 
 - (void)onReceiveMessages:(InboxMessage *)message {
     _urinext =  message.result.paging.uri_next;
-    _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+    _page = [[_getInboxListNetworkManager splitUriToPage:_urinext] integerValue];
 
     [self addMessages:message.result.list];
 
@@ -862,7 +809,6 @@
     [_act startAnimating];
     [self fetchInboxMessages];
 }
-
 
 - (void)configureGTM {
     TAGDataLayer *dataLayer = [TAGManager instance].dataLayer;

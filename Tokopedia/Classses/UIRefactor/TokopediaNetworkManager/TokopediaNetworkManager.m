@@ -66,6 +66,8 @@
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
+    [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
+    
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];

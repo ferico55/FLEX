@@ -286,7 +286,7 @@
         if (_uriNext != NULL && ![_uriNext isEqualToString:@""] && _uriNext != 0) {
             NSLog(@"%@", NSStringFromSelector(_cmd));
             [_networkManager doRequest];
-            [_tableView setTableFooterView:_loadingView];
+            [_tableView setTableFooterView:_footerView];
         }
     }
 }

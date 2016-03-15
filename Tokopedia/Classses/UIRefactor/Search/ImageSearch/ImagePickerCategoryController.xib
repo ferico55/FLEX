@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImagePickerCategoryController">
+            <connections>
+                <outlet property="tableHeaderView" destination="p38-cS-H56" id="YLn-wZ-CJI"/>
+                <outlet property="tableView" destination="tj6-Pp-jSr" id="uKM-dl-fbf"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tj6-Pp-jSr">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="C9n-Ay-YZa"/>
+                        <outlet property="delegate" destination="-1" id="z3X-c3-hHO"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="tj6-Pp-jSr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0px-UW-982"/>
+                <constraint firstAttribute="trailing" secondItem="tj6-Pp-jSr" secondAttribute="trailing" id="EKG-ce-wWg"/>
+                <constraint firstItem="tj6-Pp-jSr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="O8Y-oB-EBk"/>
+                <constraint firstAttribute="bottom" secondItem="tj6-Pp-jSr" secondAttribute="bottom" id="tNw-ej-piP"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="505" y="355"/>
+        </view>
+        <view contentMode="scaleToFill" id="p38-cS-H56">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih kategori untuk mempermudah pencarian" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UxC-xI-FWd">
+                    <rect key="frame" x="15" y="14" width="290" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="DKu-32-tRZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="UxC-xI-FWd" firstAttribute="leading" secondItem="p38-cS-H56" secondAttribute="leading" constant="15" id="OHg-Ka-xJx"/>
+                <constraint firstAttribute="trailing" secondItem="UxC-xI-FWd" secondAttribute="trailing" constant="15" id="Ps3-Gu-14E"/>
+                <constraint firstItem="UxC-xI-FWd" firstAttribute="top" secondItem="p38-cS-H56" secondAttribute="top" constant="14" id="VAK-Bu-6X9"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="447" y="807"/>
+        </view>
+    </objects>
+</document>

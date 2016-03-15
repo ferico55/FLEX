@@ -52,6 +52,9 @@
 #import "SpellCheckRequest.h"
 #import "Tokopedia-Swift.h"
 
+#import "ImageSearchResponse.h"
+#import "ImageSearchRequest.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -88,13 +91,16 @@ LoadingViewDelegate,
 PromoRequestDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
-SpellCheckRequestDelegate
+SpellCheckRequestDelegate,
+ImageSearchRequestDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) NSMutableArray *product;
 @property (strong, nonatomic) NSMutableArray *promo;
+@property (strong, nonatomic) NSMutableDictionary *similarityDictionary;
+
 @property (nonatomic) UITableViewCellType cellType;
 
 @property (weak, nonatomic) IBOutlet UIView *toolbarView;
@@ -109,8 +115,11 @@ SpellCheckRequestDelegate
 
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
+
+@property (strong, nonatomic) ImageSearchRequest *imageSearchRequest;
+
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *imageSearchToolbarButtons;
 
 @end
 
@@ -141,6 +150,9 @@ SpellCheckRequestDelegate
     NSString *_searchPostUrl;
     NSString *_searchFullUrl;
     NSString *_suggestion;
+    
+    NSString *_strImageSearchResult;
+    NSInteger allProductsCount;
     
     BOOL _isFailRequest;
     
@@ -188,6 +200,7 @@ SpellCheckRequestDelegate
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
+    _similarityDictionary = [NSMutableDictionary new];
     
     _params = [NSMutableDictionary new];
     _start = 0;
@@ -208,10 +221,10 @@ SpellCheckRequestDelegate
     [_collectionView setAlwaysBounceVertical:YES];
     [_collectionView setDelegate:self];
     [_collectionView setDataSource:self];
-    [_firstFooter setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 50)];
+    [_firstFooter setFrame:CGRectMake(0, 0, _flowLayout.footerReferenceSize.width, 50)];
     [_collectionView addSubview:_firstFooter];
     
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     
@@ -265,8 +278,6 @@ SpellCheckRequestDelegate
                                forState:UIControlStateNormal];
     }
     
-    self.contentView = self.view;
-    
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
     
@@ -292,11 +303,29 @@ SpellCheckRequestDelegate
     [self requestPromo];
     self.scrollDirection = ScrollDirectionDown;
     
+    _imageSearchRequest = [[ImageSearchRequest alloc]init];
+    _imageSearchRequest.delegate = self;
+    _imageSearchRequest.view = self.view;
+    
+    
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.isParameterNotEncrypted = YES;
     _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    
+    if(_isFromImageSearch){
+        [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
+        [_fourButtonsToolbar setHidden:YES];
+        [_threeButtonsToolbar setHidden:NO];
+        [_fourButtonsToolbar setUserInteractionEnabled:NO];
+        [_threeButtonsToolbar setUserInteractionEnabled:YES];
+    }else{
+        [_networkManager doRequest];
+        [_fourButtonsToolbar setHidden:NO];
+        [_threeButtonsToolbar setHidden:YES];
+        [_fourButtonsToolbar setUserInteractionEnabled:YES];
+        [_threeButtonsToolbar setUserInteractionEnabled:NO];
+    }
     
     _spellCheckRequest = [SpellCheckRequest new];
     _spellCheckRequest.delegate = self;
@@ -317,6 +346,10 @@ SpellCheckRequestDelegate
 #pragma mark - Properties
 - (void)setData:(NSDictionary *)data {
     _data = data;
+    
+    if (_data) {
+        [_params setObject:data[@"department_id"] forKey:@"department_id"];
+    }
 }
 
 #pragma mark - Memory Management
@@ -372,7 +405,6 @@ SpellCheckRequestDelegate
         } else {
             [(ProductThumbCell*)cell setViewModel:list.viewModel];
         }
-        
     }
     
     //next page if already last cell
@@ -437,7 +469,6 @@ SpellCheckRequestDelegate
         vc.catalogName = product.catalog_name;
         vc.catalogPrice = product.catalog_price;
         vc.hidesBottomBarWhenPushed = YES;
-        
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [TPAnalytics trackProductClick:product];
@@ -486,6 +517,8 @@ SpellCheckRequestDelegate
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
     [_networkManager doRequest];
+    
+    [_act startAnimating];
 }
 
 -(IBAction)tap:(id)sender {
@@ -497,20 +530,13 @@ SpellCheckRequestDelegate
             SortViewController *controller = [SortViewController new];
             controller.delegate = self;
             controller.selectedIndexPath = _sortIndexPath;
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+            if(_isFromImageSearch){
+                controller.sortType = SortImageSearch;
+            }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
                 controller.sortType = SortProductSearch;
             } else {
                 controller.sortType = SortCatalogSearch;
             }
-
-            UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
-                [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
-            }
-            
-            UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            controller.screenshotImage = screenshotImage;
             
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
@@ -594,16 +620,35 @@ SpellCheckRequestDelegate
     [_params addEntriesFromDictionary:userInfo];
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
-    [_act startAnimating];
 }
 
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     [_params setObject:sort forKey:@"order_by"];
     _isNeedToRemoveAllObject = YES;
-    [self refreshView:nil];
-    [_act startAnimating];
-    _sortIndexPath = indexPath;
+    
+    if([[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
+        [self restoreSimilarity];
+        //image search sort by similarity
+        NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
+            CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
+            return first > second;
+        }];
+        _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
+        _sortIndexPath = indexPath;
+        [_refreshControl beginRefreshing];
+        [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [_refreshControl endRefreshing];
+            [_collectionView reloadData];
+        });
+    } else {
+        //normal sort
+        [self refreshView:nil];
+        _sortIndexPath = indexPath;
+    }
+    
 }
 
 #pragma mark - Category notification
@@ -614,8 +659,6 @@ SpellCheckRequestDelegate
     
     _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
-    
-    [_act startAnimating];
 }
 
 #pragma mark - LoadingView Delegate
@@ -628,57 +671,107 @@ SpellCheckRequestDelegate
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
-    
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:startPerPage forKey:@"rows"];
-    [parameter setObject:@(_start) forKey:@"start"];
-    
     [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
     [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
-    [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
     [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
     [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
     [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
     [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
-    
+    if(_isFromImageSearch){
+        [parameter setObject:_image_url forKey:@"image_url"];
+        if (_strImageSearchResult) {
+            [parameter setObject:_strImageSearchResult forKey:@"id"];
+            [parameter setObject:@(allProductsCount) forKey:@"rows"];
+        }
+        if([_product firstObject] != nil && [[_product firstObject] count] > 0){
+            [parameter setObject:@(0) forKey:@"start"];
+        }
+    } else {
+        [parameter setObject:[_params objectForKey:@"search"]?:@"" forKey:@"q"];
+        [parameter setObject:startPerPage forKey:@"rows"];
+        [parameter setObject:@(_start) forKey:@"start"];
+        [parameter setObject:@"true" forKey:@"breadcrumb"];
+    }
     return parameter;
+}
+
+- (NSString*)generateProductIdString{
+    NSString* strResult = @"";
+    NSMutableArray *products = [_product firstObject];
+    for(SearchAWSProduct *prod in products){
+        strResult = [strResult stringByAppendingString:[NSString stringWithFormat:@"%@,", prod.product_id]];
+    }
+    if([strResult length] > 0){
+        strResult = [strResult substringToIndex:[strResult length] - 1];
+    }
+    return strResult;
 }
 
 - (NSString*)getPath:(int)tag{
     NSString *pathUrl;
-    
-    if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
+    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && !([_params objectForKey:@"order_by"])) {
+        pathUrl = @"/v4/search/snapsearch.pl";
+    } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
         pathUrl = @"search/v1/catalog";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_shop"]) {
         pathUrl = @"search/v1/shop";
     } else {
         pathUrl = @"search/v1/product";
     }
-    
-    return [_searchPostUrl isEqualToString:@""] ? pathUrl : _searchPostUrl;
+    return pathUrl;
 }
 
 - (id)getObjectManager:(int)tag {
-    if([_searchBaseUrl isEqualToString:kTkpdBaseURLString] || [_searchBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
-#ifdef DEBUG
-        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary *auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
-        NSString *baseUrl;
-//        if([[auth objectForKey:@"AppBaseUrl"] containsString:@"staging"]) {
-        if([[auth objectForKey:@"AppBaseUrl"] rangeOfString:@"staging"].location == NSNotFound) {
-            baseUrl = @"https://ace.tokopedia.com/";
-        } else {
-            baseUrl = @"https://ace-staging.tokopedia.com/";
-        }
-        _objectmanager = [RKObjectManager sharedClient:baseUrl];
-#endif
-
+    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
+        _objectmanager = [RKObjectManager sharedClientHttps];
+        [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
     } else {
-        _objectmanager = [RKObjectManager sharedClient:_searchBaseUrl];
+        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
+        [_objectmanager addResponseDescriptor:[self searchResponseDescriptor]];
     }
+    return _objectmanager;
+}
+
+- (RKResponseDescriptor *)imageSearchResponseDescriptor {
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ImageSearchResponse class]];
+    [responseMapping addAttributeMappingsFromArray:@[@"status", @"config"]];
     
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ImageSearchResponseData class]];
+
+    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+    [productMapping addAttributeMappingsFromArray:@[@"shop_lucky",
+                                                    @"shop_id",
+                                                    @"shop_gold_status",
+                                                    @"shop_url",
+                                                    @"is_owner",
+                                                    @"rate",
+                                                    @"product_id",
+                                                    @"product_image_full",
+                                                    @"product_talk_count",
+                                                    @"product_image",
+                                                    @"product_price",
+                                                    @"product_sold_count",
+                                                    @"shop_location",
+                                                    @"product_wholesale",
+                                                    @"shop_name",
+                                                    @"product_review_count",
+                                                    @"similarity_rank",
+                                                    @"condition",
+                                                    @"product_name",
+                                                    @"product_url"]];
+
+    [responseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping]];
+    
+    [dataMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"similar_prods" toKeyPath:@"similar_prods" withMapping:productMapping]];
+    
+    RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodGET pathPattern:@"/v4/search/snapsearch.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    return descriptor;
+}
+
+- (RKResponseDescriptor *)searchResponseDescriptor {
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -712,6 +805,32 @@ SpellCheckRequestDelegate
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
+    NSDictionary *categoryAttributeMappings = @{
+        @"d_id" : @"categoryId",
+        @"title" : @"name",
+        @"tree" : @"tree",
+        @"href" : @"url",
+    };
+
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+
+    // Adjust Relationship
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
+    [resultMapping addPropertyMapping:categoryRelationship];
+
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
+
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:[self didReceiveRequestMethod:nil]
@@ -719,10 +838,7 @@ SpellCheckRequestDelegate
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    //add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-    return _objectmanager;
+    return responseDescriptor;
 }
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag {
@@ -740,9 +856,90 @@ SpellCheckRequestDelegate
     
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    SearchAWS *search = [result objectForKey:@""];
+- (void)backupSimilarity{
+    for(SearchAWSProduct *prod in [_product firstObject]){
+        [_similarityDictionary setObject:prod.similarity_rank forKey:prod.product_id];
+    }
+}
+
+- (void)restoreSimilarity{
+    NSMutableArray *products = [_product firstObject];
+    for(int i=0;i<[products count];i++){
+        NSString* productId = ((SearchAWSProduct*)products[i]).product_id;
+        ((SearchAWSProduct*)products[i]).similarity_rank = [_similarityDictionary objectForKey:productId];
+    }
+    if (_product.count > 0) {
+        _product[0] = products;
+    }
+}
+
+- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+    [_noResultView removeFromSuperview];
+    [_firstFooter removeFromSuperview];
+    
+    if(_isNeedToRemoveAllObject) {
+        [_product removeAllObjects];
+        [_promo removeAllObjects];
+        _isNeedToRemoveAllObject = NO;
+    }
+    
+    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
+        [self imageSearchMappingResult:successResult];
+    } else {
+        [self searchMappingResult:successResult];
+    }
+}
+
+- (void)imageSearchMappingResult:(RKMappingResult *)mappingResult {
+    ImageSearchResponse *search = [mappingResult.dictionary objectForKey:@""];
+    if(search.data.similar_prods.count > 0){
+        
+        [_product addObject:search.data.similar_prods];
+        
+        [self backupSimilarity];
+        
+        _strImageSearchResult = [self generateProductIdString];
+        allProductsCount = [[_product firstObject] count];
+        _isnodata = NO;
+        _start = [[self splitUriToPage:_urinext] integerValue];
+        if([_urinext isEqualToString:@""]) {
+            [_flowLayout setFooterReferenceSize:CGSizeZero];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
+        [_noResultView removeFromSuperview];
+        
+        for (UIButton *button in self.imageSearchToolbarButtons) {
+            button.enabled = YES;
+        }
+        
+    } else {
+        //no data at all
+        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        
+        if([self isUsingAnyFilter]){
+            _suggestion = @"";
+            [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
+            [_noResultView hideButton:YES];
+        }else{
+            [_noResultView setNoResultDesc:@"Mohon maaf, gambar serupa tidak dapat ditemukan. Coba foto lagi dari sisi yang berbeda."];
+            [_noResultView hideButton:YES];
+        }
+        [_collectionView addSubview:_noResultView];
+    }
+    
+    if(_start > 0) [self requestPromo];
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+        [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
+    } else  {
+        [_collectionView reloadData];
+    }
+}
+
+- (void)searchMappingResult:(RKMappingResult *)mappingResult {
+    SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
     _searchObject = search;
     
     [_noResultView removeFromSuperview];
@@ -754,17 +951,21 @@ SpellCheckRequestDelegate
         _isNeedToRemoveAllObject = NO;
     }
     
+    if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
+        [_delegate updateCategories:search.result.breadcrumb];
+    }
+    
     NSString *redirect_url = search.result.redirect_url;
     if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
         NSString *departementID = search.result.department_id?:@"";
         [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
         if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-            [_delegate updateTabCategory:departementID];            
+            CategoryDetail *category = [CategoryDetail new];
+            category.categoryId = departementID;
+            [_delegate updateTabCategory:category];
         }
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
-        
-        
         NSString *hascatalog = search.result.has_catalog;
         
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
@@ -787,19 +988,22 @@ SpellCheckRequestDelegate
                 [_product addObject: search.result.products];
                 [TPAnalytics trackProductImpressions:search.result.products];
             }
-
+            
         } else {
             if(search.result.catalogs.count > 0) {
-                [_product addObject: search.result.catalogs];                
+                //_product[0] is for products
+                //so everything is in first index
+                //you're welcome!
+                [_product addObject: search.result.catalogs];
             }
-
+            
         }
         
         if(_start == 0) {
             [_collectionView setContentOffset:CGPointZero animated:YES];
             
             [_collectionView reloadData];
-//            [_collectionView layoutIfNeeded];
+            //            [_collectionView layoutIfNeeded];
         }
         
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
@@ -811,8 +1015,18 @@ SpellCheckRequestDelegate
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
-            //self.view = self.contentView;
             [_noResultView removeFromSuperview];
+            
+            if(_isFromImageSearch && [_params objectForKey:@"order_by"] && [[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
+                [self restoreSimilarity];
+                //image search sort by similarity
+                NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+                    CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
+                    CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
+                    return first > second;
+                }];
+                _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
+            }
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -828,7 +1042,7 @@ SpellCheckRequestDelegate
                     _suggestion = @"";
                 }
             }
-        
+            
             [_collectionView addSubview:_noResultView];
         }
         
@@ -849,16 +1063,18 @@ SpellCheckRequestDelegate
         if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
             [self performSelector:@selector(redirectToHotlistResult) withObject:nil afterDelay:1.0f];
         }
-
+        
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.result.department_id?:@"";
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [_params removeObjectForKey:@"search"];
             [_networkManager requestCancel];
-
+            
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
-                [self.delegate updateTabCategory:departementID];
+                CategoryDetail *category = [CategoryDetail new];
+                category.categoryId = departementID;
+                [self.delegate updateTabCategory:category];
             }
             
             [self refreshView:nil];
@@ -875,7 +1091,6 @@ SpellCheckRequestDelegate
         }
     }
 }
-
 
 - (void)redirectToCatalogResult{
     NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];
@@ -954,7 +1169,6 @@ SpellCheckRequestDelegate
 
 - (void) buttonDidTapped:(id)sender{
     [_params setObject:_suggestion forKey:@"search"];
-    //self.view = self.contentView;
     [_noResultView removeFromSuperview];
     
     NSDictionary *newData = @{
@@ -988,6 +1202,15 @@ SpellCheckRequestDelegate
     BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
     
     return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
+}
+
+- (BOOL) isUsingAnyFilterExceptCategory{
+    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_min"]] isEqualToString:@"0"];
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_max"]] isEqualToString:@"0"];;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
+    
+    return  ( isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
 
 
@@ -1077,8 +1300,16 @@ SpellCheckRequestDelegate
     }
 }
 
+#pragma mark - ImageSearchRequest Delegate
+-(void)didReceiveUploadedImageURL:(NSString *)imageURL{
+    _image_url = imageURL;
+    [_networkManager doRequest];
+}
+
 - (void)orientationChanged:(NSNotification*)note {
     [_collectionView reloadData];
 }
+
+
 
 @end

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchViewController">
             <connections>
+                <outlet property="cameraImageView" destination="ipL-Mx-fD9" id="4Vx-Qd-Tas"/>
                 <outlet property="collectionView" destination="hji-HG-v1X" id="1a6-QT-fPs"/>
+                <outlet property="iconCamera" destination="paW-a2-BGG" id="rz7-Cc-ymH"/>
                 <outlet property="searchBar" destination="7Xm-Sf-r27" id="Q3G-cL-7SC"/>
+                <outlet property="searchBarTrailingConstraint" destination="e5M-rJ-faP" id="S9E-Kb-lKb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,7 +25,6 @@
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="hji-HG-v1X">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="VGw-v9-qcW">
                                 <size key="itemSize" width="50" height="50"/>
@@ -36,7 +38,6 @@
                             </connections>
                         </collectionView>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="hji-HG-v1X" secondAttribute="bottom" id="9Hx-hc-2rL"/>
@@ -45,9 +46,8 @@
                         <constraint firstItem="hji-HG-v1X" firstAttribute="top" secondItem="UGu-Sr-Afb" secondAttribute="top" id="fQC-c3-Vo9"/>
                     </constraints>
                 </view>
-                <searchBar contentMode="scaleToFill" placeholder="Cari produk / toko" showsCancelButton="YES" backgroundImage="NavBar" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
+                <searchBar contentMode="scaleToFill" placeholder="Cari produk / toko" translucent="NO" backgroundImage="NavBar" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="BpI-NQ-T71"/>
                     </constraints>
@@ -57,18 +57,38 @@
                         <outlet property="delegate" destination="-1" id="p3n-bA-ELj"/>
                     </connections>
                 </searchBar>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="paW-a2-BGG">
+                    <rect key="frame" x="600" y="0.0" width="0.0" height="44"/>
+                    <subviews>
+                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera.png" translatesAutoresizingMaskIntoConstraints="NO" id="ipL-Mx-fD9">
+                            <rect key="frame" x="-39" y="9" width="25" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="25" id="7El-Od-3YG"/>
+                                <constraint firstAttribute="height" constant="25" id="qmx-hB-v1W"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="ipL-Mx-fD9" secondAttribute="trailing" constant="14" id="6RN-gG-yEh"/>
+                        <constraint firstItem="ipL-Mx-fD9" firstAttribute="centerY" secondItem="paW-a2-BGG" secondAttribute="centerY" id="bU0-wq-Mdk"/>
+                        <constraint firstAttribute="height" constant="44" id="ejx-7h-I0x"/>
+                    </constraints>
+                </view>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="7Xm-Sf-r27" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Enb-5j-7SY"/>
                 <constraint firstAttribute="bottom" secondItem="UGu-Sr-Afb" secondAttribute="bottom" id="Gxb-T3-vvo"/>
+                <constraint firstItem="paW-a2-BGG" firstAttribute="leading" secondItem="7Xm-Sf-r27" secondAttribute="trailing" id="Haw-Rr-wNL"/>
                 <constraint firstItem="UGu-Sr-Afb" firstAttribute="top" secondItem="7Xm-Sf-r27" secondAttribute="bottom" id="Jtn-2j-9R8"/>
                 <constraint firstItem="7Xm-Sf-r27" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="OJu-IQ-xyS"/>
                 <constraint firstAttribute="trailing" secondItem="UGu-Sr-Afb" secondAttribute="trailing" id="RSP-2i-Cbd"/>
+                <constraint firstItem="paW-a2-BGG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Y7d-H2-qzI"/>
                 <constraint firstAttribute="trailing" secondItem="7Xm-Sf-r27" secondAttribute="trailing" id="e5M-rJ-faP"/>
+                <constraint firstAttribute="trailing" secondItem="paW-a2-BGG" secondAttribute="trailing" id="rCE-Lh-XDT"/>
                 <constraint firstItem="UGu-Sr-Afb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tnf-dv-1aL"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -77,5 +97,6 @@
     </objects>
     <resources>
         <image name="NavBar" width="320" height="64"/>
+        <image name="camera.png" width="40" height="36"/>
     </resources>
 </document>

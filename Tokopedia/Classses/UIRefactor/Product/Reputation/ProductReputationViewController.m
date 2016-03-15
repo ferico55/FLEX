@@ -819,9 +819,15 @@ static NSInteger userViewHeight = 70;
     LoginViewController *controller = [LoginViewController new];
     controller.delegate = self;
     controller.isPresentedViewController = YES;
-    controller.redirectViewController = self;
+    //controller.redirectViewController = self;
     navigationController.viewControllers = @[controller];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    //prevent crash because of phone verif
+    //will fix this after revamp-review finished
+    //[self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum login."] delegate:self];
+    [alert show];
 }
 
 - (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {

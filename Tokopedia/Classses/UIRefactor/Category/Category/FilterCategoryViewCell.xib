@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="filterCategoryViewCell" rowHeight="44" id="KGk-i7-Jjw" customClass="FilterCategoryViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GhO-oG-2pZ">
+                        <rect key="frame" x="15" y="0.0" width="230" height="43"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="req-rL-MmU"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-minus-math.png" translatesAutoresizingMaskIntoConstraints="NO" id="znv-Qa-OSR">
+                        <rect key="frame" x="290" y="15" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="JZ8-5P-h2E"/>
+                            <constraint firstAttribute="width" constant="15" id="TYc-04-aId"/>
+                        </constraints>
+                    </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-checkmark-filled.png" translatesAutoresizingMaskIntoConstraints="NO" id="7UP-Xq-0rM">
+                        <rect key="frame" x="260" y="15" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="1rD-2P-Z3f"/>
+                            <constraint firstAttribute="height" constant="15" id="I1e-V2-4LB"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="7UP-Xq-0rM" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="1u4-X3-DO5"/>
+                    <constraint firstItem="znv-Qa-OSR" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="DER-OX-eSx"/>
+                    <constraint firstItem="znv-Qa-OSR" firstAttribute="leading" secondItem="7UP-Xq-0rM" secondAttribute="trailing" constant="15" id="Dsz-Sd-UNd"/>
+                    <constraint firstItem="7UP-Xq-0rM" firstAttribute="leading" secondItem="GhO-oG-2pZ" secondAttribute="trailing" constant="15" id="FF3-xy-15q"/>
+                    <constraint firstAttribute="trailing" secondItem="znv-Qa-OSR" secondAttribute="trailing" constant="15" id="Ze6-dL-5Tw"/>
+                    <constraint firstAttribute="bottom" secondItem="GhO-oG-2pZ" secondAttribute="bottom" constant="0.5" id="cnm-RR-VWg"/>
+                    <constraint firstItem="GhO-oG-2pZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="v8t-A6-Tlg"/>
+                    <constraint firstItem="GhO-oG-2pZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="yqY-p1-elV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="arrowImageView" destination="znv-Qa-OSR" id="gid-KL-iSE"/>
+                <outlet property="categoryNameLabel" destination="GhO-oG-2pZ" id="PpE-q4-yhC"/>
+                <outlet property="checkmarkImageView" destination="7UP-Xq-0rM" id="XUc-Ov-85k"/>
+                <outlet property="leftPaddingConstraint" destination="v8t-A6-Tlg" id="Ha8-eA-P3A"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon-checkmark-filled.png" width="25" height="25"/>
+        <image name="icon-minus-math.png" width="30" height="30"/>
+    </resources>
+</document>

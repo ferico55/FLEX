@@ -1062,9 +1062,12 @@
     LoginViewController *controller = [LoginViewController new];
     controller.delegate = self;
     controller.isPresentedViewController = YES;
-    controller.redirectViewController = self;
+    //controller.redirectViewController = self;
     navigationController.viewControllers = @[controller];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    //[self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum login."] delegate:self];
+    [alert show];
 }
 
 - (void)configureRestkit {
