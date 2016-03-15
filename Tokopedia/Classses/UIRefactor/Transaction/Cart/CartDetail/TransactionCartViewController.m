@@ -86,12 +86,9 @@
     
     UIBarButtonItem *_doneBarButtonItem;
     
-    NSMutableArray *_isDropshipper;
     NSMutableArray *_stockPartialDetail;
     NSMutableArray *_stockPartialStrList;
     
-    NSMutableArray *_senderNameDropshipper;
-    NSMutableArray *_senderPhoneDropshipper;
     NSMutableArray *_dropshipStrList;
     
     BOOL _isUsingSaldoTokopedia;
@@ -220,10 +217,7 @@
     
     _list = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
-    _isDropshipper = [NSMutableArray new];
     _stockPartialStrList = [NSMutableArray new];
-    _senderNameDropshipper = [NSMutableArray new];
-    _senderPhoneDropshipper = [NSMutableArray new];
     _dropshipStrList = [NSMutableArray new];
     _stockPartialDetail = [NSMutableArray new];
     
@@ -1079,13 +1073,6 @@
 
     _isUsingSaldoTokopedia = ([_cartSummary.deposit_amount integerValue]>0);
     
-    NSArray *dropshipNameArray = [_data objectForKey:DATA_DROPSHIPPER_NAME_KEY];
-    [_senderNameDropshipper removeAllObjects];
-    [_senderNameDropshipper addObjectsFromArray:dropshipNameArray];
-    NSArray *dropshipPhoneArray = [_data objectForKey:DATA_DROPSHIPPER_PHONE_KEY];
-    [_senderPhoneDropshipper removeAllObjects];
-    [_senderPhoneDropshipper addObjectsFromArray:dropshipPhoneArray];
-    
     TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
     if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
         if (!_selectedInstallmentBank) _selectedInstallmentBank = _cartSummary.installment_bank_option[0];
@@ -1159,20 +1146,20 @@
             }
         }
     }
-    
-    for (int i = 0; i<_isDropshipper.count; i++) {
-        if ([_isDropshipper[i] boolValue] == 1) {
-            if ([_senderNameDropshipper[i] isEqualToString:@""] || _senderNameDropshipper[i]==nil) {
+
+    for (int i = 0; i<_list.count; i++) {
+        if ([_list[i].cart_is_dropshipper integerValue] == 1) {
+            if ([_list[i].cart_dropship_name isEqualToString:@""] || _list[i].cart_dropship_name==nil) {
                 isValid = NO;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
                     [messageError addObject:ERRORMESSAGE_SENDER_NAME_NILL];
             }
-            if ([_senderPhoneDropshipper[i] isEqualToString:@""] || _senderPhoneDropshipper[i]==nil) {
+            if ([_list[i].cart_dropship_phone isEqualToString:@""] || _list[i].cart_dropship_phone==nil) {
                 isValid = NO;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
                     [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
             }
-            else if (((NSString*)_senderPhoneDropshipper[i]).length < 6) {
+            else if (_list[i].cart_dropship_phone.length < 6) {
                 isValid = NO;
                 if (![messageError containsObject:@"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."])
                     [messageError addObject:@"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."];
@@ -1221,9 +1208,9 @@
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *dropshipperNameKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_NAME_KEY,shopID,addressID,shipmentID,shipmentPackageID];
         NSString *dropshipperPhoneKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_PHONE_KEY,shopID,addressID,shipmentID,shipmentPackageID];
-        if (_senderNameDropshipper.count >i) {
-            [dropshipListParam setObject:_senderNameDropshipper[i] forKey:dropshipperNameKey];
-            [dropshipListParam setObject:_senderPhoneDropshipper[i] forKey:dropshipperPhoneKey];
+        if (_list.count >i) {
+            [dropshipListParam setObject:_list[i].cart_dropship_name forKey:dropshipperNameKey];
+            [dropshipListParam setObject:_list[i].cart_dropship_phone forKey:dropshipperPhoneKey];
         }
         else
         {
@@ -1231,9 +1218,9 @@
             [dropshipListParam setObject:@"" forKey:dropshipperPhoneKey];
         }
         
-        if (_isDropshipper.count>0)
+        if (_list.count>0)
         {
-            if ([_isDropshipper[i] boolValue]==YES) {
+            if ([_list[i].cart_is_dropshipper boolValue]==YES) {
                 NSString *dropshipStringObject = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_KEY,shopID,addressID,shipmentID,shipmentPackageID];
                 [_dropshipStrList replaceObjectAtIndex:i withObject:dropshipStringObject];
             }
@@ -1279,7 +1266,7 @@
     NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
     NSInteger shipmentPackageID =[list.cart_shipments.shipment_package_id integerValue];
     
-    [_isDropshipper replaceObjectAtIndex:indexPath.section withObject:@(cell.settingSwitch.on)];
+    _list[indexPath.section].cart_is_dropshipper = [NSString stringWithFormat:@"%zd",cell.settingSwitch.on];
     
     if (cell.settingSwitch.on) {
         NSString *dropshipStringObject = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_KEY,shopID,addressID,shipmentID,shipmentPackageID];
@@ -1581,11 +1568,11 @@
 {
     if (textField.tag > 0 )
     {
-        [_senderNameDropshipper replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
+        _list[textField.tag-1].cart_dropship_name = textField.text;
     }
     else if (textField.tag < 0)
     {
-        [_senderPhoneDropshipper replaceObjectAtIndex:-textField.tag-1 withObject:textField.text];
+        _list[-textField.tag-1].cart_dropship_phone = textField.text;
     }
     if (textField == _saldoTokopediaAmountTextField) {
         
@@ -1731,7 +1718,7 @@
         [_delegate didFinishRequestBuyData:userInfo];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        //
+
         [_act stopAnimating];
         
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
@@ -1758,7 +1745,6 @@
         
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
         
-        //
         [_act stopAnimating];
         
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
@@ -1810,10 +1796,7 @@
 
 -(void)addArrayObjectTemp
 {
-    [_isDropshipper addObject:@(NO)];
     [_stockPartialStrList addObject:@""];
-    [_senderNameDropshipper addObject:@""];
-    [_senderPhoneDropshipper addObject:@""];
     [_dropshipStrList addObject:@""];
     [_stockPartialDetail addObject:@(0)];
     _isUsingSaldoTokopedia = NO;
@@ -1852,9 +1835,6 @@
     [_delegate isNodata:NO];
     [_dataInput removeAllObjects];
     [_dropshipStrList removeAllObjects];
-    [_senderNameDropshipper removeAllObjects];
-    [_senderPhoneDropshipper removeAllObjects];
-    [_isDropshipper removeAllObjects];
     [_stockPartialDetail removeAllObjects];
     [_stockPartialStrList removeAllObjects];
     _isUsingSaldoTokopedia = NO;
@@ -1920,6 +1900,11 @@
         
         NSArray *list = data.list;
         [_list addObjectsFromArray:list];
+        for (TransactionCartList *cart in _list) {
+            cart.cart_dropship_name = cart.cart_dropship_name?:@"";
+            cart.cart_dropship_phone = cart.cart_dropship_phone?:@"";
+            cart.cart_is_dropshipper = cart.cart_is_dropshipper?:@"";
+        }
         
         if(list.count >0){
             [_noResultView removeFromSuperview];
@@ -2131,25 +2116,13 @@
         else if (indexPath.row == productCount+2)
             cell = [CartCell cellPartialDetail:_stockPartialDetail partialStrList:_stockPartialStrList tableView:_tableView atIndextPath:indexPath];
         else if (indexPath.row == productCount+3)
-            cell = [CartCell cellIsDropshipper:_isDropshipper tableView:_tableView atIndextPath:indexPath];
+            cell = [CartCell cellIsDropshipper:_list[indexPath.section].cart_is_dropshipper tableView:_tableView atIndextPath:indexPath];
         else if (indexPath.row == productCount+4){
-            NSInteger count =_senderNameDropshipper.count;
-            if (indexPath.section>count-1) {
-                for (int i=count-1; i<=indexPath.section; i++) {
-                    [_senderNameDropshipper addObject:@""];
-                }
-            }
-            cell = [CartCell cellTextFieldPlaceholder:@"Nama Pengirim" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_senderNameDropshipper[indexPath.section]?:@""];
+            cell = [CartCell cellTextFieldPlaceholder:@"Nama Pengirim" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_list[indexPath.section].cart_dropship_name?:@""];
         }
         else if (indexPath.row == productCount+5)
         {
-            NSInteger count =_senderPhoneDropshipper.count;
-            if (indexPath.section>count-1) {
-                for (int i=count-1; i<indexPath.section; i++) {
-                    [_senderPhoneDropshipper addObject:@""];
-                }
-            }
-            cell = [CartCell cellTextFieldPlaceholder:@"Nomer Telepon" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]?:@""];
+            cell = [CartCell cellTextFieldPlaceholder:@"Nomer Telepon" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_list[indexPath.section].cart_dropship_phone?:@""];
         }
     }
     
@@ -2304,20 +2277,13 @@
         }
         else if (indexPath.row == list.cart_products.count + 4)
         {
-            if (_isDropshipper.count>=indexPath.section) {
-                [_isDropshipper addObject:@(NO)];
-            }
-            if (![_isDropshipper[indexPath.section] boolValue]) {
+            if ([_list[indexPath.section].cart_is_dropshipper integerValue] == 0) {
                 return 0;
             }
-
         }
         else if (indexPath.row == list.cart_products.count + 5)
         {
-            if (_isDropshipper.count>=indexPath.section) {
-                [_isDropshipper addObject:@(NO)];
-            }
-            if (![_isDropshipper[indexPath.section] boolValue]) {
+            if ([_list[indexPath.section].cart_is_dropshipper integerValue] == 0) {
                 return 0;
             }
         }
@@ -2608,11 +2574,9 @@
                                     
         TransactionSummaryDetail *summary = data.transaction;
         [TPAnalytics trackCheckout:summary.carts step:1 option:summary.gateway_name];
-        
+
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:summary?:[TransactionSummaryDetail new],
-                                   DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
-                                   DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
                                    DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
                                    DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
                                    DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
@@ -2777,10 +2741,7 @@
         }
         
         if (productCount<=0) {
-            [_isDropshipper removeObjectAtIndex:i];
             [_stockPartialStrList removeObjectAtIndex:i];
-            [_senderNameDropshipper removeObjectAtIndex:i];
-            [_senderPhoneDropshipper removeObjectAtIndex:i];
             [_dropshipStrList removeObjectAtIndex:i];
             [_stockPartialDetail removeObjectAtIndex:i];
         }

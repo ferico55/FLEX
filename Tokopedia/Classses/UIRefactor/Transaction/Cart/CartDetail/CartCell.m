@@ -94,7 +94,7 @@
     return cell;
 }
 
-+(UITableViewCell*)cellIsDropshipper:(NSArray*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
++(UITableViewCell*)cellIsDropshipper:(NSString*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
 {
     NSString *cellid = @"GeneralSwitchCellIdentifier";
     
@@ -106,14 +106,8 @@
     
     cell.indexPath = indexPath;
     cell.textCellLabel.text = @"Dropshipper";
-    if (isDropshipper.count>0) {
-        cell.settingSwitch.on = [isDropshipper[indexPath.section] boolValue];
-    }
-    else
-    {
-        cell.settingSwitch.on = NO;
-    }
-    
+    cell.settingSwitch.on = ([isDropshipper integerValue] == 1);
+
     return cell;
 }
 

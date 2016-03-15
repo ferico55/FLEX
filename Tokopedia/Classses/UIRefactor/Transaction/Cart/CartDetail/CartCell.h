@@ -22,7 +22,7 @@
 +(UITableViewCell*)cellTextFieldPlaceholder:(NSString*)placeholder List:(NSArray<TransactionCartList *>*)list tableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath withText:(NSString*)text
 ;
 
-+(UITableViewCell*)cellIsDropshipper:(NSArray*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath;
++(UITableViewCell*)cellIsDropshipper:(NSString*)isDropshipper tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath;
 +
 (UITableViewCell*)cellCart:(NSArray<TransactionCartList*>*)list tableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath page:(NSInteger)page;
 
