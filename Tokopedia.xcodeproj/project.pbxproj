@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -2110,9 +2110,9 @@
 		B8BC1868860D43638F0559D3 /* RolloutDynamic_12.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		B992750762994650B9C16E0E /* RolloutDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		C7F961F230434FC497BE3DDF /* RolloutDynamic_18.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		D9C98E17B9A542E18C19C91B /* RolloutDynamic_19.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		EC590EC10F764B488966E884 /* RolloutDynamic_09.m in Sources */ = {isa = PBXBuildFile; fileRef = F027C86D73C64BA8A3B6D76E /* RolloutDynamic_09.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
@@ -2141,13 +2141,16 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
 		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
+		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
+		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -2156,6 +2159,7 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		852DFE9D1C92B3C100A52E93 /* OtherProductDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherProductDataSource.h; sourceTree = "<group>"; };
 		852DFE9E1C92B3C100A52E93 /* OtherProductDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherProductDataSource.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -5278,27 +5282,23 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_18.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_18.m"; sourceTree = "<group>"; };
 		8E670BDDA5CB41D18FCB051D /* RolloutDynamic_02.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_02.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_02.m"; sourceTree = "<group>"; };
 		90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_17.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_17.m"; sourceTree = "<group>"; };
 		92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewCategory.swift; sourceTree = "<group>"; };
 		939838F8A82345A2B27A507A /* RolloutDynamic_01.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_01.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_01.m"; sourceTree = "<group>"; };
-		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_19.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_19.m"; sourceTree = "<group>"; };
 		A05CDE3AB94D4662AE7303A7 /* RolloutDynamic_16.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_16.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_16.m"; sourceTree = "<group>"; };
+		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic.m; path = Pods/Rollout.io/Rollout/RolloutDynamic.m; sourceTree = "<group>"; };
 		B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_11.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_11.m"; sourceTree = "<group>"; };
-		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_20.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_20.m"; sourceTree = "<group>"; };
+		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_08.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_08.m"; sourceTree = "<group>"; };
 		D42C03553460450FB506D4DE /* RolloutDynamic_03.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_03.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_03.m"; sourceTree = "<group>"; };
 		DD2849330B874E69A80561F9 /* RolloutDynamic_15.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_15.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_15.m"; sourceTree = "<group>"; };
-		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
-		E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_13.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_13.m"; sourceTree = "<group>"; };
 		F027C86D73C64BA8A3B6D76E /* RolloutDynamic_09.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_09.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_09.m"; sourceTree = "<group>"; };
-		FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5358,9 +5358,9 @@
 				7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				8565E1DB1B9401E600843388 /* GooglePlus.framework in Frameworks */,
-				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
 				8565E1EA1B94059600843388 /* GoogleOpenSource.framework in Frameworks */,
 				FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */,
+				F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5372,7 +5372,7 @@
 				FC36DFA019B0656400AF74C1 /* XCTest.framework in Frameworks */,
 				FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DFA119B0656400AF74C1 /* Foundation.framework in Frameworks */,
-				20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */,
+				2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5406,17 +5406,6 @@
 				B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */,
 			);
 			name = Rollout;
-			sourceTree = "<group>";
-		};
-		53AC970CF2132927344A64C3 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */,
-				DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */,
-				967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */,
-				C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		852DFE9C1C92B3A300A52E93 /* OtherProduct */ = {
@@ -10885,6 +10874,17 @@
 			path = "Third Party";
 			sourceTree = "<group>";
 		};
+		E1A48FC656B05056B45251AD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */,
+				7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */,
+				C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */,
+				2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -10892,8 +10892,8 @@
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				FC36DF8419B0656400AF74C1 /* Products */,
-				53AC970CF2132927344A64C3 /* Pods */,
 				22AE1F778E4A40CE9CCE0410 /* Rollout */,
+				E1A48FC656B05056B45251AD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -10951,8 +10951,8 @@
 				FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */,
 				FC36DF8A19B0656400AF74C1 /* UIKit.framework */,
 				FC36DF9F19B0656400AF74C1 /* XCTest.framework */,
-				FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */,
-				8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */,
+				4868E459AB2A65D133732296 /* libPods-Tokopedia.a */,
+				7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -10982,13 +10982,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
+				9852790493753292549B327E /* Check Pods Manifest.lock */,
 				AA9EFE24FE5445AAB7DE4394 /* Rollout.io pre-build */,
-				72CC7607790349BDBBECF8CD /* Check Pods Manifest.lock */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
 				61399F3788A34F96AC01292E /* Rollout.io post-build */,
-				7C3B363ED25146719E39B6B0 /* Copy Pods Resources */,
+				270CBF0B5FC08042843CD1B4 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -11003,11 +11003,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFB219B0656400AF74C1 /* Build configuration list for PBXNativeTarget "TokopediaTests" */;
 			buildPhases = (
-				66B6361E93B8451F93E58898 /* Check Pods Manifest.lock */,
+				E69AA1A952B2C8DACAC50186 /* Check Pods Manifest.lock */,
 				FC36DF9A19B0656400AF74C1 /* Sources */,
 				FC36DF9B19B0656400AF74C1 /* Frameworks */,
 				FC36DF9C19B0656400AF74C1 /* Resources */,
-				5DE7980136424989A1A7B226 /* Copy Pods Resources */,
+				2340CF76B183AE415524ED79 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -12157,7 +12157,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5DE7980136424989A1A7B226 /* Copy Pods Resources */ = {
+		2340CF76B183AE415524ED79 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -12170,6 +12170,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		270CBF0B5FC08042843CD1B4 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		61399F3788A34F96AC01292E /* Rollout.io post-build */ = {
@@ -12186,7 +12201,7 @@
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=4 \"${SRCROOT}/Pods/Rollout.io/lib/tweaker\"  -k 56a717aed7bed00574f5169c";
 		};
-		66B6361E93B8451F93E58898 /* Check Pods Manifest.lock */ = {
+		9852790493753292549B327E /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -12199,36 +12214,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		72CC7607790349BDBBECF8CD /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		7C3B363ED25146719E39B6B0 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AA9EFE24FE5445AAB7DE4394 /* Rollout.io pre-build */ = {
@@ -12244,6 +12229,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=4 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\"";
+		};
+		E69AA1A952B2C8DACAC50186 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -13396,7 +13396,7 @@
 		};
 		FC36DFB019B0656400AF74C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */;
+			baseConfigurationReference = AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -13443,7 +13443,7 @@
 		};
 		FC36DFB119B0656400AF74C1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */;
+			baseConfigurationReference = 7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -13454,6 +13454,10 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
@@ -13591,7 +13595,7 @@
 		};
 		FC36DFB319B0656400AF74C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */;
+			baseConfigurationReference = C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -13617,7 +13621,7 @@
 		};
 		FC36DFB419B0656400AF74C1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */;
+			baseConfigurationReference = 2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
