@@ -62,9 +62,14 @@
         requestMethod = [_delegate getRequestMethod:self.tagRequest];
     }
     
+    //API Spec documentation: https://wiki.tokopedia.net/API_Specification
+    
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
+    NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
 
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
     

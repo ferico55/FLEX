@@ -43,12 +43,12 @@
     }];
 }
 
-+(void)fetchATCProduct:(ProductDetail*)product address:(AddressFormList*)address shipment:(ShippingInfoShipments*)shipment shipmentPackage:(ShippingInfoShipmentPackage*)shipmentPackage quantity:(NSString*)qty remark:(NSString *)remark success:(void(^)(TransactionAction* data))success failed:(void(^)(NSError * error))failed {
++(void)fetchATCProduct:(ProductDetail*)product address:(AddressFormList*)address shipment:(RateAttributes*)shipment shipmentPackage:(RateProduct*)shipmentPackage quantity:(NSString*)qty remark:(NSString *)remark success:(void(^)(TransactionAction* data))success failed:(void(^)(NSError * error))failed {
     
     NSInteger productID = [ product.product_id integerValue];
     NSInteger insuranceID = [product.product_insurance integerValue];
-    NSInteger shippingID = [shipment.shipment_id integerValue];
-    NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
+    NSInteger shippingID = [shipment.shipper_id integerValue];
+    NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
     
     NSInteger addressID = (address.address_id==0)?-1:address.address_id;
     NSNumber *districtID = address.district_id?:@(0);
@@ -98,11 +98,11 @@
     }];
 }
 
-+(void)fetchCalculateProduct:(ProductDetail*)product qty:(NSString*)qty insurance:(NSString*)insurance shipment:(ShippingInfoShipments*)shipment shipmentPackage:(ShippingInfoShipmentPackage*)shipmentPackage address:(AddressFormList*)address success:(void(^)(TransactionCalculatePriceResult* data))success failed:(void(^)(NSError * error))failed {
++(void)fetchCalculateProduct:(ProductDetail*)product qty:(NSString*)qty insurance:(NSString*)insurance shipment:(RateAttributes*)shipment shipmentPackage:(RateProduct*)shipmentPackage address:(AddressFormList*)address success:(void(^)(TransactionCalculatePriceResult* data))success failed:(void(^)(NSError * error))failed {
     
     NSString *productID = product.product_id;
-    NSInteger shippingID = [shipment.shipment_id integerValue];
-    NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
+    NSInteger shippingID = [shipment.shipper_id integerValue];
+    NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
     NSString *weight = product.product_weight?:@"0";
     
     NSInteger addressID = (address.address_id==0)?-1:address.address_id;

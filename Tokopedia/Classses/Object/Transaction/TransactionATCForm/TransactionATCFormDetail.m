@@ -22,7 +22,7 @@
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_detail" toKeyPath:@"product_detail" withMapping:[ProductDetail mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"destination" toKeyPath:@"destination" withMapping:[AddressFormList mapping]]];
-    
+
     RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shipment" toKeyPath:@"shipment" withMapping:[ShippingInfoShipments mapping]];
     [mapping addPropertyMapping:relMapping];
     return mapping;

@@ -10,6 +10,7 @@
 #import "TransactionATCForm.h"
 #import "TransactionAction.h"
 #import "TransactionCalculatePrice.h"
+#import "RateResponse.h"
 
 @interface RequestATC : NSObject
 
@@ -18,8 +19,8 @@
                   success:(void(^)(TransactionATCFormResult* data))success
                    failed:(void(^)(NSError * error))failed;
 
-+(void)fetchATCProduct:(ProductDetail*)product address:(AddressFormList*)address shipment:(ShippingInfoShipments*)shipment shipmentPackage:(ShippingInfoShipmentPackage*)shipmentPackage quantity:(NSString*)qty remark:(NSString *)remark success:(void(^)(TransactionAction* data))success failed:(void(^)(NSError * error))failed;
++(void)fetchATCProduct:(ProductDetail*)product address:(AddressFormList*)address shipment:(RateAttributes*)shipment shipmentPackage:(RateProduct*)shipmentPackage quantity:(NSString*)qty remark:(NSString *)remark success:(void(^)(TransactionAction* data))success failed:(void(^)(NSError * error))failed;
 
-+(void)fetchCalculateProduct:(ProductDetail*)product qty:(NSString*)qty insurance:(NSString*)insurance shipment:(ShippingInfoShipments*)shipment shipmentPackage:(ShippingInfoShipmentPackage*)shipmentPackage address:(AddressFormList*)address success:(void(^)(TransactionCalculatePriceResult* data))success failed:(void(^)(NSError * error))failed;
++(void)fetchCalculateProduct:(ProductDetail*)product qty:(NSString*)qty insurance:(NSString*)insurance shipment:(RateAttributes*)shipment shipmentPackage:(RateProduct*)shipmentPackage address:(AddressFormList*)address success:(void(^)(TransactionCalculatePriceResult* data))success failed:(void(^)(NSError * error))failed;
 
 @end

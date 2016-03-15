@@ -9,7 +9,6 @@
 #import "TransactionATCForm.h"
 
 @implementation TransactionATCForm
-
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"message_error",
@@ -26,5 +25,6 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[TransactionATCFormResult mapping]]];
     return mapping;
 }
+
 
 @end
