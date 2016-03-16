@@ -43,13 +43,9 @@
 <
     TKPDAlertViewDelegate,
     SettingAddressViewControllerDelegate,
-    SettingAddressViewControllerDelegate,
     SettingAddressEditViewControllerDelegate,
     GeneralTableViewControllerDelegate,
     TransactionShipmentATCTableViewControllerDelegate,
-    TokopediaNetworkManagerDelegate,
-    RequestEditAddressDelegate,
-    RequestAddAddressDelegate,
     TKPPlacePickerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
@@ -63,39 +59,20 @@
     
     BOOL _isnodata;
     BOOL _isRefreshRequest;
-    
-    UITextField *_activeTextField;
-    UITextView *_activeTextView;
-    
+
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
-    
-    NSDictionary *_auth;
-    
-    NSOperationQueue *_operationQueue;
-    
-    UIBarButtonItem *_doneBarButtonItem;
     
     BOOL _isRequestFrom;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
     
-    CGRect _containerDefault;
-    CGSize _scrollviewContentSize;
-
     BOOL _isFinishRequesting;
     
     RateProduct *_selectedShipmentPackage;
     RateAttributes *_selectedShipment;
-    
-    RequestEditAddress *_requestEditAddress;
-    RequestAddAddress *_requestAddAddress;
-    
     AddressFormList *_selectedAddress;
-    
     TransactionATCFormResult *_ATCForm;
-    
     NSArray<RateAttributes*> *_shipments;
     NSArray *_autoResi;
     
@@ -155,7 +132,6 @@
     [super viewDidLoad];
    
     _dataInput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
 
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
@@ -239,33 +215,6 @@
     [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue]?:0, [_longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
 }
 
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    _activeTextField = nil;
-    _activeTextView = nil;
-}
-
--(RequestEditAddress*)requestEditAddress
-{
-    if (!_requestEditAddress) {
-        _requestEditAddress = [RequestEditAddress new];
-        _requestEditAddress.delegate = self;
-    }
-    return _requestEditAddress;
-}
-
--(RequestAddAddress*)requestAddAddress
-{
-    if (!_requestAddAddress) {
-        _requestAddAddress = [RequestAddAddress new];
-        _requestAddAddress.delegate = self;
-    }
-    return _requestAddAddress;
-}
-
 #pragma mark - Picker Place Delegate
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
@@ -280,14 +229,24 @@
     _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
     _selectedAddress.longitude = _longitude;
     _selectedAddress.latitude = _latitude;
-    [[self requestEditAddress] doRequestWithAddress:_selectedAddress];
+    
+    [self doRequestEditAddress];
+}
 
+-(void)doRequestEditAddress{
+    [RequestEditAddress fetchEditAddress:_selectedAddress success:^(ProfileSettingsResult *data) {
+        
+        _isFinishRequesting = NO;
+        [self refreshView];
+        [_tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
-    [_activeTextView resignFirstResponder];
-    [_activeTextField resignFirstResponder];
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)sender;
         switch (button.tag) {
@@ -752,8 +711,6 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    [_activeTextField resignFirstResponder];
-    [_activeTextView resignFirstResponder];
     if (_isRequestFrom) {
         return;
     }
@@ -886,9 +843,6 @@
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
-    [_activeTextField resignFirstResponder];
-    [_activeTextView resignFirstResponder];
-    [_remarkTextView resignFirstResponder];
     [_dataInput setObject:_remarkTextView.text forKey:API_NOTES_KEY];
 }
 
@@ -1079,7 +1033,7 @@
 {
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
     if (address.address_id <= 0) {
-        [[self requestAddAddress] doRequestWithAddress:address];
+        [self requestAddAddress:address];
         return;
     }
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
@@ -1092,15 +1046,20 @@
     [_tableView reloadData];
 }
 
-#pragma mark - Textfield Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    [_activeTextView resignFirstResponder];
-    _activeTextView = nil;
-    _activeTextField = textField;
-    return YES;
+-(void)requestAddAddress:(AddressFormList*)address{
+    
+    [RequestAddAddress fetchAddAddress:address success:^(ProfileSettingsResult *data, AddressFormList *address) {
+        _isFinishRequesting = NO;
+        _selectedAddress = address;
+        [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+        [self setAddress:address];
+        [self refreshView];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
-
+#pragma mark - Textfield Delegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     // select all text in product quantity, needs dispatch for it to work reliably
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1123,12 +1082,6 @@
     [_tableView reloadData];
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
-    [_activeTextField resignFirstResponder];
-    return YES;
-}
-
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
 replacementString:(NSString*)string
 {
@@ -1141,15 +1094,6 @@ replacementString:(NSString*)string
 
 #pragma mark - Text View Delegate
 
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
-    _activeTextField= nil;
-    [_activeTextView resignFirstResponder];
-    _activeTextView = textView;
-
-    return YES;
-}
-
 - (void)textViewDidChange:(UITextView *)textView
 {
     UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
@@ -1158,12 +1102,6 @@ replacementString:(NSString*)string
     } else {
         placeholderLabel.hidden = NO;
     }
-}
-
--(BOOL)textViewShouldReturn:(UITextView *)textView{
-    
-    [_activeTextView resignFirstResponder];
-    return YES;
 }
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
@@ -1396,22 +1334,6 @@ replacementString:(NSString*)string
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
     NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
     [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
-}
-
--(void)requestSuccessEditAddress:(id)successResult withOperation:(RKObjectRequestOperation *)operation
-{
-    _isFinishRequesting = NO;
-    [self refreshView];
-    [_tableView reloadData];
-}
-
--(void)requestSuccessAddAddress:(AddressFormList *)address
-{
-    _isFinishRequesting = NO;
-    _selectedAddress = address;
-    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
-    [self setAddress:address];
-    [self refreshView];
 }
 
 @end
