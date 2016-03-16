@@ -802,6 +802,11 @@
     [_navigateController navigateToProfileFromViewController:self withUserID:userId];
 }
 
+- (IBAction)btnSendTapped {
+    [self submitTalk];
+}
+
+
 -(IBAction)tap:(id)sender {
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -824,90 +829,6 @@
     if([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
-            case 10: {
-                if([_growingtextview.text length] < 6) {
-                    return;
-                }
-                NSInteger lastindexpathrow = [_list count];
-                TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                NSDictionary* auth = [secureStorage keychainDictionary];
-                _auth = [auth mutableCopy];
-
-                if(_auth) {
-                    
-                    TalkCommentList *comment = [TalkCommentList new];
-                    comment.comment_user_id = [_userManager getUserId];
-                    comment.comment_user_name = [_auth objectForKey:@"full_name"];
-                    comment.comment_user_image = [_auth objectForKey:@"user_image"];
-                    comment.comment_message =_growingtextview.text;
-
-                    if ([_auth objectForKey:@"shop_id"]) {
-                        //TODO: the UserAuthenticationManager actually returns shop id as NSNumber*,
-                        //so we need to get the string value of it. need to fix data type problem
-                        NSString* userShopId = [((NSNumber*)[_userManager getShopId]) stringValue];
-                        
-                        if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:userShopId]) {
-                            comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
-                            comment.comment_shop_image = [_auth objectForKey:@"shop_avatar"];
-                            comment.comment_is_owner = @"1";
-                        }
-                        comment.comment_is_seller = @"1";
-                        comment.comment_user_label = @"Penjual";
-                    }
-
-                    NSDate *today = [NSDate date];
-                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:mm"];
-                    NSString *dateString = [dateFormat stringFromDate:today];
-                    
-                    comment.comment_create_time = dateString;
-                    comment.is_just_sent = YES;
-                    comment.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
-                    
-                    if(![_act isAnimating]) {
-                        [_list insertObject:comment atIndex:lastindexpathrow];
-                        [_table reloadData];
-                        
-                        NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
-                        [_table scrollToRowAtIndexPath:indexpath
-                                      atScrollPosition:UITableViewScrollPositionTop
-                                              animated:YES];
-                        
-                        //connect action to web service
-                        _savedComment = _growingtextview.text;
-                        [self configureSendCommentRestkit];
-                        [self addProductCommentTalk];
-                        
-                        _growingtextview.text = nil;
-                        [self adjustSendButtonAvailability];
-                        [_growingtextview resignFirstResponder];
-                    } else {
-                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sedang memuat komentar.."]
-                                                                                       delegate:self];
-                        [alert show];
-                    }
-                    
-                }
-                else
-                {
-                    UINavigationController *navigationController = [[UINavigationController alloc] init];
-                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                    navigationController.navigationBar.translucent = NO;
-                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-                    
-                    
-                    LoginViewController *controller = [LoginViewController new];
-                    controller.delegate = self;
-                    controller.isPresentedViewController = YES;
-                    controller.redirectViewController = self;
-                    navigationController.viewControllers = @[controller];
-                    
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                }
-                
-                break;
-            }
-                
             case 11 : {
                 [self tapProduct];
                 break;
@@ -929,6 +850,85 @@
             default:
                 break;
         }
+    }
+}
+
+- (void)submitTalk {
+    NSInteger lastindexpathrow = [_list count];
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    _auth = [auth mutableCopy];
+
+    if(_auth) {
+
+        TalkCommentList *comment = [TalkCommentList new];
+        comment.comment_user_id = [_userManager getUserId];
+        comment.comment_user_name = [_auth objectForKey:@"full_name"];
+        comment.comment_user_image = [_auth objectForKey:@"user_image"];
+        comment.comment_message = _growingtextview.text;
+
+        if ([_auth objectForKey:@"shop_id"]) {
+            //TODO: the UserAuthenticationManager actually returns shop id as NSNumber*,
+            //so we need to get the string value of it. need to fix data type problem
+            NSString* userShopId = [((NSNumber*)[_userManager getShopId]) stringValue];
+
+            if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:userShopId]) {
+                comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
+                comment.comment_shop_image = [_auth objectForKey:@"shop_avatar"];
+                comment.comment_is_owner = @"1";
+            }
+            comment.comment_is_seller = @"1";
+            comment.comment_user_label = @"Penjual";
+        }
+
+        NSDate *today = [NSDate date];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"dd MMMM yyyy, HH:mm"];
+        NSString *dateString = [dateFormat stringFromDate:today];
+
+        comment.comment_create_time = dateString;
+        comment.is_just_sent = YES;
+        comment.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
+
+        if(![_act isAnimating]) {
+            [_list insertObject:comment atIndex:lastindexpathrow];
+            [_table reloadData];
+
+            NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
+            [_table scrollToRowAtIndexPath:indexpath
+                          atScrollPosition:UITableViewScrollPositionTop
+                                  animated:YES];
+
+            //connect action to web service
+            _savedComment = _growingtextview.text;
+            [self configureSendCommentRestkit];
+            [self addProductCommentTalk];
+
+            _growingtextview.text = nil;
+            [self adjustSendButtonAvailability];
+            [_growingtextview resignFirstResponder];
+        } else {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sedang memuat komentar.."]
+                                                                           delegate:self];
+            [alert show];
+        }
+
+    }
+    else
+    {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
 
