@@ -27,6 +27,8 @@
 #import "ReportViewController.h"
 #import "RequestLDExtension.h"
 #import "ReviewRequest.h"
+#import "ReviewImageAttachment.h"
+#import "UIImageView+AFNetworking.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface MyReviewDetailViewController ()
@@ -315,21 +317,23 @@
 
 #pragma mark - Action Sheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (actionSheet.tag == 100) {
-        GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
-        vc.detailMyReviewReputation = self;
-        vc.detailReputationReview = _selectedReview;
-        vc.isEdit = YES;
-        [self.navigationController pushViewController:vc animated:YES];
-    } else if (actionSheet.tag == 200) {
-        ReportViewController *vc = [ReportViewController new];
-        vc.delegate = self;
-        vc.strProductID = _selectedReview.product_id;
-        vc.strShopID = _selectedReview.shop_id;
-        vc.strReviewID = _selectedReview.review_id;
-        [self.navigationController pushViewController:vc animated:YES];
-    } else {
-        [_myReviewDetailRequest requestDeleteReputationReviewResponse:_selectedReview];
+    if (buttonIndex == 0) {
+        if (actionSheet.tag == 100) {
+            GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
+            vc.detailMyReviewReputation = self;
+            vc.detailReputationReview = _selectedReview;
+            vc.isEdit = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (actionSheet.tag == 200) {
+            ReportViewController *vc = [ReportViewController new];
+            vc.delegate = self;
+            vc.strProductID = _selectedReview.product_id;
+            vc.strShopID = _selectedReview.shop_id;
+            vc.strReviewID = _selectedReview.review_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            [_myReviewDetailRequest requestDeleteReputationReviewResponse:_selectedReview];
+        }
     }
 }
 
@@ -363,8 +367,17 @@
 - (void)didTapToSkipReview:(DetailReputationReview *)review {
     _selectedReview = review;
     
-    
-    [_myReviewDetailRequest requestSkipReviewWithDetail:review];
+    [_reviewRequest requestSkipProductReviewWithProductID:review.product_id
+                                             reputationID:review.reputation_id
+                                                   shopID:review.shop_id
+                                                onSuccess:^(SkipReviewResult *result) {
+                                                    [self refreshData];
+                                                } onFailure:^(NSError *error) {
+                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal melewati ulasan"]
+                                                                                                                   delegate:self];
+                                                    
+                                                    [alert show];
+                                                }];
 }
 
 - (void)didTapToEditReview:(DetailReputationReview *)review {
@@ -402,6 +415,22 @@
     
     [actionSheet showInView:self.view];
 }
+
+- (void)didTapAttachedImages:(DetailReputationReview *)review withIndex:(NSInteger)index {
+    NSMutableArray *descriptionArray = [NSMutableArray new];
+    NSMutableArray<UIImageView*> *imageArray = [NSMutableArray new];
+    
+    for (ReviewImageAttachment *imageAttachment in review.review_image_attachment) {
+        UIImageView *image = [UIImageView new];
+        [image setImageWithURL:[NSURL URLWithString:imageAttachment.uri_large]
+              placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
+        [descriptionArray addObject:imageAttachment.desc?:@""];
+        [imageArray addObject:image];
+    }
+    
+    [_navigator navigateToShowImageFromViewController:self withImageDictionaries:imageArray imageDescriptions:descriptionArray indexImage:index];
+}
+
 
 #pragma mark - Header Delegate
 - (void)didTapRevieweeNameWithID:(NSString *)revieweeID {

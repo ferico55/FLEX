@@ -155,13 +155,23 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
     for (int ii = 0; ii < review.review_image_attachment.count; ii++) {
         ReviewImageAttachment *image = review.review_image_attachment[ii];
         images.push_back({
-            [CKNetworkImageComponent
-             newWithURL:[NSURL URLWithString:image.uri_thumbnail]
-             imageDownloader:context.imageDownloader
-             scenePath:nil
-             size:{50,50}
-             options:{}
-             attributes:{}]
+            [CKInsetComponent
+             newWithView:{
+                 [UIView class],
+                 {
+                     {CKComponentTapGestureAttribute(@selector(didTapAttachedImages:))},
+                     {@selector(setTag:), ii}
+                 }
+             }
+             insets:{0,0,0,0}
+             component:[CKNetworkImageComponent
+                        newWithURL:[NSURL URLWithString:image.uri_thumbnail]
+                        imageDownloader:context.imageDownloader
+                        scenePath:nil
+                        size:{50,50}
+                        options:{}
+                        attributes:{}]]
+            
         });
     }
     
@@ -215,6 +225,10 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
     [_delegate didTapToDeleteResponse:_review];
 }
 
+- (void)didTapAttachedImages:(id)sender {
+    [_delegate didTapAttachedImages:_review withIndex:0];
+}
+
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context {
     
     UIEdgeInsets insets;
@@ -224,87 +238,88 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
         insets = {8, 8, 0, 8};
     }
     
-    DetailReputationReviewComponent* component = [super newWithComponent:
-                                                  [CKInsetComponent
-                                                   newWithView:{}
-                                                   insets:insets
-                                                   component:
-                                                   [CKStackLayoutComponent
-                                                    newWithView:{
-                                                        [UIView class],
-                                                        {
-                                                            {@selector(setBackgroundColor:), [UIColor whiteColor]}
-                                                        }
-                                                    }
-                                                    size:{}
-                                                    style:{
-                                                        .direction = CKStackLayoutDirectionVertical,
-                                                        .alignItems = CKStackLayoutAlignItemsStretch,
-                                                        .justifyContent = CKStackLayoutJustifyContentCenter
-                                                    }
-                                                    children:{
-                                                        {
-                                                            [CKInsetComponent
-                                                             newWithInsets:{8,8,8,8}
-                                                             component:
-                                                             [CKStackLayoutComponent
-                                                              newWithView:{}
-                                                              size:{}
-                                                              style:{
-                                                                  .direction = CKStackLayoutDirectionHorizontal,
-                                                                  .spacing = 8
-                                                              }
-                                                              children:{
-                                                                  {
-                                                                      [DetailReputationReviewHeaderComponent newWithReview:review
-                                                                                                                      role:(NSString*)role
-                                                                                                        tapToProductAction:@selector(didTapHeader:)
-                                                                                                           tapButtonAction:@selector(didTapButton:)
-                                                                                                           imageDownloader:context.imageDownloader],
-                                                                      .flexGrow = YES,
-                                                                      .flexShrink = YES,
-                                                                      .alignSelf = CKStackLayoutAlignSelfStretch
-                                                                  },
-                                                                  {
-                                                                      skipButton(review)
-                                                                  }
-                                                              }]]
-                                                        },
-                                                        {
-                                                            messageLabel(review, role)
-                                                        },
-                                                        {
-                                                            attachedImages(review, context)
-                                                        },
-                                                        {
-                                                            giveReviewButton(review, role)
-                                                        },
-                                                        {
-                                                            horizontalBorder(review),
-                                                            .alignSelf = CKStackLayoutAlignSelfCenter
-                                                        },
-                                                        {
-                                                            [ReviewRatingComponent newWithReview:review]
-                                                        },
-                                                        {
-                                                            [CKComponent
-                                                             newWithView:{
-                                                                 [UIView class],
-                                                                 {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
-                                                             }
-                                                             size:{.height = 1}]
-                                                        },
-                                                        {
-                                                            [ReviewResponseComponent newWithReview:review
-                                                                                   imageDownloader:context.imageDownloader
-                                                                                              role:role
-                                                                                            action:@selector(didTapToDeleteResponse:)]
-                                                        },
-                                                        {
-                                                            giveResponseButton(review, role, isDetail)
-                                                        }
-                                                    }]
-                                                   ]];
+    DetailReputationReviewComponent* component =
+    [super newWithComponent:
+     [CKInsetComponent
+      newWithView:{}
+      insets:insets
+      component:
+      [CKStackLayoutComponent
+       newWithView:{
+           [UIView class],
+           {
+               {@selector(setBackgroundColor:), [UIColor whiteColor]}
+           }
+       }
+       size:{}
+       style:{
+           .direction = CKStackLayoutDirectionVertical,
+           .alignItems = CKStackLayoutAlignItemsStretch,
+           .justifyContent = CKStackLayoutJustifyContentCenter
+       }
+       children:{
+           {
+               [CKInsetComponent
+                newWithInsets:{8,8,8,8}
+                component:
+                [CKStackLayoutComponent
+                 newWithView:{}
+                 size:{}
+                 style:{
+                     .direction = CKStackLayoutDirectionHorizontal,
+                     .spacing = 8
+                 }
+                 children:{
+                     {
+                         [DetailReputationReviewHeaderComponent newWithReview:review
+                                                                         role:(NSString*)role
+                                                           tapToProductAction:@selector(didTapHeader:)
+                                                              tapButtonAction:@selector(didTapButton:)
+                                                              imageDownloader:context.imageDownloader],
+                         .flexGrow = YES,
+                         .flexShrink = YES,
+                         .alignSelf = CKStackLayoutAlignSelfStretch
+                     },
+                     {
+                         skipButton(review)
+                     }
+                 }]]
+           },
+           {
+               messageLabel(review, role)
+           },
+           {
+               attachedImages(review, context)
+           },
+           {
+               giveReviewButton(review, role)
+           },
+           {
+               horizontalBorder(review),
+               .alignSelf = CKStackLayoutAlignSelfCenter
+           },
+           {
+               [ReviewRatingComponent newWithReview:review]
+           },
+           {
+               [CKComponent
+                newWithView:{
+                    [UIView class],
+                    {{@selector(setBackgroundColor:),[UIColor colorWithRed:0.784 green:0.78 blue:0.8 alpha:0.4]}}
+                }
+                size:{.height = 1}]
+           },
+           {
+               [ReviewResponseComponent newWithReview:review
+                                      imageDownloader:context.imageDownloader
+                                                 role:role
+                                               action:@selector(didTapToDeleteResponse:)]
+           },
+           {
+               giveResponseButton(review, role, isDetail)
+           }
+       }]
+      ]];
     
     component->_delegate = context.delegate;
     component->_review = review;

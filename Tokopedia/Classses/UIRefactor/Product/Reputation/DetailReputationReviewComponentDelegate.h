@@ -16,4 +16,5 @@
 - (void)didTapToEditReview:(DetailReputationReview*)review;
 - (void)didTapToReportReview:(DetailReputationReview*)review;
 - (void)didTapToDeleteResponse:(DetailReputationReview*)review;
+- (void)didTapAttachedImages:(DetailReputationReview*)review withIndex:(NSInteger)index;
 @end

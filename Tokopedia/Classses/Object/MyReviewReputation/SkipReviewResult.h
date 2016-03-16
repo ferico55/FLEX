@@ -15,4 +15,7 @@
 @property (nonatomic, strong) NSString *reputation_review_counter;
 @property (nonatomic, strong) NSString *is_success;
 @property (nonatomic, strong) NSString *show_bookmark;
+
++ (RKObjectMapping*)mapping;
+
 @end

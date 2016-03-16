@@ -43,7 +43,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                 selected:NO
                 enabled:YES
                 action:buttonAction
-                size:{.height = 14, .width = 14}
+                size:{.height = 30, .width = 30}
                 attributes:{}
                 accessibilityConfiguration:{}];
     } else {
@@ -61,7 +61,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                 selected:NO
                 enabled:YES
                 action:buttonAction
-                size:{.height = 14, .width = 14}
+                size:{.height = 30, .width = 30}
                 attributes:{}
                 accessibilityConfiguration:{}];
     }

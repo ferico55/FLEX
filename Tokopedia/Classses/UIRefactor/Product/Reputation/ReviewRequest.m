@@ -20,6 +20,7 @@
 #import "RequestUploadImage.h"
 #import "RequestObject.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import "SkipReview.h"
 
 typedef NS_ENUM(NSInteger, ReviewRequestType){
     ReviewRequestLikeDislike
@@ -39,8 +40,10 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     TokopediaNetworkManager *submitReviewNetworkManager;
     TokopediaNetworkManager *uploadReviewImageNetworkManager;
     TokopediaNetworkManager *productReviewSubmitNetworkManager;
-    
     TokopediaNetworkManager *submitReviewWithImageNetworkManager;
+    TokopediaNetworkManager *editReviewWithImageNetworkManager;
+    TokopediaNetworkManager *skipProductReviewNetworkManager;
+    
     NSInteger _counter;
     NSArray *_imageIDs;
     NSString *_postKey;
@@ -56,8 +59,9 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
         submitReviewNetworkManager = [TokopediaNetworkManager new];
         uploadReviewImageNetworkManager = [TokopediaNetworkManager new];
         productReviewSubmitNetworkManager = [TokopediaNetworkManager new];
-        
         submitReviewWithImageNetworkManager = [TokopediaNetworkManager new];
+        editReviewWithImageNetworkManager = [TokopediaNetworkManager new];
+        skipProductReviewNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -254,7 +258,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                                     } else {
                                                         [StickyAlertView showErrorMessage:obj.message_error];
                                                     }
-     
+                                                    
                                                 }
                                                 onFailure:^(NSError *errorResult) {
                                                     errorCallback(errorResult);
@@ -330,8 +334,6 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                        imagesToUpload:(NSDictionary*)imagesToUpload
                                 token:(NSString*)token
                                  host:(NSString*)host {
-    
-    
     [self requestUploadReviewImageWithHost:[NSString stringWithFormat:@"https://%@",host]
                                       data:[imagesToUpload objectForKey:imageID]
                                    imageID:imageID
@@ -366,5 +368,93 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                       }];
 }
 
+- (void)requestEditReviewWithImageWithReviewID:(NSString *)reviewID
+                                     productID:(NSString *)productID
+                                  accuracyRate:(int)accuracyRate
+                                   qualityRate:(int)qualityRate
+                                  reputationID:(NSString *)reputationID
+                                       message:(NSString *)reviewMessage
+                                        shopID:(NSString *)shopID
+                         hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
+                                reviewPhotoIDs:(NSArray *)imageIDs
+                            reviewPhotoObjects:(NSDictionary *)photos
+                                imagesToUpload:(NSDictionary *)imagesToUpload
+                                         token:(NSString *)token
+                                          host:(NSString *)host
+                                     onSuccess:(void (^)(SubmitReviewResult *))successCallback
+                                     onFailure:(void (^)(NSError *))errorCallback {
+    _imageIDs = imageIDs;
+    _counter = 0;
+    
+    editReviewWithImageNetworkManager.isParameterNotEncrypted = NO;
+    editReviewWithImageNetworkManager.isUsingHmac = YES;
+    
+    NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
+    NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
+    
+    [editReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+                                                     path:@"/v4/action/review/edit_product_review_validation.pl"
+                                                   method:RKRequestMethodGET
+                                                parameter:@{@"product_id" : productID,
+                                                            @"rate_accuracy" : @(accuracyRate),
+                                                            @"rate_product" : @(qualityRate),
+                                                            @"reputation_id" : reputationID,
+                                                            @"review_id" : reviewID,
+                                                            @"review_message" : reviewMessage,
+                                                            @"shop_id" : shopID,
+                                                            @"has_product_review_photo" : hasPhoto,
+                                                            @"product_review_photo_all" : allImageIDs,
+                                                            @"product_review_photo_obj" : photos?:@{}
+                                                            }
+                                                  mapping:[SubmitReview mapping]
+                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                    SubmitReview *obj = [result objectForKey:@""];
+                                                    
+                                                    if (hasProductReviewPhoto) {
+                                                        _postKey = obj.data.post_key;
+                                                        _fileUploaded = [NSMutableDictionary new];
+                                                        for (NSString *imageID in imageIDs) {
+                                                            [self requestUploadImageWithImageID:imageID
+                                                                                 imagesToUpload:imagesToUpload
+                                                                                          token:token
+                                                                                           host:host];
+                                                            self.successCompletionBlock = successCallback;
+                                                            self.errorCompletionBlock = errorCallback;
+                                                        }
+                                                    } else {
+                                                        successCallback(obj.data);
+                                                    }
+                                                    
+                                                }
+                                                onFailure:^(NSError *errorResult) {
+                                                    errorCallback(errorResult);
+                                                }];
+}
+
+- (void)requestSkipProductReviewWithProductID:(NSString *)productID
+                                 reputationID:(NSString *)reputationID
+                                       shopID:(NSString *)shopID
+                                    onSuccess:(void (^)(SkipReviewResult *))successCallback
+                                    onFailure:(void (^)(NSError *))errorCallback {
+    skipProductReviewNetworkManager.isParameterNotEncrypted = NO;
+    skipProductReviewNetworkManager.isUsingHmac = YES;
+    
+    [skipProductReviewNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+                                                   path:@"/v4/action/review/skip_product_review.pl"
+                                                 method:RKRequestMethodGET
+                                              parameter:@{@"product_id" : productID,
+                                                          @"reputation_id" : reputationID,
+                                                          @"shop_id" : shopID}
+                                                mapping:[SkipReview mapping]
+                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                  SkipReview *obj = [result objectForKey:@""];
+                                                  successCallback(obj.data);
+                                              }
+                                              onFailure:^(NSError *errorResult) {
+                                                  errorCallback(errorResult);
+                                              }];
+}
 
 @end
