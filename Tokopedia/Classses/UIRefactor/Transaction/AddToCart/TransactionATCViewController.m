@@ -56,8 +56,6 @@
     UIAlertViewDelegate
 >
 {
-    NSMutableDictionary *_dataInput;
-    
     BOOL _isnodata;
     BOOL _isRefreshRequest;
 
@@ -73,12 +71,15 @@
     RateProduct *_selectedShipmentPackage;
     RateAttributes *_selectedShipment;
     AddressFormList *_selectedAddress;
+    ProductDetail *_selectedProduct;
+    
     TransactionATCFormResult *_ATCForm;
     NSArray<RateAttributes*> *_shipments;
     NSArray *_autoResi;
     
     NSString *_longitude;
     NSString *_latitude;
+    NSString *_insurance;
     
 }
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -131,9 +132,7 @@
 #pragma mark - View Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
-    _dataInput = [NSMutableDictionary new];
-
+    
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
@@ -212,7 +211,7 @@
 }
 
 - (IBAction)tapPinLocationButton:(id)sender {
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    AddressFormList *address = _selectedAddress;
     [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue]?:0, [_longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
 }
 
@@ -278,15 +277,16 @@
     _isFinishRequesting = NO;
     _isRequestFrom = YES;
         
-    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+    ProductDetail *product = _selectedProduct;
     NSString *addressID = [NSString stringWithFormat:@"%zd",_selectedAddress.address_id];
     
     [RequestATC fetchFormProductID:product.product_id
                          addressID:addressID
                            success:^(TransactionATCFormResult *data) {
                                
+                               _isRefreshRequest = NO;
+
        _isFinishRequesting = YES;
-       _isRefreshRequest = NO;
        [_refreshControl endRefreshing];
        _isRequestFrom = NO;
        _tableView.tableFooterView = nil;
@@ -296,20 +296,15 @@
                                
        AddressFormList *address = _ATCForm.form.destination;
        _selectedAddress = address;
-       [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
        _longitude = address.longitude;
        _latitude = address.latitude;
        
-       ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
-       product = _ATCForm.form.product_detail;
+       _selectedProduct = _ATCForm.form.product_detail;
        _productQuantityStepper.value = [product.product_min_order integerValue]?:1;
        _productQuantityTextField.text = product.product_min_order?:@"1";
        _productQuantityLabel.text = product.product_min_order?:@"1";
        _productQuantityStepper.minimumValue = [product.product_min_order integerValue]?:1;
-       [_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
-       
-       [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
-       
+              
        [self setAddress:address];
        _isnodata = NO;
        if (![address.address_name isEqualToString:@"0"] && [_ATCForm.form.available_count integerValue] == 0)
@@ -324,7 +319,6 @@
            if (error != nil){
                return;
            }
-           
            if (response == nil|| response.results.count == 0) {
                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
@@ -337,21 +331,7 @@
            }
        }];
        
-       NSString *destination = @"2264|55262|-6.1898386,106.79889969999999";//[NSString stringWithFormat:@"%ld|%@|%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
-       NSString *origin = @"5573|11410|-6.181630381254824,106.86388221583255";//[NSString stringWithFormat:@"%ld|%@|%@,%@",(long)address.address_id,address.postal_code,address.longitude,address.latitude];
-       NSString *weight = [NSString stringWithFormat:@"%@%@",_ATCForm.form.product_detail.product_weight,_ATCForm.form.product_detail.product_weight_unit_name];
-       
-       NSMutableArray *names = [NSMutableArray new];
-       for (ShippingInfoShipments *shipment in _ATCForm.form.shipment) {
-           [names addObject:shipment.shipment_name];
-       }
-       
-       [RequestRates doRequestWithNames:[names copy] origin:origin destination:destination weight:weight onSuccess:^(RateData *rateData) {
-           [self successRequestRates:rateData];
-       } onFailure:nil];
-       
-       [_tableView reloadData];
-
+       [self requestRate];
                                
     } failed:^(NSError *error) {
         _isRefreshRequest = NO;
@@ -364,15 +344,40 @@
     }];
 }
 
--(void)successRequestRates:(RateData *)data{
-    _shipments = data.attributes;
+-(void)requestRate{
+    AddressFormList *address = _ATCForm.form.destination;
     
-    if (_shipments.count > 0) {
-        _selectedShipment = _selectedShipment?:_shipments[0];
-        if (_selectedShipment.products.count > 0) {
-            _selectedShipmentPackage = _selectedShipmentPackage?:_selectedShipment.products[0];
-        }
-    }
+    float productWeight = [_ATCForm.form.product_detail.product_weight floatValue]*[_productQuantityTextField.text floatValue];
+
+    NSString *destination = [NSString stringWithFormat:@"%zd|%@|%@,%@",[address.district_id integerValue],address.postal_code,address.latitude,address.longitude];
+    NSString *origin = [NSString stringWithFormat:@"%@|%@|%@,%@",_ATCForm.shop.origin_id,_ATCForm.shop.origin_postal,_ATCForm.shop.latitude,_ATCForm.shop.longitude];
+    NSString *weight = [NSString stringWithFormat:@"%f",productWeight];
+    NSString *token = _ATCForm.shop.token;
+    NSString *ut = _ATCForm.shop.ut;
+    NSString *name = _ATCForm.shop.avail_shipping_code;
+    
+    [RequestRates fetchRateWithName:name
+                             origin:origin
+                        destination:destination
+                             weight:weight
+                              token:token
+                                 ut:ut
+                          onSuccess:^(RateData *rateData) {
+                              
+                              _shipments = rateData.attributes;
+                              
+                              if (_shipments.count > 0) {
+                                  _selectedShipment = _selectedShipment?:_shipments[0];
+                                  if (_selectedShipment.products.count > 0) {
+                                      _selectedShipmentPackage = _selectedShipmentPackage?:_selectedShipment.products[0];
+                                  } else
+                                      _tableView.tableHeaderView = _messageZeroShipmentView;
+                              }
+                          } onFailure:^(NSError *errorResult) {
+                              
+                          }];
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - Table View Data Source
@@ -389,7 +394,7 @@
         case 1:
         {
             NSInteger totalRow = _tableViewShipmentCell.count;
-            AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+            AddressFormList *address = _selectedAddress;
             if ([address.address_name isEqualToString:@"0"])
             {
                 totalRow -= 3;
@@ -411,10 +416,10 @@
     if (!_isnodata) {
         RateAttributes *shipment = _selectedShipment;
         RateProduct *shipmentPackage = _selectedShipmentPackage;
-        AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+        AddressFormList *address = _selectedAddress;
         
         [self setAddress:address];
-        ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+        ProductDetail *product = _selectedProduct;
         switch (indexPath.section) {
             case 0:
             {
@@ -643,14 +648,6 @@
 
 #pragma mark - Table View Delegate
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{    
-    if (indexPath.section == 2 && _isFinishRequesting) {
-        //[_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
-        //[self calculatePriceWithAction:@""];
-    }
-}
-
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
@@ -669,7 +666,7 @@
             cell = _tableViewShipmentCell[indexPath.row];
             if (indexPath.row == 1) {
 //                [_addressLabel sizeToFit];
-                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                AddressFormList *address = _selectedAddress;
                 if ([address.address_name isEqualToString:@"0"])
                 {
                     return 0;
@@ -704,7 +701,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    AddressFormList *address = _selectedAddress;
     if (_isRequestFrom) {
         return;
     }
@@ -735,12 +732,10 @@
                 }
                 else
                 {
-                    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                    AddressFormList *address = _selectedAddress;
                     SettingAddressViewController *addressViewController = [SettingAddressViewController new];
                     addressViewController.delegate = self;
-                    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                     addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                                   DATA_INDEXPATH_KEY: selectedIndexPath,
                                                    DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
                     [self.navigationController pushViewController:addressViewController animated:YES];
                 }
@@ -748,7 +743,7 @@
             }
             case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
             {
-                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                AddressFormList *address = _selectedAddress;
                 [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue]?:0, [_longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
                 break;
             }
@@ -840,8 +835,8 @@
     _isFinishRequesting = NO;
     [self buyButtonIsLoading:YES];
     
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+    AddressFormList *address = _selectedAddress;
+    ProductDetail *product = _selectedProduct;
     NSString *quantity = _productQuantityTextField.text;
     NSString *remark = _remarkTextView.text?:@"";
 
@@ -862,7 +857,7 @@
         
         [self pushLocalyticsData];
         
-        ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+        ProductDetail *product = _selectedProduct;
         [TPAnalytics trackAddToCart:product];
     } failed:^(NSError *error) {
         _isRefreshRequest = NO;
@@ -875,10 +870,10 @@
     _isFinishRequesting = NO;
     [self buyButtonIsLoading:YES];
         
-    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+    ProductDetail *product = _selectedProduct;
     NSString *quantity = _productQuantityTextField.text;
-    NSString *insuranceID = [_dataInput objectForKey:API_INSURANCE_KEY];
-    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    NSString *insuranceID = _insurance;
+    AddressFormList *address = _selectedAddress;
     
     [RequestATC fetchCalculateProduct:product qty:quantity insurance:insuranceID shipment:_selectedShipment shipmentPackage:_selectedShipmentPackage address:address success:^(TransactionCalculatePriceResult *data) {
         
@@ -887,19 +882,9 @@
         [_refreshControl endRefreshing];
         [self buyButtonIsLoading:NO];
         
-        NSString *toDoCalculate = [_dataInput objectForKey:DATA_TODO_CALCULATE]?:@"";
-        
-        if ([toDoCalculate isEqualToString:CALCULATE_PRODUCT]) {
-            NSString *productPrice = data.product.price;
-            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY]?:[ProductDetail new];
-            product.product_price = productPrice;
-            [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
-        }
-        else
-        {
-            
-        }
-        
+        NSString *productPrice = data.product.price;
+        _selectedProduct.product_price = productPrice;
+
         NSArray *shipments = data.shipment;
         _shipments = shipments;
         
@@ -979,13 +964,9 @@
     switch (alertView.tag) {
         case TAG_BUTTON_TRANSACTION_INSURANCE:
         {
-            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [ARRAY_INSURACE[index] objectForKey:DATA_VALUE_KEY];
-            NSString *name = [ARRAY_INSURACE[index] objectForKey:DATA_NAME_KEY];
-            product.product_insurance = value;
-            [_dataInput setObject:name forKey:DATA_INSURANCE_NAME_KEY];
-            [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
+            _selectedProduct.product_insurance = value;
             [_tableView reloadData];
             break;
         }
@@ -1004,10 +985,6 @@
                 [self.tabBarController setSelectedIndex:3];
                 [selfNav popToRootViewControllerAnimated:YES];
                 [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
-                
-                
-                //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
-                //[self.navigationController pushViewController:cartViewController animated:YES];
             }
             
             break;
@@ -1026,10 +1003,7 @@
         [self requestAddAddress:address];
         return;
     }
-    [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];
-    NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
     _selectedAddress = address;
     _isFinishRequesting = NO;
     [self refreshView];
@@ -1041,7 +1015,6 @@
     [RequestAddAddress fetchAddAddress:address success:^(ProfileSettingsResult *data, AddressFormList *address) {
         _isFinishRequesting = NO;
         _selectedAddress = address;
-        [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
         [self setAddress:address];
         [self refreshView];
     } failure:^(NSError *error) {
@@ -1061,13 +1034,12 @@
 {
     _isFinishRequesting = NO;
     
-    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+    ProductDetail *product = _selectedProduct;
 
     if ([textField.text integerValue] <1) {
         textField.text = product.product_min_order;
     }
     
-    [_dataInput setObject:textField.text forKey:API_QUANTITY_KEY];
     [self calculatePriceWithAction:@""];
     [_tableView reloadData];
 }
@@ -1139,7 +1111,6 @@ replacementString:(NSString*)string
 {
     _data = data;
     if (data) {
-        [_dataInput setObject:@(1) forKey:API_QUANTITY_KEY];
         DetailProductResult *result = [_data objectForKey:DATA_DETAIL_PRODUCT_KEY];
         NSString *shopName = result.shop_info.shop_name;
         [_shopNameLabel setText:shopName animated:YES];
@@ -1155,10 +1126,10 @@ replacementString:(NSString*)string
             }];
         }
 
-        [_dataInput setObject:result.product forKey:DATA_DETAIL_PRODUCT_KEY];
+        _selectedProduct = result.product;
         NSDictionary *insuranceDefault = [ARRAY_INSURACE lastObject];
         NSInteger insuranceID = [[insuranceDefault objectForKey:DATA_VALUE_KEY]integerValue];
-        [_dataInput setObject:@(insuranceID) forKey:API_INSURANCE_KEY];
+        _insurance = [NSString stringWithFormat:@"%zd",insuranceID];
     }
 }
 
@@ -1193,7 +1164,7 @@ replacementString:(NSString*)string
     BOOL isValid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    AddressFormList *selectedAddress = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    AddressFormList *selectedAddress = _selectedAddress;
     if (selectedAddress.address_name == nil || [selectedAddress.address_name isEqualToString:@""] || [selectedAddress.address_name isEqualToString:@"0"]) {
         isValid = NO;
         [errorMessage addObject:ERRORMESSAGE_NULL_ADDRESS];
@@ -1239,7 +1210,7 @@ replacementString:(NSString*)string
 
 -(NSInteger)insuranceStatus
 {
-    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+    ProductDetail *product = _selectedProduct;
     
     NSNumberFormatter * formatter = [NSNumberFormatter IDRFormarter];
     NSInteger productPrice = [[formatter numberFromString:product.product_price] integerValue];

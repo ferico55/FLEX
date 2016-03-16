@@ -12,6 +12,6 @@
 
 @interface RequestRates : NSObject
 
-+(void)doRequestWithNames:(NSArray *)names origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error;
++(void)fetchRateWithName:(NSString *)name origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight token:(NSString*)token ut:(NSString*)ut onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error;
 
 @end
