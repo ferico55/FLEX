@@ -131,7 +131,7 @@
     //load data
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    [_networkManager doRequest];
+    [self fetchInboxTalkList];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -170,7 +170,7 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_nextPageURL != NULL && ![_nextPageURL isEqualToString:@"0"] && _nextPageURL != 0) {
-            [_networkManager doRequest];
+            [self fetchInboxTalkList];
         }
     }
     
@@ -252,7 +252,23 @@
     
     [_talkList removeAllObjects];
     [_table reloadData];
-    [_networkManager doRequest];
+    [self fetchInboxTalkList];
+}
+
+- (void)fetchInboxTalkList {
+    [self showLoadingIndicator];
+
+    [_networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                   path:KTKPDMESSAGE_TALK
+                                 method:RKRequestMethodPOST
+                              parameter:[self requestParameter]
+                                mapping:[Talk mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self onReceiveTalkList:successResult];
+                              }
+                              onFailure:^(NSError *errorResult) {
+
+                              }];
 }
 
 #pragma mark - Notification Handler
@@ -308,7 +324,7 @@
         [_talkList removeAllObjects];
         [_table reloadData];
         [_networkManager requestCancel];
-        [_networkManager doRequest];
+        [self fetchInboxTalkList];
     }
 }
 
@@ -330,7 +346,7 @@
 }
 
 #pragma mark - Tokopedia Network Delegate 
-- (NSDictionary *)getParameter:(int)tag {
+- (NSDictionary *)requestParameter {
     NSString *nav;
     if (self.inboxTalkType == InboxTalkTypeAll) {
         nav = NAV_TALK;
@@ -382,6 +398,10 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
+    [self showLoadingIndicator];
+}
+
+- (void)showLoadingIndicator {
     if (_page != 1) {
         self.table.tableFooterView = _footer;
     } else {
@@ -389,7 +409,7 @@
     }
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+- (void)onReceiveTalkList:(RKMappingResult *)mappingResult {
     [_refreshControl endRefreshing];
     
     InboxTalk *inboxTalk = [mappingResult.dictionary objectForKey:@""];
