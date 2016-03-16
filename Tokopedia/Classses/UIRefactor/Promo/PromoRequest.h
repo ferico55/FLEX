@@ -10,10 +10,8 @@
 #import "PromoResponse.h"
 
 #define PromoProductId       @"product_id"
-#define PromoImpressionKey   @"ad_key"
-#define PromoSemKey          @"ad_sem_key"
-#define PromoReferralKey     @"ad_r"
-#define PromoRequestSource   @"promo_request_source"
+#define PromoRefKey   @"ad_ref_key"
+#define PromoClickURL @"ad_click_url"
 
 typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
     PromoRequestSourceSearch,
@@ -48,6 +46,10 @@ typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
 
 - (void)requestForProductFeed:(void (^)(NSArray<PromoResult*> *))successCallback
                     onFailure:(void (^)(NSError *))errorCallback;
+
+- (void)requestForClickURL:(NSString *)clickURL
+                 onSuccess:(void (^)(void))successCallback
+                 onFailure:(void (^)(NSError *))errorCallback;
 
 
 @end

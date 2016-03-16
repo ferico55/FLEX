@@ -323,7 +323,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                                    path:@"/promo/v1/display/shops"
                                  method:RKRequestMethodGET
                               parameter:@{@"src":@"fav_shop",
-                                          @"item":@"5",
+                                          @"item":@"3",
                                           @"page":@"1"
                                           }
                                 mapping:[PromoResponse mapping]
@@ -333,6 +333,12 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                               } onFailure:^(NSError *errorResult) {
                                   errorCallback(errorResult);
                               }];
+}
+
+- (void)requestForClickURL:(NSString *)clickURL
+                 onSuccess:(void (^)(void))successCallback
+                 onFailure:(void (^)(NSError *))errorCallback{
+    
 }
 
 - (void)requestActionPromo {
