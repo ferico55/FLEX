@@ -16,4 +16,5 @@
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;
 
++ (RKObjectMapping *)mapping;
 @end
