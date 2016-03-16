@@ -41,10 +41,13 @@ typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
                     department:(NSString *)department;
 - (void)requestForProductHotlist:(NSString *)key;
 - (void)requestForProductFeed;
-- (void)requestForShopFeed;
 - (void)addImpressionKey:(NSString *)key
                   semKey:(NSString *)semKey
              referralKey:(NSString *)referralKey
                   source:(PromoRequestSourceType)source;
+
+- (void)requestForProductFeed:(void (^)(NSArray<PromoResult*> *))successCallback
+                    onFailure:(void (^)(NSError *))errorCallback;
+
 
 @end

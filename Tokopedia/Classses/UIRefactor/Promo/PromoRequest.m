@@ -316,11 +316,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     if (!_cancelRequestProductFeed) [self requestPromo];
 }
 
-- (void)requestForShopFeed {
-    /*
-    _requestType = PromoRequestTypeShopFeed;
-    if (!_cancelRequestShopFeed) [self requestPromo];
-     */
+-(void)requestForProductFeed:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
@@ -333,9 +329,9 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                                 mapping:[PromoResponse mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   PromoResponse *response = [[successResult dictionary] objectForKey:@""];
-                                  
+                                  successCallback(response.data);
                               } onFailure:^(NSError *errorResult) {
-                                  
+                                  errorCallback(errorResult);
                               }];
 }
 

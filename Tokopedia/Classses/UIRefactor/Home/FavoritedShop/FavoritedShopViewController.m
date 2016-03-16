@@ -19,6 +19,7 @@
 #import "PromoInfoAlertView.h"
 #import "WebViewController.h"
 #import "FavoriteShopRequest.h"
+#import "PromoResult.h"
 
 #define CTagFavoriteButton 11
 #define CTagRequest 234
@@ -65,7 +66,7 @@ FavoriteShopRequestDelegate
 @property (strong, nonatomic) IBOutlet UITableView *table;
 
 @property (nonatomic, strong) NSMutableArray *shop;
-@property (nonatomic, strong) NSMutableArray *promoShops;
+@property (nonatomic, strong) NSMutableArray<PromoResult*> *promoShops;
 
 @property (strong, nonatomic) NSMutableArray *promo;
 
@@ -127,7 +128,20 @@ FavoriteShopRequestDelegate
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
-    [_promoRequest requestForShopFeed];
+    //[_promoRequest requestForShopFeed];
+    
+    [_promoRequest requestForProductFeed:^(NSArray<PromoResult *>* result) {
+        _isnodata = NO;
+        if(result == nil){
+            StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+            [stickyView show];
+        }
+        _promoShops = [NSMutableArray arrayWithArray:result];
+        [_table reloadData];
+    } onFailure:^(NSError * error) {
+        StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+        [stickyView show];
+    }];
     
     _table.tableFooterView = _footer;
     [_act startAnimating];
@@ -181,50 +195,31 @@ FavoriteShopRequestDelegate
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = nil;
+    FavoritedShopCell *cell = nil;
     NSString *cellid = kTKPDFAVORITEDSHOPCELL_IDENTIFIER;
     
     cell = (FavoritedShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [FavoritedShopCell newcell];
-        ((FavoritedShopCell*)cell).delegate = self;
+        cell.delegate = self;
     }
     
-    NSArray *shops;
-    if (indexPath.section == 0) {
-        shops = _promoShops;
-    } else {
-        shops = _shop;
+    if(indexPath.section == 0){
+        PromoShop *promoShop = _promoShops[indexPath.row].shop;
+        cell.shopname.text = promoShop.name;
+        cell.shoplocation.text = promoShop.location;
+        [cell.shopimageview setImageWithURL:[NSURL URLWithString:promoShop.image_shop.s_url]
+                           placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]];
+        [cell.isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+    }else{
+        FavoritedShopList *favoritedShop = _shop[indexPath.row];
+        cell.shopname.text = favoritedShop.shop_name;
+        cell.shoplocation.text = favoritedShop.shop_location;
+        [cell.shopimageview setImageWithURL:[NSURL URLWithString:favoritedShop.shop_image]
+                           placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]];
+        [cell.isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
     }
-    FavoritedShopList *shop = shops[indexPath.row];
-    
-    ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
-    ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
-    
-    if (indexPath.section == 0) {
-        [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-    } else {
-        [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
-    }
-    
-    ((FavoritedShopCell*)cell).indexpath = indexPath;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
-    thumb.image = nil;
-    
-    [thumb setImageWithURLRequest:request
-                 placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
-                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                              [thumb setImage:image animated:NO];
-#pragma clang diagnostic pop
-                          } failure:nil];
-    
+    cell.indexpath = indexPath;
     return cell;
 }
 
@@ -286,7 +281,7 @@ FavoriteShopRequestDelegate
 -(void)removeFavoritedRow:(NSIndexPath*)indexpath{
     is_already_updated = YES;
     if(indexpath.section == 0) {
-        PromoShop *shop = _promoShops[indexpath.row];
+        PromoShop *shop = _promoShops[indexpath.row].shop;
         _selectedPromoShop = shop;
         
         [_shop insertObject:_promoShops[indexpath.row] atIndex:0];
@@ -468,7 +463,6 @@ FavoriteShopRequestDelegate
     
     _table.tableFooterView = nil;
     [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
-    [_promoRequest requestForShopFeed];
 }
 
 #pragma mark - LoadingView Delegate
@@ -520,16 +514,10 @@ FavoriteShopRequestDelegate
     }
 }
 
-#pragma mark - Promo request delegate
+#pragma mark - Request
 
-- (void)didReceivePromo:(NSArray *)promo {
-    _isnodata = NO;
-    if(promo == nil){
-        StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
-        [stickyView show];
-    }
-    _promoShops = [NSMutableArray arrayWithArray:promo];
-    [_table reloadData];
+- (void)requestPromoShop {
+    
 }
 
 @end
