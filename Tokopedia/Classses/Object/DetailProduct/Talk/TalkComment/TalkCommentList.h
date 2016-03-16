@@ -32,5 +32,6 @@
 @property (nonatomic, strong) NSString *comment_shop_image;
 @property (nonatomic, strong) NSString *comment_is_owner;
 
++ (RKObjectMapping *)mapping;
 @end
 
