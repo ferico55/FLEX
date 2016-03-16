@@ -537,64 +537,8 @@
 -(void) configureRestKit{
     // initialize RestKit
     _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TalkComment class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkCommentResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkCommentList class]];
+    RKObjectMapping *statusMapping = [TalkComment mapping];
 
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 TKPD_TALK_COMMENT_ID,
-                                                 TKPD_TALK_COMMENT_MESSAGE,
-                                                 TKPD_COMMENT_ID,
-                                                 TKPD_TALK_COMMENT_ISMOD,
-                                                 TKPD_TALK_COMMENT_ISSELLER,
-                                                 TKPD_TALK_COMMENT_CREATETIME,
-                                                 TKPD_TALK_COMMENT_USERIMG,
-                                                 TKPD_TALK_COMMENT_USERNAME,
-                                                 TKPD_TALK_COMMENT_USERID,
-                                                 TKPD_TALK_COMMENT_USER_LABEL,
-                                                 TKPD_TALK_COMMENT_USER_LABEL_ID,
-                                                 TKPD_TALK_COMMENT_SHOP_NAME,
-                                                 TKPD_TALK_COMMENT_SHOP_IMAGE,
-                                                 TKPD_TALK_COMMENT_IS_OWNER
-                                                 ]];
-    
-    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNoReputation,
-                                                                 CNegative,
-                                                                 CNeutral,
-                                                                 CPositif]];
-    
-    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
-    [shopReputationMapping addAttributeMappingsFromArray:@[CReputationScore]];
-    
-    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-    
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    // Relationship Mapping
-    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCommentShopReputation toKeyPath:CCommentShopReputation withMapping:shopReputationMapping]];
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCommentUserReputation toKeyPath:CCommentUserReputation withMapping:reviewUserReputationMapping]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:_urlPath keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
