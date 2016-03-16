@@ -34,6 +34,7 @@
 #import "RequestAddAddress.h"
 #import "RequestATC.h"
 #import "RequestRates.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 @import GoogleMaps;
 
@@ -625,14 +626,7 @@
 
                         NSNumber *total = [NSNumber numberWithInteger:([productPrice integerValue] + [shipmentPackagePrice integerValue])];
                         
-                        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-                        formatter.currencyCode = @"Rp ";
-                        formatter.currencyGroupingSeparator = @".";
-                        formatter.currencyDecimalSeparator = @",";
-                        formatter.maximumFractionDigits = 0;
-                        formatter.minimumFractionDigits = 0;
-                        
+                        NSNumberFormatter *formatter = [NSNumberFormatter IDRFormarter];
                         NSString *totalPrice = [formatter stringFromNumber:total];
                         
                         label.text = totalPrice;
@@ -842,10 +836,6 @@
     return _headerTableView[section];
 }
 
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
-    [_dataInput setObject:_remarkTextView.text forKey:API_NOTES_KEY];
-}
-
 -(void)requestATC {
     _isFinishRequesting = NO;
     [self buyButtonIsLoading:YES];
@@ -853,7 +843,7 @@
     AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
     NSString *quantity = _productQuantityTextField.text;
-    NSString *remark = [_dataInput objectForKey:API_NOTES_KEY];
+    NSString *remark = _remarkTextView.text?:@"";
 
     [RequestATC fetchATCProduct:product address:address shipment:_selectedShipment shipmentPackage:_selectedShipmentPackage quantity:quantity remark:remark success:^(TransactionAction *data) {
         
@@ -1104,14 +1094,6 @@ replacementString:(NSString*)string
     }
 }
 
--(BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
-    if (textView == _remarkTextView) {
-        [_dataInput setObject:textView.text forKey:API_NOTES_KEY];
-    }
-    return YES;
-}
-
 #pragma mark - UIStepper method
 
 - (IBAction)changeStepperValue:(UIStepper *)sender {
@@ -1259,13 +1241,7 @@ replacementString:(NSString*)string
 {
     ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
     
-    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    formatter.currencyCode = @"Rp ";
-    formatter.currencyGroupingSeparator = @".";
-    formatter.maximumFractionDigits = 0;
-    formatter.minimumFractionDigits = 0;
-    
+    NSNumberFormatter * formatter = [NSNumberFormatter IDRFormarter];
     NSInteger productPrice = [[formatter numberFromString:product.product_price] integerValue];
     
     /* Untuk auto insurance*/

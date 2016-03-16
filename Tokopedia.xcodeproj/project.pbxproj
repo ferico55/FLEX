@@ -11,6 +11,7 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		45397D361C990453000EC079 /* StickyAlertView+NetworkErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 45397D341C990453000EC079 /* StickyAlertView+NetworkErrorHandler.m */; };
+		455CEE911C99148E0025B2BA /* NSNumberFormatter+IDRFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 455CEE901C99148E0025B2BA /* NSNumberFormatter+IDRFormater.m */; };
 		459085051C9826E00091450E /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 459077CF1C9826DC0091450E /* TPAnalytics.m */; };
 		459085061C9826E00091450E /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 459077D21C9826DC0091450E /* URLCacheAlert.m */; };
 		459085071C9826E00091450E /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 459077D41C9826DC0091450E /* URLCacheConnection.m */; };
@@ -2154,6 +2155,8 @@
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
 		45397D341C990453000EC079 /* StickyAlertView+NetworkErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StickyAlertView+NetworkErrorHandler.m"; sourceTree = "<group>"; };
 		45397D351C990453000EC079 /* StickyAlertView+NetworkErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StickyAlertView+NetworkErrorHandler.h"; sourceTree = "<group>"; };
+		455CEE8F1C99148E0025B2BA /* NSNumberFormatter+IDRFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+IDRFormater.h"; sourceTree = "<group>"; };
+		455CEE901C99148E0025B2BA /* NSNumberFormatter+IDRFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+IDRFormater.m"; sourceTree = "<group>"; };
 		459077CE1C9826DC0091450E /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		459077CF1C9826DC0091450E /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		459077D11C9826DC0091450E /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -5543,6 +5546,8 @@
 				459078121C9826DC0091450E /* Utils */,
 				459078151C9826DC0091450E /* ViewLabelUser.h */,
 				459078161C9826DC0091450E /* ViewLabelUser.m */,
+				455CEE8F1C99148E0025B2BA /* NSNumberFormatter+IDRFormater.h */,
+				455CEE901C99148E0025B2BA /* NSNumberFormatter+IDRFormater.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -12878,6 +12883,7 @@
 				459086841C9826E00091450E /* AddProductPicture.m in Sources */,
 				459085401C9826E00091450E /* AddressResult.m in Sources */,
 				459086471C9826E00091450E /* OrderDestination.m in Sources */,
+				455CEE911C99148E0025B2BA /* NSNumberFormatter+IDRFormater.m in Sources */,
 				459088691C9826E10091450E /* MyShopPaymentViewController.m in Sources */,
 				45908CFF1C9826E10091450E /* XYPieChart.m in Sources */,
 				459088871C9826E10091450E /* DetailProductWholesaleCell.m in Sources */,
