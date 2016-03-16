@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSString* shop_click_url;
 
 @property (nonatomic, strong) PromoProduct* product;
-@property (nonatomic, strong) PromoShop* shops;
+@property (nonatomic, strong) PromoShop* shop;
 
 + (RKObjectMapping *)mapping;
 

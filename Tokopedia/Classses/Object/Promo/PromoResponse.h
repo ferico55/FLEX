@@ -18,7 +18,7 @@
 @property (nonatomic, strong) PromoResult *result;
 */
 
-@property (nonatomic, strong) NSArray<PromoResult*>* data;
+@property (nonatomic, strong) NSArray* data;
 + (RKObjectMapping *)mapping;
 
 @end
