@@ -31,7 +31,7 @@
 #import "NoResultReusableView.h"
 #import "TAGDataLayer.h"
 
-@interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
+@interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TalkCellDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -51,23 +51,13 @@
     NSString *_readStatus;
     
     UIRefreshControl *_refreshControl;
-    UISearchBar *_searchBar;
-    
-    __weak RKObjectManager *_requestTalkObject;
-    
-    NSString *_inboxTalkBaseUrl;
-    NSString *_inboxTalkPostUrl;
-    NSString *_inboxTalkFullUrl;
-    
+
     NSIndexPath *_selectedIndexPath;
     NoResultReusableView *_noResultView;
     TAGContainer *_gtmContainer;
     UserAuthentificationManager *_userManager;
-    
-    NSIndexPath *_selectedDetailIndexPath;
-    
+
     NSInteger _currentTabMenuIndex;
-    NSInteger _currentTabSegmentIndex;
     BOOL isFirstShow;
 }
 
@@ -130,7 +120,6 @@
     
     //load data
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     [self fetchInboxTalkList];
 }
 
@@ -229,10 +218,6 @@
     return _delegate;
 }
 
-- (NSInteger)getSegmentedIndex {
-    return _currentTabSegmentIndex;
-}
-
 - (void)updateTalkStatusAtIndexPath:(NSIndexPath *)indexPath following:(BOOL)following {
     TalkList *talk = _talkList[indexPath.row];
     talk.talk_follow_status = following;
@@ -310,8 +295,7 @@
 
 - (void)reloadDataSource:(NSNotification *)notification {
     NSInteger currentSegmentedIndex = [[[notification object] objectForKey:TKPDTabViewSegmentedIndex] integerValue];
-    _currentTabSegmentIndex = currentSegmentedIndex;
-    
+
     NSInteger currentMenuIndex = [[[notification object] objectForKey:TKPDTabViewNavigationMenuIndex] integerValue];
     if (_currentTabMenuIndex != currentMenuIndex) {
         _currentTabMenuIndex = currentMenuIndex;
@@ -341,11 +325,10 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
     
-    _inboxTalkBaseUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkBase];
-    _inboxTalkPostUrl = [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
+    [_gtmContainer stringForKey:GTMKeyInboxTalkBase];
+    [_gtmContainer stringForKey:GTMKeyInboxTalkPost];
 }
 
-#pragma mark - Tokopedia Network Delegate 
 - (NSDictionary *)requestParameter {
     NSString *nav;
     if (self.inboxTalkType == InboxTalkTypeAll) {
@@ -365,40 +348,6 @@
                             KTKPDMESSAGE_NAVKEY:nav
                             };
     return param;
-}
-
-- (NSString *)getPath:(int)tag {
-    return [_inboxTalkPostUrl isEqualToString:@""] ? KTKPDMESSAGE_TALK : _inboxTalkPostUrl;
-}
-
-- (id)getObjectManager:(int)tag {
-    if([_inboxTalkBaseUrl isEqualToString:kTkpdBaseURLString] || [_inboxTalkBaseUrl isEqualToString:@""]) {
-        _requestTalkObject = [RKObjectManager sharedClient];
-    } else {
-        _requestTalkObject = [RKObjectManager sharedClient:_inboxTalkBaseUrl];
-    }
-
-    RKObjectMapping *statusMapping = [Talk mapping];
-
-
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[_inboxTalkPostUrl isEqualToString:@""] ? KTKPDMESSAGE_TALK : _inboxTalkPostUrl
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_requestTalkObject addResponseDescriptor:responseDescriptorStatus];
-    return _requestTalkObject;
-}
-
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    InboxTalk *inboxTalk = [mappingResult.dictionary objectForKey:@""];
-    return inboxTalk.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    [self showLoadingIndicator];
 }
 
 - (void)showLoadingIndicator {
@@ -480,12 +429,7 @@
         [_table addSubview:_noResultView];
         [self.table reloadData];
     }
-    
-    
-}
 
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    
 }
 
 @end
