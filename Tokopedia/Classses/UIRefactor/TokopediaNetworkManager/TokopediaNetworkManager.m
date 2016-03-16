@@ -70,7 +70,6 @@
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
-
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
     
     if(self.isUsingHmac) {
@@ -296,8 +295,12 @@
                                                                                              statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
     
+
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
+    NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
     
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
