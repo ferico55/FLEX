@@ -358,24 +358,10 @@
             url = [NSURL URLWithString:list.comment_user_image];
         }
 
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url
-                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-
         UIImageView *user_image = cell.user_image;
         user_image.image = nil;
 
-        [user_image setImageWithURLRequest:request
-                          placeholderImage:[UIImage imageNamed:@"default-boy.png"]
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                       //NSLOG(@"thumb: %@", thumb);
-                                       [user_image setImage:image];
-
-#pragma clang diagnostic pop
-
-                                   } failure:nil];
+        [user_image setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
 
         [cell setNeedsUpdateConstraints];
         [cell updateConstraintsIfNeeded];
