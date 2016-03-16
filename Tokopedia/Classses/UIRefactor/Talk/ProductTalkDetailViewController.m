@@ -242,11 +242,7 @@
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    return _isnodata?1:_list.count;
-#else
     return _isnodata?0:_list.count;
-#endif
 }
 
 
@@ -283,124 +279,108 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        
-        NSString *cellid = kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER;
-        
-        cell = (GeneralTalkCommentCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [GeneralTalkCommentCell newcell];
-            ((GeneralTalkCommentCell*)cell).delegate = self;
-            ((GeneralTalkCommentCell*)cell).del = self;
-            [((GeneralTalkCommentCell*)cell).user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
-        }
-        
-        if (_list.count > indexPath.row) {
-            TalkCommentList *list = _list[indexPath.row];
-            
-            UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
-            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
-            style.lineSpacing = 5.0f;
-            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message
-                                                                                   attributes:attributes];
-            ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
-            
-            NSString *name = ([list.comment_user_label isEqualToString:@"Penjual"]) ? list.comment_shop_name : list.comment_user_name;
-            ((GeneralTalkCommentCell*)cell).user_name.text = name;
-            ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
-            
-            ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
-            ((GeneralTalkCommentCell*)cell).btnReputation.tag = indexPath.row;
-            
-            if([list.comment_user_label isEqualToString:@"Penjual"]) {//Seller
-                [SmileyAndMedal generateMedalWithLevel:list.comment_shop_reputation.reputation_badge_object.level withSet:list.comment_shop_reputation.reputation_badge_object.set withImage:((GeneralTalkCommentCell*)cell).btnReputation isLarge:NO];
-                [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
-            } else {
-                if (_auth) {
-                    if (list.comment_user_reputation == nil && list.comment_user_id != nil) {
-                        NSString *userId = [_userManager getUserId];
-                        BOOL usersComment = [list.comment_user_id isEqualToString:userId];
-                        if (usersComment) {
-                            UserAuthentificationManager *user = [UserAuthentificationManager new];
-                            list.comment_user_reputation = user.reputation;
-                        }
+    NSString *cellid = kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER;
+
+    GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [GeneralTalkCommentCell newcell];
+        cell.delegate = self;
+        cell.del = self;
+        [cell.user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
+    }
+
+    if (_list.count > indexPath.row) {
+        TalkCommentList *list = _list[indexPath.row];
+
+        UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+        NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 5.0f;
+        NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message
+                                                                               attributes:attributes];
+        cell.commentlabel.attributedText = attributedString;
+
+        NSString *name = ([list.comment_user_label isEqualToString:@"Penjual"]) ? list.comment_shop_name : list.comment_user_name;
+        cell.user_name.text = name;
+        cell.create_time.text = list.comment_create_time;
+
+        cell.indexpath = indexPath;
+        cell.btnReputation.tag = indexPath.row;
+
+        if([list.comment_user_label isEqualToString:@"Penjual"]) {//Seller
+            [SmileyAndMedal generateMedalWithLevel:list.comment_shop_reputation.reputation_badge_object.level withSet:list.comment_shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
+            [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
+        } else {
+            if (_auth) {
+                if (list.comment_user_reputation == nil && list.comment_user_id != nil) {
+                    NSString *userId = [_userManager getUserId];
+                    BOOL usersComment = [list.comment_user_id isEqualToString:userId];
+                    if (usersComment) {
+                        UserAuthentificationManager *user = [UserAuthentificationManager new];
+                        list.comment_user_reputation = user.reputation;
                     }
                 }
-                
-                if(list.comment_user_reputation==nil || (list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"1"])) {
-                    [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                    [((GeneralTalkCommentCell*)cell).btnReputation setTitle:@"" forState:UIControlStateNormal];
-                }
-                else {
-                    [((GeneralTalkCommentCell*)cell).btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                    [((GeneralTalkCommentCell*)cell).btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (list.comment_user_reputation==nil? @"0":list.comment_user_reputation.positive_percentage)] forState:UIControlStateNormal];
-                }
             }
-            
-            [((GeneralTalkCommentCell*)cell).user_name setLabelBackground:list.comment_user_label];
-            
-            if(list.is_not_delivered) {
-                ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = NO;
-                ((GeneralTalkCommentCell*)cell).create_time.text = @"Gagal Kirim.";
-                
-                UITapGestureRecognizer *errorSendCommentGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapErrorComment)];
-                [((GeneralTalkCommentCell*)cell).commentfailimage addGestureRecognizer:errorSendCommentGesture];
-                [((GeneralTalkCommentCell*)cell).commentfailimage setUserInteractionEnabled:YES];
-            } else {
-                ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = YES;
-            }
-            
-            if(list.is_just_sent) {
-                ((GeneralTalkCommentCell*)cell).create_time.text = @"Kirim...";
-            } else {
-                ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
-            }
-        
-            NSURL *url;
-            if ([list.comment_user_label isEqualToString:@"Penjual"]) {
-                url = [NSURL URLWithString:list.comment_shop_image];
-            } else {
-                url = [NSURL URLWithString:list.comment_user_image];
-            }
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            UIImageView *user_image = ((GeneralTalkCommentCell*)cell).user_image;
-            user_image.image = nil;
 
-            [user_image setImageWithURLRequest:request
-                              placeholderImage:[UIImage imageNamed:@"default-boy.png"]
-                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            if(list.comment_user_reputation==nil || (list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"1"])) {
+                [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
+            }
+            else {
+                [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+                [cell.btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (list.comment_user_reputation==nil? @"0":list.comment_user_reputation.positive_percentage)] forState:UIControlStateNormal];
+            }
+        }
+
+        [cell.user_name setLabelBackground:list.comment_user_label];
+
+        if(list.is_not_delivered) {
+            cell.commentfailimage.hidden = NO;
+            cell.create_time.text = @"Gagal Kirim.";
+
+            UITapGestureRecognizer *errorSendCommentGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapErrorComment)];
+            [cell.commentfailimage addGestureRecognizer:errorSendCommentGesture];
+            [cell.commentfailimage setUserInteractionEnabled:YES];
+        } else {
+            cell.commentfailimage.hidden = YES;
+        }
+
+        if(list.is_just_sent) {
+            cell.create_time.text = @"Kirim...";
+        } else {
+            cell.create_time.text = list.comment_create_time;
+        }
+
+        NSURL *url;
+        if ([list.comment_user_label isEqualToString:@"Penjual"]) {
+            url = [NSURL URLWithString:list.comment_shop_image];
+        } else {
+            url = [NSURL URLWithString:list.comment_user_image];
+        }
+
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+
+        UIImageView *user_image = cell.user_image;
+        user_image.image = nil;
+
+        [user_image setImageWithURLRequest:request
+                          placeholderImage:[UIImage imageNamed:@"default-boy.png"]
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [user_image setImage:image];
-            
+                                       //NSLOG(@"thumb: %@", thumb);
+                                       [user_image setImage:image];
+
 #pragma clang diagnostic pop
-                
-            } failure:nil];
-            
-            [cell setNeedsUpdateConstraints];
-            [cell updateConstraintsIfNeeded];
-        }
-        
+
+                                   } failure:nil];
+
+        [cell setNeedsUpdateConstraints];
+        [cell updateConstraintsIfNeeded];
+
         return cell;
-    } else {
-        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
