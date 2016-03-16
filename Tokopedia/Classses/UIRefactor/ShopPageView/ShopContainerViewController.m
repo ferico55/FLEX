@@ -33,6 +33,7 @@
 #import "ShopBadgeLevel.h"
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
+#import "PromoRequest.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate> {
@@ -249,7 +250,6 @@
     if ([viewController isKindOfClass:[ShopProductPageViewController class]]) {
         return _shopTalkViewController;
     }
-    
     else if ([viewController isKindOfClass:[ShopTalkPageViewController class]]) {
         return _shopReviewViewController;
     }
@@ -285,7 +285,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 
-    
 }
 
 - (void)updateHeaderShopPage

@@ -338,7 +338,21 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 - (void)requestForClickURL:(NSString *)clickURL
                  onSuccess:(void (^)(void))successCallback
                  onFailure:(void (^)(NSError *))errorCallback{
-    
+    [NSURLConnection sendAsynchronousRequest:[NSMutableURLRequest requestWithURL:[NSURL URLWithString:clickURL]]
+                                                              queue:[NSOperationQueue new]
+                                                  completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable error) {
+                                                      if ([data length] >0 && error == nil)
+                                                      {
+                                                          successCallback();
+                                                      }
+                                                      else if ([data length] == 0 && error == nil)
+                                                      {
+                                                          errorCallback(error);
+                                                      }
+                                                      else if (error != nil){
+                                                          errorCallback(error);
+                                                      }
+                                                  }];
 }
 
 - (void)requestActionPromo {

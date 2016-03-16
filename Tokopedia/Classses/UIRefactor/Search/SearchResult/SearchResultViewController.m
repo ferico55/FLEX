@@ -1259,10 +1259,12 @@ ImageSearchRequestDelegate
 
         NSDictionary *promoData = @{
             kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
+            /*
             PromoImpressionKey          : product.ad_key,
             PromoSemKey                 : product.ad_sem_key,
             PromoReferralKey            : product.ad_r,
             PromoRequestSource          : @(source)
+            */
         };
 
         [navigateController navigateToProductFromViewController:self

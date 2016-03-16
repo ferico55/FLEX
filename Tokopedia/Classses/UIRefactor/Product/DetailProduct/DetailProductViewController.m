@@ -3211,6 +3211,7 @@
 
 - (void)addImpressionClick {
     _promoRequest = [[PromoRequest alloc] init];
+    /*
     NSString *adKey = [_data objectForKey:PromoImpressionKey];
     NSString *adSemKey = [_data objectForKey:PromoSemKey];
     NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
@@ -3221,6 +3222,7 @@
                             referralKey:adReferralKey
                                  source:source];
     }
+     */
 }
 
 - (void)initNoResultView {
