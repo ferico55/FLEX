@@ -1018,7 +1018,7 @@
                 </label>
             </subviews>
             <animations/>
-            <color key="backgroundColor" red="0.98039215686274506" green="0.85882352941176465" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="ZrZ-ED-WHQ" firstAttribute="leading" secondItem="tVL-of-Hh8" secondAttribute="leading" constant="15" id="Cbo-4t-Ztf"/>
                 <constraint firstAttribute="bottom" secondItem="ZrZ-ED-WHQ" secondAttribute="bottom" id="iEs-Gq-lDJ"/>
