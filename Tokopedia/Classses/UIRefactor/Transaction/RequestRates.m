@@ -8,6 +8,7 @@
 
 #import "RequestRates.h"
 #import "TkpdHMAC.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
 
 @implementation RequestRates
 
@@ -37,6 +38,8 @@
                             @"token"         :token
                            };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingDefaultError = NO;
+    
     [networkManager requestWithBaseUrl:baseuUrl path:pathUrl method:RKRequestMethodGET parameter:param mapping:[RateResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *resultDict = successResult.dictionary;
         id stat = [resultDict objectForKey:@""];
@@ -44,28 +47,7 @@
         RateResponse *response= stat;
         success(response.data);
     } onFailure:^(NSError *errorResult) {
-
-        NSArray *errors;
-        
-        if(errorResult.code == -1011) {
-            NSString *JSON = [[errorResult userInfo] valueForKey:NSLocalizedRecoverySuggestionErrorKey] ;
-            NSError *aerror = nil;
-            NSDictionary *errorFromWs = [NSJSONSerialization JSONObjectWithData: [JSON dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options: NSJSONReadingMutableContainers
-                                                                          error: &aerror];
-            if (errorFromWs && !aerror) {
-                errors = [errorFromWs[@"errors"] valueForKeyPath:@"@distinctUnionOfObjects.title"];
-            } else
-                errors = @[@"Mohon maaf, terjadi kendala pada server"];
-        } else if (errorResult.code==-1009) {
-            errors = @[@"Tidak ada koneksi internet"];
-        } else {
-            errors = @[errorResult.localizedDescription];
-        }
-        
-        
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
-        [alert show];
+        [StickyAlertView showNetworkError:errorResult];
     }];
 }
 
