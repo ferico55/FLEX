@@ -21,8 +21,11 @@
                 <outlet property="header" destination="Mxn-u0-ISc" id="M0J-K6-vMS"/>
                 <outlet property="messageViewBottomConstraint" destination="NWY-K6-Leu" id="egH-CH-ISU"/>
                 <outlet property="messagingview" destination="b1X-S7-W2F" id="Bcc-3U-KSF"/>
+                <outlet property="participantsLabel" destination="UIJ-L0-NzG" id="Pxj-jf-81N"/>
                 <outlet property="table" destination="Fz9-tI-DuS" id="2ye-Au-bOf"/>
                 <outlet property="textView" destination="Ano-dQ-eSQ" id="CBE-bQ-eFS"/>
+                <outlet property="titleLabel" destination="hvw-ai-mgj" id="d5P-co-N3a"/>
+                <outlet property="titleView" destination="o8M-8o-coB" id="vpW-nS-KJR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -173,6 +176,35 @@
                 </mask>
             </variation>
             <point key="canvasLocation" x="642" y="-796.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="o8M-8o-coB">
+            <rect key="frame" x="0.0" y="0.0" width="403" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hvw-ai-mgj">
+                    <rect key="frame" x="0.0" y="0.0" width="403" height="20"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UIJ-L0-NzG">
+                    <rect key="frame" x="0.0" y="20" width="403" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstItem="hvw-ai-mgj" firstAttribute="top" secondItem="o8M-8o-coB" secondAttribute="top" id="AeV-e2-QuK"/>
+                <constraint firstItem="UIJ-L0-NzG" firstAttribute="top" secondItem="hvw-ai-mgj" secondAttribute="bottom" id="BmX-Uy-Dxc"/>
+                <constraint firstAttribute="bottom" secondItem="UIJ-L0-NzG" secondAttribute="bottom" id="NW0-5k-OMx"/>
+                <constraint firstAttribute="trailing" secondItem="UIJ-L0-NzG" secondAttribute="trailing" id="UTZ-Jw-Igl"/>
+                <constraint firstAttribute="trailing" secondItem="hvw-ai-mgj" secondAttribute="trailing" id="ZU5-9j-P6W"/>
+                <constraint firstItem="hvw-ai-mgj" firstAttribute="leading" secondItem="o8M-8o-coB" secondAttribute="leading" id="bnC-gn-Xb1"/>
+                <constraint firstItem="UIJ-L0-NzG" firstAttribute="leading" secondItem="o8M-8o-coB" secondAttribute="leading" id="yDZ-HW-wug"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="633.5" y="96"/>
         </view>
     </objects>
 </document>
