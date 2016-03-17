@@ -85,6 +85,8 @@
     NavigateViewController *_navigateController;
     NSString *_reportAction;
     BOOL _marksOpenedTalksAsRead;
+
+    TokopediaNetworkManager *_talkCommentNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -159,10 +161,17 @@
 }
 
 #pragma mark - View Life Cycle
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_talkCommentNetworkManager requestCancel];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     [self adjustSendButtonAvailability];
+
+    _talkCommentNetworkManager = [TokopediaNetworkManager new];
     
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -217,8 +226,7 @@
         }
     }
     
-    [self configureRestKit];
-    [self loadData];
+    [self fetchTalkComments];
 
     [self setHeaderData:_data];
 }
@@ -376,8 +384,7 @@
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
-            [self configureRestKit];
-            [self loadData];
+            [self fetchTalkComments];
         }
     }
     
@@ -532,6 +539,8 @@
     _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
+
+    [_talkCommentNetworkManager requestCancel];
 }
 
 -(void) configureRestKit{
@@ -546,54 +555,32 @@
 }
 
 -(void) loadData {
-    if(_request.isExecuting) return;
-    
-    _requestcount++;
-    
-    if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-    }
-    
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : _urlAction?:@"",
-                            TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
-                            kTKPDDETAIL_APIPAGEKEY : @(_page)
-                            };
-    
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:_urlPath
-                                                                parameters:[param encrypt]];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestsuccess:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestfailure:error];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requesttimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+            kTKPDDETAIL_APIACTIONKEY : _urlAction?:@"",
+            TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
+            kTKPDDETAIL_APIPAGEKEY : @(_page)
+    };
+
+    [_talkCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                              path:_urlPath
+                                            method:RKRequestMethodPOST
+                                         parameter:param
+                                           mapping:[TalkComment mapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             [_act stopAnimating];
+                                             _table.hidden = NO;
+                                             _isrefreshview = NO;
+                                             [_refreshControl endRefreshing];
+                                             [self requestsuccess:successResult withOperation:operation];
+                                         }
+                                         onFailure:^(NSError *errorResult) {
+                                             [_act stopAnimating];
+                                             _table.hidden = NO;
+                                             _isrefreshview = NO;
+                                             [_refreshControl endRefreshing];
+                                             [self requestfailure:errorResult];
+                                         }];
 }
 
 -(void) requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -653,22 +640,12 @@
             [self cancel];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_act stopAnimating];
-                    _table.tableFooterView = nil;
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
+                [_act stopAnimating];
+                _table.tableFooterView = nil;
+                NSError *error = object;
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
             }
             else
             {
@@ -1349,11 +1326,15 @@
         _page = 1;
         [_list removeAllObjects];
         [_table reloadData];
-        
-        [self configureRestKit];
-        [self loadData];
+
+        [self fetchTalkComments];
         [self setHeaderData:data];
     }
+}
+
+- (void)fetchTalkComments {
+    [self configureRestKit];
+    [self loadData];
 }
 
 
