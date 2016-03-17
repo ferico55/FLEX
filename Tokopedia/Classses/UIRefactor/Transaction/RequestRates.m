@@ -19,7 +19,7 @@
     TAGContainer *gtmContainer = appDelegate.container;
     
     //TODO::BASE & POST URL
-    NSString *baseuUrl = @"https://kero-staging.tokopedia.com";//[_gtmContainer stringForKey:@"base_url"]?:@"https://clover.tokopedia.com";
+    NSString *baseuUrl = @"https://kero.tokopedia.com";//[_gtmContainer stringForKey:@"base_url"]?:@"https://clover.tokopedia.com";
     NSString *pathUrl = @"/rates/v1";//[_gtmContainer stringForKey:@"post_url"]?:@"notify/v1";
     
     NSDictionary *param = @{

@@ -79,7 +79,7 @@
     
     NSString *_longitude;
     NSString *_latitude;
-    NSString *_insurance;
+    NSString *_pricePerPiece;
     
 }
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -141,7 +141,7 @@
     [self setPlaceholder:PLACEHOLDER_NOTE_ATC textView:_remarkTextView];
     _remarkTextView.delegate = self;
     
-    [self setDefaultData:_data];
+//    [self setDefaultData:_data];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     barButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
@@ -257,10 +257,9 @@
     _isFinishRequesting = NO;
     _isRequestFrom = YES;
         
-    ProductDetail *product = _selectedProduct;
     NSString *addressID = [NSString stringWithFormat:@"%zd",_selectedAddress.address_id];
     
-    [RequestATC fetchFormProductID:product.product_id
+    [RequestATC fetchFormProductID:_productID
                          addressID:addressID
                            success:^(TransactionATCFormResult *data) {
                                
@@ -280,10 +279,13 @@
        _latitude = address.latitude;
        
        _selectedProduct = _ATCForm.form.product_detail;
-       _productQuantityStepper.value = [product.product_min_order integerValue]?:1;
-       _productQuantityTextField.text = product.product_min_order?:@"1";
-       _productQuantityLabel.text = product.product_min_order?:@"1";
-       _productQuantityStepper.minimumValue = [product.product_min_order integerValue]?:1;
+       _productQuantityStepper.value = [_selectedProduct.product_min_order integerValue]?:1;
+       _productQuantityTextField.text = _selectedProduct.product_min_order?:@"1";
+       _productQuantityLabel.text = _selectedProduct.product_min_order?:@"1";
+       _productQuantityStepper.minimumValue = [_selectedProduct.product_min_order integerValue]?:1;
+                                       [_productDescriptionLabel setText:_selectedProduct.product_name];
+                               _pricePerPiece = _selectedProduct.product_price;
+
               
        [self setAddress:address];
        _isnodata = NO;
@@ -533,28 +535,7 @@
                             [cell setAccessoryType:UITableViewCellAccessoryNone];
                         }
                         
-                        NSString *priceString = _productPrice;
-                        NSArray *wholesalePrice = _wholeSales;
-                        if (wholesalePrice.count>0) {
-                            for (int i = 0; i<wholesalePrice.count; i++) {
-                                WholesalePrice *price = wholesalePrice[i];
-                                if (i == 0 && [_productQuantityTextField.text integerValue] < [price.wholesale_min integerValue]) {
-                                //if (i == 0 && _productQuantityStepper.value < [price.wholesale_min integerValue]) {
-                                    break;
-                                }
-                                if (i == wholesalePrice.count-1 && [_productQuantityTextField.text integerValue] >= [price.wholesale_max integerValue]) {
-                                //if (i == wholesalePrice.count-1 && _productQuantityStepper.value >= [price.wholesale_max integerValue]) {
-                                    priceString = price.wholesale_price;
-                                    break;
-                                }
-                                if ([_productQuantityTextField.text integerValue] >= [price.wholesale_min integerValue] && [_productQuantityTextField.text integerValue] <= [price.wholesale_max integerValue]) {
-                                //if (_productQuantityStepper.value >= [price.wholesale_min integerValue] && _productQuantityStepper.value <= [price.wholesale_max integerValue]) {
-                                    priceString = price.wholesale_price;
-                                    break;
-                                }
-                            }
-                        }
-                        
+                        NSString *priceString = _pricePerPiece?:@"-";
                         priceString = [priceString stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
                         label.text = [NSString stringWithFormat:@"Rp %@",priceString];
                         break;
@@ -856,7 +837,7 @@
         
     ProductDetail *product = _selectedProduct;
     NSString *quantity = _productQuantityTextField.text;
-    NSString *insuranceID = _insurance;
+    NSString *insuranceID = product.product_insurance;
     AddressFormList *address = _selectedAddress;
     
     [RequestATC fetchCalculateProduct:product qty:quantity insurance:insuranceID shipment:_selectedShipment shipmentPackage:_selectedShipmentPackage address:address success:^(TransactionCalculatePriceResult *data) {
@@ -1008,12 +989,6 @@
 }
 
 #pragma mark - Textfield Delegate
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    // select all text in product quantity, needs dispatch for it to work reliably
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [textField selectAll:nil];
-    });
-}
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -1025,7 +1000,7 @@
         textField.text = product.product_min_order;
     }
     
-    [self calculatePriceWithAction:@""];
+    [self doCalculate];
     [_tableView reloadData];
 }
 
@@ -1092,31 +1067,31 @@ replacementString:(NSString*)string
     [self requestDataCart];
 }
 
--(void)setDefaultData:(NSDictionary*)data
-{
-    _data = data;
-    if (data) {
-        DetailProductResult *result = [_data objectForKey:DATA_DETAIL_PRODUCT_KEY];
-        NSString *shopName = result.shop_info.shop_name;
-        [_shopNameLabel setText:shopName animated:YES];
-        [_productDescriptionLabel setText:result.product.product_name animated:YES];
-        NSArray *productImages = result.product_images;
-        if (productImages.count > 0) {
-            ProductImages *productImage = productImages[0];
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:productImage.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                [_productThumbImageView setImage:image animated:YES];
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
-        }
-
-        _selectedProduct = result.product;
-        NSDictionary *insuranceDefault = [ARRAY_INSURACE lastObject];
-        NSInteger insuranceID = [[insuranceDefault objectForKey:DATA_VALUE_KEY]integerValue];
-        _insurance = [NSString stringWithFormat:@"%zd",insuranceID];
-    }
-}
+//-(void)setDefaultData:(NSDictionary*)data
+//{
+//    _data = data;
+//    if (data) {
+//        DetailProductResult *result = [_data objectForKey:DATA_DETAIL_PRODUCT_KEY];
+//        NSString *shopName = result.shop_info.shop_name;
+//        [_shopNameLabel setText:shopName animated:YES];
+//        [_productDescriptionLabel setText:result.product.product_name animated:YES];
+//        NSArray *productImages = result.product_images;
+//        if (productImages.count > 0) {
+//            ProductImages *productImage = productImages[0];
+//            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:productImage.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+//            
+//            [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//                [_productThumbImageView setImage:image animated:YES];
+//            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+//            }];
+//        }
+//
+//        _selectedProduct = result.product;
+//        NSDictionary *insuranceDefault = [ARRAY_INSURACE lastObject];
+//        NSInteger insuranceID = [[insuranceDefault objectForKey:DATA_VALUE_KEY]integerValue];
+//        _insurance = [NSString stringWithFormat:@"%zd",insuranceID];
+//    }
+//}
 
 -(void)setAddress:(AddressFormList*)address
 {
@@ -1188,11 +1163,6 @@ replacementString:(NSString*)string
     }
 }
 
--(void)calculatePriceWithAction:(NSString*)action
-{
-    [self doCalculate];
-}
-
 -(NSInteger)insuranceStatus
 {
     ProductDetail *product = _selectedProduct;
@@ -1241,9 +1211,10 @@ replacementString:(NSString*)string
 }
 
 - (void)pushLocalyticsData {
-    ProductDetail *product = [[_data objectForKey:@"product"] product];
-    NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
-    Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
+    ProductDetail *product = _selectedProduct;
+    //TODO:: Product Category
+//    NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
+//    Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
     NSString *productId = product.product_id;
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
@@ -1253,7 +1224,7 @@ replacementString:(NSString*)string
     
     NSDictionary *attributes = @{
                                  @"Product Id" : productId,
-                                 @"Product Category" : lastCategory.department_name?:@"",
+//                                 @"Product Category" : lastCategory.department_name?:@"",
                                  @"Price Per Item" : productPrice,
                                  @"Price Total" : total,
                                  @"Quantity" : productQuantity

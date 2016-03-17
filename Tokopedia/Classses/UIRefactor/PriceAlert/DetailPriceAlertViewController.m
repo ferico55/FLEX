@@ -333,6 +333,7 @@
 {
     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:productDetail};
+    transactionVC.productID = productDetail.product.product_id;
     [self.navigationController pushViewController:transactionVC animated:YES];
 }
 

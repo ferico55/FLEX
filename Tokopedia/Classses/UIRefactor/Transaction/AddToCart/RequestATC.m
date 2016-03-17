@@ -99,12 +99,12 @@
 
 +(void)fetchCalculateProduct:(ProductDetail*)product qty:(NSString*)qty insurance:(NSString*)insurance shipment:(RateAttributes*)shipment shipmentPackage:(RateProduct*)shipmentPackage address:(AddressFormList*)address success:(void(^)(TransactionCalculatePriceResult* data))success failed:(void(^)(NSError * error))failed {
     
-    NSString *productID = product.product_id;
+    NSString *productID = product.product_id?:@"";
     NSInteger shippingID = [shipment.shipper_id integerValue];
     NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
     NSString *weight = product.product_weight?:@"0";
     
-    NSInteger addressID = (address.address_id==0)?-1:address.address_id;
+    NSInteger addressID = (address.address_id==0)?-1:address.address_id?:0;
     NSNumber *districtID = address.district_id?:@(0);
     NSString *addressName = address.address_name?:@"";
     NSString *addressStreet = address.address_street?:@"";
@@ -128,7 +128,7 @@
                             @"receiver_name":recieverName,
                             @"receiver_phone":recieverPhone,
                             @"qty":qty,
-                            @"insurance":insurance,
+                            @"insurance":insurance?:@"",
                             @"shipping_id":@(shippingID),
                             @"shipping_product":@(shippingProduct),
                             @"weight": weight
