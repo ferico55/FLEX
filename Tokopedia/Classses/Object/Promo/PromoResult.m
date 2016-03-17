@@ -19,12 +19,12 @@
                                                    @"product_click_url",
                                                    @"shop_click_url"
                                                    ]];
-    /*
+    
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product"
                                                                                   toKeyPath:@"product"
                                                                                 withMapping:[PromoProduct mapping]]];
      
-    */
+    
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop"
                                                                                   toKeyPath:@"shop"
                                                                                 withMapping:[PromoShop mapping]]];

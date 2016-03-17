@@ -1232,7 +1232,14 @@ ImageSearchRequestDelegate
     NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
     NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
     _promoRequest.page = _start/[startPerPage integerValue];
-    [_promoRequest requestForProductQuery:search department:departmentId];
+    //[_promoRequest requestForProductQuery:search department:departmentId];
+    [_promoRequest requestForProductQuery:search
+                               department:departmentId
+                                onSuccess:^(NSArray<PromoResult *> *promoResult) {
+                                    
+                                } onFailure:^(NSError *error) {
+                                    
+                                }];
 }
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
@@ -1240,6 +1247,7 @@ ImageSearchRequestDelegate
 }
 
 - (void)didSelectPromoProduct:(PromoProduct *)product {
+    /*
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         NavigateViewController *navigateController = [NavigateViewController new];
         NSDictionary *productData = @{
@@ -1259,18 +1267,17 @@ ImageSearchRequestDelegate
 
         NSDictionary *promoData = @{
             kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-            /*
             PromoImpressionKey          : product.ad_key,
             PromoSemKey                 : product.ad_sem_key,
             PromoReferralKey            : product.ad_r,
             PromoRequestSource          : @(source)
-            */
         };
 
         [navigateController navigateToProductFromViewController:self
                                                       promoData:promoData
                                                     productData:productData];
     }
+*/
 }
 
 #pragma mark - Scroll delegate

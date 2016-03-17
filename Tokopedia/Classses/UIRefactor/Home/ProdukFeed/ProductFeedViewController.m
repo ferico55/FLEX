@@ -342,6 +342,7 @@ FavoriteShopRequestDelegate
 }
 
 - (void)didSelectPromoProduct:(PromoProduct *)product {
+    /*
     NavigateViewController *navigateController = [NavigateViewController new];
     NSDictionary *productData = @{
                                   @"product_id"       : product.product_id?:@"",
@@ -352,16 +353,16 @@ FavoriteShopRequestDelegate
                                   };
     NSDictionary *promoData = @{
                                 kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-                                /*
+                                
                                 PromoImpressionKey          : product.ad_key,
                                 PromoSemKey                 : product.ad_sem_key,
                                 PromoReferralKey            : product.ad_r,
                                 PromoRequestSource          : @(PromoRequestSourceFavoriteProduct)
-                                 */
+     
                                 };
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData
-                                                productData:productData];
+                                                productData:productData];*/
 }
 
 #pragma mark - Scroll delegate

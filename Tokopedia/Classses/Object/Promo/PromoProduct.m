@@ -11,18 +11,31 @@
 @implementation PromoProduct
 
 +(RKObjectMapping *)mapping{
-    return nil;
+    RKObjectMapping *promoProductMapping = [RKObjectMapping mappingForClass:[PromoProduct class]];
+    [promoProductMapping addAttributeMappingsFromDictionary:@{@"id":@"product_id"}];
+    [promoProductMapping addAttributeMappingsFromArray:@[@"name",
+                                                   @"uri",
+                                                   @"relative_uri",
+                                                   @"price_format",
+                                                   @"count_talk_format",
+                                                   @"count_review_format"
+                                                   ]];
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"category"
+                                                                                        toKeyPath:@"category"
+                                                                                      withMapping:[PromoCategory mapping]]];
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price"
+                                                                                        toKeyPath:@"wholesale_price"
+                                                                                      withMapping:[WholesalePrice mappingForPromo]]];
+    
+    return promoProductMapping;
 }
 
-- (NSString*)shop_name {
-    return [_shop_name kv_decodeHTMLCharacterEntities];
-}
-
-- (NSString *)product_name {
-    return [_product_name kv_decodeHTMLCharacterEntities];
+- (NSString *)name {
+    return [_name kv_decodeHTMLCharacterEntities];
 }
 
 - (ProductModelView *)viewModel {
+    /*
     if(_viewModel == nil) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
         [viewModel setProductName:self.product_name];
@@ -35,15 +48,16 @@
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
         _viewModel = viewModel;
     }
+     */
     return _viewModel;
 }
 
 - (NSDictionary *)productFieldObjects {
     return @{
              @"id"   : _product_id?:@"",
-             @"name" : _product_name?:@"",
-             @"url"  : _product_url?:@"",
-             @"price" : _product_price?:@""
+             @"name" : _name?:@"",
+             @"url"  : _relative_uri?:@"",
+             @"price" : _price_format?:@""
     };
 }
 

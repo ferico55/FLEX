@@ -47,6 +47,12 @@ typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
 - (void)requestForProductFeed:(void (^)(NSArray<PromoResult*> *))successCallback
                     onFailure:(void (^)(NSError *))errorCallback;
 
+- (void)requestForProductQuery:(NSString *)query
+                    department:(NSString *)department
+                     onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback
+                     onFailure:(void (^)(NSError *))errorCallback;
+
+
 - (void)requestForClickURL:(NSString *)clickURL
                  onSuccess:(void (^)(void))successCallback
                  onFailure:(void (^)(NSError *))errorCallback;
