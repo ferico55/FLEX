@@ -26,6 +26,9 @@
     [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price"
                                                                                         toKeyPath:@"wholesale_price"
                                                                                       withMapping:[WholesalePrice mappingForPromo]]];
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image"
+                                                                                        toKeyPath:@"image"
+                                                                                      withMapping:[PromoProductImage mapping]]];
     
     return promoProductMapping;
 }
@@ -35,20 +38,22 @@
 }
 
 - (ProductModelView *)viewModel {
-    /*
+    
     if(_viewModel == nil) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
-        [viewModel setProductName:self.product_name];
-        [viewModel setProductPrice:self.product_price];
-        [viewModel setProductShop:self.shop_name];
+        [viewModel setProductName:_name];
+        [viewModel setProductPrice:_price_format];
+        /*
+        [viewModel setProductShop:_];
         [viewModel setProductThumbUrl:self.product_image_200];
         [viewModel setProductReview:self.product_review_count];
         [viewModel setProductTalk:self.product_talk_count];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
+         */
         _viewModel = viewModel;
     }
-     */
+    
     return _viewModel;
 }
 

@@ -10,6 +10,7 @@
 #import "ProductModelView.h"
 #import "PromoCategory.h"
 #import "WholesalePrice.h"
+#import "PromoProductImage.h"
 
 @interface PromoProduct : NSObject
 
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) NSString *count_review_format;
 @property (strong, nonatomic) PromoCategory *category;
 @property (strong, nonatomic) NSArray<WholesalePrice*> *wholesale_price;
+@property (strong, nonatomic) PromoProductImage *image;
 
 
 @property (strong, nonatomic) ProductModelView *viewModel;
