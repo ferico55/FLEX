@@ -9,13 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "PromoProduct.h"
 #import "PromoShop.h"
+#import "ProductModelView.h"
 
 @interface PromoResult : NSObject
 
-/*
-@property (strong, nonatomic) NSArray *list;
-@property (strong, nonatomic) NSString *is_success;
-*/
 @property (nonatomic, strong) NSString* result_id;
 @property (nonatomic, strong) NSString* ad_ref_key;
 @property (nonatomic, strong) NSString* redirect;
@@ -26,7 +23,9 @@
 
 @property (nonatomic, strong) PromoProduct* product;
 @property (nonatomic, strong) PromoShop* shop;
+@property (strong, nonatomic) ProductModelView *viewModel;
 
 + (RKObjectMapping *)mapping;
+- (NSDictionary *)productFieldObjects;
 
 @end

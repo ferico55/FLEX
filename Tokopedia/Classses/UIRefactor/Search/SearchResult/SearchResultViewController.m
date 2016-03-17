@@ -98,7 +98,7 @@ ImageSearchRequestDelegate
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) NSMutableArray *product;
-@property (strong, nonatomic) NSMutableArray *promo;
+@property (strong, nonatomic) NSMutableArray<NSArray<PromoResult*>*> *promo;
 @property (strong, nonatomic) NSMutableDictionary *similarityDictionary;
 
 @property (nonatomic) UITableViewCellType cellType;
@@ -1213,32 +1213,25 @@ ImageSearchRequestDelegate
     return  ( isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
 
-
-#pragma mark - Promo request delegate
-
-- (void)didReceivePromo:(NSArray *)promo {
-    if (promo) {
-        [_promo addObject:promo];
-        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    } else if (promo == nil && _start == startPerPage) {
-        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-    }
-    [_collectionView reloadData];
-}
-
 #pragma mark - Promo collection delegate
 
 - (void)requestPromo {
     NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
     NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
-    _promoRequest.page = _start/[startPerPage integerValue];
-    //[_promoRequest requestForProductQuery:search department:departmentId];
     [_promoRequest requestForProductQuery:search
                                department:departmentId
+                                     page:_start/[startPerPage integerValue]
                                 onSuccess:^(NSArray<PromoResult *> *promoResult) {
-                                    
+                                    if (promoResult) {
+                                        [_promo addObject:promoResult];
+                                        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                    } else if (promoResult == nil && _start == [startPerPage integerValue]) {
+                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                    }
+                                    [_collectionView reloadData];
                                 } onFailure:^(NSError *error) {
-                                    
+                                    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                    [_collectionView reloadData];
                                 }];
 }
 
@@ -1246,16 +1239,15 @@ ImageSearchRequestDelegate
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
 
-- (void)didSelectPromoProduct:(PromoProduct *)product {
-    /*
+- (void)didSelectPromoProduct:(PromoResult *)promoResult {
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         NavigateViewController *navigateController = [NavigateViewController new];
         NSDictionary *productData = @{
-            @"product_id"       : product.product_id?:@"",
-            @"product_name"     : product.product_name?:@"",
-            @"product_image"    : product.product_image_200?:@"",
-            @"product_price"    :product.product_price?:@"",
-            @"shop_name"        : product.shop_name?:@""
+            @"product_id"       : promoResult.product.product_id?:@"",
+            @"product_name"     : promoResult.product.name?:@"",
+            @"product_image"    : promoResult.product.image.s_url?:@"",
+            @"product_price"    : promoResult.product.price_format?:@"",
+            @"shop_name"        : promoResult.shop.name?:@""
         };
 
         PromoRequestSourceType source;
@@ -1266,10 +1258,8 @@ ImageSearchRequestDelegate
         }
 
         NSDictionary *promoData = @{
-            kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-            PromoImpressionKey          : product.ad_key,
-            PromoSemKey                 : product.ad_sem_key,
-            PromoReferralKey            : product.ad_r,
+            kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
+            PromoImpressionKey          : promoResult.ad_ref_key,
             PromoRequestSource          : @(source)
         };
 
@@ -1277,7 +1267,6 @@ ImageSearchRequestDelegate
                                                       promoData:promoData
                                                     productData:productData];
     }
-*/
 }
 
 #pragma mark - Scroll delegate

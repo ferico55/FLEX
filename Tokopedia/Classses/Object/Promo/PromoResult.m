@@ -31,4 +31,28 @@
      
     return resultMapping;
 }
+
+-(ProductModelView *)viewModel{
+    if(_viewModel == nil) {
+        ProductModelView *viewModel = [[ProductModelView alloc] init];
+        [viewModel setProductName:_product.name];
+        [viewModel setProductPrice:_product.price_format];
+        
+         [viewModel setProductShop:_shop.name];
+         [viewModel setProductThumbUrl:_product.image.m_url];
+         [viewModel setProductReview:_product.count_review_format];
+         [viewModel setProductTalk:_product.count_talk_format];
+         [viewModel setIsGoldShopProduct:_shop.gold_shop];
+         [viewModel setLuckyMerchantImageURL:_shop.lucky_shop];
+        
+        _viewModel = viewModel;
+    }
+    
+    return _viewModel;
+}
+
+- (NSDictionary *)productFieldObjects {
+    return [_product productFieldObjects];
+}
+
 @end
