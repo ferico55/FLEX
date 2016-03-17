@@ -26,6 +26,7 @@
 #import "RetryCollectionReusableView.h"
 #import "GeneralAction.h"
 #import "Tokopedia-Swift.h"
+#import "UIAlertView+BlocksKit.h"
 
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
@@ -103,6 +104,7 @@ typedef enum TagRequest {
     [super viewDidLoad];
     
     self.title = @"Wishlist";
+    _userManager = [[UserAuthentificationManager alloc] init];
     
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
@@ -192,19 +194,15 @@ typedef enum TagRequest {
     };
     
     cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
-        _userManager = [[UserAuthentificationManager alloc] init];
-        
-        TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
-        removeWishlistRequest.isUsingHmac = YES;
-        [removeWishlistRequest requestWithBaseUrl:@"https://ws.tokopedia.com"
-                                             path:@"/v4/action/wishlist/remove_wishlist_product.pl"
-                                           method:RKRequestMethodGET
-                                        parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}
-                                          mapping:[self actionRemoveWishlistMapping]
-                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                            [_product removeObjectAtIndex:indexPath.row];
-                                            [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
-                                        } onFailure:nil];
+        [UIAlertView bk_showAlertViewWithTitle:@"Hapus Wishlist"
+                                       message:[NSString stringWithFormat:@"Anda yakin ingin menghapus %@ dari wishlist ?", list.product_name]
+                             cancelButtonTitle:@"Tidak"
+                             otherButtonTitles:@[@"Yakin"]
+                                       handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                           if(buttonIndex == 1) {
+                                               [self requestRemoveWishlist:list withIndexPath:indexPath];
+                                           }
+                                       }];
     };
 
     
@@ -219,26 +217,21 @@ typedef enum TagRequest {
     return cell;
 }
 
+- (void)requestRemoveWishlist:(WishListObjectList*)list withIndexPath:(NSIndexPath*)indexPath {
+    TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
+    removeWishlistRequest.isUsingHmac = YES;
+    [removeWishlistRequest requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                         path:@"/v4/action/wishlist/remove_wishlist_product.pl"
+                                       method:RKRequestMethodGET
+                                    parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}
+                                      mapping:[self actionRemoveWishlistMapping]
+                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                        [_product removeObjectAtIndex:indexPath.row];
+                                        [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                    } onFailure:nil];
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSInteger numberOfCell;
-//    NSInteger cellHeight;
-//    if(IS_IPAD) {
-//        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-//        if(UIInterfaceOrientationIsLandscape(orientation)) {
-//            numberOfCell = 5;
-//        } else {
-//            numberOfCell = 4;
-//        }
-//        cellHeight = 250;
-//    } else {
-//        numberOfCell = 2;
-//        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
-//    }
-//    
-//    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-//    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-//    
-//    return CGSizeMake(cellWidth, cellHeight);
     return [ProductCellSize sizeWishlistCell];
 }
 
@@ -267,36 +260,6 @@ typedef enum TagRequest {
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    
-//    CGSize cellSize = CGSizeMake(0, 0);
-//    CGRect screenRect = [[UIScreen mainScreen] bounds];
-//    
-//    NSInteger cellCount;
-//    float heightRatio;
-//    float widhtRatio;
-//    float inset;
-//    
-//    CGFloat screenWidth = screenRect.size.width;
-//    
-//    cellCount = 2;
-//    heightRatio = 41;
-//    widhtRatio = 29;
-//    inset = 15;
-//    
-//    CGFloat cellWidth;
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-//        screenWidth = screenRect.size.width/2;
-//        cellWidth = screenWidth/cellCount-inset;
-//    } else {
-//        screenWidth = screenRect.size.width;
-//        cellWidth = screenWidth/cellCount-inset;
-//    }
-//    
-//    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-//    return cellSize;
-//}
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
