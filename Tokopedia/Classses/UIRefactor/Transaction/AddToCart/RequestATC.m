@@ -7,6 +7,7 @@
 //
 
 #import "RequestATC.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
 
 @implementation RequestATC
 
@@ -32,8 +33,7 @@
     if(form.message_error)
      {
          NSArray *messages = form.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-         [alert show];
+         [StickyAlertView showErrorMessage:messages];
          failed(nil);
      } else{
          success(form.result);
@@ -47,8 +47,8 @@
     
     NSInteger productID = [ product.product_id integerValue];
     NSInteger insuranceID = [product.product_insurance integerValue];
-    NSInteger shippingID = [shipment.shipper_id integerValue];
-    NSInteger shippingProduct = [shipmentPackage.shipper_product_id integerValue];
+    NSString *shippingID = shipment.shipper_id;
+    NSString *shippingProduct = shipmentPackage.shipper_product_id;
     
     NSInteger addressID = (address.address_id==0)?-1:address.address_id;
     NSNumber *districtID = address.district_id?:@(0);
@@ -65,8 +65,8 @@
                             @"address_id" : @(addressID),
                             @"quantity":qty,
                             @"insurance":@(insuranceID),
-                            @"shipping_id":@(shippingID),
-                            @"shipping_product":@(shippingProduct),
+                            @"shipping_id":shippingID,
+                            @"shipping_product":shippingProduct,
                             @"notes":remark?:@"",
                             @"address_id" : @(addressID),
                             @"address_name": addressName,
@@ -88,8 +88,7 @@
             success(setting);
         } else {
             NSArray *messages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-            [alert show];
+            [StickyAlertView showErrorMessage:messages];
             failed (nil);
         }
 
@@ -141,8 +140,7 @@
         TransactionCalculatePrice *calculate = [successResult.dictionary objectForKey:@""];
         if(calculate.message_error){
             NSArray *messages = calculate.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-            [alert show];
+            [StickyAlertView showErrorMessage:messages];
             failed(nil);
         }
         else

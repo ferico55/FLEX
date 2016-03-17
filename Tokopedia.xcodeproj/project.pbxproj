@@ -2057,6 +2057,7 @@
 		45908CFE1C9826E10091450E /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 459085011C9826E00091450E /* vt-iOSlib-1.0.1.zip */; };
 		45908CFF1C9826E10091450E /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 459085041C9826E00091450E /* XYPieChart.m */; };
 		45908D021C9827650091450E /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45908D011C9827650091450E /* MoreWrapperViewController.m */; };
+		45DF0D511C9A67930028935E /* ShipmentAvailable.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DF0D501C9A67930028935E /* ShipmentAvailable.m */; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5248,6 +5249,8 @@
 		459085041C9826E00091450E /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		45908D001C9827650091450E /* MoreWrapperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreWrapperViewController.h; sourceTree = "<group>"; };
 		45908D011C9827650091450E /* MoreWrapperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreWrapperViewController.m; sourceTree = "<group>"; };
+		45DF0D4F1C9A67930028935E /* ShipmentAvailable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentAvailable.h; sourceTree = "<group>"; };
+		45DF0D501C9A67930028935E /* ShipmentAvailable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentAvailable.m; sourceTree = "<group>"; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
@@ -7121,6 +7124,8 @@
 				45907B931C9826DD0091450E /* TransactionATCFormResult.m */,
 				455CEE941C9935960025B2BA /* ATCShopOrigin.h */,
 				455CEE951C9935960025B2BA /* ATCShopOrigin.m */,
+				45DF0D4F1C9A67930028935E /* ShipmentAvailable.h */,
+				45DF0D501C9A67930028935E /* ShipmentAvailable.m */,
 			);
 			path = TransactionATCForm;
 			sourceTree = "<group>";
@@ -12455,6 +12460,7 @@
 				459086F21C9826E00091450E /* TxOrderPaymentEditResult.m in Sources */,
 				459085A11C9826E00091450E /* HotlistBannerInfo.m in Sources */,
 				459086E91C9826E00091450E /* SystemBankAcount.m in Sources */,
+				45DF0D511C9A67930028935E /* ShipmentAvailable.m in Sources */,
 				459086401C9826E00091450E /* ActionOrderResult.m in Sources */,
 				459086361C9826E00091450E /* Reputation.m in Sources */,
 				4590864F1C9826E00091450E /* OrderSellerShop.m in Sources */,

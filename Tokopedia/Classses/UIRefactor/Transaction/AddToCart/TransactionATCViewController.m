@@ -246,29 +246,9 @@
 }
 
 #pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        switch (button.tag) {
-            case TAG_BUTTON_TRANSACTION_BUY:
-            {
-                if ([self isValidInput]) {
-                    [self requestATC];
-                }
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *barButtonItem = (UIBarButtonItem *)sender;
-        switch (barButtonItem.tag) {
-            case TAG_BAR_BUTTON_TRANSACTION_BACK:
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            default:
-                break;
-        }
+- (IBAction)tapBuy:(id)sender {
+    if ([self isValidInput]) {
+        [self requestATC];
     }
 }
 
@@ -355,6 +335,7 @@
     NSString *token = _ATCForm.shop.token;
     NSString *ut = _ATCForm.shop.ut;
     NSString *name = _ATCForm.shop.avail_shipping_code;
+    NSArray *shipmentAvailable = _ATCForm.form.shipment;
     
     [RequestRates fetchRateWithName:name
                              origin:origin
@@ -362,6 +343,7 @@
                              weight:weight
                               token:token
                                  ut:ut
+                  shipmentAvailable:shipmentAvailable
                           onSuccess:^(RateData *rateData) {
                               
                               _shipments = rateData.attributes;
@@ -604,7 +586,7 @@
                             [cell setAccessoryType:UITableViewCellAccessoryNone];
                         }
                         //TODO::
-                        label.text = shipmentPackage.price?:@"-";
+                        label.text = shipmentPackage.formatted_price?:@"-";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_TOTAL:
@@ -862,6 +844,7 @@
     } failed:^(NSError *error) {
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
+        _isFinishRequesting = YES;
         [self buyButtonIsLoading:NO];
     }];
 }
@@ -911,6 +894,7 @@
     
     } failed:^(NSError *error) {
         _isRefreshRequest = NO;
+        _isFinishRequesting = YES;
         [_refreshControl endRefreshing];
         [self buyButtonIsLoading:NO];
     }];
@@ -954,8 +938,8 @@
             }
         }
     }
-    
-    [_tableView reloadData];
+    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
 }
 
 #pragma mark - Alert View Delegate
