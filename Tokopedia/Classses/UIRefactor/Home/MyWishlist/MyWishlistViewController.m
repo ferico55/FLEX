@@ -27,6 +27,7 @@
 #import "GeneralAction.h"
 #import "Tokopedia-Swift.h"
 #import "UIAlertView+BlocksKit.h"
+#import "TransactionATCViewController.h"
 
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
@@ -190,7 +191,10 @@ typedef enum TagRequest {
     WishListObjectList *list = [_product objectAtIndex:indexPath.row];
     [cell setViewModel:list.viewModel];
     cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
-        
+        TransactionATCViewController *transactionVC = [TransactionATCViewController new];
+        transactionVC.productID = list.product_id;
+        transactionVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:transactionVC animated:YES];
     };
     
     cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {

@@ -43,10 +43,12 @@ class ProductWishlistCell : UICollectionViewCell {
         if(viewModel.isProductBuyAble) {
             productBuyButton.backgroundColor = UIColor.init(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0)
             productBuyButton.setTitle("Beli", forState: .Normal)
+            productBuyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             productBuyButton.userInteractionEnabled = true
         } else {
             productBuyButton.backgroundColor = UIColor.init(red: 231/255, green: 231/255, blue: 231/255, alpha: 0.65)
             productBuyButton.setTitle("Stok Kosong", forState: .Normal)
+            productBuyButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
             productBuyButton.userInteractionEnabled = false
         }
         

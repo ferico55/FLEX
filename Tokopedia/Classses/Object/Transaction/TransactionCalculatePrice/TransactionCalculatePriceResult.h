@@ -12,7 +12,7 @@
 #import "ProductDetail.h"
 #import "RPX.h"
 
-@interface TransactionCalculatePriceResult : NSObject
+@interface TransactionCalculatePriceResult : NSObject <TKPObjectMapping>
 
 @property(nonatomic,strong) ProductDetail *product;
 @property(nonatomic,strong) NSArray *shipment;
