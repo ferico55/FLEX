@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSString *shipper_product_name;
 @property (nonatomic, strong) NSString *shipper_product_desc;
 @property (nonatomic, strong) NSString *price;
+@property (nonatomic, strong) NSString *formatted_price;
 
 @end
