@@ -24,6 +24,7 @@
 #import "Localytics.h"
 
 #import "RetryCollectionReusableView.h"
+#import "GeneralAction.h"
 #import "Tokopedia-Swift.h"
 
 static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
@@ -71,6 +72,7 @@ typedef enum TagRequest {
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
+    UserAuthentificationManager *_userManager;
 }
 
 #pragma mark - Initialization
@@ -190,7 +192,19 @@ typedef enum TagRequest {
     };
     
     cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
-    
+        _userManager = [[UserAuthentificationManager alloc] init];
+        
+        TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
+        removeWishlistRequest.isUsingHmac = YES;
+        [removeWishlistRequest requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                             path:@"/v4/action/wishlist/remove_wishlist_product.pl"
+                                           method:RKRequestMethodGET
+                                        parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}
+                                          mapping:[self actionRemoveWishlistMapping]
+                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                            [_product removeObjectAtIndex:indexPath.row];
+                                            [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                        } onFailure:nil];
     };
 
     
@@ -497,6 +511,25 @@ typedef enum TagRequest {
 
 - (void)orientationChanged:(NSNotification *)note {
     [_collectionView reloadData];
+}
+
+
+#pragma mark 
+- (RKObjectMapping *)actionRemoveWishlistMapping {
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    return statusMapping;
 }
 
 
