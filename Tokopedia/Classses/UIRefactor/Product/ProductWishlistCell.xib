@@ -89,6 +89,9 @@
                                         <real key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="tapBuyButton:" destination="m2U-St-6N4" eventType="touchUpInside" id="cdc-pQ-bJr"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_trash.png" translatesAutoresizingMaskIntoConstraints="NO" id="uQh-e2-gZ6">
                                 <rect key="frame" x="8" y="220" width="20" height="20"/>

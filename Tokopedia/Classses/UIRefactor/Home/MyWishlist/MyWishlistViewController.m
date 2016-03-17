@@ -185,6 +185,14 @@ typedef enum TagRequest {
     
     WishListObjectList *list = [_product objectAtIndex:indexPath.row];
     [cell setViewModel:list.viewModel];
+    cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
+        
+    };
+    
+    cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
+    
+    };
+
     
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
@@ -355,7 +363,8 @@ typedef enum TagRequest {
                                                  KTKPDSHOP_LOCATION,
                                                  KTKPDSHOP_NAME,
                                                  KTKPDPRODUCT_NAME,
-                                                 @"shop_lucky"
+                                                 @"shop_lucky",
+                                                 @"product_available"
                                                  ]];
     
     //relation

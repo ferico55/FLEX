@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 class ProductWishlistCell : UICollectionViewCell {
     
     @IBOutlet weak var productImage: UIImageView!
@@ -21,6 +22,8 @@ class ProductWishlistCell : UICollectionViewCell {
 
     @IBOutlet weak var goldBadgeHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var luckyBadgeTopConstraint: NSLayoutConstraint!
+    var tappedBuyButton: ((ProductWishlistCell) -> Void)?
+    var tappedTrashButton: ((ProductWishlistCell) -> Void)?
     
     func setViewModel(viewModel : ProductModelView) {
         let url = NSURL.init(string: viewModel.productThumbUrl)!
@@ -33,14 +36,18 @@ class ProductWishlistCell : UICollectionViewCell {
         productShopLuckyBadge.setImageWithUrl(luckyBadgeUrl, placeHolderImage: nil)
         productShopLuckyBadge.contentMode = .ScaleAspectFill
         
-        viewModel.isProductBuyAble = true
+        let trashGesture = UITapGestureRecognizer.init(target: self, action: Selector("tapTrashButton"))
+        productTrashButton.addGestureRecognizer(trashGesture)
+        productTrashButton.userInteractionEnabled = true
         
         if(viewModel.isProductBuyAble) {
             productBuyButton.backgroundColor = UIColor.init(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0)
-            productBuyButton.titleLabel?.text = "Beli"
+            productBuyButton.setTitle("Beli", forState: .Normal)
+            productBuyButton.userInteractionEnabled = true
         } else {
             productBuyButton.backgroundColor = UIColor.init(red: 231/255, green: 231/255, blue: 231/255, alpha: 0.65)
-            productBuyButton.titleLabel?.text = "Stok Kosong"
+            productBuyButton.setTitle("Stok Kosong", forState: .Normal)
+            productBuyButton.userInteractionEnabled = false
         }
         
         productShopGoldBadge.hidden = viewModel.isGoldShopProduct ? false : true
@@ -49,5 +56,12 @@ class ProductWishlistCell : UICollectionViewCell {
         
     }
     
+    @IBAction func tapBuyButton(sender: AnyObject) {
+        tappedBuyButton?(self)
+    }
+    
+    func tapTrashButton() {
+        tappedTrashButton?(self)
+    }
 
 }
