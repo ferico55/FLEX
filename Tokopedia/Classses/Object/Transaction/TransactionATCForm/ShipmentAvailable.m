@@ -64,4 +64,26 @@
     return [shipments copy];
 }
 
++(NSArray*)shipments:(NSArray<RateAttributes*>*)shipments showOKE:(NSString*)isShowOKE{
+    
+    if ([isShowOKE integerValue] == 1) {
+        return shipments;
+    } else {
+        for (RateAttributes *shipment in shipments) {
+            if ([shipment.shipper_id integerValue] == 1) {
+                NSMutableArray *products = [NSMutableArray new];
+                for (RateProduct *product in shipment.products) {
+                    if ([product.shipper_product_id integerValue] != 2) {
+                        [products addObject:product];
+                    }
+                }
+                shipment.products = products;
+            }
+        }
+        return shipments;
+    }
+
+    return @[];
+}
+
 @end

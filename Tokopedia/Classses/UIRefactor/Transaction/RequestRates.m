@@ -12,7 +12,7 @@
 
 @implementation RequestRates
 
-+(void)fetchRateWithName:(NSString *)name origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight token:(NSString*)token ut:(NSString*)ut shipmentAvailable:(NSArray*)shipmentAvailable onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error{
++(void)fetchRateWithName:(NSString *)name origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight token:(NSString*)token ut:(NSString*)ut shipmentAvailable:(NSArray*)shipmentAvailable isShowOKE:(NSString*)isShowOKE onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error{
     
     [TPAnalytics trackUserId];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -45,9 +45,10 @@
                                  
                                  RateResponse *response= stat;
                                  NSArray *shipments = [ShipmentAvailable compareShipmentsWS:shipmentAvailable withShipmentsKero:response.data.attributes];
+                                 shipments = [ShipmentAvailable shipments:shipments showOKE:isShowOKE];
                                  response.data.attributes = shipments;
-                                 
                                  success(response.data);
+                                 
                              } onFailure:^(NSError *errorResult) {
                                  [StickyAlertView showNetworkError:errorResult];
                              }];

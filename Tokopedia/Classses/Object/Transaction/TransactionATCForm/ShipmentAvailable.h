@@ -11,6 +11,7 @@
 
 @interface ShipmentAvailable : NSObject
 
-+(NSArray*)compareShipmentsWS:(NSArray*)shipmentsWS withShipmentsKero:(NSArray*)shipmentsKero;
++(NSArray*)compareShipmentsWS:(NSArray<ShippingInfoShipments*>*)shipmentsWS withShipmentsKero:(NSArray<RateAttributes*>*)shipmentsKero;
++(NSArray*)shipments:(NSArray<RateAttributes*>*)shipments showOKE:(NSString*)isShowOKE;
 
 @end

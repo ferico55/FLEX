@@ -344,6 +344,7 @@
                               token:token
                                  ut:ut
                   shipmentAvailable:shipmentAvailable
+                          isShowOKE:_ATCForm.shop.show_oke
                           onSuccess:^(RateData *rateData) {
                               
                               _shipments = rateData.attributes;
@@ -938,8 +939,8 @@
             }
         }
     }
-    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - Alert View Delegate
