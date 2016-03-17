@@ -13,7 +13,7 @@
 #import "ProductListMyShopViewController.h"
 #import "MyShopAddressViewController.h"
 #import "MyShopPaymentViewController.h"
-#import "MyShopShipmentTableViewController.h"
+#import "ShipmentViewController.h"
 #import "MyShopNoteViewController.h"
 #import "ShopEditViewController.h"
 
@@ -105,8 +105,7 @@
         }
         case 4:
         {
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            MyShopShipmentTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+            ShipmentViewController *controller = [ShipmentViewController new];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
