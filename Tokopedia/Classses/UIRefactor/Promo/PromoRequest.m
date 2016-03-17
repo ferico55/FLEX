@@ -335,7 +335,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                               }];
 }
 
--(void)requestForProductQuery:(NSString *)query department:(NSString *)department onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestForProductQuery:(NSString *)query department:(NSString *)department page:(NSInteger)page onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
@@ -343,7 +343,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                                  method:RKRequestMethodGET
                               parameter:@{@"item":@"4",
                                           @"src":@"search",
-                                          @"page":@"1",
+                                          @"page":@(page),
                                           @"dep_id":department,
                                           @"q":query
                                           }
