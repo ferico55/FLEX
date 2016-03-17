@@ -12,7 +12,16 @@
 
 +(NSArray*)compareShipmentsWS:(NSArray<ShippingInfoShipments*>*)shipmentsWS withShipmentsKero:(NSArray<RateAttributes*>*)shipmentsKero{
     
-    NSArray *shipmentWSIDs = [shipmentsWS valueForKeyPath:@"@distinctUnionOfObjects.shipment_id"];
+    NSMutableArray <ShippingInfoShipments*>*shipmentsAvailable = [NSMutableArray new];
+    for (ShippingInfoShipments *shipment in shipmentsWS) {
+        if ([shipment.shipment_available integerValue] != 0) {
+            [shipmentsAvailable addObject:shipment];
+        }
+    }
+    
+    NSArray <ShippingInfoShipments*>*shipmentAvailable = [shipmentsAvailable copy];
+    
+    NSArray *shipmentWSIDs = [shipmentAvailable valueForKeyPath:@"@distinctUnionOfObjects.shipment_id"];
     NSArray *shipmentKeroIDs = [shipmentsKero valueForKeyPath:@"@distinctUnionOfObjects.shipper_id"];
     
     NSMutableArray *shipments = [NSMutableArray new];
@@ -25,8 +34,8 @@
     NSMutableArray *shipmentPackageIDKero = [NSMutableArray new];
     NSMutableArray *shipmentPackageIDWS = [NSMutableArray new];
     
-    for (int i = 0; i<shipmentsWS.count; i++) {
-        NSArray *packageID = [shipmentsWS[i].shipment_package valueForKeyPath:@"@distinctUnionOfObjects.sp_id"];
+    for (int i = 0; i<shipmentAvailable.count; i++) {
+        NSArray *packageID = [shipmentAvailable[i].shipment_package valueForKeyPath:@"@distinctUnionOfObjects.sp_id"];
         [shipmentPackageIDWS addObjectsFromArray:packageID];
     }
     
@@ -59,7 +68,6 @@
             }
         }
     }
-    
     
     return [shipments copy];
 }
