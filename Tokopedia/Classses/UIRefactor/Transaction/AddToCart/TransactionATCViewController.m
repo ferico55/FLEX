@@ -141,8 +141,6 @@
     [self setPlaceholder:PLACEHOLDER_NOTE_ATC textView:_remarkTextView];
     _remarkTextView.delegate = self;
     
-//    [self setDefaultData:_data];
-    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     barButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
     [self.navigationItem setBackBarButtonItem:barButtonItem];
@@ -1066,32 +1064,6 @@ replacementString:(NSString*)string
 {
     [self requestDataCart];
 }
-
-//-(void)setDefaultData:(NSDictionary*)data
-//{
-//    _data = data;
-//    if (data) {
-//        DetailProductResult *result = [_data objectForKey:DATA_DETAIL_PRODUCT_KEY];
-//        NSString *shopName = result.shop_info.shop_name;
-//        [_shopNameLabel setText:shopName animated:YES];
-//        [_productDescriptionLabel setText:result.product.product_name animated:YES];
-//        NSArray *productImages = result.product_images;
-//        if (productImages.count > 0) {
-//            ProductImages *productImage = productImages[0];
-//            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:productImage.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-//            
-//            [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-//                [_productThumbImageView setImage:image animated:YES];
-//            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-//            }];
-//        }
-//
-//        _selectedProduct = result.product;
-//        NSDictionary *insuranceDefault = [ARRAY_INSURACE lastObject];
-//        NSInteger insuranceID = [[insuranceDefault objectForKey:DATA_VALUE_KEY]integerValue];
-//        _insurance = [NSString stringWithFormat:@"%zd",insuranceID];
-//    }
-//}
 
 -(void)setAddress:(AddressFormList*)address
 {
