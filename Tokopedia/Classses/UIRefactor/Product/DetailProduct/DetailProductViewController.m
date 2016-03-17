@@ -3223,6 +3223,12 @@
                                  source:source];
     }
      */
+    [_promoRequest requestForClickURL:[_data objectForKey:PromoClickURL]
+                            onSuccess:^{
+                                
+                            } onFailure:^(NSError *error) {
+                                
+                            }];
 }
 
 - (void)initNoResultView {

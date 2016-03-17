@@ -1260,6 +1260,7 @@ ImageSearchRequestDelegate
         NSDictionary *promoData = @{
             kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
             PromoImpressionKey          : promoResult.ad_ref_key,
+            PromoClickURL               : promoResult.product_click_url,
             PromoRequestSource          : @(source)
         };
 
