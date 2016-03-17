@@ -128,21 +128,7 @@ FavoriteShopRequestDelegate
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
-    //[_promoRequest requestForShopFeed];
-    
-    [_promoRequest requestForProductFeed:^(NSArray<PromoResult *>* result) {
-        _isnodata = NO;
-        if(result == nil){
-            StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
-            [stickyView show];
-        }
-        _promoShops = [NSMutableArray arrayWithArray:result];
-        [_table reloadData];
-    } onFailure:^(NSError * error) {
-        StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
-        [stickyView show];
-    }];
-    
+    [self requestPromoShop];
     _table.tableFooterView = _footer;
     [_act startAnimating];
 }
@@ -358,22 +344,18 @@ FavoriteShopRequestDelegate
 -(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
     [self resetAllState];
     [_table reloadData];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
 }
 
 -(void)failToRequestFavoriteShopListing{
-    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
-    [stickyView show];
+    [self showInternetProblemStickyAlert];
     [_refreshControl endRefreshing];
     [_timer invalidate];
     _timer = nil;
 }
 
 -(void)failToRequestActionButtonFavoriteShopConfirmation{
-    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
-    [stickyView show];
-    
+    [self showInternetProblemStickyAlert];
     [_promoShops insertObject:_selectedPromoShop atIndex:0];
     [_shops removeObjectAtIndex:0];
     
@@ -457,6 +439,7 @@ FavoriteShopRequestDelegate
     
     _table.tableFooterView = nil;
     [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
+    [self requestPromoShop];
 }
 
 #pragma mark - LoadingView Delegate
@@ -511,7 +494,19 @@ FavoriteShopRequestDelegate
 #pragma mark - Request
 
 - (void)requestPromoShop {
-    
+    [_promoRequest requestForProductFeed:^(NSArray<PromoResult *>* result) {
+        _isnodata = NO;
+        if(result == nil) [self showInternetProblemStickyAlert];
+        _promoShops = [NSMutableArray arrayWithArray:result];
+        [_table reloadData];
+    } onFailure:^(NSError * error) {
+        [self showInternetProblemStickyAlert];
+    }];
+}
+
+- (void)showInternetProblemStickyAlert{
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
 }
 
 @end
