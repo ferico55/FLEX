@@ -83,6 +83,7 @@
     BOOL _marksOpenedTalksAsRead;
 
     TokopediaNetworkManager *_talkCommentNetworkManager;
+    TokopediaNetworkManager *_sendCommentNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -155,7 +156,8 @@
     [self adjustSendButtonAvailability];
 
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
-    
+    _sendCommentNetworkManager = [TokopediaNetworkManager new];
+
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _operationSendCommentQueue = [NSOperationQueue new];
@@ -591,6 +593,10 @@
 }
 
 - (void)tapErrorComment {
+    [self sendComment];
+}
+
+- (void)sendComment {
     [self configureSendCommentRestkit];
     [self addProductCommentTalk];
 }
@@ -702,8 +708,7 @@
 
             //connect action to web service
             _savedComment = _growingtextview.text;
-            [self configureSendCommentRestkit];
-            [self addProductCommentTalk];
+            [self sendComment];
 
             _growingtextview.text = nil;
             [self adjustSendButtonAvailability];
@@ -746,39 +751,28 @@
 }
 
 -(void)addProductCommentTalk{
-    
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIADDCOMMENTTALK,
                             TKPD_TALK_ID:[_data objectForKey:TKPD_TALK_ID],
                             kTKPDTALKCOMMENT_APITEXT:_growingtextview.text,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
-    
-    _requestactioncount ++;
-    _requestSendComment = [_objectSendCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
-    
-    
-    [_requestSendComment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestactionsuccess:mappingResult withOperation:operation];
-        [_table reloadData];
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
 
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    }];
-    
-    [_operationSendCommentQueue addOperation:_requestSendComment];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
+    [_sendCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                              path:kTKPDACTIONTALK_APIPATH
+                                            method:RKRequestMethodPOST
+                                         parameter:param
+                                           mapping:[ProductTalkCommentAction mapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             [self requestactionsuccess:successResult withOperation:operation];
+                                             [_table reloadData];
+                                             [_refreshControl endRefreshing];
+                                         }
+                                         onFailure:^(NSError *errorResult) {
+                                             _table.tableFooterView = nil;
+                                             _isrefreshview = NO;
+                                             [_refreshControl endRefreshing];
+                                         }];
 }
 
 - (void)requestactionsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
