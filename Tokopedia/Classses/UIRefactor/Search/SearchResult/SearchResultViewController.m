@@ -86,7 +86,6 @@ SortViewControllerDelegate,
 FilterViewControllerDelegate,
 GeneralPhotoProductDelegate,
 GeneralSingleProductDelegate,
-TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 PromoRequestDelegate,
 PromoCollectionViewDelegate,
@@ -127,7 +126,6 @@ ImageSearchRequestDelegate
     NSInteger _start;
     NSInteger _limit;
     
-    BOOL _isNeedToRemoveAllObject;
     
     NSMutableDictionary *_params;
     NSString *_urinext;
@@ -180,22 +178,10 @@ ImageSearchRequestDelegate
 }
 
 #pragma mark - Life Cycle
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-//    [_networkManager requestCancel];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-    
     _userManager = [UserAuthentificationManager new];
-    _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
@@ -511,13 +497,11 @@ ImageSearchRequestDelegate
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
     _isrefreshview = YES;
-    _isNeedToRemoveAllObject = YES;
     _urinext = nil;
     
     [_refreshControl beginRefreshing];
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
-//    [_networkManager doRequest];
     [self requestSearch];
     
     [_act startAnimating];
@@ -620,14 +604,12 @@ ImageSearchRequestDelegate
 #pragma mark - Filter Delegate
 -(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
     [_params addEntriesFromDictionary:userInfo];
-    _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
 }
 
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     [_params setObject:sort forKey:@"order_by"];
-    _isNeedToRemoveAllObject = YES;
     
     if([[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
         [self restoreSimilarity];
@@ -655,11 +637,9 @@ ImageSearchRequestDelegate
 
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification {
-    //    [_product removeAllObjects];
     [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"department_id"];
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
-    _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
 }
 
@@ -875,11 +855,8 @@ ImageSearchRequestDelegate
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
-    if(_isNeedToRemoveAllObject) {
-        [_product removeAllObjects];
-        [_promo removeAllObjects];
-        _isNeedToRemoveAllObject = NO;
-    }
+    [_product removeAllObjects];
+    [_promo removeAllObjects];
 }
 
 
@@ -935,14 +912,7 @@ ImageSearchRequestDelegate
     SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
     _searchObject = search;
     
-    [_noResultView removeFromSuperview];
-    [_firstFooter removeFromSuperview];
-    
-    if(_isNeedToRemoveAllObject) {
-        [_product removeAllObjects];
-        [_promo removeAllObjects];
-        _isNeedToRemoveAllObject = NO;
-    }
+    [self reloadView];
     
     if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
         [_delegate updateCategories:search.result.breadcrumb];
