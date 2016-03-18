@@ -187,11 +187,11 @@
                            @"is_from_cart":@"1"
                            };
     
-    [network requestWithBaseUrl:@"https://ws.tokopedia.com/ws"
+    [network requestWithBaseUrl:@"https://ws.tokopedia.com"
                            path:@"/v4/action/people/edit_address.pl"
                          method:RKRequestMethodGET
                       parameter:param
-                        mapping:[RequestObjectEditAddress mapping]
+                        mapping:[ProfileSettings mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
 
                           ProfileSettings *setting = [successResult.dictionary objectForKey:@""];
