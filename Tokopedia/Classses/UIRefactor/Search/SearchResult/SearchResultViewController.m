@@ -309,8 +309,6 @@ ImageSearchRequestDelegate
     
     
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.isParameterNotEncrypted = YES;
     _networkManager.isUsingHmac = YES;
     
     if(_isFromImageSearch){
@@ -320,7 +318,8 @@ ImageSearchRequestDelegate
         [_fourButtonsToolbar setUserInteractionEnabled:NO];
         [_threeButtonsToolbar setUserInteractionEnabled:YES];
     }else{
-        [_networkManager doRequest];
+        [self requestSearch];
+        
         [_fourButtonsToolbar setHidden:NO];
         [_threeButtonsToolbar setHidden:YES];
         [_fourButtonsToolbar setUserInteractionEnabled:YES];
@@ -414,7 +413,8 @@ ImageSearchRequestDelegate
     if (indexPath.section == section && indexPath.row == row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
             _isFailRequest = NO;
-            [_networkManager doRequest];
+
+            [self requestSearch];
         }
     }
     
@@ -516,7 +516,8 @@ ImageSearchRequestDelegate
     [_refreshControl beginRefreshing];
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
-    [_networkManager doRequest];
+//    [_networkManager doRequest];
+    [self requestSearch];
     
     [_act startAnimating];
 }
@@ -663,13 +664,14 @@ ImageSearchRequestDelegate
 
 #pragma mark - LoadingView Delegate
 - (IBAction)pressRetryButton:(id)sender {
-    [_networkManager doRequest];
+//    [_networkManager doRequest];
+    [self requestSearch];
     _isFailRequest = NO;
     [_collectionView reloadData];
 }
 
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag {
+- (NSDictionary*)getParameter {
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
@@ -709,37 +711,51 @@ ImageSearchRequestDelegate
     return strResult;
 }
 
-- (NSString*)getPath:(int)tag{
+
+#pragma mark - requestWithBaseUrl
+- (void)requestSearch {
+    [_networkManager requestWithBaseUrl:[self getBaseUrl]
+                                   path:[self getPath]
+                                 method:RKRequestMethodGET
+                              parameter:[self getParameter]
+                                mapping:[self mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self actionAfterRequest:successResult withOperation:operation];
+                              } onFailure:^(NSError *errorResult) {
+                                  [self actionFailAfterRequest:errorResult];
+                              }];
+}
+
+- (NSString*)getPath {
     NSString *pathUrl;
     if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && !([_params objectForKey:@"order_by"])) {
         pathUrl = @"/v4/search/snapsearch.pl";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
-        pathUrl = @"search/v1/catalog";
+        pathUrl = @"/search/v1/catalog";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_shop"]) {
-        pathUrl = @"search/v1/shop";
+        pathUrl = @"/search/v1/shop";
     } else {
-        pathUrl = @"search/v1/product";
+        pathUrl = @"/search/v1/product";
     }
     return pathUrl;
 }
 
-- (id)getObjectManager:(int)tag {
+- (id)getBaseUrl {
+    NSString *baseUrl;
     if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
-        _objectmanager = [RKObjectManager sharedClientHttps];
-        [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
+        baseUrl = @"https://ws.tokopedia.com";
     } else {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
-        [_objectmanager addResponseDescriptor:[self searchResponseDescriptor]];
+        baseUrl = @"https://ace.tokopedia.com";
     }
-    return _objectmanager;
+    return baseUrl;
 }
 
-- (RKResponseDescriptor *)imageSearchResponseDescriptor {
+- (RKObjectMapping*)imageSearchMapping {
     RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ImageSearchResponse class]];
     [responseMapping addAttributeMappingsFromArray:@[@"status", @"config"]];
     
     RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ImageSearchResponseData class]];
-
+    
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
     [productMapping addAttributeMappingsFromArray:@[@"shop_lucky",
                                                     @"shop_id",
@@ -761,17 +777,15 @@ ImageSearchRequestDelegate
                                                     @"condition",
                                                     @"product_name",
                                                     @"product_url"]];
-
+    
     [responseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping]];
     
     [dataMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"similar_prods" toKeyPath:@"similar_prods" withMapping:productMapping]];
     
-    RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodGET pathPattern:@"/v4/search/snapsearch.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    return descriptor;
+    return responseMapping;
 }
 
-- (RKResponseDescriptor *)searchResponseDescriptor {
+- (RKObjectMapping *)searchMapping {
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
@@ -806,39 +820,43 @@ ImageSearchRequestDelegate
     [resultMapping addPropertyMapping:pageRel];
     
     NSDictionary *categoryAttributeMappings = @{
-        @"d_id" : @"categoryId",
-        @"title" : @"name",
-        @"tree" : @"tree",
-        @"href" : @"url",
-    };
-
+                                                @"d_id" : @"categoryId",
+                                                @"title" : @"name",
+                                                @"tree" : @"tree",
+                                                @"href" : @"url",
+                                                };
+    
     RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
     [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-
+    
     RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
     [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-
+    
     RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
     [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-
+    
     // Adjust Relationship
     RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
     [resultMapping addPropertyMapping:categoryRelationship];
-
+    
     RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
     [categoryMapping addPropertyMapping:childCategoryRelationship];
-
+    
     RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
     [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
-
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:[self didReceiveRequestMethod:nil]
-                                                                                       pathPattern:[_searchPostUrl isEqualToString:@""] ? [self getPath:nil] : _searchPostUrl
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    return responseDescriptor;
+    return statusMapping;
+
+}
+
+- (RKObjectMapping*)mapping {
+    RKObjectMapping* mapping;
+    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
+        mapping = [self imageSearchMapping];
+    } else {
+        mapping = [self searchMapping];
+    }
+    return mapping;
 }
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag {
@@ -873,7 +891,7 @@ ImageSearchRequestDelegate
     }
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation {
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
@@ -1153,7 +1171,7 @@ ImageSearchRequestDelegate
     return [queries objectForKey:@"start"];
 }
 
-- (void)actionAfterFailRequestMaxTries:(int)tag {
+- (void)actionFailAfterRequest:(id)errorResult  {
     _isrefreshview = NO;
     _isFailRequest = YES;
     [_collectionView reloadData];
@@ -1179,7 +1197,8 @@ ImageSearchRequestDelegate
     _data = newData;
     self.title = _suggestion;
     
-    [_networkManager doRequest];
+//    [_networkManager doRequest];
+    [self requestSearch];
 }
 
 #pragma mark - Other Method
@@ -1303,7 +1322,8 @@ ImageSearchRequestDelegate
 #pragma mark - ImageSearchRequest Delegate
 -(void)didReceiveUploadedImageURL:(NSString *)imageURL{
     _image_url = imageURL;
-    [_networkManager doRequest];
+//    [_networkManager doRequest];
+    [self requestSearch];
 }
 
 - (void)orientationChanged:(NSNotification*)note {
