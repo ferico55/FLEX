@@ -82,8 +82,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *phoneLabel;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
-@property (strong, nonatomic) IBOutlet UIView *footer;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *borderFullAddress;
 @property (weak, nonatomic) IBOutlet UIImageView *mapImageView;
 
@@ -135,7 +133,9 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    [self requestDataCart];
+    [_refreshControl beginRefreshing];
+    [self refreshView];
+    [self.tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
     _buyButton.hidden = YES;
     
@@ -147,9 +147,10 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
     [_messageZeroShipmentLabel setCustomAttributedText:_messageZeroShipmentLabel.text];
-    
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
+}
+
+-(void)refreshView{
+    [self requestFormWithAddressID:@""];
 }
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
@@ -196,6 +197,7 @@
     editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];;
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
+                              isFromCart:@"0"
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
@@ -220,11 +222,9 @@
     }
 }
 
--(void)requestDataCart{
+-(void)requestFormWithAddressID:(NSString*)addressID{
     
     [self adjustViewIsLoading:YES];
-    
-    NSString *addressID = [NSString stringWithFormat:@"%zd",_selectedAddress.address_id];
     
     [RequestATC fetchFormProductID:_productID
                          addressID:addressID
@@ -235,8 +235,6 @@
                                
                                [self setProduct:_ATCForm.form.product_detail];
                                [self setAddress:_ATCForm.form.destination];
-                               [self adjustViewIsLoading:NO];
-
                                [self setPlacePicker];
                                [self requestRate];
                                
@@ -252,8 +250,6 @@
     } else {
         _isFinishRequesting = YES;
         [_refreshControl endRefreshing];
-        _tableView.tableFooterView = nil;
-        [_act stopAnimating];
         [self buyButtonIsLoading:NO];
         _buyButton.hidden = NO;
     }
@@ -277,7 +273,6 @@
 }
 
 -(void)requestRate{
-    [self adjustViewIsLoading:YES];
     
     AddressFormList *address = _selectedAddress;
     
@@ -383,11 +378,9 @@
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryDisclosureIndicator isLoading:!_isFinishRequesting];
                         
                         label.text = address.address_name;
-                        _borderFullAddress.hidden = YES;
                         if ([address.address_name isEqualToString:@"0"])
                         {
                             label.text= @"Tambah Alamat";
-                            _borderFullAddress.hidden = NO;
                         }
                         break;
                     }
@@ -798,9 +791,8 @@
         [self requestAddAddress:address];
         return;
     }
-    [self setAddress:address];
-    [self refreshView];
-    [_tableView reloadData];
+    NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
+    [self requestFormWithAddressID:addressID];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -808,11 +800,12 @@
     [self adjustViewIsLoading:YES];
     
     [RequestAddAddress fetchAddAddress:address
+                            isFromCart:@"0"
                                success:^(ProfileSettingsResult *data, AddressFormList *address) {
                                    
                                    [self adjustViewIsLoading:NO];
-                                   [self setAddress:address];
-                                   [self refreshView];
+                                   NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
+                                   [self requestFormWithAddressID:addressID];
                                    
                                } failure:^(NSError *error) {
                                    
@@ -877,11 +870,6 @@ replacementString:(NSString*)string
 
 
 #pragma mark - Methods
-
--(void)refreshView
-{
-    [self requestDataCart];
-}
 
 -(void)setProduct:(ProductDetail*)product{
     _selectedProduct = product;
