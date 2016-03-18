@@ -155,7 +155,7 @@
 {
 }
 
-+(void)fetchAddAddress:(AddressFormList*)address success:(void(^)(ProfileSettingsResult* data, AddressFormList* address))success failure:(void(^)(NSError *error))failure{
++(void)fetchAddAddress:(AddressFormList*)address isFromCart:(NSString*)isFromCart success:(void(^)(ProfileSettingsResult* data, AddressFormList* address))success failure:(void(^)(NSError *error))failure{
     
     NSString *action = @"edit_address";
     NSString *addressid = [NSString stringWithFormat:@"%zd",address.address_id?:0];
@@ -186,7 +186,7 @@
                            @"district" : district,
                            @"longitude": longitude,
                            @"latitude": latitude,
-                           @"is_from_cart":@"1"
+                           @"is_from_cart":isFromCart
                            };
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];

@@ -150,7 +150,7 @@
 {
 }
 
-+(void)fetchEditAddress:(AddressFormList*)address success:(void(^)(ProfileSettingsResult* data))success failure:(void(^)(NSError* error))failure{
++(void)fetchEditAddress:(AddressFormList*)address isFromCart:(NSString*)isFromCart success:(void(^)(ProfileSettingsResult* data))success failure:(void(^)(NSError* error))failure{
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
     network.isUsingHmac = YES;
@@ -184,7 +184,7 @@
                            @"district" : district,
                            @"longitude": longitude,
                            @"latitude": latitude,
-                           @"is_from_cart":@"1"
+                           @"is_from_cart":isFromCart
                            };
     
     [network requestWithBaseUrl:@"https://ws.tokopedia.com"
