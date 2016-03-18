@@ -1074,10 +1074,6 @@
     [self requestProcessActionDelete:object];
 }
 
-- (void)requestTimeoutDeleteComment {
-    [self cancelActionDelete];
-}
-
 #pragma mark - Report Delegate
 - (NSDictionary *)getParameter {
     return @{
