@@ -983,21 +983,9 @@
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationRight];
     [_table endUpdates];
-    [self configureDeleteCommentRestkit];
     [self doDeleteCommentTalk:_datainput];
     [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
     [_table reloadData];
-}
-
-
-- (void)configureDeleteCommentRestkit {
-    _objectDeleteCommentManager =  [RKObjectManager sharedClient];
-
-    RKObjectMapping *statusMapping = [GeneralAction mapping];
-
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDACTIONTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectDeleteCommentManager addResponseDescriptor:responseDescriptorStatus];
 }
 
 - (void)doDeleteCommentTalk:(id)object {
