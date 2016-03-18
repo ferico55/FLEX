@@ -247,6 +247,7 @@
     if (isLoading) {
         _isFinishRequesting = NO;
         [self buyButtonIsLoading:YES];
+        [_tableView reloadData];
     } else {
         _isFinishRequesting = YES;
         [_refreshControl endRefreshing];
@@ -578,14 +579,10 @@
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
             {
-                NSMutableArray *autoResiImage = [NSMutableArray new];
-                for (RateAttributes *package in _shipments) {
-                    if (package.auto_resi_image != nil) {
-                        [autoResiImage addObject:package.auto_resi_image];
-                    }
-                }
-                NSArray *shipmentName = [_shipments valueForKeyPath:@"@distinctUnionOfObjects.shipper_name"];
 
+                NSArray *shipmentName = [_shipments valueForKeyPath:@"@unionOfObjects.shipper_name"];
+                NSArray *autoResiImage = [_shipments valueForKeyPath:@"@unionOfObjects.auto_resi_image"];
+                
                 TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
                 vc.title = @"Kurir Pengiriman";
                 vc.selectedObject = _selectedShipment.shipper_name;
@@ -599,7 +596,7 @@
             }
             case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
             {
-                NSArray *shipmentPackagesName = [_selectedShipment.products valueForKeyPath:@"@distinctUnionOfObjects.shipper_product_name"];
+                NSArray *shipmentPackagesName = [_selectedShipment.products valueForKeyPath:@"@unionOfObjects.shipper_product_name"];
 
                 GeneralTableViewController *vc = [GeneralTableViewController new];
                 vc.title = @"Paket Pengiriman";
