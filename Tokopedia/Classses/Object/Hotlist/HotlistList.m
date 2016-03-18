@@ -11,6 +11,17 @@
 
 @implementation HotlistList
 
+
++(RKObjectMapping *)mapping{
+    RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[HotlistList class]];
+    [hotlistMapping addAttributeMappingsFromArray:@[@"url",
+                                                    @"image_url_600",
+                                                    @"image_url",
+                                                    @"price_start",
+                                                    @"title"]];
+    return hotlistMapping;
+}
+
 -(HotlistViewModel *)viewModel
 {
     if(_viewModel == nil) {

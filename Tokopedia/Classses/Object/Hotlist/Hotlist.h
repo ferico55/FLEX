@@ -19,4 +19,6 @@
 - (void) encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;
 
++ (RKObjectMapping*)mapping;
+
 @end

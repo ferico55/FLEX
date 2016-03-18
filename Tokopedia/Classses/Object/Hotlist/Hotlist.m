@@ -12,6 +12,15 @@
 
 #pragma mark NSCoding
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
+    [statusMapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
+                                                                                  toKeyPath:@"result"
+                                                                                withMapping:[HotlistResult mapping]]];
+    return statusMapping;
+}
+
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:_status forKey:kTKPD_APISTATUSKEY];
     [encoder encodeObject:_server_process_time forKey:kTKPD_APISERVERPROCESSTIMEKEY];

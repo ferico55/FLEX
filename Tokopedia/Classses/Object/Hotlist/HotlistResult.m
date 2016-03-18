@@ -11,6 +11,17 @@
 
 @implementation HotlistResult
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistResult class]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
+                                                                                  toKeyPath:@"list"
+                                                                                withMapping:[HotlistList mapping]]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging"
+                                                                                  toKeyPath:@"paging"
+                                                                                withMapping:[Paging mapping]]];
+    return resultMapping;
+}
+
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:_list forKey:kTKPDHOME_APILISTKEY];
     [encoder encodeObject:_paging forKey:kTKPDHOME_APIPAGINGKEY];

@@ -19,4 +19,6 @@
 
 @property (nonatomic, strong) HotlistViewModel *viewModel;
 
+
++(RKObjectMapping*)mapping;
 @end
