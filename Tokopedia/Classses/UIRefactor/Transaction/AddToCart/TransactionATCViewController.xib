@@ -1007,6 +1007,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrZ-ED-WHQ">
                     <rect key="frame" x="15" y="0.0" width="290" height="70"/>
                     <animations/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" red="0.7843137255" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
