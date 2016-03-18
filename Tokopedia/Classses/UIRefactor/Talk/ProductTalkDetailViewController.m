@@ -822,10 +822,6 @@
     }
 }
 
-- (void)requestactionfailure:(id)error {
-    
-}
-
 -(void) keyboardWillShow:(NSNotification *)note{
     // get keyboard size and loctaion
     CGRect keyboardBounds;
