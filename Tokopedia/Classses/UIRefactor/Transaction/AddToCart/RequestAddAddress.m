@@ -190,8 +190,9 @@
                            };
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
+    network.isUsingHmac = YES;
     
-    [network requestWithBaseUrl:kTkpdBaseURLString
+    [network requestWithBaseUrl:@"https://ws.tokopedia.com"
                            path:@"/v4/action/people/add_address.pl"
                          method:RKRequestMethodGET
                       parameter:param
