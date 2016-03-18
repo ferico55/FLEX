@@ -153,6 +153,7 @@
 +(void)fetchEditAddress:(AddressFormList*)address success:(void(^)(ProfileSettingsResult* data))success failure:(void(^)(NSError* error))failure{
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
+    network.isUsingHmac = YES;
     
     NSString *action = @"edit_address";
     NSString *addressid = [NSString stringWithFormat:@"%zd",address.address_id?:0];
