@@ -29,7 +29,7 @@
 #import "SortViewController.h"
 #import "FilterViewController.h"
 #import "HotlistResultViewController.h"
-#import "TKPDTabNavigationController.h"
+
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 
@@ -81,7 +81,7 @@ UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 GeneralProductCellDelegate,
-TKPDTabNavigationControllerDelegate,
+
 SortViewControllerDelegate,
 FilterViewControllerDelegate,
 GeneralPhotoProductDelegate,
@@ -182,7 +182,7 @@ ImageSearchRequestDelegate
 #pragma mark - Life Cycle
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
+//    [_networkManager requestCancel];
 }
 
 - (void)viewDidLoad {
@@ -310,6 +310,7 @@ ImageSearchRequestDelegate
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    
     
     if(_isFromImageSearch){
         [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
@@ -714,23 +715,20 @@ ImageSearchRequestDelegate
 
 #pragma mark - requestWithBaseUrl
 - (void)requestSearch {
-    [_networkManager requestWithBaseUrl:[self getBaseUrl]
+    [_networkManager requestWithBaseUrl:@"https://ace.tokopedia.com"
                                    path:[self getPath]
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]
-                                mapping:[self mapping]
+                                mapping:[self searchMapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self actionAfterRequest:successResult withOperation:operation];
-                              } onFailure:^(NSError *errorResult) {
-                                  [self actionFailAfterRequest:errorResult];
-                              }];
+                                  [self reloadView];
+                                  [self searchMappingResult:successResult];
+                              } onFailure:nil];
 }
 
 - (NSString*)getPath {
     NSString *pathUrl;
-    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && !([_params objectForKey:@"order_by"])) {
-        pathUrl = @"/v4/search/snapsearch.pl";
-    } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
+    if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
         pathUrl = @"/search/v1/catalog";
     } else if([[_data objectForKey:@"type"] isEqualToString:@"search_shop"]) {
         pathUrl = @"/search/v1/shop";
@@ -740,15 +738,6 @@ ImageSearchRequestDelegate
     return pathUrl;
 }
 
-- (id)getBaseUrl {
-    NSString *baseUrl;
-    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
-        baseUrl = @"https://ws.tokopedia.com";
-    } else {
-        baseUrl = @"https://ace.tokopedia.com";
-    }
-    return baseUrl;
-}
 
 - (RKObjectMapping*)imageSearchMapping {
     RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ImageSearchResponse class]];
@@ -849,15 +838,6 @@ ImageSearchRequestDelegate
 
 }
 
-- (RKObjectMapping*)mapping {
-    RKObjectMapping* mapping;
-    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
-        mapping = [self imageSearchMapping];
-    } else {
-        mapping = [self searchMapping];
-    }
-    return mapping;
-}
 
 - (NSString*)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
@@ -891,7 +871,7 @@ ImageSearchRequestDelegate
     }
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation {
+- (void)reloadView {
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
@@ -900,13 +880,8 @@ ImageSearchRequestDelegate
         [_promo removeAllObjects];
         _isNeedToRemoveAllObject = NO;
     }
-    
-    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
-        [self imageSearchMappingResult:successResult];
-    } else {
-        [self searchMappingResult:successResult];
-    }
 }
+
 
 - (void)imageSearchMappingResult:(RKMappingResult *)mappingResult {
     ImageSearchResponse *search = [mappingResult.dictionary objectForKey:@""];
@@ -1171,18 +1146,6 @@ ImageSearchRequestDelegate
     return [queries objectForKey:@"start"];
 }
 
-- (void)actionFailAfterRequest:(id)errorResult  {
-    _isrefreshview = NO;
-    _isFailRequest = YES;
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-    [_refreshControl endRefreshing];
-}
-
-- (int)didReceiveRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
 #pragma mark - No Result Delegate
 
 - (void) buttonDidTapped:(id)sender{
@@ -1322,8 +1285,16 @@ ImageSearchRequestDelegate
 #pragma mark - ImageSearchRequest Delegate
 -(void)didReceiveUploadedImageURL:(NSString *)imageURL{
     _image_url = imageURL;
-//    [_networkManager doRequest];
-    [self requestSearch];
+
+    [_networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                   path:@"/v4/search/snapsearch.pl"
+                                 method:RKRequestMethodGET
+                              parameter:[self getParameter]
+                                mapping:[self imageSearchMapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self reloadView];
+                                  [self imageSearchMappingResult:successResult];
+                              } onFailure:nil];
 }
 
 - (void)orientationChanged:(NSNotification*)note {
