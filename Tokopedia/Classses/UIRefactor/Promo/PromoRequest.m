@@ -356,6 +356,27 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
                               }];
 }
 
+- (void)requestForProductHotlist:(NSString *)hotlistId department:(NSString *)department page:(NSInteger)page onSuccess:(void (^)(NSArray<PromoResult *> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
+                                   path:@"/promo/v1/display/products"
+                                 method:RKRequestMethodGET
+                              parameter:@{@"item":@"4",
+                                          @"src":@"hotlist",
+                                          @"page":@(page),
+                                          @"dep_id":department,
+                                          @"h":hotlistId
+                                          }
+                                mapping:[PromoResponse mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  PromoResponse *response = [[successResult dictionary] objectForKey:@""];
+                                  successCallback(response.data);
+                              } onFailure:^(NSError *errorResult) {
+                                  errorCallback(errorResult);
+                              }];
+}
+
 - (void)requestForClickURL:(NSString *)clickURL
                  onSuccess:(void (^)(void))successCallback
                  onFailure:(void (^)(NSError *))errorCallback{

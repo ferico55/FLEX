@@ -48,6 +48,13 @@ typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
              referralKey:(NSString *)referralKey
                   source:(PromoRequestSourceType)source;
 
+- (void)requestForProductHotlist:(NSString *)hotlistId
+                      department:(NSString *)department
+                            page:(NSInteger)page
+                       onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback
+                       onFailure:(void (^)(NSError *))errorCallback;
+
+
 - (void)requestForProductFeed:(void (^)(NSArray<PromoResult*> *))successCallback
                     onFailure:(void (^)(NSError *))errorCallback;
 

@@ -151,12 +151,13 @@ RetryViewDelegate
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
-    [self initCacheHotlist];
-    if([self getFromCache] && _page == 1) {
-        [_networkManager requestSuccess:[self getFromCache] withOperation:nil];
-    } else {
-        [_networkManager doRequest];
-    }
+    //[self initCacheHotlist];
+    //if([self getFromCache] && _page == 1) {
+     //   [_networkManager requestSuccess:[self getFromCache] withOperation:nil];
+    //} else {
+        //[_networkManager doRequest];
+    //}
+    [self requestHotlistListing];
     
     UINib *cellNib = [UINib nibWithNibName:@"HotlistCollectionCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"HotlistCollectionCellIdentifier"];
@@ -194,14 +195,14 @@ RetryViewDelegate
     if(_timeinterval > _cacheController.URLCacheInterval) {
         _page = 1;
         _isNeedToRemoveAllObject = YES;
-        [_networkManager doRequest];
+        [self requestHotlistListing];
         _collectionView.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
     }
     
     [self initNotificationManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
-    [self doRequestNotify];
+    //[self doRequestNotify];
 }
 
 - (void) setTableInset {
@@ -243,7 +244,7 @@ RetryViewDelegate
     if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             _isFailRequest = NO;
-            [_networkManager doRequest];
+            [self requestHotlistListing];
         }
     }
     
@@ -385,6 +386,52 @@ RetryViewDelegate
 
 #pragma mark - Methods
 
+- (void)requestHotlistListing{
+    
+    [_networkManager requestWithBaseUrl:@"http://staging.tokopedia.com"
+                                   path:@"/ws/home.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:@{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
+                                          kTKPDHOME_APIPAGEKEY   :   @(_page),
+                                          kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE),
+                                          }
+                                mapping:[Hotlist mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                  Hotlist *hotlist = [result objectForKey:@""];
+                                  
+                                  if(_refreshControl.isRefreshing) {
+                                      [_refreshControl endRefreshing];
+                                  }
+                                  
+                                  if(_isNeedToRemoveAllObject) {
+                                      [_product removeAllObjects];
+                                      _isNeedToRemoveAllObject = NO;
+                                  }
+                                  
+                                  [_product addObjectsFromArray: hotlist.result.list];
+                                  
+                                  if (_product.count >0) {
+                                      _isnodata = NO;
+                                      _urinext =  hotlist.result.paging.uri_next;
+                                      _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+                                  }
+                                  
+                                  if((_page - 1) == 1) {
+                                      [self setToCache:operation];
+                                  }
+                                  
+                                  _isFailRequest = NO;
+                                  
+                                  [_collectionView reloadData];
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  [_refreshControl endRefreshing];
+                                  _isFailRequest = YES;
+                                  [_collectionView reloadData];
+                              }];
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     _page = 1;
@@ -392,7 +439,7 @@ RetryViewDelegate
     _isNeedToRemoveAllObject = YES;
     
     [_collectionView reloadData];
-    [_networkManager doRequest];
+    [self requestHotlistListing];
 }
 
 #pragma mark - Tokopedia Network Manager
@@ -412,7 +459,8 @@ RetryViewDelegate
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectmanager = [RKObjectManager sharedClient];
+    //_objectmanager = [RKObjectManager sharedClient];
+    _objectmanager = [RKObjectManager sharedClient:@"http://staging.tokopedia.com/ws"];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
@@ -561,7 +609,7 @@ RetryViewDelegate
     _isFailRequest = NO;
     [_collectionView reloadData];
     _table.tableFooterView = _footer;
-    [_networkManager doRequest];
+    [self requestHotlistListing];
 }
 
 #pragma mark - Delegate
