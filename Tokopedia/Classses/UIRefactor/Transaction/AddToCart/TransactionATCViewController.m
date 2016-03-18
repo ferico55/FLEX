@@ -63,9 +63,8 @@
     TransactionATCFormResult *_ATCForm;
     
     NSArray<RateAttributes*> *_shipments;
-    NSArray *_autoResi;
-    
 }
+
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBuyButton;
