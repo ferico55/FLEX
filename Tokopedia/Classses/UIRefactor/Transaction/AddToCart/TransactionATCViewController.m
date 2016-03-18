@@ -192,6 +192,10 @@
 -(void)doRequestEditAddress:(GMSAddress *)address longitude:(double)longitude latitude:(double)latitude{
     
     [self adjustViewIsLoading:YES];
+    AddressFormList *editedAddress = _selectedAddress;
+    editedAddress.latitude = [[NSNumber numberWithDouble:latitude] stringValue];;
+    editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];;
+    
     [RequestEditAddress fetchEditAddress:_selectedAddress
                                  success:^(ProfileSettingsResult *data) {
                                      
@@ -439,7 +443,7 @@
                         
                         NSNumber *price = [NSNumber numberWithInteger:(productPrice/qty)];
                         NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
-                        label.text = [NSString stringWithFormat:@"Rp %@",priceString];
+                        label.text = priceString;
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
@@ -589,7 +593,7 @@
                     }
                 }
                 NSArray *shipmentName = [_shipments valueForKeyPath:@"@distinctUnionOfObjects.shipper_name"];
-                
+
                 TransactionShipmentATCTableViewController *vc = [TransactionShipmentATCTableViewController new];
                 vc.title = @"Kurir Pengiriman";
                 vc.selectedObject = _selectedShipment.shipper_name;
@@ -604,7 +608,7 @@
             case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
             {
                 NSArray *shipmentPackagesName = [_selectedShipment.products valueForKeyPath:@"@distinctUnionOfObjects.shipper_product_name"];
-                
+
                 GeneralTableViewController *vc = [GeneralTableViewController new];
                 vc.title = @"Paket Pengiriman";
                 vc.selectedObject = _selectedShipmentPackage.shipper_product_name;
@@ -882,7 +886,7 @@ replacementString:(NSString*)string
 
 -(void)setProduct:(ProductDetail*)product{
     _selectedProduct = product;
-    _productQuantityTextField.text = _selectedProduct.product_min_order?:@"1";
+    _productQuantityTextField.text = ([_productQuantityTextField.text integerValue]!=0)?_productQuantityTextField.text:_selectedProduct.product_min_order?:@"1";
     [_productDescriptionLabel setText:_selectedProduct.product_name];
 }
 
