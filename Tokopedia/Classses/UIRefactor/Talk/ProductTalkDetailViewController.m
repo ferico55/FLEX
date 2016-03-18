@@ -80,6 +80,7 @@
 
     TokopediaNetworkManager *_talkCommentNetworkManager;
     TokopediaNetworkManager *_sendCommentNetworkManager;
+    TokopediaNetworkManager *_deleteCommentNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -153,6 +154,7 @@
 
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
+    _deleteCommentNetworkManager = [TokopediaNetworkManager new];
 
     _list = [NSMutableArray new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
@@ -990,63 +992,42 @@
 
 - (void)configureDeleteCommentRestkit {
     _objectDeleteCommentManager =  [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
 
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
+    RKObjectMapping *statusMapping = [GeneralAction mapping];
+
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDACTIONTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectDeleteCommentManager addResponseDescriptor:responseDescriptorStatus];
 }
 
 - (void)doDeleteCommentTalk:(id)object {
-    if(_requestDeleteComment.isExecuting) return;
-    
-    _requestDeleteCommentCount++;
-
     NSDictionary *param = @{
-                            @"action" : @"delete_comment_talk",
-                            @"product_id" : [_datainput objectForKey:@"product_id"],
-                            @"comment_id" : [_datainput objectForKey:@"comment_id"],
-                            @"shop_id" : [_data objectForKey:@"talk_shop_id"],
-                            @"talk_id" : [_data objectForKey:@"talk_id"]
-                            };
-    
-    _requestDeleteComment = [_objectDeleteCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
-    
-    [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%lu Komentar", (unsigned long)[_list count]] forState:UIControlStateNormal];
-    
-    [_requestDeleteComment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessDeleteComment:mappingResult withOperation:operation];
-        
-        [_table reloadData];
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
- 
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        
-        [self requestFailureDeleteComment:error];
-    }];
-    
-    [_operationDeleteCommentQueue addOperation:_requestDeleteComment];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutDeleteComment) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+            @"action" : @"delete_comment_talk",
+            @"product_id" : [_datainput objectForKey:@"product_id"],
+            @"comment_id" : [_datainput objectForKey:@"comment_id"],
+            @"shop_id" : [_data objectForKey:@"talk_shop_id"],
+            @"talk_id" : [_data objectForKey:@"talk_id"]
+    };
+
+    [_deleteCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                                path:kTKPDACTIONTALK_APIPATH
+                                              method:RKRequestMethodPOST
+                                           parameter:param
+                                             mapping:[GeneralAction mapping]
+                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                               [self requestSuccessDeleteComment:successResult withOperation:operation];
+
+                                               [_table reloadData];
+                                               [_refreshControl endRefreshing];
+                                           }
+                                           onFailure:^(NSError *errorResult) {
+                                               [_act stopAnimating];
+                                               _table.hidden = NO;
+                                               _isrefreshview = NO;
+                                               [_refreshControl endRefreshing];
+
+                                               [self requestFailureDeleteComment:errorResult];
+                                           }];
 }
 
 - (void)requestSuccessDeleteComment:(id)object withOperation:(RKObjectRequestOperation *)operation {
