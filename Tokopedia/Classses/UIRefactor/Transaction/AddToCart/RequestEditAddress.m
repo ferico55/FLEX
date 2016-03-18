@@ -187,7 +187,7 @@
                            @"is_from_cart":@"1"
                            };
     
-    [network requestWithBaseUrl:kTkpdBaseURLString
+    [network requestWithBaseUrl:@"https://ws.tokopedia.com/ws"
                            path:@"/v4/action/people/edit_address.pl"
                          method:RKRequestMethodGET
                       parameter:param
