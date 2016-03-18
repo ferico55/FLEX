@@ -51,6 +51,7 @@
                                  
                              } onFailure:^(NSError *errorResult) {
                                  [StickyAlertView showNetworkError:errorResult];
+                                 error(errorResult);
                              }];
 }
 

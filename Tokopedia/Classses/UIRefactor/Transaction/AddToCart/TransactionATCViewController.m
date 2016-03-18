@@ -237,7 +237,7 @@
                                [self setAddress:_ATCForm.form.destination];
                                [self setPlacePicker];
                                [self requestRate];
-                               
+                               [_tableView reloadData];
                            } failed:^(NSError *error) {
                                [self adjustViewIsLoading:NO];
                            }];
@@ -252,7 +252,7 @@
         _isFinishRequesting = YES;
         [_refreshControl endRefreshing];
         [self buyButtonIsLoading:NO];
-        _buyButton.hidden = NO;
+        _buyButton.hidden = _isnodata;
     }
 }
 
@@ -302,6 +302,11 @@
                               [_tableView reloadData];
                               
                           } onFailure:^(NSError *errorResult) {
+                              if (_selectedAddress.address_id != 0) {
+                                  _tableView.tableHeaderView = _messageZeroShipmentView;
+                              } else{
+                                      _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+                              }
                               [self adjustViewIsLoading:NO];
                           }];
 }
@@ -379,8 +384,10 @@
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryDisclosureIndicator isLoading:!_isFinishRequesting];
                         
                         label.text = address.address_name;
+                        _borderFullAddress.hidden = YES;
                         if ([address.address_name isEqualToString:@"0"])
                         {
+                            _borderFullAddress.hidden = NO;
                             label.text= @"Tambah Alamat";
                         }
                         break;
@@ -877,11 +884,6 @@ replacementString:(NSString*)string
 -(void)setAddress:(AddressFormList*)address
 {
     _selectedAddress = address;
-    
-    if (![address.address_name isEqualToString:@"0"] && [_ATCForm.form.available_count integerValue] == 0)
-        _tableView.tableHeaderView = _messageZeroShipmentView;
-    else
-        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
     
     NSString *street = ([address.address_street isEqualToString:@"0"] || !address.address_street)?@"":address.address_street;
     NSString *districtName = ([address.district_name isEqualToString:@"0"] || !address.district_name)?@"":address.district_name;

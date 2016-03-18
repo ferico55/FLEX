@@ -52,6 +52,7 @@
             <connections>
                 <outlet property="actBuyButton" destination="guT-MQ-tD1" id="0m3-zF-bT8"/>
                 <outlet property="addressLabel" destination="bk2-Tr-a8Z" id="7eh-z0-BKv"/>
+                <outlet property="borderFullAddress" destination="IfS-dh-V7H" id="6ev-3f-x1k"/>
                 <outlet property="buyButton" destination="ZND-e2-NEY" id="Hzm-Ug-aPG"/>
                 <outlet property="mapImageView" destination="mVJ-c3-iyT" id="6xo-Ku-nch"/>
                 <outlet property="messageZeroShipmentLabel" destination="ZrZ-ED-WHQ" id="zkj-XQ-7HH"/>
