@@ -519,57 +519,31 @@
     [_talkCommentNetworkManager requestCancel];
 }
 
--(void) requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    _talkcomment = stats;
-    BOOL status = [_talkcomment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestprocess:object];
-    }
-}
+- (void)onReceiveComment:(TalkComment *)comment {
+    _talkcomment = comment;
 
--(void)requestprocess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            
-            id stats = [result objectForKey:@""];
-            
-            _talkcomment = stats;
-            BOOL status = [_talkcomment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                NSArray *list = _talkcomment.result.list;
-                [_list addObjectsFromArray:list];
-                
-                _urinext =  _talkcomment.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
-                    
-                    [queries setObject:value forKey:key];
-                }
-                
-                _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %zd",_page);
-                
-                
-                _isnodata = NO;
-                [_table reloadData];
-            }
-        }
+    NSArray *list = _talkcomment.result.list;
+    [_list addObjectsFromArray:list];
+
+    _urinext =  _talkcomment.result.paging.uri_next;
+    NSURL *url = [NSURL URLWithString:_urinext];
+    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+
+    NSMutableDictionary *queries = [NSMutableDictionary new];
+    [queries removeAllObjects];
+    for (NSString *keyValuePair in querry)
+    {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        NSString *key = [pairComponents objectAtIndex:0];
+        NSString *value = [pairComponents objectAtIndex:1];
+
+        [queries setObject:value forKey:key];
     }
+
+    _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+
+    _isnodata = NO;
+    [_table reloadData];
 }
 
 -(void)requesttimeout {
@@ -1187,7 +1161,7 @@
                                              _table.hidden = NO;
                                              _isrefreshview = NO;
                                              [_refreshControl endRefreshing];
-                                             [self requestsuccess:successResult withOperation:operation];
+                                             [self onReceiveComment:successResult.dictionary[@""]];
                                          }
                                          onFailure:^(NSError *errorResult) {
                                              [_act stopAnimating];
