@@ -12,6 +12,8 @@
 #import "CameraAlbumListViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+HVDLayout.h"
+#import "ReviewImageAttachment.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface ProductAddCaptionViewController ()
 <
@@ -19,8 +21,7 @@
     UITableViewDelegate,
     CameraCollectionViewControllerDelegate,
     UIScrollViewDelegate,
-    UITextFieldDelegate,
-    TokopediaNetworkManagerDelegate
+    UITextFieldDelegate
 >
 {
     NavigateViewController *_navigate;
@@ -28,19 +29,24 @@
     UITextField *_activeTextField;
     
     NSMutableArray *_uploadedImages;
-    NSMutableArray *_uploadingImages;
     NSMutableArray *_attachedImageURLs;
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     NSMutableArray *_attachedImagesCaptions;
+    NSMutableArray *_productReviewPhotoObjectsArray;
+    NSMutableArray *_productReviewPhotoObjectKeys;
+    
+    NSMutableDictionary *_productReviewPhotoObjects;
+    NSMutableDictionary *_imagesToUpload;
     
     UIImageView *_selectedImageIcon;
     
     BOOL _isFinishedUploadingImage;
     
-    int _scrollViewPageAmount;
+    NSInteger _scrollViewPageAmount;
+    NSInteger _maxSelected;
     
-    TokopediaNetworkManager *_networkManager;
+    NSString *_uniqueID;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -88,24 +94,73 @@
                          name:UIKeyboardWillHideNotification
                        object:nil];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    
-    _uploadingImages = [NSMutableArray new];
     _uploadedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImageURLs = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-    _attachedImagesCaptions = [_userInfo objectForKey:@"images-captions"]?:[[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _attachedImagesCaptions = _imagesCaptions?[_imagesCaptions mutableCopy]:[[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _productReviewPhotoObjectsArray = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _productReviewPhotoObjectKeys = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
     _attachedImages = [NSArray sortViewsWithTagInArray:_attachedImages];
     
+    _productReviewPhotoObjects = [NSMutableDictionary new];
+    _imagesToUpload = [NSMutableDictionary new];
+    
     _numberOfUploadedImages = 0;
     _scrollViewPageAmount = 0;
+    _maxSelected = 5;
     
     _imageCaptionTextField.delegate = self;
     
-    [self startUploadingImageWithUserInfo:_userInfo];
+    if (_review.review_image_attachment.count > 0) {
+        _numberOfUploadedImages = _review.review_image_attachment.count;
+        _scrollViewPageAmount = _numberOfUploadedImages;
+        _maxSelected = 5 - _numberOfUploadedImages;
+        
+        for (NSInteger ii = 0; ii < _review.review_image_attachment.count; ii++) {
+            ReviewImageAttachment *imageAttachment = _review.review_image_attachment[ii];
+            
+            [_uploadedImages replaceObjectAtIndex:ii
+                                       withObject:imageAttachment];
+            
+            NSMutableDictionary *photoObject = [NSMutableDictionary new];
+            
+            [photoObject setObject:imageAttachment.desc?:@""
+                             forKey:@"file_desc"];
+            [photoObject setObject:imageAttachment.attachment_id?:@""
+                             forKey:@"attachment_id"];
+            [photoObject setObject:@(0)
+                             forKey:@"is_deleted"];
+            
+            [_productReviewPhotoObjects setObject:photoObject forKey:imageAttachment.attachment_id];
+            
+            NSDictionary *tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:photoObject, imageAttachment.attachment_id, nil];
+            [_productReviewPhotoObjectsArray replaceObjectAtIndex:ii withObject:tempDict];
+            [_productReviewPhotoObjectKeys replaceObjectAtIndex:ii withObject:imageAttachment.attachment_id];
+            
+            NSInteger tag = ii + 20;
+            
+            for (UIImageView *imageView in _attachedImages) {
+                if (imageView.tag == tag) {
+                    imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageAttachment.uri_large]]];
+                }
+                
+                if (imageView.tag == tag + 1) {
+                    if (imageView.image == nil) {
+                        imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
+                        imageView.userInteractionEnabled = YES;
+                        imageView.hidden = NO;
+                    }
+                }
+            }
+        }
+        
+        [self setScrollViewImages];
+    }
+    
+    [self didReceiveImageWithSelectedImages:_selectedImages
+                         selectedIndexPaths:_selectedIndexPaths];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -118,20 +173,10 @@
                                                   object:nil];
 }
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (NSInteger)totalUploadedAndUploadingImage {
-    NSMutableArray *fileThumbImage = [NSMutableArray new];
-    for (NSString *image in _uploadedImages) {
-        if (![image isEqualToString:@""]) {
-            [fileThumbImage addObject:image];
-        }
-    }
-    
-    return fileThumbImage.count + _uploadingImages.count;
 }
 
 - (BOOL)image:(UIImage*)image1 isEqualTo:(UIImage*)image2 {
@@ -233,11 +278,15 @@
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             case 11: { // Tombol "Simpan"
-                NSMutableDictionary *tempUserInfoDict = [_userInfo mutableCopy];
-                [tempUserInfoDict setObject:_attachedImagesCaptions forKey:@"images-captions"];
-                [tempUserInfoDict setObject:_uploadedImages forKey:@"uploaded-images"];
-                _userInfo = [NSDictionary dictionaryWithDictionary:tempUserInfoDict];
-                [_delegate didDismissController:self withUserInfo:_userInfo];
+                NSMutableDictionary *userInfo = [NSMutableDictionary new];
+                [userInfo setObject:_attachedImagesCaptions forKey:@"images-captions"];
+                [userInfo setObject:_uploadedImages forKey:@"uploaded-images"];
+                [userInfo setObject:_selectedIndexPaths forKey:@"selected_indexpath"];
+                [userInfo setObject:_selectedImages forKey:@"selected_images"];
+                [userInfo setObject:_productReviewPhotoObjects forKey:@"product-review-photo-objects"];
+                [userInfo setObject:[_productReviewPhotoObjects allKeys] forKey:@"all-image-ids"];
+                [userInfo setObject:_imagesToUpload forKey:@"images-to-upload"];
+                [_delegate didDismissController:self withUserInfo:userInfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
@@ -302,10 +351,10 @@
 
 
 #pragma mark - Camera Collection Delegate
-- (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo {
-    _userInfo = userInfo;
-    NSArray *selectedImages = [userInfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexpaths = [userInfo objectForKey:@"selected_indexpath"];
+- (void)didReceiveImageWithSelectedImages:(NSArray *)selectedImages
+                       selectedIndexPaths:(NSArray *)selectedIndexPaths {
+    _selectedImages = selectedImages;
+    _selectedIndexPaths = selectedIndexPaths;
     
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];
@@ -324,20 +373,23 @@
             }
             if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
                 NSUInteger index = [emptyImageIndex[j] integerValue];
-                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
+                [_selectedImagesCameraController replaceObjectAtIndex:index
+                                                           withObject:selected];
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:selected];
                 NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+                [data setObject:_selectedIndexPaths[indexIndexPath]
+                         forKey:@"selected_indexpath"];
                 [self setImageData:[data copy] tag:index];
                 j++;
             }
         }
     }
+    
 }
 
--(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
-{
+- (void)setImageData:(NSDictionary*)data
+                 tag:(NSInteger)tag {
     id selectedIndexpaths = [data objectForKey:@"selected_indexpath"];
     [_selectedIndexPathCameraController replaceObjectAtIndex:tag withObject:selectedIndexpaths?:@""];
     
@@ -362,6 +414,25 @@
             if (_selectedImageTag == tagView) {
                 [_imagesScrollView setContentOffset:CGPointMake((tagView  - 20) * _imagesScrollView.frame.size.width, 0) animated:YES];
             }
+            
+            _uniqueID = [self getUnixTime];
+            _uniqueID = [_uniqueID stringByAppendingString:[NSString stringWithFormat:@"%zd", tagView]];
+            
+            NSMutableDictionary *photoObject = [NSMutableDictionary new];
+            
+            [photoObject setObject:@""
+                             forKey:@"file_desc"];
+            [photoObject setObject:@(0)
+                             forKey:@"attachment_id"];
+            [photoObject setObject:@(0)
+                             forKey:@"is_deleted"];
+            
+            [_productReviewPhotoObjects setObject:photoObject forKey:_uniqueID];
+            
+            NSDictionary *tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:photoObject, _uniqueID, nil];
+            [_productReviewPhotoObjectsArray replaceObjectAtIndex:tag withObject:tempDict];
+            [_productReviewPhotoObjectKeys replaceObjectAtIndex:tag withObject:_uniqueID];
+            [_imagesToUpload setObject:photo forKey:_uniqueID];
         }
         
         if (image.tag == tagView + 1) {
@@ -410,6 +481,17 @@
     [textField resignFirstResponder];
     NSString *imageCaption = textField.text;
     [_attachedImagesCaptions replaceObjectAtIndex:_selectedImageTag withObject:imageCaption];
+    
+    NSString *key = _productReviewPhotoObjectKeys[_selectedImageTag];
+    NSDictionary *tempPhotoObject = [_productReviewPhotoObjectsArray[_selectedImageTag] objectForKey:key];
+    
+    [tempPhotoObject setValue:imageCaption forKey:@"file_desc"];
+    
+    NSDictionary *dict = @{key : tempPhotoObject};
+    
+    [_productReviewPhotoObjectsArray replaceObjectAtIndex:_selectedImageTag withObject:dict];
+    [_productReviewPhotoObjects setObject:tempPhotoObject forKey:key];
+    
     return YES;
 }
 
@@ -445,7 +527,7 @@
         }
     }
     
-    photoVC.maxSelected = 5;
+    photoVC.maxSelected = _maxSelected;
     photoVC.selectedImagesArray = selectedImage;
     
     selectedIndexPath = [NSMutableArray new];
@@ -465,7 +547,6 @@
     NSArray *controllers = @[albumVC,photoVC];
     [nav setViewControllers:controllers];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
-    
 }
 
 #pragma mark - Methods
@@ -473,7 +554,11 @@
     [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     for(int ii = 0; ii < _scrollViewPageAmount; ii++) {
-        CGRect frame;
+        CGRect screenRect = [[UIScreen mainScreen] bounds];
+        CGRect frame = _imagesScrollView.frame;
+        frame.size.width = screenRect.size.width;
+        _imagesScrollView.frame = frame;
+        
         frame.origin.x = _imagesScrollView.frame.size.width * ii;
         frame.origin.y = 0;
         frame.size = _imagesScrollView.frame.size;
@@ -491,8 +576,8 @@
             newImageView.frame = frame;
             newImageView.userInteractionEnabled = YES;
             
-            float widthRatio = newImageView.bounds.size.width / newImageView.image.size.width;
-            float heightRatio = newImageView.bounds.size.height / newImageView.image.size.height;
+            float widthRatio = newImageView.frame.size.width / newImageView.image.size.width;
+            float heightRatio = newImageView.frame.size.height / newImageView.image.size.height;
             float scale = MIN(widthRatio, heightRatio);
             float imageWidth = scale * newImageView.image.size.width;
             float imageHeight = scale * newImageView.image.size.height;
@@ -522,7 +607,24 @@
 - (void)deleteImageAtIndex:(NSInteger)index {
     [_selectedImagesCameraController replaceObjectAtIndex:index withObject:@""];
     [_selectedIndexPathCameraController replaceObjectAtIndex:index withObject:@""];
+    [_attachedImagesCaptions replaceObjectAtIndex:index withObject:@""];
+    
+    if ([_uploadedImages[index] isKindOfClass:[NSString class]]) {
+        [_productReviewPhotoObjectsArray replaceObjectAtIndex:index withObject:@""];
+        [_productReviewPhotoObjectKeys replaceObjectAtIndex:index withObject:@""];
+    } else {
+        NSString *key = _productReviewPhotoObjectKeys[index];
+        NSMutableDictionary *photoObject = [_productReviewPhotoObjects objectForKey:key];
+        [photoObject setObject:@(1)
+                        forKey:@"is_deleted"];
+        
+        [_productReviewPhotoObjects setObject:photoObject forKey:key];
+        [_productReviewPhotoObjectsArray replaceObjectAtIndex:index withObject:@""];
+        [_productReviewPhotoObjectKeys replaceObjectAtIndex:index withObject:@""];
+    }
+    
     [_uploadedImages replaceObjectAtIndex:index withObject:@""];
+    _activeTextField.text = @"";
     
     for (UIImageView *image in _attachedImages) {
         if (image.tag-20 == index) {
@@ -533,6 +635,12 @@
     
     [self setScrollViewImages];
     _numberOfUploadedImages--;
+}
+
+- (NSString*)getUnixTime {
+    int unixTime = (int)[[NSDate date] timeIntervalSince1970];
+    
+    return [NSString stringWithFormat:@"%d", unixTime];
 }
 
 @end

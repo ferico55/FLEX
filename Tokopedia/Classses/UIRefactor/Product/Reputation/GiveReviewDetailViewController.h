@@ -22,5 +22,6 @@
 @property NSDictionary *userInfo;
 @property NSString *token;
 @property (nonatomic, weak) GiveReviewRatingViewController *reviewRating;
+@property NSDictionary *productReviewPhotoObjects;
 
 @end

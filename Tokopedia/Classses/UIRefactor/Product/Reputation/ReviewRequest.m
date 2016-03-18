@@ -244,7 +244,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     [productReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
-                                                     path:@"/v4/action/review/add_product_review_submit.pl"
+                                                     path:@"/v4/action/reputation/insert_reputation_review_submit.pl"
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"post_key" : postKey?:@"",
                                                             @"file_uploaded" : uploaded?:@""}
@@ -289,9 +289,16 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
     NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
     
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:photos options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
+    uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     
     [submitReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
-                                                       path:@"/v4/action/review/add_product_review_validation.pl"
+                                                       path:@"/v4/action/reputation/insert_reputation_review_validation.pl"
                                                      method:RKRequestMethodGET
                                                   parameter:@{@"product_id" : productID,
                                                               @"rate_accuracy" : @(accuracyRate),
@@ -302,7 +309,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                                               @"server_id" : serverID,
                                                               @"has_product_review_photo" : hasPhoto,
                                                               @"product_review_photo_all" : allImageIDs?:@"",
-                                                              @"product_review_photo_obj" : photos?:@{}
+                                                              @"product_review_photo_obj" : uploaded?:@""
                                                               }
                                                     mapping:[SubmitReview mapping]
                                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -393,7 +400,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
     
     [editReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
-                                                     path:@"/v4/action/review/edit_product_review_validation.pl"
+                                                     path:@"/v4/action/reputation/edit_reputation_review_validation.pl"
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"product_id" : productID,
                                                             @"rate_accuracy" : @(accuracyRate),
@@ -403,8 +410,8 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                                             @"review_message" : reviewMessage,
                                                             @"shop_id" : shopID,
                                                             @"has_product_review_photo" : hasPhoto,
-                                                            @"product_review_photo_all" : allImageIDs,
-                                                            @"product_review_photo_obj" : photos?:@{}
+                                                            @"product_review_photo_all" : allImageIDs?:@"",
+                                                            @"product_review_photo_obj" : photos?:@"{}"
                                                             }
                                                   mapping:[SubmitReview mapping]
                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

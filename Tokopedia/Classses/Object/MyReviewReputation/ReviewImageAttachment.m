@@ -13,7 +13,7 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *reviewImageAttachmentMapping = [RKObjectMapping mappingForClass:[ReviewImageAttachment class]];
     
-    [reviewImageAttachmentMapping addAttributeMappingsFromDictionary:@{@"desc" : @"description",
+    [reviewImageAttachmentMapping addAttributeMappingsFromDictionary:@{@"description" : @"desc",
                                                                        @"uri_large" : @"uri_large",
                                                                        @"attachment_id" : @"attachment_id",
                                                                        @"uri_thumbnail" : @"uri_thumbnail"}];

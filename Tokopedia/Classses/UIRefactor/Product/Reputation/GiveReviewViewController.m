@@ -388,7 +388,7 @@
         [self didTapImage:((UIImageView*)attachedImages[sender.view.tag-20])];
     } else {
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-        vc.userInfo = _userInfo;
+//        vc.userInfo = _userInfo;
         vc.delegate = self;
         vc.selectedImageTag = (int)sender.view.tag;
         

@@ -323,6 +323,7 @@
             vc.detailMyReviewReputation = self;
             vc.detailReputationReview = _selectedReview;
             vc.isEdit = YES;
+            vc.token = _token;
             [self.navigationController pushViewController:vc animated:YES];
         } else if (actionSheet.tag == 200) {
             ReportViewController *vc = [ReportViewController new];

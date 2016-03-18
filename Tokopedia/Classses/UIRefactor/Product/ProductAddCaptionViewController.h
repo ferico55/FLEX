@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DetailReputationReview.h"
 
 @class ProductAddCaptionViewController, GeneratedHost;
 
@@ -19,8 +20,12 @@
 @interface ProductAddCaptionViewController : UIViewController
 
 @property (weak, nonatomic) id<ProductAddCaptionDelegate> delegate;
-@property (nonatomic, strong) NSDictionary *userInfo;
 @property NSInteger selectedImageTag;
-@property int numberOfUploadedImages;
+@property NSInteger numberOfUploadedImages;
+
+@property (nonatomic, strong) DetailReputationReview *review;
+@property (nonatomic, strong) NSArray *selectedImages;
+@property (nonatomic, strong) NSArray *selectedIndexPaths;
+@property (nonatomic, strong) NSArray *imagesCaptions;
 
 @end

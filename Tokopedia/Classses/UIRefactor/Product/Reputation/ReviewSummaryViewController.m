@@ -15,6 +15,7 @@
 #import "GiveReviewRatingViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "ReviewRequest.h"
+#import "ReviewImageAttachment.h"
 
 @interface ReviewSummaryViewController ()
 <
@@ -126,11 +127,16 @@ TokopediaNetworkManagerDelegate
         _attachedImagesViewHeight.constant = 0;
         _textViewHeight.constant = 147.0;
     } else {
-        for (int ii = 0; ii < _uploadedImages.count; ii++) {
-            ((UIImageView*)_attachedImagesArray[ii]).image = [[_uploadedImages[ii] objectForKey:@"photo"] objectForKey:@"photo"];
-            ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
-            
-            
+        for (NSInteger ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
+            ReviewImageAttachment *attachedImage = _detailReputationReview.review_image_attachment[ii];
+            [((UIImageView*)_attachedImagesArray[ii]) setImageWithURL:[NSURL URLWithString:attachedImage.uri_thumbnail]
+                                                     placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
+            [((UIImageView*)_attachedImagesArray[ii]) setHidden:NO];
+        }
+        
+        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
+            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
+            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
         }
     }
     
@@ -208,7 +214,7 @@ TokopediaNetworkManagerDelegate
 }
 
 - (BOOL)isNoImageUploaded {
-    if (_uploadedImages != nil) {
+    if (_uploadedImages != nil || _detailReputationReview.review_image_attachment.count > 0) {
         return NO;
     }
     
@@ -252,33 +258,72 @@ TokopediaNetworkManagerDelegate
     if ([self isSuccessValidateReview]) {
         [self sendButtonIsLoading:YES];
         
-        [_reviewRequest requestSubmitReviewWithImageWithReputationID:_detailReputationReview.reputation_id
-                                                           productID:_detailReputationReview.product_id
-                                                        accuracyRate:_accuracyRate
-                                                         qualityRate:_qualityRate
-                                                             message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
-                                                              shopID:_detailReputationReview.shop_id
-                                                            serverID:_generatedHost.server_id
-                                               hasProductReviewPhoto:_hasAttachedImages
-                                                      reviewPhotoIDs:_imageIDs
-                                                  reviewPhotoObjects:_imageDescriptions
-                                                      imagesToUpload:_imagesToUpload
-                                                               token:_token
-                                                                host:_generatedHost.upload_host
-                                                           onSuccess:^(SubmitReviewResult *result) {
-                                                               NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-                                                               
-                                                               for (UIViewController *aViewController in allViewControllers) {
-                                                                   if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
-                                                                       [self.navigationController popToViewController:aViewController animated:YES];
-                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
-                                                                                                                           object:nil];
+        if (_isEdit) {
+            [_reviewRequest requestEditReviewWithImageWithReviewID:_detailReputationReview.review_id
+                                                         productID:_detailReputationReview.product_id
+                                                      accuracyRate:_accuracyRate
+                                                       qualityRate:_qualityRate
+                                                      reputationID:_detailReputationReview.reputation_id
+                                                           message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                                                            shopID:_detailReputationReview.shop_id
+                                             hasProductReviewPhoto:_hasAttachedImages
+                                                    reviewPhotoIDs:_imageIDs
+                                                reviewPhotoObjects:_imageDescriptions
+                                                    imagesToUpload:_imagesToUpload
+                                                             token:_token
+                                                              host:_generatedHost.upload_host
+                                                         onSuccess:^(SubmitReviewResult *result) {
+                                                             NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                                                             
+                                                             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengubah ulasan"]
+                                                                                                                              delegate:self];
+                                                             [alert show];
+                                                             
+                                                             for (UIViewController *aViewController in allViewControllers) {
+                                                                 if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
+                                                                     [self.navigationController popToViewController:aViewController animated:YES];
+                                                                     [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
+                                                                                                                         object:nil];
+                                                                 }
+                                                             }
+                                                         }
+                                                         onFailure:^(NSError *error) {
+                                                             [self sendButtonIsLoading:NO];
+                                                         }];
+        } else {
+            [_reviewRequest requestSubmitReviewWithImageWithReputationID:_detailReputationReview.reputation_id
+                                                               productID:_detailReputationReview.product_id
+                                                            accuracyRate:_accuracyRate
+                                                             qualityRate:_qualityRate
+                                                                 message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                                                                  shopID:_detailReputationReview.shop_id
+                                                                serverID:_generatedHost.server_id
+                                                   hasProductReviewPhoto:_hasAttachedImages
+                                                          reviewPhotoIDs:_imageIDs
+                                                      reviewPhotoObjects:_imageDescriptions
+                                                          imagesToUpload:_imagesToUpload
+                                                                   token:_token
+                                                                    host:_generatedHost.upload_host
+                                                               onSuccess:^(SubmitReviewResult *result) {
+                                                                   NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                                                                   
+                                                                   StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengisi ulasan"]
+                                                                                                                                    delegate:self];
+                                                                   [alert show];
+                                                                   
+                                                                   for (UIViewController *aViewController in allViewControllers) {
+                                                                       if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
+                                                                           [self.navigationController popToViewController:aViewController animated:YES];
+                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
+                                                                                                                               object:nil];
+                                                                       }
                                                                    }
                                                                }
-                                                           }
-                                                           onFailure:^(NSError *error) {
-                                                               [self sendButtonIsLoading:NO];
-                                                           }];
+                                                               onFailure:^(NSError *error) {
+                                                                   [self sendButtonIsLoading:NO];
+                                                               }];
+        }
+        
     }
 }
 

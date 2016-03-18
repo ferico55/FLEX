@@ -44,6 +44,8 @@ static CKComponent* messageLabel(DetailReputationReview* review, NSString* role)
         message = review.review_message;
     } else if ([role isEqualToString:@"2"]) {
         message = [review.review_is_skipped isEqualToString:@"1"]?@"Pembeli memutuskan untuk tidak mengisi ulasan":@"Pembeli belum memberi ulasan";
+    } else if ([review.review_is_skipped isEqualToString:@"1"] && [role isEqualToString:@"1"]) {
+        message = @"Anda telah melewati ulasan ini";
     }
     
     if (message == nil) {
@@ -65,7 +67,7 @@ static CKComponent* messageLabel(DetailReputationReview* review, NSString* role)
 }
 
 static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* role) {
-    if (([review.review_message isEqualToString:@"0"] || review.review_message == nil) && [role isEqualToString:@"1"]) {
+    if (([review.review_message isEqualToString:@"0"] || review.review_message == nil) && [role isEqualToString:@"1"] && [review.review_is_skipped isEqualToString:@"0"]) {
         return [CKInsetComponent
                 newWithInsets:{8,8,8,8}
                 component:

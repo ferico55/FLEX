@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DetailReputationReview.h"
 
 @class CameraCollectionViewController;
 
@@ -16,6 +17,8 @@
 @optional
 - (void)didDismissController:(CameraCollectionViewController*)controller withUserInfo:(NSDictionary *)userinfo;
 - (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo;
+- (void)didReceiveImageWithSelectedImages:(NSArray*)selectedImages
+                       selectedIndexPaths:(NSArray*)selectedIndexPaths;
 - (void)didRemoveImageDictionary:(NSDictionary*)removedImage;
 @end
 
@@ -29,6 +32,7 @@
 @property BOOL isCameraSource;
 @property NSArray *selectedImagesArray;
 @property(nonatomic, strong) NSMutableArray *selectedIndexPath;
+@property(nonatomic, strong) DetailReputationReview *review;
 @property NSInteger maxSelected;
 
 @property BOOL isAddEditProduct;

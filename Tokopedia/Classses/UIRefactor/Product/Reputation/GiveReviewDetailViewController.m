@@ -14,6 +14,8 @@
 #import "CameraCollectionViewController.h"
 #import "CameraController.h"
 #import "ProductAddCaptionViewController.h"
+#import "UIImageView+AFNetworking.h"
+#import "ReviewImageAttachment.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, CameraControllerDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
@@ -26,8 +28,6 @@
     NSMutableArray *_attachedImages;
     
     NSMutableDictionary *_imagesToUpload;
-    NSMutableArray *_imageIDs;
-    NSMutableDictionary *_imageCaptions;
     
     NSOperationQueue *_operationQueue;
     
@@ -65,7 +65,7 @@
                                                                             action:nil];
     
     [self initData];
-    [self initCameraIcon];
+    
     
     _operationQueue = [NSOperationQueue new];
     
@@ -75,13 +75,13 @@
     _attachedImageURL = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _attachedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
-    _imageIDs = [NSMutableArray new];
     _imagesToUpload = [NSMutableDictionary new];
-    _imageCaptions = [NSMutableDictionary new];
     
     _isFinishedUploadingImage = YES;
     
     _reviewDetailTextView.delegate = self;
+    
+    _userInfo = (_detailReputationReview.review_image_attachment.count > 0)?@{@"attached_images":_detailReputationReview.review_image_attachment}:nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -103,30 +103,36 @@
     _productName.text = [NSString convertHTML:_detailReputationReview.product_name];
     
     // Set Product Image
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_productImage setImageWithURLRequest:request
-                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                      [_productImage setImage:image];
-#pragma clang diagnostic pop
-                                  }
-                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                      NSLog(@"Failed get image");
-                                  }];
+    [_productImage setImageWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
+                  placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
     
     if (_isEdit) {
         _reviewDetailTextView.text = [NSString convertHTML:_detailReputationReview.review_message];
+        
+        for (int ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
+            ReviewImageAttachment *imageAttachment = _detailReputationReview.review_image_attachment[ii];
+            
+            for (UIImageView *image in _attachedImagesArray) {
+                if (image.tag == 20 + ii) {
+                    [image setImageWithURL:[NSURL URLWithString:imageAttachment.uri_thumbnail]
+                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
+                    image.userInteractionEnabled = YES;
+                }
+            }
+        }
+        
+        if (_detailReputationReview.review_image_attachment.count < 5) {
+            [self initCameraIconAtIndex:_detailReputationReview.review_image_attachment.count];
+        }
+        
+    } else {
+        [self initCameraIconAtIndex:0];
     }
 }
 
-- (void)initCameraIcon {
+- (void)initCameraIconAtIndex:(NSInteger)index {
     for (UIImageView *image in _attachedImagesArray) {
-        if (image.tag == 20) {
+        if (image.tag == 20 + index) {
             image.image = [UIImage imageNamed:@"icon_camera.png"];
             image.alpha = 1;
             image.hidden = NO;
@@ -137,8 +143,6 @@
             image.layer.cornerRadius = 5.0;
             image.layer.masksToBounds = YES;
             
-        } else {
-            image.image = nil;
         }
     }
 }
@@ -189,8 +193,6 @@
 }
 
 - (NSString*)generateUniqueImageID {
-//    NSString *uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-//    NSString *userID = [[UserAuthentificationManager new] getUserId];
     int unixTime = (int) [[NSDate date] timeIntervalSince1970];
     
     return [NSString stringWithFormat:@"%d", unixTime];
@@ -219,10 +221,10 @@
         vc.imagesCaption = [_userInfo objectForKey:@"images-captions"];
         vc.detailMyReviewReputation = _detailMyReviewReputation;
         vc.token = _token;
-        vc.imagesToUpload = [_imagesToUpload copy];
-        vc.imageDescriptions = [_imageCaptions copy];
+        vc.imagesToUpload = [_userInfo objectForKey:@"images-to-upload"];
+        vc.imageDescriptions = _productReviewPhotoObjects;
         vc.hasAttachedImages = _hasImages;
-        vc.imageIDs = [_imageIDs copy];
+        vc.imageIDs = [_userInfo objectForKey:@"all-image-ids"];
         
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -233,9 +235,12 @@
         [self didTapImage:((UIImageView*)_attachedImagesArray[sender.view.tag-20])];
     } else {
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-        vc.userInfo = _userInfo;
+        vc.selectedIndexPaths = [_userInfo objectForKey:@"selected_indexpath"];
+        vc.selectedImages = [_userInfo objectForKey:@"selected_images"];
+        vc.imagesCaptions = [_userInfo objectForKey:@"images-captions"];
         vc.delegate = self;
         vc.selectedImageTag = (int)sender.view.tag;
+        vc.review = _detailReputationReview;
         
         UINavigationController *nav = [[UINavigationController alloc]init];
         nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -257,6 +262,7 @@
     photoVC.delegate = self;
     photoVC.isAddEditProduct = YES;
     photoVC.tag = sender.tag;
+    photoVC.review = _detailReputationReview;
     
     NSMutableArray *notEmptyImageIndex = [NSMutableArray new];
     for (UIImageView *image in _attachedImagesArray) {
@@ -279,7 +285,7 @@
         }
     }
     
-    photoVC.maxSelected = 5;
+    photoVC.maxSelected = 5 - _detailReputationReview.review_image_attachment.count;
     photoVC.selectedImagesArray = selectedImage;
     
     selectedIndexPath = [NSMutableArray new];
@@ -304,6 +310,7 @@
 #pragma mark - Product Add Caption Delegate
 - (void)didDismissController:(ProductAddCaptionViewController*)controller withUserInfo:(NSDictionary *)userinfo {
     _userInfo = userinfo;
+    _productReviewPhotoObjects = [userinfo objectForKey:@"product-review-photo-objects"];
     _hasImages = YES;
     NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
     NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
@@ -374,13 +381,6 @@
             }
         }
     }
-    
-    NSString *imageID = [[self generateUniqueImageID] stringByAppendingString:[NSString stringWithFormat:@"%d", tag]];
-    NSString *caption = [_userInfo objectForKey:@"images-captions"][tag];
-    
-    [_imagesToUpload setObject:photo forKey:imageID];
-    [_imageCaptions setObject:[[NSDictionary alloc] initWithObjects:@[caption] forKeys:@[@"file_desc"]] forKey:imageID];
-    [_imageIDs addObject:imageID];
     
     if (imageView != nil) {
         [object setObject:imageView forKey:@"data_selected_image_view"];

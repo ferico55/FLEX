@@ -326,13 +326,15 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     }
     if (_isAddReviewImage && _selectedImages.count > 0) {
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-        vc.userInfo = @{@"selected_images":[_selectedImages copy],
-                        @"selected_indexpath":arrayIndexPath};
+        vc.selectedImages = [_selectedImages copy];
+        vc.selectedIndexPaths = arrayIndexPath;
         vc.delegate = _delegate;
+        vc.review = _review;
         
         [self.navigationController pushViewController:vc animated:YES];
     } else if (_isAddMoreReviewImage) {
-        [_delegate startUploadingImageWithUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
+        [_delegate didReceiveImageWithSelectedImages:[_selectedImages copy]
+                                  selectedIndexPaths:arrayIndexPath];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
     } else {
