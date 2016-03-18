@@ -534,12 +534,7 @@
 }
 
 #pragma mark - Request and Mapping
--(void) cancel {
-    [_request cancel];
-    _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-
+- (void)cancel {
     [_talkCommentNetworkManager requestCancel];
 }
 
@@ -635,26 +630,6 @@
                 
                 _isnodata = NO;
                 [_table reloadData];
-            }
-        }else{
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-            else
-            {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
             }
         }
     }
