@@ -533,10 +533,6 @@
     }
 }
 
--(void) requestfailure:(id)object {
-    [self requestprocess:object];
-}
-
 -(void)requestprocess:(id)object
 {
     if (object) {
@@ -782,9 +778,6 @@
         _timer = nil;
 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-        
         _table.tableFooterView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
@@ -1275,7 +1268,6 @@
                                              _table.hidden = NO;
                                              _isrefreshview = NO;
                                              [_refreshControl endRefreshing];
-                                             [self requestfailure:errorResult];
                                          }];
 }
 
