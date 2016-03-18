@@ -60,16 +60,12 @@
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *dictCell;
 
-    NSInteger _requestactioncount;
     __weak RKObjectManager *_objectSendCommentManager;
-    __weak RKManagedObjectRequestOperation *_requestSendComment;
-    
+
     NSInteger _requestDeleteCommentCount;
     __weak RKObjectManager *_objectDeleteCommentManager;
     __weak RKManagedObjectRequestOperation *_requestDeleteComment;
-    
-    NSOperationQueue *_operationQueue;
-    NSOperationQueue *_operationSendCommentQueue;
+
     NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
@@ -159,8 +155,6 @@
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
 
     _list = [NSMutableArray new];
-    _operationQueue = [NSOperationQueue new];
-    _operationSendCommentQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
     
     _datainput = [NSMutableDictionary new];
@@ -597,8 +591,28 @@
 }
 
 - (void)sendComment {
-    [self configureSendCommentRestkit];
-    [self addProductCommentTalk];
+    NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIADDCOMMENTTALK,
+                            TKPD_TALK_ID:[_data objectForKey:TKPD_TALK_ID],
+                            kTKPDTALKCOMMENT_APITEXT: _growingtextview.text,
+                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
+                            };
+
+    [_sendCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                              path:kTKPDACTIONTALK_APIPATH
+                                            method:RKRequestMethodPOST
+                                         parameter:param
+                                           mapping:[ProductTalkCommentAction mapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             [self requestactionsuccess:successResult withOperation:operation];
+                                             [_table reloadData];
+                                             [_refreshControl endRefreshing];
+                                         }
+                                         onFailure:^(NSError *errorResult) {
+                                             _table.tableFooterView = nil;
+                                             _isrefreshview = NO;
+                                             [_refreshControl endRefreshing];
+                                         }];
 }
 
 - (void)tapUser {
@@ -739,41 +753,6 @@
 }
 
 #pragma mark - Action Send Comment Talk
-- (void)configureSendCommentRestkit {
-    // initialize RestKit
-    _objectSendCommentManager =  [RKObjectManager sharedClient];
-    RKObjectMapping *statusMapping = [ProductTalkCommentAction mapping];
-
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDACTIONTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectSendCommentManager addResponseDescriptor:responseDescriptorStatus];
-}
-
--(void)addProductCommentTalk{
-    NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIADDCOMMENTTALK,
-                            TKPD_TALK_ID:[_data objectForKey:TKPD_TALK_ID],
-                            kTKPDTALKCOMMENT_APITEXT:_growingtextview.text,
-                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
-                            };
-
-    [_sendCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
-                                              path:kTKPDACTIONTALK_APIPATH
-                                            method:RKRequestMethodPOST
-                                         parameter:param
-                                           mapping:[ProductTalkCommentAction mapping]
-                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                             [self requestactionsuccess:successResult withOperation:operation];
-                                             [_table reloadData];
-                                             [_refreshControl endRefreshing];
-                                         }
-                                         onFailure:^(NSError *errorResult) {
-                                             _table.tableFooterView = nil;
-                                             _isrefreshview = NO;
-                                             [_refreshControl endRefreshing];
-                                         }];
-}
 
 - (void)requestactionsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
