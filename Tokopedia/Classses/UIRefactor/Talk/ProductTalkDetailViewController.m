@@ -60,10 +60,6 @@
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *dictCell;
 
-    NSInteger _requestcount;
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-    
     NSInteger _requestactioncount;
     __weak RKObjectManager *_objectSendCommentManager;
     __weak RKManagedObjectRequestOperation *_requestSendComment;
@@ -145,19 +141,6 @@
     }
 
     return self;
-}
-
-- (void)addBottomInsetWhen14inch {
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 155;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 240;
-        _table.contentInset = inset;
-    }
 }
 
 #pragma mark - View Life Cycle
@@ -536,46 +519,6 @@
 #pragma mark - Request and Mapping
 - (void)cancel {
     [_talkCommentNetworkManager requestCancel];
-}
-
--(void) configureRestKit{
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    RKObjectMapping *statusMapping = [TalkComment mapping];
-
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:_urlPath keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
--(void) loadData {
-    NSDictionary* param = @{
-            kTKPDDETAIL_APIACTIONKEY : _urlAction?:@"",
-            TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
-            kTKPDDETAIL_APIPAGEKEY : @(_page)
-    };
-
-    [_talkCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
-                                              path:_urlPath
-                                            method:RKRequestMethodPOST
-                                         parameter:param
-                                           mapping:[TalkComment mapping]
-                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                             [_act stopAnimating];
-                                             _table.hidden = NO;
-                                             _isrefreshview = NO;
-                                             [_refreshControl endRefreshing];
-                                             [self requestsuccess:successResult withOperation:operation];
-                                         }
-                                         onFailure:^(NSError *errorResult) {
-                                             [_act stopAnimating];
-                                             _table.hidden = NO;
-                                             _isrefreshview = NO;
-                                             [_refreshControl endRefreshing];
-                                             [self requestfailure:errorResult];
-                                         }];
 }
 
 -(void) requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -1308,8 +1251,32 @@
 }
 
 - (void)fetchTalkComments {
-    [self configureRestKit];
-    [self loadData];
+    NSDictionary* param = @{
+            kTKPDDETAIL_APIACTIONKEY : _urlAction ?:@"",
+            TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
+            kTKPDDETAIL_APIPAGEKEY : @(_page)
+    };
+
+    [_talkCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+                                              path:_urlPath
+                                            method:RKRequestMethodPOST
+                                         parameter:param
+                                           mapping:[TalkComment mapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             [_act stopAnimating];
+                                             _table.hidden = NO;
+                                             _isrefreshview = NO;
+                                             [_refreshControl endRefreshing];
+                                             [self requestsuccess:successResult withOperation:operation];
+                                         }
+                                         onFailure:^(NSError *errorResult) {
+                                             [_act stopAnimating];
+                                             _table.hidden = NO;
+                                             _isrefreshview = NO;
+                                             [_refreshControl endRefreshing];
+                                             [self requestfailure:errorResult];
+                                         }];
 }
 
 
