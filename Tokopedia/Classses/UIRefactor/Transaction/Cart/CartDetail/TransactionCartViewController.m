@@ -661,7 +661,6 @@
                         
                         UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                         navigationController.navigationBar.translucent = NO;
-                        navigationController.navigationBar.tintColor = [UIColor whiteColor];
                         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                     }
                 }
@@ -692,9 +691,7 @@
                     vc.title = _cartSummary.gateway_name?:@"BRI E-Pay";
                     
                     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
                     navigationController.navigationBar.translucent = NO;
-                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
                     break;
@@ -1724,8 +1721,6 @@
         {
             [_list removeObject:list];
         }
-        
-        [self adjustAfterUpdateList];
         [self requestCartData];
         [self isLoading:NO];
     } error:^(NSError *error) {
@@ -2448,7 +2443,6 @@
         [self isLoading:NO];
     }];
 }
-
 
 -(void)doRequestEditProduct:(ProductDetail*)product{
     [RequestCart fetchEditProduct:product success:^(TransactionAction *data) {
