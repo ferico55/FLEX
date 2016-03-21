@@ -99,4 +99,4 @@ SPEC CHECKSUMS:
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.38.0
+COCOAPODS: 0.38.2
