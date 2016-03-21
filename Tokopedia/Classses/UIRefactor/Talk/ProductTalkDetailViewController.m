@@ -44,7 +44,6 @@
     CMPopTipViewDelegate
 >
 {
-    BOOL _isnodata;
     NSMutableArray *_list;
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
@@ -60,13 +59,9 @@
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *dictCell;
 
-    __weak RKObjectManager *_objectSendCommentManager;
-
-    NSInteger _requestDeleteCommentCount;
     __weak RKObjectManager *_objectDeleteCommentManager;
     __weak RKManagedObjectRequestOperation *_requestDeleteComment;
 
-    NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
     IBOutlet RSKGrowingTextView *_growingtextview;
@@ -116,7 +111,6 @@
     
     
     if (self) {
-        _isnodata = YES;
         _marksOpenedTalksAsRead = NO;
         self.title = kTKPDTITLE_TALK;
     }
@@ -157,8 +151,7 @@
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
 
     _list = [NSMutableArray new];
-    _operationDeleteCommentQueue = [NSOperationQueue new];
-    
+
     _datainput = [NSMutableDictionary new];
     _userManager = [UserAuthentificationManager new];
     _navigateController = [NavigateViewController new];
@@ -230,9 +223,8 @@
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _isnodata?0:_list.count;
+    return _list.count;
 }
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -534,7 +526,6 @@
 
     _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
 
-    _isnodata = NO;
     [_table reloadData];
 }
 
