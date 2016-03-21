@@ -2085,7 +2085,6 @@
 		85624E311C6DC48B00036001 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8562462B1C6DC48600036001 /* Main.storyboard */; };
 		85624E321C6DC48B00036001 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8562462D1C6DC48700036001 /* MainViewController.m */; };
 		85624E331C6DC48B00036001 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8562462E1C6DC48700036001 /* MainViewController.xib */; };
-		856250EF1C6DC48B00036001 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = 8562491A1C6DC48A00036001 /* test.m */; };
 		856250F01C6DC48B00036001 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 856249201C6DC48A00036001 /* Tokopedia-Info.plist */; };
 		856250F11C6DC48B00036001 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 856249221C6DC48A00036001 /* Tokopedia.entitlements */; };
 		856250F21C6DC48B00036001 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 856249231C6DC48A00036001 /* Tokopedia.xcworkspace */; };
@@ -5285,8 +5284,6 @@
 		856249161C6DC48A00036001 /* string copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "string copy.h"; sourceTree = "<group>"; };
 		856249171C6DC48A00036001 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
 		856249181C6DC48A00036001 /* stringrestkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringrestkit.h; sourceTree = "<group>"; };
-		856249191C6DC48A00036001 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
-		8562491A1C6DC48A00036001 /* test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
 		8562491C1C6DC48A00036001 /* TKPAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPAPIKey.h; sourceTree = "<group>"; };
 		8562491D1C6DC48A00036001 /* Tkpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tkpd.h; sourceTree = "<group>"; };
 		8562491E1C6DC48A00036001 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
@@ -10951,8 +10948,6 @@
 				856249161C6DC48A00036001 /* string copy.h */,
 				856249171C6DC48A00036001 /* string.h */,
 				856249181C6DC48A00036001 /* stringrestkit.h */,
-				856249191C6DC48A00036001 /* test.h */,
-				8562491A1C6DC48A00036001 /* test.m */,
 				8562491B1C6DC48A00036001 /* Third Party */,
 				8562491C1C6DC48A00036001 /* TKPAPIKey.h */,
 				8562491D1C6DC48A00036001 /* Tkpd.h */,
@@ -12809,7 +12804,6 @@
 				459085711C9826E00091450E /* ProductImages.m in Sources */,
 				459089F91C9826E10091450E /* TxOrderPaymentConfirmationSuccessViewController.m in Sources */,
 				4590882B1C9826E10091450E /* ResolutionCenterDetailViewController.m in Sources */,
-				856250EF1C6DC48B00036001 /* test.m in Sources */,
 				459086AF1C9826E00091450E /* TransactionAction.m in Sources */,
 				459089D71C9826E10091450E /* TxOrderStatusDetailViewController.m in Sources */,
 				4590893F1C9826E10091450E /* SettingNotificationViewController.m in Sources */,
