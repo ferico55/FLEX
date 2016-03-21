@@ -521,11 +521,13 @@
                                              [self onCommentSent:successResult commentAction:successResult.dictionary[@""]];
                                              [_table reloadData];
                                              [_refreshControl endRefreshing];
+                                             [_act stopAnimating];
                                          }
                                          onFailure:^(NSError *errorResult) {
                                              _table.tableFooterView = nil;
                                              _isrefreshview = NO;
                                              [_refreshControl endRefreshing];
+                                             [_act stopAnimating];
                                              [self putSendCommentBack];
                                          }];
 }
@@ -870,12 +872,14 @@
 
                                                [_table reloadData];
                                                [_refreshControl endRefreshing];
+                                               [_act stopAnimating];
                                            }
                                            onFailure:^(NSError *errorResult) {
                                                [_act stopAnimating];
                                                _table.hidden = NO;
                                                _isrefreshview = NO;
                                                [_refreshControl endRefreshing];
+                                               [_act stopAnimating];
 
                                                [self deleteCommentFailed];
                                            }];
