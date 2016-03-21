@@ -2258,7 +2258,10 @@
             [self setHeaderviewData];
             [self setFooterViewData];
             [self setOtherProducts];
-            [self addImpressionClick];
+            
+            if(!_product.isDummyProduct && [_data objectForKey:@"ad_click_url"]){
+                [self addImpressionClick];
+            }
 
             //Track in GA
             [TPAnalytics trackProductView:_product.result.product];
