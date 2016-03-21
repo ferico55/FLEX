@@ -49,21 +49,15 @@
     NSString *_urinext;
     NSString *_urlPath;
     NSString *_urlAction;
-    
-    NSTimer *_timer;
+
     NSInteger _page;
-    NSInteger _limit;
     NSMutableDictionary *_datainput;
     NSString *_savedComment;
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *dictCell;
 
-    __weak RKObjectManager *_objectDeleteCommentManager;
-    __weak RKManagedObjectRequestOperation *_requestDeleteComment;
-
     IBOutlet RSKGrowingTextView *_growingtextview;
-    
-    NSTimeInterval _timeinterval;
+
     NSMutableDictionary *_auth;
     UserAuthentificationManager *_userManager;
     NavigateViewController *_navigateController;
@@ -419,6 +413,7 @@
     CGRect headerFrame = _header.frame;
     headerFrame.size.height = height;
     _header.frame = headerFrame;
+
 
     self.table.tableHeaderView = self.header;
 
@@ -887,7 +882,6 @@
 }
 
 - (void)deleteCommentFailed {
-    [self cancelActionDelete];
     [self cancelDeleteRow];
 }
 
@@ -932,14 +926,6 @@
     [_table reloadData];
 }
 
-
-
-- (void)cancelActionDelete {
-    [_requestDeleteComment cancel];
-    _requestDeleteComment = nil;
-    [_objectDeleteCommentManager.operationQueue cancelAllOperations];
-    _objectDeleteCommentManager = nil;
-}
 
 #pragma mark - Report Delegate
 - (NSDictionary *)getParameter {
