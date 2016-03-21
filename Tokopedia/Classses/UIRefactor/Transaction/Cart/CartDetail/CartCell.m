@@ -28,7 +28,7 @@
 }
 
 
-+(UITableViewCell*)cellIsPartial:(NSString*)isPartial partialStrList:(NSArray*)partialStrList tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
++(UITableViewCell*)cellIsPartial:(NSString*)isPartial tableView:(UITableView*)tableView atIndextPath:(NSIndexPath*)indexPath
 {
     static NSString *CellIdentifier = @"leftStockIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
