@@ -165,8 +165,8 @@ MGSwipeTableCellDelegate>
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if(! isSuccessSentMessage) {
-            _detailReputationReview.review_response.response_create_time = _detailReputationReview.viewModel.review_response.response_create_time = nil;
-            _detailReputationReview.review_response.response_message = _detailReputationReview.viewModel.review_response.response_message = nil;
+        _detailReputationReview.review_response.response_create_time = _detailReputationReview.viewModel.review_response.response_create_time = nil;
+        _detailReputationReview.review_response.response_message = _detailReputationReview.viewModel.review_response.response_message = nil;
     }
 }
 
@@ -578,11 +578,12 @@ MGSwipeTableCellDelegate>
 }
 
 - (void)actionLike:(id)sender {
+    [productReputationCell disableTouchLikeDislikeButton];
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     NSDictionary *auth = [_userManager getUserLoginData];
 
     if(auth) {
-        [productReputationCell.getBtnLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
+        //[productReputationCell.getBtnLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
         if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"2"]){
             [reviewRequest actionLikeWithReviewId:_detailReputationReview.review_id
                                               shopId:_detailReputationReview.shop_id
@@ -623,11 +624,12 @@ MGSwipeTableCellDelegate>
 }
 
 - (void)actionDisLike:(id)sender {
+    [productReputationCell disableTouchLikeDislikeButton];
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     NSDictionary *auth = [_userManager getUserLoginData];
     
     if(auth) {
-        [productReputationCell.getBtnDisLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
+        //[productReputationCell.getBtnDisLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
         if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"1"]){
             [reviewRequest actionDislikeWithReviewId:_detailReputationReview.review_id
                                               shopId:_detailReputationReview.shop_id
@@ -1355,8 +1357,8 @@ MGSwipeTableCellDelegate>
     }else if(strStatusLike != nil && [strStatusLike isEqualToString:@"3"]){
         [productReputationCell resetLikeDislikeButton];
     }
+    [productReputationCell enableTouchLikeDislikeButton];
 }
-
 - (void)showNetworkFailStickyAlert{
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
     [alert show];

@@ -78,4 +78,6 @@
 - (void)enableDislikeButton;
 - (void)disableDislikeButton;
 - (void)resetLikeDislikeButton;
+- (void)enableTouchLikeDislikeButton;
+- (void)disableTouchLikeDislikeButton;
 @end
