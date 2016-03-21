@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "DetailReputationReview.h"
 #import "TotalLikeDislike.h"
+#import "TotalLikeDislikePost.h"
+#import "LikeDislikePostResult.h"
 #import "DetailMyInboxReputation.h"
 #import "InboxReputationResult.h"
 #import "MyReviewReputationResult.h"
@@ -21,6 +23,27 @@
                                  shopId:(NSString *)shopId
                               onSuccess:(void(^)(TotalLikeDislike* totalLikeDislike))successCallback
                               onFailure:(void(^)(NSError* errorResult)) errorCallback;
+
+- (void) actionLikeWithReviewId:(NSString *)reviewId
+                         shopId:(NSString *)shopId
+                      productId:(NSString *)productId
+                         userId:(NSString *)userId
+                      onSuccess:(void(^)(LikeDislikePostResult* likeDislikePostResult))successCallback
+                      onFailure:(void(^)(NSError* errorResult)) errorCallback;
+
+- (void) actionDislikeWithReviewId:(NSString *)reviewId
+                         shopId:(NSString *)shopId
+                      productId:(NSString *)productId
+                         userId:(NSString *)userId
+                      onSuccess:(void(^)(LikeDislikePostResult* likeDislikePostResult))successCallback
+                      onFailure:(void(^)(NSError* errorResult)) errorCallback;
+
+- (void) actionCancelLikeDislikeWithReviewId:(NSString *)reviewId
+                         shopId:(NSString *)shopId
+                      productId:(NSString *)productId
+                         userId:(NSString *)userId
+                      onSuccess:(void(^)(LikeDislikePostResult* likeDislikePostResult))successCallback
+                      onFailure:(void(^)(NSError* errorResult)) errorCallback;
 
 - (void)requestGetInboxReputationWithNavigation:(NSString*)navigation
                                            page:(NSNumber*)page

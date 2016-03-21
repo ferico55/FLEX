@@ -23,7 +23,6 @@
 - (void)actionDisLike:(id)sender;
 - (void)actionChat:(id)sender;
 - (void)actionMore:(id)sender;
-- (void)goToImageViewerImages:(NSArray*)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath*)indexPath;
 @end
 
 
@@ -40,11 +39,6 @@
     
     BOOL isProductCell;//flag is used to product data
     IBOutletCollection(UIImageView) NSArray *arrImageKualitas, *arrImageAkurasi;
-    
-    IBOutlet UIView *viewAttachedImages;
-    IBOutletCollection(UIImageView) NSArray *attachedImages;
-    
-    NSIndexPath *indexPath;
 }
 @property (nonatomic, unsafe_unretained) id<productReputationDelegate> delegate;
 
@@ -79,5 +73,11 @@
 - (IBAction)actionDisLike:(id)sender;
 - (IBAction)actionChat:(id)sender;
 - (IBAction)actionMore:(id)sender;
-- (IBAction)gesture:(UITapGestureRecognizer*)sender;
+- (void)enableLikeButton;
+- (void)disableLikeButton;
+- (void)enableDislikeButton;
+- (void)disableDislikeButton;
+- (void)resetLikeDislikeButton;
+- (void)enableTouchLikeDislikeButton;
+- (void)disableTouchLikeDislikeButton;
 @end

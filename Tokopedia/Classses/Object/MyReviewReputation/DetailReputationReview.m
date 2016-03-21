@@ -32,15 +32,26 @@
         tempViewModel.product_status = _product_status;
         tempViewModel.review_rate_accuracy = _review_rate_accuracy;
         tempViewModel.review_rate_quality = _review_rate_product;
-        tempViewModel.review_user_name = _review_user_name;
-        tempViewModel.review_user_image = _review_user_image;
-        
+        tempViewModel.product_id = _review_product_id;
+        if(_review_user_name != nil){
+            //if coming from product review and shop page
+            tempViewModel.review_user_name = _review_user_name;
+        }else{
+            tempViewModel.review_user_name = _review_full_name;
+        }
+        if(_review_user_image != nil){
+            //if coming from product review and shop page
+            tempViewModel.review_user_image = _review_user_image;
+        }else{
+            //if coming from inbox review
+            tempViewModel.review_user_image = _user_image;
+        }
+
         _viewModel = tempViewModel;
     }
     
     return _viewModel;
 }
-
 - (NSString*)shop_name {
     if (_shop_name != nil) {
         return [_shop_name kv_decodeHTMLCharacterEntities];
@@ -50,38 +61,74 @@
 }
 
 - (NSString*)product_name {
-    return [_product_name kv_decodeHTMLCharacterEntities];
+    if(_product_name != nil){
+        return [_product_name kv_decodeHTMLCharacterEntities];
+    }else{
+        return [_review_product_name kv_decodeHTMLCharacterEntities];
+    }
 }
 
 - (NSString*)review_message {
     return [_review_message kv_decodeHTMLCharacterEntities];
 }
 
-//- (NSString*)reputation_id {
-//    if (_reputation_id != nil) {
-//        return _reputation_id;
-//    } else {
-//        return _review_reputation_id;
-//    }
-//}
-//
-//- (NSString*)shop_id {
-//    if (_shop_id != nil) {
-//        return _shop_id;
-//    } else {
-//        return _review_shop_id;
-//    }
-//}
-//
-//- (ProductOwner*)product_owner {
-//    if (_product_owner != nil) {
-//        return _product_owner;
-//    } else {
-//        return _review_product_owner;
-//    }
-//}
+-(NSString *)product_image{
+    if(_product_image != nil){
+        return _product_image;
+    }else{
+        return _review_product_image;
+    }
+}
 
-+ (RKObjectMapping *)mapping{
+- (NSString*)review_user_name{
+    if(_review_user_name != nil){
+        return _review_user_name;
+    }else{
+        return _review_full_name;
+    }
+}
+
+-(NSString *)review_user_image{
+    if(_review_user_image != nil){
+        return _review_user_image;
+    }else{
+        return _user_image;
+    }
+}
+
+-(NSString *)product_rating_point{
+    if(_product_rating_point != nil){
+        return _product_rating_point;
+    }else{
+        return _review_rate_quality;
+    }
+}
+
+-(NSString *)product_accuracy_point{
+    if(_product_accuracy_point != nil){
+        return _product_accuracy_point;
+    }else{
+        return _review_rate_accuracy;
+    }
+}
+
+-(NSString *)product_id{
+    if(_product_id != nil){
+        return _product_id;
+    }else{
+        return _review_product_id;
+    }
+}
+
+-(NSString *)review_shop_name{
+    if(_review_shop_name != nil){
+        return _review_shop_name;
+    }else{
+        return _product_owner.shop_name;
+    }
+}
+
++(RKObjectMapping *)mapping{
     RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
     [detailReputationReviewMapping addAttributeMappingsFromDictionary:@{@"review_update_time"           : @"review_update_time",
                                                                         @"review_rate_accuracy_desc"    : @"review_rate_accuracy_desc",
