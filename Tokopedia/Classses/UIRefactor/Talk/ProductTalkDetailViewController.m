@@ -199,7 +199,6 @@
         if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
            ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
            ) {
-            [self initTalkInputView];
         }
         else
         {
@@ -505,13 +504,6 @@
     _productNameLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_productNameLabel addGestureRecognizer:tap];
-}
-
-- (void) initTalkInputView {
-    _growingtextview.layer.borderWidth = 0.5f;
-    _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
-
-    _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
 #pragma mark - Request and Mapping
