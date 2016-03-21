@@ -347,17 +347,6 @@ FavoriteShopRequestDelegate
                                        }];
 }
 
-- (void)didReceivePromo:(NSArray *)promo {
-    if (promo) {
-        [_promo addObject:promo];
-        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    } else if (promo == nil && _page == 2) {
-        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-    }
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-}
-
 #pragma mark - Promo collection delegate
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {

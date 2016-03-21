@@ -1189,17 +1189,6 @@ static NSString const *rows = @"12";
     }
 }
 
-- (void)didReceivePromo:(NSArray *)promo {
-    if (promo) {
-        [_promo addObject:promo];
-        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    } else if (promo == nil && _page == 2) {
-        [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-    }
-    [viewCollection reloadData];
-    [viewCollection layoutIfNeeded];
-}
-
 #pragma mark - Promo collection delegate
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
