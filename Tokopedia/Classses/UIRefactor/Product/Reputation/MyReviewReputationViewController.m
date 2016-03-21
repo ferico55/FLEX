@@ -409,7 +409,6 @@
         [cell.theirReputation setTitle:[NSString stringWithFormat:@"%@%%", (current.user_reputation==nil? @"0":current.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
     
-    [cell setView:tempReputation.viewModel];
     return cell;
 }
 

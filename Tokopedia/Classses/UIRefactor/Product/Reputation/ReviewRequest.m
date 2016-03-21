@@ -43,11 +43,13 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
     TokopediaNetworkManager *submitReviewWithImageNetworkManager;
     TokopediaNetworkManager *editReviewWithImageNetworkManager;
     TokopediaNetworkManager *skipProductReviewNetworkManager;
+    TokopediaNetworkManager *editReputationReviewSubmitNetworkManager;
     
     NSInteger _counter;
     NSArray *_imageIDs;
     NSString *_postKey;
     NSMutableDictionary *_fileUploaded;
+    BOOL _isEdit;
 }
 
 - (id)init{
@@ -176,7 +178,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                             method:RKRequestMethodGET
                                          parameter:@{@"product_id" : productID,
                                                      @"rate_accuracy" : @(accuracyRate),
-                                                     @"rate_product" : @(qualityRate),
+                                                     @"rate_quality" : @(qualityRate),
                                                      @"reputation_id" : reputationID,
                                                      @"review_message" : reviewMessage,
                                                      @"shop_id" : shopID,
@@ -392,6 +394,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                      onFailure:(void (^)(NSError *))errorCallback {
     _imageIDs = imageIDs;
     _counter = 0;
+    _isEdit = YES;
     
     editReviewWithImageNetworkManager.isParameterNotEncrypted = NO;
     editReviewWithImageNetworkManager.isUsingHmac = YES;
@@ -404,7 +407,7 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"product_id" : productID,
                                                             @"rate_accuracy" : @(accuracyRate),
-                                                            @"rate_product" : @(qualityRate),
+                                                            @"rate_quality" : @(qualityRate),
                                                             @"reputation_id" : reputationID,
                                                             @"review_id" : reviewID,
                                                             @"review_message" : reviewMessage,
@@ -462,6 +465,41 @@ typedef NS_ENUM(NSInteger, ReviewRequestType){
                                               onFailure:^(NSError *errorResult) {
                                                   errorCallback(errorResult);
                                               }];
+}
+
+- (void)requestEditReputationReviewSubmitWithPostKey:(NSString*)postKey
+                                        fileUploaded:(NSDictionary*)fileUploaded
+                                           onSuccess:(void (^)(SubmitReviewResult *))successCallback
+                                           onFailure:(void (^)(NSError *))errorCallback {
+    editReputationReviewSubmitNetworkManager.isParameterNotEncrypted = NO;
+    editReputationReviewSubmitNetworkManager.isUsingHmac = YES;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:fileUploaded options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
+    uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+                                                            path:@"/v4/action/reputation/edit_reputation_review_submit.pl"
+                                                          method:RKRequestMethodGET
+                                                       parameter:@{@"post_key" : postKey?:@"",
+                                                                   @"file_uploaded" : uploaded?:@""}
+                                                         mapping:[SubmitReview mapping]
+                                                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                           NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                           SubmitReview *obj = [result objectForKey:@""];
+                                                           
+                                                           if ([obj.data.is_success isEqualToString:@"1"]) {
+                                                               successCallback(obj.data);
+                                                           } else {
+                                                               [StickyAlertView showErrorMessage:obj.message_error];
+                                                           }
+                                                       }
+                                                       onFailure:^(NSError *errorResult) {
+                                                           errorCallback(errorResult);
+                                                       }];
 }
 
 @end
