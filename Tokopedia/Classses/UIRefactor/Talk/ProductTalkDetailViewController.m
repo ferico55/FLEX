@@ -580,7 +580,7 @@
                                          parameter:param
                                            mapping:[ProductTalkCommentAction mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                             [self requestactionsuccess:successResult withOperation:operation];
+                                             [self onCommentSent:successResult commentAction:successResult.dictionary[@""]];
                                              [_table reloadData];
                                              [_refreshControl endRefreshing];
                                          }
@@ -588,6 +588,7 @@
                                              _table.tableFooterView = nil;
                                              _isrefreshview = NO;
                                              [_refreshControl endRefreshing];
+                                             [self putSendCommentBack];
                                          }];
 }
 
@@ -688,8 +689,10 @@
         comment.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
 
         if(![_act isAnimating]) {
-            [_list insertObject:comment atIndex:lastindexpathrow];
+            [_list addObject:comment];
             [_table reloadData];
+
+            [_act startAnimating];
 
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
             [_table scrollToRowAtIndexPath:indexpath
@@ -730,51 +733,46 @@
 
 #pragma mark - Action Send Comment Talk
 
-- (void)requestactionsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    ProductTalkCommentAction *commentaction = info;
-    BOOL status = [commentaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        //if success
-        if([commentaction.result.is_success isEqualToString:@"0"]) {
-            _growingtextview.text = _savedComment;
-            
-            TalkCommentList *commentlist = _list[_list.count-1];
-            [_list removeObject:commentlist];
-            [_table beginUpdates];
-            [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-            [_table endUpdates];
-            
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentaction.message_error
-                                                                           delegate:self];
-            [alert show];
-        } else {
-            NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
-            [_talkCommentButtonLarge setTitle:totalcomment forState:UIControlStateNormal];
-            
-            TalkCommentList *comment = _list[_list.count-1];
-            comment.is_just_sent = NO;
-            comment.comment_id = commentaction.result.comment_id;
-            comment.comment_user_id = [_userManager getUserId];
-            
-            if([dictCell objectForKey:@"-1"]) {
-                [dictCell removeObjectForKey:@"-1"];
-            }
-            
-            NSDictionary *userInfo = @{
-                TKPD_TALK_TOTAL_COMMENT  : @(_list.count)?:0,
-                kTKPDDETAIL_DATAINDEXKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
-                TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
-            };
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
-                                                                object:nil
-                                                              userInfo:userInfo];
-            
+- (void)onCommentSent:(RKMappingResult *)object commentAction:(ProductTalkCommentAction *)commentAction {
+    if([commentAction.result.is_success isEqualToString:@"0"]) {
+        [self putSendCommentBack];
+
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:commentAction.message_error
+                                                                       delegate:self];
+        [alert show];
+    } else {
+        NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
+        [_talkCommentButtonLarge setTitle:totalcomment forState:UIControlStateNormal];
+
+        TalkCommentList *comment = _list[_list.count-1];
+        comment.is_just_sent = NO;
+        comment.comment_id = commentAction.result.comment_id;
+        comment.comment_user_id = [_userManager getUserId];
+
+        if([dictCell objectForKey:@"-1"]) {
+            [dictCell removeObjectForKey:@"-1"];
         }
+
+        NSDictionary *userInfo = @{
+            TKPD_TALK_TOTAL_COMMENT  : @(_list.count)?:0,
+            kTKPDDETAIL_DATAINDEXKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
+            TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
+        };
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
+                                                            object:nil
+                                                          userInfo:userInfo];
+
     }
+}
+
+- (void)putSendCommentBack {
+    _growingtextview.text = _savedComment;
+
+    [_table beginUpdates];
+    [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    [_list removeLastObject];
+    [_table endUpdates];
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
