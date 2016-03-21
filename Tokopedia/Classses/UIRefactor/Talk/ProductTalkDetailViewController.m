@@ -61,8 +61,6 @@
     __weak RKObjectManager *_objectDeleteCommentManager;
     __weak RKManagedObjectRequestOperation *_requestDeleteComment;
 
-    TalkComment *_talkcomment;
-
     IBOutlet RSKGrowingTextView *_growingtextview;
     
     NSTimeInterval _timeinterval;
@@ -503,29 +501,31 @@
 }
 
 - (void)onReceiveComment:(TalkComment *)comment {
-    _talkcomment = comment;
+    _urinext = comment.result.paging.uri_next;
+    NSDictionary *queries = [self queryFromUri:_urinext];
 
-    NSArray *list = _talkcomment.result.list;
+    _page = [queries[kTKPDDETAIL_APIPAGEKEY] integerValue];
+
+    NSArray *list = comment.result.list;
     [_list addObjectsFromArray:list];
+    [_table reloadData];
+}
 
-    _urinext =  _talkcomment.result.paging.uri_next;
-    NSURL *url = [NSURL URLWithString:_urinext];
-    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+- (NSDictionary *)queryFromUri:(NSString *)uri {
+    NSURL *url = [NSURL URLWithString:uri];
+    NSArray *keyValueQueries = [[url query] componentsSeparatedByString: @"&"];
 
     NSMutableDictionary *queries = [NSMutableDictionary new];
     [queries removeAllObjects];
-    for (NSString *keyValuePair in querry)
+    for (NSString *keyValuePair in keyValueQueries)
     {
         NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-        NSString *key = [pairComponents objectAtIndex:0];
-        NSString *value = [pairComponents objectAtIndex:1];
+        NSString *key = pairComponents[0];
+        NSString *value = pairComponents[1];
 
-        [queries setObject:value forKey:key];
+        queries[key] = value;
     }
-
-    _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-
-    [_table reloadData];
+    return queries;
 }
 
 -(void)requesttimeout {
