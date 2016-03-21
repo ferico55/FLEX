@@ -294,7 +294,6 @@
         [self adjustTableViewData:_data];
         _passwordTextField.text = @"";
         TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
-        [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
         _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -302,14 +301,15 @@
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    if(_list.count>0){
+        
+    }
     
     if(!_isnodata) _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
 
     _tableView.scrollsToTop = YES;
-    
 
     [self adjustPaymentMethodView];
-    //[self swipePaymentMethod];
     [self swipeView:_paymentMethodView];
 }
 
@@ -347,7 +347,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [_activeTextField resignFirstResponder];
     _activeTextField = nil;
 
     self.title = @"";
@@ -618,15 +617,8 @@
     }
 }
 
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [_activeTextField resignFirstResponder];
-    [_activeTextView resignFirstResponder];
-}
-
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
-    [_activeTextField resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         [_delegate shouldBackToFirstPage];
     }
@@ -1407,8 +1399,6 @@
 #pragma mark - UIAlertview delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [_activeTextField resignFirstResponder];
-    [_activeTextView resignFirstResponder];
     switch (alertView.tag) {
         case TYPE_CANCEL_CART_PRODUCT:
             switch (buttonIndex) {
@@ -1507,18 +1497,12 @@
 
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    [textField resignFirstResponder];
     _activeTextField = textField;
     if (textField == _saldoTokopediaAmountTextField) {
         NSInteger grandTotal = [[[NSNumberFormatter IDRFormarter] numberFromString:_grandTotalLabel.text] integerValue];
         [_dataInput setObject:@(grandTotal) forKey:DATA_UPDATED_GRAND_TOTAL];
     }
 
-    return YES;
-}
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
     return YES;
 }
 
