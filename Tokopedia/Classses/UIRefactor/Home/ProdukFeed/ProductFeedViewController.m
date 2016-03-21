@@ -171,7 +171,7 @@ FavoriteShopRequestDelegate
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
-    [self requestPromo];
+    //[self requestPromo];
     
     [self registerNib];
     self.contentView = self.view;
@@ -208,7 +208,7 @@ FavoriteShopRequestDelegate
     CGSize size = CGSizeZero;
     if (_promo.count > section && section > 0) {
         if ([_promo objectAtIndex:section]) {
-            CGFloat headerHeight = [PromoCollectionReusableView collectionViewNormalHeight];
+            CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:PromoCollectionViewCellTypeNormal];
             size = CGSizeMake(self.view.frame.size.width, headerHeight);
         }
     }
@@ -276,7 +276,7 @@ FavoriteShopRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (_promo.count >= indexPath.section && indexPath.section > 0 ) {
+        if (_promo.count >= indexPath.section && indexPath.section > 0) {
             if ([_promo objectAtIndex:indexPath.section]) {
                 reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                   withReuseIdentifier:@"PromoCollectionReusableView"
@@ -301,12 +301,13 @@ FavoriteShopRequestDelegate
                                                               withReuseIdentifier:@"RetryView"
                                                                      forIndexPath:indexPath];
         } else {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                                                  withReuseIdentifier:@"FooterView"
-                                                                         forIndexPath:indexPath];
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"FooterView"
+                                                                     forIndexPath:indexPath];
             
         }
     }
+    
     return reusableView;
 }
 
@@ -321,7 +322,21 @@ FavoriteShopRequestDelegate
 
 - (void)requestPromo {
     _promoRequest.page = _page;
-    [_promoRequest requestForProductFeed];
+    //[_promoRequest requestForProductFeed];
+    [_promoRequest requestForProductFeedWithPage:_page
+                                       onSuccess:^(NSArray<PromoResult *> *promo) {
+                                           if (promo) {
+                                               [_promo addObject:promo];
+                                               [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                           } else if (promo == nil && _page == 2) {
+                                               [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                           }
+                                           [_collectionView reloadData];
+                                           [_collectionView layoutIfNeeded];
+                                       } onFailure:^(NSError *error) {
+                                           StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+                                           [stickyView show];
+                                       }];
 }
 
 - (void)didReceivePromo:(NSArray *)promo {
