@@ -2050,6 +2050,7 @@
 		459077C61C97E04D0091450E /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 45906FCD1C97E04C0091450E /* vt-iOSlib-1.0.1.tar.gz */; };
 		459077C71C97E04D0091450E /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 45906FCE1C97E04C0091450E /* vt-iOSlib-1.0.1.zip */; };
 		459077C81C97E04D0091450E /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 45906FD11C97E04C0091450E /* XYPieChart.m */; };
+		45CF089B1C9FCF0D00C3BB8A /* CartValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF089A1C9FCF0D00C3BB8A /* CartValidation.m */; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -5228,6 +5229,8 @@
 		45906FCE1C97E04C0091450E /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		45906FD01C97E04C0091450E /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		45906FD11C97E04C0091450E /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		45CF08991C9FCF0D00C3BB8A /* CartValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartValidation.h; sourceTree = "<group>"; };
+		45CF089A1C9FCF0D00C3BB8A /* CartValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartValidation.m; sourceTree = "<group>"; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
@@ -9597,6 +9600,8 @@
 				45906C151C97E04A0091450E /* TransactionCCViewController.xib */,
 				45906C161C97E04A0091450E /* TransactionPaymenViewController.h */,
 				45906C171C97E04A0091450E /* TransactionPaymenViewController.m */,
+				45CF08991C9FCF0D00C3BB8A /* CartValidation.h */,
+				45CF089A1C9FCF0D00C3BB8A /* CartValidation.m */,
 			);
 			path = CartDetail;
 			sourceTree = "<group>";
@@ -12668,6 +12673,7 @@
 				459070AE1C97E04C0091450E /* ReplyInboxTicket.m in Sources */,
 				459070AF1C97E04C0091450E /* ReplyInboxTicketResult.m in Sources */,
 				459071AC1C97E04C0091450E /* TxOrderConfirmedDetailOrder.m in Sources */,
+				45CF089B1C9FCF0D00C3BB8A /* CartValidation.m in Sources */,
 				459074791C97E04C0091450E /* CartGAHandler.m in Sources */,
 				4590721A1C97E04C0091450E /* CameraCollectionCell.m in Sources */,
 				459071C21C97E04C0091450E /* GenerateHostResult.m in Sources */,

@@ -25,6 +25,7 @@
 #import "GeneralTableViewController.h"
 
 #import "CartCell.h"
+#import "CartValidation.h"
 #import "CartGAHandler.h"
 
 #import "TransactionCCViewController.h"
@@ -766,56 +767,6 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
--(BOOL)isValidInputCC
-{
-    BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
-    if ([_cart.grand_total integerValue] <50000) {
-        [errorMessage addObject:@"Minimum pembayaran untuk kartu kredit adalah Rp 50.000."];
-        isvalid = NO;
-    }
-    
-    if (!isvalid) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-        [alert show];
-    }
-    
-    return isvalid;
-}
-
--(BOOL)isValidInputKlikBCA
-{
-    BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
-    if ([_cart.grand_total integerValue] <50000) {
-        [errorMessage addObject:@"Minimum pembayaran untuk KlikBCA adalah Rp 50.000."];
-        isvalid = NO;
-    }
-    
-    if (!isvalid) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-        [alert show];
-    }
-    
-    return isvalid;
-}
-
--(BOOL)isValidInputIndomaret
-{
-    BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
-    if ([_cart.grand_total integerValue] <10000) {
-        [errorMessage addObject:@"Minimum pembayaran untuk Indomaret adalah Rp 10.000."];
-        isvalid = NO;
-    }
-    
-    if (!isvalid) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-        [alert show];
-    }
-    
-    return isvalid;
-}
 
 -(void)pushToCCInformation
 {
@@ -1019,13 +970,13 @@
             [self swipeView:_paymentMethodView];
         }
         if (gateway == TYPE_GATEWAY_CC) {
-            return [self isValidInputCC];
+            return [CartValidation isValidInputCCCart:_cart];
         }
         if (gateway == TYPE_GATEWAY_BCA_KLIK_BCA) {
-            return [self isValidInputKlikBCA];
+            return [CartValidation isValidInputKlikBCACart:_cart];
         }
         if (gateway == TYPE_GATEWAY_INDOMARET) {
-            return  [self isValidInputIndomaret];
+            return  [CartValidation isValidInputIndomaretCart:_cart];
         }
         if (_isUsingSaldoTokopedia)
         {
@@ -1082,32 +1033,12 @@
     
     NSLog(@"%d",isValid);
     if (!isValid) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messageError delegate:self];
-        [alert show];
+        [StickyAlertView showErrorMessage:[messageError copy]];
     }
 
     return  isValid;
 }
 
--(BOOL)isValidInputVoucher
-{
-    BOOL isValid = YES;
-    
-    NSMutableArray *errorMessages = [NSMutableArray new];
-    
-    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
-    if (!(voucherCode) || [voucherCode isEqualToString:@""]) {
-        isValid = NO;
-        [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
-    }
-
-    if (!isValid) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-        [alert show];
-    }
-    
-    return  isValid;
-}
 
 -(void)adjustDropshipperListParam;
 {
@@ -1372,7 +1303,7 @@
             if (buttonIndex == 1) {
                 NSString *voucherCode = [[alertView textFieldAtIndex:0] text];
                 [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
-                if ([self isValidInputVoucher]) {
+                if ([CartValidation isValidInputVoucherCode:voucherCode]) {
                     [self doRequestVoucher];
                 }
                 else
@@ -2591,10 +2522,6 @@
 
 - (IBAction)switchUsingSaldo:(id)sender {
     [self changeSwitchSaldo:sender];
-}
-
-- (void)refreshCartAfterCancelPayment {
-    
 }
 
 #pragma mark - Delegate LoadingView
