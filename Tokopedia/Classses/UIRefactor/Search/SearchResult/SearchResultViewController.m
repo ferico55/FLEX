@@ -75,18 +75,11 @@ static NSString *const startPerPage = @"12";
 
 @interface SearchResultViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
-GeneralProductCellDelegate,
-
 SortViewControllerDelegate,
 FilterViewControllerDelegate,
-GeneralPhotoProductDelegate,
-GeneralSingleProductDelegate,
-LoadingViewDelegate,
 PromoRequestDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
@@ -126,12 +119,9 @@ ImageSearchRequestDelegate
     NSInteger _start;
     NSInteger _limit;
     
-    
     NSMutableDictionary *_params;
     NSString *_urinext;
     
-    BOOL _isnodata;
-    BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
     SearchAWS *_searchObject;
@@ -161,8 +151,7 @@ ImageSearchRequestDelegate
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _isrefreshview = NO;
-        _isnodata = YES;
+
     }
     return self;
 }
@@ -289,22 +278,21 @@ ImageSearchRequestDelegate
     [self requestPromo];
     self.scrollDirection = ScrollDirectionDown;
     
-    _imageSearchRequest = [[ImageSearchRequest alloc]init];
-    _imageSearchRequest.delegate = self;
-    _imageSearchRequest.view = self.view;
-    
-    
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     
     
     if(_isFromImageSearch){
+        _imageSearchRequest = [[ImageSearchRequest alloc]init];
+        _imageSearchRequest.delegate = self;
+        _imageSearchRequest.view = self.view;
+        
         [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
         [_fourButtonsToolbar setHidden:YES];
         [_threeButtonsToolbar setHidden:NO];
         [_fourButtonsToolbar setUserInteractionEnabled:NO];
         [_threeButtonsToolbar setUserInteractionEnabled:YES];
-    }else{
+    } else{
         [self requestSearch];
         
         [_fourButtonsToolbar setHidden:NO];
@@ -496,7 +484,6 @@ ImageSearchRequestDelegate
 
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
-    _isrefreshview = YES;
     _urinext = nil;
     
     [_refreshControl beginRefreshing];
@@ -645,7 +632,6 @@ ImageSearchRequestDelegate
 
 #pragma mark - LoadingView Delegate
 - (IBAction)pressRetryButton:(id)sender {
-//    [_networkManager doRequest];
     [self requestSearch];
     _isFailRequest = NO;
     [_collectionView reloadData];
@@ -696,7 +682,7 @@ ImageSearchRequestDelegate
 #pragma mark - requestWithBaseUrl
 - (void)requestSearch {
     [_networkManager requestWithBaseUrl:@"https://ace.tokopedia.com"
-                                   path:[self getPath]
+                                   path:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]
                                 mapping:[self searchMapping]
@@ -706,16 +692,13 @@ ImageSearchRequestDelegate
                               } onFailure:nil];
 }
 
-- (NSString*)getPath {
-    NSString *pathUrl;
-    if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
-        pathUrl = @"/search/v1/catalog";
-    } else if([[_data objectForKey:@"type"] isEqualToString:@"search_shop"]) {
-        pathUrl = @"/search/v1/shop";
-    } else {
-        pathUrl = @"/search/v1/product";
-    }
-    return pathUrl;
+- (NSDictionary*)pathUrls {
+    NSDictionary *pathDictionary = @{
+                                     @"search_catalog" : @"/search/v1/catalog",
+                                     @"search_shop" : @"/search/v1/shop",
+                                     @"search_product" : @"/search/v1/product"
+                                     };
+    return pathDictionary;
 }
 
 
@@ -855,8 +838,10 @@ ImageSearchRequestDelegate
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
-    [_product removeAllObjects];
-    [_promo removeAllObjects];
+    if(_start == 0) {
+        [_product removeAllObjects];
+        [_promo removeAllObjects];
+    }
 }
 
 
@@ -870,7 +855,6 @@ ImageSearchRequestDelegate
         
         _strImageSearchResult = [self generateProductIdString];
         allProductsCount = [[_product firstObject] count];
-        _isnodata = NO;
         _start = [[self splitUriToPage:_urinext] integerValue];
         if([_urinext isEqualToString:@""]) {
             [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -970,7 +954,6 @@ ImageSearchRequestDelegate
         }
         
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
-            _isnodata = NO;
             _urinext =  search.result.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
             if([_urinext isEqualToString:@""]) {
@@ -1225,8 +1208,7 @@ ImageSearchRequestDelegate
 
 #pragma mark - Scroll delegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (self.lastContentOffset > scrollView.contentOffset.y) {
         self.scrollDirection = ScrollDirectionUp;
     } else if (self.lastContentOffset < scrollView.contentOffset.y) {
