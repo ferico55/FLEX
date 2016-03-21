@@ -911,7 +911,7 @@
                                            parameter:param
                                              mapping:[GeneralAction mapping]
                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                               [self requestSuccessDeleteComment:successResult withOperation:operation];
+                                               [self onCommentDeleted:successResult];
 
                                                [_table reloadData];
                                                [_refreshControl endRefreshing];
@@ -922,68 +922,45 @@
                                                _isrefreshview = NO;
                                                [_refreshControl endRefreshing];
 
-                                               [self requestFailureDeleteComment:errorResult];
+                                               [self deleteCommentFailed];
                                            }];
 }
 
-- (void)requestSuccessDeleteComment:(id)object withOperation:(RKObjectRequestOperation *)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    GeneralAction *generalaction = stat;
-    BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionDelete:object];
-    }
+- (void)deleteCommentFailed {
+    [self cancelActionDelete];
+    [self cancelDeleteRow];
 }
 
-- (void)requestProcessActionDelete:(id)object {
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            GeneralAction *generalaction = stat;
-            BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(generalaction.message_error)
-                {
-                    [self cancelDeleteRow];
-                    NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                if ([generalaction.result.is_success isEqualToString:@"1"]) {
-                    NSArray *array =  [[NSArray alloc] initWithObjects:CStringBerhasilMenghapusKomentarDiskusi, nil];
-                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
-                    [stickyAlertView show];
-                    
-                    NSString *title = [NSString stringWithFormat:@"%d Komentar", (int)_list.count?:0];
-                    [_talkCommentButtonLarge setTitle:title
-                                             forState:UIControlStateNormal];
-                    
-                    NSDictionary *userinfo = @{
-                        TKPD_TALK_TOTAL_COMMENT : @(_list.count)?:0,
-                        kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
-                        TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
-                    };
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
-                                                                        object:nil
-                                                                      userInfo:userinfo];
-                }
-            }
-        }
-        else{
-            [self cancelActionDelete];
-            [self cancelDeleteRow];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
+- (void)onCommentDeleted:(RKMappingResult *)object {
+    NSDictionary *result = object.dictionary;
+    GeneralAction *generalaction = [result objectForKey:@""];
+
+    if(generalaction.message_error)
+    {
+        [self cancelDeleteRow];
+        NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+        [alert show];
+    }
+    
+    if ([generalaction.result.is_success isEqualToString:@"1"]) {
+        NSArray *array =  [[NSArray alloc] initWithObjects:CStringBerhasilMenghapusKomentarDiskusi, nil];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+        [stickyAlertView show];
+
+        NSString *title = [NSString stringWithFormat:@"%d Komentar", (int) _list.count?:0];
+        [_talkCommentButtonLarge setTitle:title
+                                 forState:UIControlStateNormal];
+
+        NSDictionary *userinfo = @{
+                TKPD_TALK_TOTAL_COMMENT : @(_list.count)?:0,
+                kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY],
+                TKPD_TALK_ID : [_data objectForKey:TKPD_TALK_ID]
+        };
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment"
+                                                            object:nil
+                                                          userInfo:userinfo];
     }
 }
 
@@ -1002,10 +979,6 @@
     _requestDeleteComment = nil;
     [_objectDeleteCommentManager.operationQueue cancelAllOperations];
     _objectDeleteCommentManager = nil;
-}
-
-- (void)requestFailureDeleteComment:(id)object {
-    [self requestProcessActionDelete:object];
 }
 
 #pragma mark - Report Delegate
