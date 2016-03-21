@@ -226,7 +226,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [_delegate popShippingViewController];
     //NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
     //                           DATA_CART_DETAIL_LIST_KEY : [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY]};
     //[_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
