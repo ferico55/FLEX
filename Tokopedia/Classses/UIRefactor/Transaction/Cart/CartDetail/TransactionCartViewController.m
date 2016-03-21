@@ -102,8 +102,6 @@
     NSString *_saldoTokopedia;
     NSIndexPath *_switchSaldoIndexPath;
     
-    NSMutableDictionary *_textAttributes;
-    
     NSInteger _indexSelectedShipment;
     
     UIAlertView *_alertLoading;
@@ -245,15 +243,6 @@
         
     }
     [self initNoResultView];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 8.0;
-    
-    _textAttributes = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                      NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                                                                      NSParagraphStyleAttributeName  : style,
-                                                                      NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
-                                                                      }];
     
     _saldoTokopediaAmountTextField.delegate = self;
     
