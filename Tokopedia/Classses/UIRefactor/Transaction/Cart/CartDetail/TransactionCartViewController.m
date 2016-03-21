@@ -40,6 +40,7 @@
 
 #import "ListRekeningBank.h"
 #import "NoResultReusableView.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
@@ -104,8 +105,6 @@
     NSMutableDictionary *_textAttributes;
     
     NSInteger _indexSelectedShipment;
-    
-    NSNumberFormatter *_IDRformatter;
     
     UIAlertView *_alertLoading;
     
@@ -267,14 +266,6 @@
     [self setDefaultInputData];
     
     _popFromShipment = NO;
-    
-    _IDRformatter = [[NSNumberFormatter alloc] init];
-    _IDRformatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    _IDRformatter.currencyCode = @"Rp ";
-    _IDRformatter.currencyGroupingSeparator = @".";
-    _IDRformatter.currencyDecimalSeparator = @",";
-    _IDRformatter.maximumFractionDigits = 0;
-    _IDRformatter.minimumFractionDigits = 0;
     
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 
@@ -1443,7 +1434,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
+    _cart.grand_total_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
     _grandTotalLabel.text = _cart.grand_total_without_lp_idr;
@@ -1555,11 +1546,8 @@
     [textField resignFirstResponder];
     _activeTextField = textField;
     if (textField == _saldoTokopediaAmountTextField) {
-        NSString *grandTotal = [_grandTotalLabel.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"," withString:@""];
-        grandTotal = [grandTotal stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        [_dataInput setObject:grandTotal forKey:DATA_UPDATED_GRAND_TOTAL];
+        NSInteger grandTotal = [[[NSNumberFormatter IDRFormarter] numberFromString:_grandTotalLabel.text] integerValue];
+        [_dataInput setObject:@(grandTotal) forKey:DATA_UPDATED_GRAND_TOTAL];
     }
 
     return YES;
@@ -1806,12 +1794,8 @@
 
 -(NSInteger)depositAmountUser
 {
-    NSString *depositAmountUser = _cart.deposit_idr;
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"." withString:@""];
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"," withString:@""];
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    return [depositAmountUser integerValue];
+    NSInteger depositAmountUser = [[[NSNumberFormatter IDRFormarter] numberFromString:_cart.deposit_idr] integerValue];
+    return depositAmountUser;
 }
 
 -(void)refreshRequestCart
@@ -2077,7 +2061,7 @@
     view.infoButton.hidden = ([list.cart_logistic_fee integerValue]==0);
     [view.subtotalLabel setText:list.cart_total_product_price_idr animated:YES];
     NSInteger aditionalFeeValue = [list.cart_logistic_fee integerValue]+[list.cart_insurance_price integerValue];
-    NSString *formatAdditionalFeeValue = [_IDRformatter stringFromNumber:@(aditionalFeeValue)];
+    NSString *formatAdditionalFeeValue = [[NSNumberFormatter IDRFormarter] stringFromNumber:@(aditionalFeeValue)];
     [view.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
     [view.shippingCostLabel setText:list.cart_shipping_rate_idr animated:YES];
     [view.totalLabel setText:list.cart_total_amount_idr animated:YES];
@@ -2523,7 +2507,7 @@
         _voucherAmountLabel.hidden = NO;
         
         NSInteger voucher = [_voucherData.voucher_amount integerValue];
-        NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
+        NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
         _voucherAmountLabel.text = voucherString;
         _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
@@ -2758,12 +2742,7 @@
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_UPDATED_GRAND_TOTAL];
     
     NSNumber *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
-    
-    NSString *deposit = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-    deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
-    deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    
+    NSInteger deposit = [[[NSNumberFormatter IDRFormarter] numberFromString:_saldoTokopediaAmountTextField.text] integerValue];
     NSString *voucher = [_dataInput objectForKey:DATA_VOUCHER_AMOUNT];
     
     NSInteger totalInteger = [grandTotal integerValue];
@@ -2788,14 +2767,14 @@
     [_dataInput setObject:@(grandTotalCartFromWS) forKey:DATA_UPDATED_GRAND_TOTAL];
     [_dataInput setObject:@(voucherUsedAmount) forKey:DATA_CART_USED_VOUCHER_AMOUNT];
     
-    grandTotalInteger -= [deposit integerValue];
+    grandTotalInteger -= deposit;
     if (grandTotalInteger <0) {
         grandTotalInteger = 0;
     }
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
+    _cart.grand_total_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
