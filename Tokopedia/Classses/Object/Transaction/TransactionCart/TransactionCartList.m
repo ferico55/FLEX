@@ -15,6 +15,13 @@
         CartModelView *tempViewModel = [CartModelView new];
         tempViewModel.cartIsPriceChanged = _cart_is_price_changed;
         tempViewModel.cartShopName = _cart_shop.shop_name;
+        tempViewModel.isLuckyMerchant = _cart_shop.lucky_merchant;
+        tempViewModel.logiscticFee = _cart_logistic_fee;
+        tempViewModel.totalProductPriceIDR = _cart_total_product_price_idr;
+        tempViewModel.insuranceFee = [_cart_insurance_price stringValue];
+        tempViewModel.shippingRateIDR = _cart_shipping_rate_idr;
+        tempViewModel.totalAmountIDR = _cart_total_amount_idr;
+        
         _viewModel = tempViewModel;
     }
     
