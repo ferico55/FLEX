@@ -412,19 +412,14 @@
         }
     }
 
-    CGFloat previouseLabelHeight = _talkmessagelabel.frame.size.height;
-    
     _talkmessagelabel.text = data[TKPD_TALK_MESSAGE];
-    [_talkmessagelabel sizeToFit];
+    [_header layoutIfNeeded];
 
-    CGFloat currentLabelHeight = _talkmessagelabel.frame.size.height;
-    CGFloat paddingBottom = -20;
-    // add 10 for padding bottom
-    if (currentLabelHeight < 70) paddingBottom = 10;
-    CGFloat differenceLabelHeight = currentLabelHeight - previouseLabelHeight + paddingBottom;
+    CGFloat height = [_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     CGRect headerFrame = _header.frame;
-    headerFrame.size.height += differenceLabelHeight;
-    self.header.frame = headerFrame;
+    headerFrame.size.height = height;
+    _header.frame = headerFrame;
+
     self.table.tableHeaderView = self.header;
 
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
