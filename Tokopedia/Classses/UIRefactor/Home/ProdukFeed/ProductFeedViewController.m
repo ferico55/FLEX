@@ -353,29 +353,30 @@ FavoriteShopRequestDelegate
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
 
-- (void)didSelectPromoProduct:(PromoProduct *)product {
-    /*
+- (void)didSelectPromoProduct:(PromoResult *)promoResult {
     NavigateViewController *navigateController = [NavigateViewController new];
     NSDictionary *productData = @{
-                                  @"product_id"       : product.product_id?:@"",
-                                  @"product_name"     : product.product_name?:@"",
-                                  @"product_image"    : product.product_image_200?:@"",
-                                  @"product_price"    :product.product_price?:@"",
-                                  @"shop_name"        : product.shop_name?:@""
+                                  @"product_id"       : promoResult.product.product_id?:@"",
+                                  @"product_name"     : promoResult.product.name?:@"",
+                                  @"product_image"    : promoResult.product.image.s_url?:@"",
+                                  @"product_price"    : promoResult.product.price_format?:@"",
+                                  @"shop_name"        : promoResult.shop.name?:@""
                                   };
+    
     NSDictionary *promoData = @{
-                                kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-                                
-                                PromoImpressionKey          : product.ad_key,
-                                PromoSemKey                 : product.ad_sem_key,
-                                PromoReferralKey            : product.ad_r,
-                                PromoRequestSource          : @(PromoRequestSourceFavoriteProduct)
-     
+                                kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
+                                PromoImpressionKey          : promoResult.ad_ref_key,
+                                PromoClickURL               : promoResult.product_click_url,
+                                PromoRequestSource          : @(PromoRequestSourceHotlist)
                                 };
+    
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData
-                                                productData:productData];*/
+                                                productData:productData];
+    
 }
+
+
 
 #pragma mark - Scroll delegate
 
