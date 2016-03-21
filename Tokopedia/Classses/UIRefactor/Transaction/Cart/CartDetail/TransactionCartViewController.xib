@@ -66,7 +66,6 @@
             <connections>
                 <outlet property="LPCashback1Cell" destination="FNB-x4-X6r" id="gbs-om-JJi"/>
                 <outlet property="LPCashbackCell" destination="pzN-dJ-cAl" id="eDJ-Ge-0Hf"/>
-                <outlet property="act" destination="kvI-4t-wDf" id="yuS-lP-yqe"/>
                 <outlet property="bankInstallmentLabel" destination="iqU-73-xD1" id="Dpd-A7-hyD"/>
                 <outlet property="bankView" destination="XQN-Ku-2hw" id="dTl-ze-GDF"/>
                 <outlet property="buttonCancelVoucher" destination="Ykh-pd-XjA" id="SFH-lB-YJV"/>
@@ -83,7 +82,6 @@
                 <outlet property="depositAmountLabel" destination="iQg-aJ-CXo" id="i8x-TE-pGp"/>
                 <outlet property="durationInstallmentLabel" destination="axK-8c-txg" id="YhE-RW-eFd"/>
                 <outlet property="durationView" destination="DiC-BR-LYF" id="Smo-hx-DMI"/>
-                <outlet property="footerView" destination="KDl-FM-LK1" id="SJG-4e-rGU"/>
                 <outlet property="grandTotalLabel" destination="6yM-Im-p4G" id="C1X-UC-14m"/>
                 <outlet property="klikBCANotes" destination="tBH-R1-omE" id="pWO-i2-ErD"/>
                 <outlet property="klikBCAUserIDCell" destination="hqV-P8-utv" id="Gki-KX-t6y"/>
@@ -1199,29 +1197,6 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="209" y="116.5"/>
-        </view>
-        <view contentMode="scaleToFill" id="KDl-FM-LK1" userLabel="FooterView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="78"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kvI-4t-wDf">
-                    <rect key="frame" x="150" y="50" width="20" height="20"/>
-                    <animations/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="Pqt-O4-cYr"/>
-                        <constraint firstAttribute="width" constant="20" id="auW-bD-AJT"/>
-                    </constraints>
-                </activityIndicatorView>
-            </subviews>
-            <animations/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="kvI-4t-wDf" firstAttribute="top" secondItem="KDl-FM-LK1" secondAttribute="top" constant="50" id="IQO-ia-e5d"/>
-                <constraint firstAttribute="centerX" secondItem="kvI-4t-wDf" secondAttribute="centerX" id="tH1-JB-F0w"/>
-            </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="117" y="429"/>
         </view>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="tTs-1N-0vt" userLabel="Saldo textfield Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
