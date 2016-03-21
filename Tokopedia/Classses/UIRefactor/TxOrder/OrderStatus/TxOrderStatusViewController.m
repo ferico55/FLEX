@@ -37,6 +37,8 @@
 #import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
 
+#import "RequestPurchase.h"
+
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define TAG_ALERT_REORDER 12
@@ -74,7 +76,6 @@
     NSInteger _totalButtonsShow;
     
     NavigateViewController *_navigate;
-    TokopediaNetworkManager *_networkManager;
     
     TxOrderStatusList *_selectedTrackOrder;
     LoadingView *_loadingView;
@@ -153,18 +154,9 @@
     [_refreshControll addTarget:self action:@selector(refreshRequest)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControll];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
-    
     [self initNoResultView];
 
     if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
-//        _filterView.hidden = NO;
-//        UIEdgeInsets inset = _tableView.contentInset;
-//        inset.bottom += _filterView.frame.size.height;
-//        _tableView.contentInset = inset;
-//        _tableView.scrollIndicatorInsets = inset;
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithTitle:@"Filter" style:UIBarButtonItemStyleDone target:self action:@selector(tap:)];
         self.navigationItem.rightBarButtonItem = barButton;
     }
@@ -181,30 +173,7 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-//    LuckyDeal *ld = [LuckyDeal new];
-//    LuckyDealAttributes *att = [LuckyDealAttributes new];
-//    LuckyDealData *data = [LuckyDealData new];
-//    att.token = @"Tokopedia Clover:q62yPVXnFRbDr9jh9wdBFhjU/DA=";
-//    att.extid = 1;
-//    att.code = 12400877;
-//    att.ut = 1448420536;
-//    data.ld_id = 1299609;
-//    data.type = 1;
-//    data.attributes = att;
-//    ld.data = data;
-//    ld.url =@"https://clover-staging.tokopedia.com/badge/member/extend/v1";
-//
-    
-    //TODO:: REMOVE THIS
-//    _requestLD = [RequestLDExtension new];
-//    _requestLD.delegate = self;
-//    _requestLD.luckyDeal = ld;
-//    [_requestLD doRequestMemberExtendURLString:@""];
-//    UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [alertSuccess show];
-//    alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-//    [self refreshRequest];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+    [self doRequestList];
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -228,16 +197,6 @@
         [TPAnalytics trackScreenName:@"Purchase - Transaction List"];
         self.screenName = @"Purchase - Transaction List";
     }
-    
-    _networkManager.delegate = self;
-}
-
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -249,9 +208,6 @@
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
 
 -(IBAction)tap:(id)sender
@@ -557,214 +513,34 @@
         NSLog(@"%ld", (long)row);
         
         if (_URINext != NULL && ![_URINext isEqualToString:@"0"] && _URINext != 0) {
-            [_networkManager doRequest];
-            //[self configureRestKit];
-            //[self request];
+            [self doRequestList];
         }
     }
 }
 
 
 #pragma mark - Request Get Transaction Order Payment Confirmation
-//-(void)cancel
-//{
-//    [_request cancel];
-//    //_request = nil;
-//    [_objectManager.operationQueue cancelAllOperations];
-//    _objectManager = nil;
-//}
 
--(id)getObjectManager:(int)tag
-//-(void)configureRestKit
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderStatus class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderStatusResult class]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY,
-                                                        }];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TxOrderStatusList class]];
-    
-    RKObjectMapping *orderDetailMapping = [_mapping orderDetailMapping];
-    RKObjectMapping *orderDeadlineMapping = [_mapping orderDeadlineMapping];
-    RKObjectMapping *orderProductMapping = [_mapping orderProductsMapping];
-    RKObjectMapping *orderShopMapping = [_mapping orderShopMapping];
-    RKObjectMapping *orderShipmentMapping = [_mapping orderShipmentsMapping];
-    RKObjectMapping *orderLastMapping = [_mapping orderLastMapping];
-    RKObjectMapping *orderButtonMapping = [_mapping orderButtonMapping];
-    RKObjectMapping *orderHistoryMapping = [_mapping orderHistoryMapping];
-    RKObjectMapping *orderDestinationMapping = [_mapping orderDestinationMapping];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                toKeyPath:kTKPD_APILISTKEY
-                                                                              withMapping:listMapping];
-    
-    RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
-                                                                                   toKeyPath:kTKPD_APIPAGINGKEY
-                                                                                 withMapping:pagingMapping];
-    
-    RKRelationshipMapping *orderDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DETAIL_KEY
-                                                                                        toKeyPath:API_ORDER_LIST_DETAIL_KEY
-                                                                                      withMapping:orderDetailMapping];
-    
-    RKRelationshipMapping *orderDeadlineRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DEADLINE_KEY
-                                                                                              toKeyPath:API_ORDER_LIST_DEADLINE_KEY
-                                                                                            withMapping:orderDeadlineMapping];
-    
-    RKRelationshipMapping *orderproductsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_PRODUCTS_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_PRODUCTS_KEY
-                                                                                        withMapping:orderProductMapping];
-    
-    RKRelationshipMapping *orderButtonRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_BUTTON_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_BUTTON_KEY
-                                                                                    withMapping:orderButtonMapping];
-    
-    RKRelationshipMapping *orderShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_SHOP_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_SHOP_KEY
-                                                                                    withMapping:orderShopMapping];
-    
-    RKRelationshipMapping *orderShipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_SHIPMENT_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_SHIPMENT_KEY
-                                                                                        withMapping:orderShipmentMapping];
-    
-    RKRelationshipMapping *orderLastRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_LAST_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_LAST_KEY
-                                                                                    withMapping:orderLastMapping];
-    
-    RKRelationshipMapping *orderHistoryRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_HISTORY_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_HISTORY_KEY
-                                                                                    withMapping:orderHistoryMapping];
-    
-    RKRelationshipMapping *orderDestinationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DESTINATION_KEY
-                                                                                         toKeyPath:API_ORDER_LIST_DESTINATION_KEY
-                                                                                       withMapping:orderDestinationMapping];
-
-    [statusMapping addPropertyMapping:resultRel];
-    
-    [resultMapping addPropertyMapping:listRel];
-    [resultMapping addPropertyMapping:pagingRel];
-    
-    [listMapping addPropertyMapping:orderDetailRel];
-    [listMapping addPropertyMapping:orderDeadlineRel];
-    [listMapping addPropertyMapping:orderproductsRel];
-    [listMapping addPropertyMapping:orderShopRel];
-    [listMapping addPropertyMapping:orderButtonRel];
-    [listMapping addPropertyMapping:orderShipmentRel];
-    [listMapping addPropertyMapping:orderLastRel];
-    [listMapping addPropertyMapping:orderHistoryRel];
-    [listMapping addPropertyMapping:orderDestinationRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
+-(void)doRequestList{
     NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
     NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
     NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
     NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
-    
-    NSDictionary* param = @{API_ACTION_KEY : _action,
-                            API_PAGE_KEY : @(_page),
-                            API_INVOICE_KEY : filterInvoice,
-                            API_TRANSACTION_START_DATE_KEY:filterStartDate,
-                            API_TRANSACTION_END_DATE_KEY : filterEndDate,
-                            API_TRANSACTION_STATUS_KEY : filterStatus
-                            };
-    return param;
-}
-
--(NSString *)getPath:(int)tag
-{
-    return API_PATH_TX_ORDER;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
     if (![_refreshControll isRefreshing]) {
         _tableView.tableFooterView = _footer;
         [_act startAnimating];
+    }
+    
+    [RequestPurchase fetchListPuchasePage:_page action:_action invoice:filterInvoice startDate:filterStartDate endDate:filterEndDate status:filterStatus success:^(NSArray *list, NSInteger nextPage, NSString* uriNext) {
         
-    }
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    TxOrderStatus *order = stat;
-    
-    return order.status;
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    [_act stopAnimating];
-    [_refreshControll endRefreshing];
-    if (_page == 1) {
-        _tableView.contentOffset = CGPointZero;
-    }
-    
-    NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    TxOrderStatus *order = stat;
-    
-    [_noResultView removeFromSuperview];
-    
-    if(order.message_error)
-    {
-        NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-        [alert show];
-    }
-    else{
         if (_page == 1) {
             [_list removeAllObjects];
         }
-        
-        [_list addObjectsFromArray:order.result.list];
-        
+        [_list addObjectsFromArray:list];
         if (_list.count >0) {
             _isNodata = NO;
-            _URINext =  order.result.paging.uri_next;
-            NSURL *url = [NSURL URLWithString:_URINext];
-            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-            
-            NSMutableDictionary *queries = [NSMutableDictionary new];
-            [queries removeAllObjects];
-            for (NSString *keyValuePair in querry)
-            {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [pairComponents objectAtIndex:0];
-                NSString *value = [pairComponents objectAtIndex:1];
-                
-                [queries setObject:value forKey:key];
-            }
-            
-            _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
+            _URINext =  uriNext;
+            _page = nextPage;
             _tableView.tableFooterView = nil;
         } else {
             if ([self isUsingAnyFilter]) {
@@ -776,25 +552,20 @@
             }
             
             [_tableView addSubview:_noResultView];
-
         }
         
+        [_act stopAnimating];
+        [_refreshControll endRefreshing];
         [_tableView reloadData];
-    }
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    [_act stopAnimating];
-    [_refreshControll endRefreshing];
-    
-    [_noResultView removeFromSuperview];
-    
-    if (_page == 1) {
-        _tableView.contentOffset = CGPointZero;
-    }
-    
-    _tableView.tableFooterView = _loadingView.view;
+        
+    } failure:^(NSError *error) {
+        [_act stopAnimating];
+        [_refreshControll endRefreshing];
+        
+        [_noResultView removeFromSuperview];
+        
+        _tableView.tableFooterView = _loadingView.view;
+    }];
 }
 
 #pragma mark - loading view delegate
@@ -802,7 +573,7 @@
 {
     [_act startAnimating];
     _tableView.tableFooterView = _footer;
-    [_networkManager doRequest];
+    [self doRequestList];
 }
 
 
@@ -1385,12 +1156,7 @@
 -(void)refreshRequest
 {
     _page = 1;
-
-    _networkManager.delegate = self;
-    [_refreshControll beginRefreshing];
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
-    [_networkManager doRequest];
-    [_act stopAnimating];
+    [self doRequestList];
 }
 
 -(void)statusDetailAtIndexPath:(NSIndexPath *)indexPath

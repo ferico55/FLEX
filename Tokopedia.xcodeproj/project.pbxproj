@@ -10,6 +10,7 @@
 		14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		45CF1DCB1C9FF33F00C3BB8A /* RequestPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF1DCA1C9FF33F00C3BB8A /* RequestPurchase.m */; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -2145,6 +2146,8 @@
 		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
 		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
+		45CF1DC91C9FF33F00C3BB8A /* RequestPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPurchase.h; sourceTree = "<group>"; };
+		45CF1DCA1C9FF33F00C3BB8A /* RequestPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPurchase.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
@@ -9640,6 +9643,8 @@
 				85A280041C919C23005170EB /* TxOrderTabViewController.h */,
 				85A280051C919C23005170EB /* TxOrderTabViewController.m */,
 				85A280061C919C23005170EB /* TxOrderTabViewController.xib */,
+				45CF1DC91C9FF33F00C3BB8A /* RequestPurchase.h */,
+				45CF1DCA1C9FF33F00C3BB8A /* RequestPurchase.m */,
 			);
 			path = TxOrder;
 			sourceTree = "<group>";
@@ -12828,6 +12833,7 @@
 				85A2848C1C919C2B005170EB /* ProfileSettings.m in Sources */,
 				85A284251C919C2B005170EB /* ResolutionActionResult.m in Sources */,
 				85A286731C919C2B005170EB /* HotlistResultViewController.m in Sources */,
+				45CF1DCB1C9FF33F00C3BB8A /* RequestPurchase.m in Sources */,
 				85A285011C919C2B005170EB /* JNE.m in Sources */,
 				85A285211C919C2B005170EB /* TransactionBuyResult.m in Sources */,
 				85A2870C1C919C2C005170EB /* ProductListMyShopCell.m in Sources */,
