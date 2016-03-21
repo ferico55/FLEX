@@ -7,7 +7,16 @@
 //
 
 #import "SearchAWS.h"
+#import "SearchAWSResult.h"
 
 @implementation SearchAWS
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:self];
+    [statusMapping addAttributeMappingsFromDictionary:@{@"status":@"status"}];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[SearchAWSResult mapping]]];
+    
+    return statusMapping;
+}
 
 @end

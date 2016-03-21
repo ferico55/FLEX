@@ -685,7 +685,7 @@ ImageSearchRequestDelegate
                                    path:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]
-                                mapping:[self searchMapping]
+                                mapping:[SearchAWS mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   [self reloadView];
                                   [self searchMappingResult:successResult];
@@ -699,122 +699,6 @@ ImageSearchRequestDelegate
                                      @"search_product" : @"/search/v1/product"
                                      };
     return pathDictionary;
-}
-
-
-- (RKObjectMapping*)imageSearchMapping {
-    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ImageSearchResponse class]];
-    [responseMapping addAttributeMappingsFromArray:@[@"status", @"config"]];
-    
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ImageSearchResponseData class]];
-    
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-    [productMapping addAttributeMappingsFromArray:@[@"shop_lucky",
-                                                    @"shop_id",
-                                                    @"shop_gold_status",
-                                                    @"shop_url",
-                                                    @"is_owner",
-                                                    @"rate",
-                                                    @"product_id",
-                                                    @"product_image_full",
-                                                    @"product_talk_count",
-                                                    @"product_image",
-                                                    @"product_price",
-                                                    @"product_sold_count",
-                                                    @"shop_location",
-                                                    @"product_wholesale",
-                                                    @"shop_name",
-                                                    @"product_review_count",
-                                                    @"similarity_rank",
-                                                    @"condition",
-                                                    @"product_name",
-                                                    @"product_url"]];
-    
-    [responseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping]];
-    
-    [dataMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"similar_prods" toKeyPath:@"similar_prods" withMapping:productMapping]];
-    
-    return responseMapping;
-}
-
-- (RKObjectMapping *)searchMapping {
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
-    
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
-                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
-                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
-                                                        }];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-    //product
-    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
-    //catalog
-    [listMapping addAttributeMappingsFromArray:@[@"catalog_id", @"catalog_name", @"catalog_price", @"catalog_uri", @"catalog_image", @"catalog_image_300", @"catalog_description", @"catalog_count_product"]];
-    
-    // paging mapping
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
-    
-    //add list relationship
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:([[_data objectForKey:@"type"] isEqualToString:@"search_product"])?@"products":@"catalogs" toKeyPath:([[_data objectForKey:@"type"] isEqualToString:@"search_product"])?@"products":@"catalogs" withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    // add page relationship
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    NSDictionary *categoryAttributeMappings = @{
-                                                @"d_id" : @"categoryId",
-                                                @"title" : @"name",
-                                                @"tree" : @"tree",
-                                                @"href" : @"url",
-                                                };
-    
-    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-    
-    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-    
-    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-    
-    // Adjust Relationship
-    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
-    [resultMapping addPropertyMapping:categoryRelationship];
-    
-    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
-    [categoryMapping addPropertyMapping:childCategoryRelationship];
-    
-    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
-    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
-    
-    return statusMapping;
-
-}
-
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    return ((SearchItem *) stat).status;
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
 }
 
 - (void)backupSimilarity{
@@ -1242,7 +1126,7 @@ ImageSearchRequestDelegate
                                    path:@"/v4/search/snapsearch.pl"
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]
-                                mapping:[self imageSearchMapping]
+                                mapping:[ImageSearchResponse mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   [self reloadView];
                                   [self imageSearchMappingResult:successResult];
