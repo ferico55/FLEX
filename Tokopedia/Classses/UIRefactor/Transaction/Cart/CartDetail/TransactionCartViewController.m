@@ -1690,24 +1690,33 @@
 }
 
 -(void)doRequestEmoney{
-    [_alertLoading show];
+    [self isLoading:YES];
     
     [RequestCart fetchEMoneyCode:_cartBuy.transaction.emoney_code?:@"" success:^(TxEMoneyData *data) {
         NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
         [_delegate didFinishRequestBuyData:userInfo];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-
-        [_act stopAnimating];
-        
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
+        [self isLoading:NO];
     } error:^(NSError *error) {
         [_delegate shouldBackToFirstPage];
-        [_act stopAnimating];
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
+}
+
+-(void)isLoading:(BOOL)isLoading{
+    _isLoadingRequest = isLoading;
+    if (isLoading) {
+        [_alertLoading show];
+        [_act startAnimating];
+    } else{
+        if (_refreshControl.isRefreshing) {
+            _tableView.contentOffset = CGPointZero;
+            [_refreshControl endRefreshing];
+        }
+        [_act stopAnimating];
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }
 }
 
 -(void)shouldDoRequestBCAClickPay
@@ -1716,28 +1725,23 @@
 }
 
 -(void)doRequestBCAClickPay{
-    [_alertLoading show];
+    [self isLoading:YES];
     [RequestCart fetchBCAClickPaySuccess:^(TransactionBuyResult *data) {
         
         NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:data?:[TransactionBuyResult new]};
         [_delegate didFinishRequestBuyData:userInfo?:@{}];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        
-        [_act stopAnimating];
-        
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     } error:^(NSError *error) {
         [_delegate shouldBackToFirstPage];
-        [_act stopAnimating];
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
 }
 
 -(void)shouldDoRequestBRIEPayCode:(NSString *)code
 {
-    [_alertLoading show];
+    [self isLoading:YES];
     
     [RequestCart fetchBRIEPayCode:code success:^(TransactionActionResult *data) {
         
@@ -1748,26 +1752,21 @@
         [_delegate didFinishRequestBuyData:userInfo?:@{}];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        
-        [_act stopAnimating];
-        
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     } error:^(NSError *error) {
         [_delegate shouldBackToFirstPage];
-        [_act stopAnimating];
-         [self endRefreshing];
-         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
 }
 
 -(void)shouldDoRequestTopPayThxCode:(NSString *)code
 {
+    [self isLoading:YES];
     [RequestCart fetchToppayThanksCode:code success:^(TransactionActionResult *data) {
         [self refreshRequestCart];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     } error:^(NSError *error) {
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
 }
 
@@ -1856,13 +1855,9 @@
         _tableView.tableFooterView = _footerView;
         [_act startAnimating];
     }
-    _isLoadingRequest = YES;
+    [self isLoading:YES];
     
     [RequestCart fetchCartData:^(TransactionCartResult *data) {
-        
-        [self endRefreshing];
-        [_act stopAnimating];
-        _isLoadingRequest = NO;
         
         [_list removeAllObjects];
         
@@ -1889,25 +1884,18 @@
         
         NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
-        
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-        
+
+        [self isLoading:NO];
     } error:^(NSError *error) {
-        
-        [self endRefreshing];
-        [_act stopAnimating];
         _paymentMethodView.hidden = YES;
-        _isLoadingRequest = NO;
         if (!_refreshFromShipment)_tableView.tableFooterView =_loadingView.view;
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-        
+        [self isLoading:NO];
     }];
     
 }
 
 -(void)doCancelCart{
-    [_alertLoading show];
-    
+    [self isLoading:YES];
     NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
     
     TransactionCartList *list = _list[indexPathCancelProduct.section];
@@ -1934,11 +1922,9 @@
         
         [self adjustAfterUpdateList];
         [self refreshRequestCart];
-        [self endRefreshing];
-        
+        [self isLoading:NO];
     } error:^(NSError *error) {
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
 }
 
@@ -2487,6 +2473,7 @@
 
 
 -(void)doRequestVoucher{
+    [self isLoading:YES];
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
     [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucherData *data) {
         
@@ -2505,20 +2492,17 @@
         _buttonCancelVoucher.hidden = NO;
         
         [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
-        
+        [self isLoading:NO];
         [_tableView reloadData];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-        
     } error:^(NSError *error) {
         [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
 }
 
 -(void)doCheckout{
     _checkoutButton.enabled = NO;
-    [_alertLoading show];
+    [self isLoading:YES];
     
     [self adjustDropshipperListParam];
     
@@ -2554,18 +2538,17 @@
         [_delegate didFinishRequestCheckoutData:userInfo];
         _checkoutButton.enabled = YES;
         _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     } error:^(NSError *error) {
         _checkoutButton.enabled = YES;
         _checkoutButton.layer.opacity = 1;
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
 }
 
 -(void)doCheckoutWithToppay{
     
-    [_alertLoading show];
+    [self isLoading:YES];
     
     [self adjustDropshipperListParam];
     
@@ -2595,20 +2578,17 @@
           _popFromToppay = YES;
                               
           [self.navigationController pushViewController:vc animated:YES];
-          [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-                              
+          [self isLoading:NO];
      } error:^(NSError *error) {
          _checkoutButton.enabled = YES;
          _checkoutButton.layer.opacity = 1;
-         [self endRefreshing];
-         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
      }];
 }
 
 -(void)doRequestBuy{
     _buyButton.enabled = NO;
-    //[_alertLoading dismissWithClickedButtonIndex:0 animated:NO];
-    [_alertLoading show];
+    [self isLoading:YES];
     
     NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
     NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
@@ -2651,12 +2631,11 @@
         //
         _buyButton.enabled = YES;
         _buyButton.layer.opacity = 1;
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     } error:^(NSError *error) {
         _buyButton.enabled = YES;
         _buyButton.layer.opacity = 1;
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
 }
 
@@ -2669,17 +2648,8 @@
         }
         [_tableView reloadData];
     } error:^(NSError *error) {
-        [self endRefreshing];
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [self isLoading:NO];
     }];
-}
-
--(void)endRefreshing
-{
-    if (_refreshControl.isRefreshing) {
-        _tableView.contentOffset = CGPointZero;
-        [_refreshControl endRefreshing];
-    }
 }
 
 -(void)adjustAfterUpdateList
