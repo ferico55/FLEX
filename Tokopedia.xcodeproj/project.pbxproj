@@ -10,6 +10,7 @@
 		14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		455FE0581C9F94E300F7A8F7 /* NSNumberFormatter+IDRFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 455FE0571C9F94E300F7A8F7 /* NSNumberFormatter+IDRFormater.m */; };
 		45906FD21C97E04C0091450E /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 459062A51C97E0480091450E /* TPAnalytics.m */; };
 		45906FD31C97E04C0091450E /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 459062A81C97E0480091450E /* URLCacheAlert.m */; };
 		45906FD41C97E04C0091450E /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 459062AA1C97E0480091450E /* URLCacheConnection.m */; };
@@ -2147,6 +2148,8 @@
 		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
 		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
+		455FE0561C9F94E300F7A8F7 /* NSNumberFormatter+IDRFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+IDRFormater.h"; sourceTree = "<group>"; };
+		455FE0571C9F94E300F7A8F7 /* NSNumberFormatter+IDRFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+IDRFormater.m"; sourceTree = "<group>"; };
 		459062A41C97E0480091450E /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		459062A51C97E0480091450E /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		459062A71C97E0480091450E /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -5460,6 +5463,8 @@
 		459062AD1C97E0480091450E /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				455FE0561C9F94E300F7A8F7 /* NSNumberFormatter+IDRFormater.h */,
+				455FE0571C9F94E300F7A8F7 /* NSNumberFormatter+IDRFormater.m */,
 				459062AE1C97E0480091450E /* ALAsset+Date.h */,
 				459062AF1C97E0480091450E /* ALAsset+Date.m */,
 				459062B01C97E0480091450E /* NSArray+PerformSelector.h */,
@@ -12681,6 +12686,7 @@
 				4590702C1C97E04C0091450E /* CatalogImages.m in Sources */,
 				4590738B1C97E04C0091450E /* RequestMoveTo.m in Sources */,
 				459071431C97E04C0091450E /* NoteDetailResult.m in Sources */,
+				455FE0581C9F94E300F7A8F7 /* NSNumberFormatter+IDRFormater.m in Sources */,
 				EC590EC10F764B488966E884 /* RolloutDynamic_09.m in Sources */,
 				459071251C97E04C0091450E /* ImageSearchProduct.m in Sources */,
 				459072261C97E04C0091450E /* CatalogProductCell.m in Sources */,
