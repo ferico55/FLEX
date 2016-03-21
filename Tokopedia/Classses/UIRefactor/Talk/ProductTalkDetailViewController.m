@@ -34,7 +34,6 @@
     UITableViewDataSource,
     UITableViewDelegate,
     UIScrollViewDelegate,
-    UISplitViewControllerDelegate,
     UITextViewDelegate,
     MGSwipeTableCellDelegate,
     ReportViewControllerDelegate,
@@ -1072,12 +1071,6 @@
                                              _isrefreshview = NO;
                                              [_refreshControl endRefreshing];
                                          }];
-}
-
-
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-{
-    return NO;
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
