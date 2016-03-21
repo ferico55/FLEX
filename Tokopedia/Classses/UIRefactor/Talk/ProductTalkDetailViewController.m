@@ -604,53 +604,6 @@
     [self submitTalk];
 }
 
-
--(IBAction)tap:(id)sender {
-    
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-                
-                
-            
-                
-            default:
-            break;
-        }
-    }
-    
-    if([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton *)sender;
-        switch (btn.tag) {
-            case 11 : {
-                [self tapProduct];
-                break;
-            }
-                
-            case 12 : {
-                [self tapUser];
-                break;
-            }
-                
-            case 13 : {
-                _reportAction = @"report_product_talk";
-                ReportViewController *reportController = [ReportViewController new];
-                reportController.delegate = self;
-                [self.navigationController pushViewController:reportController animated:YES];
-                break;
-            }
-
-            default:
-                break;
-        }
-    }
-}
-
 - (void)submitTalk {
     NSInteger lastindexpathrow = [_list count];
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
