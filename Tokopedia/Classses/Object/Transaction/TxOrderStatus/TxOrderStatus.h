@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TxOrderStatusResult.h"
 
-@interface TxOrderStatus : NSObject
+@interface TxOrderStatus : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
