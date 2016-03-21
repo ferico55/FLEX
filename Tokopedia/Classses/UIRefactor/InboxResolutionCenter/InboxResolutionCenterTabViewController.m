@@ -331,6 +331,7 @@
          [self refreshChildViewController];
     }
     _filterAlertView = nil;
+    [self setTitleButtonString:_selectedFilterRead[@"filter_name"] withImage:@"icon_triangle_down_white.png"];
 }
 
 -(void)backToFirstPageWithFilterProcess:(NSInteger)filterProcess

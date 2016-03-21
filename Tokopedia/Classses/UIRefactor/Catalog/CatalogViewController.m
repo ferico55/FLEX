@@ -728,7 +728,7 @@ static CGFloat rowHeight = 40;
     } else if ([sender isKindOfClass:[UIButton class]]) {
         CatalogShopViewController *controller = [CatalogShopViewController new];
         controller.catalog = _catalog;
-        controller.catalog_shops = [NSMutableArray arrayWithArray:_catalog.result.catalog_shops];
+        //controller.catalog_shops = [NSMutableArray arrayWithArray:_catalog.result.catalog_shops];
         [self.navigationController pushViewController:controller animated:YES];
     }
     else if ([sender isKindOfClass:[UISegmentedControl class]]) {

@@ -21,6 +21,7 @@
 #import "ProductCell.h"
 
 #import "RetryCollectionReusableView.h"
+#import "Tokopedia-Swift.h"
 
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -103,7 +104,7 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSeeAProduct:) name:@"didSeeAProduct" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     //todo with view
@@ -186,25 +187,26 @@ typedef enum TagRequest {
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger numberOfCell;
-    NSInteger cellHeight;
-    if(IS_IPAD) {
-        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-        if(UIInterfaceOrientationIsLandscape(orientation)) {
-            numberOfCell = 5;
-        } else {
-            numberOfCell = 4;
-        }
-        cellHeight = 250;
-    } else {
-        numberOfCell = 2;
-        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
-    }
-    
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-    
-    return CGSizeMake(cellWidth, cellHeight);
+//    NSInteger numberOfCell;
+//    NSInteger cellHeight;
+//    if(IS_IPAD) {
+//        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+//        if(UIInterfaceOrientationIsLandscape(orientation)) {
+//            numberOfCell = 5;
+//        } else {
+//            numberOfCell = 4;
+//        }
+//        cellHeight = 250;
+//    } else {
+//        numberOfCell = 2;
+//        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
+//    }
+//    
+//    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+//    CGFloat cellWidth = screenWidth/numberOfCell - 15;
+//    
+//    return CGSizeMake(cellWidth, cellHeight);
+    return [ProductCellSize sizeWithType:1];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{

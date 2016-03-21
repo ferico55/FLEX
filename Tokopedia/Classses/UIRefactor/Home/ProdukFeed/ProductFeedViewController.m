@@ -22,6 +22,12 @@
 #import "PromoRequest.h"
 #import "Tokopedia-Swift.h"
 
+#import "SearchAWS.h"
+#import "SearchAWSResult.h"
+#import "SearchAWSProduct.h"
+
+#import "FavoriteShopRequest.h"
+
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
 static NSInteger const normalWidth = 320;
 static NSInteger const normalHeight = 568;
@@ -48,7 +54,8 @@ TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
 PromoRequestDelegate,
 NoResultDelegate,
-CollectionViewSupplementaryDataSource
+CollectionViewSupplementaryDataSource,
+FavoriteShopRequestDelegate
 >
 
 @property (strong, nonatomic) NSMutableArray *promo;
@@ -63,7 +70,8 @@ CollectionViewSupplementaryDataSource
 
 @property (strong, nonatomic) PromoRequest *promoRequest;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
-@property (strong, nonatomic) UIView *loadingView;
+@property (strong, nonatomic) FavoriteShopRequest *favoriteShopRequest;
+@property (strong, nonatomic) IBOutlet UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 @end
 
@@ -73,15 +81,16 @@ CollectionViewSupplementaryDataSource
     NSString *_nextPageUri;
     
     BOOL _isFailRequest;
+    BOOL _isRequestingProductFeed;
 //    BOOL _isShowRefreshControl;
     
     UIRefreshControl *_refreshControl;
     
     __weak RKObjectManager *_objectmanager;
-    TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
     ProductDataSource* _productDataSource;
     UIActivityIndicatorView *_loadingIndicator;
+    FavoritedShopResult *_favoritedShops;
 }
 
 #pragma mark - Initialization
@@ -115,16 +124,14 @@ CollectionViewSupplementaryDataSource
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     
-    _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    _loadingIndicator.hidesWhenStopped = YES;
-    [_loadingIndicator startAnimating];
-    _loadingIndicator.center = self.view.center;
+    _favoritedShops = [[FavoritedShopResult alloc] init];
+    
+
+    _collectionView.delegate = self;
 
     
-    [_collectionView addSubview:_loadingIndicator];
-    
     [self initNoResultView];
-    _page = 1;
+    _page = 0;
     
     //todo with view
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -136,24 +143,31 @@ CollectionViewSupplementaryDataSource
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
-    [_collectionView addSubview:_firstFooter];
+//    [_collectionView addSubview:_firstFooter];
+//    [_firstFooter setHidden:NO];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
+    _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _loadingIndicator.hidesWhenStopped = YES;
+    [_loadingIndicator startAnimating];
+    [_loadingIndicator setFrame:CGRectMake(0, 10, [UIScreen mainScreen].bounds.size.width, _loadingIndicator.frame.size.height)];
+    
+    
+    [_collectionView addSubview:_loadingIndicator];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteShop) name:@"updateFavoriteShop" object:nil];
+    
     //set change orientation
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
-    //todo with network
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = ProductFeedTag;
-    _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    _favoriteShopRequest = [FavoriteShopRequest new];
+    _favoriteShopRequest.delegate = self;
+    [_favoriteShopRequest requestFavoriteShopListings];
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
@@ -161,6 +175,7 @@ CollectionViewSupplementaryDataSource
     
     [self registerNib];
     self.contentView = self.view;
+    _isRequestingProductFeed = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -182,12 +197,86 @@ CollectionViewSupplementaryDataSource
                                                  name:TKPDUserDidLoginNotification
                                                object:nil];
 }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NavigateViewController *navigateController = [NavigateViewController new];
+    SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath.row];
+    [TPAnalytics trackProductClick:product];
+    [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
+}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    CGSize size = CGSizeZero;
+    if (_promo.count > section && section > 0) {
+        if ([_promo objectAtIndex:section]) {
+            CGFloat headerHeight = [PromoCollectionReusableView collectionViewNormalHeight];
+            size = CGSizeMake(self.view.frame.size.width, headerHeight);
+        }
+    }
+    return size;
+}
 
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Notification Action
+- (void)userDidTappedTabBar:(NSNotification*)notification {
+    [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (void)userDidLogin:(NSNotification*)notification {
+    [self refreshProductFeed];
+}
+
+- (void)didSwipeHomeTab:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
+    
+    if(tag == 1) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
+    }
+    
+}
+
+- (void)updateFavoriteShop {
+    _isRequestingProductFeed = NO;
+    [self refreshProductFeed];
+}
+
+- (void)refreshProductFeed {
+    
+    [_productDataSource removeAllProducts];
+    [_collectionViewFlowLayout setFooterReferenceSize:CGSizeZero];
+    [_firstFooter removeFromSuperview];
+    [_noResultView removeFromSuperview];
+    if(!_isRequestingProductFeed){
+        _page = 0;
+        _isRequestingProductFeed = YES;
+        //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+        [_favoriteShopRequest requestFavoriteShopListings];
+    }
+}
+
+- (void)registerNib {
+    
+    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+    
+    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
+    
+    UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
+    [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
+}
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (_promo.count >= indexPath.section && indexPath.section > 0) {
+        if (_promo.count >= indexPath.section && indexPath.section > 0 ) {
             if ([_promo objectAtIndex:indexPath.section]) {
                 reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                   withReuseIdentifier:@"PromoCollectionReusableView"
@@ -212,226 +301,20 @@ CollectionViewSupplementaryDataSource
                                                               withReuseIdentifier:@"RetryView"
                                                                      forIndexPath:indexPath];
         } else {
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                                              withReuseIdentifier:@"FooterView"
-                                                                     forIndexPath:indexPath];
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                                  withReuseIdentifier:@"FooterView"
+                                                                         forIndexPath:indexPath];
+            
         }
     }
     return reusableView;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NavigateViewController *navigateController = [NavigateViewController new];
-    ProductFeedList *product = [_productDataSource productAtIndex:indexPath.row];
-    [TPAnalytics trackProductClick:product];
-    [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return [_productDataSource sizeForItemAtIndexPath:indexPath];
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    CGSize size = CGSizeZero;
-    if (_promo.count > section && section > 0) {
-        if ([_promo objectAtIndex:section]) {
-            CGFloat headerHeight = [PromoCollectionReusableView collectionViewNormalHeight];
-            size = CGSizeMake(self.view.frame.size.width, headerHeight);
-        }
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
+    if([_productDataSource isProductFeedEmpty] || _nextPageUri == nil || [_nextPageUri isEqualToString:@""]){
+        return CGSizeZero;
     }
-    return size;
-}
-
-
-#pragma mark - Memory Management
--(void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
-}
-
-#pragma mark - Tokopedia Network Delegate
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = [[NSDictionary alloc] initWithObjectsAndKeys:@(_page), kTKPDHOME_APIPAGEKEY,
-                               IS_IPAD ? @"16" : @"12", kTKPDHOME_APILIMITPAGEKEY, nil];
-    
-    return parameter;
-}
-
-- (NSString *)getPath:(int)tag {
-    return @"/v4/home/get_product_feed.pl";
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    ProductFeed *list = stat;
-    
-    return list.status;
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (id)getObjectManager:(int)tag {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClientHttps];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductFeed class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ProductFeedResult class]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ProductFeedList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,
-                                                 kTKPDDETAILCATALOG_APIPRODUCTIDKEY,
-                                                 kTKPDDETAILCATALOG_APISHOPGOLDSTATUSKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                 kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                 kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
-                                                 API_PRODUCT_NAME_KEY,
-                                                 @"shop_lucky",
-                                                 @"shop_url"
-                                                 ]];
-    //relation
-    RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
-    [statusMapping addPropertyMapping:dataRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [dataMapping addPropertyMapping:pageRel];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [dataMapping addPropertyMapping:listRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[self getPath:nil] keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    
-    return _objectmanager;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    CGFloat yPosition = _collectionView.contentSize.height;
-    
-    CGRect frame = CGRectMake(0, yPosition, [UIScreen mainScreen].bounds.size.width, 50);
-    [_loadingIndicator setFrame:frame];
-    [_loadingIndicator startAnimating];
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    [_loadingIndicator stopAnimating];
-    
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    ProductFeed *feed = [result objectForKey:@""];
-    [_noResultView removeFromSuperview];
-    [_firstFooter removeFromSuperview];
-    
-    if (feed.data.list.count > 0) {
-        [_noResultView removeFromSuperview];
-        if (_page == 1) {
-            [_productDataSource replaceProductsWith: feed.data.list];
-            [_promo removeAllObjects];
-            [_firstFooter removeFromSuperview];
-        } else {
-            [_productDataSource addProducts: feed.data.list];
-        }
-        
-        [TPAnalytics trackProductImpressions:feed.data.list];
-        
-        _nextPageUri =  feed.data.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
-        
-
-        if (_page > 1) [self requestPromo];
-        
-    } else {
-        // no data at all
-        [_productDataSource removeAllProducts];
-        [_collectionView addSubview:_noResultView];
-    }
-    
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-        [_collectionView reloadData];
-    } else  {
-        [_collectionView reloadData];
-    }
-    [_collectionView layoutIfNeeded];
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    [_refreshControl endRefreshing];
-    
-    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
-    [stickyView show];
-}
-
-
-#pragma mark - Notification Action
-- (void)userDidTappedTabBar:(NSNotification*)notification {
-    [_collectionView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-}
-
-- (void)userDidLogin:(NSNotification*)notification {
-//    [_productDataSource removeAllProducts];
-//    [_promo removeAllObjects];
-//    [self refreshView:_refreshControl];
-    [self refreshProductFeed];
-}
-
-- (void)didSwipeHomeTab:(NSNotification*)notification {
-    NSDictionary *userinfo = notification.userInfo;
-    NSInteger tag = [[userinfo objectForKey:@"tag"]integerValue];
-    
-    if(tag == 1) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidTappedTabBar:) name:@"TKPDUserDidTappedTapBar" object:nil];
-    } else {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"TKPDUserDidTappedTapBar" object:nil];
-    }
-    
-}
-
-- (void)updateFavoriteShop {
-    [self refreshProductFeed];
-}
-
-- (void)refreshProductFeed {
-    _page = 1;
-    [_productDataSource removeAllProducts];
-    [_networkManager doRequest];
-    [_noResultView removeFromSuperview];
-}
-
-
-//-(void)refreshView:(UIRefreshControl*)refresh {
-//    _page = 1;
-//    [_networkManager doRequest];
-//}
-
-- (void)registerNib {
-    
-    UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
-    [_collectionView registerNib:footerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
-    
-    UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
-    [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
-    
-    UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
-    [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
+    return CGSizeMake(collectionView.bounds.size.width, 45.0f);
 }
 
 #pragma mark - Promo request delegate
@@ -494,28 +377,95 @@ CollectionViewSupplementaryDataSource
     }
     
     if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
-        if ([self isAbleToRequest]) {
-            _isFailRequest = NO;
-            [_networkManager doRequest];
-        }
+        [_collectionViewFlowLayout setFooterReferenceSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 45)];
+        [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     }
 }
 
-- (BOOL)isAbleToRequest {
-    return (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0);
-}
-
-- (void)orientationChanged:(NSNotification *)note {
-    [_collectionView reloadData];
-}
-
-#pragma mark - UIScrollViewDelegate
-
-static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize, UIEdgeInsets contentInset, CGRect bounds) {
+static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize, UIEdgeInsets contentInset, CGRect bounds)
+{
     CGFloat buffer = CGRectGetHeight(bounds) - contentInset.top - contentInset.bottom;
     const CGFloat maxVisibleY = (contentOffset.y + bounds.size.height);
     const CGFloat actualMaxY = (contentSize.height + contentInset.bottom);
     return ((maxVisibleY + buffer) >= actualMaxY);
+}
+
+#pragma mark - Favorite Shop Request delegate
+
+-(void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
+    _favoritedShops = favoriteShops;
+    _isFailRequest = NO;
+    if(_favoritedShops.list.count > 0){
+        [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+    }else{
+        [_loadingIndicator stopAnimating];
+        [_noResultView removeFromSuperview];
+        [_firstFooter removeFromSuperview];
+        [_productDataSource removeAllProducts];
+        [_collectionView addSubview:_noResultView];
+        [_collectionView layoutIfNeeded];
+        _isRequestingProductFeed = NO;
+    }
+}
+
+-(void)didReceiveProductFeed:(SearchAWS *)feed{
+    [_noResultView removeFromSuperview];
+    [_firstFooter removeFromSuperview];
+    [_refreshControl setHidden:YES];
+    _isFailRequest = NO;
+    
+    if (_favoritedShops.list.count > 0 && feed.result.products.count > 0) {
+        if (_page == 0) {
+            [_productDataSource replaceProductsWith: feed.result.products];
+            [_promo removeAllObjects];
+        }else{
+            [_productDataSource addProducts: feed.result.products];
+        }
+        
+        [TPAnalytics trackProductImpressions:feed.result.products];
+        
+        _nextPageUri =  feed.result.paging.uri_next;
+        _page++;
+        
+        if (_page > 1) [self requestPromo];
+        
+    } else {
+        // no data at all
+        if(_page == 0){
+            [_productDataSource removeAllProducts];
+            [_collectionView addSubview:_noResultView];
+        }
+    }
+    
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
+    [_loadingIndicator stopAnimating];
+    [_collectionView reloadData];
+    [_collectionView layoutIfNeeded];
+    _isRequestingProductFeed = NO;
+}
+
+-(void)failToRequestFavoriteShopListing{
+    [_refreshControl endRefreshing];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
+    _isFailRequest = YES;
+    _isRequestingProductFeed = NO;
+}
+
+-(void)failToRequestProductFeed{
+    [_refreshControl endRefreshing];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
+    _isFailRequest = YES;
+    _isRequestingProductFeed = NO;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [ProductCellSize sizeWithType:1];
 }
 
 #pragma mark - No Request delegate

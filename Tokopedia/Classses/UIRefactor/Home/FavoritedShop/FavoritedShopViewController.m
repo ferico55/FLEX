@@ -14,11 +14,11 @@
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
 #import "ShopContainerViewController.h"
-#import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 #import "PromoRequest.h"
 #import "PromoInfoAlertView.h"
 #import "WebViewController.h"
+#import "FavoriteShopRequest.h"
 
 #define CTagFavoriteButton 11
 #define CTagRequest 234
@@ -28,10 +28,10 @@
 UITableViewDataSource,
 UITableViewDelegate,
 FavoritedShopCellDelegate,
-TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
 TKPDAlertViewDelegate,
-PromoRequestDelegate
+PromoRequestDelegate,
+FavoriteShopRequestDelegate
 >
 {
     BOOL _isnodata;
@@ -53,8 +53,8 @@ PromoRequestDelegate
     
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
-    TokopediaNetworkManager *tokopediaNetworkManager;
     PromoRequest *_promoRequest;
+    FavoriteShopRequest *_favoriteShopRequest;
     
     PromoShop *_selectedPromoShop;
 }
@@ -81,32 +81,23 @@ PromoRequestDelegate
     [super viewDidLoad];
     
     _operationQueue = [NSOperationQueue new];
-    
-    /** create new **/
     _shop = [NSMutableArray new];
     _promoShops = [NSMutableArray new];
     
-    /** set first page become 1 **/
     _page = 1;
-    
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
     
-    /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
-    
-    /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    tokopediaNetworkManager = [TokopediaNetworkManager new];
-    tokopediaNetworkManager.delegate = self;
+    _favoriteShopRequest = [FavoriteShopRequest new];
+    _favoriteShopRequest.delegate = self;
     
-//    [self setTableInset];
+    [self setTableInset];
     
-    if (_shop.count > 0) {
-        _isnodata = NO;
-    }
+    _isnodata = NO;
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
@@ -119,12 +110,7 @@ PromoRequestDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
-    if (!_isrefreshview) {
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self request];
-            objLoadData = [NSObject new];
-        }
-    }
+    [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
     
     //Check login with different id
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -137,16 +123,6 @@ PromoRequestDelegate
         _isnodata = YES;
         _urinext = nil;
         _page = 1;
-    }
-    
-    if(objLoadData == nil) {
-        _page = 1;
-        _isrefreshview = NO;
-        _urinext = nil;
-        [self request];
-    }
-    else {
-        objLoadData = nil;
     }
     
     _promoRequest = [PromoRequest new];
@@ -166,19 +142,14 @@ PromoRequestDelegate
     [self refreshView:nil];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [tokopediaNetworkManager requestCancel];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-//- (void) setTableInset {
-//    _table.contentInset = UIEdgeInsetsMake(7, 0, 200, 0);
-//}
+- (void) setTableInset {
+    _table.contentInset = UIEdgeInsetsMake(7, 0, 200, 0);
+}
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -305,7 +276,7 @@ PromoRequestDelegate
         NSInteger row = [self tableView:tableView numberOfRowsInSection:1] - 1;
         if (row == indexPath.row) {
             if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-                [self request];
+                [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
             }
         }
     }
@@ -346,12 +317,61 @@ PromoRequestDelegate
 
 -(void)pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
     strTempShopID = shopid;
-    tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
-    [tokopediaNetworkManager doRequest];
-
+    [_favoriteShopRequest requestActionButtonFavoriteShop:strTempShopID withAdKey:_selectedPromoShop.ad_key];
 }
 
--(void) requestfailurefav:(id)error {
+
+#pragma mark - Favorite Shop Request Delegate
+
+- (void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
+    if(_page == 1) {
+        _shop = [favoriteShops.list mutableCopy];
+    } else {
+        [_shop addObjectsFromArray: favoriteShops.list];
+    }
+    
+    if (_shop.count > 0) {
+        _isnodata = NO;
+        _urinext =  favoriteShops.paging.uri_next;
+        NSURL *url = [NSURL URLWithString:_urinext];
+        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+        
+        NSMutableDictionary *queries = [NSMutableDictionary new];
+        [queries removeAllObjects];
+        for (NSString *keyValuePair in querry)
+        {
+            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString *key = [pairComponents objectAtIndex:0];
+            NSString *value = [pairComponents objectAtIndex:1];
+            
+            [queries setObject:value forKey:key];
+        }
+        
+        _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+    } else {
+        _isnodata = YES;
+    }
+    [self resetAllState];
+}
+
+-(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
+    [self resetAllState];
+    [_table reloadData];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
+}
+
+-(void)failToRequestFavoriteShopListing{
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
+    [_refreshControl endRefreshing];
+    [_timer invalidate];
+    _timer = nil;
+}
+
+-(void)failToRequestActionButtonFavoriteShopConfirmation{
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
     [_promoShops insertObject:_shop[0] atIndex:0];
     [_shop removeObjectAtIndex:0];
     
@@ -368,123 +388,26 @@ PromoRequestDelegate
     [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationTop];
     [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
     [_table endUpdates];
+    
+    _table.tableFooterView = nil;
+    _isrefreshview = NO;
+    [_refreshControl endRefreshing];
+    [_timer invalidate];
+    _timer = nil;
 }
 
-
-#pragma mark - Request + Mapping
-
--(void) request {
-    if (tokopediaNetworkManager.getObjectRequest.isExecuting) return;
-    
-    // create a new one, this one is expired or we've never gotten it
-    if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
+-(void)resetAllState{
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
     }
     
-    tokopediaNetworkManager.tagRequest = CTagRequest;
-    tokopediaNetworkManager.isUsingHmac = YES;
-    [tokopediaNetworkManager doRequest];
+    [_act stopAnimating];
+    _table.tableFooterView = nil;
+    [_table reloadData];
+    _isrefreshview = NO;
+    [_timer invalidate];
+    _timer = nil;
 }
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
--(void) requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    FavoritedShop *favoritedshop = info;
-    BOOL status = [favoritedshop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        [self requestproceed:object];
-        
-        NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHISTORYPRODUCT_APIRESPONSEFILE];
-        NSError *error;
-        BOOL success = [result writeToFile:path atomically:YES];
-        if (!success) {
-            NSLog(@"writeToFile failed with error %@", error);
-        }
-        
-    }
-}
-
--(void) requestproceed:(id)object {
-    if (object) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
-        FavoritedShop *favoritedshop = stat;
-        BOOL status = [favoritedshop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status) {
-            if(_page == 1) {
-                _shop = [favoritedshop.data.list mutableCopy];
-            } else {
-                [_shop addObjectsFromArray: favoritedshop.data.list];
-            }
-            
-            if (_shop.count > 0) {
-                _isnodata = NO;
-                _urinext =  favoritedshop.data.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
-                    
-                    [queries setObject:value forKey:key];
-                }
-                
-                _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
-            } else {
-                _isnodata = YES;
-            }
-            
-            if(_refreshControl.isRefreshing) {
-                [_refreshControl endRefreshing];
-            }
-            
-            [_table reloadData];
-        }
-        else{
-            
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                } else {
-                    [_act stopAnimating];
-                    _table.tableFooterView = nil;
-                }
-            } else {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
-            }
-            
-        }
-    }
-    
-}
-
--(void) requestfailure:(id)error {
-    
-}
-
--(void) requesttimeout {
-    [self cancel];
-}
-
 
 #pragma mark - Delegate
 -(void)FavoritedShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview {
@@ -503,12 +426,27 @@ PromoRequestDelegate
                            };
         
     } else {
-        FavoritedShopList *shop = [_shop objectAtIndex:indexpath.row];
-        container.data = @{
-                           kTKPDDETAIL_APISHOPIDKEY:shop.shop_id?:@0,
-                           kTKPDDETAIL_APISHOPNAMEKEY:shop.shop_name?:@"",
-                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                           };
+        id shopTemp = [_shop objectAtIndex:indexpath.row];
+        FavoritedShopList* favShop;
+        PromoShop* promoShop;
+        
+        if([shopTemp isKindOfClass:[PromoShop class]]){
+            promoShop = (PromoShop*)shopTemp;
+            container.data = @{
+                               kTKPDDETAIL_APISHOPIDKEY:promoShop.shop_id?:@0,
+                               kTKPDDETAIL_APISHOPNAMEKEY:promoShop.shop_name?:@"",
+                               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                               };
+        }else{
+            favShop = (FavoritedShopList*)shopTemp;
+            container.data = @{
+                               kTKPDDETAIL_APISHOPIDKEY:favShop.shop_id?:@0,
+                               kTKPDDETAIL_APISHOPNAMEKEY:favShop.shop_name?:@"",
+                               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                               };
+        }
+        
+        
     }
     
     [self.navigationController pushViewController:container animated:YES];
@@ -522,199 +460,15 @@ PromoRequestDelegate
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    [self cancel];
-    /** clear object **/
+    [_favoriteShopRequest cancelAllOperation];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
     is_already_updated = NO;
     
     _table.tableFooterView = nil;
-    /** request data **/
-    [self request];
-    
+    [_favoriteShopRequest requestFavoriteShopListingsWithPage:_page];
     [_promoRequest requestForShopFeed];
-}
-
--(void)cancel {
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-}
-
-
-
-#pragma mark - TokoPedia Network Manager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    if(tag == CTagFavoriteButton)
-    {
-        NSString *tempShopID = [NSString stringWithFormat:@"%@", strTempShopID];
-        return @{
-            @"shop_id":tempShopID,
-            @"ad_key":_selectedPromoShop.ad_key,
-        };
-    }
-    else
-        return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
-                 kTKPDHOME_APILIMITPAGEKEY : @(5),
-                 kTKPDHOME_APIPAGEKEY:@(_page)};
-}
-
-- (NSString*)getPath:(int)tag
-{
-    if(tag == CTagFavoriteButton)
-        return @"/v4/action/favorite-shop/fav_shop.pl";
-    else
-        return @"/v4/home/get_favorite_shop.pl";
-}
-
-- (id)getObjectManager:(int)tag
-{
-    if(tag == CTagFavoriteButton)
-    {
-        // initialize RestKit
-        _objectmanager =  [RKObjectManager sharedClientHttps];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
-        [dataMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
-                                                          @"is_success":@"is_success"}];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor
-                                                          responseDescriptorWithMapping:statusMapping
-                                                          method:RKRequestMethodPOST
-                                                          pathPattern:[self getPath:CTagFavoriteButton]
-                                                          keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-        
-        return _objectmanager;
-    }
-    else
-    {
-        // initialize RestKit
-        _objectmanager =  [RKObjectManager sharedClientHttps];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoritedShop class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[FavoritedShopResult class]];
-        
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-        
-        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[FavoritedShopList class]];
-        [listMapping addAttributeMappingsFromArray:@[
-                                                     kTKPDDETAILSHOP_APISHOPIMAGE,
-                                                     kTKPDDETAILSHOP_APISHOPLOCATION,
-                                                     kTKPDDETAILSHOP_APISHOPID,
-                                                     kTKPDDETAILSHOP_APISHOPNAME,
-                                                     ]];
-        
-        RKObjectMapping *listGoldMapping = [RKObjectMapping mappingForClass:[FavoritedShopList class]];
-        [listGoldMapping addAttributeMappingsFromArray:@[
-                                                         kTKPDDETAILSHOP_APISHOPIMAGE,
-                                                         kTKPDDETAILSHOP_APISHOPLOCATION,
-                                                         kTKPDDETAILSHOP_APISHOPID,
-                                                         kTKPDDETAILSHOP_APISHOPNAME,
-                                                         ]];
-        
-        //relation
-        RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
-        [statusMapping addPropertyMapping:dataRel];
-        
-        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-        [dataMapping addPropertyMapping:pageRel];
-        
-        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-        [dataMapping addPropertyMapping:listRel];
-        
-        RKRelationshipMapping *listGoldRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTGOLDKEY toKeyPath:kTKPDHOME_APILISTGOLDKEY withMapping:listMapping];
-        [dataMapping addPropertyMapping:listGoldRel];
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                      method:[self getRequestMethod:nil]
-                                                                                                 pathPattern:[self getPath:nil]
-                                                                                                     keyPath:@""
-                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-        return _objectmanager;
-    }
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if(tag == CTagFavoriteButton)
-        return ((FavoriteShopAction *) stat).status;
-    else
-        return ((FavoritedShop *) stat).status;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
-    if(tag == CTagFavoriteButton) {
-
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    } else {
-        [self requestsuccess:successResult withOperation:operation];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    if(tag == CTagFavoriteButton) {
-        /** failure **/
-        [self requestfailurefav:errorResult];
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    } else {
-        /** failure **/
-        [self requestfailure:errorResult];
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    if(tag != CTagFavoriteButton) {
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        if(loadingView == nil) {
-            loadingView = [LoadingView new];
-            loadingView.delegate = self;
-        }
-        _table.tableFooterView = loadingView.view;
-    }
 }
 
 #pragma mark - LoadingView Delegate
@@ -722,8 +476,6 @@ PromoRequestDelegate
 {
     _table.tableFooterView = _footer;
     [_act startAnimating];
-    tokopediaNetworkManager.tagRequest = CTagRequest;
-    [tokopediaNetworkManager doRequest];
 }
 
 
@@ -748,9 +500,6 @@ PromoRequestDelegate
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager.delegate = nil;
-    tokopediaNetworkManager = nil;
 }
 
 #pragma mark - Actions
@@ -775,6 +524,10 @@ PromoRequestDelegate
 
 - (void)didReceivePromo:(NSArray *)promo {
     _isnodata = NO;
+    if(promo == nil){
+        StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+        [stickyView show];
+    }
     _promoShops = [NSMutableArray arrayWithArray:promo];
     [_table reloadData];
 }

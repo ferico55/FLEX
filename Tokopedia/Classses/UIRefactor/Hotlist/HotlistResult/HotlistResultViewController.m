@@ -29,7 +29,7 @@
 #import "SearchResultShopViewController.h"
 
 #import "TKPDTabNavigationController.h"
-#import "CategoryMenuViewController.h"
+#import "FilterCategoryViewController.h"
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
@@ -51,6 +51,7 @@
 #import "Localytics.h"
 
 #import "UIActivityViewController+Extensions.h"
+#import "Tokopedia-Swift.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -84,7 +85,7 @@ static NSString const *rows = @"12";
 @interface HotlistResultViewController ()
 <
     GeneralProductCellDelegate,
-    CategoryMenuViewDelegate,
+    FilterCategoryViewDelegate,
     SortViewControllerDelegate,
     FilterViewControllerDelegate,
     GeneralSingleProductDelegate,
@@ -142,6 +143,9 @@ static NSString const *rows = @"12";
     BOOL _shouldUseHashtag;
     
     NSIndexPath *_sortIndexPath;
+    
+    NSArray *_initialCategories;
+    CategoryDetail *_selectedCategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -239,7 +243,7 @@ static NSString const *rows = @"12";
                                                                          action:@selector(tap:)];
     
     
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -400,19 +404,13 @@ static NSString const *rows = @"12";
             case 11:
             {
                 //CATEGORY
-                CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@(0),
-                            kTKPDCATEGORY_DATAPUSHCOUNTKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0),
-                            kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_detailfilter objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
-                            kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue])?:NO,
-                            kTKPDCATEGORY_DATAINDEXPATHKEY :[_detailfilter objectForKey:kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                            DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
-                            };
-                vc.selectedCategoryID = [[_detailfilter objectForKey:@"selected_id"] integerValue];
-                vc.delegate = self;
-                
-                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                FilterCategoryViewController *controller = [FilterCategoryViewController new];
+                controller.filterType = FilterCategoryTypeHotlist;
+                controller.selectedCategory = _selectedCategory;
+                controller.categories = [_initialCategories mutableCopy];
+                controller.delegate = self;
+                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
+                navigationController.navigationBar.translucent = NO;
                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }
                 break;
@@ -646,19 +644,31 @@ static NSString const *rows = @"12";
     RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:hashtagMapping];
     [resultMapping addPropertyMapping:hashtagRel];
     
-    RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
-    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY,
-                                                       kTKPDHOME_APITREEKEY,
-                                                       kTKPDHOME_APIDIDKEY,
-                                                       kTKPDHOME_APITITLEKEY
-                                                       ]];
-    // Adjust Relationship
-    //add Department tree relationship
-    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:departmentMapping];
-    [resultMapping addPropertyMapping:depttreeRel];
+    NSDictionary *categoryAttributeMappings = @{
+                                                @"d_id" : @"categoryId",
+                                                @"title" : @"name",
+                                                @"tree" : @"tree",
+                                                @"href" : @"url",
+                                                };
     
-    RKRelationshipMapping *deptchildRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APICHILDTREEKEY toKeyPath:kTKPDHOME_APICHILDTREEKEY withMapping:departmentMapping];
-    [departmentMapping addPropertyMapping:deptchildRel];
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    // Adjust Relationship
+    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
+    [resultMapping addPropertyMapping:categoryRelationship];
+    
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+    
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
     
     // add page relationship
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
@@ -789,12 +799,11 @@ static NSString const *rows = @"12";
                 _pagecontrol.hidden = NO;
                 _swipegestureleft.enabled = YES;
                 _swipegestureright.enabled = YES;
+
                 [self setHeaderData];
                 
-                NSArray * departmenttree = _searchObject.result.breadcrumb;
-                
-                if (_departmenttree.count == 0) {
-                    [_departmenttree addObjectsFromArray:departmenttree];
+                if (_initialCategories == nil) {
+                    _initialCategories = [_searchObject.result.breadcrumb mutableCopy];
                 }
                 
                 if (_searchObject.result.products.count > 0) {
@@ -995,10 +1004,9 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Category Delegate
-- (void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-{
-    [_detailfilter addEntriesFromDictionary:userInfo];
-    [_detailfilter setObject:userInfo[@"department_id"] forKey:@"selected_id"];
+- (void)didSelectCategory:(CategoryDetail *)category {
+    _selectedCategory = category;
+    [_detailfilter setObject:category.categoryId forKey:@"department_id"];
     [self refreshView:nil];
 }
 
@@ -1019,52 +1027,9 @@ static NSString const *rows = @"12";
 
 #pragma mark - CollectionView Delegate And Datasource
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger numberOfCell;
-    NSInteger cellHeight;
-    if(IS_IPAD) {
-        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-        if(self.cellType == UITableViewCellTypeTwoColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
-                numberOfCell = 5;
-            } else {
-                numberOfCell = 4;
-            }
-            cellHeight = 250;
-        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
-                numberOfCell = 8;
-            } else {
-                numberOfCell = 6;
-            }
-            cellHeight = 150;
-        } else if(self.cellType == UITableViewCellTypeOneColumn) {
-            if(UIInterfaceOrientationIsLandscape(orientation)) {
-                numberOfCell = 4;
-                cellHeight = 400;
-            } else {
-                numberOfCell = 2;
-                cellHeight = 450;
-            }
-
-        }
-    } else {
-        if(self.cellType == UITableViewCellTypeTwoColumn) {
-            numberOfCell = 2;
-            cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
-        } else if(self.cellType == UITableViewCellTypeThreeColumn) {
-            numberOfCell = 3;
-            cellHeight = [UIScreen mainScreen].bounds.size.width / 3 - 15;
-        } else {
-            numberOfCell = 1;
-            cellHeight = [UIScreen mainScreen].bounds.size.width + 100;
-        }
-    }
-
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-
-    return CGSizeMake(cellWidth, cellHeight);
+    return [ProductCellSize sizeWithType:self.cellType];
 }
+
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return _product.count?:1;

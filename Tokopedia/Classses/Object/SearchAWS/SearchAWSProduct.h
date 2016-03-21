@@ -31,6 +31,9 @@
 @property (nonatomic, strong) NSString *is_owner;
 @property (nonatomic, strong) NSString *shop_lucky;
 
+@property (nonatomic, strong) NSString *shop_id;
+@property (nonatomic, strong) NSString *condition;
+
 //catalog
 @property (nonatomic, strong) NSString *catalog_id;
 @property (nonatomic, strong) NSString *catalog_name;
@@ -40,6 +43,9 @@
 @property (nonatomic, strong) NSString *catalog_image_300;
 @property (nonatomic, strong) NSString *catalog_description;
 @property (nonatomic, strong) NSString *catalog_count_product;
+
+//only used in image search
+@property (strong, nonatomic) NSString *similarity_rank;
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 @property (nonatomic, strong) CatalogModelView *catalogViewModel;

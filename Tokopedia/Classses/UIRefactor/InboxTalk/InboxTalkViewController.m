@@ -162,6 +162,7 @@
     cell.detailViewController = _detailViewController;
     cell.marksOpenedTalkAsRead = YES;
     cell.isSplitScreen = YES;
+
     
     [cell setTalkViewModel:list.viewModel];
     
@@ -230,6 +231,18 @@
 
 - (NSInteger)getSegmentedIndex {
     return _currentTabSegmentIndex;
+}
+
+- (void)updateTalkStatusAtIndexPath:(NSIndexPath *)indexPath following:(BOOL)following {
+    TalkList *talk = _talkList[indexPath.row];
+    talk.talk_follow_status = following;
+    talk.viewModel = nil;
+}
+
+- (void)tapToDeleteTalk:(UITableViewCell *)cell {
+    NSInteger index = [_table indexPathForCell:cell].row;
+    [_talkList removeObjectAtIndex:index];
+    [_table reloadData];
 }
 
 #pragma mark - Refresh View 

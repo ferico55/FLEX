@@ -16,9 +16,6 @@
 @end
 
 @implementation AlertListFilterView
-{
-    UITapGestureRecognizer *_newGesture;
-}
 
 #pragma mark - Table Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -48,6 +45,8 @@
 #pragma mark - Methods
 - (void)show
 {
+    [super show];
+    
     id<TKPDAlertViewDelegate> _delegate = self.delegate;
     
     if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(willPresentAlertView:)])) {
@@ -57,24 +56,13 @@
     [_window setFrame:CGRectMake(0,((UIViewController*)_delegate).view.frame.origin.y, ((UIViewController*)_delegate).view.frame.size.width, ((UIViewController*)_delegate).view.frame.size.height)];
     _window.clipsToBounds = YES;
 
-    self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
-    
-    if (_background.superview == nil) {	//fix dismiss - show race condition
-        [_window addSubview:_background];
-    }
-    _background.userInteractionEnabled = YES;
-    _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
-    [_background addGestureRecognizer:_newGesture];
-    
     CGFloat tableViewContentHeight = _list.count*40;
     
     self.frame = CGRectMake(0, -tableViewContentHeight, _window.bounds.size.width, tableViewContentHeight);
     [_window addSubview:self];	//from animation block below
     [_window makeKeyAndVisible];
     
-    _window.tag = 99;
-    
-    [UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionNone | UIViewAnimationOptionAllowAnimatedContent) animations:^{
+    [UIView transitionWithView:_window duration:0.5 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionNone | UIViewAnimationOptionAllowAnimatedContent) animations:^{
         
         //[_window addSubview:self];	//moved before animation call above
         self.frame = CGRectMake(0, 0, _window.bounds.size.width, tableViewContentHeight);
@@ -100,7 +88,6 @@
     [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     if(self.superview != nil){
-        [_background removeGestureRecognizer:_newGesture];
         [self dismissindex:buttonIndex silent:NO animated:animated];
     }
 }

@@ -66,6 +66,8 @@
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
+    [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
+    
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
@@ -404,8 +406,10 @@
     NSArray *errors;
     if(error.code == -1011) {
         errors = @[@"Mohon maaf, terjadi kendala pada server"];
-    } else if (error.code==-1009) {
+    } else if (error.code == -1009) {
         errors = @[@"Tidak ada koneksi internet"];
+    } else if (error.code == -999) {
+        errors = @[@"Terjadi kendala pada koneksi internet"];
     } else {
         errors = @[error.localizedDescription];
     }

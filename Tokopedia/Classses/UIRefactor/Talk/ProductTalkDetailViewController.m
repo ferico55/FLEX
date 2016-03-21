@@ -417,11 +417,6 @@
     return cell;
 }
 
-#pragma mark - Table View Delegate
--(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [_growingtextview resignFirstResponder];
-}
-
 #pragma mark - Methods
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {

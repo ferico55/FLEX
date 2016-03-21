@@ -89,6 +89,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 // Photo picker
 @property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
+@property (strong, nonatomic) IBOutlet UIButton *verifyButton;
 
 @end
 
@@ -106,7 +107,11 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [super viewWillAppear:animated];
 
     [self initView];
+    [_verifyButton setUserInteractionEnabled:YES];
+    [_verifyButton setHidden:NO];
+    
     [self showSaveButton];
+    _scrollView.contentSize = CGSizeMake(_contentView.frame.size.width, _contentView.frame.size.height + 200);
 
     // register for keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -584,8 +589,12 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (IBAction)didTapVerificationPhoneButton:(UIButton *)sender {
     HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-    controller.isSkipButtonHidden = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+    controller.isSkipButtonHidden = NO;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBarHidden = YES;
+    navigationController.viewControllers = @[controller];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)didTapSaveButton:(UIBarButtonItem *)saveButton {

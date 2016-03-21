@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "CategoryDetail.h"
 
 @protocol SearchResultDelegate <NSObject>
 
 - (void)pushViewController:(id)viewController animated:(BOOL)animated;
-- (void)updateTabCategory:(NSString *)categoryID;
+- (void)updateTabCategory:(CategoryDetail *)category;
+- (void)updateCategories:(NSArray *)categories;
 
 @end
 
@@ -21,6 +22,12 @@
 @interface SearchResultViewController : GAITrackedViewController
 
 @property (strong,nonatomic) NSDictionary *data;
+@property (strong,nonatomic) NSDictionary* imageQueryInfo;
+@property (strong,nonatomic) NSString* image_url;
+@property (nonatomic) BOOL isFromImageSearch;
 @property (nonatomic) BOOL isFromAutoComplete;
 @property (weak, nonatomic) id<SearchResultDelegate> delegate;
+@property (strong, nonatomic) IBOutlet UIView *fourButtonsToolbar;
+@property (strong, nonatomic) IBOutlet UIView *threeButtonsToolbar;
+
 @end

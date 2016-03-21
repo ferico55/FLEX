@@ -175,7 +175,11 @@
 }
 
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName {
-    NSDictionary *loadedData = @{@"product_id" : productId?:@"", @"product_name" : name?:@"", @"product_image" : url?:@"", @"product_price" :price?:@"", @"shop_name" : shopName?:@""};
+    NSDictionary *loadedData = @{@"product_id" : productId?:@"",
+                                 @"product_name" : name?:@"",
+                                 @"product_image" : url?:@"",
+                                 @"product_price" :price?:@"",
+                                 @"shop_name" : shopName?:@""};
     
     DetailProductViewController *productController = [DetailProductViewController new];
     productController.loadedData = loadedData;

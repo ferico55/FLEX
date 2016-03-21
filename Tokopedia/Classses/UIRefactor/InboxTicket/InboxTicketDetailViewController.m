@@ -358,12 +358,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Tidak Membantu", ticket.ticket_detail_message];
     }
     
-    CGSize maximumLabelSize = CGSizeMake(190,9999);
-    CGSize expectedLabelSize = [message sizeWithFont:FONT_GOTHAM_BOOK_12
-                                   constrainedToSize:maximumLabelSize
-                                       lineBreakMode:NSLineBreakByTruncatingTail];
+    CGRect paragraphRect = [message boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont fontWithName:@"GothamBook" size:14]} context:nil];
 
-    height = cellRowHeight + expectedLabelSize.height;
+    height = cellRowHeight + paragraphRect.size.height;
     
     if (ticket.ticket_detail_attachment.count > 0) {
         height += photoHeight;

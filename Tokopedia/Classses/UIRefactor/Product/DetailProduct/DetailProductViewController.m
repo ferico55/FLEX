@@ -69,6 +69,10 @@
 #import "FavoriteShopAction.h"
 #import "Promote.h"
 
+#import "SearchAWS.h"
+#import "SearchAWSProduct.h"
+#import "SearchAWSResult.h"
+
 #import "LoginViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
@@ -85,6 +89,8 @@
 
 #import "NoResultReusableView.h"
 
+#import "OtherProductDataSource.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -99,27 +105,29 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
-LabelMenuDelegate,
-TTTAttributedLabelDelegate,
-GalleryViewControllerDelegate,
-UITableViewDelegate,
-UITableViewDataSource,
-DetailProductInfoCellDelegate,
-DetailProductOtherViewDelegate,
-LoginViewDelegate,
-TokopediaNetworkManagerDelegate,
-MyShopEtalaseFilterViewControllerDelegate,
-RequestMoveToDelegate,
-UIAlertViewDelegate,
-CMPopTipViewDelegate,
-UIAlertViewDelegate,
-NoResultDelegate
+    LabelMenuDelegate,
+    TTTAttributedLabelDelegate,
+    GalleryViewControllerDelegate,
+    UITableViewDelegate,
+    UITableViewDataSource,
+    DetailProductInfoCellDelegate,
+    DetailProductOtherViewDelegate,
+    LoginViewDelegate,
+    TokopediaNetworkManagerDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    RequestMoveToDelegate,
+    UIAlertViewDelegate,
+    CMPopTipViewDelegate,
+    UIAlertViewDelegate,
+    NoResultDelegate,
+    UICollectionViewDelegate,
+    OtherProductDelegate
 >
 {
     CMPopTipView *cmPopTitpView;
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
-    NSMutableArray *_otherProductObj;
+    NSArray<SearchAWSProduct*> *_otherProductObj;
     
     NSMutableArray *_expandedSections;
     CGFloat _descriptionHeight;
@@ -198,6 +206,8 @@ NoResultDelegate
     NSString *_detailProductFullUrl;
 
     PromoRequest *_promoRequest;
+    
+    OtherProductDataSource *_otherProductDataSource;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -234,11 +244,16 @@ NoResultDelegate
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightBuyButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightDinkButton;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
+//@property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (weak, nonatomic) IBOutlet UIButton *favButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightShare;
 @property (weak, nonatomic) IBOutlet UIButton *dinkButton;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *otherProductsCollectionView;
+@property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *otherProductsFlowLayout;
+@property (weak, nonatomic) IBOutlet UILabel *otherProductNoDataLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *otherProductsConstraintHeight;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -295,6 +310,7 @@ NoResultDelegate
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     _TKPDNavigator = [NavigateViewController new];
+    _otherProductDataSource = [OtherProductDataSource new];
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
@@ -323,6 +339,8 @@ NoResultDelegate
     tokopediaOtherProduct = [TokopediaNetworkManager new];
     tokopediaOtherProduct.delegate = self;
     tokopediaOtherProduct.tagRequest = CTagOtherProduct;
+    tokopediaOtherProduct.isParameterNotEncrypted = YES;
+    tokopediaOtherProduct.isUsingHmac = NO;
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.delegate = self;
@@ -404,15 +422,11 @@ NoResultDelegate
 }
 
 - (void)initNotification {
-    
-    
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(refreshRequest:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
     [center addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [center addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 }
-
-
 
 - (void)setButtonFav {
     
@@ -507,7 +521,6 @@ NoResultDelegate
 {
     [super viewWillDisappear:animated];
 }
-
 
 #pragma mark - Table view delegate
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
@@ -1194,7 +1207,10 @@ NoResultDelegate
                  @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
                  };
     else if(tag == CTagOtherProduct)
-        return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0"};
+        return @{@"shop_id" : _product.result.shop_info.shop_id,
+                 @"device" : @"ios",
+                 @"-id" : _product.result.product.product_id
+                 };
     else if(tag == CTagFavorite)
     {
         NSString *strShopID = [[NSString alloc] initWithString:tempShopID?:@"0"];
@@ -1220,6 +1236,28 @@ NoResultDelegate
     return nil;
 }
 
+-(int)getRequestMethod:(int)tag{
+    if(tag == CTagPromote)
+        return RKRequestMethodPOST;
+    else if(tag == CTagTokopediaNetworkManager)
+        return RKRequestMethodPOST;
+    else if(tag == CTagOtherProduct)
+        return RKRequestMethodGET;
+    else if(tag == CTagFavorite)
+        return RKRequestMethodPOST;
+    else if(tag == CTagUnWishList)
+        return RKRequestMethodPOST;
+    else if(tag == CTagWishList)
+        return RKRequestMethodPOST;
+    else if(tag == CTagNoteCanReture)
+        return RKRequestMethodPOST;
+    else if(tag == CTagPriceAlert)
+        return RKRequestMethodPOST;
+    
+    return RKRequestMethodPOST;;
+
+}
+
 - (NSString*)getPath:(int)tag
 {
     if(tag == CTagPromote)
@@ -1227,7 +1265,8 @@ NoResultDelegate
     else if(tag == CTagTokopediaNetworkManager)
         return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
-        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
+        //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
+        return @"search/v1/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -1429,30 +1468,55 @@ NoResultDelegate
     }
     else if(tag == CTagOtherProduct)
     {
-        _objectOtherProductManager = [RKObjectManager sharedClient];
+        //_objectOtherProductManager = [RKObjectManager sharedClient];
+        _objectOtherProductManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
         
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TheOtherProduct class]];
+        
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
                                                             }];
         
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TheOtherProductResult class]];
         
-        RKObjectMapping *otherProductListMapping = [RKObjectMapping mappingForClass:[TheOtherProductList class]];
-        [otherProductListMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY, API_PRODUCT_IMAGE_NO_SQUARE]];
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
         
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                            kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                            @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
+                                                            }];
+        
+        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
+        //product
+        [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+        
+        // paging mapping
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
+        
+        //add list relationship
         [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
         
-        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherProductListMapping];
-        [resultMapping addPropertyMapping:listRel];
         
+        RKRelationshipMapping *productsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
+                                                                                                
+        [resultMapping addPropertyMapping:productsRel];
+        
+        // add page relationship
+        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
+        [resultMapping addPropertyMapping:pageRel];
+        
+        // register mappings with the provider using a response descriptor
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                method:RKRequestMethodPOST
-                                                                                           pathPattern:[self getPath:tag] keyPath:@""
+                                                                                                method:[self getRequestMethod:CTagOtherProduct]
+                                                                                           pathPattern:[self getPath:CTagOtherProduct]
+                                                                                               keyPath:@""
                                                                                            statusCodes:kTkpdIndexSetStatusCodeOK];
         
+        //add response description to object manager
         [_objectOtherProductManager addResponseDescriptor:responseDescriptor];
+        
         return _objectOtherProductManager;
+
     }
     else if(tag == CTagFavorite)
     {
@@ -1644,7 +1708,7 @@ NoResultDelegate
         [_act stopAnimating];
         _buyButton.enabled = YES;
         [self configureGetOtherProductRestkit];
-        [self loadDataOtherProduct];
+        
         [self requestsuccess:successResult withOperation:operation];
                 
         if(isNeedLogin) {
@@ -1963,6 +2027,10 @@ NoResultDelegate
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
+    
+    
+    [self loadDataOtherProduct];
+    
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
@@ -2245,18 +2313,10 @@ NoResultDelegate
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-    if(sender.tag == 111)
-    {
-        CGFloat pageWidth = _otherproductscrollview.bounds.size.width;
-        otherProductPageControl.currentPage = floor((_otherproductscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    }
-    else
-    {
-        // Update the page when more than 50% of the previous/next page is visible
-        CGFloat pageWidth = _imagescrollview.frame.size.width;
-        _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-        _pagecontrol.currentPage = _pageheaderimages;
-    }
+    // Update the page when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = _imagescrollview.frame.size.width;
+    _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pagecontrol.currentPage = _pageheaderimages;
 }
 
 #pragma mark - Cell Delegate
@@ -2324,7 +2384,7 @@ NoResultDelegate
 #pragma mark - View Delegate
 - (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
 {
-    OtherProduct *product = _otherProductObj[index];
+    SearchAWSProduct *product = _otherProductObj[index];
     if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
         [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.result.shop_info.shop_name];
     }
@@ -2712,72 +2772,47 @@ NoResultDelegate
     }];
 }
 
--(void)setOtherProducts
-{
-    float count;
+-(void)setOtherProducts {
+    [self.otherProductIndicator stopAnimating];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        count = 3.0f;
+    if (_otherProductObj.count > 0) {
+
+        self.otherProductNoDataLabel.hidden = YES;
+        otherProductPageControl.hidden = NO;
+        
+        UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+        [self.otherProductsCollectionView registerNib:cellNib forCellWithReuseIdentifier:@"ProductCellIdentifier"];
+
+        otherProductPageControl.numberOfPages = _otherProductObj.count;
+        
+        _otherProductDataSource.products = _otherProductObj;
+        _otherProductDataSource.collectionView = _otherProductsCollectionView;
+        _otherProductDataSource.pageControl = otherProductPageControl;
+        _otherProductDataSource.delegate = self;
+        
+        self.otherProductsCollectionView.dataSource = _otherProductDataSource;
+        self.otherProductsCollectionView.delegate = _otherProductDataSource;
+        self.otherProductsCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+        
+        self.otherProductsConstraintHeight.constant = _otherProductDataSource.collectionViewItemSize.height + 20; // padding top bottom
+        
+        [self.otherProductsCollectionView performBatchUpdates:^{
+            [self.otherProductsCollectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+        } completion:nil];
+        
+        CGRect frame = _shopinformationview.frame;
+        frame.size.height = 457;
+        _shopinformationview.frame = frame;
+
+        _table.tableFooterView = _shopinformationview;
+        [_table reloadData];
+        
+        [self.otherProductsCollectionView flashScrollIndicators];
+        
+    } else {
+        self.otherProductNoDataLabel.hidden = NO;
+        otherProductPageControl.hidden = YES;
     }
-    else
-    {
-        count = 2.0f;
-    }
-    
-    float widthOtherProductView = (_otherproductscrollview.frame.size.width-(10*(count+1)))/count;
-    constraintHeightScrollOtherView.constant = widthOtherProductView + (widthOtherProductView/count);
-    otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/count);
-    int x = 10;
-    for(int i = 0; i< _otherProductObj.count; i++)
-    {
-        TheOtherProductList *product = _otherProductObj[i];
-        
-        DetailProductOtherView *v = [DetailProductOtherView newview];
-        
-//        x += 10 + v.bounds.size.width;
-        [v setFrame:CGRectMake(x, 0, widthOtherProductView, (widthOtherProductView+(widthOtherProductView/count)))];
-        x += widthOtherProductView+10;
-        NSInteger countInt = (int)count;
-        x += (((i+1)%countInt==0) && i<(_otherProductObj.count-1)? 10 : 0);
-        v.delegate = self;
-        v.index = i;
-        [v.act startAnimating];
-        v.namelabel.text = product.product_name;
-        v.pricelabel.text = product.product_price;
-        //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
-        
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
-        
-        UIImageView *thumb = v.thumb;
-        //UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
-        
-        thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
-        
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image];
-            [thumb setContentMode:UIViewContentModeScaleAspectFit];
-            [v.act stopAnimating];
-#pragma clang diagnostic pop
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [thumb setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-            [thumb setContentMode:UIViewContentModeCenter];
-            [v.act stopAnimating];
-        }];
-        
-        [_otherproductscrollview addSubview:v];
-        [_otherproductviews addObject:v];
-    }
-    
-    _otherproductscrollview.pagingEnabled = YES;
-    _otherproductscrollview.contentSize = CGSizeMake(x, 0);
-    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, _otherproductscrollview.frame.origin.y + constraintHeightScrollOtherView.constant + 6 + _pagecontrol.bounds.size.height);
-    _table.tableFooterView = _shopinformationview;
 }
 
 
@@ -2786,12 +2821,15 @@ NoResultDelegate
 }
 
 - (void)loadDataOtherProduct {
-    [tokopediaOtherProduct doRequest];
+    [_otherProductIndicator setHidden:NO];
+    [_otherProductIndicator startAnimating];
+    [tokopediaOtherProduct doRequest];    
 }
 
 - (void)requestSuccessOtherProduct:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    TheOtherProduct *otherProduct = [result objectForKey:@""];
+    SearchAWS *otherProduct = [result objectForKey:@""];
+    
     BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if(status) {
@@ -2821,26 +2859,11 @@ NoResultDelegate
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TheOtherProduct *otherProduct = stat;
+            SearchAWS *otherProduct = [result objectForKey:@""];
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
             if (status) {
-                [_otherProductObj removeAllObjects];
-                
-                for(int i=0;i<_otherproductviews.count;i++)
-                    [[_otherproductviews objectAtIndex:i] removeFromSuperview];
-                [_otherproductviews removeAllObjects];
-                [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
-                
-                if(_otherProductObj.count == 0) {
-                    lblOtherProductTitle.hidden = YES;
-                    _shopinformationview.frame = CGRectMake(_shopinformationview.frame.origin.x, _shopinformationview.frame.origin.y, _shopinformationview.bounds.size.width, lblOtherProductTitle.frame.origin.y);
-                    _table.tableFooterView = _shopinformationview;
-                }
-                else {
-                    [self setOtherProducts];
-                }
+                _otherProductObj = [NSArray arrayWithArray:otherProduct.result.products];
+                [self setOtherProducts];
             }
         }
         else{
@@ -3218,6 +3241,19 @@ NoResultDelegate
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
         self.userActivity = [TPSpotlight productDetailActivity:_product.result];
     }
+}
+
+#pragma mark - Push other product
+
+- (void)didSelectOtherProduct:(SearchAWSProduct *)product {
+    [TPAnalytics trackProductClick:product];
+    NavigateViewController *navigateController = [NavigateViewController new];
+    [navigateController navigateToProductFromViewController:self
+                                                   withName:product.product_name
+                                                  withPrice:product.product_price
+                                                     withId:product.product_id
+                                               withImageurl:product.product_image
+                                               withShopName:product.shop_name];
 }
 
 @end

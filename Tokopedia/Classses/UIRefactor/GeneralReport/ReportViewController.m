@@ -18,7 +18,7 @@
 #import "LoginViewController.h"
 #import "MyReviewDetailViewController.h"
 
-@interface ReportViewController () <UITextViewDelegate> {
+@interface ReportViewController () <UITextViewDelegate, LoginViewDelegate> {
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
@@ -58,9 +58,9 @@
         navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
         LoginViewController *controller = [LoginViewController new];
-        controller.delegate = [_delegate didReceiveViewController];
+        controller.delegate = self;
         controller.isPresentedViewController = YES;
-        controller.redirectViewController = [_delegate didReceiveViewController];
+        controller.redirectViewController = self;
         navigationController.viewControllers = @[controller];
         
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -292,6 +292,11 @@
 
 - (void)requestTimeout {
     
+}
+
+// implement this to dismiss login view controller (-_-")
+- (void)redirectViewController:(id)viewController {
+
 }
 
 

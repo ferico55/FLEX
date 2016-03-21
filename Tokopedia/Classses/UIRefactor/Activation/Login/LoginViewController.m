@@ -577,11 +577,15 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 controller.delegate = self.delegate;
                 controller.redirectViewController = self.redirectViewController;
                 
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] init];
-                navigationController.navigationBarHidden = YES;
-                navigationController.viewControllers = @[controller];
-                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                if(!_isFromTabBar){
+                    [self.navigationController setNavigationBarHidden:YES animated:YES];
+                    [self.navigationController pushViewController:controller animated:YES];
+                }else{
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBarHidden = YES;
+                    navigationController.viewControllers = @[controller];
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
             }else{
                 if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                     [self.delegate redirectViewController:_redirectViewController];
@@ -617,7 +621,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 controller.facebookUserData = _facebookUserData;
             } else if (_googleUser) {
                 controller.googleUser = _googleUser;
-                NSString *fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+                NSString *fullName;
+                if (_googleUser.name.givenName.length > 0) {
+                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+                }
                 controller.fullName = fullName;
                 controller.email = _signIn.authentication.userEmail;
             }
@@ -706,11 +713,15 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 controller.delegate = self.delegate;
                 controller.redirectViewController = self.redirectViewController;
                 
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] init];
-                navigationController.navigationBarHidden = YES;
-                navigationController.viewControllers = @[controller];
-                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                if(!_isFromTabBar){
+                    [self.navigationController setNavigationBarHidden:YES animated:YES];
+                    [self.navigationController pushViewController:controller animated:YES];
+                }else{
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBarHidden = YES;
+                    navigationController.viewControllers = @[controller];
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
             }else{
                 if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                     [self.delegate redirectViewController:_redirectViewController];
@@ -900,18 +911,30 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)createPasswordSuccess
 {
-    if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
-        [self.delegate redirectViewController:_redirectViewController];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        [self.tabBarController setSelectedIndex:0];
-         
-        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                            object:nil
-                                                          userInfo:nil];
+    if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
+        HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+        controller.delegate = self.delegate;
+        controller.redirectViewController = self.redirectViewController;
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
-                                                            object:nil];
+        if(!_isFromTabBar){
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+            [self.navigationController pushViewController:controller animated:YES];
+        }else{
+            UINavigationController *navigationController = [[UINavigationController alloc] init];
+            navigationController.navigationBarHidden = YES;
+            navigationController.viewControllers = @[controller];
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }
+    }else{
+        if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
+            [self.delegate redirectViewController:_redirectViewController];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
+            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
+            [self.tabBarController setSelectedIndex:0];
+            [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
+        }
     }
 }
 
