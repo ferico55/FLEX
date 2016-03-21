@@ -16,9 +16,7 @@
 - (void)shouldDoRequestBCAClickPay;
 - (void)doRequestCC:(NSDictionary*)param;
 - (void)isSucessSprintAsia:(NSDictionary*)param;
-- (void)refreshCartAfterCancelPayment;
 - (void)shouldDoRequestBRIEPayCode:(NSString*)code;
-
 - (void)shouldDoRequestTopPayThxCode:(NSString*)code;
 
 @end

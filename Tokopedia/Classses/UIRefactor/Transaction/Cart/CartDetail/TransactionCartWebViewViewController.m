@@ -413,7 +413,6 @@
     else
     {
         if (buttonIndex == 1) {
-            [_delegate refreshCartAfterCancelPayment];
             [_webView stopLoading];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }

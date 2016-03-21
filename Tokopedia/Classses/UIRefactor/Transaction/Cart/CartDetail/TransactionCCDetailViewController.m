@@ -223,10 +223,6 @@
     }
 }
 
--(void)refreshCartAfterCancelPayment
-{
-    
-}
 
 #pragma mark - GTM
 - (void)configureGTM {
