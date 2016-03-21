@@ -58,7 +58,7 @@ CollectionViewSupplementaryDataSource,
 FavoriteShopRequestDelegate
 >
 
-@property (strong, nonatomic) NSMutableArray *promo;
+@property (strong, nonatomic) NSMutableArray<NSArray<PromoResult*>*> *promo;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -171,7 +171,7 @@ FavoriteShopRequestDelegate
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
-    //[self requestPromo];
+    [self requestPromo];
     
     [self registerNib];
     self.contentView = self.view;
@@ -199,10 +199,11 @@ FavoriteShopRequestDelegate
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath.row];
+    SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath];
     [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
     CGSize size = CGSizeZero;
@@ -312,10 +313,17 @@ FavoriteShopRequestDelegate
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
-    if([_productDataSource isProductFeedEmpty] || _nextPageUri == nil || [_nextPageUri isEqualToString:@""]){
-        return CGSizeZero;
+    
+    CGSize size = CGSizeZero;
+    NSInteger lastSection = [collectionView numberOfSections] - 1;
+    if (section == lastSection) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
+            size = CGSizeMake(self.view.frame.size.width, 45);
+        }
+    } else if ([_productDataSource isProductFeedEmpty]) {
+        size = CGSizeMake(self.view.frame.size.width, 45);
     }
-    return CGSizeMake(collectionView.bounds.size.width, 45.0f);
+    return size;
 }
 
 #pragma mark - Promo request delegate
@@ -435,7 +443,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     if (_favoritedShops.list.count > 0 && feed.result.products.count > 0) {
         if (_page == 0) {
             [_productDataSource replaceProductsWith: feed.result.products];
-            [_promo removeAllObjects];
+            //[_promo removeAllObjects];
         }else{
             [_productDataSource addProducts: feed.result.products];
         }
