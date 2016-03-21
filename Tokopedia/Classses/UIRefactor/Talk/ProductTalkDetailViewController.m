@@ -462,33 +462,13 @@
             [btnReputation setTitle:[NSString stringWithFormat:@"%@%%", ((ReputationDetail *)[data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]).positive_percentage] forState:UIControlStateNormal];
         }
     }
-    
-    NSURLRequest* requestUserImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [_talkuserimage setImageWithURLRequest:requestUserImage placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [_talkuserimage setImage:image];
-        _talkuserimage = [UIImageView circleimageview:_talkuserimage];
-        
-#pragma clang diagnostic pop
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        
-    }];
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_PRODUCT_IMAGE]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    [_talkProductImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [_talkProductImage setImage:image];
-        
-#pragma clang diagnostic pop
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        
-    }];
+
+    NSURL *userImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
+    [_talkuserimage setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+
+    NSURL *productImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_PRODUCT_IMAGE]];
+    [_talkProductImage setImageWithURL:productImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+
     _productNameLabel.text = [_data objectForKey:TKPD_TALK_PRODUCT_NAME];
     _productNameLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];

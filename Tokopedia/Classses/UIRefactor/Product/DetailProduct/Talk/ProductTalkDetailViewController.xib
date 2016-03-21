@@ -175,6 +175,11 @@
                                 <constraint firstAttribute="width" constant="50" id="py7-M8-k8c"/>
                                 <constraint firstAttribute="height" constant="50" id="rkc-Il-Q23"/>
                             </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="25"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6T-bo-Y27" userLabel="User Name View" customClass="ViewLabelUser">
                             <rect key="frame" x="75" y="15" width="230" height="22"/>
