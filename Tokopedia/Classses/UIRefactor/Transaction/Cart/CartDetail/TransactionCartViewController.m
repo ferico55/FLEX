@@ -74,27 +74,14 @@
     
     NSMutableDictionary *_dataInput;
     
-    BOOL _isnodata;
-
     UITextField *_activeTextField;
-    UITextView *_activeTextView;
     
     UIRefreshControl *_refreshControl;
-    
-    BOOL _isaddressexpanded;
-    
-    NSOperationQueue *_operationQueue;
-    
-    UIBarButtonItem *_doneBarButtonItem;
-    
     BOOL _isUsingSaldoTokopedia;
     
     BOOL _isLoadingRequest;
     
     BOOL _popFromToppay;
-    
-    NSString *_saldoTokopedia;
-    NSIndexPath *_switchSaldoIndexPath;
     
     NSInteger _indexSelectedShipment;
     
@@ -233,30 +220,16 @@
         
     }
     [self initNoResultView];
-    
-    _saldoTokopediaAmountTextField.delegate = self;
-    
-    _checkoutButton.layer.cornerRadius = 2;
-    _checkoutButton.layer.opacity = 1;
-    
-    _buyButton.layer.cornerRadius = 2;
-    _buyButton.layer.opacity = 1;
-    
     [self setDefaultInputData];
+    
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
-    
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-    TagManagerHandler *gtmHandler = [TagManagerHandler new];
-    [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
- 
 }
 
 - (void)initNoResultView{
-    //_noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, -30, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:@"Keranjang.png"
@@ -271,46 +244,31 @@
     [super viewWillAppear:animated];
     
     if (_indexPage == 0) {
-        
         [TPAnalytics trackScreenName:@"Shopping Cart"];
         self.screenName = @"Shopping Cart";
         
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
         [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
-        _tableView.tableHeaderView = nil;
         
         if (_popFromToppay) {
             _popFromToppay = NO;
             [self requestCartData];
         }
-        
     } else {
-        
         [TPAnalytics trackScreenName:@"Shopping Cart Summary"];
         self.screenName = @"Shopping Cart Summary";
-
-        _tableView.contentOffset = CGPointZero;
-
         [self adjustTableViewData:_data];
         _passwordTextField.text = @"";
-        TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
-        _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
     }
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
-    if(_list.count>0){
-        
-    }
-    
-    if(!_isnodata) _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
 
     _tableView.scrollsToTop = YES;
-
+    [self isLoading:NO];
     [self adjustPaymentMethodView];
     [self swipeView:_paymentMethodView];
+    
+    if (_list.count>0) {
+        _tableView.tableFooterView = (_indexPage == 1)?_buyView:_checkoutView;
+    } else _tableView.tableFooterView = nil;
 }
 
 -(void)headerInstallmentAnimating
@@ -327,7 +285,7 @@
 
 -(void)adjustPaymentMethodView
 {
-    if (_isnodata) {
+    if (_list.count==0) {
         _paymentMethodView.hidden = YES;
         _paymentMethodSelectedView.hidden = YES;
     }
@@ -348,8 +306,6 @@
 {
     [super viewWillDisappear:animated];
     _activeTextField = nil;
-
-    self.title = @"";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -360,7 +316,7 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger sectionCount = _list.count + 4;
-    return _isnodata?0:sectionCount;
+    return (_list.count==0)?0:sectionCount;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -382,7 +338,7 @@
 
     else rowCount = 2; // Biaya administrasi, total pembayaran
     
-    return _isnodata?0:rowCount;
+    return (_list.count==0)?0:rowCount;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -457,7 +413,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!_isnodata)
+    if (_list.count>0)
     {
         return (_indexPage==0)?[self rowHeightPage1AtIndexPath:indexPath]:[self rowHeightPage2AtIndexPath:indexPath];
     }
@@ -467,7 +423,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (_isnodata) {
+    if (_list.count==0) {
         return 0;
     }
     
@@ -507,7 +463,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     
-    if (_isnodata) {
+    if (_list.count==0) {
         return 0;
     }
     
@@ -935,7 +891,10 @@
 -(TAGContainer *)gtmContainer
 {
     if (!_gtmContainer) {
+        TagManagerHandler *handler = [TagManagerHandler new];
         _gtmContainer = [TagManagerHandler getContainer];
+        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+        [handler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
     }
     return _gtmContainer;
 }
@@ -1017,18 +976,17 @@
 -(void)adjustTableViewData:(NSDictionary*)data
 {
     TransactionSummaryDetail *summaryDetail = [_data objectForKey:DATA_CART_SUMMARY_KEY];
-    [_list removeAllObjects];
-
-    [_list addObjectsFromArray:summaryDetail.carts];
-    if (_list.count>0) {
-        _isnodata = NO;
-    }
-    
     _cartSummary = summaryDetail;
+
+    [_list removeAllObjects];
+    [_list addObjectsFromArray:summaryDetail.carts];
+    
+    TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
+    [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+    _tableView.tableHeaderView = ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT)?_chooseBankDurationView:nil;
 
     _isUsingSaldoTokopedia = ([_cartSummary.deposit_amount integerValue]>0);
     
-    TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
     if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
         if (!_selectedInstallmentBank) _selectedInstallmentBank = _cartSummary.installment_bank_option[0];
         if (!_selectedInstallmentDuration){
@@ -1212,24 +1170,7 @@
 
 -(void)GeneralSwitchCell:(GeneralSwitchCell *)cell withIndexPath:(NSIndexPath *)indexPath
 {
-    //NSInteger shopID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-    TransactionCartList *list = _list[indexPath.section];
-    NSInteger shopID = [list.cart_shop.shop_id integerValue];
-    NSInteger addressID =list.cart_destination.address_id;
-    NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
-    NSInteger shipmentPackageID =[list.cart_shipments.shipment_package_id integerValue];
-    
     _list[indexPath.section].cart_is_dropshipper = [NSString stringWithFormat:@"%zd",cell.settingSwitch.on];
-    
-    if (cell.settingSwitch.on) {
-        NSString *dropshipStringObject = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_KEY,shopID,addressID,shipmentID,shipmentPackageID];
-        _list[indexPath.section].cart_dropship_param = dropshipStringObject;
-    }
-    else
-    {
-        _list[indexPath.section].cart_dropship_param = @"";
-    }
-    
     [_tableView reloadData];
 }
 
@@ -1665,6 +1606,8 @@
 
 -(void)isLoading:(BOOL)isLoading{
     _isLoadingRequest = isLoading;
+    _checkoutButton.enabled = !isLoading;
+    _buyButton.enabled = !isLoading;
     if (isLoading) {
         [_alertLoading show];
     } else{
@@ -1720,7 +1663,7 @@
 {
     [self isLoading:YES];
     [RequestCart fetchToppayThanksCode:code success:^(TransactionActionResult *data) {
-        [self refreshRequestCart];
+        [self requestCartData];
         [self isLoading:NO];
     } error:^(NSError *error) {
         [self isLoading:NO];
@@ -1739,16 +1682,12 @@
 -(void)refreshRequestCart
 {
     [self doClearAllData];
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [_refreshControl beginRefreshing];
-
     [self requestCartData];
     _paymentMethodView.hidden = YES;
 }
 
 -(void)doClearAllData
 {
-    _isnodata = YES;
     _indexPage = 0;
     [_delegate isNodata:NO];
     [_dataInput removeAllObjects];
@@ -1768,7 +1707,6 @@
     _buttonVoucherInfo.hidden = NO;
     _buttonCancelVoucher.hidden = YES;
     
-    _tableView.tableFooterView = nil;
     _saldoTokopediaAmountTextField.text = @"";
     _userIDKlikBCATextField.text = @"";
     
@@ -1785,8 +1723,6 @@
     {
         [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
     }
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [_refreshControl beginRefreshing];
     
     [self isLoading:YES];
     
@@ -1821,6 +1757,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
 
         [self isLoading:NO];
+
     } error:^(NSError *error) {
         _paymentMethodView.hidden = YES;
         if (_list.count <=0) {
@@ -1858,7 +1795,7 @@
         }
         
         [self adjustAfterUpdateList];
-        [self refreshRequestCart];
+        [self requestCartData];
         [self isLoading:NO];
     } error:^(NSError *error) {
         [self isLoading:NO];
@@ -1866,7 +1803,6 @@
 }
 
 -(void)swipeView:(UIView*)view{
-//- (void)swipePaymentMethod {
     CGAffineTransform tr = CGAffineTransformTranslate(view.transform, -40, 0);
     view.transform = tr;
     
@@ -1879,19 +1815,12 @@
 
 -(void)setDefaultInputData
 {
-    _isUsingSaldoTokopedia = NO;
-    _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-    
-    _isnodata = YES;
-    _isLoadingRequest = NO;
-    
     TransactionCartGateway *gateway = [TransactionCartGateway new];
     gateway.gateway = @(-1);
     [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
     
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
-    
 }
 
 #pragma mark - Footer View
@@ -2438,7 +2367,6 @@
 }
 
 -(void)doCheckout{
-    _checkoutButton.enabled = NO;
     [self isLoading:YES];
     
     [self adjustDropshipperListParam];
@@ -2481,7 +2409,6 @@
                                    };
         [_delegate didFinishRequestCheckoutData:userInfo];
         _checkoutButton.enabled = YES;
-        _tableView.tableFooterView = _isnodata?nil:(_indexPage==1)?_buyView:_checkoutView;
         [self isLoading:NO];
     } error:^(NSError *error) {
         _checkoutButton.enabled = YES;
@@ -2605,33 +2532,9 @@
 
 -(void)adjustAfterUpdateList
 {
-    
-    if (_list.count>0) {
-        _isnodata = NO;
-    }
-    else
-    {
-        _isnodata = YES;
-        _tableView.tableFooterView = nil;
-    }
     [self adjustPaymentMethodView];
-    [_delegate isNodata:_isnodata];
+    [_delegate isNodata:(_list.count==0)];
     
-    
-    NSInteger listCount = _list.count;
-
-    if (listCount>0) {
-        
-        
-        if (_indexPage == 0) {
-            _checkoutView.hidden = NO;
-            _tableView.tableFooterView = _isnodata?nil:_checkoutView;
-        }
-        else if (_indexPage == 1) {
-            _buyView.hidden = NO;
-            _tableView.tableFooterView = _isnodata?nil:_buyView;
-        }
-    }
     [self adjustPaymentMethodView];
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_UPDATED_GRAND_TOTAL];
     
