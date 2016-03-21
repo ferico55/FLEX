@@ -414,21 +414,7 @@
 
     CGFloat previouseLabelHeight = _talkmessagelabel.frame.size.height;
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 3.0;
-
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style
-                                 };
-    
-    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:TKPD_TALK_MESSAGE]?:@""
-                                                                                    attributes:attributes];
-    _talkmessagelabel.attributedText = productNameAttributedText;
-    _talkmessagelabel.textAlignment = NSTextAlignmentLeft;
-    _talkmessagelabel.numberOfLines = 0;
+    _talkmessagelabel.text = data[TKPD_TALK_MESSAGE];
     [_talkmessagelabel sizeToFit];
 
     CGFloat currentLabelHeight = _talkmessagelabel.frame.size.height;
