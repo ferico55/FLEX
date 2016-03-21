@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *image_url;
 @property (nonatomic, strong) NSString *image_url_600;
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *hotlist_id;
 
 @property (nonatomic, strong) HotlistViewModel *viewModel;
 

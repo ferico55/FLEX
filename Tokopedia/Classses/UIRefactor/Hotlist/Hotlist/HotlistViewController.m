@@ -282,6 +282,7 @@ RetryViewDelegate
                             kTKPHOME_DATAHEADERIMAGEKEY : cell.productimageview,
                             kTKPDHOME_APIURLKEY         : hotlist.url,
                             kTKPDHOME_APITITLEKEY       : hotlist.title,
+                            @"hotlist_id"               : hotlist.hotlist_id
                             };
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
@@ -387,10 +388,11 @@ RetryViewDelegate
 #pragma mark - Methods
 
 - (void)requestHotlistListing{
-    
-    [_networkManager requestWithBaseUrl:@"http://staging.tokopedia.com"
-                                   path:@"/ws/home.pl"
-                                 method:RKRequestMethodPOST
+    _networkManager.isUsingHmac = YES;
+    _networkManager.isParameterNotEncrypted = NO;
+    [_networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                   path:@"/v4/hotlist/get_hotlist.pl"
+                                 method:RKRequestMethodGET
                               parameter:@{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
                                           kTKPDHOME_APIPAGEKEY   :   @(_page),
                                           kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE),
@@ -460,7 +462,7 @@ RetryViewDelegate
 
 - (id)getObjectManager:(int)tag {
     //_objectmanager = [RKObjectManager sharedClient];
-    _objectmanager = [RKObjectManager sharedClient:@"http://staging.tokopedia.com/ws"];
+    _objectmanager = [RKObjectManager sharedClient:@"http://www.tokopedia.com/ws"];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];

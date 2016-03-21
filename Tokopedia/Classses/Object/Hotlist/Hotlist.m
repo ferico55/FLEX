@@ -15,7 +15,7 @@
 +(RKObjectMapping *)mapping{
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
     [statusMapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                   toKeyPath:@"result"
                                                                                 withMapping:[HotlistResult mapping]]];
     return statusMapping;

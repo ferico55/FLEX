@@ -325,7 +325,6 @@ static NSString const *rows = @"12";
     
     _promoRequest = [PromoRequest new];
     _promoRequest.delegate = self;
-    [self requestPromo];
     
     _bannerRequest = [[HotlistBannerRequest alloc] init];
     [_bannerRequest setDelegate:self];
@@ -836,7 +835,7 @@ static NSString const *rows = @"12";
                     
                     _filterview.hidden = NO;
                     
-                    if ([_start integerValue] > 0) [self requestPromo];
+                    [self requestPromo];
 
                 } else {
                     [viewCollection addSubview:_noResultView];
@@ -1169,9 +1168,25 @@ static NSString const *rows = @"12";
 #pragma mark - Promo request delegate
 
 - (void)requestPromo {
-    NSString *key = [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
     _promoRequest.page = _page;
-    [_promoRequest requestForProductHotlist:key];
+    
+    if([_data objectForKey:@"hotlist_id"] && _bannerResult.query.sc){
+        [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
+                                     department:_bannerResult.query.sc
+                                           page:_page
+                                      onSuccess:^(NSArray<PromoResult *> *promoResult) {
+                                          if (promoResult) {
+                                              [_promo addObject:promoResult];
+                                              [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                          } else if (promoResult == nil && _page == 2) {
+                                              [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                          }
+                                          [viewCollection reloadData];
+                                          [viewCollection layoutIfNeeded];
+                                      } onFailure:^(NSError *errorResult) {
+                                          
+                                      }];
+    }
 }
 
 - (void)didReceivePromo:(NSArray *)promo {
@@ -1191,28 +1206,27 @@ static NSString const *rows = @"12";
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
 
-- (void)didSelectPromoProduct:(PromoProduct *)product {
-    /*
+- (void)didSelectPromoProduct:(PromoResult *)promoResult {
     NavigateViewController *navigateController = [NavigateViewController new];
     NSDictionary *productData = @{
-        @"product_id"       : product.product_id?:@"",
-        @"product_name"     : product.product_name?:@"",
-        @"product_image"    : product.product_image_200?:@"",
-        @"product_price"    :product.product_price?:@"",
-        @"shop_name"        : product.shop_name?:@""
-    };
+                                  @"product_id"       : promoResult.product.product_id?:@"",
+                                  @"product_name"     : promoResult.product.name?:@"",
+                                  @"product_image"    : promoResult.product.image.s_url?:@"",
+                                  @"product_price"    : promoResult.product.price_format?:@"",
+                                  @"shop_name"        : promoResult.shop.name?:@""
+                                  };
+    
     NSDictionary *promoData = @{
-        kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-        PromoImpressionKey          : product.ad_key,
-        PromoSemKey                 : product.ad_sem_key,
-        PromoReferralKey            : product.ad_r,
-        PromoRequestSource          : @(PromoRequestSourceHotlist)
-     
-    };
+                                kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
+                                PromoImpressionKey          : promoResult.ad_ref_key,
+                                PromoClickURL               : promoResult.product_click_url,
+                                PromoRequestSource          : @(PromoRequestSourceHotlist)
+                                };
+    
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData
                                                 productData:productData];
-*/
+
 }
 
 #pragma mark - Scroll delegate

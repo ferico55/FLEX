@@ -14,6 +14,7 @@
 
 +(RKObjectMapping *)mapping{
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[HotlistList class]];
+    [hotlistMapping addAttributeMappingsFromDictionary:@{@"id":@"hotlist_id"}];
     [hotlistMapping addAttributeMappingsFromArray:@[@"url",
                                                     @"image_url_600",
                                                     @"image_url",
