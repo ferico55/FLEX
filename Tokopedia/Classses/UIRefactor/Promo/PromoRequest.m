@@ -316,7 +316,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     if (!_cancelRequestProductFeed) [self requestPromo];
 }
 
--(void)requestForProductFeed:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestForFavoriteShop:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"

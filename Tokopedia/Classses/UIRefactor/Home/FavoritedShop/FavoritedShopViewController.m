@@ -494,7 +494,7 @@ FavoriteShopRequestDelegate
 #pragma mark - Request
 
 - (void)requestPromoShop {
-    [_promoRequest requestForProductFeed:^(NSArray<PromoResult *>* result) {
+    [_promoRequest requestForFavoriteShop:^(NSArray<PromoResult *>* result) {
         _isnodata = NO;
         if(result == nil) [self showInternetProblemStickyAlert];
         _promoShops = [NSMutableArray arrayWithArray:result];
