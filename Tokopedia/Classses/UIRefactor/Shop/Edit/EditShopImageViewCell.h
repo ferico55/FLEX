@@ -12,6 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
-@property (weak, nonatomic) IBOutlet UIButton *changeImageButton;
+@property (weak, nonatomic) IBOutlet UILabel *changeImageLabel;
 
 @end

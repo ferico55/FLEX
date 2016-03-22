@@ -26,31 +26,31 @@
                             <constraint firstAttribute="width" constant="50" id="Uip-Va-wqc"/>
                         </constraints>
                     </imageView>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hw8-5t-7FB">
-                        <rect key="frame" x="107" y="74" width="106" height="30"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="30" id="KcW-eI-u6a"/>
-                            <constraint firstAttribute="width" constant="106" id="qFH-Gg-xb5"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                        <state key="normal" title="Ubah Gambar"/>
-                    </button>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hJm-iv-rp6">
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hJm-iv-rp6">
                         <rect key="frame" x="150" y="79" width="20" height="20"/>
                     </activityIndicatorView>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ubah Gambar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m8W-cz-7Oy">
+                        <rect key="frame" x="107" y="78" width="106" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="M2m-sO-mA4"/>
+                            <constraint firstAttribute="width" constant="106" id="W5H-6s-wsp"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                        <color key="textColor" red="0.25882352939999997" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="feh-Cw-rFN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="2TB-7n-8Xc"/>
-                    <constraint firstItem="hw8-5t-7FB" firstAttribute="top" secondItem="feh-Cw-rFN" secondAttribute="bottom" constant="8" id="Gom-HD-yjv"/>
-                    <constraint firstItem="hw8-5t-7FB" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="KpB-4Y-YDj"/>
-                    <constraint firstItem="hJm-iv-rp6" firstAttribute="centerY" secondItem="hw8-5t-7FB" secondAttribute="centerY" id="TrJ-86-99E"/>
+                    <constraint firstItem="m8W-cz-7Oy" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="LcM-Gq-Nkp"/>
+                    <constraint firstItem="m8W-cz-7Oy" firstAttribute="top" secondItem="feh-Cw-rFN" secondAttribute="bottom" constant="12" id="cEn-XJ-XwX"/>
                     <constraint firstItem="feh-Cw-rFN" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="lX7-Fy-yfr"/>
                     <constraint firstItem="hJm-iv-rp6" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="mDz-Ho-G9k"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicatorView" destination="hJm-iv-rp6" id="n8e-YE-O1a"/>
-                <outlet property="changeImageButton" destination="hw8-5t-7FB" id="ref-2X-338"/>
+                <outlet property="changeImageLabel" destination="m8W-cz-7Oy" id="ZPI-sI-Vpv"/>
                 <outlet property="shopImageView" destination="feh-Cw-rFN" id="kb8-E5-KXP"/>
             </connections>
             <point key="canvasLocation" x="204" y="260.5"/>

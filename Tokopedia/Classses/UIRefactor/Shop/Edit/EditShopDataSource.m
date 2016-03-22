@@ -66,7 +66,7 @@ NSInteger const SectionForShopTagDescription = 2;
                                                  NSHTTPURLResponse *response,
                                                  UIImage *image) {
                                            cell.shopImageView.image = image;
-                                           cell.changeImageButton.hidden = NO;
+                                           cell.changeImageLabel.hidden = NO;
                                            [cell.activityIndicatorView stopAnimating];
     } failure:nil];
     return cell;
