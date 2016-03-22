@@ -57,4 +57,7 @@
     return [_comment_user_name kv_decodeHTMLCharacterEntities];
 }
 
+- (BOOL)isSeller {
+    return [self.comment_user_label isEqualToString:@"Penjual"];
+}
 @end
