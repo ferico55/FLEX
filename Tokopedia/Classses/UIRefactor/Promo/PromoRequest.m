@@ -264,20 +264,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 
 - (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     PromoResponse *response = [[result dictionary] objectForKey:@""];
-    if (tag == PromoNetworkManagerGet) {
-        /*
-        if ([self.delegate respondsToSelector:@selector(didReceivePromo:)]) {
-            if (response.result.list.count > 0) {
-                if (_requestType != PromoRequestTypeShopFeed) {
-                    [TPAnalytics trackPromoImpression:response.result.list];
-                }
-                [self.delegate didReceivePromo:response.result.list];
-            } else {
-                [self.delegate didReceivePromo:nil];
-            }
-        }
-         */
-    } else if (tag == PromoNetworkManagerAction) {
+    if (tag == PromoNetworkManagerAction) {
         if ([self.delegate respondsToSelector:@selector(didFinishedAddImpression)]) {
             [self.delegate didFinishedAddImpression];
         }
