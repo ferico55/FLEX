@@ -714,10 +714,6 @@
     
 }
 
-- (void)GeneralTalkCommentCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    
-}
-
 #pragma mark - Action Smiley
 - (IBAction)actionSmiley:(id)sender {
     if([_data objectForKey:TKPD_TALK_REPUTATION_PERCENTAGE]) {

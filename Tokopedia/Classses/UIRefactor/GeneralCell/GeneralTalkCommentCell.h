@@ -20,7 +20,6 @@
 @protocol GeneralTalkCommentCellDelegate <NSObject>
 @required
 - (IBAction)actionSmile:(id)sender;
--(void)GeneralTalkCommentCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
 
 @optional
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
@@ -37,7 +36,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *create_time;
 @property (weak, nonatomic) IBOutlet UIImageView *user_image;
 @property (weak, nonatomic) IBOutlet UIImageView *commentfailimage;
-@property (weak, nonatomic) IBOutlet UIButton *loadingButton, *btnReputation;
+@property (weak, nonatomic) IBOutlet UIButton *btnReputation;
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
