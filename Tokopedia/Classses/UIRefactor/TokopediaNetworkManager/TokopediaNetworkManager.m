@@ -309,7 +309,7 @@
         NSDictionary *auth = [userAuth getUserLoginData];
         
         NSString* userId = [[auth objectForKey:@"user_id"] stringValue];
-        NSString* sessionId = [auth objectForKey:@"device_token_id"];
+        NSString* sessionId = [auth objectForKey:@"device_token"];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-UserId" value:userId];
         [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-SessionId" value:sessionId];
