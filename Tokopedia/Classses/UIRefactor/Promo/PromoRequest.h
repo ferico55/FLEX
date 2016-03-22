@@ -25,28 +25,12 @@ typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
     PromoRequestSourceFavoriteShop,
 };
 
-@protocol PromoRequestDelegate <NSObject>
-
-- (void)didReceivePromo:(NSArray *)promo;
-
-@optional;
-- (void)didFinishedAddImpression;
-
-@end
-
 @interface PromoRequest : NSObject
 
 @property NSInteger page;
-@property (weak, nonatomic) id<PromoRequestDelegate> delegate;
 
 - (void)requestForProductQuery:(NSString *)query
                     department:(NSString *)department;
-- (void)requestForProductHotlist:(NSString *)key;
-- (void)requestForProductFeed;
-- (void)addImpressionKey:(NSString *)key
-                  semKey:(NSString *)semKey
-             referralKey:(NSString *)referralKey
-                  source:(PromoRequestSourceType)source;
 
 - (void)requestForProductHotlist:(NSString *)hotlistId
                       department:(NSString *)department

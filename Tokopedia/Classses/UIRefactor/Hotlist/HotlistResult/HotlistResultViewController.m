@@ -91,7 +91,6 @@ static NSString const *rows = @"12";
     GeneralSingleProductDelegate,
     GeneralPhotoProductDelegate,
     PromoCollectionViewDelegate,
-    PromoRequestDelegate,
     HotlistBannerDelegate
 >
 {
@@ -324,7 +323,6 @@ static NSString const *rows = @"12";
     _iPadView.frame = newFrame;
     
     _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
     
     _bannerRequest = [[HotlistBannerRequest alloc] init];
     [_bannerRequest setDelegate:self];

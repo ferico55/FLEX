@@ -88,7 +88,6 @@ GeneralPhotoProductDelegate,
 GeneralSingleProductDelegate,
 TokopediaNetworkManagerDelegate,
 LoadingViewDelegate,
-PromoRequestDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
 SpellCheckRequestDelegate,
@@ -299,7 +298,6 @@ ImageSearchRequestDelegate
     [self configureGTM];
     
     _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
     [self requestPromo];
     self.scrollDirection = ScrollDirectionDown;
     

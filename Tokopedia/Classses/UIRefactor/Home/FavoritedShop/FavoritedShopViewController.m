@@ -31,7 +31,6 @@ UITableViewDelegate,
 FavoritedShopCellDelegate,
 LoadingViewDelegate,
 TKPDAlertViewDelegate,
-PromoRequestDelegate,
 FavoriteShopRequestDelegate
 >
 {
@@ -127,7 +126,6 @@ FavoriteShopRequestDelegate
     }
     
     _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
     [self requestPromoShop];
     _table.tableFooterView = _footer;
     [_act startAnimating];

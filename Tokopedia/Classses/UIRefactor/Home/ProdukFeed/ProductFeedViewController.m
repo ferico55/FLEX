@@ -52,7 +52,6 @@ UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
-PromoRequestDelegate,
 NoResultDelegate,
 CollectionViewSupplementaryDataSource,
 FavoriteShopRequestDelegate
@@ -170,7 +169,6 @@ FavoriteShopRequestDelegate
     [_favoriteShopRequest requestFavoriteShopListings];
     
     _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
     [self requestPromo];
     
     [self registerNib];
