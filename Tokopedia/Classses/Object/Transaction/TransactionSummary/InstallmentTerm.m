@@ -12,9 +12,17 @@
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[
-                      @"duration",
+                      @"total_price",
                       @"monthly_price",
-                      @"monthly_price_idr"
+                      @"total_price_idr",
+                      @"admin_price_idr",
+                      @"monthly_price_idr",
+                      @"bunga",
+                      @"duration",
+                      @"is_zero",
+                      @"interest_price_idr",
+                      @"interest_price",
+                      @"admin_price"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
