@@ -39,7 +39,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnReputation;
 
 @property (strong,nonatomic) NSDictionary *data;
-@property (strong, nonatomic) NSIndexPath *indexpath;
 
 @property(nonatomic, strong) TalkCommentList *comment;
 

@@ -261,7 +261,6 @@
 
     cell.comment = list;
 
-    cell.indexpath = indexPath;
     cell.btnReputation.tag = indexPath.row;
 
     [cell setNeedsUpdateConstraints];
@@ -679,7 +678,7 @@
         expansionSettings.threshold = 1.1;
         
         CGFloat padding = 15;
-        NSIndexPath *indexPath = ((GeneralTalkCommentCell*) cell).indexpath;
+        NSIndexPath *indexPath = [_table indexPathForCell:cell];
         TalkCommentList *list = _list[indexPath.row];
         if(list.comment_user_id == nil || list.comment_id == nil)
             return nil;
