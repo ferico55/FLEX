@@ -250,14 +250,11 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *cellid = kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER;
-
-    GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:cellid];
+    GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
     if (cell == nil) {
         cell = [GeneralTalkCommentCell newcell];
         cell.delegate = self;
         cell.del = self;
-        [cell.user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
     }
 
     TalkCommentList *list = _list[indexPath.row];
