@@ -408,13 +408,22 @@
 {
     if (alertView.tag == 11) {
         [_webView stopLoading];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
+        if ([self isModal]) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }    }
     else
     {
         if (buttonIndex == 1) {
             [_webView stopLoading];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            if ([self isModal]) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }
