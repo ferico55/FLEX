@@ -11,6 +11,8 @@
 #import "ViewLabelUser.h"
 #import "MGSwipeTableCell.h"
 
+@class TalkCommentList;
+
 #define kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER @"GeneralTalkCommentCellIdentifier"
 
 
@@ -40,10 +42,11 @@
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
+@property(nonatomic, strong) TalkCommentList *comment;
+
 + (id)newcell;
 - (IBAction)actionSmile:(id)sender;
 + (CGSize)messageSize:(NSString*)message;
 + (CGFloat)maxTextWidth;
-+ (CGFloat)textMarginVertical;
 
 @end

@@ -33,5 +33,7 @@
 @property (nonatomic, strong) NSString *comment_is_owner;
 
 + (RKObjectMapping *)mapping;
+
+- (BOOL)isSeller;
 @end
 
