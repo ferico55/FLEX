@@ -1028,7 +1028,15 @@
     
     _requestFavoriteCount ++;
     
+    
+    
+    NSString* adKey = @"";
+    if([_data objectForKey:PromoRefKey]){
+        adKey = [_data objectForKey:PromoRefKey];
+    }
+    
     NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
+                            @"ad_key"               :   adKey,
                             @"shop_id"              :   shop_id};
     
     _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
