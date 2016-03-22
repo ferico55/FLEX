@@ -67,6 +67,8 @@
     TokopediaNetworkManager *_talkCommentNetworkManager;
     TokopediaNetworkManager *_sendCommentNetworkManager;
     TokopediaNetworkManager *_deleteCommentNetworkManager;
+
+    GeneralTalkCommentCell *_dummyCell;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -136,6 +138,7 @@
     [super viewDidLoad];
 
     [self adjustSendButtonAvailability];
+    _dummyCell = [GeneralTalkCommentCell newcell];
 
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
@@ -220,33 +223,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TalkCommentList *list = _list[indexPath.row];
-
-    GeneralTalkCommentCell *cell = [dictCell objectForKey:list.comment_id==nil? @"-1":list.comment_id];
-    if (cell == nil) {
-        NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"GeneralTalkCommentCell" owner:nil options:0];
-        cell = [tempArr objectAtIndex:0];
-        
-        if(dictCell == nil) {
-            dictCell = [NSMutableDictionary new];
-        }
-        
-        [dictCell setObject:cell forKey:list.comment_id==nil? @"-1":list.comment_id];
-    }
-
+    _dummyCell.comment = list;
+    [_dummyCell layoutIfNeeded];
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
-    NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 5.0f;
-    NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message attributes:attributes];
-    
-    UILabel *tempLbl = [[UILabel alloc] init];
-    tempLbl.numberOfLines = 0;
-    [tempLbl setAttributedText:attributedString];
-    [tableView addSubview:tempLbl];
-    
-    CGSize tempSizeComment = [tempLbl sizeThatFits:CGSizeMake(tableView.bounds.size.width-25-((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.x, 9999)];//left space
-    return ((GeneralTalkCommentCell *)cell).commentlabel.frame.origin.y + 27 + tempSizeComment.height;//27 bottom space
+    CGFloat height = [_dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1;
+    return height;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -262,9 +243,6 @@
     cell.comment = list;
 
     cell.btnReputation.tag = indexPath.row;
-
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
 
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
