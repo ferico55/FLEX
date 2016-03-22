@@ -21,6 +21,7 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		7AF470B01CA109E9008E74E3 /* HotlistData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF470AF1CA109E9008E74E3 /* HotlistData.m */; };
 		852DFE9F1C92B3C100A52E93 /* OtherProductDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 852DFE9E1C92B3C100A52E93 /* OtherProductDataSource.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
@@ -207,7 +208,6 @@
 		85A284161C919C2B005170EB /* Hotlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A2779E1C919C1D005170EB /* Hotlist.m */; };
 		85A284171C919C2B005170EB /* HotlistDetailResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A277A01C919C1D005170EB /* HotlistDetailResult.m */; };
 		85A284181C919C2B005170EB /* HotlistList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A277A21C919C1D005170EB /* HotlistList.m */; };
-		85A284191C919C2B005170EB /* HotlistResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A277A41C919C1D005170EB /* HotlistResult.m */; };
 		85A2841A1C919C2B005170EB /* HotlistResultInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A277A61C919C1D005170EB /* HotlistResultInfo.m */; };
 		85A2841B1C919C2B005170EB /* InboxMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A277A91C919C1D005170EB /* InboxMessage.m */; };
 		85A2841C1C919C2B005170EB /* InboxMessageAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A277AC1C919C1D005170EB /* InboxMessageAction.m */; };
@@ -2159,6 +2159,8 @@
 		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		7AF470AE1CA109E9008E74E3 /* HotlistData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistData.h; sourceTree = "<group>"; };
+		7AF470AF1CA109E9008E74E3 /* HotlistData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistData.m; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		852DFE9D1C92B3C100A52E93 /* OtherProductDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherProductDataSource.h; sourceTree = "<group>"; };
 		852DFE9E1C92B3C100A52E93 /* OtherProductDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherProductDataSource.m; sourceTree = "<group>"; };
@@ -2511,8 +2513,6 @@
 		85A277A01C919C1D005170EB /* HotlistDetailResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistDetailResult.m; sourceTree = "<group>"; };
 		85A277A11C919C1D005170EB /* HotlistList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistList.h; sourceTree = "<group>"; };
 		85A277A21C919C1D005170EB /* HotlistList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistList.m; sourceTree = "<group>"; };
-		85A277A31C919C1D005170EB /* HotlistResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResult.h; sourceTree = "<group>"; };
-		85A277A41C919C1D005170EB /* HotlistResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResult.m; sourceTree = "<group>"; };
 		85A277A51C919C1D005170EB /* HotlistResultInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResultInfo.h; sourceTree = "<group>"; };
 		85A277A61C919C1D005170EB /* HotlistResultInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResultInfo.m; sourceTree = "<group>"; };
 		85A277A81C919C1D005170EB /* InboxMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessage.h; sourceTree = "<group>"; };
@@ -6095,6 +6095,8 @@
 		85A2778B1C919C1C005170EB /* Hotlist */ = {
 			isa = PBXGroup;
 			children = (
+				7AF470AE1CA109E9008E74E3 /* HotlistData.h */,
+				7AF470AF1CA109E9008E74E3 /* HotlistData.m */,
 				85A2778C1C919C1C005170EB /* Banner */,
 				85A277951C919C1D005170EB /* DepartmentChild.h */,
 				85A277961C919C1D005170EB /* DepartmentChild.m */,
@@ -6110,8 +6112,6 @@
 				85A277A01C919C1D005170EB /* HotlistDetailResult.m */,
 				85A277A11C919C1D005170EB /* HotlistList.h */,
 				85A277A21C919C1D005170EB /* HotlistList.m */,
-				85A277A31C919C1D005170EB /* HotlistResult.h */,
-				85A277A41C919C1D005170EB /* HotlistResult.m */,
 				85A277A51C919C1D005170EB /* HotlistResultInfo.h */,
 				85A277A61C919C1D005170EB /* HotlistResultInfo.m */,
 			);
@@ -12453,7 +12453,6 @@
 				85A283851C919C2B005170EB /* UITextView+UITextView_Placeholder.m in Sources */,
 				85A287051C919C2C005170EB /* ProductCellSize.swift in Sources */,
 				85A2876B1C919C2C005170EB /* FilterShipmentConfirmationViewController.m in Sources */,
-				85A284191C919C2B005170EB /* HotlistResult.m in Sources */,
 				85A285711C919C2B005170EB /* WishListObjectResult.m in Sources */,
 				85A285911C919C2B005170EB /* AlertCameraView.m in Sources */,
 				85A283F51C919C2B005170EB /* Favorited.m in Sources */,
@@ -12616,6 +12615,7 @@
 				85A287251C919C2C005170EB /* ProductReputationViewController.m in Sources */,
 				85A284681C919C2B005170EB /* ResponseCommentResult.m in Sources */,
 				85A285411C919C2B005170EB /* TransactionVoucherResult.m in Sources */,
+				7AF470B01CA109E9008E74E3 /* HotlistData.m in Sources */,
 				85A288371C919C2C005170EB /* TransactionObjectManager.m in Sources */,
 				85A284461C919C2B005170EB /* InboxTicketList.m in Sources */,
 				85A2883A1C919C2C005170EB /* objectManagerPayment.m in Sources */,

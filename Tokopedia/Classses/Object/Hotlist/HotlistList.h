@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "HotlistViewModel.h"
 
-@interface HotlistList: NSObject
+@interface HotlistList: NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *price_start;
 @property (nonatomic, strong) NSString *url;
