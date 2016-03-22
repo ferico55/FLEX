@@ -45,7 +45,6 @@ TokopediaNetworkManagerDelegate
     GeneratedHost *_generatedHost;
     ReviewRequest *_reviewRequest;
     
-    BOOL _hasProductReviewPhoto;
     NSInteger _counter;
     
     NSMutableDictionary *_fileUploaded;
@@ -54,12 +53,6 @@ TokopediaNetworkManagerDelegate
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if (_uploadedImages == nil) {
-        _hasProductReviewPhoto = NO;
-    } else {
-        _hasProductReviewPhoto = YES;
-    }
     
     self.title = @"Ringkasan Ulasan";
     
@@ -125,7 +118,7 @@ TokopediaNetworkManagerDelegate
     
     if ([self isNoImageUploaded]) {
         _attachedImagesViewHeight.constant = 0;
-        _textViewHeight.constant = 147.0;
+        _textViewHeight.constant = 139.0;
     } else {
         for (NSInteger ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
             ReviewImageAttachment *attachedImage = _detailReputationReview.review_image_attachment[ii];
@@ -134,10 +127,10 @@ TokopediaNetworkManagerDelegate
             [((UIImageView*)_attachedImagesArray[ii]) setHidden:NO];
         }
         
-        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
-            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
-            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
-        }
+//        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
+//            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
+//            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
+//        }
     }
     
     
@@ -238,7 +231,7 @@ TokopediaNetworkManagerDelegate
 
 - (BOOL)isSuccessValidateReview {
     if (_isEdit) {
-        if ([_reviewMessage isEqualToString:_detailReputationReview.review_message] && [_detailReputationReview.product_accuracy_point intValue] == _accuracyRate && [_detailReputationReview.product_rating_point intValue] == _qualityRate) {
+        if ([_reviewMessage isEqualToString:_detailReputationReview.review_message] && [_detailReputationReview.product_accuracy_point intValue] == _accuracyRate && [_detailReputationReview.product_rating_point intValue] == _qualityRate && [_isAttachedImagesModified isEqualToString:@"0"]) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Tidak ada perubahan ulasan"] delegate:self];
             [stickyAlertView show];
             

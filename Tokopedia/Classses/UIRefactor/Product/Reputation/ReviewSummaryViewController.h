@@ -33,5 +33,6 @@
 @property NSDictionary *imagesToUpload;
 @property NSArray *imageIDs;
 @property NSDictionary *imageDescriptions;
+@property NSString *isAttachedImagesModified;
 
 @end

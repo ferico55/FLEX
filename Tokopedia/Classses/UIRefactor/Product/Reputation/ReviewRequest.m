@@ -70,6 +70,7 @@
         submitReviewWithImageNetworkManager = [TokopediaNetworkManager new];
         editReviewWithImageNetworkManager = [TokopediaNetworkManager new];
         skipProductReviewNetworkManager = [TokopediaNetworkManager new];
+        editReputationReviewSubmitNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -511,7 +512,7 @@
                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                     SubmitReview *obj = [result objectForKey:@""];
                                                     
-                                                    if (hasProductReviewPhoto) {
+                                                    if (hasProductReviewPhoto && ([imagesToUpload count] > 0)) {
                                                         _postKey = obj.data.post_key;
                                                         _fileUploaded = [NSMutableDictionary new];
                                                         for (NSString *imageID in imageIDs) {
@@ -524,6 +525,11 @@
                                                                 self.errorCompletionBlock = errorCallback;
                                                             }
                                                         }
+                                                    } else if (hasProductReviewPhoto && ([imagesToUpload count] == 0)) {
+                                                        [self requestEditReviewSubmitWithPostKey:obj.data.post_key
+                                                                                    fileUploaded:@{}];
+                                                        self.successCompletionBlock = successCallback;
+                                                        self.errorCompletionBlock = errorCallback;
                                                     } else {
                                                         successCallback(obj.data);
                                                     }
@@ -558,6 +564,22 @@
                                                   errorCallback(errorResult);
                                               }];
 }
+
+- (void)requestEditReviewSubmitWithPostKey:(NSString*)postKey
+                              fileUploaded:(NSDictionary*)fileUploaded {
+    [self requestEditReputationReviewSubmitWithPostKey:postKey
+                                          fileUploaded:fileUploaded
+                                             onSuccess:^(SubmitReviewResult *result) {
+                                                 if ([result.is_success isEqualToString:@"1"]) {
+                                                     self.successCompletionBlock(result);
+                                                 } else {
+                                                     self.errorCompletionBlock(nil);
+                                                 }
+                                             } onFailure:^(NSError *errorResult) {
+                                                 self.errorCompletionBlock(errorResult);
+                                             }];
+}
+
 
 - (void)requestEditReputationReviewSubmitWithPostKey:(NSString*)postKey
                                         fileUploaded:(NSDictionary*)fileUploaded

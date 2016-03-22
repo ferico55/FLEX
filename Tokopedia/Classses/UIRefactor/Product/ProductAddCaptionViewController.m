@@ -103,6 +103,8 @@
     _attachedImagesCaptions = _imagesCaptions?[_imagesCaptions mutableCopy]:[[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _productReviewPhotoObjectsArray = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     _productReviewPhotoObjectKeys = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _selectedIndexPaths = [[NSArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _selectedImages = _selectedImages?:[[NSArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
     _attachedImages = [NSArray sortViewsWithTagInArray:_attachedImages];
     
@@ -289,6 +291,7 @@
                 [userInfo setObject:_productReviewPhotoObjects forKey:@"product-review-photo-objects"];
                 [userInfo setObject:[_productReviewPhotoObjects allKeys] forKey:@"all-image-ids"];
                 [userInfo setObject:_imagesToUpload forKey:@"images-to-upload"];
+                [userInfo setObject:_isAttachedImageModified?@"1":@"0" forKey:@"is-attached-images-modified"];
                 [_delegate didDismissController:self withUserInfo:userInfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
@@ -342,6 +345,7 @@
     }
     
     [_imageCaptionTextField setText:_attachedImagesCaptions[page]];
+    _isAttachedImageModified = YES;
 }
 
 - (IBAction)tapToDeleteImage:(id)sender {
@@ -359,7 +363,7 @@
                    attachedImagesCaptions:(NSArray *)attachedImagesCaptions {
     _selectedImages = selectedImages;
     _selectedIndexPaths = selectedIndexPaths;
-    _attachedImagesCaptions = [attachedImagesCaptions mutableCopy];
+    _attachedImagesCaptions = [attachedImagesCaptions mutableCopy]?:[[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
     
     [_imageCaptionTextField setText:_attachedImagesCaptions[0]];
     
@@ -379,6 +383,7 @@
                 return;
             }
             if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
+                _isAttachedImageModified = YES;
                 NSUInteger index = [emptyImageIndex[j] integerValue];
                 [_selectedImagesCameraController replaceObjectAtIndex:index
                                                            withObject:selected];
@@ -642,6 +647,8 @@
     
     [self setScrollViewImages];
     _numberOfUploadedImages--;
+    _maxSelected = 5 - _numberOfUploadedImages;
+    _isAttachedImageModified = YES;
 }
 
 - (NSString*)getUnixTime {

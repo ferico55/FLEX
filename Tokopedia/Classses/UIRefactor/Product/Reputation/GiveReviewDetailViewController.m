@@ -239,7 +239,7 @@
         vc.imageDescriptions = _productReviewPhotoObjects;
         vc.hasAttachedImages = _hasImages;
         vc.imageIDs = [_userInfo objectForKey:@"all-image-ids"];
-        
+        vc.isAttachedImagesModified = [_userInfo objectForKey:@"is-attached-images-modified"];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
