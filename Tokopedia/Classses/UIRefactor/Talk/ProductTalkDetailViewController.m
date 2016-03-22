@@ -263,76 +263,10 @@
     if (_list.count > indexPath.row) {
         TalkCommentList *list = _list[indexPath.row];
 
-        UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
-        NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 5.0f;
-        NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message
-                                                                               attributes:attributes];
-        cell.commentlabel.attributedText = attributedString;
-
-        NSString *name = ([list.comment_user_label isEqualToString:@"Penjual"]) ? list.comment_shop_name : list.comment_user_name;
-        cell.user_name.text = name;
-        cell.create_time.text = list.comment_create_time;
+        cell.comment = list;
 
         cell.indexpath = indexPath;
         cell.btnReputation.tag = indexPath.row;
-
-        if([list.comment_user_label isEqualToString:@"Penjual"]) {//Seller
-            [SmileyAndMedal generateMedalWithLevel:list.comment_shop_reputation.reputation_badge_object.level withSet:list.comment_shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
-            [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
-        } else {
-            if (_auth) {
-                if (list.comment_user_reputation == nil && list.comment_user_id != nil) {
-                    NSString *userId = [_userManager getUserId];
-                    BOOL usersComment = [list.comment_user_id isEqualToString:userId];
-                    if (usersComment) {
-                        UserAuthentificationManager *user = [UserAuthentificationManager new];
-                        list.comment_user_reputation = user.reputation;
-                    }
-                }
-            }
-
-            if(list.comment_user_reputation==nil || (list.comment_user_reputation.no_reputation!=nil && [list.comment_user_reputation.no_reputation isEqualToString:@"1"])) {
-                [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
-            }
-            else {
-                [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
-                [cell.btnReputation setTitle:[NSString stringWithFormat:@"%@%%", (list.comment_user_reputation==nil? @"0":list.comment_user_reputation.positive_percentage)] forState:UIControlStateNormal];
-            }
-        }
-
-        [cell.user_name setLabelBackground:list.comment_user_label];
-
-        if(list.is_not_delivered) {
-            cell.commentfailimage.hidden = NO;
-            cell.create_time.text = @"Gagal Kirim.";
-
-            UITapGestureRecognizer *errorSendCommentGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapErrorComment)];
-            [cell.commentfailimage addGestureRecognizer:errorSendCommentGesture];
-            [cell.commentfailimage setUserInteractionEnabled:YES];
-        } else {
-            cell.commentfailimage.hidden = YES;
-        }
-
-        if(list.is_just_sent) {
-            cell.create_time.text = @"Kirim...";
-        } else {
-            cell.create_time.text = list.comment_create_time;
-        }
-
-        NSURL *url;
-        if ([list.comment_user_label isEqualToString:@"Penjual"]) {
-            url = [NSURL URLWithString:list.comment_shop_image];
-        } else {
-            url = [NSURL URLWithString:list.comment_user_image];
-        }
-
-        UIImageView *user_image = cell.user_image;
-        user_image.image = nil;
-
-        [user_image setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
 
         [cell setNeedsUpdateConstraints];
         [cell updateConstraintsIfNeeded];
