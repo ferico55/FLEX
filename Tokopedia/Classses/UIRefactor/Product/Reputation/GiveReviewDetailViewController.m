@@ -81,7 +81,21 @@
     
     _reviewDetailTextView.delegate = self;
     
-    _userInfo = (_detailReputationReview.review_image_attachment.count > 0)?@{@"attached_images":_detailReputationReview.review_image_attachment}:nil;
+    if (_detailReputationReview.review_image_attachment.count > 0) {
+        NSMutableArray *tempImageCaptions = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+        
+        for (int ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
+            ReviewImageAttachment *image = _detailReputationReview.review_image_attachment[ii];
+            [tempImageCaptions replaceObjectAtIndex:ii withObject:image.desc];
+        }
+        
+        NSDictionary *tempUserInfo = @{@"attached_images":_detailReputationReview.review_image_attachment,
+                                       @"images-captions":tempImageCaptions
+                                       };
+        
+        _userInfo = tempUserInfo;
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {

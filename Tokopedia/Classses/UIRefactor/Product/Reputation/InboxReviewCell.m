@@ -18,6 +18,7 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+    _inboxReviewCellView.backgroundColor = selected ? [UIColor colorWithRed:232/255.0 green:245/255.0 blue:233/255.0 alpha:1] : [UIColor whiteColor];
 }
 
 #pragma mark - Action

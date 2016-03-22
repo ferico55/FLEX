@@ -35,7 +35,7 @@
 
 @implementation ReviewRequest {
     TokopediaNetworkManager *likeDislikeCountNetworkManager;
-	TokopediaNetworkManager *actionLikeNetworkManager;
+    TokopediaNetworkManager *actionLikeNetworkManager;
     TokopediaNetworkManager *actionDislikeNetworkManager;
     TokopediaNetworkManager *actionCancelLikeDislikeNetworkManager;
     TokopediaNetworkManager *getInboxReputationNetworkManager;
@@ -49,7 +49,7 @@
     TokopediaNetworkManager *editReputationReviewSubmitNetworkManager;
     
     NSInteger _counter;
-    NSArray *_imageIDs;
+    NSDictionary *_imagesToUpload;
     NSString *_postKey;
     NSMutableDictionary *_fileUploaded;
     BOOL _isEdit;
@@ -59,7 +59,7 @@
     self = [super init];
     if(self){
         likeDislikeCountNetworkManager = [TokopediaNetworkManager new];
-		actionLikeNetworkManager = [TokopediaNetworkManager new];
+        actionLikeNetworkManager = [TokopediaNetworkManager new];
         actionDislikeNetworkManager = [TokopediaNetworkManager new];
         actionCancelLikeDislikeNetworkManager = [TokopediaNetworkManager new];
         getInboxReputationNetworkManager = [TokopediaNetworkManager new];
@@ -102,36 +102,13 @@
     actionLikeNetworkManager.isParameterNotEncrypted = NO;
     actionLikeNetworkManager.isUsingHmac = YES;
     [actionLikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
-                                                   path:@"/v4/action/review/like_dislike_review.pl"
-                                                 method:RKRequestMethodGET
-                                              parameter:@{@"product_id"  : productId,
-                                                          @"review_id"   : reviewId,
-                                                          @"shop_id"     : shopId,
-                                                          @"user_id"     : userId,
-                                                          @"like_status" : @(ACTION_LIKE_REQUEST)
-                                                          }
-                                                mapping:[LikeDislikePost mapping]
-                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                                  LikeDislikePost *obj = [result objectForKey:@""];
-                                                  successCallback(obj.data);
-                                              } onFailure:^(NSError *errorResult) {
-                                                  errorCallback(errorResult);
-                                              }];
-}
-
--(void)actionDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    
-    actionDislikeNetworkManager.isParameterNotEncrypted = NO;
-    actionDislikeNetworkManager.isUsingHmac = YES;
-    [actionDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
                                             path:@"/v4/action/review/like_dislike_review.pl"
                                           method:RKRequestMethodGET
                                        parameter:@{@"product_id"  : productId,
                                                    @"review_id"   : reviewId,
                                                    @"shop_id"     : shopId,
                                                    @"user_id"     : userId,
-                                                   @"like_status" : @(ACTION_DISLIKE_REQUEST)
+                                                   @"like_status" : @(ACTION_LIKE_REQUEST)
                                                    }
                                          mapping:[LikeDislikePost mapping]
                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -141,6 +118,29 @@
                                        } onFailure:^(NSError *errorResult) {
                                            errorCallback(errorResult);
                                        }];
+}
+
+-(void)actionDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    
+    actionDislikeNetworkManager.isParameterNotEncrypted = NO;
+    actionDislikeNetworkManager.isUsingHmac = YES;
+    [actionDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                               path:@"/v4/action/review/like_dislike_review.pl"
+                                             method:RKRequestMethodGET
+                                          parameter:@{@"product_id"  : productId,
+                                                      @"review_id"   : reviewId,
+                                                      @"shop_id"     : shopId,
+                                                      @"user_id"     : userId,
+                                                      @"like_status" : @(ACTION_DISLIKE_REQUEST)
+                                                      }
+                                            mapping:[LikeDislikePost mapping]
+                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                              NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                              LikeDislikePost *obj = [result objectForKey:@""];
+                                              successCallback(obj.data);
+                                          } onFailure:^(NSError *errorResult) {
+                                              errorCallback(errorResult);
+                                          }];
 }
 
 -(void)actionCancelLikeDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
@@ -174,7 +174,7 @@
     getInboxReputationNetworkManager.isParameterNotEncrypted = NO;
     getInboxReputationNetworkManager.isUsingHmac = YES;
     
-    [getInboxReputationNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+    [getInboxReputationNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                                     path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
                                                   method:RKRequestMethodGET
                                                parameter:@{@"filter" : filter,
@@ -214,7 +214,7 @@
                                 @"buyer_seller"         : role
                                 };
     
-    [getReviewDetailNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+    [getReviewDetailNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                                  path:@"/v4/inbox-reputation/get_list_reputation_review.pl"
                                                method:RKRequestMethodGET
                                             parameter:parameter
@@ -248,7 +248,7 @@
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
     NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
     
-    [submitReviewNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+    [submitReviewNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                               path:@"/v4/action/review/add_product_review_validation.pl"
                                             method:RKRequestMethodGET
                                          parameter:@{@"product_id" : productID,
@@ -320,8 +320,10 @@
     uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
     uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    [productReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
-                                                     path:@"/v4/action/reputation/insert_reputation_review_submit.pl"
+    NSString *path = _isEdit?@"/v4/action/reputation/edit_reputation_review_submit.pl":@"/v4/action/reputation/insert_reputation_review_submit.pl";
+    
+    [productReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+                                                     path:path
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"post_key" : postKey?:@"",
                                                             @"file_uploaded" : uploaded?:@""}
@@ -357,7 +359,7 @@
                                                host:(NSString*)host
                                           onSuccess:(void (^)(SubmitReviewResult *))successCallback
                                           onFailure:(void (^)(NSError *))errorCallback {
-    _imageIDs = imageIDs;
+    _imagesToUpload = imagesToUpload;
     _counter = 0;
     
     submitReviewWithImageNetworkManager.isParameterNotEncrypted = NO;
@@ -365,21 +367,23 @@
     
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
     NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
+    NSString *uploaded = @"";
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:photos options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
-    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
-    uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (photos) {
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:photos options:NSJSONWritingPrettyPrinted error:nil];
+        uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+        uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+        uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
+        uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    }
     
-    
-    [submitReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+    [submitReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                                        path:@"/v4/action/reputation/insert_reputation_review_validation.pl"
                                                      method:RKRequestMethodGET
                                                   parameter:@{@"product_id" : productID,
                                                               @"rate_accuracy" : @(accuracyRate),
-                                                              @"rate_product" : @(qualityRate),
+                                                              @"rate_quality" : @(qualityRate),
                                                               @"reputation_id" : reputationID,
                                                               @"review_message" : reviewMessage,
                                                               @"shop_id" : shopID,
@@ -425,7 +429,7 @@
                                  onSuccess:^(ImageResult *result) {
                                      [_fileUploaded setObject:result.pic_obj forKey:imageID];
                                      _counter++;
-                                     if (_counter == [_imageIDs count]) {
+                                     if (_counter == [[_imagesToUpload allKeys] count]) {
                                          [self requestSubmitReviewWithPostKey:_postKey
                                                                  fileUploaded:_fileUploaded];
                                      }
@@ -467,7 +471,7 @@
                                           host:(NSString *)host
                                      onSuccess:(void (^)(SubmitReviewResult *))successCallback
                                      onFailure:(void (^)(NSError *))errorCallback {
-    _imageIDs = imageIDs;
+    _imagesToUpload = imagesToUpload;
     _counter = 0;
     _isEdit = YES;
     
@@ -476,8 +480,19 @@
     
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
     NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
+    NSString *uploaded = @"";
+    if (photos) {
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:photos options:NSJSONWritingPrettyPrinted error:nil];
+        uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+        uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+        uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
+        uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    }
     
-    [editReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+    
+    [editReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                                      path:@"/v4/action/reputation/edit_reputation_review_validation.pl"
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"product_id" : productID,
@@ -489,7 +504,7 @@
                                                             @"shop_id" : shopID,
                                                             @"has_product_review_photo" : hasPhoto,
                                                             @"product_review_photo_all" : allImageIDs?:@"",
-                                                            @"product_review_photo_obj" : photos?:@"{}"
+                                                            @"product_review_photo_obj" : uploaded?:@"{}"
                                                             }
                                                   mapping:[SubmitReview mapping]
                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -500,12 +515,14 @@
                                                         _postKey = obj.data.post_key;
                                                         _fileUploaded = [NSMutableDictionary new];
                                                         for (NSString *imageID in imageIDs) {
-                                                            [self requestUploadImageWithImageID:imageID
-                                                                                 imagesToUpload:imagesToUpload
-                                                                                          token:token
-                                                                                           host:host];
-                                                            self.successCompletionBlock = successCallback;
-                                                            self.errorCompletionBlock = errorCallback;
+                                                            if ([imagesToUpload objectForKey:imageID] != nil) {
+                                                                [self requestUploadImageWithImageID:imageID
+                                                                                     imagesToUpload:imagesToUpload
+                                                                                              token:token
+                                                                                               host:host];
+                                                                self.successCompletionBlock = successCallback;
+                                                                self.errorCompletionBlock = errorCallback;
+                                                            }
                                                         }
                                                     } else {
                                                         successCallback(obj.data);
@@ -525,7 +542,7 @@
     skipProductReviewNetworkManager.isParameterNotEncrypted = NO;
     skipProductReviewNetworkManager.isUsingHmac = YES;
     
-    [skipProductReviewNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+    [skipProductReviewNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                                    path:@"/v4/action/review/skip_product_review.pl"
                                                  method:RKRequestMethodGET
                                               parameter:@{@"product_id" : productID,
@@ -556,7 +573,7 @@
     uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
     uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-alpha.tokopedia.com"
+    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                                             path:@"/v4/action/reputation/edit_reputation_review_submit.pl"
                                                           method:RKRequestMethodGET
                                                        parameter:@{@"post_key" : postKey?:@"",

@@ -42,6 +42,7 @@
     UIImageView *_selectedImageIcon;
     
     BOOL _isFinishedUploadingImage;
+    BOOL _isAttachedImageModified;
     
     NSInteger _scrollViewPageAmount;
     NSInteger _maxSelected;
@@ -66,6 +67,7 @@
     [super viewDidLoad];
     
     self.title = @"Tambah Gambar";
+    _isAttachedImageModified = NO;
     
     _addCaptionCells = [NSArray sortViewsWithTagInArray:_addCaptionCells];
     

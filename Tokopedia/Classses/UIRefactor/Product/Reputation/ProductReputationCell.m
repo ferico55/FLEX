@@ -31,7 +31,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -45,14 +45,8 @@
     }
     
     btnMore.frame = CGRectMake((self.bounds.size.width-(viewContent.frame.origin.x*2))-10-btnMore.bounds.size.width, 5, btnMore.bounds.size.width, btnMore.bounds.size.height);
-//    viewAttachedImages.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewAttachedImages.isHidden)?0:60);
-//    lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
-//    viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, viewAttachedImages.frame.origin.y+viewAttachedImages.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
-    
-    viewAttachedImages.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, (viewAttachedImages.isHidden)?0:60);
-    lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, viewAttachedImages.frame.origin.y+viewAttachedImages.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
+    lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
     viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
-    
     lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
     
     lblKualitas.frame = CGRectMake(lblKualitas.frame.origin.x, lineSeparatorDesc.frame.origin.y+lineSeparatorDesc.bounds.size.height+((viewContentRating.bounds.size.height-lblKualitas.bounds.size.height)/2.0f), lblKualitas.bounds.size.width, lblKualitas.bounds.size.height);
@@ -92,7 +86,7 @@
 
 - (void)initProductCell {
     if(viewSeparatorProduct == nil) {
-        isProductCell = YES;        
+        isProductCell = YES;
         viewSeparatorProduct = [[UIView alloc] initWithFrame:CGRectZero];
         viewSeparatorProduct.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
         imageProduct = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -139,24 +133,6 @@
 - (IBAction)actionMore:(id)sender {
     [_delegate actionMore:sender];
 }
-
-- (IBAction)gesture:(UITapGestureRecognizer*)sender {
-    if ([self.delegate respondsToSelector:@selector(goToImageViewerImages:atIndexImage:atIndexPath:)]) {
-        if (((UIImageView*)attachedImages[sender.view.tag-10]).image == nil) {
-            return;
-        }
-        
-        NSMutableArray *images = [NSMutableArray new];
-        for (UIImageView *imageView in attachedImages) {
-            if (imageView.image != nil) {
-                [images addObject:imageView];
-            }
-        }
-        
-        [_delegate goToImageViewerImages:[images copy] atIndexImage:sender.view.tag-10 atIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-    }
-}
-
 
 
 #pragma mark - Setter and Getter
@@ -274,7 +250,7 @@
 }
 
 - (void)nothing:(id)sender {
-
+    
 }
 
 - (void)enableLikeButton{

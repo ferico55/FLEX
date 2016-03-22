@@ -366,6 +366,9 @@
                                                               [self showFirstDataOnFirstShowInIpad];
                                                               
                                                               [tableContent reloadData];
+                                                              
+                                                              UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                                                              [firstCell setSelected:YES];
                                                           }
                                                           onFailure:^(NSError *errorResult) {
                                                               
@@ -409,6 +412,25 @@
         [cell.theirReputation setTitle:[NSString stringWithFormat:@"%@%%", (current.user_reputation==nil? @"0":current.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
     
+    if ([current.read_status isEqualToString:@"1"]) {
+        [cell.unreadIconImage setHidden:NO];
+    } else {
+        [cell.unreadIconImage setHidden:YES];
+    }
+    
+    if ([current.reputation_days_left intValue] > 0 && [current.reputation_days_left intValue] < 4) {
+        cell.remainingTimeLabel.text = current.reputation_days_left_fmt;
+    } else {
+        cell.remainingTimeView.hidden = YES;
+    }
+    
+    cell.timestampLabel.text = current.create_time_fmt_ws;
+    
+    [cell.button setTitle:current.review_status_description forState:UIControlStateNormal];
+    [cell.button.layer setBorderWidth:2.0];
+    [cell.button.layer setCornerRadius:5.0];
+    [cell.button setClipsToBounds:YES];
+    
     return cell;
 }
 
@@ -420,13 +442,13 @@
         [firstCell setSelected:NO];
     }
     
-    MyReviewReputationCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    InboxReviewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
     if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
     {
         [cell setSelected:YES];
     }
     
-    [self actionFooter:cell.getBtnFooter];
+    [self tapToInboxReviewDetailAtIndexPath:indexPath];
 }
 
 
@@ -597,8 +619,7 @@
 - (void)showFirstDataOnFirstShowInIpad {
     if (arrList.count && !hasShownData && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         hasShownData = YES;
-        MyReviewReputationCell* cell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        [self actionFooter:cell.getBtnFooter];
+        [self tapToInboxReviewDetailAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     }
 }
 
