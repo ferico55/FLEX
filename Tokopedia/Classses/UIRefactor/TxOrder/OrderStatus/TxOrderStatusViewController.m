@@ -245,26 +245,20 @@
 
 -(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath
 {
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:order forKey:DATA_ORDER_DELIVERY_CONFIRM];
-    [object setObject:indexPath forKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    
     [_list removeObject:order];
     [_tableView reloadData];
-    
-    [self configureRestKitFinishOrder];
-    [self requestFinishOrder:object];
+
+    [self doRequestFinishOrder:order];
 }
 
--(void)complainOrder:(TxOrderStatusList *)order
-{
+-(void)complainOrder:(TxOrderStatusList *)order{
     
 }
 
 -(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath
 {
     [self configureRestKitReOrder];
-    [self requestReOrder:order];
+    [self doRequestReorder:order];
 }
 
 #pragma mark - Filter Delegate
@@ -578,145 +572,35 @@
 
 
 #pragma mark - Request Delivery Finish Order
--(void)cancelFinishOrder
-{
-    [_requestFinishOrder cancel];
-    //_requestFinishOrder = nil;
-    [_objectManagerFinishOrder.operationQueue cancelAllOperations];
-    _objectManagerFinishOrder = nil;
-}
+-(void)doRequestFinishOrder:(TxOrderStatusList*)order{
+    
+    [_objectsConfirmRequest addObject:order];
 
--(void)configureRestKitFinishOrder
-{
-    _objectManagerFinishOrder = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[TransactionAction mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerFinishOrder addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestFinishOrder:(id)object
-{
-    NSDictionary *selectedObject = (NSDictionary*)object;
-    
-    TxOrderStatusList *order = [selectedObject objectForKey:DATA_ORDER_DELIVERY_CONFIRM];
-    NSIndexPath *indexPath = [selectedObject objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    
-    NSMutableDictionary *processingObject = [NSMutableDictionary new];
-    [processingObject setObject:order forKey:DATA_ORDER_DELIVERY_CONFIRM];
-    [processingObject setObject:indexPath forKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    
-    [_objectsConfirmRequest addObject:processingObject];
-    
-    if (_requestFinishOrder.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    NSString *action = ACTION_DELIVERY_FINISH_ORDER;
-    if ([_action isEqualToString:@"get_tx_order_deliver"]) {
-        action = ACTION_DETIVERY_CONFIRM;
-    }
-    
-    NSDictionary* param = @{API_ACTION_KEY : action,
-                            API_ORDER_ID_KEY : order.order_detail.detail_order_id};
-
-    _requestFinishOrder = [_objectManagerFinishOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-    
-    [_requestFinishOrder setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessFinishOrder:object
-                          withOperation:operation
-                      withMappingResult:mappingResult];
-        [_objectsConfirmRequest removeObject:processingObject];
-        [timer invalidate];
-        [_act stopAnimating];
-        [self requestProcessFinishOrder];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self failedConfirmDelivery:object];
-        [self requestFailureFinishOrder:error];
-        [timer invalidate];
-        [_act stopAnimating];
-        [_objectsConfirmRequest removeObject:processingObject];
-        [self requestProcessFinishOrder];
-    }];
-    
-    [_operationQueue addOperation:_requestFinishOrder];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutFinishOrder) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessFinishOrder:(NSDictionary*)object withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (order.result.is_success == 1) {
-            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertSuccess show];
-            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-            [self refreshRequest];
-            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
-        }
-        else
-        {
-            [self failedConfirmDelivery:object];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
-            StickyAlertView *alertDelegate = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:_detailViewController];
-            [alertDelegate show];
-            [alert show];
-        }
-        
-        if (order.result.ld.url) {
+    [RequestPurchase fetchConfirmDeliveryOrder:order action:_action success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
-            _requestLD.luckyDeal = order.result.ld;
+            _requestLD.luckyDeal = data.ld;
             _requestLD.delegate = self;
-            [_requestLD doRequestMemberExtendURLString:order.result.ld.url];
+            [_requestLD doRequestMemberExtendURLString:data.ld.url];
         }
-    }
-    else
-    {
-        [self failedConfirmDelivery:object];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
-        [alert show];
-        StickyAlertView *alertDelegate = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:_detailViewController];
-        [alertDelegate show];
-    }
+        [self failedConfirmDelivery:order];
+    } failure:^(NSError *error, TxOrderStatusList* order) {
+        [self actionAfterConfirmOrder:order];
+        [self failedConfirmDelivery:order];
+    }];
 }
 
--(void)requestFailureFinishOrder:(id)object
-{
-    NSError *error = object;
-
-    NSArray *errors;
-    if(error.code == -1011) {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
-    } else if (error.code==-1009 || error.code==-999) {
-        errors = @[@"Tidak ada koneksi internet"];
-    } else {
-        errors = @[error.localizedDescription];
-    }
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
-    [alert show];
+-(void)actionAfterConfirmOrder:(TxOrderStatusList*)order{
+    [_act stopAnimating];
+    [_objectsConfirmRequest removeObject:order];
+    [self requestProcessFinishOrder];
 }
 
 -(void)requestProcessFinishOrder
 {
     if ([_objectsConfirmRequest count]>0) {
-        [self configureRestKitFinishOrder];
-        [self requestFinishOrder:[_objectsConfirmRequest firstObject]];
+        [self doRequestFinishOrder:[_objectsConfirmRequest firstObject]];
     }
-}
-
--(void)requestTimeoutFinishOrder
-{
-    [self cancelFinishOrder];
 }
 
 #pragma mark - Request ReOrder
@@ -760,81 +644,19 @@
     
 }
 
--(void)requestReOrder:(TxOrderStatusList*)order
-{
-    if (_requestReOrder.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_RE_ORDER,
-                            API_ORDER_ID_KEY : order.order_detail.detail_order_id};
-
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _requestReOrder = [_objectManagerReOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-//#else
-    _requestReOrder = [_objectManagerReOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-//#endif
-    
-    [_requestReOrder setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessReOrder:order
-                          withOperation:operation
-                      withMappingResult:mappingResult];
-        [timer invalidate];
+-(void)doRequestReorder:(TxOrderStatusList*)order{
+    [RequestPurchase fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         [_act stopAnimating];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureReOrder:order withError:error];
-        [timer invalidate];
+        TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    } failure:^(NSError *error, TxOrderStatusList *order) {
         [_act stopAnimating];
     }];
-    
-    [_operationQueue addOperation:_requestReOrder];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutReOrder) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessReOrder:(TxOrderStatusList*)object withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (order.result.is_success == 1) {
-            TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        else
-        {
-            if(order.message_error)
-            {
-                NSMutableArray *errors = [order.message_error mutableCopy];
-                for (int i = 0; i<errors.count; i++) {
-                    if ([order.message_error[i] rangeOfString:@"Alamat"].location == NSNotFound) {
-                    //if ([order.message_error[i] containsString:@"Alamat"]) {
-                        [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
-                    }
-                }
-                NSArray *array = errors?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                [alert show];
-            }        }
-    }
-    else
-    {
-        [self requestFailureReOrder:object withError:nil];
-    }
+-(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
+
 }
 
 
@@ -936,11 +758,9 @@
     [alert show];
 }
 
--(void)failedConfirmDelivery:(NSDictionary*)object
+-(void)failedConfirmDelivery:(TxOrderStatusList*)order
 {
-    TxOrderStatusList *order = [object objectForKey:DATA_ORDER_DELIVERY_CONFIRM];
-    NSIndexPath *indexPath = [object objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    [_list insertObject:order atIndex:indexPath.row];
+    [_list insertObject:order atIndex:0];
     [_tableView reloadData];
 }
 
@@ -989,7 +809,7 @@
         if (buttonIndex == 1) {
             TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_REORDER_KEY];
             [self configureRestKitReOrder];
-            [self requestReOrder:order];
+            [self doRequestReorder:order];
         }
     }
     else if (alertView.tag == TAG_ALERT_COMPLAIN)
