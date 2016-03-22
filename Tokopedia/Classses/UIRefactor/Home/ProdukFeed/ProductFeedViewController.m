@@ -58,7 +58,7 @@ CollectionViewSupplementaryDataSource,
 FavoriteShopRequestDelegate
 >
 
-@property (strong, nonatomic) NSMutableArray<NSArray<PromoResult*>*> *promo;
+@property (strong, nonatomic) NSMutableArray<PromoResult*> *promo;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -207,11 +207,9 @@ FavoriteShopRequestDelegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
     CGSize size = CGSizeZero;
-    if (_promo.count > section && section > 0) {
-        if ([_promo objectAtIndex:section]) {
-            CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:PromoCollectionViewCellTypeNormal];
-            size = CGSizeMake(self.view.frame.size.width, headerHeight);
-        }
+    if (_promo.count >= (section+1)*2) {
+        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:PromoCollectionViewCellTypeNormal];
+        size = CGSizeMake(self.view.frame.size.width, headerHeight);
     }
     return size;
 }
@@ -277,24 +275,20 @@ FavoriteShopRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (_promo.count >= indexPath.section && indexPath.section > 0) {
-            if ([_promo objectAtIndex:indexPath.section]) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                         forIndexPath:indexPath];
-                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = PromoCollectionViewCellTypeNormal;
-                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).delegate = self;
-                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                }
-            } else {
-                reusableView = nil;
-            }
-        } else {
-            reusableView = nil;
+        NSArray *promo = @[];
+        NSInteger numberOfPromoPerRow = 2;
+        if (_promo.count >= (indexPath.section + 1) * numberOfPromoPerRow) {
+            promo = [_promo subarrayWithRange:NSMakeRange(indexPath.section * numberOfPromoPerRow, numberOfPromoPerRow)];
+        }
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                          withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                 forIndexPath:indexPath];
+        ((PromoCollectionReusableView *)reusableView).collectionViewCellType = PromoCollectionViewCellTypeNormal;
+        ((PromoCollectionReusableView *)reusableView).promo = promo;
+        ((PromoCollectionReusableView *)reusableView).delegate = self;
+        ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+        if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+            [((PromoCollectionReusableView *)reusableView) scrollToCenter];
         }
     } else if (kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
@@ -330,12 +324,10 @@ FavoriteShopRequestDelegate
 
 - (void)requestPromo {
     _promoRequest.page = _page;
-    //[_promoRequest requestForProductFeed];
     [_promoRequest requestForProductFeedWithPage:_page
                                        onSuccess:^(NSArray<PromoResult *> *promo) {
                                            if (promo) {
-                                               [_promo addObject:promo];
-                                               [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                               [_promo addObjectsFromArray:promo];
                                            } else if (promo == nil && _page == 2) {
                                                [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                            }
@@ -375,8 +367,6 @@ FavoriteShopRequestDelegate
                                                 productData:productData];
     
 }
-
-
 
 #pragma mark - Scroll delegate
 
