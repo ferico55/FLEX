@@ -277,6 +277,7 @@
     photoVC.isAddEditProduct = YES;
     photoVC.tag = sender.tag;
     photoVC.review = _detailReputationReview;
+    photoVC.attachedImagesCaptions = [_userInfo objectForKey:@"images-captions"];
     
     NSMutableArray *notEmptyImageIndex = [NSMutableArray new];
     for (UIImageView *image in _attachedImagesArray) {

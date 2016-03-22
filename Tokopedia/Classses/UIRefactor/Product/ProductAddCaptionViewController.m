@@ -162,7 +162,8 @@
     }
     
     [self didReceiveImageWithSelectedImages:_selectedImages
-                         selectedIndexPaths:_selectedIndexPaths];
+                         selectedIndexPaths:_selectedIndexPaths
+                     attachedImagesCaptions:_attachedImagesCaptions];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -354,9 +355,13 @@
 
 #pragma mark - Camera Collection Delegate
 - (void)didReceiveImageWithSelectedImages:(NSArray *)selectedImages
-                       selectedIndexPaths:(NSArray *)selectedIndexPaths {
+                       selectedIndexPaths:(NSArray *)selectedIndexPaths
+                   attachedImagesCaptions:(NSArray *)attachedImagesCaptions {
     _selectedImages = selectedImages;
     _selectedIndexPaths = selectedIndexPaths;
+    _attachedImagesCaptions = [attachedImagesCaptions mutableCopy];
+    
+    [_imageCaptionTextField setText:_attachedImagesCaptions[0]];
     
     // Cari Index Image yang kosong
     NSMutableArray *emptyImageIndex = [NSMutableArray new];

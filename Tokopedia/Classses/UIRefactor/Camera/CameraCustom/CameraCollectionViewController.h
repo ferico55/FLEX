@@ -18,7 +18,8 @@
 - (void)didDismissController:(CameraCollectionViewController*)controller withUserInfo:(NSDictionary *)userinfo;
 - (void)startUploadingImageWithUserInfo:(NSDictionary*)userInfo;
 - (void)didReceiveImageWithSelectedImages:(NSArray*)selectedImages
-                       selectedIndexPaths:(NSArray*)selectedIndexPaths;
+                       selectedIndexPaths:(NSArray*)selectedIndexPaths
+                   attachedImagesCaptions:(NSArray*)attachedImagesCaptions;
 - (void)didRemoveImageDictionary:(NSDictionary*)removedImage;
 @end
 
@@ -34,6 +35,7 @@
 @property(nonatomic, strong) NSMutableArray *selectedIndexPath;
 @property(nonatomic, strong) DetailReputationReview *review;
 @property NSInteger maxSelected;
+@property NSArray *attachedImagesCaptions;
 
 @property BOOL isAddEditProduct;
 @property BOOL isAddReviewImage;

@@ -330,11 +330,12 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
         vc.selectedIndexPaths = arrayIndexPath;
         vc.delegate = _delegate;
         vc.review = _review;
-        
+        vc.imagesCaptions = _attachedImagesCaptions;
         [self.navigationController pushViewController:vc animated:YES];
     } else if (_isAddMoreReviewImage) {
         [_delegate didReceiveImageWithSelectedImages:[_selectedImages copy]
-                                  selectedIndexPaths:arrayIndexPath];
+                                  selectedIndexPaths:arrayIndexPath
+                              attachedImagesCaptions:_attachedImagesCaptions];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
     } else {
