@@ -260,20 +260,16 @@
         [cell.user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
     }
 
-    if (_list.count > indexPath.row) {
-        TalkCommentList *list = _list[indexPath.row];
+    TalkCommentList *list = _list[indexPath.row];
 
-        cell.comment = list;
+    cell.comment = list;
 
-        cell.indexpath = indexPath;
-        cell.btnReputation.tag = indexPath.row;
+    cell.indexpath = indexPath;
+    cell.btnReputation.tag = indexPath.row;
 
-        [cell setNeedsUpdateConstraints];
-        [cell updateConstraintsIfNeeded];
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
 
-        return cell;
-    }
-    
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
