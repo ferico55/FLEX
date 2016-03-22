@@ -17,6 +17,7 @@ static CGFloat messageTextSize = 14.0;
 
 - (void)awakeFromNib {
     self.user_image.layer.cornerRadius = self.user_image.frame.size.width/2;
+    [self.user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
