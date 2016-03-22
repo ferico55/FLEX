@@ -255,18 +255,18 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="XgS-nn-gQi" secondAttribute="trailing" id="5DV-0A-qho"/>
+                <constraint firstItem="QKG-0J-91A" firstAttribute="top" secondItem="J3c-fP-zfL" secondAttribute="bottom" id="DGD-fY-obl"/>
                 <constraint firstItem="J3c-fP-zfL" firstAttribute="top" secondItem="Gh7-DV-yXN" secondAttribute="top" id="Dtb-LH-B0C"/>
                 <constraint firstAttribute="trailing" secondItem="XgS-nn-gQi" secondAttribute="trailing" id="KmZ-TP-114"/>
                 <constraint firstAttribute="trailing" secondItem="J3c-fP-zfL" secondAttribute="trailing" id="Ojc-3e-rhd"/>
+                <constraint firstItem="QKG-0J-91A" firstAttribute="leading" secondItem="Gh7-DV-yXN" secondAttribute="leading" id="QNZ-R3-LHH"/>
                 <constraint firstItem="XgS-nn-gQi" firstAttribute="leading" secondItem="Gh7-DV-yXN" secondAttribute="leading" id="QhJ-rx-4fY"/>
                 <constraint firstItem="XgS-nn-gQi" firstAttribute="leading" secondItem="Gh7-DV-yXN" secondAttribute="leading" id="T65-YJ-OLz"/>
+                <constraint firstAttribute="bottom" secondItem="QKG-0J-91A" secondAttribute="bottom" id="Xe5-p1-Mgw"/>
                 <constraint firstItem="J3c-fP-zfL" firstAttribute="leading" secondItem="Gh7-DV-yXN" secondAttribute="leading" id="XhI-Tv-GFT"/>
                 <constraint firstItem="XgS-nn-gQi" firstAttribute="top" secondItem="Gh7-DV-yXN" secondAttribute="top" id="eiL-C1-OK5"/>
-                <constraint firstAttribute="bottom" secondItem="QKG-0J-91A" secondAttribute="bottom" id="hEu-dS-bIo"/>
                 <constraint firstItem="XgS-nn-gQi" firstAttribute="top" secondItem="Gh7-DV-yXN" secondAttribute="top" id="nz5-2q-82n"/>
-                <constraint firstItem="QKG-0J-91A" firstAttribute="top" secondItem="J3c-fP-zfL" secondAttribute="bottom" id="p0q-N9-v5o"/>
-                <constraint firstItem="QKG-0J-91A" firstAttribute="leading" secondItem="Gh7-DV-yXN" secondAttribute="leading" id="qZP-jP-l2C"/>
-                <constraint firstAttribute="trailing" secondItem="QKG-0J-91A" secondAttribute="trailing" id="xCW-hm-P7n"/>
+                <constraint firstAttribute="trailing" secondItem="QKG-0J-91A" secondAttribute="trailing" id="rXZ-Fz-N0Z"/>
             </constraints>
             <point key="canvasLocation" x="-373" y="192"/>
         </view>

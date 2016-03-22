@@ -215,6 +215,9 @@
         [_tableView addSubview:_refreshControl];
         
         if (_isLogin) {
+            [_refreshControl beginRefreshing];
+            [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+            [_refreshControl beginRefreshing];
             [self requestCartData];
         }
         _paymentMethodView.hidden = YES;
@@ -253,6 +256,7 @@
         
         if (_popFromToppay) {
             _popFromToppay = NO;
+            [self isLoading:YES];
             [self requestCartData];
         }
     } else {
@@ -263,23 +267,16 @@
     }
 
     _tableView.scrollsToTop = YES;
-    [self isLoading:NO];
     [self adjustPaymentMethodView];
     [self swipeView:_paymentMethodView];
-    
-    if (_list.count>0) {
-        _tableView.tableFooterView = (_indexPage == 1)?_buyView:_checkoutView;
-    } else _tableView.tableFooterView = nil;
 }
 
 -(void)headerInstallmentAnimating
 {
     if ([_durationInstallmentLabel.text isEqualToString:@"Pilih"]) {
-        _tableView.contentOffset = CGPointZero;
         [self swipeView:_durationView];
     }
     if ([_bankInstallmentLabel.text isEqualToString:@"Pilih"]) {
-        _tableView.contentOffset = CGPointZero;
         [self swipeView:_bankView];
     }
 }
@@ -854,6 +851,7 @@
         
         NSInteger index = [[userInfo objectForKey:DATA_INDEX_KEY] integerValue];
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
+        [self isLoading:YES];
         [self requestCartData];
         
     }
@@ -867,7 +865,7 @@
         NSInteger index = [[userInfo objectForKey:DATA_INDEX_KEY] integerValue];
         [_dataInput setObject:@(index) forKey:DATA_INDEX_KEY];
         [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
-        
+        [self isLoading:YES];
         [self requestCartData];
     }
 }
@@ -1541,6 +1539,9 @@
             _tableView.contentOffset = CGPointZero;
             [_refreshControl endRefreshing];
         }
+        if (_list.count>0) {
+            _tableView.tableFooterView = (_indexPage == 1)?_buyView:_checkoutView;
+        } else _tableView.tableFooterView = nil;
         [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
     }
 }
@@ -1588,12 +1589,7 @@
 -(void)shouldDoRequestTopPayThxCode:(NSString *)code
 {
     [self isLoading:YES];
-    [RequestCart fetchToppayThanksCode:code success:^(TransactionActionResult *data) {
-        [self requestCartData];
-        [self isLoading:NO];
-    } error:^(NSError *error) {
-        [self isLoading:NO];
-    }];
+    [self requestCartData];
 }
 
 #pragma mark - Methods
@@ -1608,6 +1604,8 @@
 -(void)refreshRequestCart
 {
     [self doClearAllData];
+    [_refreshControl beginRefreshing];
+    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     [self requestCartData];
     _paymentMethodView.hidden = YES;
 }
@@ -1639,6 +1637,7 @@
     _selectedInstallmentBank = nil;
     _selectedInstallmentDuration = nil;
     _voucherData = nil;
+    _tableView.tableFooterView = nil;
     
     [_tableView reloadData];
 }
@@ -2223,18 +2222,21 @@
         [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
     }
     
-    [self isLoading:YES];
+    _isLoadingRequest = YES;
+    _checkoutButton.enabled = NO;
+    _buyButton.enabled = NO;
     
     [RequestCart fetchCartData:^(TransactionCartResult *data) {
         
         NSArray <TransactionCartList*>*list = data.list;
-        for (int i = 0; i<_list.count; i++) {
-            list[i].cart_dropship_name = _list[i].cart_dropship_name?:@"";
-            list[i].cart_dropship_phone = _list[i].cart_dropship_phone?:@"";
-            list[i].cart_is_dropshipper = _list[i].cart_is_dropshipper?:@"";
-            list[i].cart_dropship_param = _list[i].cart_dropship_param?:@"";
-            list[i].cart_partial_param = _list[i].cart_partial_param?:@"";
-            
+        for (int i = 0; i< data.list.count; i++) {
+            if (i < _list.count) {
+                list[i].cart_dropship_name = _list[i].cart_dropship_name?:@"";
+                list[i].cart_dropship_phone = _list[i].cart_dropship_phone?:@"";
+                list[i].cart_is_dropshipper = _list[i].cart_is_dropshipper?:@"";
+                list[i].cart_dropship_param = _list[i].cart_dropship_param?:@"";
+                list[i].cart_partial_param = _list[i].cart_partial_param?:@"";
+            }
         }
         [_list removeAllObjects];
         [_list addObjectsFromArray:list];
@@ -2371,6 +2373,7 @@
         [_delegate didFinishRequestCheckoutData:userInfo];
         _checkoutButton.enabled = YES;
         [self isLoading:NO];
+        _tableView.tableFooterView = _buyView;
     } error:^(NSError *error) {
         _checkoutButton.enabled = YES;
         _checkoutButton.layer.opacity = 1;
@@ -2392,11 +2395,11 @@
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     NSMutableArray *dropshipStrList = [NSMutableArray new];
     for (TransactionCartList *cart in _list) {
-        [dropshipStrList addObject:cart.cart_dropship_param];
+        [dropshipStrList addObject:cart.cart_dropship_param?:@""];
     }
     NSMutableArray *partialStrList = [NSMutableArray new];
     for (TransactionCartList *cart in _list) {
-        [partialStrList addObject:cart.cart_partial_param];
+        [partialStrList addObject:cart.cart_partial_param?:@""];
     }
     
     [RequestCart fetchToppayWithToken:_cart.token
@@ -2410,12 +2413,18 @@
                           voucherCode:voucherCode success:^(TransactionActionResult *data) {
                               
           TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-          vc.toppayQueryString = data.query_string;
-          vc.URLString = data.redirect_url;
-          vc.toppayParam = data.parameter;
+//          vc.toppayQueryString = data.query_string;
+//          vc.URLString = data.redirect_url;
+//          vc.toppayParam = data.parameter;
+                              NSDictionary *param = data.parameter;
+                              vc.toppayQueryString = param[@"query_string"];
+                              vc.URLString = param[@"redirect_url"];
+                              vc.toppayParam = param[@"parameter"];
           vc.gateway = @([_cart.gateway integerValue]);
           vc.delegate = self;
           _popFromToppay = YES;
+          vc.title = _cartSummary.gateway_name?:@"Pembayaran";
+
                               
           [self.navigationController pushViewController:vc animated:YES];
           [self isLoading:NO];
