@@ -214,8 +214,7 @@
                                               RKObjectRequestOperation *operation) {
                                       ShopSettings *settings = [mappingResult.dictionary objectForKey:@""];
                                       if (settings.result.is_success == 1) {
-                                          StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[KTKPDSHOP_SUCCESSEDIT] delegate:self];
-                                          [alert show];
+                                          [self didReceiveActionMappingResult:mappingResult];
                                       } else if (settings.message_error.count > 0) {
                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:settings.message_error delegate:self];
                                           [alert show];
@@ -227,6 +226,17 @@
                                       [alert show];
                                       self.navigationItem.rightBarButtonItem = self.saveButton;
                                   }];
+}
+
+- (void)didReceiveActionMappingResult:(RKMappingResult *)mappingResult {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[KTKPDSHOP_SUCCESSEDIT] delegate:self];
+    [alert show];
+    
+    NSInteger index = self.navigationController.viewControllers.count - 3;
+    UIViewController *previousController = [self.navigationController.viewControllers objectAtIndex:index];
+    [self.navigationController popToViewController:previousController animated:NO];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
 }
 
 #pragma mark - Photo picker delegate
@@ -268,9 +278,11 @@
 
 - (void)didTapShopStatus {
     EditShopStatusViewController *controller = [EditShopStatusViewController new];
-    controller.shop = _dataSource.shop;
+    controller.shopIsClosed = _dataSource.shop.isClosed;
+    controller.closedNote = _dataSource.shop.closed_detail.note;
+    controller.closedUntil = _dataSource.shop.closed_detail.until;
     controller.delegate = self;
-    [self.navigationController pushViewController:controller animated:YES];    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Generate Host
@@ -287,8 +299,12 @@
 
 #pragma mark - Edit status delegate
 
-- (void)didFinishEditShop:(ShopInfoResult *)shop {
-    self.dataSource.shop = shop;
+- (void)didFinishEditShopClosedNote:(NSString *)note
+                        closedUntil:(NSString *)until {
+    ShopCloseDetail *detail = self.dataSource.shop.closed_detail;
+    detail.note = note;
+    detail.until = until;
+    self.dataSource.shop.closed_detail = detail;
     [self.tableView reloadData];
 }
 

@@ -9,8 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "ShopInfoResult.h"
 
+@protocol EditShopStatusDelegate <NSObject>
+
+- (void)didFinishEditShopClosedNote:(NSString *)note
+                        closedUntil:(NSString *)until;
+
+@end
+
 @interface EditShopStatusViewController : UITableViewController
 
-@property (strong, nonatomic) ShopInfoResult *shop;
+@property BOOL shopIsClosed;
+@property (strong, nonatomic) NSString *closedNote;
+@property (strong, nonatomic) NSString *closedUntil;
+
+@property (weak, nonatomic) id<EditShopStatusDelegate> delegate;
 
 @end

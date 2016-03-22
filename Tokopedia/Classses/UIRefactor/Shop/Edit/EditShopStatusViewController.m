@@ -8,8 +8,9 @@
 
 #import "EditShopStatusViewController.h"
 #import "EditShopNoteViewCell.h"
+#import "AlertDatePickerView.h"
 
-@interface EditShopStatusViewController ()
+@interface EditShopStatusViewController () <TKPDAlertViewDelegate>
 
 @end
 
@@ -36,31 +37,34 @@
 }
 
 - (void)registerNib {
-    [self.tableView registerNib:[UINib nibWithNibName:@"EditShopNoteViewCell" bundle:nil] forCellReuseIdentifier:@"note"];
+    UINib *nib = [UINib nibWithNibName:@"EditShopNoteViewCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"note"];
 }
 
 #pragma mark - Bar button item
 
 - (UIBarButtonItem *)doneButton {
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone target:self action:@selector(didTapDoneButton:)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                               style:UIBarButtonItemStyleDone
+                                                              target:self
+                                                              action:@selector(didTapDoneButton:)];
     return button;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.shop.isClosed) {
-        return 3;
-    } else {
-        return 1;
-    }
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger numberOfRows = 0;
     if (section == 0) {
-        return 2;
+        numberOfRows = 2;
+    } else {
+        numberOfRows = self.shopIsClosed?1:0;
     }
-    return 1;
+    return numberOfRows;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -90,16 +94,30 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         cell.tintColor = [UIColor colorWithRed:66.0/255.0 green:189.0/255.0 blue:65.0/255.0 alpha:1];
     }
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"Buka";
-    } else {
-        cell.textLabel.text = @"Tutup";
-    }
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"Buka";
+            cell.accessoryType = self.shopIsClosed? UITableViewCellAccessoryNone: UITableViewCellAccessoryCheckmark;
+        } else {
+            cell.textLabel.text = @"Tutup";
+            cell.accessoryType = self.shopIsClosed? UITableViewCellAccessoryCheckmark: UITableViewCellAccessoryNone;
+        }        
+    }
 }
 
 - (EditShopNoteViewCell *)noteViewCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EditShopNoteViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"note"];
+    cell.statusTextView.text = _closedNote;
+    cell.statusTextView.placeholder = @"Tulis Catatan";
+    NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
+    [notification addObserver:self
+                     selector:@selector(noteTextViewDidChange:)
+                         name:UITextViewTextDidChangeNotification
+                       object:cell.statusTextView];
     return cell;
 }
 
@@ -112,25 +130,117 @@
         cell.detailTextLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
         cell.detailTextLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:189.0/255.0 blue:65.0/255.0 alpha:1];
     }
+    if (self.shopIsClosed) {
+        if ([self.closedUntil isEqualToString:@""]) {
+            NSDate *today = [NSDate date];
+            NSInteger daysToAdd = 7;
+            NSInteger totalSecondsInOneDay = 86400;
+            NSDate *nextWeekDate = [today dateByAddingTimeInterval:totalSecondsInOneDay*daysToAdd];
+            cell.detailTextLabel.text = [self stringFromDate:nextWeekDate];
+        } else {
+            cell.detailTextLabel.text = self.closedUntil;
+        }
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        self.shop.isClosed = NO;
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
-        [tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else if (indexPath.row == 1) {
-        self.shop.isClosed = YES;
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
-        [tableView insertSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            if (self.shopIsClosed) {
+                [self openShop];
+            }
+        } else if (indexPath.row == 1) {
+            if (self.shopIsClosed == NO) {
+                [self closeShop];
+            }
+        }
+    } else if (indexPath.section == 2) {
+        AlertDatePickerView *datePicker = [AlertDatePickerView newview];
+        datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPESHOPEDITKEY)};
+        datePicker.delegate = self;
+        datePicker.isSetMinimumDate = YES;
+        [datePicker show];
     }
+}
+
+- (void)openShop {
+    self.shopIsClosed = NO;
+    self.closedNote = @"";
+    self.closedUntil = @"";
+    NSArray *indexPaths = @[
+        [NSIndexPath indexPathForRow:0 inSection:1],
+        [NSIndexPath indexPathForRow:0 inSection:2],
+    ];
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
+    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)closeShop {
+    NSDate *today = [NSDate date];
+    NSInteger daysToAdd = 7;
+    NSInteger totalSecondsInOneDay = 86400;
+    NSDate *nextWeekDate = [today dateByAddingTimeInterval:totalSecondsInOneDay*daysToAdd];
+    self.shopIsClosed = YES;
+    self.closedNote = @"";
+    self.closedUntil = [self stringFromDate:nextWeekDate];
+    NSArray *indexPaths = @[
+        [NSIndexPath indexPathForRow:0 inSection:1],
+        [NSIndexPath indexPathForRow:0 inSection:2],
+    ];
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:0];
+    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Action
 
 - (void)didTapDoneButton:(UIButton *)button {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.formIsValid) {
+        if ([self.delegate respondsToSelector:@selector(didFinishEditShopClosedNote:closedUntil:)]) {
+            [self.delegate didFinishEditShopClosedNote:_closedNote closedUntil:_closedUntil];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Catatan harus diisi."] delegate:self];
+        [alert show];
+    }
+}
+
+#pragma mark - Notification
+
+- (void)noteTextViewDidChange:(NSNotification *)notification {
+    TKPDTextView *textView = notification.object;
+    self.closedNote = textView.text;
+}
+
+#pragma mark - Date to string
+
+- (NSString *)stringFromDate:(NSDate *)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    return [dateFormatter stringFromDate:date];
+}
+
+#pragma mark - Alert View Delegate
+
+-(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSDate *date = [alertView.data objectForKey:@"datepicker"];
+    NSCalendarUnit calendarUnit = NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit;
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:calendarUnit fromDate:date];
+    NSString *dateString = [NSString stringWithFormat:@"%zd/%zd/%zd", [components day], [components month], [components year]];
+    self.closedUntil = dateString;
+    [self.tableView reloadData];
+}
+
+- (BOOL)formIsValid {
+    if (self.shopIsClosed && self.closedNote.length == 0) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 @end
