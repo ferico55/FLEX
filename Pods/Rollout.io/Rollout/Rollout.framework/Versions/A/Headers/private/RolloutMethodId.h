@@ -17,10 +17,10 @@ typedef enum {
 @property(readonly, nonatomic) RolloutMethodId_methodType methodType;
 @property(readonly, nonatomic) NSString *signature;
 
-- (instancetype)initWithClass:(NSString *)clazz selector:(NSString *)selector methodType:(RolloutMethodId_methodType)methodType signature:(NSString *)signatiure;
+- (instancetype)initWithClass:(NSString *)clazz selector:(NSString *)selector methodType:(RolloutMethodId_methodType)methodType signature:(NSString *)signature;
 
 - (instancetype)initFromJsonConfiguration:(NSDictionary *)json;
 
-- (NSString *)selectorString;
+- (NSString *)dynamicCodeSelectorString;
 @end
 
