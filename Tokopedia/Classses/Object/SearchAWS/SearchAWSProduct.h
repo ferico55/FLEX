@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TKPObjectMapping.h"
 @class ProductModelView;
 @class CatalogModelView;
 
-@interface SearchAWSProduct : NSObject
+@interface SearchAWSProduct : NSObject <TKPObjectMapping>
 
 //product
 @property (nonatomic, strong) NSString *product_url;

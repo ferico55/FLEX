@@ -10,7 +10,7 @@
 
 @class SearchAWSResult;
 
-@interface SearchAWS : NSObject
+@interface SearchAWS : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *server_process_time;

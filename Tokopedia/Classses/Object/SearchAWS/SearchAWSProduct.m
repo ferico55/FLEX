@@ -65,4 +65,12 @@
     return productFieldObjects;
 }
 
++(RKObjectMapping *)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
+    //product
+    [mapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+    
+    return mapping;
+}
+
 @end
