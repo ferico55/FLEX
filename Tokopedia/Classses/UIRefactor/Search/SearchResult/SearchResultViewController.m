@@ -97,7 +97,7 @@ ImageSearchRequestDelegate
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) NSMutableArray *product;
-@property (strong, nonatomic) NSMutableArray<PromoResult*> *topads;
+@property (strong, nonatomic) NSMutableArray<NSArray<PromoResult*>*> *promo;
 @property (strong, nonatomic) NSMutableDictionary *similarityDictionary;
 
 @property (nonatomic) UITableViewCellType cellType;
@@ -197,7 +197,7 @@ ImageSearchRequestDelegate
     _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
-    _topads = [NSMutableArray new];
+    _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     _similarityDictionary = [NSMutableDictionary new];
     
@@ -422,27 +422,23 @@ ImageSearchRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-            NSArray *promo = @[];
-            NSInteger numberOfPromoPerRow;
-            if (self.cellType == UITableViewCellTypeThreeColumn) {
-                numberOfPromoPerRow = 4;
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
+            _promo.count >= indexPath.section &&
+            indexPath.section > 0) {
+            if ([_promo objectAtIndex:indexPath.section]) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                }
             } else {
-                numberOfPromoPerRow = 2;
-            }
-            if (_topads.count >= (indexPath.section + 1) * numberOfPromoPerRow) {
-                promo = [_topads subarrayWithRange:NSMakeRange(indexPath.section * numberOfPromoPerRow, numberOfPromoPerRow)];
-            }
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                              withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                     forIndexPath:indexPath];
-            ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-            ((PromoCollectionReusableView *)reusableView).promo = promo;
-            ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
-            ((PromoCollectionReusableView *)reusableView).delegate = self;
-            ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-            if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                reusableView = nil;
             }
         } else {
             reusableView = nil;
@@ -484,8 +480,9 @@ ImageSearchRequestDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-        if (_topads.count >= (section+1)*2) {
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
+        _promo.count > section && section > 0) {
+        if ([_promo objectAtIndex:section]) {
             CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
             size = CGSizeMake(self.view.frame.size.width, headerHeight);
         }
@@ -880,7 +877,7 @@ ImageSearchRequestDelegate
     
     if(_isNeedToRemoveAllObject) {
         [_product removeAllObjects];
-        [_topads removeAllObjects];
+        [_promo removeAllObjects];
         _isNeedToRemoveAllObject = NO;
     }
     
@@ -948,7 +945,7 @@ ImageSearchRequestDelegate
     
     if(_isNeedToRemoveAllObject) {
         [_product removeAllObjects];
-        [_topads removeAllObjects];
+        [_promo removeAllObjects];
         _isNeedToRemoveAllObject = NO;
     }
     
@@ -1224,7 +1221,7 @@ ImageSearchRequestDelegate
                                      page:_start/[startPerPage integerValue]
                                 onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                     if (promoResult) {
-                                        [_topads addObjectsFromArray:promoResult];
+                                        [_promo addObject:promoResult];
                                         [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                     } else if (promoResult == nil && _start == [startPerPage integerValue]) {
                                         [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
