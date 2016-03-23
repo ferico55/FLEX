@@ -28,6 +28,7 @@
 
 #import "NavigationHelper.h"
 #import "ShopBadgeLevel.h"
+#import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
 @interface ProductTalkDetailViewController ()
 <
@@ -67,8 +68,6 @@
     TokopediaNetworkManager *_talkCommentNetworkManager;
     TokopediaNetworkManager *_sendCommentNetworkManager;
     TokopediaNetworkManager *_deleteCommentNetworkManager;
-
-    GeneralTalkCommentCell *_dummyCell;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -138,7 +137,7 @@
     [super viewDidLoad];
 
     [self adjustSendButtonAvailability];
-    _dummyCell = [GeneralTalkCommentCell newcell];
+    [_table registerNib:[UINib nibWithNibName:@"GeneralTalkCommentCell" bundle:nil] forCellReuseIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
 
 
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
@@ -221,17 +220,12 @@
     return _list.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TalkCommentList *list = _list[indexPath.row];
-    _dummyCell.comment = list;
-    _dummyCell.frame = tableView.bounds;
-
-    [_dummyCell setNeedsLayout];
-    [_dummyCell layoutIfNeeded];
-
-    CGFloat height = [_dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1;
-    return height;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [tableView fd_heightForCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER
+                                    cacheByIndexPath:indexPath
+                                       configuration:^(GeneralTalkCommentCell * cell) {
+                                            cell.comment = _list[indexPath.row];
+                                       }];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
