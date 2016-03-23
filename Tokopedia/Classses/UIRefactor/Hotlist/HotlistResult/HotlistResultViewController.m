@@ -228,7 +228,7 @@ static NSString const *rows = @"12";
     // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
     
-    _page = 1;
+    _page = 0;
     
     
     if (_product.count > 0) {
@@ -844,6 +844,7 @@ static NSString const *rows = @"12";
                 _urinext = nil;
 
             }
+            _page++;
             [viewCollection reloadData];
         }
     }
@@ -1086,20 +1087,41 @@ static NSString const *rows = @"12";
             }
 
         } else if (_promo.count >= indexPath.section && indexPath.section > 0) {
-            if ([_promo objectAtIndex:indexPath.section]) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                         forIndexPath:indexPath];
-                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).delegate = self;
-                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
+            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+                if(indexPath.section % 2 == 1){
+                    if (currentPromo && currentPromo.count > 0) {
+                        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                          withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                                 forIndexPath:indexPath];
+                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section - 1]];
+                        if(_promo.count > indexPath.section){
+                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section]];
+                        }
+                        ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                        ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
+                        ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                        ((PromoCollectionReusableView *)reusableView).delegate = self;
+                        ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                        if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                            [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                        }
+                    }
                 }
-            } else {
-                reusableView = nil;
+            }else{
+                if (currentPromo && currentPromo.count > 0) {
+                    reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                      withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                             forIndexPath:indexPath];
+                    ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                    ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section - 1];
+                    ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                    ((PromoCollectionReusableView *)reusableView).delegate = self;
+                    ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                    if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                        [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                    }
+                }
             }
         } else {
             reusableView = nil;
@@ -1134,9 +1156,20 @@ static NSString const *rows = @"12";
         size = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
     } else {
         if (_promo.count > section && section > 0) {
-            if ([_promo objectAtIndex:section]) {
-                CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-                size = CGSizeMake(self.view.frame.size.width, headerHeight);
+            NSArray *currentPromo = [_promo objectAtIndex:section];
+            
+            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+                if(section % 2 == 1){
+                    if (currentPromo && currentPromo.count > 0) {
+                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                    }
+                }
+            }else{
+                if (currentPromo && currentPromo.count > 0) {
+                    CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                    size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                }
             }
         }
     }
@@ -1168,13 +1201,26 @@ static NSString const *rows = @"12";
 - (void)requestPromo {
     _promoRequest.page = _page;
     
-    if([_data objectForKey:@"hotlist_id"] && _bannerResult.query.sc){
+    if([_data objectForKey:@"hotlist_id"] && _page % 2 == 1){
+        NSString *departmentId = @"";
+        if(_bannerResult.query.sc){
+            departmentId = _bannerResult.query.sc;
+        }
+
         [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
-                                     department:_bannerResult.query.sc
+                                     department:departmentId
                                            page:_page
                                       onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                           if (promoResult) {
-                                              [_promo addObject:promoResult];
+                                              NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                              NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                              arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                              arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                              NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+
+                                              [_promo addObject:promoArrayFirstHalf];
+                                              [_promo addObject:promoArrayLastHalf];
+                                              [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                               [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                           } else if (promoResult == nil && _page == 2) {
                                               [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
@@ -1184,6 +1230,8 @@ static NSString const *rows = @"12";
                                       } onFailure:^(NSError *errorResult) {
                                           
                                       }];
+    }else{
+        
     }
 }
 
