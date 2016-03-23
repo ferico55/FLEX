@@ -1085,28 +1085,24 @@ static NSString const *rows = @"12";
                 [reusableView addSubview:_header];
             }
 
-        } else{
-            NSArray *promo = @[];
-            NSInteger numberOfPromoPerRow;
-            if (self.cellType == UITableViewCellTypeThreeColumn) {
-                numberOfPromoPerRow = 4;
+        } else if (_promo.count >= indexPath.section && indexPath.section > 0) {
+            if ([_promo objectAtIndex:indexPath.section]) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                }
             } else {
-                numberOfPromoPerRow = 2;
+                reusableView = nil;
             }
-            if (_promo.count >= (indexPath.section + 1) * numberOfPromoPerRow) {
-                promo = [_promo subarrayWithRange:NSMakeRange(indexPath.section * numberOfPromoPerRow, numberOfPromoPerRow)];
-            }
-            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                              withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                     forIndexPath:indexPath];
-            ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-            ((PromoCollectionReusableView *)reusableView).promo = promo;
-            ((PromoCollectionReusableView *)reusableView).delegate = self;
-            ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-            if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-            }
-
+        } else {
+            reusableView = nil;
         }
     }
     else if(kind == UICollectionElementKindSectionFooter) {
@@ -1137,9 +1133,11 @@ static NSString const *rows = @"12";
 
         size = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
     } else {
-        if (_promo.count >= (section+1)*2) {
-            CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-            size = CGSizeMake(self.view.frame.size.width, headerHeight);
+        if (_promo.count > section && section > 0) {
+            if ([_promo objectAtIndex:section]) {
+                CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                size = CGSizeMake(self.view.frame.size.width, headerHeight);
+            }
         }
     }
     return size;
@@ -1170,17 +1168,13 @@ static NSString const *rows = @"12";
 - (void)requestPromo {
     _promoRequest.page = _page;
     
-    if([_data objectForKey:@"hotlist_id"]){
-        NSString *departmentId = @"";
-        if(_bannerResult.query.sc){
-            departmentId = _bannerResult.query.sc;
-        }
+    if([_data objectForKey:@"hotlist_id"] && _bannerResult.query.sc){
         [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
-                                     department:departmentId
+                                     department:_bannerResult.query.sc
                                            page:_page
                                       onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                           if (promoResult) {
-                                              [_promo addObjectsFromArray:promoResult];
+                                              [_promo addObject:promoResult];
                                               [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                           } else if (promoResult == nil && _page == 2) {
                                               [flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
