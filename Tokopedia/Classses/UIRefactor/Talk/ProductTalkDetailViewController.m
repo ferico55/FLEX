@@ -140,6 +140,7 @@
     [self adjustSendButtonAvailability];
     _dummyCell = [GeneralTalkCommentCell newcell];
 
+
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
@@ -224,8 +225,11 @@
 {
     TalkCommentList *list = _list[indexPath.row];
     _dummyCell.comment = list;
+    _dummyCell.frame = tableView.bounds;
+
+    [_dummyCell setNeedsLayout];
     [_dummyCell layoutIfNeeded];
-    
+
     CGFloat height = [_dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1;
     return height;
 }
