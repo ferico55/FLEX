@@ -259,11 +259,18 @@
             [self isLoading:YES];
             [self requestCartData];
         }
+        if (_list.count>0) {
+            _tableView.tableFooterView =_checkoutView;
+        } else _tableView.tableFooterView = nil;
+        
     } else {
         [TPAnalytics trackScreenName:@"Shopping Cart Summary"];
         self.screenName = @"Shopping Cart Summary";
         [self adjustTableViewData:_data];
         _passwordTextField.text = @"";
+        if (_list.count>0) {
+            _tableView.tableFooterView =_buyView;
+        } else _tableView.tableFooterView = nil;
     }
 
     _tableView.scrollsToTop = YES;
@@ -2227,7 +2234,7 @@
         
         _cart = data;
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
-        [_dataInput setObject:_cart.grand_total_without_lp?:@"" forKey:DATA_CART_GRAND_TOTAL_WO_LP];
+        [_dataInput setObject:_cart.grand_total_without_lp?:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_WO_LP];
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_W_LP];
         
         [self adjustAfterUpdateList];
@@ -2351,7 +2358,6 @@
                                                            };
                                 [_delegate didFinishRequestCheckoutData:userInfo];
                                 [self isLoading:NO];
-                                _tableView.tableFooterView = _buyView;
                             } error:^(NSError *error) {
                                 [self isLoading:NO];
                             }];
