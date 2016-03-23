@@ -237,7 +237,7 @@
     
     NSDictionary *param = @{
                             @"token_cart"       : _token,
-                            @"gateway"          : _gateway,
+                            @"gateway"          : [_gateway stringValue],
                             @"step"             : @"2",
                             @"klikPayCode"      : bcaParam.bca_code,
                             @"transactionNo"    : bcaParam.payment_id,
