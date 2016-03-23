@@ -55,6 +55,12 @@ static CGFloat messageTextSize = 14.0;
     }
 }
 
+- (void)layoutSubviews {
+
+    [super layoutSubviews];
+    self.commentlabel.preferredMaxLayoutWidth = self.commentlabel.frame.size.width;
+}
+
 - (void)setComment:(TalkCommentList *)list {
     _comment = list;
     GeneralTalkCommentCell *cell = self;
