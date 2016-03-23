@@ -9,9 +9,11 @@
 #import "CKCompositeComponent.h"
 #import "DetailReputationReview.h"
 #import "DetailReputationReviewComponentDelegate.h"
+#import "ImageStorage.h"
 #import <ComponentKit/ComponentKit.h>
 
 @interface DetailReputationReviewContext : NSObject
+@property (nonatomic, weak) ImageStorage *imageCache;
 @property id<CKNetworkImageDownloading> imageDownloader;
 @property(weak, nonatomic) id<DetailReputationReviewComponentDelegate> delegate;
 @end

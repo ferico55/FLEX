@@ -8,6 +8,7 @@
 
 #import "MyReviewDetailHeaderSmileyComponent.h"
 #import "MyReviewDetailHeaderComponent.h"
+#import "ImageStorage.h"
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent* revieweeEditedLabel(DetailMyInboxReputation *inbox) {
@@ -40,7 +41,8 @@ static CKComponent* reviewerEditedLabel(DetailMyInboxReputation *inbox) {
             size:{}];
 }
 
-static CKComponent* score(DetailMyInboxReputation *inbox) {
+static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext *context) {
+    ImageStorage *imageCache = context.imageCache;
     std::vector<CKStackLayoutComponentChild> smileys;
     NSInteger score;
     
@@ -66,7 +68,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                             children:{
                                                 {
                                                     [CKImageComponent
-                                                     newWithImage:[UIImage imageNamed:@"icon_review_locked.png"]
+                                                     newWithImage:[imageCache cachedImageWithDescription:@"IconReviewLocked"]
                                                      size:{37,30}]
                                                 },
                                                 {
@@ -96,7 +98,8 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                              children:{
                                                  {
                                                      [CKImageComponent
-                                                      newWithImage:[UIImage imageNamed:@"icon_sad_grey.png"] size:{30,30}]
+                                                      newWithImage:[imageCache cachedImageWithDescription:@"IconSadGrey"]
+                                                      size:{30,30}]
                                                  },
                                                  {
                                                      [CKLabelComponent
@@ -122,7 +125,8 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                          children:{
                                              {
                                                  [CKImageComponent
-                                                  newWithImage:[UIImage imageNamed:@"icon_sad.png"] size:{30,30}]
+                                                  newWithImage:[imageCache cachedImageWithDescription:@"IconSad"]
+                                                  size:{30,30}]
                                              },
                                              {
                                                  [CKLabelComponent
@@ -151,7 +155,8 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                  children:{
                                                      {
                                                          [CKImageComponent
-                                                          newWithImage:[UIImage imageNamed:@"icon_neutral_grey.png"] size:{30,30}]
+                                                          newWithImage:[imageCache cachedImageWithDescription:@"IconNeutralGrey"]
+                                                          size:{30,30}]
                                                      },
                                                      {
                                                          [CKLabelComponent
@@ -177,7 +182,8 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                              children:{
                                                  {
                                                      [CKImageComponent
-                                                      newWithImage:[UIImage imageNamed:@"icon_netral.png"] size:{30,30}]
+                                                      newWithImage:[imageCache cachedImageWithDescription:@"IconNeutral"]
+                                                      size:{30,30}]
                                                  },
                                                  {
                                                      [CKLabelComponent
@@ -206,7 +212,8 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                                children:{
                                                    {
                                                        [CKImageComponent
-                                                        newWithImage:[UIImage imageNamed:@"icon_smile_grey.png"] size:{30,30}]
+                                                        newWithImage:[imageCache cachedImageWithDescription:@"IconSmileGrey"]
+                                                        size:{30,30}]
                                                    },
                                                    {
                                                        [CKLabelComponent
@@ -232,7 +239,8 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
                                            children:{
                                                {
                                                    [CKImageComponent
-                                                    newWithImage:[UIImage imageNamed:@"icon_smile.png"] size:{30,30}]
+                                                    newWithImage:[imageCache cachedImageWithDescription:@"IconSmile"]
+                                                    size:{30,30}]
                                                },
                                                {
                                                    [CKLabelComponent
@@ -299,14 +307,15 @@ static CKComponent* score(DetailMyInboxReputation *inbox) {
 }
 
 
-static CKComponent *myScore(DetailMyInboxReputation *inbox) {
-    NSDictionary<NSString*, NSString*>* myScoreImageNameByType = @{
-                                                                   @"smiley_neutral":@"icon_netral.png",
-                                                                   @"smiley_bad":@"icon_sad.png",
-                                                                   @"smiley_good":@"icon_smile.png",
-                                                                   @"smiley_none":[inbox.reputation_progress isEqualToString:@"2"]?@"icon_review_locked.png":@"icon_question_mark30.png",
-                                                                   @"grey_question_mark":@"icon_question_mark30.png",
-                                                                   @"blue_question_mark":@"icon_checklist.png"
+static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContext *context) {
+    ImageStorage *imageCache = context.imageCache;
+    NSDictionary<NSString*, UIImage*>* myScoreImageNameByType = @{
+                                                                   @"smiley_neutral":[imageCache cachedImageWithDescription:@"IconNeutral"],
+                                                                   @"smiley_bad":[imageCache cachedImageWithDescription:@"IconSad"],
+                                                                   @"smiley_good":[imageCache cachedImageWithDescription:@"IconSmile"],
+                                                                   @"smiley_none":[inbox.reputation_progress isEqualToString:@"2"]?[imageCache cachedImageWithDescription:@"IconReviewLocked"]:[imageCache cachedImageWithDescription:@"IconQuestionMark"],
+                                                                   @"grey_question_mark":[imageCache cachedImageWithDescription:@"IconQuestionMark"],
+                                                                   @"blue_question_mark":[imageCache cachedImageWithDescription:@"IconChecklist"]
                                                                    };
     
     return [CKStackLayoutComponent
@@ -357,7 +366,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                          },
                          {
                              [CKImageComponent
-                              newWithImage:[UIImage imageNamed:[myScoreImageNameByType objectForKey:inbox.my_score_image]]
+                              newWithImage:[myScoreImageNameByType objectForKey:inbox.my_score_image]
                               size:{([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"])?24.7:20,20}]
                          },
                          {
@@ -462,11 +471,11 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox) {
                      .spacingBefore = 8
                  },
                  {
-                     score(inbox),
+                     score(inbox, context),
                      .alignSelf = CKStackLayoutAlignSelfStretch
                  },
                  {
-                     myScore(inbox),
+                     myScore(inbox, context),
                      .alignSelf = CKStackLayoutAlignSelfStretch
                  }
              }]];

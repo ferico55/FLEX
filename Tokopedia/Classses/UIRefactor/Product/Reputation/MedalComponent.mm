@@ -10,7 +10,7 @@
 
 @implementation MedalComponent
 
-+ (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set {
++ (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set imageCache:(ImageStorage *)imageCache {
     NSInteger intLevel = level;
     NSInteger intSet = set;
     std::vector<CKStackLayoutComponentChild> medal;
@@ -18,19 +18,19 @@
     
     switch(intSet) {
         case 0:
-            medalImage = [UIImage imageNamed:@"icon_medal14.png"];
+            medalImage = [imageCache cachedImageWithDescription:@"IconMedal"];
             break;
         case 1:
-            medalImage = [UIImage imageNamed:@"icon_medal_bronze14.png"];
+            medalImage = [imageCache cachedImageWithDescription:@"IconMedalBronze"];
             break;
         case 2:
-            medalImage = [UIImage imageNamed:@"icon_medal_silver14.png"];
+            medalImage = [imageCache cachedImageWithDescription:@"IconMedalSilver"];
             break;
         case 3:
-            medalImage = [UIImage imageNamed:@"icon_medal_gold14.png"];
+            medalImage = [imageCache cachedImageWithDescription:@"IconMedalGold"];
             break;
         default:
-            medalImage = [UIImage imageNamed:@"icon_medal_diamond_one14.png"];
+            medalImage = [imageCache cachedImageWithDescription:@"IconMedalDiamond"];
             break;
     }
     

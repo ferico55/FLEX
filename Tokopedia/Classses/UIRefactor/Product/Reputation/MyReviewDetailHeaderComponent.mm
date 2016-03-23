@@ -12,6 +12,7 @@
 #import "MedalComponent.h"
 #import "ShopBadgeLevel.h"
 #import "AFNetworkingImageDownloader.h"
+#import "ImageStorage.h"
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent *userLabel(DetailMyInboxReputation *inbox) {
@@ -53,7 +54,8 @@ static CKComponent *userLabel(DetailMyInboxReputation *inbox) {
             }];
 }
 
-static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox) {
+static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox, MyReviewDetailContext *context) {
+    ImageStorage *imageCache = context.imageCache;
     
     NSString *percentage = @"0";
     
@@ -70,7 +72,7 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox) {
                     {UIControlStateNormal, [UIColor colorWithWhite:117.0/255 alpha:1.0]}
                 }
                 images:{
-                    {UIControlStateNormal, [UIImage imageNamed:@"icon_smile_small.png"]}
+                    {UIControlStateNormal, [imageCache cachedImageWithDescription:@"IconSmileSmall"]}
                 }
                 backgroundImages:{}
                 titleFont:{
@@ -84,11 +86,13 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox) {
                 accessibilityConfiguration:{}];
     } else {
         return [MedalComponent newMedalWithLevel:[inbox.shop_badge_level.level intValue]
-                                             set:[inbox.shop_badge_level.set intValue]];
+                                             set:[inbox.shop_badge_level.set intValue]
+                                      imageCache:imageCache];
     }
 }
 
-static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
+static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDetailContext *context) {
+    ImageStorage *imageCache = context.imageCache;
     
     NSString *timeLeft = [NSString stringWithFormat:@"Batas waktu ubah nilai %d hari lagi", [inbox.reputation_days_left intValue]];
     
@@ -104,7 +108,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
                 children:{
                     {
                         [CKImageComponent
-                         newWithImage:[UIImage imageNamed:@"icon_countdown.png"]
+                         newWithImage:[imageCache cachedImageWithDescription:@"IconCountdown"]
                          size:{14,14}]
                     },
                     {
@@ -145,92 +149,94 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox) {
 }
 
 + (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox context:(MyReviewDetailContext*)context {
+    ImageStorage *imageCache = context.imageCache;
+    
     MyReviewDetailHeaderComponent *header = [super newWithComponent:[CKStackLayoutComponent
-                                    newWithView:{
-                                        [UIView class],
-                                        {
-                                            {@selector(setBackgroundColor:), [UIColor whiteColor]}
-                                        }
-                                    }
-                                    size:{}
-                                    style:{
-                                        .direction = CKStackLayoutDirectionVertical,
-                                        .alignItems = CKStackLayoutAlignItemsCenter,
-                                        .spacing = 5
-                                    }
-                                    children:{
-                                        {   // Avatar
-                                            [CKInsetComponent
-                                             newWithView:{
-                                                 [UIView class],
-                                                 {
-                                                     {CKComponentTapGestureAttribute(@selector(didTapReviewee))}
-                                                 }
-                                             }
-                                             insets:{8,8,8,8}
-                                             component:{
-                                                 [CKNetworkImageComponent
-                                                  newWithURL:[NSURL URLWithString:inbox.reviewee_picture]
-                                                  imageDownloader:context.imageDownloader
-                                                  scenePath:nil
-                                                  size:{50,50}
-                                                  options:{
-                                                      .defaultImage = [UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                                                  }
-                                                  attributes:{
-                                                      {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 25.0},
-                                                      {@selector(setClipsToBounds:), YES}
-                                                  }]
-                                             }]
-                                        },
-                                        {   // Label nama
-                                            [CKStackLayoutComponent
-                                             newWithView:{
-                                                 [UIView class],
-                                                 {
-                                                     {CKComponentTapGestureAttribute(@selector(didTapReviewee))}
-                                                 }
-                                             }
-                                             size:{}
-                                             style:{
-                                                 .direction = CKStackLayoutDirectionHorizontal,
-                                                 .spacing = 5
-                                             }
-                                             children:
-                                             {
-                                                 {
-                                                     userLabel(inbox)
-                                                 },
-                                                 {
-                                                     [CKInsetComponent
-                                                      newWithInsets:{3,0,3,0}
-                                                      component:{
-                                                          [CKLabelComponent
-                                                           newWithLabelAttributes:{
-                                                               .string = inbox.reviewee_name,
-                                                               .font = [UIFont fontWithName:@"Gotham Medium" size:14.0],
-                                                               .maximumNumberOfLines = 1,
-                                                               .color = [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
-                                                           }
-                                                           viewAttributes:{}
-                                                           size:{}]
-                                                      }]
-                                                     
-                                                 }
-                                             }]
-                                        },
-                                        {
-                                            revieweeReputation(inbox)
-                                        },
-                                        {
-                                            [MyReviewDetailHeaderSmileyComponent newWithInbox:inbox context:context],
-                                            .spacingAfter = 8
-                                        },
-                                        {
-                                            remainingTimeLeft(inbox),
-                                            .spacingAfter = 8
-                                        }
-                                    }]];
+                                                                     newWithView:{
+                                                                         [UIView class],
+                                                                         {
+                                                                             {@selector(setBackgroundColor:), [UIColor whiteColor]}
+                                                                         }
+                                                                     }
+                                                                     size:{}
+                                                                     style:{
+                                                                         .direction = CKStackLayoutDirectionVertical,
+                                                                         .alignItems = CKStackLayoutAlignItemsCenter,
+                                                                         .spacing = 5
+                                                                     }
+                                                                     children:{
+                                                                         {   // Avatar
+                                                                             [CKInsetComponent
+                                                                              newWithView:{
+                                                                                  [UIView class],
+                                                                                  {
+                                                                                      {CKComponentTapGestureAttribute(@selector(didTapReviewee))}
+                                                                                  }
+                                                                              }
+                                                                              insets:{8,8,8,8}
+                                                                              component:{
+                                                                                  [CKNetworkImageComponent
+                                                                                   newWithURL:[NSURL URLWithString:inbox.reviewee_picture]
+                                                                                   imageDownloader:context.imageDownloader
+                                                                                   scenePath:nil
+                                                                                   size:{50,50}
+                                                                                   options:{
+                                                                                       .defaultImage = [imageCache cachedImageWithDescription:@"IconProfilePicture"]
+                                                                                   }
+                                                                                   attributes:{
+                                                                                       {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 25.0},
+                                                                                       {@selector(setClipsToBounds:), YES}
+                                                                                   }]
+                                                                              }]
+                                                                         },
+                                                                         {   // Label nama
+                                                                             [CKStackLayoutComponent
+                                                                              newWithView:{
+                                                                                  [UIView class],
+                                                                                  {
+                                                                                      {CKComponentTapGestureAttribute(@selector(didTapReviewee))}
+                                                                                  }
+                                                                              }
+                                                                              size:{}
+                                                                              style:{
+                                                                                  .direction = CKStackLayoutDirectionHorizontal,
+                                                                                  .spacing = 5
+                                                                              }
+                                                                              children:
+                                                                              {
+                                                                                  {
+                                                                                      userLabel(inbox)
+                                                                                  },
+                                                                                  {
+                                                                                      [CKInsetComponent
+                                                                                       newWithInsets:{3,0,3,0}
+                                                                                       component:{
+                                                                                           [CKLabelComponent
+                                                                                            newWithLabelAttributes:{
+                                                                                                .string = inbox.reviewee_name,
+                                                                                                .font = [UIFont fontWithName:@"Gotham Medium" size:14.0],
+                                                                                                .maximumNumberOfLines = 1,
+                                                                                                .color = [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
+                                                                                            }
+                                                                                            viewAttributes:{}
+                                                                                            size:{}]
+                                                                                       }]
+                                                                                      
+                                                                                  }
+                                                                              }]
+                                                                         },
+                                                                         {
+                                                                             revieweeReputation(inbox, context)
+                                                                         },
+                                                                         {
+                                                                             [MyReviewDetailHeaderSmileyComponent newWithInbox:inbox context:context],
+                                                                             .spacingAfter = 8
+                                                                         },
+                                                                         {
+                                                                             remainingTimeLeft(inbox, context),
+                                                                             .spacingAfter = 8
+                                                                         }
+                                                                     }]];
     
     header->_delegate = context.delegate;
     header->_inbox = inbox;

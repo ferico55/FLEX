@@ -26,7 +26,7 @@ static CKComponent* timestampLabel(NSString* createTime) {
             size:{}];
 }
 
-static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSString *role) {
+static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSString *role, ImageStorage *imageCache) {
     if ([role isEqualToString:@"1"]) {
         if (![review.review_is_allow_edit isEqualToString:@"1"]) {
             return nil;
@@ -36,7 +36,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                 newWithTitles:{}
                 titleColors:{}
                 images:{
-                    {UIControlStateNormal, [UIImage imageNamed:@"icon_arrow_down.png"]}
+                    {UIControlStateNormal, [imageCache cachedImageWithDescription:@"IconArrowDown"]}
                 }
                 backgroundImages:{}
                 titleFont:nil
@@ -54,7 +54,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                 newWithTitles:{}
                 titleColors:{}
                 images:{
-                    {UIControlStateNormal, [UIImage imageNamed:@"icon_arrow_down.png"]}
+                    {UIControlStateNormal, [imageCache cachedImageWithDescription:@"IconArrowDown"]}
                 }
                 backgroundImages:{}
                 titleFont:nil
@@ -73,7 +73,8 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                          role:(NSString*)role
            tapToProductAction:(SEL)action
               tapButtonAction:(SEL)buttonAction
-              imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader {
+              imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
+                   imageCache:(ImageStorage *)imageCache {
     return [super newWithComponent:
             [CKStackLayoutComponent
              newWithView:{}
@@ -90,7 +91,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                       scenePath:nil
                       size:{50,50}
                       options:{
-                          .defaultImage = [UIImage imageNamed:@"icon_toped_loading_grey.png"]
+                          .defaultImage = [imageCache cachedImageWithDescription:@"IconTopedLoadingGrey"]
                       }
                       attributes:{}]
                  },
@@ -130,7 +131,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                      .alignSelf = CKStackLayoutAlignSelfStretch
                  },
                  {
-                     button(review, buttonAction, role),
+                     button(review, buttonAction, role, imageCache),
                      .alignSelf = CKStackLayoutAlignSelfStart
                  }
              }]];

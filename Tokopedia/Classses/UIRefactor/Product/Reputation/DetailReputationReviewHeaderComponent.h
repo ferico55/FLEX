@@ -7,6 +7,7 @@
 //
 
 #import "DetailReputationReview.h"
+#import "ImageStorage.h"
 #import <ComponentKit/ComponentKit.h>
 
 @interface DetailReputationReviewHeaderComponent : CKCompositeComponent
@@ -14,5 +15,6 @@
                          role:(NSString*)role
            tapToProductAction:(SEL)action
               tapButtonAction:(SEL)buttonAction
-              imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader;
+              imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
+                   imageCache:(ImageStorage*)imageCache;
 @end

@@ -14,6 +14,8 @@
 #import "UIImageView+AFNetworking.h"
 #import "SmileyAndMedal.h"
 #import "ShopBadgeLevel.h"
+#import "Tokopedia-Swift.h"
+#import "ReviewRequest.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface GiveReviewResponseViewController () <
@@ -24,12 +26,14 @@
     MyReviewDetailDataManager *_dataManager;
     CMPopTipView *_cmPopTipView;
     
+    ReviewRequest *_reviewRequest;
+    
     IBOutlet UICollectionView *_collectionView;
 }
 
 
 @property (strong, nonatomic) IBOutlet UIView *giveResponseView;
-@property (strong, nonatomic) IBOutlet HPGrowingTextView *responseMessageGrowingTextView;
+@property (strong, nonatomic) IBOutlet RSKGrowingTextView *textView;
 @property (strong, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -60,10 +64,12 @@
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_inbox.role
                                                                     isDetail:YES
+                                                                  imageCache:_imageCache
                                                                     delegate:nil];
     
     
     _collectionView.delegate = self;
+    _collectionView.alwaysBounceVertical = YES;
     
     [_dataManager replaceReviews:@[_review]];
     
@@ -73,12 +79,15 @@
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
     
+    
     _invoiceLabel.text = _inbox.invoice_ref_num;
     _titleView.frame = CGRectMake(0, 0, self.view.bounds.size.width-144, self.navigationController.navigationBar.bounds.size.height);
     self.navigationItem.titleView = _titleView;
     
     [self setHeaderView];
-    [self setGrowingTextView];
+    
+    _textView.layer.borderWidth = 0.5f;
+    _textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     CGRect frame = _headerView.frame;
     frame.size.width = self.view.frame.size.width;
@@ -105,6 +114,8 @@
                                              selector:@selector(keyboardDidShow:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
+    
+    _reviewRequest = [ReviewRequest new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,7 +124,7 @@
 
 #pragma mark - Actions
 - (IBAction)didTapSendButton:(id)sender {
-    
+//    _reviewRequest requestInsertReputationReviewResponseWithReputationID:<#(NSString *)#> responseMessage:<#(NSString *)#> reviewID:<#(NSString *)#> shopID:<#(NSString *)#> onSuccess:<#^(ResponseCommentResult *result)successCallback#> onFailure:<#^(NSError *error)errorCallback#>
 }
 
 #pragma mark - Methods
@@ -144,29 +155,8 @@
     }
 }
 
-- (void)setGrowingTextView {
-    [_responseMessageGrowingTextView setIsScrollable:NO];
-    [_responseMessageGrowingTextView setContentInset:UIEdgeInsetsMake(0, 5, 0, 5)];
-    [_responseMessageGrowingTextView.layer setBorderWidth:1];
-    [_responseMessageGrowingTextView.layer setBorderColor:[[UIColor colorWithWhite:224.0/255 alpha:1.0] CGColor]];
-    [_responseMessageGrowingTextView.layer setCornerRadius:5.0];
-    [_responseMessageGrowingTextView.layer setMasksToBounds:YES];
-    [_responseMessageGrowingTextView setMinNumberOfLines:1];
-    _responseMessageGrowingTextView.maxNumberOfLines = 6;
-    _responseMessageGrowingTextView.returnKeyType = UIReturnKeyDone;
-    _responseMessageGrowingTextView.delegate = self;
-    _responseMessageGrowingTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    [_responseMessageGrowingTextView setBackgroundColor:[UIColor whiteColor]];
-    [_responseMessageGrowingTextView setPlaceholder:@"Balas ulasan Pembeli"];
-    [_responseMessageGrowingTextView setFont:[UIFont fontWithName:@"Gotham Book"
-                                                             size:12.0]];
-    
-    [_giveResponseView addSubview:_responseMessageGrowingTextView];
-    _giveResponseView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-}
-
 - (void)resignKeyboardView:(id)sender {
-    [_responseMessageGrowingTextView resignFirstResponder];
+    [_textView resignFirstResponder];
 }
 
 #pragma mark - Collection View Delegate
@@ -204,15 +194,17 @@
     NSDictionary *userInfo = [notification userInfo];
     CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(_headerView.frame.size.height, 0.0, keyboardSize.height, 0.0);
     _collectionView.contentInset = contentInsets;
     _collectionView.scrollIndicatorInsets = contentInsets;
+    
+    [_giveResponseView becomeFirstResponder];
 }
 
 - (void)keyboardDidShow:(NSNotification*)notification {
     [_collectionView scrollRectToVisible:CGRectMake(0, _collectionView.contentSize.height - _collectionView.bounds.size.height, _collectionView.bounds.size.width, _collectionView.bounds.size.height)
                                 animated:YES];
-    [_giveResponseView setFrame:CGRectMake(0.0, _collectionView.contentSize.height - _collectionView.bounds.size.height + 59, _giveResponseView.frame.size.width, _giveResponseView.frame.size.height)];
+    [_giveResponseView setFrame:CGRectMake(0.0, _collectionView.contentSize.height - _collectionView.bounds.size.height + 50, _giveResponseView.frame.size.width, _giveResponseView.frame.size.height)];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {

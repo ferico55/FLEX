@@ -29,19 +29,20 @@
 #import "ReviewRequest.h"
 #import "ReviewImageAttachment.h"
 #import "UIImageView+AFNetworking.h"
+#import "ImageStorage.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface MyReviewDetailViewController ()
 <
-    UICollectionViewDelegateFlowLayout,
-    MyReviewDetailRequestDelegate,
-    DetailReputationReviewComponentDelegate,
-    MyReviewDetailHeaderDelegate,
-    MyReviewDetailHeaderSmileyDelegate,
-    UIActionSheetDelegate,
-    ReportViewControllerDelegate,
-    UIAlertViewDelegate,
-    requestLDExttensionDelegate
+UICollectionViewDelegateFlowLayout,
+MyReviewDetailRequestDelegate,
+DetailReputationReviewComponentDelegate,
+MyReviewDetailHeaderDelegate,
+MyReviewDetailHeaderSmileyDelegate,
+UIActionSheetDelegate,
+ReportViewControllerDelegate,
+UIAlertViewDelegate,
+requestLDExttensionDelegate
 >
 {
     TAGContainer *_gtmContainer;
@@ -69,6 +70,7 @@
     CMPopTipView *_cmPopTipView;
     
     RequestLDExtension *_request;
+    ImageStorage *_imageCache;
     
     BOOL _page;
     BOOL _isRefreshing;
@@ -105,9 +107,34 @@
     _isRefreshView = NO;
     _getDataFromMasterInServer = @"0";
     
+    _imageCache = [ImageStorage new];
+    [_imageCache initImageStorage];
+    [_imageCache loadImageNamed:@"icon_toped_loading_grey.png" description:@"IconTopedLoadingGrey"];
+    [_imageCache loadImageNamed:@"icon_arrow_down.png" description:@"IconArrowDown"];
+    [_imageCache loadImageNamed:@"icon_profile_picture.jpeg" description:@"IconProfilePicture"];
+    [_imageCache loadImageNamed:@"icon_smile_small.png" description:@"IconSmileSmall"];
+    [_imageCache loadImageNamed:@"icon_medal14.png" description:@"IconMedal"];
+    [_imageCache loadImageNamed:@"icon_medal_bronze14.png" description:@"IconMedalBronze"];
+    [_imageCache loadImageNamed:@"icon_medal_silver14.png" description:@"IconMedalSilver"];
+    [_imageCache loadImageNamed:@"icon_medal_gold14.png" description:@"IconMedalGold"];
+    [_imageCache loadImageNamed:@"icon_medal_diamond_one14.png" description:@"IconMedalDiamond"];
+    [_imageCache loadImageNamed:@"icon_countdown.png" description:@"IconCountdown"];
+    [_imageCache loadImageNamed:@"icon_review_locked.png" description:@"IconReviewLocked"];
+    [_imageCache loadImageNamed:@"icon_sad_grey.png" description:@"IconSadGrey"];
+    [_imageCache loadImageNamed:@"icon_sad.png" description:@"IconSad"];
+    [_imageCache loadImageNamed:@"icon_neutral_grey.png" description:@"IconNeutralGrey"];
+    [_imageCache loadImageNamed:@"icon_netral.png" description:@"IconNeutral"];
+    [_imageCache loadImageNamed:@"icon_smile_grey.png" description:@"IconSmileGrey"];
+    [_imageCache loadImageNamed:@"icon_smile.png" description:@"IconSmile"];
+    [_imageCache loadImageNamed:@"icon_question_mark30.png" description:@"IconQuestionMark"];
+    [_imageCache loadImageNamed:@"icon_checklist.png" description:@"IconChecklist"];
+    [_imageCache loadImageNamed:@"icon_star_active.png" description:@"IconStarActive"];
+    [_imageCache loadImageNamed:@"icon_star.png" description:@"IconStar"];
+    
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
                                                                     isDetail:NO
+                                                                  imageCache:_imageCache
                                                                     delegate:self];
     
     
@@ -115,8 +142,9 @@
     _collectionView.alwaysBounceVertical = YES;
     
     _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
-                                                                            delegate:self
-                                                                      smileyDelegate:self];
+                                                     imageCache:_imageCache
+                                                       delegate:self
+                                                 smileyDelegate:self];
     
     [self setHeaderPosition];
     
@@ -125,7 +153,7 @@
                         action:@selector(refreshData)
               forControlEvents:UIControlEventValueChanged];
     [_header addSubview:_refreshControl];
-
+    
     
     _myReviewDetailRequest = [MyReviewDetailRequest new];
     _myReviewDetailRequest.delegate = self;
@@ -171,7 +199,7 @@
     _pageTitleView.frame = CGRectMake(0, 0, self.view.bounds.size.width-(72*2), self.navigationController.navigationBar.bounds.size.height);
     _pageTitleView.userInteractionEnabled = YES;
     [_pageTitleView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                action:@selector(tapToInvoice)]];
+                                                                                 action:@selector(tapToInvoice)]];
     self.navigationItem.titleView = _pageTitleView;
     
     _navigator = [NavigateViewController new];
@@ -267,7 +295,7 @@
             
             _selectedInbox.seller_score = _score;
         }
-            
+        
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
                                                                        delegate:self];
@@ -312,7 +340,7 @@
 #pragma mark - Actions
 - (void)tapToInvoice {
     [NavigateViewController navigateToInvoiceFromViewController:self
-                                     withInvoiceURL:_detailMyInboxReputation.invoice_uri];
+                                                 withInvoiceURL:_detailMyInboxReputation.invoice_uri];
 }
 
 #pragma mark - Action Sheet Delegate
@@ -342,6 +370,19 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
         [_myReviewDetailRequest requestInsertReputation:_selectedInbox withScore:_score];
+    } else if (buttonIndex == alertView.cancelButtonIndex && alertView.tag == 40) {
+        [_reviewRequest requestSkipProductReviewWithProductID:_selectedReview.product_id
+                                                 reputationID:_selectedReview.reputation_id
+                                                       shopID:_selectedReview.shop_id
+                                                    onSuccess:^(SkipReviewResult *result) {
+                                                        [self refreshData];
+                                                    }
+                                                    onFailure:^(NSError *error) {
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal melewati ulasan"]
+                                                                                                                       delegate:self];
+                                                        
+                                                        [alert show];
+                                                    }];
     }
 }
 
@@ -368,17 +409,13 @@
 - (void)didTapToSkipReview:(DetailReputationReview *)review {
     _selectedReview = review;
     
-    [_reviewRequest requestSkipProductReviewWithProductID:review.product_id
-                                             reputationID:review.reputation_id
-                                                   shopID:review.shop_id
-                                                onSuccess:^(SkipReviewResult *result) {
-                                                    [self refreshData];
-                                                } onFailure:^(NSError *error) {
-                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal melewati ulasan"]
-                                                                                                                   delegate:self];
-                                                    
-                                                    [alert show];
-                                                }];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                    message:@"Apakah Anda yakin melewati review ini?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ya"
+                                          otherButtonTitles:@"Tidak", nil];
+    alert.tag = 40;
+    [alert show];
 }
 
 - (void)didTapToEditReview:(DetailReputationReview *)review {
@@ -443,38 +480,39 @@
 }
 
 - (void)didTapRevieweeReputation:(id)sender role:(NSString *)role {
-//    if ([role isEqualToString:@"1"]) {
-//        int paddingRightLeftContent = 10;
-//        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-//        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-//        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
-//                                 andPadding:paddingRightLeftContent
-//                       withReputationNetral:_detailMyInboxReputation.user_reputation.neutral
-//                               withRepSmile:_detailMyInboxReputation.user_reputation.positive
-//                                 withRepSad:_detailMyInboxReputation.user_reputation.negative
-//                               withDelegate:self];
-//        
-//        //Init pop up
-//        _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-//        _cmPopTipView.delegate = self;
-//        _cmPopTipView.backgroundColor = [UIColor whiteColor];
-//        _cmPopTipView.animation = CMPopTipAnimationSlide;
-//        _cmPopTipView.dismissTapAnywhere = YES;
-//        _cmPopTipView.leftPopUp = YES;
-//        
-//        [_cmPopTipView presentPointingAtView:sender
-//                                      inView:self.view
-//                                    animated:YES];
-//    } else {
-//        NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
-//        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
-//    }
+    //    if ([role isEqualToString:@"1"]) {
+    //        int paddingRightLeftContent = 10;
+    //        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+    //        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+    //        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
+    //                                 andPadding:paddingRightLeftContent
+    //                       withReputationNetral:_detailMyInboxReputation.user_reputation.neutral
+    //                               withRepSmile:_detailMyInboxReputation.user_reputation.positive
+    //                                 withRepSad:_detailMyInboxReputation.user_reputation.negative
+    //                               withDelegate:self];
+    //
+    //        //Init pop up
+    //        _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+    //        _cmPopTipView.delegate = self;
+    //        _cmPopTipView.backgroundColor = [UIColor whiteColor];
+    //        _cmPopTipView.animation = CMPopTipAnimationSlide;
+    //        _cmPopTipView.dismissTapAnywhere = YES;
+    //        _cmPopTipView.leftPopUp = YES;
+    //
+    //        [_cmPopTipView presentPointingAtView:sender
+    //                                      inView:self.view
+    //                                    animated:YES];
+    //    } else {
+    //        NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
+    //        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+    //    }
 }
 
 - (void)didTapToGiveResponse:(DetailReputationReview *)review {
     GiveReviewResponseViewController *vc = [GiveReviewResponseViewController new];
     vc.inbox = _detailMyInboxReputation;
     vc.review = review;
+    vc.imageCache = _imageCache;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -499,19 +537,19 @@
     }
     
     NSDictionary<NSString*, NSString*>* myScoreMessageByType = @{
-                                                                   @"smiley_neutral":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Netral\"":@"Nilai dari Pembeli: \"Netral\"",
-                                                                   @"smiley_bad":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Tidak Puas\"":@"Nilai dari Pembeli : \"Tidak Puas\"",
-                                                                   @"smiley_good":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Puas\"":@"Nilai dari Pembeli: \"Puas\"",
-                                                                   @"smiley_none":smileyNoneString,
-                                                                   @"grey_question_mark":[inbox.role isEqualToString:@"1"]?@"Penjual belum memberi nilai untuk Anda":@"Pembeli belum memberi nilai untuk Anda",
-                                                                   @"blue_question_mark":[inbox.role isEqualToString:@"1"]?@"Beri nilai Penjual untuk melihat nilai Anda":@"Beri nilai Pembeli untuk melihat nilai Anda"
-                                                                   };
+                                                                 @"smiley_neutral":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Netral\"":@"Nilai dari Pembeli: \"Netral\"",
+                                                                 @"smiley_bad":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Tidak Puas\"":@"Nilai dari Pembeli : \"Tidak Puas\"",
+                                                                 @"smiley_good":[inbox.role isEqualToString:@"1"]?@"Nilai dari Penjual: \"Puas\"":@"Nilai dari Pembeli: \"Puas\"",
+                                                                 @"smiley_none":smileyNoneString,
+                                                                 @"grey_question_mark":[inbox.role isEqualToString:@"1"]?@"Penjual belum memberi nilai untuk Anda":@"Pembeli belum memberi nilai untuk Anda",
+                                                                 @"blue_question_mark":[inbox.role isEqualToString:@"1"]?@"Beri nilai Penjual untuk melihat nilai Anda":@"Beri nilai Pembeli untuk melihat nilai Anda"
+                                                                 };
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                      message:[myScoreMessageByType objectForKey:inbox.my_score_image]
-                                     delegate:self
-                            cancelButtonTitle:@"OK"
-                            otherButtonTitles:nil];
+                                                    message:[myScoreMessageByType objectForKey:inbox.my_score_image]
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
     [alert show];
 }
 
@@ -522,7 +560,7 @@
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
-
+    
 }
 
 - (void)didTapNotSatisfiedSmiley:(DetailMyInboxReputation*)inbox {
@@ -661,10 +699,11 @@
                                                          }];
     
     _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
-                                             delegate:self
-                                       smileyDelegate:self];
+                                                     imageCache:_imageCache
+                                                       delegate:self
+                                                 smileyDelegate:self];
     
-//    [self setHeaderPosition];
+    //    [self setHeaderPosition];
 }
 
 @end

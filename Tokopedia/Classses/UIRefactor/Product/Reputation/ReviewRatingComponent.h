@@ -8,9 +8,11 @@
 
 #import <ComponentKit/ComponentKit.h>
 #import "DetailReputationReview.h"
+#import "ImageStorage.h"
 
 @interface ReviewRatingComponent : CKCompositeComponent
 
-+ (instancetype)newWithReview:(DetailReputationReview*)review;
++ (instancetype)newWithReview:(DetailReputationReview*)review
+                   imageCache:(ImageStorage*)imageCache;
 
 @end

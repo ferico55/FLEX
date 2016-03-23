@@ -11,7 +11,7 @@
 
 @implementation ReviewRatingComponent
 
-+ (instancetype)newWithReview:(DetailReputationReview*)review {
++ (instancetype)newWithReview:(DetailReputationReview*)review imageCache:(ImageStorage *)imageCache {
     if ([review.review_message isEqualToString:@"0"] || review.review_message == nil) {
         return nil;
     }
@@ -50,7 +50,7 @@
                                 size:{}]
                            },
                            {
-                               [RatingComponent newWithRating:[review.product_rating_point intValue]]
+                               [RatingComponent newWithRating:[review.product_rating_point intValue] imageCache:imageCache]
                            }
                        }],
                       .flexBasis = CKRelativeDimension::Percent(0.5)
@@ -77,7 +77,7 @@
                                 size:{}]
                            },
                            {
-                               [RatingComponent newWithRating:[review.product_accuracy_point intValue]]
+                               [RatingComponent newWithRating:[review.product_accuracy_point intValue] imageCache:imageCache]
                            }
                        }],
                       .flexBasis = CKRelativeDimension::Percent(0.5)

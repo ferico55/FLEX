@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "DetailReputationReview.h"
 #import "DetailReputationReviewComponentDelegate.h"
+#import "ImageStorage.h"
 
 @interface MyReviewDetailDataManager : NSObject
 
 - (instancetype)initWithCollectionView:(UICollectionView*)collectionView
                                   role:(NSString*)role
                               isDetail:(BOOL)role
+                            imageCache:(ImageStorage*)imageCache
                               delegate:(id<DetailReputationReviewComponentDelegate>)delegate;
 - (void)replaceReviews:(NSArray<DetailReputationReview*>*)reviews;
 - (void)addReviews:(NSArray<DetailReputationReview*>*)reviews;

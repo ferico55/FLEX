@@ -2133,6 +2133,7 @@
 		627070E81CA0F5FB0099A288 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6270689E1CA0F5FA0099A288 /* Tokopedia-Info.plist */; };
 		627070E91CA0F5FB0099A288 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 627068A01CA0F5FA0099A288 /* Tokopedia.entitlements */; };
 		627070EA1CA0F5FB0099A288 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 627068A11CA0F5FA0099A288 /* Tokopedia.xcworkspace */; };
+		62E7D2121CA23DED0037806E /* ImageStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E7D2111CA23DED0037806E /* ImageStorage.m */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -5421,6 +5422,8 @@
 		627068A01CA0F5FA0099A288 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		627068A11CA0F5FA0099A288 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
+		62E7D2101CA23DED0037806E /* ImageStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageStorage.h; sourceTree = "<group>"; };
+		62E7D2111CA23DED0037806E /* ImageStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageStorage.m; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -8990,6 +8993,8 @@
 				627062DD1CA0F5F00099A288 /* SplitReputationViewController.h */,
 				627062DE1CA0F5F00099A288 /* SplitReputationViewController.m */,
 				627062DF1CA0F5F00099A288 /* String_Reputation.h */,
+				62E7D2101CA23DED0037806E /* ImageStorage.h */,
+				62E7D2111CA23DED0037806E /* ImageStorage.m */,
 			);
 			path = Reputation;
 			sourceTree = "<group>";
@@ -13350,6 +13355,7 @@
 				62706A491CA0F5FA0099A288 /* TrackOrderHistory.m in Sources */,
 				627069AF1CA0F5FA0099A288 /* PriceAlertResult.m in Sources */,
 				62706D9E1CA0F5FA0099A288 /* TxOrderConfirmationDetailHeaderView.m in Sources */,
+				62E7D2121CA23DED0037806E /* ImageStorage.m in Sources */,
 				627069031CA0F5FA0099A288 /* CatalogPrice.m in Sources */,
 				62706A411CA0F5FA0099A288 /* ShippingInfoShipmentPackage.m in Sources */,
 				62706BA71CA0F5FA0099A288 /* HotlistViewController.m in Sources */,

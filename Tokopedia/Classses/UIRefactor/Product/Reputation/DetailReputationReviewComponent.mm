@@ -277,7 +277,8 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
                                                                          role:(NSString*)role
                                                            tapToProductAction:@selector(didTapHeader:)
                                                               tapButtonAction:@selector(didTapButton:)
-                                                              imageDownloader:context.imageDownloader],
+                                                              imageDownloader:context.imageDownloader
+                                                                   imageCache:context.imageCache],
                          .flexGrow = YES,
                          .flexShrink = YES,
                          .alignSelf = CKStackLayoutAlignSelfStretch
@@ -301,7 +302,7 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
                .alignSelf = CKStackLayoutAlignSelfCenter
            },
            {
-               [ReviewRatingComponent newWithReview:review]
+               [ReviewRatingComponent newWithReview:review imageCache:context.imageCache]
            },
            {
                [CKComponent
@@ -314,6 +315,7 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
            {
                [ReviewResponseComponent newWithReview:review
                                       imageDownloader:context.imageDownloader
+                                           imageCache:context.imageCache
                                                  role:role
                                                action:@selector(didTapToDeleteResponse:)]
            },

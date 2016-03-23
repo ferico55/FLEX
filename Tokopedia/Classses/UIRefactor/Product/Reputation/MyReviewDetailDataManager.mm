@@ -30,7 +30,7 @@
     NSArray<DetailReputationReview*>* _reviews;
 }
 
-- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role isDetail:(BOOL)isDetail delegate:(id<DetailReputationReviewComponentDelegate>)delegate  {
+- (instancetype)initWithCollectionView:(UICollectionView*)collectionView role:(NSString*)role isDetail:(BOOL)isDetail imageCache:(ImageStorage *)imageCache delegate:(id<DetailReputationReviewComponentDelegate>)delegate  {
     if (self = [super init]) {
         _role = role;
         _isDetail = isDetail;
@@ -38,6 +38,7 @@
         DetailReputationReviewContext* context = [DetailReputationReviewContext new];
         context.imageDownloader = [AFNetworkingImageDownloader new];
         context.delegate = delegate;
+        context.imageCache = imageCache;
         
         _sizeRangeProvider = [CKComponentFlexibleSizeRangeProvider providerWithFlexibility:CKComponentSizeRangeFlexibleHeight];
         _dataSource = [[CKCollectionViewDataSource alloc] initWithCollectionView:collectionView

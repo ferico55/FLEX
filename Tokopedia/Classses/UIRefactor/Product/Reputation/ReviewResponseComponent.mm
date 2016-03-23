@@ -10,13 +10,13 @@
 #import "MedalComponent.h"
 #import "ShopBadgeLevel.h"
 
-static CKComponent *deleteButton (NSString *role, SEL action) {
+static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imageCache) {
     if ([role isEqualToString:@"2"]) {
         return [CKButtonComponent
                 newWithTitles:{}
                 titleColors:{}
                 images:{
-                    {UIControlStateNormal, [UIImage imageNamed:@"icon_arrow_down.png"]}
+                    {UIControlStateNormal, [imageCache cachedImageWithDescription:@"IconArrowDown"]}
                 }
                 backgroundImages:{}
                 titleFont:nil
@@ -35,6 +35,7 @@ static CKComponent *deleteButton (NSString *role, SEL action) {
 
 + (instancetype)newWithReview:(DetailReputationReview *)review
               imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
+                   imageCache:(ImageStorage *)imageCache
                          role:(NSString *)role
                        action:(SEL)action {
     if ([review.review_response.response_message isEqualToString:@"0"] || review.review_response.response_message == nil) {
@@ -60,7 +61,7 @@ static CKComponent *deleteButton (NSString *role, SEL action) {
                            scenePath:nil
                            size:{50,50}
                            options:{
-                               .defaultImage = [UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                               .defaultImage = [imageCache cachedImageWithDescription:@"IconProfilePicture"]
                            }
                            attributes:{
                                {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 25.0},
@@ -132,7 +133,7 @@ static CKComponent *deleteButton (NSString *role, SEL action) {
                                     }]
                                },
                                {
-                                   [MedalComponent newMedalWithLevel:[review.shop_badge_level.level intValue] set:[review.shop_badge_level.set intValue]]
+                                   [MedalComponent newMedalWithLevel:[review.shop_badge_level.level intValue] set:[review.shop_badge_level.set intValue] imageCache:imageCache]
                                },
                                {
                                    [CKLabelComponent
@@ -160,7 +161,7 @@ static CKComponent *deleteButton (NSString *role, SEL action) {
                           .flexGrow = YES
                       },
                       {
-                          deleteButton(role, action)
+                          deleteButton(role, action, imageCache)
                       }
                   }]}]];
 }

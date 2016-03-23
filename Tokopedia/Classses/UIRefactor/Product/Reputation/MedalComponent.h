@@ -7,8 +7,9 @@
 //
 
 #import "CKCompositeComponent.h"
+#import "ImageStorage.h"
 #import <ComponentKit/ComponentKit.h>
 
 @interface MedalComponent : CKCompositeComponent
-+ (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set;
++ (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set imageCache:(ImageStorage*)imageCache;
 @end

@@ -7,8 +7,8 @@
 //
 
 #import <ComponentKit/ComponentKit.h>
+#import "ImageStorage.h"
 
 @interface RatingComponent : CKCompositeComponent
-+ (instancetype)newWithRating:(NSInteger)rating;
-
++ (instancetype)newWithRating:(NSInteger)rating imageCache:(ImageStorage*)imageCache;
 @end

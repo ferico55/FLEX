@@ -8,10 +8,12 @@
 
 #import <ComponentKit/ComponentKit.h>
 #import "DetailReputationReview.h"
+#import "ImageStorage.h"
 
 @interface ReviewResponseComponent : CKCompositeComponent
 + (instancetype)newWithReview:(DetailReputationReview*)review
               imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
+                   imageCache:(ImageStorage*)imageCache
                          role:(NSString*)role
                        action:(SEL)action;
 @end
