@@ -89,18 +89,14 @@
 +(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data gatewayID:(NSInteger)gatewayID gatewayName:(NSString*)gatewayName {
     
     TransactionCartWebViewViewController *controller = [TransactionCartWebViewViewController new];
-    //          vc.toppayQueryString = data.query_string;
-    //          vc.URLString = data.redirect_url;
-    //          vc.toppayParam = data.parameter;
-    NSDictionary *param = data.parameter;
-    controller.toppayQueryString = param[@"query_string"];
-    controller.URLString = param[@"redirect_url"];
-    controller.toppayParam = param[@"parameter"];
+    controller.toppayQueryString = data.query_string;
+    controller.URLString = data.redirect_url;
+    controller.toppayParam = data.parameter;
     controller.gateway = @(gatewayID);
     controller.delegate = vc;
     controller.title = gatewayName?:@"Pembayaran";
     
-    [vc.navigationController pushViewController:vc animated:YES];
+    [vc.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)viewDidLoad {
