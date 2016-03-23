@@ -42,12 +42,12 @@
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
     
-    #if defined( DEBUG )
-        [Rollout setupWithDebug:YES];
-    #else
-        [Rollout setupWithDebug:NO];
-    #endif
-        
+    [Rollout setupWithKey:@"56a717aed7bed00574f5169c"
+#ifdef DEBUG
+        developmentDevice:YES
+#endif
+     ];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];
