@@ -17,6 +17,7 @@
 #import "SubmitReviewResult.h"
 #import "ImageResult.h"
 #import "SkipReviewResult.h"
+#import "ResponseCommentResult.h"
 
 @interface ReviewRequest : NSObject
 - (void)requestReviewLikeDislikesWithId:(NSString *)reviewId
@@ -98,5 +99,12 @@
                                        shopID:(NSString*)shopID
                                     onSuccess:(void(^)(SkipReviewResult *result))successCallback
                                     onFailure:(void(^)(NSError *error))errorCallback;
+
+- (void)requestInsertReputationReviewResponseWithReputationID:(NSString*)reputationID
+                                              responseMessage:(NSString*)responseMessage
+                                                     reviewID:(NSString*)reviewID
+                                                       shopID:(NSString*)shopID
+                                                    onSuccess:(void(^)(ResponseCommentResult *result))successCallback
+                                                    onFailure:(void(^)(NSError *error))errorCallback;
 
 @end

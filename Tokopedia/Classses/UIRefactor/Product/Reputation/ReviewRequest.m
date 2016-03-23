@@ -21,6 +21,7 @@
 #import "RequestObject.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "SkipReview.h"
+#import "ResponseComment.h"
 
 #define ACTION_LIKE_REQUEST 1
 #define ACTION_DISLIKE_REQUEST 2
@@ -47,6 +48,7 @@
     TokopediaNetworkManager *editReviewWithImageNetworkManager;
     TokopediaNetworkManager *skipProductReviewNetworkManager;
     TokopediaNetworkManager *editReputationReviewSubmitNetworkManager;
+    TokopediaNetworkManager *insertReputationReviewResponseNetworkManager;
     
     NSInteger _counter;
     NSDictionary *_imagesToUpload;
@@ -71,6 +73,7 @@
         editReviewWithImageNetworkManager = [TokopediaNetworkManager new];
         skipProductReviewNetworkManager = [TokopediaNetworkManager new];
         editReputationReviewSubmitNetworkManager = [TokopediaNetworkManager new];
+        insertReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -614,6 +617,32 @@
                                                        onFailure:^(NSError *errorResult) {
                                                            errorCallback(errorResult);
                                                        }];
+}
+
+- (void)requestInsertReputationReviewResponseWithReputationID:(NSString *)reputationID
+                                              responseMessage:(NSString *)responseMessage
+                                                     reviewID:(NSString *)reviewID
+                                                       shopID:(NSString *)shopID
+                                                    onSuccess:(void (^)(ResponseCommentResult *))successCallback
+                                                    onFailure:(void (^)(NSError *))errorCallback {
+    insertReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
+    insertReputationReviewResponseNetworkManager.isUsingHmac = YES;
+    
+    [insertReputationReviewResponseNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+                                                                path:@"/v4/action/reputation/insert_reputation_review_response.pl"
+                                                              method:RKRequestMethodGET
+                                                           parameter:@{@"reputation_id" : reputationID,
+                                                                       @"response_message" : responseMessage,
+                                                                       @"review_id" : reviewID,
+                                                                       @"shop_id" : shopID}
+                                                             mapping:[ResponseComment mapping]
+                                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                               NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                               ResponseComment *obj = [result objectForKey:@""];
+                                                               successCallback(obj.result);
+                                                           } onFailure:^(NSError *errorResult) {
+                                                               errorCallback(errorResult);
+                                                           }];
 }
 
 @end
