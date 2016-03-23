@@ -9,7 +9,7 @@
 #import "RequestCart.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
-#define CartBaseURL @"https://ws-staging.tokopedia.com"
+#define CartBaseURL @"https://ws.tokopedia.com"
 
 @implementation RequestCart
 
