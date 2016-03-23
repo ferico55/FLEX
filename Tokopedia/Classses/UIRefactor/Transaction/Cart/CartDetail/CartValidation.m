@@ -21,12 +21,11 @@
 //    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
     if (!(voucherCode) || [voucherCode isEqualToString:@""]) {
         isValid = NO;
-        [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
+        [errorMessages addObject:@"Masukkan kode voucher terlebih dahulu."];
     }
     
     if (!isValid) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-        [alert show];
+        [StickyAlertView showErrorMessage:errorMessages];
     }
     
     return  isValid;
@@ -42,8 +41,7 @@
     }
     
     if (!isvalid) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-        [alert show];
+        [StickyAlertView showErrorMessage:errorMessage];
     }
     
     return isvalid;
@@ -67,8 +65,7 @@
     }
     
     if (!isvalid) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-        [alert show];
+        [StickyAlertView showErrorMessage:errorMessage];
     }
     
     return isvalid;
@@ -94,8 +91,7 @@
     }
     
     if (!isvalid) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-        [alert show];
+        [StickyAlertView showErrorMessage:errorMessage];
     }
     
     return isvalid;
