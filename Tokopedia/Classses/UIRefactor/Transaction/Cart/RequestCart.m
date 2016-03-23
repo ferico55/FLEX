@@ -354,8 +354,9 @@
 
 +(void)fetchEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error{
     NSDictionary* param = @{//API_ACTION_KEY : isWSNew?ACTION_START_UP_EMONEY:ACTION_VALIDATE_CODE_EMONEY,
-                            API_ACTION_KEY :ACTION_START_UP_EMONEY,
-                            API_MANDIRI_ID_KEY : code};
+                            @"action"     : @"startup",
+                            @"mandiri_id" : code
+                            };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-payment-emoney.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
