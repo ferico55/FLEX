@@ -645,18 +645,7 @@
                 case TYPE_GATEWAY_BCA_CLICK_PAY:
                 {
                     if ([self isValidInput]) {
-                        TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-                        vc.BCAParam = _cartSummary.bca_param;
-                        vc.gateway = @(TYPE_GATEWAY_BCA_CLICK_PAY);
-                        vc.token = _cartSummary.token;
-                        vc.cartDetail = _cartSummary;
-                        vc.delegate = self;
-                        vc.paymentID = _cartSummary.payment_id;
-                        vc.title = _cartSummary.gateway_name?:@"BCA KlikPay";
-                        
-                        UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                        navigationController.navigationBar.translucent = NO;
-                        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                        [TransactionCartWebViewViewController pushBCAKlikPayFrom:self cartDetail:_cartSummary];
                     }
                 }
                     break;
@@ -675,19 +664,7 @@
                     break;
                 case TYPE_GATEWAY_BRI_EPAY:
                 {
-                    TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-                    vc.gateway = _cartSummary.gateway;
-                    vc.token = _cartSummary.token;
-                    vc.URLString = _cartSummary.bri_website_link?:@"";
-                    vc.cartDetail = _cartSummary;
-                    vc.transactionCode = _cartSummary.transaction_code?:@"";
-                    vc.delegate = self;
-                    vc.paymentID = _cartSummary.payment_id;
-                    vc.title = _cartSummary.gateway_name?:@"BRI E-Pay";
-                    
-                    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                    navigationController.navigationBar.translucent = NO;
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    [TransactionCartWebViewViewController pushBRIEPayFrom:self cartDetail:_cartSummary];
                 }
                     break;
                 default:
@@ -1516,16 +1493,17 @@
 -(void)doRequestEmoney{
     [self isLoading:YES];
     
-    [RequestCart fetchEMoneyCode:_cartBuy.transaction.emoney_code?:@"" success:^(TxEMoneyData *data) {
-        NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
-        [_delegate didFinishRequestBuyData:userInfo];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        [self isLoading:NO];
-    } error:^(NSError *error) {
-        [_delegate shouldBackToFirstPage];
-        [self isLoading:NO];
-    }];
+    [RequestCart fetchEMoneyCode:_cartBuy.transaction.emoney_code?:@""
+                         success:^(TxEMoneyData *data) {
+                             NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:_cartBuy?:@{}};
+                             [_delegate didFinishRequestBuyData:userInfo];
+                             
+                             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+                             [self isLoading:NO];
+                         } error:^(NSError *error) {
+                             [_delegate shouldBackToFirstPage];
+                             [self isLoading:NO];
+                         }];
 }
 
 -(void)isLoading:(BOOL)isLoading{
@@ -2279,26 +2257,27 @@
     
     NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY] integerValue];
     
-    [RequestCart fetchDeleteProduct:product cart:list withType:type success:^(TransactionAction *data, ProductDetail *product, TransactionCartList *cart, NSInteger type) {
-        
-        if (type == TYPE_CANCEL_CART_PRODUCT ) {
-            NSMutableArray *products = [NSMutableArray new];
-            [products addObjectsFromArray:list.cart_products];
-            [products removeObject:product];
-            ([_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
-            if (([_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
-                [_list removeObject:_list[indexPathCancelProduct.section]];
-            }
-        }
-        else
-        {
-            [_list removeObject:list];
-        }
-        [self requestCartData];
-        [self isLoading:NO];
-    } error:^(NSError *error) {
-        [self isLoading:NO];
-    }];
+    [RequestCart fetchDeleteProduct:product
+                               cart:list
+                           withType:type
+                            success:^(TransactionAction *data, ProductDetail *product, TransactionCartList *cart, NSInteger type) {
+                                
+                                if (type == TYPE_CANCEL_CART_PRODUCT ) {
+                                    NSMutableArray *products = [NSMutableArray new];
+                                    [products addObjectsFromArray:list.cart_products];
+                                    [products removeObject:product];
+                                    ([_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
+                                    if (([_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
+                                        [_list removeObject:_list[indexPathCancelProduct.section]];
+                                    }
+                                } else {
+                                    [_list removeObject:list];
+                                }
+                                [self requestCartData];
+                                [self isLoading:NO];
+                            } error:^(NSError *error) {
+                                [self isLoading:NO];
+                            }];
 }
 
 -(void)doRequestVoucher{
@@ -2359,26 +2338,23 @@
                               saldo:_saldoTokopediaAmountTextField.text
                         voucherCode:voucherCode
                             success:^(TransactionSummaryResult *data) {
-                                    
-        _cartSummary = data.transaction;
-        [TPAnalytics trackCheckout:_cartSummary.carts step:1 option:_cartSummary.gateway_name];
-        [self setDataDropshipperCartSummary];
-
-        TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-        NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:_cartSummary?:[TransactionSummaryDetail new],
-                                   DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
-                                   DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
-                                   DATA_CC_KEY : data.credit_card_data?:[CCData new]
-                                   };
-        [_delegate didFinishRequestCheckoutData:userInfo];
-        _checkoutButton.enabled = YES;
-        [self isLoading:NO];
-        _tableView.tableFooterView = _buyView;
-    } error:^(NSError *error) {
-        _checkoutButton.enabled = YES;
-        _checkoutButton.layer.opacity = 1;
-        [self isLoading:NO];
-    }];
+                                
+                                _cartSummary = data.transaction;
+                                [TPAnalytics trackCheckout:_cartSummary.carts step:1 option:_cartSummary.gateway_name];
+                                [self setDataDropshipperCartSummary];
+                                
+                                TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+                                NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:_cartSummary?:[TransactionSummaryDetail new],
+                                                           DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
+                                                           DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
+                                                           DATA_CC_KEY : data.credit_card_data?:[CCData new]
+                                                           };
+                                [_delegate didFinishRequestCheckoutData:userInfo];
+                                [self isLoading:NO];
+                                _tableView.tableFooterView = _buyView;
+                            } error:^(NSError *error) {
+                                [self isLoading:NO];
+                            }];
 }
 
 -(void)doCheckoutWithToppay{
@@ -2412,27 +2388,15 @@
                                 saldo:_saldoTokopediaAmountTextField.text
                           voucherCode:voucherCode success:^(TransactionActionResult *data) {
                               
-          TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-//          vc.toppayQueryString = data.query_string;
-//          vc.URLString = data.redirect_url;
-//          vc.toppayParam = data.parameter;
-                              NSDictionary *param = data.parameter;
-                              vc.toppayQueryString = param[@"query_string"];
-                              vc.URLString = param[@"redirect_url"];
-                              vc.toppayParam = param[@"parameter"];
-          vc.gateway = @([_cart.gateway integerValue]);
-          vc.delegate = self;
-          _popFromToppay = YES;
-          vc.title = _cartSummary.gateway_name?:@"Pembayaran";
+                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[_cartSummary.gateway integerValue] gatewayName:_cartSummary.gateway_name];
+                              _popFromToppay = YES;
+                              [self isLoading:NO];
 
+                          } error:^(NSError *error) {
                               
-          [self.navigationController pushViewController:vc animated:YES];
-          [self isLoading:NO];
-     } error:^(NSError *error) {
-         _checkoutButton.enabled = YES;
-         _checkoutButton.layer.opacity = 1;
-        [self isLoading:NO];
-     }];
+                              [self isLoading:NO];
+                              
+                          }];
 }
 
 -(void)doRequestBuy{
@@ -2453,20 +2417,7 @@
         switch ([_cartSummary.gateway integerValue]) {
             case TYPE_GATEWAY_MANDIRI_E_CASH:
             {
-                TransactionCartWebViewViewController *vc = [TransactionCartWebViewViewController new];
-                vc.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
-                vc.token = _cartSummary.token;
-                vc.URLString = data.link_mandiri?:@"";
-                vc.cartDetail = _cartSummary;
-                vc.emoney_code = data.transaction.emoney_code;
-                vc.delegate = self;
-                vc.paymentID = data.transaction.payment_id;
-                vc.title = _cartSummary.gateway_name?:@"Mandiri E-Cash";
-                
-                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
-                navigationController.navigationBar.translucent = NO;
-                
-                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                [TransactionCartWebViewViewController pushMandiriECashFrom:self cartDetail:summary LinkMandiri:data.link_mandiri?:@""];
             }
                 break;
             default:
@@ -2477,13 +2428,8 @@
             }
                 break;
         }
-        //
-        _buyButton.enabled = YES;
-        _buyButton.layer.opacity = 1;
         [self isLoading:NO];
     } error:^(NSError *error) {
-        _buyButton.enabled = YES;
-        _buyButton.layer.opacity = 1;
         [self isLoading:NO];
     }];
 }

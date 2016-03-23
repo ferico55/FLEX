@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TransactionSummaryDetail.h"
+#import "TransactionActionResult.h"
 
 @protocol TransactionCartWebViewViewControllerDelegate <NSObject>
 
@@ -26,7 +27,6 @@
 
 @property (nonatomic, weak) IBOutlet id<TransactionCartWebViewViewControllerDelegate> delegate;
 
-@property TransactionSummaryBCAParam *BCAParam;
 @property NSDictionary *CCParam;
 @property NSNumber *gateway;
 @property BOOL isVeritrans;
@@ -39,7 +39,10 @@
 @property NSDictionary *toppayParam;
 @property NSString *paymentID;
 
-@property NSDictionary *data;
++(void)pushBCAKlikPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
++(void)pushMandiriECashFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail LinkMandiri:(NSString*)linkMandiri;
++(void)pushBRIEPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
++(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data gatewayID:(NSInteger)gatewayID gatewayName:(NSString*)gatewayName;
 
 @end
 
