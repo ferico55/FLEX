@@ -54,14 +54,14 @@ static RKObjectManager *_objectManager;
     return _objectManager;
 }
 
-+ (RKObjectManager *)objectManagerUploadReviewImageWithBaseURL:(NSString*)baseURL
-                                                   pathPattern:(NSString*)pathPattern {
++ (RKObjectManager *)objectManagerUploadImageWithBaseURL:(NSString*)baseURL
+                                             pathPattern:(NSString*)pathPattern {
     _objectManager = [RKObjectManager sharedClient:baseURL];
     static dispatch_once_t oncePredicate;
     //TODO: pake oncePredicate
 //    dispatch_once(&oncePredicate, ^{
-        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectUploadReviewImage mapping] inverseMapping]
-                                                                                       objectClass:[RequestObjectUploadReviewImage class]
+        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectUploadImage mapping] inverseMapping]
+                                                                                       objectClass:[RequestObjectUploadImage class]
                                                                                        rootKeyPath:nil
                                                                                             method:RKRequestMethodPOST];
         

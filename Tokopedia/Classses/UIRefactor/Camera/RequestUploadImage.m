@@ -220,8 +220,8 @@
                  onSuccess:(void (^)(ImageResult *imageResult))success
                  onFailure:(void (^)(NSError *errorResult))failure {
     
-    RKObjectManager *objectManager = [TKPMappingManager objectManagerUploadReviewImageWithBaseURL:host
-                                                                                      pathPattern:path];
+    RKObjectManager *objectManager = [TKPMappingManager objectManagerUploadImageWithBaseURL:host
+                                                                                pathPattern:path];
     
     
     // Serialize the Article attributes then attach a file

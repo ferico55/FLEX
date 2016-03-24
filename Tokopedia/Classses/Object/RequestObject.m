@@ -60,7 +60,7 @@
 
 @end
 
-@implementation RequestObjectUploadReviewImage
+@implementation RequestObjectUploadImage
 
 + (NSDictionary*)attributeMappingDictionary {
     NSDictionary *dictionary = @{@"id"       : @"image_id",

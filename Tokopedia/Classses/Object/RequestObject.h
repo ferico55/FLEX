@@ -38,7 +38,7 @@
 
 @end
 
-@interface RequestObjectUploadReviewImage : NSObject <TKPObjectMapping>
+@interface RequestObjectUploadImage : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *image_id;
 @property (nonatomic, strong) NSString *token;

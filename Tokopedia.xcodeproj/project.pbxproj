@@ -2702,8 +2702,8 @@
 		62705D0B1CA0F5ED0099A288 /* DetailReputationReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReputationReview.m; sourceTree = "<group>"; };
 		62705D0C1CA0F5ED0099A288 /* DetailReviewReputationViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewReputationViewModel.h; sourceTree = "<group>"; };
 		62705D0D1CA0F5ED0099A288 /* DetailReviewReputationViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReviewReputationViewModel.m; sourceTree = "<group>"; };
-		62705D0E1CA0F5ED0099A288 /* ImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResult.h; sourceTree = "<group>"; };
-		62705D0F1CA0F5ED0099A288 /* ImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResult.m; sourceTree = "<group>"; };
+		62705D0E1CA0F5ED0099A288 /* ImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageResult.h; path = ../MyReviewReputation/ImageResult.h; sourceTree = "<group>"; };
+		62705D0F1CA0F5ED0099A288 /* ImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageResult.m; path = ../MyReviewReputation/ImageResult.m; sourceTree = "<group>"; };
 		62705D101CA0F5ED0099A288 /* InboxReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReputation.h; sourceTree = "<group>"; };
 		62705D111CA0F5ED0099A288 /* InboxReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReputation.m; sourceTree = "<group>"; };
 		62705D121CA0F5ED0099A288 /* InboxReputationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReputationResult.h; sourceTree = "<group>"; };
@@ -6538,8 +6538,6 @@
 				62705D0B1CA0F5ED0099A288 /* DetailReputationReview.m */,
 				62705D0C1CA0F5ED0099A288 /* DetailReviewReputationViewModel.h */,
 				62705D0D1CA0F5ED0099A288 /* DetailReviewReputationViewModel.m */,
-				62705D0E1CA0F5ED0099A288 /* ImageResult.h */,
-				62705D0F1CA0F5ED0099A288 /* ImageResult.m */,
 				62705D101CA0F5ED0099A288 /* InboxReputation.h */,
 				62705D111CA0F5ED0099A288 /* InboxReputation.m */,
 				62705D121CA0F5ED0099A288 /* InboxReputationResult.h */,
@@ -7537,6 +7535,8 @@
 		62705F581CA0F5EE0099A288 /* UploadImage */ = {
 			isa = PBXGroup;
 			children = (
+				62705D0E1CA0F5ED0099A288 /* ImageResult.h */,
+				62705D0F1CA0F5ED0099A288 /* ImageResult.m */,
 				62705F591CA0F5EE0099A288 /* GenerateHost */,
 				62705F601CA0F5EE0099A288 /* Upload.h */,
 				62705F611CA0F5EE0099A288 /* Upload.m */,

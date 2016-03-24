@@ -12,7 +12,7 @@
 
 + (RKObjectManager*)objectManagerGetAddress;
 + (RKObjectManager*)objectManagerEditAddress;
-+ (RKObjectManager*)objectManagerUploadReviewImageWithBaseURL:(NSString*)baseURL
-                                                  pathPattern:(NSString*)pathPattern;
++ (RKObjectManager*)objectManagerUploadImageWithBaseURL:(NSString*)baseURL
+                                            pathPattern:(NSString*)pathPattern;
 
 @end
