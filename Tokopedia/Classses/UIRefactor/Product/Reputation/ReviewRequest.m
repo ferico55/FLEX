@@ -49,6 +49,7 @@
     TokopediaNetworkManager *skipProductReviewNetworkManager;
     TokopediaNetworkManager *editReputationReviewSubmitNetworkManager;
     TokopediaNetworkManager *insertReputationReviewResponseNetworkManager;
+    TokopediaNetworkManager *deleteReputationReviewResponseNetworkManager;
     
     NSInteger _counter;
     NSDictionary *_imagesToUpload;
@@ -74,6 +75,7 @@
         skipProductReviewNetworkManager = [TokopediaNetworkManager new];
         editReputationReviewSubmitNetworkManager = [TokopediaNetworkManager new];
         insertReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
+        deleteReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -633,6 +635,30 @@
                                                               method:RKRequestMethodGET
                                                            parameter:@{@"reputation_id" : reputationID,
                                                                        @"response_message" : responseMessage,
+                                                                       @"review_id" : reviewID,
+                                                                       @"shop_id" : shopID}
+                                                             mapping:[ResponseComment mapping]
+                                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                               NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                               ResponseComment *obj = [result objectForKey:@""];
+                                                               successCallback(obj.result);
+                                                           } onFailure:^(NSError *errorResult) {
+                                                               errorCallback(errorResult);
+                                                           }];
+}
+
+- (void)requestDeleteReputationReviewResponseWithReputationID:(NSString *)reputationID
+                                                     reviewID:(NSString *)reviewID
+                                                       shopID:(NSString *)shopID
+                                                    onSuccess:(void (^)(ResponseCommentResult *))successCallback
+                                                    onFailure:(void (^)(NSError *))errorCallback {
+    deleteReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
+    deleteReputationReviewResponseNetworkManager.isUsingHmac = YES;
+    
+    [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+                                                                path:@"/v4/action/reputation/delete_reputation_review_response.pl"
+                                                              method:RKRequestMethodGET
+                                                           parameter:@{@"reputation_id" : reputationID,
                                                                        @"review_id" : reviewID,
                                                                        @"shop_id" : shopID}
                                                              mapping:[ResponseComment mapping]

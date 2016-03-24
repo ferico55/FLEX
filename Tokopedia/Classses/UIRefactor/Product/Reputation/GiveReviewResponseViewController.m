@@ -16,11 +16,12 @@
 #import "ShopBadgeLevel.h"
 #import "Tokopedia-Swift.h"
 #import "ReviewRequest.h"
+#import "MyReviewDetailViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface GiveReviewResponseViewController () <
     UICollectionViewDelegateFlowLayout,
-    HPGrowingTextViewDelegate
+    RSKGrowingTextViewDelegate
 >
 {
     MyReviewDetailDataManager *_dataManager;
@@ -41,6 +42,7 @@
 @property (strong, nonatomic) IBOutlet ViewLabelUser *revieweeNameLabel;
 @property (strong, nonatomic) IBOutlet UIButton *revieweeReputation;
 @property (strong, nonatomic) IBOutlet UIView *horizontalBorderView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *responseViewBottomConstraint;
 
 @property (strong, nonatomic) IBOutlet UIView *titleView;
 @property (strong, nonatomic) IBOutlet UILabel *invoiceLabel;
@@ -108,11 +110,7 @@
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification
+                                                 name:UIKeyboardWillHideNotification
                                                object:nil];
     
     _reviewRequest = [ReviewRequest new];
@@ -124,7 +122,40 @@
 
 #pragma mark - Actions
 - (IBAction)didTapSendButton:(id)sender {
-//    _reviewRequest requestInsertReputationReviewResponseWithReputationID:<#(NSString *)#> responseMessage:<#(NSString *)#> reviewID:<#(NSString *)#> shopID:<#(NSString *)#> onSuccess:<#^(ResponseCommentResult *result)successCallback#> onFailure:<#^(NSError *error)errorCallback#>
+    NSString *message = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (message.length > 5) {
+        [_reviewRequest requestInsertReputationReviewResponseWithReputationID:_review.reputation_id
+                                                              responseMessage:_textView.text
+                                                                     reviewID:_review.review_id
+                                                                       shopID:_review.shop_id
+                                                                    onSuccess:^(ResponseCommentResult *result) {
+                                                                        NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
+                                                                        
+                                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil membalas ulasan"]
+                                                                                                                                         delegate:self];
+                                                                        [alert show];
+                                                                        
+                                                                        for (UIViewController *aViewController in allViewControllers) {
+                                                                            if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
+                                                                                [self.navigationController popToViewController:aViewController animated:YES];
+                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
+                                                                                                                                    object:nil];
+                                                                            }
+                                                                        }
+                                                                        
+                                                                    }
+                                                                    onFailure:^(NSError *error) {
+                                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal membalas ulasan"]
+                                                                                                                                       delegate:self];
+                                                                        [alert show];
+                                                                    }];
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Komentar terlalu pendek, minimum 5 karakter."]
+                                                                       delegate:self];
+        [alert show];
+    }
+    
 }
 
 #pragma mark - Methods
@@ -178,45 +209,66 @@
     [_dataManager announceDidDisappearForItemInCell:cell];
 }
 
-#pragma mark - Growing Text View Delegate
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
-    float diff = growingTextView.frame.size.height - height;
-    
-    CGRect aRect = _giveResponseView.frame;
-    aRect.size.height -= diff;
-    aRect.origin.y += diff;
-    
-    _giveResponseView.frame = aRect;
+#pragma mark - Text View Delegate
+//- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
+//    float diff = growingTextView.frame.size.height - height;
+//    
+//    CGRect aRect = _giveResponseView.frame;
+//    aRect.size.height -= diff;
+//    aRect.origin.y += diff;
+//    
+//    _giveResponseView.frame = aRect;
+//}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [_collectionView scrollToBottomAnimated:YES];
 }
+
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification*)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = notification.userInfo[UIKeyboardAnimationCurveUserInfoKey];
     
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(_headerView.frame.size.height, 0.0, keyboardSize.height, 0.0);
-    _collectionView.contentInset = contentInsets;
-    _collectionView.scrollIndicatorInsets = contentInsets;
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    
+    _responseViewBottomConstraint.constant = keyboardBounds.size.height;
+    [self.view layoutIfNeeded];
     
     [_giveResponseView becomeFirstResponder];
-}
-
-- (void)keyboardDidShow:(NSNotification*)notification {
-    [_collectionView scrollRectToVisible:CGRectMake(0, _collectionView.contentSize.height - _collectionView.bounds.size.height, _collectionView.bounds.size.width, _collectionView.bounds.size.height)
-                                animated:YES];
-    [_giveResponseView setFrame:CGRectMake(0.0, _collectionView.contentSize.height - _collectionView.bounds.size.height + 50, _giveResponseView.frame.size.width, _giveResponseView.frame.size.height)];
+    [UIView commitAnimations];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
-    CGRect frame = CGRectMake(0, self.view.frame.size.height - - _giveResponseView.frame.size.height, _giveResponseView.frame.size.width, _giveResponseView.frame.size.height);
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         [_giveResponseView setFrame:frame];
-                     }
-                     completion:^(BOOL finished){
-                     }];
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = notification.userInfo[UIKeyboardAnimationCurveUserInfoKey];
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    
+    
+    _responseViewBottomConstraint.constant = 0;
+    [self.view layoutIfNeeded];
+    
+    [_giveResponseView resignFirstResponder];
+    [UIView commitAnimations];
 }
 
 @end

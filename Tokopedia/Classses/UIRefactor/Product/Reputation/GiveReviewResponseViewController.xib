@@ -23,6 +23,7 @@
                 <outlet property="headerView" destination="WNj-GM-80k" id="hsg-Hp-0HI"/>
                 <outlet property="horizontalBorderView" destination="WxN-8p-B1k" id="Kvq-Rh-exY"/>
                 <outlet property="invoiceLabel" destination="Ses-s4-UB7" id="VM8-7c-OhK"/>
+                <outlet property="responseViewBottomConstraint" destination="nAi-z3-Fs0" id="fox-nn-NXv"/>
                 <outlet property="revieweeImage" destination="Kq6-NV-tnA" id="XGs-6B-P7Y"/>
                 <outlet property="revieweeNameLabel" destination="iiF-RI-UqZ" id="jgM-Mo-SsJ"/>
                 <outlet property="revieweeReputation" destination="8p8-tP-5wT" id="00V-Kt-wSw"/>
@@ -37,7 +38,7 @@
             <rect key="frame" x="0.0" y="0.0" width="335" height="519"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="IkR-FG-1ah">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="IkR-FG-1ah">
                     <rect key="frame" x="0.0" y="0.0" width="335" height="469"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FrQ-zR-mNJ">
@@ -47,10 +48,10 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Tb-3r-e2G">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Tb-3r-e2G">
                     <rect key="frame" x="0.0" y="469" width="335" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3fn-5e-sEa">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3fn-5e-sEa">
                             <rect key="frame" x="281" y="10" width="46" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="90V-PL-eB9"/>
@@ -67,7 +68,7 @@
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IZD-CW-svx" customClass="RSKGrowingTextView" customModule="Tokopedia" customModuleProvider="target">
                             <rect key="frame" x="8" y="8" width="265" height="34"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Balas ulasan pembeli"/>
@@ -78,29 +79,33 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="minimumNumberOfLines">
                                     <integer key="value" value="1"/>
                                 </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </textView>
                     </subviews>
                     <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="IZD-CW-svx" secondAttribute="bottom" constant="8" id="Cya-za-2Ji"/>
-                        <constraint firstItem="IZD-CW-svx" firstAttribute="top" secondItem="0Tb-3r-e2G" secondAttribute="top" constant="8" id="ltc-Q4-o6w"/>
-                        <constraint firstItem="3fn-5e-sEa" firstAttribute="leading" secondItem="IZD-CW-svx" secondAttribute="trailing" constant="8" id="oTM-Fb-EET"/>
-                        <constraint firstAttribute="trailing" secondItem="3fn-5e-sEa" secondAttribute="trailing" constant="8" id="pu5-xh-AW2"/>
-                        <constraint firstItem="IZD-CW-svx" firstAttribute="leading" secondItem="0Tb-3r-e2G" secondAttribute="leading" constant="8" id="wBH-9I-eAS"/>
-                        <constraint firstAttribute="bottom" secondItem="3fn-5e-sEa" secondAttribute="bottom" constant="10" id="y4j-1M-QeT"/>
+                        <constraint firstAttribute="trailing" secondItem="3fn-5e-sEa" secondAttribute="trailing" constant="8" id="4fw-oA-GaD"/>
+                        <constraint firstAttribute="bottom" secondItem="3fn-5e-sEa" secondAttribute="bottom" constant="10" id="8lz-6q-BCC"/>
+                        <constraint firstItem="IZD-CW-svx" firstAttribute="top" secondItem="0Tb-3r-e2G" secondAttribute="top" constant="8" id="9Cp-9X-28k"/>
+                        <constraint firstItem="IZD-CW-svx" firstAttribute="leading" secondItem="0Tb-3r-e2G" secondAttribute="leading" constant="8" id="JkU-1e-guH"/>
+                        <constraint firstItem="3fn-5e-sEa" firstAttribute="leading" secondItem="IZD-CW-svx" secondAttribute="trailing" constant="8" id="XP9-BW-9ti"/>
+                        <constraint firstAttribute="bottom" secondItem="IZD-CW-svx" secondAttribute="bottom" constant="8" id="fux-KX-LhB"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="IkR-FG-1ah" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="67P-gR-5uh"/>
-                <constraint firstItem="0Tb-3r-e2G" firstAttribute="top" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="AqM-7F-kuE"/>
-                <constraint firstAttribute="trailing" secondItem="IkR-FG-1ah" secondAttribute="trailing" id="KSZ-Pj-a0K"/>
-                <constraint firstAttribute="trailing" secondItem="0Tb-3r-e2G" secondAttribute="trailing" id="WfM-cw-Fhh"/>
-                <constraint firstItem="IkR-FG-1ah" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="exj-wT-hCp"/>
-                <constraint firstAttribute="bottom" secondItem="0Tb-3r-e2G" secondAttribute="bottom" id="gMZ-9p-Uu8"/>
-                <constraint firstItem="0Tb-3r-e2G" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="o01-Mv-C6g"/>
+                <constraint firstItem="IkR-FG-1ah" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="09t-5T-pv9"/>
+                <constraint firstItem="0Tb-3r-e2G" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NZd-NN-Aas"/>
+                <constraint firstItem="0Tb-3r-e2G" firstAttribute="top" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="YVz-O9-wmK"/>
+                <constraint firstAttribute="trailing" secondItem="IkR-FG-1ah" secondAttribute="trailing" id="c3N-gZ-FpI"/>
+                <constraint firstAttribute="bottom" secondItem="0Tb-3r-e2G" secondAttribute="bottom" id="nAi-z3-Fs0"/>
+                <constraint firstAttribute="trailing" secondItem="0Tb-3r-e2G" secondAttribute="trailing" id="pT6-WC-E3R"/>
+                <constraint firstItem="IkR-FG-1ah" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qx0-5b-T6H"/>
+                <constraint firstItem="0Tb-3r-e2G" firstAttribute="top" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="vEd-3E-WMM"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="48.5" y="303.5"/>
@@ -157,7 +162,7 @@
                 <constraint firstAttribute="trailing" secondItem="WxN-8p-B1k" secondAttribute="trailing" constant="8" id="th7-a0-SqP"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="48.5" y="677"/>
+            <point key="canvasLocation" x="123.5" y="686"/>
         </view>
         <view contentMode="scaleToFill" id="759-KD-gFq">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

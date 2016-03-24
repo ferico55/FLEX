@@ -107,4 +107,10 @@
                                                     onSuccess:(void(^)(ResponseCommentResult *result))successCallback
                                                     onFailure:(void(^)(NSError *error))errorCallback;
 
+- (void)requestDeleteReputationReviewResponseWithReputationID:(NSString*)reputationID
+                                                     reviewID:(NSString*)reviewID
+                                                       shopID:(NSString*)shopID
+                                                    onSuccess:(void(^)(ResponseCommentResult *result))successCallback
+                                                    onFailure:(void(^)(NSError *error))errorCallback;
+
 @end
