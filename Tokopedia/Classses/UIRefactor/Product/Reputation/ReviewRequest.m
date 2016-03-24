@@ -22,6 +22,7 @@
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "SkipReview.h"
 #import "ResponseComment.h"
+#import "GeneralAction.h"
 
 #define ACTION_LIKE_REQUEST 1
 #define ACTION_DISLIKE_REQUEST 2
@@ -50,6 +51,7 @@
     TokopediaNetworkManager *editReputationReviewSubmitNetworkManager;
     TokopediaNetworkManager *insertReputationReviewResponseNetworkManager;
     TokopediaNetworkManager *deleteReputationReviewResponseNetworkManager;
+    TokopediaNetworkManager *insertReputationNetworkManager;
     
     NSInteger _counter;
     NSDictionary *_imagesToUpload;
@@ -76,6 +78,7 @@
         editReputationReviewSubmitNetworkManager = [TokopediaNetworkManager new];
         insertReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
         deleteReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
+        insertReputationNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -293,7 +296,7 @@
     NSString *fileName = [imageData objectForKey:@"cameraimagename"];
     NSString *name = @"fileToUpload";
     
-    RequestObjectUploadReviewImage *requestObject = [RequestObjectUploadReviewImage new];
+    RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
     requestObject.image_id = imageID;
     requestObject.token = token;
     requestObject.user_id = [[UserAuthentificationManager new] getUserId];
@@ -665,10 +668,34 @@
                                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                                NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                                ResponseComment *obj = [result objectForKey:@""];
-                                                               successCallback(obj.result);
+                                                               successCallback(obj.data);
                                                            } onFailure:^(NSError *errorResult) {
                                                                errorCallback(errorResult);
                                                            }];
+}
+
+- (void)requestInsertReputationWithReputationID:(NSString *)reputationID
+                                           role:(NSString *)role
+                                          score:(NSString *)score
+                                      onSuccess:(void (^)(GeneralActionResult *))successCallback
+                                      onFailure:(void (^)(NSError *))errorCallback {
+    insertReputationNetworkManager.isParameterNotEncrypted = NO;
+    insertReputationNetworkManager.isUsingHmac = YES;
+    
+    [insertReputationNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+                                                  path:@"/v4/action/reputation/insert_reputation.pl"
+                                                method:RKRequestMethodGET
+                                             parameter:@{@"buyer_seller"     : role,
+                                                         @"reputation_id"    : reputationID,
+                                                         @"reputation_score" : score}
+                                               mapping:[GeneralAction mapping]
+                                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                 GeneralAction *obj = [result objectForKey:@""];
+                                                 successCallback(obj.data);
+                                             } onFailure:^(NSError *errorResult) {
+                                                 errorCallback(errorResult);
+                                             }];
 }
 
 @end

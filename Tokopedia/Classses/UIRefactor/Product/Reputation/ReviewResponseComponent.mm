@@ -16,14 +16,14 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                 newWithTitles:{}
                 titleColors:{}
                 images:{
-                    {UIControlStateNormal, [imageCache cachedImageWithDescription:@"IconArrowDown"]}
+                    {UIControlStateNormal, [imageCache cachedImageWithDescription:@"IconDelete"]}
                 }
                 backgroundImages:{}
                 titleFont:nil
                 selected:NO
                 enabled:YES
                 action:action
-                size:{.height = 14, .width = 14}
+                size:{.height = 30, .width = 30}
                 attributes:{}
                 accessibilityConfiguration:{}];
     }
@@ -123,7 +123,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                                       .string = review.product_owner.shop_name,
                                                       .font = [UIFont fontWithName:@"Gotham Medium" size:14.0],
                                                       .maximumNumberOfLines = 1,
-                                                      .color = [UIColor colorWithRed:18.0/255 green:199.0/255 blue:0 alpha:1]
+                                                      .color = [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
                                                   }
                                                   viewAttributes:{}
                                                   size:{}]

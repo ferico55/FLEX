@@ -127,10 +127,10 @@ TokopediaNetworkManagerDelegate
             [((UIImageView*)_attachedImagesArray[ii]) setHidden:NO];
         }
         
-//        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
-//            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
-//            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
-//        }
+        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
+            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
+            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
+        }
     }
     
     
@@ -257,7 +257,7 @@ TokopediaNetworkManagerDelegate
                                                       accuracyRate:_accuracyRate
                                                        qualityRate:_qualityRate
                                                       reputationID:_detailReputationReview.reputation_id
-                                                           message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+                                                           message:_reviewMessage
                                                             shopID:_detailReputationReview.shop_id
                                              hasProductReviewPhoto:_hasAttachedImages
                                                     reviewPhotoIDs:_imageIDs

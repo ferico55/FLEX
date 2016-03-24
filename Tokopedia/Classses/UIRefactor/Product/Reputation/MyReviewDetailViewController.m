@@ -7,7 +7,6 @@
 //
 
 #import "MyReviewDetailViewController.h"
-#import "MyReviewDetailRequest.h"
 #import "NavigateViewController.h"
 #import "MyReviewReputationViewModel.h"
 #import "MyReviewDetailTableViewCell.h"
@@ -34,19 +33,17 @@
 
 @interface MyReviewDetailViewController ()
 <
-UICollectionViewDelegateFlowLayout,
-MyReviewDetailRequestDelegate,
-DetailReputationReviewComponentDelegate,
-MyReviewDetailHeaderDelegate,
-MyReviewDetailHeaderSmileyDelegate,
-UIActionSheetDelegate,
-ReportViewControllerDelegate,
-UIAlertViewDelegate,
-requestLDExttensionDelegate
+    UICollectionViewDelegateFlowLayout,
+    DetailReputationReviewComponentDelegate,
+    MyReviewDetailHeaderDelegate,
+    MyReviewDetailHeaderSmileyDelegate,
+    UIActionSheetDelegate,
+    ReportViewControllerDelegate,
+    UIAlertViewDelegate,
+    requestLDExttensionDelegate
 >
 {
     TAGContainer *_gtmContainer;
-    MyReviewDetailRequest *_myReviewDetailRequest;
     ReviewRequest *_reviewRequest;
     DetailReputationReview *_detailReputationReview;
     DetailReputationReview *_selectedReview;
@@ -130,6 +127,7 @@ requestLDExttensionDelegate
     [_imageCache loadImageNamed:@"icon_checklist.png" description:@"IconChecklist"];
     [_imageCache loadImageNamed:@"icon_star_active.png" description:@"IconStarActive"];
     [_imageCache loadImageNamed:@"icon_star.png" description:@"IconStar"];
+    [_imageCache loadImageNamed:@"icon_order_cancel-01.png" description:@"IconDelete"];
     
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
@@ -153,10 +151,6 @@ requestLDExttensionDelegate
                         action:@selector(refreshData)
               forControlEvents:UIControlEventValueChanged];
     [_header addSubview:_refreshControl];
-    
-    
-    _myReviewDetailRequest = [MyReviewDetailRequest new];
-    _myReviewDetailRequest.delegate = self;
     
     _reviewRequest = [ReviewRequest new];
     [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
@@ -213,94 +207,6 @@ requestLDExttensionDelegate
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - My Review Detail Request Delegate
-- (void)didReceiveReviewListing:(MyReviewReputationResult *)myReviews {
-    
-    [_refreshControl endRefreshing];
-    [_reviewList removeAllObjects];
-    
-    if (_page == 0) {
-        _isRefreshing = NO;
-        [_dataManager removeAllReviews];
-        [_dataManager replaceReviews:myReviews.list];
-    } else {
-        [_dataManager removeAllReviews];
-        [_dataManager addReviews:myReviews.list];
-    }
-}
-
-- (void)didSkipReview:(SkipReviewResult *)skippedReview {
-    _detailReputationReview = nil;
-    
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil lewati ulasan"]
-                                                                     delegate:self];
-    [alert show];
-    
-    _page = 0;
-    _getDataFromMasterInServer = @"1";
-    [_reviewList removeAllObjects];
-    [_collectionView reloadData];
-    
-    _detailMyInboxReputation.unassessed_reputation_review = [NSString stringWithFormat:@"%d", [_detailMyInboxReputation.unassessed_reputation_review intValue]-1];
-    
-    [_myReviewDetailRequest requestGetListReputationReviewWithDetail:_detailMyInboxReputation
-                                                            autoRead:_autoRead
-                                           getDataFromMasterInServer:_getDataFromMasterInServer];
-    
-    _getDataFromMasterInServer = @"0";
-}
-
-- (void)didFailSkipReview:(SkipReview *)skipReview {
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal lewati ulasan"]
-                                                                   delegate:self];
-    [alert show];
-}
-
-- (void)didDeleteReputationReviewResponse:(ResponseCommentResult *)response {
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil menghapus komentar"]
-                                                                     delegate:self];
-    [alert show];
-    
-    [_collectionView reloadData];
-    
-    int unassessedReputationReview = [_detailMyInboxReputation.unassessed_reputation_review intValue];
-    unassessedReputationReview++;
-    
-    _detailMyInboxReputation.unassessed_reputation_review = [NSString stringWithFormat:@"%d", unassessedReputationReview];
-}
-
-- (void)didInsertReputation:(GeneralAction *)action {
-    NSDateFormatter *date = [NSDateFormatter new];
-    date.dateFormat = @"d MMMM yyyy, HH:mm";
-    if ([action.data.is_success isEqualToString:@"1"]) {
-        if (![action.data.ld.url isEqualToString:@""] && action.data.ld.url) {
-            _request = [RequestLDExtension new];
-            _request.luckyDeal = action.data.ld;
-            _request.delegate = self;
-            [_request doRequestMemberExtendURLString:action.data.ld.url];
-        }
-        
-        if ([_selectedInbox.role isEqualToString:@"2"]) {
-            if (_selectedInbox.buyer_score != nil && ![_selectedInbox.buyer_score isEqualToString:@""]) {
-                _selectedInbox.score_edit_time_fmt = [date stringFromDate:[NSDate date]];
-            }
-            
-            _selectedInbox.buyer_score = _score;
-        } else {
-            if (_selectedInbox.seller_score != nil && ![_selectedInbox.seller_score isEqualToString:@""]) {
-                _selectedInbox.score_edit_time_fmt = [date stringFromDate:[NSDate date]];
-            }
-            
-            _selectedInbox.seller_score = _score;
-        }
-        
-    } else {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
-                                                                       delegate:self];
-        [alert show];
-    }
 }
 
 #pragma mark - GTM
@@ -360,8 +266,18 @@ requestLDExttensionDelegate
             vc.strShopID = _selectedReview.shop_id;
             vc.strReviewID = _selectedReview.review_id;
             [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [_myReviewDetailRequest requestDeleteReputationReviewResponse:_selectedReview];
+        } else if (actionSheet.tag == 300) {
+            [_reviewRequest requestDeleteReputationReviewResponseWithReputationID:_selectedReview.reputation_id
+                                                                         reviewID:_selectedReview.review_id
+                                                                           shopID:_selectedReview.shop_id
+                                                                        onSuccess:^(ResponseCommentResult *result) {
+                                                                            [self refreshData];
+                                                                        }
+                                                                        onFailure:^(NSError *error) {
+                                                                            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal membalas ulasan"]
+                                                                                                                                           delegate:self];
+                                                                            [alert show];
+                                                                        }];
         }
     }
 }
@@ -369,12 +285,65 @@ requestLDExttensionDelegate
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
-        [_myReviewDetailRequest requestInsertReputation:_selectedInbox withScore:_score];
+        [_reviewRequest requestInsertReputationWithReputationID:_detailMyInboxReputation.reputation_id
+                                                           role:_detailMyInboxReputation.role
+                                                          score:_score
+                                                      onSuccess:^(GeneralActionResult *result) {
+                                                          NSDateFormatter *date = [NSDateFormatter new];
+                                                          date.dateFormat = @"d MMMM yyyy, HH:mm";
+                                                          
+                                                          if (![result.ld.url isEqualToString:@""] && result.ld.url) {
+                                                              _request = [RequestLDExtension new];
+                                                              _request.luckyDeal = result.ld;
+                                                              _request.delegate = self;
+                                                              [_request doRequestMemberExtendURLString:result.ld.url];
+                                                          }
+                                                          
+                                                          if ([_selectedInbox.role isEqualToString:@"2"]) {
+                                                              if (_selectedInbox.buyer_score != nil && ![_selectedInbox.buyer_score isEqualToString:@""]) {
+                                                                  _selectedInbox.score_edit_time_fmt = [date stringFromDate:[NSDate date]];
+                                                              }
+                                                              
+                                                              _selectedInbox.buyer_score = _score;
+                                                          } else {
+                                                              if (_selectedInbox.seller_score != nil && ![_selectedInbox.seller_score isEqualToString:@""]) {
+                                                                  _selectedInbox.score_edit_time_fmt = [date stringFromDate:[NSDate date]];
+                                                              }
+                                                              
+                                                              _selectedInbox.seller_score = _score;
+                                                          }
+                                                          
+                                                          if ([_score isEqualToString:@"-1"]) {
+                                                              StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Saya tidak puas"]
+                                                                                                                               delegate:self];
+                                                              
+                                                              [alert show];
+                                                          } else if ([_score isEqualToString:@"1"]) {
+                                                              StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Saya cukup puas"]
+                                                                                                                               delegate:self];
+                                                              
+                                                              [alert show];
+                                                          } else if ([_score isEqualToString:@"2"]) {
+                                                              StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Saya puas"]
+                                                                                                                               delegate:self];
+                                                              
+                                                              [alert show];
+                                                          }
+                                                          
+                                                          [self refreshData];
+                                                      }
+                                                      onFailure:^(NSError *error) {
+                                                          
+                                                      }];
     } else if (buttonIndex == alertView.cancelButtonIndex && alertView.tag == 40) {
         [_reviewRequest requestSkipProductReviewWithProductID:_selectedReview.product_id
                                                  reputationID:_selectedReview.reputation_id
                                                        shopID:_selectedReview.shop_id
                                                     onSuccess:^(SkipReviewResult *result) {
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil melewati ulasan"]
+                                                                                                                         delegate:self];
+                                                        
+                                                        [alert show];
                                                         [self refreshData];
                                                     }
                                                     onFailure:^(NSError *error) {
@@ -480,32 +449,32 @@ requestLDExttensionDelegate
 }
 
 - (void)didTapRevieweeReputation:(id)sender role:(NSString *)role {
-    //    if ([role isEqualToString:@"1"]) {
-    //        int paddingRightLeftContent = 10;
-    //        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-    //        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-    //        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
-    //                                 andPadding:paddingRightLeftContent
-    //                       withReputationNetral:_detailMyInboxReputation.user_reputation.neutral
-    //                               withRepSmile:_detailMyInboxReputation.user_reputation.positive
-    //                                 withRepSad:_detailMyInboxReputation.user_reputation.negative
-    //                               withDelegate:self];
-    //
-    //        //Init pop up
-    //        _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-    //        _cmPopTipView.delegate = self;
-    //        _cmPopTipView.backgroundColor = [UIColor whiteColor];
-    //        _cmPopTipView.animation = CMPopTipAnimationSlide;
-    //        _cmPopTipView.dismissTapAnywhere = YES;
-    //        _cmPopTipView.leftPopUp = YES;
-    //
-    //        [_cmPopTipView presentPointingAtView:sender
-    //                                      inView:self.view
-    //                                    animated:YES];
-    //    } else {
-    //        NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
-    //        [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
-    //    }
+        if ([role isEqualToString:@"1"]) {
+            int paddingRightLeftContent = 10;
+            UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+            SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+            [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
+                                     andPadding:paddingRightLeftContent
+                           withReputationNetral:_detailMyInboxReputation.user_reputation.neutral
+                                   withRepSmile:_detailMyInboxReputation.user_reputation.positive
+                                     withRepSad:_detailMyInboxReputation.user_reputation.negative
+                                   withDelegate:self];
+    
+            //Init pop up
+            _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+            _cmPopTipView.delegate = self;
+            _cmPopTipView.backgroundColor = [UIColor whiteColor];
+            _cmPopTipView.animation = CMPopTipAnimationSlide;
+            _cmPopTipView.dismissTapAnywhere = YES;
+            _cmPopTipView.leftPopUp = YES;
+    
+            [_cmPopTipView presentPointingAtView:sender
+                                          inView:self.view
+                                        animated:YES];
+        } else {
+            NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
+            [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+        }
 }
 
 - (void)didTapToGiveResponse:(DetailReputationReview *)review {
@@ -698,12 +667,20 @@ requestLDExttensionDelegate
                                                              
                                                          }];
     
-    _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_detailMyInboxReputation
+    [_header removeFromSuperview];
+    
+    _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_selectedInbox?:_detailMyInboxReputation
                                                      imageCache:_imageCache
                                                        delegate:self
                                                  smileyDelegate:self];
     
-    //    [self setHeaderPosition];
+    [self setHeaderPosition];
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self
+                        action:@selector(refreshData)
+              forControlEvents:UIControlEventValueChanged];
+    [_header addSubview:_refreshControl];
 }
 
 @end

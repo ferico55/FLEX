@@ -133,6 +133,7 @@
 @property (nonatomic, strong) NSString *review_reputation_id;
 
 @property (nonatomic, strong) NSArray *review_image_attachment;
+@property (nonatomic, strong) NSString *review_create_time_fmt;
 
 //only used in helpful review, diff implementation, diff ws
 @property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;

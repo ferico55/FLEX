@@ -10,7 +10,7 @@
 #import <ComponentKit/ComponentKit.h>
 
 static CKComponent* timestampLabel(NSString* createTime) {
-    if (![createTime boolValue]) {
+    if ([createTime isEqualToString:@"0"]) {
         return nil;
     }
     
@@ -123,7 +123,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                                size:{}],
                           },
                           {
-                              timestampLabel(review.review_response.response_create_time)
+                              timestampLabel(review.review_create_time_fmt)
                           }
                       }],
                      .flexGrow = YES,

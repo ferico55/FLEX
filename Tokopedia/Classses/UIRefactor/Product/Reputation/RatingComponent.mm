@@ -18,7 +18,7 @@
         stars.push_back({
             [CKImageComponent
              newWithImage:starImage
-             size:{15,15}]
+             size:{20,20}]
         });
     }
     
@@ -27,7 +27,8 @@
              newWithView:{}
              size:{}
              style:{
-                 .direction = CKStackLayoutDirectionHorizontal
+                 .direction = CKStackLayoutDirectionHorizontal,
+                 .spacing = 3
              }
              children:stars]];
 }

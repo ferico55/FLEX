@@ -29,7 +29,7 @@ static CKComponent* skipButton (DetailReputationReview* review) {
                 selected:NO
                 enabled:YES
                 action:@selector(didTapToSkipReview:)
-                size:{}
+                size:{.height = 25}
                 attributes:{}
                 accessibilityConfiguration:{}];
     }

@@ -18,6 +18,7 @@
 #import "ImageResult.h"
 #import "SkipReviewResult.h"
 #import "ResponseCommentResult.h"
+#import "GeneralActionResult.h"
 
 @interface ReviewRequest : NSObject
 - (void)requestReviewLikeDislikesWithId:(NSString *)reviewId
@@ -112,5 +113,11 @@
                                                        shopID:(NSString*)shopID
                                                     onSuccess:(void(^)(ResponseCommentResult *result))successCallback
                                                     onFailure:(void(^)(NSError *error))errorCallback;
+
+- (void)requestInsertReputationWithReputationID:(NSString*)reputationID
+                                           role:(NSString*)role
+                                          score:(NSString*)score
+                                      onSuccess:(void(^)(GeneralActionResult *result))successCallback
+                                      onFailure:(void(^)(NSError *error))errorCallback;
 
 @end

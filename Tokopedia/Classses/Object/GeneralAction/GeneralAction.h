@@ -19,4 +19,6 @@
 @property (nonatomic, strong) GeneralActionResult *result;
 @property (nonatomic, strong) GeneralActionResult *data;
 
++ (RKObjectMapping*)mapping;
+
 @end

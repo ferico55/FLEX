@@ -19,8 +19,8 @@
                                                             @"server_process_time"]];
     
     [responseCommentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                          toKeyPath:@"result"
-                                                                                        withMapping:[ResponseCommentResult mapping]]];
+                                                                                           toKeyPath:@"data"
+                                                                                         withMapping:[ResponseCommentResult mapping]]];
     
     return responseCommentMapping;
 }

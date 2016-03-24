@@ -18,7 +18,7 @@
     
     return [super newWithComponent:
             [CKInsetComponent
-             newWithInsets:{0,8,0,8}
+             newWithInsets:{8,8,8,8}
              component:
              [CKStackLayoutComponent
               newWithView:{}
@@ -34,23 +34,24 @@
                        newWithView:{}
                        size:{}
                        style:{
-                           .direction = CKStackLayoutDirectionHorizontal,
+                           .direction = CKStackLayoutDirectionVertical,
                            .alignItems = CKStackLayoutAlignItemsCenter,
+                           .justifyContent = CKStackLayoutJustifyContentCenter,
                            .spacing = 5
                        }
                        children:
                        {
                            {
+                               [RatingComponent newWithRating:[review.product_rating_point intValue] imageCache:imageCache]
+                           },
+                           {
                                [CKLabelComponent
                                 newWithLabelAttributes:{
-                                    .string = @"Kualitas",
+                                    .string = @"Kualitas Produk",
                                     .font = [UIFont fontWithName:@"Gotham Book" size:12]
                                 }
                                 viewAttributes:{}
                                 size:{}]
-                           },
-                           {
-                               [RatingComponent newWithRating:[review.product_rating_point intValue] imageCache:imageCache]
                            }
                        }],
                       .flexBasis = CKRelativeDimension::Percent(0.5)
@@ -60,24 +61,24 @@
                        newWithView:{}
                        size:{}
                        style:{
-                           .direction = CKStackLayoutDirectionHorizontal,
+                           .direction = CKStackLayoutDirectionVertical,
                            .alignItems = CKStackLayoutAlignItemsCenter,
-                           .justifyContent = CKStackLayoutJustifyContentEnd,
+                           .justifyContent = CKStackLayoutJustifyContentCenter,
                            .spacing = 5
                        }
                        children:
                        {
                            {
+                               [RatingComponent newWithRating:[review.product_accuracy_point intValue] imageCache:imageCache]
+                           },
+                           {
                                [CKLabelComponent
                                 newWithLabelAttributes:{
-                                    .string = @"Akurasi",
+                                    .string = @"Akurasi Produk",
                                     .font = [UIFont fontWithName:@"Gotham Book" size:12]
                                 }
                                 viewAttributes:{}
                                 size:{}]
-                           },
-                           {
-                               [RatingComponent newWithRating:[review.product_accuracy_point intValue] imageCache:imageCache]
                            }
                        }],
                       .flexBasis = CKRelativeDimension::Percent(0.5)

@@ -240,7 +240,8 @@
                                                                    @"review_post_time",
                                                                    @"review_is_allow_edit",
                                                                    @"product_name",
-                                                                   @"shop_domain"
+                                                                   @"shop_domain",
+                                                                   @"review_create_time_fmt"
                                                                    ]];
     
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation"
@@ -253,7 +254,7 @@
     
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_owner"
                                                                                                   toKeyPath:@"product_owner"
-                                                                                                withMapping:[ProductOwner mapping]]];
+                                                                                                withMapping:[ProductOwner mappingForInbox]]];
     
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level"
                                                                                                   toKeyPath:@"shop_badge_level"
