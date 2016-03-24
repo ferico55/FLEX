@@ -47,26 +47,16 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
 {
     NSMutableArray *_list;
-    NSOperationQueue *_operationQueue;
     NSString *_URINext;
     
     NSInteger _page;
     
     BOOL _isNodata;
     
-    TxOrderObjectMapping *_mapping;
-    
     UIRefreshControl *_refreshControll;
-    
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKObjectManager *_objectManagerFinishOrder;
-    __weak RKManagedObjectRequestOperation *_requestFinishOrder;
-    __weak RKObjectManager *_objectManagerReOrder;
-    __weak RKManagedObjectRequestOperation *_requestReOrder;
     
     NSString *_transactionFilter;
     
@@ -145,8 +135,6 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     _list = [NSMutableArray new];
-    _mapping = [TxOrderObjectMapping new];
-    _operationQueue = [NSOperationQueue new];
     _objectsConfirmRequest = [NSMutableArray new];
     
     _refreshControll = [[UIRefreshControl alloc] init];
@@ -257,8 +245,8 @@
 
 -(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath
 {
-    [self configureRestKitReOrder];
     [self doRequestReorder:order];
+    
 }
 
 #pragma mark - Filter Delegate
@@ -604,46 +592,6 @@
 }
 
 #pragma mark - Request ReOrder
--(void)cancelReOrder
-{
-    [_requestReOrder cancel];
-    //_requestReOrder = nil;
-    [_objectManagerReOrder.operationQueue cancelAllOperations];
-    _objectManagerReOrder = nil;
-}
-
--(void)configureRestKitReOrder
-{
-    _objectManagerReOrder = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[API_IS_SUCCESS_KEY]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resultRel];
-    
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerReOrder addResponseDescriptor:responseDescriptor];
-    
-}
-
 -(void)doRequestReorder:(TxOrderStatusList*)order{
     [RequestPurchase fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         [_act stopAnimating];
@@ -654,31 +602,6 @@
         [_act stopAnimating];
     }];
 }
-
--(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
-
-}
-
-
--(void)requestFailureReOrder:(TxOrderStatusList*)order withError:(NSError*)error
-{
-    if ([error code] != NSURLErrorCancelled) {
-        NSString *errorDescription = error.localizedDescription;
-        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-        [errorAlert show];
-    }
-}
-
--(void)requestProcessReOrder
-{
-
-}
-
--(void)requestTimeoutReOrder
-{
-    [self cancelReOrder];
-}
-
 
 #pragma mark - Cell Delegate
 -(void)trackOrderAtIndexPath:(NSIndexPath *)indexPath
@@ -724,38 +647,16 @@
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
-    RequestCancelResolution *request = [self requestCancelComlpain];
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
-    request.resolutionID = [resolutionID integerValue];
-    request.delegate = self;
-    request.resolution = resolution;
-    [request doRequest];
-}
-
--(RequestCancelResolution*)requestCancelComlpain
-{
-    if (!_requestCancelComplain) {
-        _requestCancelComplain = [RequestCancelResolution new];
-        _requestCancelComplain.delegate = self;
-    }
     
-    return _requestCancelComplain;
-}
-
--(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil membatalkan komplain"] delegate:self];
-    [alert show];
-    [_list removeObject:resolution];
-    [_tableView reloadData];
-    [self refreshRequest];
-}
-
--(void)failedCancelComplain:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
-    [alert show];
+    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution, NSString *uriNext) {
+        [_list removeObject:resolution];
+        [_tableView reloadData];
+        [self refreshRequest];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 -(void)failedConfirmDelivery:(TxOrderStatusList*)order
@@ -808,7 +709,6 @@
     {
         if (buttonIndex == 1) {
             TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_REORDER_KEY];
-            [self configureRestKitReOrder];
             [self doRequestReorder:order];
         }
     }
