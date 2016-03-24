@@ -14,6 +14,7 @@ target "Tokopedia" do
     pod 'Rollout.io', '~> 0.13.0'
     pod 'AppsFlyer-SDK', '4.3.7'
     pod 'BlocksKit', '~> 2.2.5'
+    pod 'Tweaks'
 end
 
 target "TokopediaTests" do

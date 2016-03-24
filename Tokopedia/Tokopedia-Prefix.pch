@@ -70,5 +70,6 @@
     #import "TKPMappingManager.h"
 
     #import "TPSpotlight.h"
+    #import "FBTweakInline.h"
 
 #endif

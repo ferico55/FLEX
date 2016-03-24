@@ -62,6 +62,7 @@ PODS:
   - SOCKit (1.1)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
+  - Tweaks (2.0.0)
 
 DEPENDENCIES:
   - AppsFlyer-SDK (= 4.3.7)
@@ -76,6 +77,7 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - Rollout.io (~> 0.13.0)
   - TTTAttributedLabel
+  - Tweaks
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
@@ -98,5 +100,6 @@ SPEC CHECKSUMS:
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
+  Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81
 
 COCOAPODS: 0.38.2
