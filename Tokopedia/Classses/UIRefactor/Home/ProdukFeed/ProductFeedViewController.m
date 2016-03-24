@@ -257,6 +257,7 @@ FavoriteShopRequestDelegate
     if(!_isRequestingProductFeed){
         _page = 0;
         _isRequestingProductFeed = YES;
+        [_collectionView addSubview:_loadingIndicator];
         //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         [_favoriteShopRequest requestFavoriteShopListings];
     }
@@ -420,11 +421,13 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
     }else{
         [_loadingIndicator stopAnimating];
+        [_refreshControl endRefreshing];
         [_noResultView removeFromSuperview];
         [_firstFooter removeFromSuperview];
         [_productDataSource removeAllProducts];
         [_collectionView addSubview:_noResultView];
         [_collectionView layoutIfNeeded];
+        [_collectionView reloadData];
         _isRequestingProductFeed = NO;
     }
 }
