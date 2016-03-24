@@ -11,6 +11,7 @@
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		456AD0CC1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 456AD0CB1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m */; };
+		456AD0CF1CA3A19C00AAC667 /* ImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 456AD0CD1CA3A19C00AAC667 /* ImageResult.m */; };
 		45CF1DCB1C9FF33F00C3BB8A /* RequestPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF1DCA1C9FF33F00C3BB8A /* RequestPurchase.m */; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -2149,6 +2150,8 @@
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
 		456AD0CA1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StickyAlertView+NetworkErrorHandler.h"; sourceTree = "<group>"; };
 		456AD0CB1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StickyAlertView+NetworkErrorHandler.m"; sourceTree = "<group>"; };
+		456AD0CD1CA3A19C00AAC667 /* ImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResult.m; sourceTree = "<group>"; };
+		456AD0CE1CA3A19C00AAC667 /* ImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResult.h; sourceTree = "<group>"; };
 		45CF1DC91C9FF33F00C3BB8A /* RequestPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPurchase.h; sourceTree = "<group>"; };
 		45CF1DCA1C9FF33F00C3BB8A /* RequestPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPurchase.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7361,6 +7364,8 @@
 		85A27A821C919C1E005170EB /* UploadImage */ = {
 			isa = PBXGroup;
 			children = (
+				456AD0CD1CA3A19C00AAC667 /* ImageResult.m */,
+				456AD0CE1CA3A19C00AAC667 /* ImageResult.h */,
 				85A27A831C919C1E005170EB /* GenerateHost */,
 				85A27A8A1C919C1E005170EB /* Upload.h */,
 				85A27A8B1C919C1E005170EB /* Upload.m */,
@@ -12668,6 +12673,7 @@
 				85A2861F1C919C2B005170EB /* StarsRateView.m in Sources */,
 				85A287B31C919C2C005170EB /* SettingUserProfileViewController.m in Sources */,
 				85A2852C1C919C2B005170EB /* TransactionEditAddressFormResult.m in Sources */,
+				456AD0CF1CA3A19C00AAC667 /* ImageResult.m in Sources */,
 				85A2840B1C919C2B005170EB /* HistoryProduct.m in Sources */,
 				85A285631C919C2B005170EB /* GenerateHostResult.m in Sources */,
 				85A284651C919C2B005170EB /* MyReviewReputationViewModel.m in Sources */,

@@ -14,6 +14,7 @@
 #import "RequestGenerateHost.h"
 #import "string_tx_order.h"
 #import "AlertInfoView.h"
+#import "RequestObject.h"
 
 @implementation RequestPayment
 {
@@ -70,10 +71,9 @@
 
 -(void)doRequestGenerateHost
 {
-    RequestGenerateHost *requestHost = [RequestGenerateHost new];
-    [requestHost configureRestkitGenerateHost];
-    [requestHost requestGenerateHost];
-    requestHost.delegate = self;
+    [RequestGenerateHost fetchGenerateHostSuccess:^(GeneratedHost *host) {
+        
+    }];
 }
 
 -(void)doUploadImage:(id)object withHost:(GenerateHost*)host;
@@ -244,6 +244,25 @@
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     [_delegate actionAfterRequest];
+}
+
++(void)requestPaymentConfirmationImage:(UIImage*)image imageName:(NSString*)imageName fileName:(NSString*)fileName requestObject:(RequestObjectUploadImage*)object Success:(void(^)(TransactionAction *data))success{
+    
+    if (image == nil) {
+        
+    }
+    
+    [RequestGenerateHost fetchGenerateHostSuccess:^(GeneratedHost *host) {
+        [RequestUploadImage requestUploadImage:image withUploadHost:host.upload_host path:@"ws/action/upload-image.pl" name:imageName fileName:@"payment_image" requestObject:object onSuccess:^(ImageResult *imageResult) {
+            
+        } onFailure:^(NSError *error) {
+            
+        }];
+    }];
+}
+
++(void)requestSubmitSuccess:(void(^)(TransactionAction *data))success{
+    
 }
 
 @end
