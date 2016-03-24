@@ -146,6 +146,7 @@ FavoriteShopRequestDelegate
 //    [_firstFooter setHidden:NO];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(100, 0, 0, 0)];
     
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
@@ -205,8 +206,9 @@ FavoriteShopRequestDelegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
     CGSize size = CGSizeZero;
-    if (_promo.count > section && section > 0) {
-        if ([_promo objectAtIndex:section]) {
+    if (_promo.count > section) {
+        NSArray *currentPromo = [_promo objectAtIndex:section];
+        if (currentPromo && currentPromo.count > 0) {
             CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:PromoCollectionViewCellTypeNormal];
             size = CGSizeMake(self.view.frame.size.width, headerHeight);
         }
@@ -275,10 +277,10 @@ FavoriteShopRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (_promo.count >= indexPath.section && indexPath.section > 0) {
-            if ([_promo objectAtIndex:indexPath.section]) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+        if (_promo.count >= indexPath.section) {
+            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
+            if (currentPromo && currentPromo.count > 0) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
                                                                          forIndexPath:indexPath];
                 ((PromoCollectionReusableView *)reusableView).collectionViewCellType = PromoCollectionViewCellTypeNormal;
                 ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
@@ -288,10 +290,8 @@ FavoriteShopRequestDelegate
                 if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
                     [((PromoCollectionReusableView *)reusableView) scrollToCenter];
                 }
-            } else {
-                reusableView = nil;
-            }
-        } else {
+                
+            }        } else {
             reusableView = nil;
         }
     } else if (kind == UICollectionElementKindSectionFooter) {
@@ -328,21 +328,28 @@ FavoriteShopRequestDelegate
 
 - (void)requestPromo {
     _promoRequest.page = _page;
-    //[_promoRequest requestForProductFeed];
-    [_promoRequest requestForProductFeedWithPage:_page
-                                       onSuccess:^(NSArray<PromoResult *> *promo) {
-                                           if (promo) {
-                                               [_promo addObject:promo];
-                                               [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                           } else if (promo == nil && _page == 2) {
-                                               [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-                                           }
-                                           [_collectionView reloadData];
-                                           [_collectionView layoutIfNeeded];
-                                       } onFailure:^(NSError *error) {
-                                           StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
-                                           [stickyView show];
-                                       }];
+    if(_page % 2 == 0){
+        [_promoRequest requestForProductFeedWithPage:_page
+                                           onSuccess:^(NSArray<PromoResult *> *promoResult) {
+                                        if (promoResult) {
+                                            NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                            NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                            arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                            arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                            NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                            
+                                            [_promo addObject:promoArrayFirstHalf];
+                                            [_promo addObject:promoArrayLastHalf];
+                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                        }
+                                        [_collectionView reloadData];
+                                    } onFailure:^(NSError *error) {
+                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                        [_collectionView reloadData];
+                                    }];
+    }
 }
 
 #pragma mark - Promo collection delegate
@@ -431,7 +438,6 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     if (_favoritedShops.list.count > 0 && feed.result.products.count > 0) {
         if (_page == 0) {
             [_productDataSource replaceProductsWith: feed.result.products];
-            //[_promo removeAllObjects];
         }else{
             [_productDataSource addProducts: feed.result.products];
         }
