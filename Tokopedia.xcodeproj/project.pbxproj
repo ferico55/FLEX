@@ -10,6 +10,7 @@
 		14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		456AD0CC1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 456AD0CB1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m */; };
 		45CF1DCB1C9FF33F00C3BB8A /* RequestPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF1DCA1C9FF33F00C3BB8A /* RequestPurchase.m */; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -2146,6 +2147,8 @@
 		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
 		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
 		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
+		456AD0CA1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StickyAlertView+NetworkErrorHandler.h"; sourceTree = "<group>"; };
+		456AD0CB1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StickyAlertView+NetworkErrorHandler.m"; sourceTree = "<group>"; };
 		45CF1DC91C9FF33F00C3BB8A /* RequestPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPurchase.h; sourceTree = "<group>"; };
 		45CF1DCA1C9FF33F00C3BB8A /* RequestPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPurchase.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7638,6 +7641,8 @@
 		85A27AEA1C919C1E005170EB /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				456AD0CA1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.h */,
+				456AD0CB1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m */,
 				85A27AEB1C919C1E005170EB /* AlertBaseUrl.h */,
 				85A27AEC1C919C1E005170EB /* AlertBaseUrl.m */,
 				85A27AED1C919C1E005170EB /* AlertBaseUrl.xib */,
@@ -12753,6 +12758,7 @@
 				85A287F91C919C2C005170EB /* InfoAddressView.swift in Sources */,
 				85A284A01C919C2B005170EB /* PromoResult.m in Sources */,
 				85A287401C919C2C005170EB /* ReputationMyReviewViewController.m in Sources */,
+				456AD0CC1CA39A9F00AAC667 /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				85A285761C919C2B005170EB /* SwipeView.m in Sources */,
 				85A284EF1C919C2B005170EB /* ShipmentPackage.m in Sources */,
 				85A287971C919C2C005170EB /* SettingAddressExpandedCell.m in Sources */,

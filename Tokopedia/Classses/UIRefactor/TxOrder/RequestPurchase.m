@@ -7,6 +7,7 @@
 //
 
 #import "RequestPurchase.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
 
 @implementation RequestPurchase
 
@@ -35,9 +36,8 @@
         
         if(response.message_error)
         {
-            NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-            [alert show];
+            NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+            [StickyAlertView showErrorMessage:array];
             failure(nil);
         } else {
             NSInteger nextPage = [[networkManager splitUriToPage:response.result.paging.uri_next] integerValue];
@@ -72,8 +72,7 @@
             success(order,response.result);
         }
         else{
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
-            [alert show];
+            [StickyAlertView showErrorMessage:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"]];
             failure(nil, order);
         }
         
@@ -111,9 +110,7 @@
                 }
                 errorMessage = errors?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
             }
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage?:@[@"Pesan ulang tidak dapat dilakukan"] delegate:self];
-            [alert show];
-
+            [StickyAlertView showErrorMessage:errorMessage?:@[@"Pesan ulang tidak dapat dilakukan"]];
             failure(nil,order);
         }
     } onFailure:^(NSError *errorResult) {
