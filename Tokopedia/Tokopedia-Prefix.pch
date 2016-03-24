@@ -71,5 +71,6 @@
 
     #import "TPSpotlight.h"
     #import "FBTweakInline.h"
+    #import "NSString+TPBaseUrl.h"
 
 #endif
