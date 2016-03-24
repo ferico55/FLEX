@@ -194,7 +194,6 @@ ImageSearchRequestDelegate
     self.navigationItem.backBarButtonItem = backButton;
     
     _userManager = [UserAuthentificationManager new];
-    _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
@@ -423,8 +422,7 @@ ImageSearchRequestDelegate
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
-            _promo.count >= indexPath.section &&
-            indexPath.section > 0) {
+            _promo.count > indexPath.section) {
             
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
             if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
@@ -432,9 +430,9 @@ ImageSearchRequestDelegate
                     if (currentPromo && currentPromo.count > 0) {
                         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
                                                                                  forIndexPath:indexPath];
-                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section - 1]];
+                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section]];
                         if(_promo.count > indexPath.section){
-                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section]];
+                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section+1]];
                         }
                         ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
                         ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
@@ -451,7 +449,7 @@ ImageSearchRequestDelegate
                     reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
                                                                              forIndexPath:indexPath];
                     ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                    ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section - 1];
+                    ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
                     ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
                     ((PromoCollectionReusableView *)reusableView).delegate = self;
                     ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
@@ -503,11 +501,11 @@ ImageSearchRequestDelegate
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-        if (_promo.count > section && section > 0) {
+        if (_promo.count > section) {
             NSArray *currentPromo = [_promo objectAtIndex:section];
             
             if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
-                if(section % 2 == 1){
+                if(section % 2 == 0){
                     if (currentPromo && currentPromo.count > 0) {
                         CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
                         size = CGSizeMake(self.view.frame.size.width, headerHeight);
@@ -961,7 +959,7 @@ ImageSearchRequestDelegate
         [_collectionView addSubview:_noResultView];
     }
     
-    if(_start > 0) [self requestPromo];
+    //if(_start > 0) [self requestPromo];
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
@@ -1079,7 +1077,7 @@ ImageSearchRequestDelegate
             [_collectionView addSubview:_noResultView];
         }
         
-        if(_start > 0) [self requestPromo];
+        if (_start > 0) [self requestPromo];
         
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
