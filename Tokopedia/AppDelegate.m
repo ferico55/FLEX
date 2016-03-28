@@ -22,6 +22,7 @@
 #import "DeeplinkController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Rollout/Rollout.h>
+#import "Tokopedia-Swift.h"
 
 @implementation AppDelegate
 
@@ -35,7 +36,7 @@
 
     [self hideTitleBackButton];
     
-    _viewController = [MainViewController new];
+    _viewController = [IntroViewController new];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;

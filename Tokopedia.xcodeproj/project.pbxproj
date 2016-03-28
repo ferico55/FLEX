@@ -2091,6 +2091,14 @@
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		92351FD61C9690B30056B25C /* UIScrollViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */; };
+		92464B0E1CA3FC89000AABAD /* onboarding_toped_1a.png in Resources */ = {isa = PBXBuildFile; fileRef = 92464B081CA3FC89000AABAD /* onboarding_toped_1a.png */; };
+		92464B0F1CA3FC89000AABAD /* onboarding_toped_1b.png in Resources */ = {isa = PBXBuildFile; fileRef = 92464B091CA3FC89000AABAD /* onboarding_toped_1b.png */; };
+		92464B101CA3FC89000AABAD /* onboarding_toped_1c.png in Resources */ = {isa = PBXBuildFile; fileRef = 92464B0A1CA3FC89000AABAD /* onboarding_toped_1c.png */; };
+		92464B111CA3FC89000AABAD /* onboarding_toped_1d.png in Resources */ = {isa = PBXBuildFile; fileRef = 92464B0B1CA3FC89000AABAD /* onboarding_toped_1d.png */; };
+		92464B121CA3FC89000AABAD /* onboarding_toped_1e.png in Resources */ = {isa = PBXBuildFile; fileRef = 92464B0C1CA3FC89000AABAD /* onboarding_toped_1e.png */; };
+		92464B131CA3FC89000AABAD /* onboarding_toped_1f.png in Resources */ = {isa = PBXBuildFile; fileRef = 92464B0D1CA3FC89000AABAD /* onboarding_toped_1f.png */; };
+		92464B161CA3FD17000AABAD /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92464B151CA3FD17000AABAD /* IntroViewController.swift */; };
+		927E9A961CA9086800CE5F51 /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 927E9A951CA9086800CE5F51 /* IntroViewController.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5255,6 +5263,14 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewCategory.swift; sourceTree = "<group>"; };
+		92464B081CA3FC89000AABAD /* onboarding_toped_1a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_toped_1a.png; sourceTree = "<group>"; };
+		92464B091CA3FC89000AABAD /* onboarding_toped_1b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_toped_1b.png; sourceTree = "<group>"; };
+		92464B0A1CA3FC89000AABAD /* onboarding_toped_1c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_toped_1c.png; sourceTree = "<group>"; };
+		92464B0B1CA3FC89000AABAD /* onboarding_toped_1d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_toped_1d.png; sourceTree = "<group>"; };
+		92464B0C1CA3FC89000AABAD /* onboarding_toped_1e.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_toped_1e.png; sourceTree = "<group>"; };
+		92464B0D1CA3FC89000AABAD /* onboarding_toped_1f.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_toped_1f.png; sourceTree = "<group>"; };
+		92464B151CA3FD17000AABAD /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		927E9A951CA9086800CE5F51 /* IntroViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -7409,6 +7425,7 @@
 		85A27AC61C919C1E005170EB /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				92464B141CA3FCEA000AABAD /* Onboarding */,
 				85A27AC71C919C1E005170EB /* Activation */,
 				85A27AE01C919C1E005170EB /* Address */,
 				85A27AEA1C919C1E005170EB /* Alert */,
@@ -9827,6 +9844,7 @@
 		85A2806B1C919C24005170EB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92464B071CA3FC89000AABAD /* Onboarding */,
 				85A2806C1C919C24005170EB /* Database */,
 				85A2806E1C919C24005170EB /* Font */,
 				85A280751C919C24005170EB /* Images */,
@@ -10802,6 +10820,29 @@
 			path = "Third Party";
 			sourceTree = "<group>";
 		};
+		92464B071CA3FC89000AABAD /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				92464B081CA3FC89000AABAD /* onboarding_toped_1a.png */,
+				92464B091CA3FC89000AABAD /* onboarding_toped_1b.png */,
+				92464B0A1CA3FC89000AABAD /* onboarding_toped_1c.png */,
+				92464B0B1CA3FC89000AABAD /* onboarding_toped_1d.png */,
+				92464B0C1CA3FC89000AABAD /* onboarding_toped_1e.png */,
+				92464B0D1CA3FC89000AABAD /* onboarding_toped_1f.png */,
+			);
+			name = Onboarding;
+			path = Images/Onboarding;
+			sourceTree = "<group>";
+		};
+		92464B141CA3FCEA000AABAD /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				92464B151CA3FD17000AABAD /* IntroViewController.swift */,
+				927E9A951CA9086800CE5F51 /* IntroViewController.xib */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -11083,6 +11124,7 @@
 				85A287871C919C2C005170EB /* SearchViewController.xib in Resources */,
 				85A289301C919C2C005170EB /* icon_14@3x.png in Resources */,
 				85A28B251C919C2C005170EB /* icon_home@2x.png in Resources */,
+				92464B101CA3FC89000AABAD /* onboarding_toped_1c.png in Resources */,
 				85A285F21C919C2B005170EB /* ContactUsWebViewController.xib in Resources */,
 				85A2878C1C919C2C005170EB /* SearchResultShopCell.xib in Resources */,
 				85A2866B1C919C2B005170EB /* HotlistCollectionCell.xib in Resources */,
@@ -11516,6 +11558,7 @@
 				85A2892A1C919C2C005170EB /* icon_category@3x.png in Resources */,
 				85A288C21C919C2C005170EB /* icon_15.png in Resources */,
 				85A285941C919C2B005170EB /* AlertDatePickerView.xib in Resources */,
+				92464B111CA3FC89000AABAD /* onboarding_toped_1d.png in Resources */,
 				85A28B561C919C2C005170EB /* icon_more_grey@2x.png in Resources */,
 				85A28B241C919C2C005170EB /* icon_home.png in Resources */,
 				85A2897B1C919C2C005170EB /* icon_google@2x.png in Resources */,
@@ -11628,6 +11671,7 @@
 				85A289151C919C2C005170EB /* icon_button_share.png in Resources */,
 				85A289201C919C2C005170EB /* icon_camera_album.png in Resources */,
 				85A287FA1C919C2C005170EB /* InfoAddressView.xib in Resources */,
+				92464B0E1CA3FC89000AABAD /* onboarding_toped_1a.png in Resources */,
 				85A289741C919C2C005170EB /* icon_etalase.png in Resources */,
 				85A285801C919C2B005170EB /* CreatePasswordViewController.xib in Resources */,
 				85A289D31C919C2C005170EB /* icon_nav_arrow_up.png in Resources */,
@@ -11650,6 +11694,7 @@
 				85A28AF41C919C2C005170EB /* pin_poin_toped_60.png in Resources */,
 				85A288E51C919C2C005170EB /* tab_btm_shadow.png in Resources */,
 				85A28A331C919C2C005170EB /* icon_sad50@2x.png in Resources */,
+				92464B131CA3FC89000AABAD /* onboarding_toped_1f.png in Resources */,
 				85A286D11C919C2B005170EB /* MyShopPaymentCell.xib in Resources */,
 				85A287D71C919C2C005170EB /* SendMessageViewController.xib in Resources */,
 				85A28A111C919C2C005170EB /* icon_problem_about_account.png in Resources */,
@@ -11898,6 +11943,7 @@
 				85A28B4A1C919C2C005170EB /* icon_close_white@2x.png in Resources */,
 				85A289F71C919C2C005170EB /* icon_neutral_smile@2x.png in Resources */,
 				85A2876F1C919C2C005170EB /* ShipmentConfirmationViewController.xib in Resources */,
+				92464B0F1CA3FC89000AABAD /* onboarding_toped_1b.png in Resources */,
 				85A288EC1C919C2C005170EB /* icon-camera-filled.png in Resources */,
 				85A288A51C919C2C005170EB /* Lato-Bold.ttf in Resources */,
 				85A288821C919C2C005170EB /* ProductSingleViewCell.xib in Resources */,
@@ -11913,6 +11959,7 @@
 				85A289B01C919C2C005170EB /* icon_medal_bronze@2x.png in Resources */,
 				85A289B11C919C2C005170EB /* icon_medal_bronze@3x.png in Resources */,
 				85A287281C919C2C005170EB /* SegmentedReviewReputationViewController.xib in Resources */,
+				92464B121CA3FC89000AABAD /* onboarding_toped_1e.png in Resources */,
 				85A2871C1C919C2C005170EB /* MyReviewReputationCell.xib in Resources */,
 				85A286E51C919C2B005170EB /* PriceAlertCell.xib in Resources */,
 				85A289F91C919C2C005170EB /* icon_neutral_smile_small.png in Resources */,
@@ -11950,6 +11997,7 @@
 				85A287591C919C2C005170EB /* SalesNewOrderViewController.xib in Resources */,
 				85A28B261C919C2C005170EB /* icon_home_active.png in Resources */,
 				85A288181C919C2C005170EB /* TransactionCartCell.xib in Resources */,
+				927E9A961CA9086800CE5F51 /* IntroViewController.xib in Resources */,
 				85A2881E1C919C2C005170EB /* TransactionCartFormMandiriClickPayViewController.xib in Resources */,
 				85A28B361C919C2C005170EB /* icon_signin.png in Resources */,
 				85A286BB1C919C2B005170EB /* WebViewController.xib in Resources */,
@@ -12907,6 +12955,7 @@
 				85A288711C919C2C005170EB /* ProfileFavoriteShopViewController.m in Sources */,
 				85A284C61C919C2B005170EB /* ImageSearchProduct.m in Sources */,
 				85A286011C919C2B005170EB /* ContactUsFormWireframe.m in Sources */,
+				92464B161CA3FD17000AABAD /* IntroViewController.swift in Sources */,
 				85A286561C919C2B005170EB /* FavoritedShopViewController.m in Sources */,
 				85A2857E1C919C2B005170EB /* UIViewController+TKPAdditions.m in Sources */,
 				85A286A51C919C2B005170EB /* InboxTalkSplitViewController.m in Sources */,
