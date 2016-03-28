@@ -55,6 +55,10 @@
 		8565E1EA1B94059600843388 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E81B94059600843388 /* GoogleOpenSource.framework */; };
 		8565E1EB1B94059600843388 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1E91B94059600843388 /* GooglePlus.framework */; };
 		8565E1ED1B9405C800843388 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8565E1EC1B9405C800843388 /* GooglePlus.bundle */; };
+		858C0F791CA295A60085776B /* NSURL+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 858C0F781CA295A60085776B /* NSURL+Dictionary.m */; };
+		858C0F7F1CA297EC0085776B /* UITableView+IndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 858C0F7E1CA297EC0085776B /* UITableView+IndexPath.m */; };
+		858C0F821CA29E9B0085776B /* UITableView+RefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 858C0F811CA29E9B0085776B /* UITableView+RefreshControl.m */; };
+		858C0F851CA2A2AF0085776B /* ProductRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 858C0F841CA2A2AF0085776B /* ProductRequest.m */; };
 		85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDD1BAFCE4A002F1382 /* Fabric.framework */; };
 		85A18BE01BAFD257002F1382 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A18BDF1BAFD257002F1382 /* StoreKit.framework */; };
 		85A283731C919C2B005170EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A276341C919C1C005170EB /* AppDelegate.m */; };
@@ -2215,6 +2219,14 @@
 		8565E1E81B94059600843388 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		8565E1E91B94059600843388 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		8565E1EC1B9405C800843388 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
+		858C0F771CA295A60085776B /* NSURL+Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Dictionary.h"; sourceTree = "<group>"; };
+		858C0F781CA295A60085776B /* NSURL+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Dictionary.m"; sourceTree = "<group>"; };
+		858C0F7D1CA297EC0085776B /* UITableView+IndexPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+IndexPath.h"; sourceTree = "<group>"; };
+		858C0F7E1CA297EC0085776B /* UITableView+IndexPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+IndexPath.m"; sourceTree = "<group>"; };
+		858C0F801CA29E9B0085776B /* UITableView+RefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+RefreshControl.h"; sourceTree = "<group>"; };
+		858C0F811CA29E9B0085776B /* UITableView+RefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+RefreshControl.m"; sourceTree = "<group>"; };
+		858C0F831CA2A2AF0085776B /* ProductRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductRequest.h; sourceTree = "<group>"; };
+		858C0F841CA2A2AF0085776B /* ProductRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductRequest.m; sourceTree = "<group>"; };
 		85A18BDD1BAFCE4A002F1382 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		85A18BDF1BAFD257002F1382 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		85A276331C919C1C005170EB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -5543,6 +5555,8 @@
 			isa = PBXGroup;
 			children = (
 				85A276411C919C1C005170EB /* ALAsset+Date.h */,
+				858C0F771CA295A60085776B /* NSURL+Dictionary.h */,
+				858C0F781CA295A60085776B /* NSURL+Dictionary.m */,
 				85A276421C919C1C005170EB /* ALAsset+Date.m */,
 				85A276431C919C1C005170EB /* NSArray+PerformSelector.h */,
 				85A276441C919C1C005170EB /* NSArray+PerformSelector.m */,
@@ -5569,6 +5583,10 @@
 				85A276591C919C1C005170EB /* UIKitCategory.m */,
 				85A2765A1C919C1C005170EB /* UITextView+UITextView_Placeholder.h */,
 				85A2765B1C919C1C005170EB /* UITextView+UITextView_Placeholder.m */,
+				858C0F7D1CA297EC0085776B /* UITableView+IndexPath.h */,
+				858C0F7E1CA297EC0085776B /* UITableView+IndexPath.m */,
+				858C0F801CA29E9B0085776B /* UITableView+RefreshControl.h */,
+				858C0F811CA29E9B0085776B /* UITableView+RefreshControl.m */,
 				85A2765C1C919C1C005170EB /* UIViewCategory.swift */,
 			);
 			path = Category;
@@ -8688,6 +8706,8 @@
 				85A27DA71C919C21005170EB /* Reputation */,
 				85A27DD01C919C21005170EB /* RequestMoveTo.h */,
 				85A27DD11C919C21005170EB /* RequestMoveTo.m */,
+				858C0F831CA2A2AF0085776B /* ProductRequest.h */,
+				858C0F841CA2A2AF0085776B /* ProductRequest.m */,
 				85A27DD21C919C21005170EB /* SimpleReputation */,
 				85A27DD81C919C21005170EB /* string_product.h */,
 			);
@@ -12532,6 +12552,7 @@
 				85A2851A1C919C2B005170EB /* TransactionAddressShipping.m in Sources */,
 				85A284141C919C2B005170EB /* DepartmentTree.m in Sources */,
 				85A2872B1C919C2C005170EB /* ProductReputationSimpleCell.m in Sources */,
+				858C0F851CA2A2AF0085776B /* ProductRequest.m in Sources */,
 				85A284D01C919C2B005170EB /* SearchAutoCompleteObject.m in Sources */,
 				85A286D01C919C2B005170EB /* MyShopPaymentCell.m in Sources */,
 				85A284761C919C2B005170EB /* PriceAlert.m in Sources */,
@@ -12551,6 +12572,7 @@
 				85A2841B1C919C2B005170EB /* InboxMessage.m in Sources */,
 				85A287271C919C2C005170EB /* SegmentedReviewReputationViewController.m in Sources */,
 				85A2839C1C919C2B005170EB /* UserAuthentificationManager.m in Sources */,
+				858C0F7F1CA297EC0085776B /* UITableView+IndexPath.m in Sources */,
 				85A285EF1C919C2B005170EB /* ContactUsViewController.m in Sources */,
 				85A285171C919C2B005170EB /* LuckyDealWord.m in Sources */,
 				85A285141C919C2B005170EB /* LuckyDeal.m in Sources */,
@@ -12612,6 +12634,7 @@
 				85A287991C919C2C005170EB /* SettingAddressViewController.m in Sources */,
 				85A283E71C919C2B005170EB /* ReviewResult.m in Sources */,
 				85A285881C919C2B005170EB /* RegisterViewController.m in Sources */,
+				858C0F821CA29E9B0085776B /* UITableView+RefreshControl.m in Sources */,
 				85A286F61C919C2B005170EB /* GalleryViewController.m in Sources */,
 				85A286A71C919C2B005170EB /* InboxTalkViewController.m in Sources */,
 				85A284AA1C919C2B005170EB /* RequestObject.m in Sources */,
@@ -13212,6 +13235,7 @@
 				85A288831C919C2C005170EB /* ProductTableViewCell.m in Sources */,
 				85A283C21C919C2B005170EB /* TicketCategory.m in Sources */,
 				85A287FF1C919C2C005170EB /* TKPMapView.swift in Sources */,
+				858C0F791CA295A60085776B /* NSURL+Dictionary.m in Sources */,
 				85A2853F1C919C2B005170EB /* TransactionVoucher.m in Sources */,
 				85A284881C919C2B005170EB /* ListFavoriteShop.m in Sources */,
 				85A2838A1C919C2B005170EB /* LabelMenu.m in Sources */,

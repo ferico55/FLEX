@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) ManageProductResult *result;
+@property (nonatomic, strong) ManageProductResult *data;
+
++ (RKObjectMapping *)objectMapping;
 
 @end
