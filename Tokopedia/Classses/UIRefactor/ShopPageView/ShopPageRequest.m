@@ -40,4 +40,12 @@
                                      }];
 }
 
+-(NSString*)splitUriToPage:(NSString *)uri{
+    if(!_productNetworkManager){
+        _productNetworkManager = [TokopediaNetworkManager new];
+        _productNetworkManager.isUsingHmac = YES;
+    }
+    return [_productNetworkManager splitUriToPage:uri];
+}
+
 @end

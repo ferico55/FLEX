@@ -18,4 +18,6 @@
                                          order_by:(NSString*)orderBy
                                       shop_domain:(NSString*)shopDomain
                                         onSuccess:(void (^)(ShopProductPageResult*))successCallback onFailure:(void (^)(NSError *))errorCallback;
+
+-(NSString*)splitUriToPage:(NSString*)uri;
 @end
