@@ -60,7 +60,7 @@ $0 <options>
 
   -k <app key>           Rollout app key (required)
   -p <.xcodeproj dir>    a path to the project directory (optional, for cases
-                         in which the script can't locate it automatically)
+                         in which the script cannot locate it automatically)
   -l                     set tweaker script phase before the linking phase
   -h                     this help message
 EOF
@@ -81,7 +81,7 @@ analytics rollout_sdk_ios_build_number $rollout_build
 analytics project_file_selected true 
 echo "Configuring project \"$xcode_dir\""
 
-rm -rf "$PROJECT_DIR"/Rollout-ios-SDK/{.cache,lib,install,Rollout}
+rm -rf "$PROJECT_DIR"/Rollout-ios-SDK
 analytics  rm_exit_status $? 
 
 "$BIN_DIR"/xcode_ruby_helpers/install.rb << EOF
@@ -89,9 +89,6 @@ analytics  rm_exit_status $?
   "xcode_dir": "$xcode_dir",
   "app_key": "$app_key",
   "files_to_add": [
-    "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_structs.h",
-    `seq -f '"Rollout-ios-SDK/auto_generated_code/RolloutDynamic_%02g.m",' 1 20`
-    "Pods/Rollout.io/Rollout/RolloutDynamic.m"
   ],
   `[ -z "$tweaker_before_linking" ] || echo "\"tweaker_phase_before_linking\": 1,"`
   "sdk_subdir": "Pods/Rollout.io"

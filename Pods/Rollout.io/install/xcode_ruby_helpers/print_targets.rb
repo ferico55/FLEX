@@ -13,6 +13,3 @@ project.targets.each do |source_target|
   end
 end
 exit
-
-
-
