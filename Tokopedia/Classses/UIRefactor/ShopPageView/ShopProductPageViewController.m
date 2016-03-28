@@ -52,6 +52,11 @@
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
 
+#import "ShopProductPageResponse.h"
+#import "ShopProductPageResult.h"
+#import "ShopProductPageList.h"
+#import "ShopPageRequest.h"
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -167,6 +172,7 @@ RetryViewDelegate
     PromoRequest *_promoRequest;
     
     NSIndexPath *_sortIndexPath;
+    ShopPageRequest* _shopPageRequest;
 }
 
 #pragma mark - Initialization
@@ -288,7 +294,10 @@ RetryViewDelegate
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductTag;
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
+    
+    _shopPageRequest = [[ShopPageRequest alloc]init];
+    _shopPageRequest requestForShopProductPageListingWithShopId:<#(NSString *)#> onSuccess:<#^(NSArray<ShopProductPageResult *> *)successCallback#> onFailure:<#^(NSError *)errorCallback#>
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {

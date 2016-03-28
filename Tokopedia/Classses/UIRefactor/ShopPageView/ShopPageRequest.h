@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ShopProductPageResponse.h"
+#import "ShopProductPageResult.h"
 
 @interface ShopPageRequest : NSObject
-
+-(void)requestForShopProductPageListingWithShopId:(NSString *)shopId onSuccess:(void (^)(NSArray<ShopProductPageResult*>*))successCallback onFailure:(void (^)(NSError *))errorCallback;
 @end
