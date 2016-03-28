@@ -2091,6 +2091,10 @@
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		92351FD61C9690B30056B25C /* UIScrollViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */; };
+		BB7238CB1CA8E2F30068AE44 /* ShopPageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7238CA1CA8E2F20068AE44 /* ShopPageRequest.m */; };
+		BBFE4DE31CA3E69C0083BCC1 /* ShopProductPageResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BBFE4DE21CA3E69C0083BCC1 /* ShopProductPageResponse.m */; };
+		BBFE4DE61CA3E6F70083BCC1 /* ShopProductPageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BBFE4DE51CA3E6F70083BCC1 /* ShopProductPageResult.m */; };
+		BBFE4DE91CA3E7FC0083BCC1 /* ShopProductPageList.m in Sources */ = {isa = PBXBuildFile; fileRef = BBFE4DE81CA3E7FC0083BCC1 /* ShopProductPageList.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5256,6 +5260,14 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewCategory.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB7238C91CA8E2F20068AE44 /* ShopPageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopPageRequest.h; sourceTree = "<group>"; };
+		BB7238CA1CA8E2F20068AE44 /* ShopPageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopPageRequest.m; sourceTree = "<group>"; };
+		BBFE4DE11CA3E69C0083BCC1 /* ShopProductPageResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopProductPageResponse.h; sourceTree = "<group>"; };
+		BBFE4DE21CA3E69C0083BCC1 /* ShopProductPageResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopProductPageResponse.m; sourceTree = "<group>"; };
+		BBFE4DE41CA3E6F70083BCC1 /* ShopProductPageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopProductPageResult.h; sourceTree = "<group>"; };
+		BBFE4DE51CA3E6F70083BCC1 /* ShopProductPageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopProductPageResult.m; sourceTree = "<group>"; };
+		BBFE4DE71CA3E7FC0083BCC1 /* ShopProductPageList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopProductPageList.h; sourceTree = "<group>"; };
+		BBFE4DE81CA3E7FC0083BCC1 /* ShopProductPageList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopProductPageList.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -6774,6 +6786,7 @@
 		85A279581C919C1D005170EB /* Shops */ = {
 			isa = PBXGroup;
 			children = (
+				BBFE4DE01CA3E69C0083BCC1 /* ShopPage */,
 				85A279591C919C1D005170EB /* CreateShop */,
 				85A279621C919C1D005170EB /* Etalase */,
 				85A279691C919C1D005170EB /* Notes */,
@@ -9286,6 +9299,8 @@
 				85A27F201C919C22005170EB /* ShopTalkPageViewController.h */,
 				85A27F211C919C22005170EB /* ShopTalkPageViewController.m */,
 				85A27F221C919C22005170EB /* ShopTalkPageViewController.xib */,
+				BB7238C91CA8E2F20068AE44 /* ShopPageRequest.h */,
+				BB7238CA1CA8E2F20068AE44 /* ShopPageRequest.m */,
 			);
 			path = ShopPageView;
 			sourceTree = "<group>";
@@ -10802,6 +10817,19 @@
 			path = "Third Party";
 			sourceTree = "<group>";
 		};
+		BBFE4DE01CA3E69C0083BCC1 /* ShopPage */ = {
+			isa = PBXGroup;
+			children = (
+				BBFE4DE11CA3E69C0083BCC1 /* ShopProductPageResponse.h */,
+				BBFE4DE21CA3E69C0083BCC1 /* ShopProductPageResponse.m */,
+				BBFE4DE41CA3E6F70083BCC1 /* ShopProductPageResult.h */,
+				BBFE4DE51CA3E6F70083BCC1 /* ShopProductPageResult.m */,
+				BBFE4DE71CA3E7FC0083BCC1 /* ShopProductPageList.h */,
+				BBFE4DE81CA3E7FC0083BCC1 /* ShopProductPageList.m */,
+			);
+			path = ShopPage;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -12167,6 +12195,7 @@
 				85A285241C919C2B005170EB /* TransactionCalculatePriceResult.m in Sources */,
 				85A285FF1C919C2B005170EB /* ContactUsFormViewController.m in Sources */,
 				85A287F11C919C2C005170EB /* FilterViewController.m in Sources */,
+				BBFE4DE91CA3E7FC0083BCC1 /* ShopProductPageList.m in Sources */,
 				85A288801C919C2C005170EB /* ProductModelView.m in Sources */,
 				85A2855D1C919C2B005170EB /* OrderButton.m in Sources */,
 				85A285001C919C2B005170EB /* Gojek.m in Sources */,
@@ -12463,6 +12492,7 @@
 				85A283E71C919C2B005170EB /* ReviewResult.m in Sources */,
 				85A285881C919C2B005170EB /* RegisterViewController.m in Sources */,
 				85A286F61C919C2B005170EB /* GalleryViewController.m in Sources */,
+				BB7238CB1CA8E2F30068AE44 /* ShopPageRequest.m in Sources */,
 				85A286A71C919C2B005170EB /* InboxTalkViewController.m in Sources */,
 				85A284AA1C919C2B005170EB /* RequestObject.m in Sources */,
 				85A283F11C919C2B005170EB /* TheOtherProduct.m in Sources */,
@@ -12770,6 +12800,7 @@
 				85A285CC1C919C2B005170EB /* CatalogShopCell.m in Sources */,
 				85A287781C919C2C005170EB /* FilterShipmentStatusViewController.m in Sources */,
 				85A283801C919C2B005170EB /* UIActivityViewController+Extensions.m in Sources */,
+				BBFE4DE31CA3E69C0083BCC1 /* ShopProductPageResponse.m in Sources */,
 				85A286C21C919C2B005170EB /* MyShopEtalaseDetailViewController.m in Sources */,
 				85A286581C919C2B005170EB /* FavoriteShopRequest.m in Sources */,
 				85A285511C919C2B005170EB /* OrderDetailForm.m in Sources */,
@@ -13012,6 +13043,7 @@
 				85A287D01C919C2C005170EB /* ShopInfoShipmentCell.m in Sources */,
 				85A284661C919C2B005170EB /* ProductOwner.m in Sources */,
 				85A286041C919C2B005170EB /* TKPDTabInboxCustomerServiceNavigationController.m in Sources */,
+				BBFE4DE61CA3E6F70083BCC1 /* ShopProductPageResult.m in Sources */,
 				85A283D11C919C2B005170EB /* CatalogPrice.m in Sources */,
 				85A285841C919C2B005170EB /* HelloPhoneVerificationViewController.m in Sources */,
 				85A2877E1C919C2C005170EB /* ImagePickerCategoryController.m in Sources */,
