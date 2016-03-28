@@ -7,12 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */ = {isa = PBXBuildFile; fileRef = 90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
-		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2095,23 +2090,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
-		8917F7DACFE44A03B51AA454 /* RolloutDynamic_05.m in Sources */ = {isa = PBXBuildFile; fileRef = 6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		8C25CB72C9504D0289FE6475 /* RolloutDynamic_16.m in Sources */ = {isa = PBXBuildFile; fileRef = A05CDE3AB94D4662AE7303A7 /* RolloutDynamic_16.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		8E3B2B29E0054A1D9A285411 /* RolloutDynamic_20.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		9034B7F19CD24D21A190AB50 /* RolloutDynamic_04.m in Sources */ = {isa = PBXBuildFile; fileRef = 4511DD45484E4930BD91882A /* RolloutDynamic_04.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		92351FD61C9690B30056B25C /* UIScrollViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */; };
-		9DE0A4BBA86D4190A7E07CB2 /* RolloutDynamic_03.m in Sources */ = {isa = PBXBuildFile; fileRef = D42C03553460450FB506D4DE /* RolloutDynamic_03.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		9E7E2D6D104C42C59FBFF513 /* RolloutDynamic_15.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2849330B874E69A80561F9 /* RolloutDynamic_15.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		A057EECF8D204BED8A68681F /* RolloutDynamic_14.m in Sources */ = {isa = PBXBuildFile; fileRef = 533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		A38BF6C1FD6F409BADC908D1 /* RolloutDynamic_07.m in Sources */ = {isa = PBXBuildFile; fileRef = 3293238776844DC597B4A5AD /* RolloutDynamic_07.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		A8315F4B00E34948BD2ACBF9 /* RolloutDynamic_02.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E670BDDA5CB41D18FCB051D /* RolloutDynamic_02.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AEE860FBB64F42208EBDE6B5 /* RolloutDynamic_10.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		AFAA2BA84BC74A62BC6E1CC3 /* RolloutDynamic_08.m in Sources */ = {isa = PBXBuildFile; fileRef = CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		B8BC1868860D43638F0559D3 /* RolloutDynamic_12.m in Sources */ = {isa = PBXBuildFile; fileRef = 33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		B992750762994650B9C16E0E /* RolloutDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		C7F961F230434FC497BE3DDF /* RolloutDynamic_18.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		D9C98E17B9A542E18C19C91B /* RolloutDynamic_19.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		EC590EC10F764B488966E884 /* RolloutDynamic_09.m in Sources */ = {isa = PBXBuildFile; fileRef = F027C86D73C64BA8A3B6D76E /* RolloutDynamic_09.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -2142,14 +2121,7 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
-		3293238776844DC597B4A5AD /* RolloutDynamic_07.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_07.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_07.m"; sourceTree = "<group>"; };
-		33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_12.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_12.m"; sourceTree = "<group>"; };
-		4511DD45484E4930BD91882A /* RolloutDynamic_04.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_04.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_04.m"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
-		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
-		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
-		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -5282,23 +5254,9 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_18.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_18.m"; sourceTree = "<group>"; };
-		8E670BDDA5CB41D18FCB051D /* RolloutDynamic_02.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_02.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_02.m"; sourceTree = "<group>"; };
-		90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_17.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_17.m"; sourceTree = "<group>"; };
 		92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewCategory.swift; sourceTree = "<group>"; };
-		939838F8A82345A2B27A507A /* RolloutDynamic_01.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_01.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_01.m"; sourceTree = "<group>"; };
-		98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_19.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_19.m"; sourceTree = "<group>"; };
-		A05CDE3AB94D4662AE7303A7 /* RolloutDynamic_16.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_16.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_16.m"; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
-		B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic.m; path = Pods/Rollout.io/Rollout/RolloutDynamic.m; sourceTree = "<group>"; };
-		B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_11.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_11.m"; sourceTree = "<group>"; };
-		C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_20.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_20.m"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_08.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_08.m"; sourceTree = "<group>"; };
-		D42C03553460450FB506D4DE /* RolloutDynamic_03.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_03.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_03.m"; sourceTree = "<group>"; };
-		DD2849330B874E69A80561F9 /* RolloutDynamic_15.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_15.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_15.m"; sourceTree = "<group>"; };
-		E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_13.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_13.m"; sourceTree = "<group>"; };
-		F027C86D73C64BA8A3B6D76E /* RolloutDynamic_09.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_09.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_09.m"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5313,7 +5271,6 @@
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		FD015B03B8544840B6F1AAA9 /* RolloutDynamic_structs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RolloutDynamic_structs.h; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_structs.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5379,35 +5336,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		22AE1F778E4A40CE9CCE0410 /* Rollout */ = {
-			isa = PBXGroup;
-			children = (
-				FD015B03B8544840B6F1AAA9 /* RolloutDynamic_structs.h */,
-				939838F8A82345A2B27A507A /* RolloutDynamic_01.m */,
-				8E670BDDA5CB41D18FCB051D /* RolloutDynamic_02.m */,
-				D42C03553460450FB506D4DE /* RolloutDynamic_03.m */,
-				4511DD45484E4930BD91882A /* RolloutDynamic_04.m */,
-				6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */,
-				6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */,
-				3293238776844DC597B4A5AD /* RolloutDynamic_07.m */,
-				CB853322A4A24CF3BDEF855D /* RolloutDynamic_08.m */,
-				F027C86D73C64BA8A3B6D76E /* RolloutDynamic_09.m */,
-				4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */,
-				B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */,
-				33B1F3ACB74A44ACBB13951C /* RolloutDynamic_12.m */,
-				E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */,
-				533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */,
-				DD2849330B874E69A80561F9 /* RolloutDynamic_15.m */,
-				A05CDE3AB94D4662AE7303A7 /* RolloutDynamic_16.m */,
-				90BEDCEFC1724F24B37ABB73 /* RolloutDynamic_17.m */,
-				8CC3F888BE924191BD86A597 /* RolloutDynamic_18.m */,
-				98D0E83748674EABB5AC874A /* RolloutDynamic_19.m */,
-				C6E35ED74CF8435E8051F5E0 /* RolloutDynamic_20.m */,
-				B01B7261CEA746D5A218C3E8 /* RolloutDynamic.m */,
-			);
-			name = Rollout;
-			sourceTree = "<group>";
-		};
 		852DFE9C1C92B3A300A52E93 /* OtherProduct */ = {
 			isa = PBXGroup;
 			children = (
@@ -10892,7 +10820,6 @@
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				FC36DF8419B0656400AF74C1 /* Products */,
-				22AE1F778E4A40CE9CCE0410 /* Rollout */,
 				E1A48FC656B05056B45251AD /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -10983,11 +10910,10 @@
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
 				9852790493753292549B327E /* Check Pods Manifest.lock */,
-				AA9EFE24FE5445AAB7DE4394 /* Rollout.io pre-build */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
-				61399F3788A34F96AC01292E /* Rollout.io post-build */,
+				482F0ED011CF4FBE8FD33502 /* Rollout.io dsym upload */,
 				270CBF0B5FC08042843CD1B4 /* Copy Pods Resources */,
 			);
 			buildRules = (
@@ -12187,19 +12113,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		61399F3788A34F96AC01292E /* Rollout.io post-build */ = {
+		482F0ED011CF4FBE8FD33502 /* Rollout.io dsym upload */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Rollout.io post-build";
+			name = "Rollout.io dsym upload";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=4 \"${SRCROOT}/Pods/Rollout.io/lib/tweaker\"  -k 56a717aed7bed00574f5169c";
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=5 \"${SRCROOT}/Pods/Rollout.io/lib/upload_dsym_phase\" -k 56a717aed7bed00574f5169c";
 		};
 		9852790493753292549B327E /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -12215,20 +12141,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		AA9EFE24FE5445AAB7DE4394 /* Rollout.io pre-build */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Rollout.io pre-build";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=4 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\"";
 		};
 		E69AA1A952B2C8DACAC50186 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -12400,7 +12312,6 @@
 				85A284DE1C919C2B005170EB /* OpenShopPicture.m in Sources */,
 				85A283EF1C919C2B005170EB /* TalkList.m in Sources */,
 				85A2867A1C919C2B005170EB /* InboxMessageDetailCell.m in Sources */,
-				50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */,
 				85A285641C919C2B005170EB /* Upload.m in Sources */,
 				85A288901C919C2C005170EB /* VTCustomerDetails.m in Sources */,
 				85A284951C919C2B005170EB /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
@@ -12433,7 +12344,6 @@
 				85A285C11C919C2B005170EB /* RequestUploadImageSubmit.m in Sources */,
 				85A2884D1C919C2C005170EB /* TxOrderConfirmationProductCell.m in Sources */,
 				85A285B41C919C2B005170EB /* CameraController.m in Sources */,
-				A8315F4B00E34948BD2ACBF9 /* RolloutDynamic_02.m in Sources */,
 				85A284D11C919C2B005170EB /* SearchData.m in Sources */,
 				85A283B11C919C2B005170EB /* CatalogResult.m in Sources */,
 				85A285461C919C2B005170EB /* TxOrderCancelPaymentFormForm.m in Sources */,
@@ -12520,7 +12430,6 @@
 				85A2861E1C919C2B005170EB /* ScrollViewSimultaneousGesture.m in Sources */,
 				85A283D71C919C2B005170EB /* SpecChilds.m in Sources */,
 				85A2837F1C919C2B005170EB /* NSStringCategory.m in Sources */,
-				9DE0A4BBA86D4190A7E07CB2 /* RolloutDynamic_03.m in Sources */,
 				85A285DD1C919C2B005170EB /* FilterCategoryViewCell.m in Sources */,
 				85A284EE1C919C2B005170EB /* Shipment.m in Sources */,
 				85A2845B1C919C2B005170EB /* LoyaltyPointMerchant.m in Sources */,
@@ -12610,7 +12519,6 @@
 				85A287B81C919C2C005170EB /* CreateShopViewController.m in Sources */,
 				85A288451C919C2C005170EB /* TxOrderConfirmationCostCell.m in Sources */,
 				85A2857C1C919C2B005170EB /* TKPMappingManager.m in Sources */,
-				9034B7F19CD24D21A190AB50 /* RolloutDynamic_04.m in Sources */,
 				85A2838B1C919C2B005170EB /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				85A2857B1C919C2B005170EB /* TKPHomeProductsStore.m in Sources */,
 				85A287251C919C2C005170EB /* ProductReputationViewController.m in Sources */,
@@ -12636,7 +12544,6 @@
 				85A2885B1C919C2C005170EB /* TxOrderConfirmedCell.m in Sources */,
 				85A286F51C919C2B005170EB /* GalleryPhotoView.m in Sources */,
 				85A283A11C919C2B005170EB /* LoginResult.m in Sources */,
-				8917F7DACFE44A03B51AA454 /* RolloutDynamic_05.m in Sources */,
 				85A283A91C919C2B005170EB /* RegisterResult.m in Sources */,
 				85A284531C919C2B005170EB /* LikeDislikePost.m in Sources */,
 				85A285351C919C2B005170EB /* CCFee.m in Sources */,
@@ -12667,12 +12574,10 @@
 				85A284021C919C2B005170EB /* GoogleDistanceMatrixElement.m in Sources */,
 				85A287821C919C2C005170EB /* SearchAutoCompleteHeaderView.m in Sources */,
 				85A286231C919C2B005170EB /* TKPDTextView.m in Sources */,
-				725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */,
 				85A2881F1C919C2C005170EB /* TransactionCartHeaderView.m in Sources */,
 				85A2876E1C919C2C005170EB /* ShipmentConfirmationViewController.m in Sources */,
 				85A2871D1C919C2C005170EB /* MyReviewReputationViewController.m in Sources */,
 				85A284F51C919C2B005170EB /* AddProductSubmitResult.m in Sources */,
-				A38BF6C1FD6F409BADC908D1 /* RolloutDynamic_07.m in Sources */,
 				85A286D81C919C2B005170EB /* NotificationBarButton.m in Sources */,
 				85A285CA1C919C2B005170EB /* CatalogSectionHeaderView.m in Sources */,
 				85A286FB1C919C2B005170EB /* ProductReviewDetailViewController.m in Sources */,
@@ -12700,7 +12605,6 @@
 				85A285AF1C919C2B005170EB /* StickyAlertView.m in Sources */,
 				85A2862D1C919C2B005170EB /* DepositSummaryCell.m in Sources */,
 				85A288351C919C2C005170EB /* TransactionShipmentViewController.m in Sources */,
-				AFAA2BA84BC74A62BC6E1CC3 /* RolloutDynamic_08.m in Sources */,
 				85A287A91C919C2C005170EB /* SettingPasswordViewController.m in Sources */,
 				85A284CE1C919C2B005170EB /* SearchAutoCompleteGeneral.m in Sources */,
 				85A283921C919C2B005170EB /* TKPDSecureStorage.m in Sources */,
@@ -12859,7 +12763,6 @@
 				85A283A81C919C2B005170EB /* Register.m in Sources */,
 				85A2843B1C919C2B005170EB /* InboxReviewProductOwner.m in Sources */,
 				85A283741C919C2B005170EB /* TPAnalytics.m in Sources */,
-				EC590EC10F764B488966E884 /* RolloutDynamic_09.m in Sources */,
 				85A2852A1C919C2B005170EB /* TransactionCCResult.m in Sources */,
 				85A285E61C919C2B005170EB /* RequestCategory.m in Sources */,
 				85A286F91C919C2B005170EB /* ProductReviewCell.m in Sources */,
@@ -12887,12 +12790,10 @@
 				85A2842E1C919C2B005170EB /* ResolutionCenterDetailResult.m in Sources */,
 				85A284E01C919C2B005170EB /* Etalase.m in Sources */,
 				85A288271C919C2C005170EB /* TransactionCCDetailViewController.m in Sources */,
-				AEE860FBB64F42208EBDE6B5 /* RolloutDynamic_10.m in Sources */,
 				85A283C01C919C2B005170EB /* ContactUsResponse.m in Sources */,
 				85A2841D1C919C2B005170EB /* InboxMessageActionResult.m in Sources */,
 				85A283A61C919C2B005170EB /* VerifyOTP.m in Sources */,
 				85A2840F1C919C2B005170EB /* HotlistBannerInfo.m in Sources */,
-				5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */,
 				85A285771C919C2B005170EB /* UIImageView%2BAFNetworking.swift in Sources */,
 				85A283E11C919C2B005170EB /* AdvanceReview.m in Sources */,
 				85A285751C919C2B005170EB /* RSKPlaceholderTextView.swift in Sources */,
@@ -12918,7 +12819,6 @@
 				85A284A11C919C2B005170EB /* PromoShop.m in Sources */,
 				85A287D61C919C2C005170EB /* SendMessageViewController.m in Sources */,
 				85A284011C919C2B005170EB /* GoogleDistanceMatrixDuration.m in Sources */,
-				B8BC1868860D43638F0559D3 /* RolloutDynamic_12.m in Sources */,
 				85A287541C919C2C005170EB /* ProductQuantityCell.m in Sources */,
 				85A287F41C919C2C005170EB /* ChangeMessageUrlTagHandler.m in Sources */,
 				85A283FF1C919C2B005170EB /* GoogleDistanceMatrix.m in Sources */,
@@ -12977,7 +12877,6 @@
 				85A284A81C919C2B005170EB /* ShopBadgeLevel.m in Sources */,
 				85A286DC1C919C2B005170EB /* AlertPriceNotificationViewController.m in Sources */,
 				85A286631C919C2B005170EB /* ProductInfoTableViewController.m in Sources */,
-				433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */,
 				85A285A91C919C2B005170EB /* AlertRateView.m in Sources */,
 				85A2859F1C919C2B005170EB /* AlertListView.m in Sources */,
 				85A283AB1C919C2B005170EB /* AddressDistrict.m in Sources */,
@@ -13055,7 +12954,6 @@
 				85A286E61C919C2B005170EB /* PriceAlertViewController.m in Sources */,
 				85A284851C919C2B005170EB /* ProfileEditResult.m in Sources */,
 				85A285EC1C919C2B005170EB /* ContactUsPresenter.m in Sources */,
-				A057EECF8D204BED8A68681F /* RolloutDynamic_14.m in Sources */,
 				85A284C41C919C2B005170EB /* SearchAWSResult.m in Sources */,
 				85A284BF1C919C2B005170EB /* OrderTransaction.m in Sources */,
 				85A286BA1C919C2B005170EB /* WebViewController.m in Sources */,
@@ -13080,7 +12978,6 @@
 				85A283861C919C2B005170EB /* UIViewCategory.swift in Sources */,
 				85A2850F1C919C2B005170EB /* TrackOrder.m in Sources */,
 				85A284C71C919C2B005170EB /* ImageSearchResponse.m in Sources */,
-				9E7E2D6D104C42C59FBFF513 /* RolloutDynamic_15.m in Sources */,
 				85A283951C919C2B005170EB /* NavigationHelper.m in Sources */,
 				85A287F61C919C2C005170EB /* ProductTalkFormViewController.m in Sources */,
 				85A283BE1C919C2B005170EB /* ContactUsActionResultStatus.m in Sources */,
@@ -13107,7 +13004,6 @@
 				85A283891C919C2B005170EB /* ExpiringCache.m in Sources */,
 				85A284F61C919C2B005170EB /* AddProductValidation.m in Sources */,
 				85A285331C919C2B005170EB /* TxOrderConfirmationResult.m in Sources */,
-				8C25CB72C9504D0289FE6475 /* RolloutDynamic_16.m in Sources */,
 				85A2869E1C919C2B005170EB /* InboxReviewSplitViewController.m in Sources */,
 				85A286061C919C2B005170EB /* TKPDTabInboxMessageNavigationController.m in Sources */,
 				85A2881B1C919C2C005170EB /* TransactionCartEditViewController.m in Sources */,
@@ -13158,7 +13054,6 @@
 				85A285201C919C2B005170EB /* TransactionBuy.m in Sources */,
 				85A285AA1C919C2B005170EB /* AlertShipmentCodeView.m in Sources */,
 				85A284E21C919C2B005170EB /* EtalaseResult.m in Sources */,
-				14258CCDA1574FA0B6B8C876 /* RolloutDynamic_17.m in Sources */,
 				85A285021C919C2B005170EB /* POSIndonesia.m in Sources */,
 				85A288131C919C2C005170EB /* TransactionShipmentATCTableViewController.m in Sources */,
 				85A283AA1C919C2B005170EB /* AddressCity.m in Sources */,
@@ -13212,7 +13107,6 @@
 				85A286B11C919C2B005170EB /* InboxTicketViewController.m in Sources */,
 				85A284B61C919C2B005170EB /* OrderDetail.m in Sources */,
 				85A286451C919C2B005170EB /* GeneralSingleProductCell.m in Sources */,
-				C7F961F230434FC497BE3DDF /* RolloutDynamic_18.m in Sources */,
 				85A285E71C919C2B005170EB /* ContactUsCategoryCell.m in Sources */,
 				85A286EE1C919C2B005170EB /* DetailProductViewController.m in Sources */,
 				85A283B41C919C2B005170EB /* CatalogShopAWSResult.m in Sources */,
@@ -13234,12 +13128,10 @@
 				85A285951C919C2B005170EB /* AlertInfoPaymentConfirmationView.m in Sources */,
 				85A287931C919C2C005170EB /* SettingAddressDetailViewController.m in Sources */,
 				85A287D41C919C2C005170EB /* ShopNotesDetailViewController.m in Sources */,
-				D9C98E17B9A542E18C19C91B /* RolloutDynamic_19.m in Sources */,
 				85A288111C919C2C005170EB /* TransactionShipmentATCTableViewCell.m in Sources */,
 				85A285AC1C919C2B005170EB /* AlertVerifyOTP.m in Sources */,
 				85A2882C1C919C2C005170EB /* TransactionCartResultCell.m in Sources */,
 				85A284381C919C2B005170EB /* InboxReviewAction.m in Sources */,
-				8E3B2B29E0054A1D9A285411 /* RolloutDynamic_20.m in Sources */,
 				85A284751C919C2B005170EB /* DetailPriceAlert.m in Sources */,
 				85A284C01C919C2B005170EB /* WarehouseResponse.m in Sources */,
 				85A283781C919C2B005170EB /* ALAsset+Date.m in Sources */,
@@ -13267,7 +13159,6 @@
 				85A283AC1C919C2B005170EB /* AddressObj.m in Sources */,
 				85A285301C919C2B005170EB /* TxOrderConfirmation.m in Sources */,
 				85A285E31C919C2B005170EB /* CategoryMenuViewController.m in Sources */,
-				B992750762994650B9C16E0E /* RolloutDynamic.m in Sources */,
 				85A283B31C919C2B005170EB /* CatalogShopAWSProductResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -13400,7 +13291,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CC = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/compiler/clang";
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -13415,8 +13305,6 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang";
-				LDPLUSPLUS = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang++";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13428,7 +13316,6 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
-				LIPO = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/lipo/lipo";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tokopedia.Tokopedia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -13447,7 +13334,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CC = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/compiler/clang";
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
@@ -13466,8 +13352,6 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang";
-				LDPLUSPLUS = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/linker/clang++";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -13479,7 +13363,6 @@
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Appsflyer",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Veritrans",
 				);
-				LIPO = "${SRCROOT}/Pods/Rollout.io/lib/clang_wrapper/lipo/lipo";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

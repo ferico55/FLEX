@@ -6,14 +6,11 @@ lib_dir=$(dirname "$0")
 rollout_dir=$(dirname "$lib_dir")
 cache_dir="${rollout_dir}/.cache"
 
-unset help exit rollout_key structure_md5 bundle_version bundle_short_version dsym_file
+unset help exit rollout_key bundle_version bundle_short_version dsym_file
 while getopts "k:m:d:h" option; do
   case $option in
     k)
       rollout_key=$OPTARG
-      ;;
-    m)
-      structure_md5=$OPTARG
       ;;
     d)
       dsym_file="$OPTARG"
@@ -32,7 +29,6 @@ done
 Usage:  $0 <options>
 
   -k <app key>                 Rollout app key
-  -m <structure md5>           the md5 of the structure generated from the dsym
   -d <path to dsym>            path to the dsym file (the binary file, not the .dsym directory)
   -h                           this help message
 EOF
@@ -40,7 +36,6 @@ EOF
 }
 
 [ -n "$rollout_key" ] || { echo "Rollout app key is required (-k)" 1>&2 ; exit=1; }
-[ -n "$structure_md5" ] || { echo "Structure md5 is required (-m)" 1>&2; exit=1; }
 [ -n "$dsym_file" ] || { echo "Path to dsym is required (-d)" 1>&2; exit=1; }
 
 [ -z "$exit" ] || exit 1
@@ -48,10 +43,12 @@ EOF
 rollout_build=`. "$lib_dir"/versions; echo $build`
 [ -n "$rollout_build" ] || { echo "Could not extract rollout build number" 1>&2; exit 2; }
 
-gzipped_dsym="$cache_dir/dsym.gz"
-gzip -c "$dsym_file" > "$gzipped_dsym" || { echo "Could not gzip dsym \"$gzipped_dsym)\"" 1>&2; exit 3; }
-
 server="$ROLLOUT_allServicesInOneServer"
 [ -n "$ROLLOUT_allServicesInOneServer" ] || server="https://upload.rollout.io"
 
-curl -sS --location --post301 --post302 -F dsym=@"$gzipped_dsym" "${server}/api/dsym/$rollout_key?rollout_key=$rollout_key&md5=$structure_md5&rollout_build=$rollout_build"
+gzip -c "$dsym_file" | curl -sS --location --post301 --post302 -F dsym=@"-" "${server}/api/dsym/$rollout_key?rollout_key=$rollout_key&rollout_build=$rollout_build"
+pipe_status=(${PIPESTATUS[*]})
+[ ${pipe_status[0]} == 0 ] || echo "gzip command failed"
+[ ${pipe_status[1]} == 0 ] || echo "curl command failed"
+
+exit $((${pipe_status[0]} + ${pipe_status[1]}))
